@@ -5,7 +5,7 @@ import {
   PersonService, EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -20,6 +20,10 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() employee: Employee;
 
+  editDepartment = false;
+  biodatas = false;
+  contacts = false;
+
   contentSecMenuShow = false;
   modal_on = false;
   changeUserImg = false;
@@ -30,25 +34,25 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedState: any;
   selectedLGA: any;
   selectedPerson: Person;
-  selectedFacility: any = <any>{};
+  selectedFacility: Facility = <Facility>{};
   searchControl = new FormControl();
   employees: Employee[] = [];
-  homeAddress = '';
+  homeAddress: string = '';
   selectedUser: User = <User>{};
-  loadIndicatorVisible = false;
+  loadIndicatorVisible: boolean = false;
 
-  createWorkspace = false;
-  assignUnitPop = false;
+  createWorkspace: boolean = false;
+  assignUnitPop: boolean = false;
 
   employeeSubscription: Subscription;
   constructor(private countryService: CountriesService,
     private employeeService: EmployeeService,
-    public facilityService: FacilitiesService,
+    private facilityService: FacilitiesService,
     private userService: UserService,
     private personService: PersonService,
     private router: Router, private route: ActivatedRoute,
     private toastr: ToastsManager,
-    private locker: CoolLocalStorage) {
+    private locker: Locker) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
     });
@@ -66,7 +70,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = this.locker.get('selectedFacility');
     // this.getEmployees();
     this.searchControl.valueChanges.subscribe(value => {
     });
@@ -74,8 +78,8 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   getEmployee(employee) {
     this.loadIndicatorVisible = true;
-    const employee$ = this.employeeService.get(employee._id, {});
-    const user$ = this.userService.find({ query: { personId: employee.personId } });
+    let employee$ = this.employeeService.get(employee._id, {});
+    let user$ = this.userService.find({ query: { personId: employee.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};
@@ -241,5 +245,14 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.employeeSubscription.unsubscribe();
+  }
+  toggleDepartmentShow() {
+    this.editDepartment = !this.editDepartment;
+  }
+  bioDataShow() {
+    this.biodatas = !this.biodatas;
+  }
+  contactShow(){
+    this.contacts = !this.contacts;
   }
 }

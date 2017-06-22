@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-let request = require('superagent');
+const request = require('superagent');
 
 @Injectable()
 export class EmployeeService {
@@ -38,7 +38,7 @@ export class EmployeeService {
   }
 
   InitializeEvent(event) {
-    let observable = new Observable(observer => {
+    const observable = new Observable(observer => {
       this._socket.on(event, (data) => {
         observer.next(data);
       });
@@ -87,8 +87,8 @@ export class EmployeeService {
   }
   searchEmployee(facilityId: string, searchText: string, showbasicinfo: boolean) {
     console.log('inin')
-    let host = this._restService.getHost();
-    let path = host + '/employee';
+    const host = this._restService.getHost();
+    const path = host + '/employee';
     return request
       .get(path)
       .query({ facilityid: facilityId, searchtext: searchText, showbasicinfo }); // query string 

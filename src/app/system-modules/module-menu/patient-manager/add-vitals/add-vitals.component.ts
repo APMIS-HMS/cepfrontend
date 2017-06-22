@@ -5,7 +5,7 @@ import {
   EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 
 
 @Component({
@@ -28,6 +28,9 @@ export class AddVitalsComponent implements OnInit {
   temperature: any = <any>{};
   heightWeight: any = <any>{};
   bloodPressure: any = <any>{};
+  bmi: number = <number>{};
+  isWarning = false;
+  bmiWarningMssg = '';
 
   public frmAddVitals: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -38,14 +41,12 @@ export class AddVitalsComponent implements OnInit {
     private _vitaLocationService: VitaLocationService,
     private _vitalPositionService: VitalPositionService,
     private _vitalRythmService: VitalRythmService,
-    private _locker: CoolLocalStorage,
-    private _employeeService: EmployeeService) {
+    private _locker: Locker,
+    private _employeeService: EmployeeService) { }
 
-  }
   ngOnInit() {
-    console.log('from vitals');
-    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-    const auth: any = this._locker.getObject('auth');
+    this.selectedFacility = this._locker.get('selectedFacility');
+    const auth = this._locker.get('auth');
     this._employeeService.find({
       query:
       {
@@ -69,12 +70,47 @@ export class AddVitalsComponent implements OnInit {
       respiratoryRate: ['', []],
       temp: ['', []],
       height: ['', []],
-      weight: ['', []],
-      bmi: ['', []]
+      weight: ['', []]
     });
     this.getVitalLocation();
     this.getVitalPosition();
     this.getVitalRythm();
+
+    this.frmAddVitals.controls['height'].valueChanges.subscribe(value => {
+      const heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
+      const bmiValue = (+this.frmAddVitals.controls['weight'].value) / heightSquare;
+      this.bmi = Math.round(bmiValue * 10) / 10;
+      if (this.bmi < 16) {
+        this.bmiWarningMssg = 'Severe Thinness';
+        this.isWarning = true;
+      }      else if (this.bmi >= 25 && this.bmi < 30) {
+        this.bmiWarningMssg = 'Overweight';
+        this.isWarning = true;
+      } else if (this.bmi > 30) {
+        this.bmiWarningMssg = 'Obese Class';
+        this.isWarning = true;
+      } else {
+        this.isWarning = false;
+      }
+    });
+
+    this.frmAddVitals.controls['weight'].valueChanges.subscribe(value => {
+      const heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
+      const bmiValue = (+this.frmAddVitals.controls['weight'].value) / heightSquare;
+      this.bmi = Math.round(bmiValue * 10) / 10;
+      if (this.bmi < 16) {
+        this.bmiWarningMssg = 'Severe Thinness';
+        this.isWarning = true;
+      } else if (this.bmi >= 25 && this.bmi < 30) {
+        this.bmiWarningMssg = 'Overweight';
+        this.isWarning = true;
+      } else if (this.bmi > 30) {
+        this.bmiWarningMssg = 'Obese Class';
+        this.isWarning = true;
+      } else {
+        this.isWarning = false;
+      }
+    });
   }
 
   getVitalPosition() {
@@ -108,7 +144,7 @@ export class AddVitalsComponent implements OnInit {
       this.temperature = this.frmAddVitals.controls['temp'].value;
       this.heightWeight.height = this.frmAddVitals.controls['height'].value;
       this.heightWeight.weight = this.frmAddVitals.controls['weight'].value;
-      this.heightWeight.bmi = this.frmAddVitals.controls['bmi'].value;
+      this.heightWeight.bmi = this.bmi;
       this.bloodPressure.systolic = this.frmAddVitals.controls['systolicBp1'].value;
       this.bloodPressure.diastolic = this.frmAddVitals.controls['diastolicBp1'].value;
       this.bloodPressure.location = this.frmAddVitals.controls['diastolicBp1Loc'].value;
