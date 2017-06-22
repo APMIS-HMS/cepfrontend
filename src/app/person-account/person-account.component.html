@@ -58,14 +58,7 @@
           <small class="alert-label" [hidden]="frmPerson.controls.password.valid || frmPerson.controls.password.pristine">
             this field is required, minimum of 6 and maximum of 20 characters.
           </small>
-          <dx-text-box formControlName="password" mode="password"></dx-text-box> 
-        </div>
-
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.repassword.valid || frmPerson.controls.repassword.pristine">
-            this field is required, minimum of 6 and maximum of 20 characters.
-          </small>
-          <dx-text-box formControlName="repassword" mode="password"></dx-text-box> 
+          <input class="txt-input" formControlName="password" type="password" placeholder="Confirm Password" autocomplete="off">
         </div>
       </div>
 
@@ -110,6 +103,13 @@
             Wrong phone number format.
           </small>
           <input class="txt-input" formControlName="phone" type="number" placeholder="Phone Number" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.repassword.valid || frmPerson.controls.repassword.pristine">
+            this field is required, minimum of 6 and maximum of 20 characters.
+          </small>
+          <input class="txt-input" formControlName="repassword" type="password" placeholder="Confirm Password" autocomplete="off">
         </div>
 
       </div>

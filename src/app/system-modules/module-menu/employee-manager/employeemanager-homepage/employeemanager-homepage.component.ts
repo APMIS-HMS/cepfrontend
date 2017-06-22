@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/cor
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, EmployeeService, PersonService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
@@ -19,13 +19,13 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   employees: Employee[] = [];
   searchControl = new FormControl();
 
-  pageSize = 1;
-  limit = 100;
-  total = 0;
-  loadIndicatorVisible = false;
+  pageSize: number = 1;
+  limit: number = 100;
+  total: number = 0;
+  loadIndicatorVisible: boolean = false;
   constructor(private employeeService: EmployeeService,
-    public facilityService: FacilitiesService,
-    private personService: PersonService, private locker: CoolLocalStorage,
+    private facilityService: FacilitiesService,
+    private personService: PersonService, private locker: Locker,
     private toast: ToastsManager,
     private router: Router, private route: ActivatedRoute) {
     this.employeeService.listner.subscribe(payload => {
@@ -38,7 +38,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
 
-    const away = this.searchControl.valueChanges
+    let away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
 
@@ -60,7 +60,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       });
     });
     this.pageInView.emit('Employee Manager');
-    this.facility =  <Facility> this.locker.getObject('selectedFacility');
+    this.facility = this.locker.get('selectedFacility');
     // this.getEmployees(this.limit);
   }
   searchEmployees(searchText: string) {
@@ -115,7 +115,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     });
   }
   contactEmployees(employeeData: Employee[]) {
-    const newEmployees: Employee[] = [];
+    let newEmployees: Employee[] = [];
     this.employees.forEach((employee, i) => {
       let found = false;
       let newEmp: Employee = <Employee>{};
@@ -134,7 +134,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
-    const limit = this.limit * this.pageSize;
+    let limit = this.limit * this.pageSize;
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, false);
     }
@@ -144,7 +144,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
-    const limit = this.limit * this.pageSize;
+    let limit = this.limit * this.pageSize;
 
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, true);

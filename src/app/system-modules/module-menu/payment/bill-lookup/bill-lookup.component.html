@@ -31,7 +31,7 @@
         <div *ngIf="selectedPatient._id != undefined" class="billBody">
           <div class="billContentSect">
             <div (click)="addItem_show()" class="cta-1 btn-addItem">
-              Add Item
+              Add Item 
             </div>
             <table class="tblBg">
               <thead>
@@ -103,7 +103,7 @@
                 <tr class="summaryItem">
                   <td class="label">Discount</td>
                   <td class="data"> {{discount | currency:'NGN':true:'1.2-2'}}</td>
-                  <td><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
+                  <td class="remove-link"><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
                 </tr>
               </div>
               <tr class="grandTotalWrap">

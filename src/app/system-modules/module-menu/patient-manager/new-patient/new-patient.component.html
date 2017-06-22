@@ -133,9 +133,14 @@
                     <small class="alert-label" [hidden]="frmNewEmp2.controls.empDOB.valid || frmNewEmp2.controls.empDOB.pristine">
 						this is a required field.
 					</small>
+                    <dx-date-box
+                        [value]="now"
+                        formControlName="empDOB" 
+                        placeholder="Date of Birth"
+                        type="date">
+                    </dx-date-box>
                     <!--<ng2-datepicker formControlName="empDOB"></ng2-datepicker>-->
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="date" formControlName="empDOB" placeholder="Date of Birth" autocomplete="off">
+                    
                     <!--<dx-date-box formControlName="empDOB" [value]="now" type="date"></dx-date-box>-->
                     <!--<div class="date-inputLabel">Date of Birth</div>-->
                 </div>

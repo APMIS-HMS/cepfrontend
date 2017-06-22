@@ -3,9 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Locker } from 'angular2-locker';
 import {
-	FacilitiesService, PrescriptionService,
-	PrescriptionPriorityService, DictionariesService,
-	RouteService, FrequencyService, DrugListApiService, DrugDetailService
+  FacilitiesService, PrescriptionService,
+  PrescriptionPriorityService, DictionariesService,
+  RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import { durationUnits } from '../../../../../shared-module/helpers/global-config';
@@ -60,7 +60,7 @@ export class PatientPrescriptionComponent implements OnInit {
 		private _frequencyService: FrequencyService,
 		private _routeService: RouteService,
 		private _drugListApi: DrugListApiService,
-		private _drugDetails: DrugDetailService
+		private _drugDetails: DrugDetailsService
 	) {
 
 	}

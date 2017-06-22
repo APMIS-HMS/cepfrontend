@@ -19,14 +19,14 @@
           <div class="frmSubGroupWrap">
             <div class="frm-item-wrap">
               <label>Location</label>
-              <select formControlName="pulseLoc">
+              <select formControlName="pulseLoc" (change)="onPulseLocChange($event.target.value)">
                 <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
               </select>
             </div>
 
             <div class="frm-item-wrap">
               <label>Rythm</label>
-              <select formControlName="pulseRythm">
+              <select formControlName="pulseRythm" (change)="onPulseRythmChange($event.target.value)">
                 <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
               </select>
             </div>
@@ -52,16 +52,19 @@
         <div class="frmGroupWrap">
           <div class="frmGroupTitle">Height/Weight</div>
           <div class="frm-item-wrap">
-            <label class="side-label">Height (Inches)</label>
-            <input type="number" formControlName="height" autocomplete="off">
+            <label class="side-label">Height (m)</label>
+            <input type="number" formControlName="height" value="">
           </div>
           <div class="frm-item-wrap">
-            <label class="side-label">Weight (lbs)</label>
-            <input type="number" formControlName="weight" autocomplete="off">
+            <label class="side-label">Weight (kg)</label>
+            <input type="number" formControlName="weight" value="">
           </div>
           <div class="frm-item-wrap">
             <label class="side-label">BMI</label>
-            <input type="number" formControlName="bmi" autocomplete="off">
+            <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">
+            <small class="alert-label" *ngIf="isWarning">
+            {{bmiWarningMssg}}
+          </small>
           </div>
         </div>
 
@@ -104,7 +107,7 @@
             <div class="frm-item">
               <div class="frm-item-wrap">
                 <label>Location</label>
-                <select formControlName="diastolicBp1Loc">
+                <select formControlName="diastolicBp1Loc" (change)="onPulseLocChange($event.target.value)">
                   <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
                 </select>
               </div>
@@ -112,7 +115,7 @@
             <div class="frm-item">
               <div class="frm-item-wrap">
                 <label>Position</label>
-                <select formControlName="diastolicBp1Pos">
+                <select formControlName="diastolicBp1Pos" (change)="onPulsePosChange($event.target.value)">
                   <option *ngFor="let position of vitalPosition"  value="{{position?.name}}" value="">{{position?.name}}</option>
                 </select>
               </div>

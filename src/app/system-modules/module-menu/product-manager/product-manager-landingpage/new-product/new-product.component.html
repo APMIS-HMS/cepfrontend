@@ -20,30 +20,35 @@
                     </select>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.presentationId.valid || frm_newProduct.controls.presentationId.pristine">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.presentation.valid || frm_newProduct.controls.presentation.pristine">
                         Kindly select an option from the drop down.
                     </small>
                     <label>Presentation</label>
-                    <dx-lookup [dataSource]="presentations" formControlName="presentationId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false" displayExpr="name" valueExpr="_id">
-                    </dx-lookup><span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>
+                    <!--<dx-lookup [dataSource]="presentations" formControlName="presentationId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
+                        displayExpr="name" valueExpr="_id">
+                    </dx-lookup>-->
+                    <input formControlName="presentation" type="text" name="" value="">
+                    <span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
                         Kindly select an option from the drop down.
                     </small>
                     <label>Strength</label>
-                    <dx-lookup [dataSource]="strengths" formControlName="strengthId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false" displayExpr="strength" valueExpr="_id">
+                    <dx-lookup [dataSource]="strengths" formControlName="strengthId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
+                        displayExpr="strength" valueExpr="_id">
                     </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.manufacturerId.valid || frm_newProduct.controls.manufacturerId.pristine">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.manufacturer.valid || frm_newProduct.controls.manufacturer.pristine">
                         Kindly select an option from the drop down.
                     </small>
                     <label>Manufacturer</label>
-                    <select formControlName="manufacturerId">
+                    <!--<select formControlName="manufacturerId">
                         <option  *ngFor="let manufacturer of manufacturers" value="{{manufacturer._id}}">{{manufacturer.name}}</option>
-                    </select>
-                    <span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>
+                    </select>-->
+                    <input formControlName="manufacturer" type="text" name="" value="">
+                    <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.productTypeId.valid || frm_newProduct.controls.productTypeId.pristine">
@@ -85,9 +90,9 @@
                     </small>
                     <label>Active Ingredient</label>
                     <input formControlName="genericName" type="text" name="" value="">
-                    <div *ngIf="ingridentSugestion" class="sugestion-wrap shadow-B">
+                    <!--<div *ngIf="ingridentSugestion" class="sugestion-wrap shadow-B">
                         <div (click)="onSelectActiveIngredientSuggestion(active)" *ngFor="let active of activeIngredients" class="sugestion-item">{{active.genericName}}</div>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.name.valid || frm_newProduct.controls.name.pristine">
@@ -96,7 +101,7 @@
                     <label>Name(Product)</label>
                     <input formControlName="name" type="text" name="" value="">
                     <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
-                        <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.name}}</div>
+                        <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                     </div>
                 </div>
             </div>
@@ -105,13 +110,13 @@
         <div class="clear"></div>
         <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; {{createText}}</button>
     </form>
-    <div *ngIf="manufacturer">
-            <app-manufacturer-manager></app-manufacturer-manager>
+    <div *ngIf="isManufacturer">
+        <app-manufacturer-manager></app-manufacturer-manager>
     </div>
-    <div *ngIf="presentation">
+    <div *ngIf="isPresentation">
         <app-presentation-manager></app-presentation-manager>
     </div>
-    <div *ngIf="strength">
+    <div *ngIf="isStrength">
         <app-strength-manager></app-strength-manager>
     </div>
 </div>

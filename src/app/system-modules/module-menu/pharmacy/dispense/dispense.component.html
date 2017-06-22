@@ -22,9 +22,6 @@
                             <p>Refill</p>
                         </div>
                         <div class="table-head-inner-content">
-                            <p>Instruction</p>
-                        </div>
-                        <div class="table-head-inner-content">
                             <p>Start Date</p>
                         </div>
                         <div class="table-head-inner-content">
@@ -37,9 +34,6 @@
                         </div>
                         <div class="table-data" id="drugs">
                             <p>drugs name</p>
-                        </div>
-                        <div class="table-data">
-                            <p>---</p>
                         </div>
                         <div class="table-data">
                             <p>---</p>
@@ -58,7 +52,7 @@
                         <div class="row">
                             <div class="col-sm-4 col-md-4">
                                 <label>Drugs</label>
-                                <dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
+                                <dx-lookup [items]="drugs" [value]="drugs" [showPopupTitle]="false">
                                 </dx-lookup>
                             </div>
                             <div class="col-sm-3 col-md-3">
@@ -69,8 +63,8 @@
                                         <div class="input-group-btn">
                                             <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
                                             <select>
-                        <option>Cards</option>
-                      </select>
+												<option>Cards</option>
+											</select>
                                         </div>
                                         <!-- /btn-group -->
                                     </div>
@@ -95,99 +89,101 @@
                 <!-- end ngIF-->
                 <!-- no prescription -->
                 <div *ngIf="noPrescription">
-                    <div class="row padding-10">
-                        <div class="col-sm-5">
-                            <label> Client </label>
-                            <div class="input-group-btn">
-                                <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
-                                <select (change)="onChange($event.target.value)" class="form-control" id="select">
-                      <option>Individual</option>
-                      <option>Corporate</option>
-                      <option>Internal</option>
-                    </select>
+                    <form [formGroup]="noPrescriptionForm">
+                        <div class="row padding-10">
+                            <div class="col-sm-5">
+                                <label> Client </label>
+                                <div class="input-group-btn">
+                                    <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
+                                    <select formControlName="client" (change)="onChange($event.target.value)" class="form-control" id="select">
+										<option>Individual</option>
+										<option>Corporate</option>
+										<option>Internal</option>
+									</select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="individual-details">
-                        <div class="row">
-                            <!-- begin individual -->
-                            <div *ngIf="individualShow">
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> Last Name </label>
-                                    <dx-text-box value=""></dx-text-box>
-                                </div>
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> First Name </label>
-                                    <dx-text-box value=""></dx-text-box>
-                                </div>
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> Phone Number </label>
-                                    <dx-text-box value=""></dx-text-box>
-                                </div>
-                            </div>
-                            <!--end individual-->
-                            <!-- begin corporate -->
-                            <div *ngIf="corporateShow">
-                                <div class="col-sm-8 col-md-8 col-xs-12">
-                                    <label> Company Name </label>
-                                    <dx-text-box value=""></dx-text-box>
-                                </div>
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> Phone Number </label>
-                                    <dx-text-box value=""></dx-text-box>
-                                </div>
-                            </div>
-                            <!--end corporate-->
-                            <!-- begin Internal -->
-                            <div *ngIf="internalShow">
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> Department </label>
-                                    <dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
-                                    </dx-lookup>
-                                </div>
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> Unit </label>
-                                    <dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
-                                    </dx-lookup>
-                                </div>
-                                <div class="col-sm-4 col-md-4 col-xs-12">
-                                    <label> Minor Location </label>
-                                    <dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
-                                    </dx-lookup>
-                                </div>
-                            </div>
-                            <!--end Internal-->
-                            <div class="col-sm-5 col-md-5 col-xs-12">
-                                <label> Drug </label>
-                                <dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
-                                </dx-lookup>
-                            </div>
-                            <div class="col-sm-5 col-md-5 col-xs-12">
-                                <label> Quantity </label>
-                                <div class="input-bg cacaca">
-                                    <div class="input-group">
-                                        <input type="text" name="quantity" class="form-control" aria-label="...">
-                                        <div class="input-group-btn">
-                                            <i class="fa fa-caret-right pull-right" style="margin-top: 7px;"></i>
-                                            <select>
-                          <option>Cards</option>
-                        </select>
-                                        </div>
-                                        <!-- /btn-group -->
+                        <div class="individual-details">
+                            <div class="row">
+                                <!-- begin individual -->
+                                <div *ngIf="individualShow">
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> Last Name </label>
+                                        <dx-text-box formControlName="lastname" value=""></dx-text-box>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> First Name </label>
+                                        <dx-text-box formControlName="firstname" value=""></dx-text-box>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> Phone Number </label>
+                                        <dx-text-box formControlName="phone" value=""></dx-text-box>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2 col-md-2 col-xs-2">
-                                <p style="color: red;margin-top: 40px;"> N200 </p>
+                                <!--end individual-->
+                                <!-- begin corporate -->
+                                <div *ngIf="corporateShow">
+                                    <div class="col-sm-8 col-md-8 col-xs-12">
+                                        <label> Company Name </label>
+                                        <dx-text-box formControlName="companyname" value=""></dx-text-box>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> Phone Number </label>
+                                        <dx-text-box formControlName="corporatephone" value=""></dx-text-box>
+                                    </div>
+                                </div>
+                                <!--end corporate-->
+                                <!-- begin Internal -->
+                                <div *ngIf="internalShow">
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> Department </label>
+                                        <dx-lookup formControlName="dept" [items]="departments" displayExpr="name" valueExpr="_id" [showPopupTitle]="false">
+                                        </dx-lookup>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> Unit </label>
+                                        <dx-lookup formControlName="unit" [items]="units" displayExpr="name" valueExpr="_id" [showPopupTitle]="false">
+                                        </dx-lookup>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-xs-12">
+                                        <label> Minor Location </label>
+                                        <dx-lookup formControlName="location" [items]="locations" displayExpr="name" valueExpr="_id" [showPopupTitle]="false">
+                                        </dx-lookup>
+                                    </div>
+                                </div>
+                                <!--end Internal-->
+                                <div class="col-sm-5 col-md-5 col-xs-12">
+                                    <label> Drug </label>
+                                    <dx-lookup formControlName="drug" [items]="drugs" [value]="drugs" [showPopupTitle]="false">
+                                    </dx-lookup>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-xs-12">
+                                    <label> Quantity </label>
+                                    <div class="input-bg cacaca">
+                                        <div class="input-group">
+                                            <input formControlName="qty" type="text" name="quantity" class="form-control" aria-label="...">
+                                            <div class="input-group-btn">
+                                                <i class="fa fa-caret-right pull-right" style="margin-top: 7px;"></i>
+                                                <select>
+													<option>Cards</option>
+												</select>
+                                            </div>
+                                            <!-- /btn-group -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-md-2 col-xs-2">
+                                    <p style="color: red;margin-top: 40px;"> N200 </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- end no prescription -->
 
                 <div *ngIf="noPrescription" class="row margin-top-bottom">
                     <div class="col-sm-12 col-md-12 text-center">
-                        <button class="btn bnt-default"> Save </button>
+                        <button (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);" class="btn bnt-default"> Save </button>
                     </div>
                 </div>
             </div>
@@ -203,11 +199,14 @@
                     <div class="table-head-inner-content" id="drugs">
                         <p>Drugs</p>
                     </div>
-                    <div class="table-head-inner-content" id="batch">
-                        <p>Batch</p>
+                    <div class="table-head-inner-content" id="qt">
+                        <p>Qty Assessed</p>
                     </div>
                     <div class="table-head-inner-content" id="qt">
-                        <p>Quantity</p>
+                        <p>Dispensed Qty</p>
+                    </div>
+                    <div class="table-head-inner-content" id="batch">
+                        <p>Batch</p>
                     </div>
                     <div class="table-head-inner-content">
                         <p>Instruction</p>
@@ -221,7 +220,7 @@
                         <p>drugs name</p>
                     </div>
                     <div class="table-data" id="batch">
-                        <dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
+                        <dx-lookup [items]="drugs" [value]="drugs" [showPopupTitle]="false">
                         </dx-lookup>
                     </div>
                     <div class="table-data" id="qt">

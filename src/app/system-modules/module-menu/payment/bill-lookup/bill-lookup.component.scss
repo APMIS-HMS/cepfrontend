@@ -1,5 +1,22 @@
 @import "../payment.component.scss";
 
+//.......................///
+
+table, td { 
+    border: 0.5px solid $td-border;
+}
+th {
+    height: 50px;
+    background: transparent;
+    border: 0.5px solid $td-border;
+}
+
+.billSummarySect table, td { 
+    border: 0;
+}
+.billSummarySect tr:hover {background-color: transparent}
+.billSummarySect tr:nth-child(even) {background-color: transparent}
+//.................................////
 .billContentSect{
     position: relative;
     min-height: 300px;
@@ -32,6 +49,18 @@ td i{
 }
 td i:hover{
     color: #0288D1;
+}
+.remove-link{
+    cursor: pointer;
+    padding: 3px;
+    margin: 3px;
+    text-align: center;
+}
+.remove-link:hover{
+    color: #fff;
+}
+.remove-link i:hover{
+    color: #fff;
 }
 td .cta-1{
     margin: 0;
