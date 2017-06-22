@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from '../../../../models/index';
 import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
 
@@ -29,7 +29,7 @@ export class DispenseComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _locker: Locker,
+    private _locker: CoolLocalStorage,
     private _route: ActivatedRoute,
     private _facilityService: FacilitiesService,
     private _DispenseService: FacilitiesService
@@ -38,7 +38,7 @@ export class DispenseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.facility = this._locker.get('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this._route.params.subscribe(params => {
       console.log(params)
       this.prescriptionId = params['id'];

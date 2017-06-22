@@ -17,9 +17,9 @@ export class CheckoutPatientComponent implements OnInit {
 	@Input() selectedAppointment: Appointment = <Appointment>{};
 	@Input() employeeDetails: any;
 
-	patientId = '';
-	employeeId = '';
-	ward_checkout = false;
+	patientId: string = "";
+	employeeId: string = "";
+	ward_checkout: boolean = false;
 	admitFormGroup: FormGroup;
 	facility: Facility = <Facility>{};
 	wards: any[] = [];
@@ -34,7 +34,7 @@ export class CheckoutPatientComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.getAllWards();
 		console.log(this.facility);
 		console.log(this.selectedAppointment);
@@ -56,8 +56,8 @@ export class CheckoutPatientComponent implements OnInit {
 	onClickAdmit(value: any, valid: boolean) {
 		console.log(value);
 		console.log(valid);
-		if (valid) {
-			const patient = {
+		if(valid) {
+			let patient = {
 				employeeId: this.employeeDetails.employeeDetails._id,
 				patientId: this.patientId,
 				facilityId: this.employeeDetails.facilityId,

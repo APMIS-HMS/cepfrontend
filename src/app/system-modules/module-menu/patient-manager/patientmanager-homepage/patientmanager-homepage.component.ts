@@ -12,7 +12,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./patientmanager-homepage.component.scss']
 })
 export class PatientmanagerHomepageComponent implements OnInit {
-
+  editPatient = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
 
@@ -20,11 +20,11 @@ export class PatientmanagerHomepageComponent implements OnInit {
   patients: Patient[] = [];
   searchControl = new FormControl();
 
-  pageSize = 1;
-  limit = 10;
+  pageSize: number = 1;
+  limit: number = 10;
 
   constructor(private patientService: PatientService, private personService: PersonService,
-    public facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
+    private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager) {
     this.patientService.listner.subscribe(payload => {
       this.getPatients(this.limit);
@@ -35,7 +35,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
       this.toast.success(payload.personDetails.personFullName + ' created successfully!', 'Success!');
     });
 
-    const away = this.searchControl.valueChanges
+    let away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .switchMap((term: Patient[]) => this.patientService.searchPatient(this.facility._id, this.searchControl.value));
@@ -61,10 +61,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
     // })
   }
   sortPatientsByName() {
-    const sortedPatient = this.patients;
+    let sortedPatient = this.patients;
     sortedPatient.sort(function (x, y) {
-      const xLastName = x.personDetails.lastName.toLowerCase();
-      const yLastName = y.personDetails.lastName.toLowerCase();
+      let xLastName = x.personDetails.lastName.toLowerCase();
+      let yLastName = y.personDetails.lastName.toLowerCase();
       if (xLastName < yLastName) {
         return -1;
       }
@@ -80,10 +80,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
   }
   sortPatientsByGender() {
-    const sortedPatient = this.patients;
+    let sortedPatient = this.patients;
     sortedPatient.sort(function (x, y) {
-      const xGender = x.personDetails.gender.name.toLowerCase();
-      const yGender = y.personDetails.gender.name.toLowerCase();
+      let xGender = x.personDetails.gender.name.toLowerCase();
+      let yGender = y.personDetails.gender.name.toLowerCase();
       if (xGender < yGender) {
         return -1;
       }
@@ -94,7 +94,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
   }
   navEpDetail(patient) {
-    this.router.navigate(['/modules/facility-manager/patient-manager/patient-manager-detail', patient.personId]);
+    this.router.navigate(['/modules/patient-manager/patient-manager-detail', patient.personId]);
   }
   getPatients(limit) {
     console.log('event called');
@@ -106,7 +106,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
-    const limit = this.limit * this.pageSize;
+    let limit = this.limit * this.pageSize;
     this.getPatients(limit);
   }
   onScrollUp() {
@@ -114,7 +114,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
-    const limit = this.limit * this.pageSize;
+    let limit = this.limit * this.pageSize;
     this.getPatients(limit);
+  }
+  slideEdit() {
+    this.editPatient = true;
   }
 }

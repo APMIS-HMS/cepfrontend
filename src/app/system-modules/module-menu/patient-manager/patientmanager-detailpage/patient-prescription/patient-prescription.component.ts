@@ -88,16 +88,9 @@ export class PatientPrescriptionComponent implements OnInit {
 			drug: ['', [<any>Validators.required]],
 			frequency: ['', [<any>Validators.required]],
 			duration: ['', [<any>Validators.required]],
-			durationUnit: ['', [<any>Validators.required]],
 			refillCount: [this.refillCount],
 			startDate: [this.currentDate],
 			specialInstruction: ['']
-		});
-	}
-
-	onClickAddPrescription(value: any, valid: boolean) {
-		if (valid) {
-			if (this.selectedAppointment.clinicId === undefined) {
 				this._facilityService.announceNotification({
 					type: 'Info',
 					text: 'Clinic has not been set!'

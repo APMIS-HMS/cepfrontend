@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Prescription, PrescriptionItem } from '../../../../models/index';
 
@@ -14,14 +14,14 @@ export class PrescriptionListComponent implements OnInit {
   prescriptionLists: any[] = [];
 
   constructor(
-    private _locker: Locker,
+    private _locker: CoolLocalStorage,
     private _prescriptionService: PrescriptionService,
   ) {
 
   }
 
   ngOnInit() {
-    this.facility = this._locker.get('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getAllPrescriptions();
   }
 
