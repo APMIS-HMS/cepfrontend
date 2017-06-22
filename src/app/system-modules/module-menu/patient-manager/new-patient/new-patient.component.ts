@@ -10,7 +10,7 @@ import {
     Department,
     MinorLocation, Gender, Title, Country
 } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { Observable } from 'rxjs/Observable';
@@ -33,7 +33,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
 
-    shouldMoveFirst = false;
+    shouldMoveFirst: boolean = false;
 
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
@@ -70,7 +70,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     // ***
     uploadFile: any;
-    hasBaseDropZoneOver = false;
+    hasBaseDropZoneOver: boolean = false;
     options: NgUploaderOptions = {
         url: 'http://localhost:3030/image',
         autoUpload: false,
@@ -87,10 +87,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private maritalStatusService: MaritalStatusService,
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
-        private locker: CoolLocalStorage, private patientService: PatientService,
+        private locker: Locker, private patientService: PatientService,
         private personService: PersonService,
         private employeeService: EmployeeService,
-        public facilityService: FacilitiesService
+        private facilityService: FacilitiesService
     ) {
         // this.uploadEvents = new EventEmitter();
         this.cropperSettings = new CropperSettings();
@@ -115,10 +115,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         // this.uploadEvents = new EventEmitter();
     }
     fileChangeListener($event) {
-        const image: any = new Image();
-        const file: File = $event.target.files[0];
-        const myReader: FileReader = new FileReader();
-        const that = this;
+        let image: any = new Image();
+        let file: File = $event.target.files[0];
+        let myReader: FileReader = new FileReader();
+        let that = this;
         myReader.onloadend = function (loadEvent: any) {
             image.src = loadEvent.target.result;
             console.log(that.cropper);
@@ -151,7 +151,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         if (data && data.response) {
             console.log('am uploading 2')
             data = JSON.parse(data.response);
-            const file = data[0].file;
+            let file = data[0].file;
             if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
                 console.log('am uploading 3')
                 this.personService.get(this.selectedPerson._id, {}).then(payload => {
@@ -189,7 +189,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // this.uploadEvents = new EventEmitter();
-        this.facility =  <Facility> this.locker.getObject('selectedFacility');
+        this.facility = this.locker.get('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.newEmpIdControl.valueChanges.subscribe(value => {
@@ -454,7 +454,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     savePerson() {
         {
-            const person: Person = <Person>{ nextOfKin: [] };
+            let person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value.momentObj;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
@@ -584,7 +584,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
     }
     saveEmployee() {
-        const model: Patient = <Patient>{};
+        let model: Patient = <Patient>{};
         model.facilityId = this.facility._id;
         model.personId = this.selectedPerson._id;
         console.log(model);

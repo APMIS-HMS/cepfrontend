@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { FacilitiesService, InPatientListService, InPatientService } from '../../../../services/facility-manager/setup/index';
@@ -17,16 +17,16 @@ export class CheckoutPatientComponent implements OnInit {
 	@Input() selectedAppointment: Appointment = <Appointment>{};
 	@Input() employeeDetails: any;
 
-	patientId = '';
-	employeeId = '';
-	ward_checkout = false;
+	patientId: string = "";
+	employeeId: string = "";
+	ward_checkout: boolean = false;
 	admitFormGroup: FormGroup;
 	facility: Facility = <Facility>{};
 	wards: any[] = [];
 
 	constructor(
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage,
+		private _locker: Locker,
 		private fb: FormBuilder,
 		private _router: Router,
 		private _route: ActivatedRoute,
@@ -34,7 +34,7 @@ export class CheckoutPatientComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.facility = this._locker.get('selectedFacility');
 		this.getAllWards();
 		console.log(this.facility);
 		console.log(this.selectedAppointment);
@@ -56,8 +56,8 @@ export class CheckoutPatientComponent implements OnInit {
 	onClickAdmit(value: any, valid: boolean) {
 		console.log(value);
 		console.log(valid);
-		if (valid) {
-			const patient = {
+		if(valid) {
+			let patient = {
 				employeeId: this.employeeDetails.employeeDetails._id,
 				patientId: this.patientId,
 				facilityId: this.employeeDetails.facilityId,
