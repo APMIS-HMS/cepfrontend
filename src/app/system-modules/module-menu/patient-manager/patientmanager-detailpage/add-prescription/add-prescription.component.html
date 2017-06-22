@@ -1,0 +1,73 @@
+<!-- table header start-->
+<div class="wrap-th">
+    <div class="pres-col" id="long-text">Prescription</div>
+    <div class="pres-col">Instruction</div>
+    <div class="pres-col">Refill Count</div>
+    <div class="pres-col" id="action-long">Action</div>
+</div>
+<div *ngFor="let prescription of prescriptionItems; let i = index;">
+    <div class="wrap-tr">
+        <div class="pres-data" id="long-text">
+            {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}
+        </div>
+        <div class="pres-data">{{ prescription.patientInstruction }}</div>
+        <div class="pres-data">{{ prescription.refillCount }}</div>
+        <div class="pres-data padding" id="action-long">
+            <div class="text-center">
+                <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
+                <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
+                <button (click)="toggleBill(i);" class="btn btn-default">Bill</button>
+            </div>
+        </div>
+    </div>
+    <!--inner container onclick-->
+    <div *ngIf="billShow && (billShowId == i)" class="inner-container">
+        <div class="row">
+            <div class="col-sm-4 col-md-4">
+                <label>Drugs</label>
+                <dx-lookup [items]="drugs" [value]="drugs.name" displayExpr="name" valueExpr="_id">
+                </dx-lookup>
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <label>Quantity</label>
+                <div class="input-bg cacaca">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="input" required>
+                        <div class="input-group-btn">
+                            <!--<i class="fa fa-caret-right pull-right" style="margin-top: 8px;padding-left: 0;"></i>-->
+                            <!--<select formControlName="strengthWeight" [(ngModel)]="selectedValue" id="select">
+								<option *ngFor="let weight of drugWeight" value="{{ weight.name }}">{{ weight.name }}</option>
+							</select>-->
+                        </div>
+                        <!-- /btn-group -->
+                    </div>
+                </div>
+                <!--<div class="input-bg cacaca">
+					<div class="input-group">
+						<input type="text" name="quantity" class="form-control" aria-label="...">
+						<div class="input-group-btn">
+							<i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
+							<select>
+								<option>Cards</option>
+							</select>
+						</div>
+					</div>
+				</div>-->
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <label style="margin-top:20px"></label>
+            </div>
+            <div class="col-sm-1 col-ms-1">
+                <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <div class="text-amount puul-right">
+                    <button class="btn btn-default save-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0">
+    <div class="pres-data" style="width: 100%">No data to display in table</div>
+</div>

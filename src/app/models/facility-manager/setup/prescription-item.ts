@@ -2,11 +2,10 @@ export interface PrescriptionItem {
     id?: number,
     genericName: string,
     frequency: string,
-    duration: number,
+    duration: string,
     routeName: String,
     quantity?: number,
     patientInstruction: string,
-    priorityId: string,
-    isRefill: Boolean,
-    refillCount: number,
+    isRefill?: Boolean,
+    refillCount: number
 }
