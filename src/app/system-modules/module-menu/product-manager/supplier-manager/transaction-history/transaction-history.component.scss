@@ -7,6 +7,17 @@
     background: transparent;
     font-size: 10px;
 }
+.subtitleWrap {
+    position: absolute;
+    top: -34px;
+    font-size: 12px;
+    left: 5px;
+    color: #8e8e8e;
+}
+.subtitleWrap .pg-subTitle {
+    color: #0288D1;
+    text-decoration: underline;
+}
 
 span {
     color: #03a9f4 !important;

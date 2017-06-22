@@ -1,4 +1,23 @@
 @import "../payment.component.scss";
+
+//.......................///
+
+table, td { 
+    border: 0.5px solid $td-border;
+}
+th {
+    height: 50px;
+    background: transparent;
+    border: 0.5px solid $td-border;
+}
+
+.billSummarySect table, td { 
+    border: 0;
+}
+.billSummarySect tr:hover {background-color: transparent}
+.billSummarySect tr:nth-child(even) {background-color: transparent}
+//.................................////
+
 .existing-bill-group {
     top: 0;
     text-align: center;

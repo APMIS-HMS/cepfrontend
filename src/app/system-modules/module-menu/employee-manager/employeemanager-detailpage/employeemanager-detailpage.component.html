@@ -5,7 +5,6 @@
     </div>
 
     <div class="content-sec rhs">
-
         <div class="inner-menu1-wrap">
             <i *ngIf="employee !== undefined && employee._id !== undefined" id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
@@ -18,13 +17,29 @@
                 <li><i class="fa fa-heartbeat" aria-hidden="true"></i> Health Care Coverage</li>
             </ul>
         </div>
-
         <div *ngIf="employee != undefined">
             <div class="empData-header">
                 <div class="lhs emp-data">
                     <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}</div>
-                    <div class="emp-dept">{{employee?.department?.name}}</div>
+                    <div class="emp-dept">{{employee?.department?.name}}
+                    <span (click)="toggleDepartmentShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                    </div>
+                    <div *ngIf = "editDepartment" class="survery">
+                        <div class="box">
+                           <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                 <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                 <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                            <div class="col-sm-12 col-md-12 text-center" style="padding-top:5px;">
+                                <button class="btn btn-default"> Save </button>
+                            </div>
+                           </div>
+                        </div>
+                    </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
                     <div class="emp-status">
@@ -32,7 +47,6 @@
                         <span [hidden]="!employee?.isActive" style="color: #43A047;">Active</span>
                     </div>
                 </div>
-
                 <div class="rhs emp-img">
                     <div class="emp-img-wrap">
                         <div *ngIf="employee?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
@@ -42,12 +56,33 @@
                 </div>
                 <div class="clear"></div>
             </div>
-
             <div class="empData-body">
-
                 <div class="empData-block emp-bioData">
-                    <div class="empDataBlock-title">Bio Data</div>
-
+                    <div class="empDataBlock-title">Bio Data 
+                        <span (click)="bioDataShow()"  class="editButton">
+                        <i class="fa fa-edit"></i></span>
+                    </div>
+                      <div *ngIf = "biodatas" class="survery" style="display:table;">
+                          <div class="box">
+                           <div class="row">
+                            <div class="col-sm-3 col-md-3">
+                                <dx-text-box value="John Smith"></dx-text-box>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                 <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                             <div class="col-sm-3 col-md-3">
+                                 <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                <dx-date-box [value]="now" type="date"></dx-date-box>
+                            </div>
+                            <div class="col-sm-12 col-md-12 text-center" style="padding-top:5px;">
+                                <button class="btn btn-default"> Save </button>
+                            </div>
+                           </div>
+                        </div>
+                      </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
@@ -75,8 +110,36 @@
                 </div>
 
                 <div class="empData-block emp-bioData">
-                    <div class="empDataBlock-title">Contact Information</div>
-
+                    <div class="empDataBlock-title">Contact Information
+                    <span (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                    </div>
+                       <div *ngIf = "contacts" class="survery" style="display:table;">
+                          <div class="box">
+                           <div class="row">
+                            <div class="col-sm-4 col-md-4">
+                                <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                 <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                             <div class="col-sm-4 col-md-4">
+                                 <dx-select-box [items]="simpleProducts"></dx-select-box>
+                            </div>
+                            <div class="col-sm-4 col-md-4 padding">
+                                <dx-text-box value="John Smith"></dx-text-box>
+                            </div>
+                            <div class="col-sm-4 col-md-4 padding">
+                                <dx-text-box value="John Smith"></dx-text-box>
+                            </div>
+                            <div class="col-sm-4 col-md-4 padding">
+                               <dx-text-box value="John Smith"></dx-text-box>
+                            </div>
+                            <div class="col-sm-12 col-md-12 text-center" style="padding-top:5px;">
+                                <button class="btn btn-default"> Save </button>
+                            </div>
+                           </div>
+                        </div>
+                      </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
                         <div class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>

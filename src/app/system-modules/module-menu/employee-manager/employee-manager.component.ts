@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmployeeService, FacilitiesService } from '../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { EmployeemanagerHomepageComponent } from './employeemanager-homepage/employeemanager-homepage.component'
 
 @Component({
@@ -30,7 +30,7 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   units: any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private employeeService: EmployeeService,
-    private locker: CoolLocalStorage) { }
+    private locker: Locker) { }
   ngAfterViewInit() {
     this.searchControl.valueChanges.subscribe(searchText => {
       this.employeeManagerComponent.searchEmployees(searchText);
@@ -38,14 +38,14 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.selectedFacility =  <any> this.locker.getObject('selectedFacility');
+    this.selectedFacility = this.locker.get('selectedFacility');
     this.departments = this.selectedFacility.departments;
     this.department.valueChanges.subscribe(value => {
       this.units = value.units;
       this.employeeManagerComponent.getByDepartment(value._id);
     });
     this.unit.valueChanges.subscribe(value => {
-      const department = this.department.value;
+      let department = this.department.value;
       this.employeeManagerComponent.getByUnit(department._id, value._id);
     });
     // this.employeeService.find({

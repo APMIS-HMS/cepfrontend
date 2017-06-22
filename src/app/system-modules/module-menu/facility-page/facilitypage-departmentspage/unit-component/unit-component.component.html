@@ -50,3 +50,36 @@
     <div class="clear"></div>
   </div>
 </div>
+
+<div class="dataMix-wrap color2">
+  <div>
+    <div class="lhs">Clinic</div>
+    <div class="rhs">
+      <div class="clinicsWrap">
+        <div class="clinicWrap">
+          <div [hidden]="unitEditClinicIcoShow" class="lhs"> Authopeadic Clinic </div>
+          <dx-lookup
+                class="edit-control lhs"
+                *ngIf="unitEditClinicIcoShow"
+                [showPopupTitle]="false">
+            </dx-lookup>
+          <i [hidden]="unitEditClinicIcoShow" (click)="unitEditClinicToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+          <i *ngIf="unitEditClinicIcoShow" (click)="unitEditClinicSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+          <div class="clear"></div>
+        </div>
+        <div class="clinicWrap">
+          <div [hidden]="unitEditClinicIcoShow2" class="lhs"> Authopeadic Clinic </div>
+          <dx-lookup
+                class="edit-control lhs"
+                *ngIf="unitEditClinicIcoShow2"
+                [showPopupTitle]="false">
+            </dx-lookup>
+          <i [hidden]="unitEditClinicIcoShow2" (click)="unitEditClinicToggle2()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+          <i *ngIf="unitEditClinicIcoShow2" (click)="unitEditClinicSubmit2()" class="done-ico fa fa-check" aria-hidden="true"></i>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ export interface Prescription {
     employeeId: string,
     patientId: string,
     title?: string,
+    priorityId: string,
     prescriptionItems: any,
     isAuthorised: Boolean,
     totalQuantity?: number,

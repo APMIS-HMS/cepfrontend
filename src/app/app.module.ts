@@ -75,7 +75,8 @@ import {ApmisCheckboxComponent } from './system-modules/module-menu/patient-mana
     SetupService.WorkSpaceService, SetupService.InPatientService, SetupService.WardDischargeTypesService, SetupService.DocumentationService,
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
-    SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService
+    SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
+    SetupService.DrugDetailsService
   ],
   bootstrap: [AppComponent]
 })
