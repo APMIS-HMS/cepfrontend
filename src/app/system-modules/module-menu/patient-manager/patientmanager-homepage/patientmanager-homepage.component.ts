@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { PatientService, PersonService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient } from '../../../../models/index';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -24,7 +24,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   limit: number = 10;
 
   constructor(private patientService: PatientService, private personService: PersonService,
-    private facilityService: FacilitiesService, private locker: Locker, private router: Router,
+    private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager) {
     this.patientService.listner.subscribe(payload => {
       this.getPatients(this.limit);
@@ -49,7 +49,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   }
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
-    this.facility = this.locker.get('selectedFacility');
+    this.facility = <Facility> this.locker.getObject('selectedFacility');
     this.getPatients(this.limit);
     // this.route.params.subscribe((params: any) => {
     //   this.patientService.find({ query: { personId: params.id, facilityId: this.facility._id } }).then(payload => {

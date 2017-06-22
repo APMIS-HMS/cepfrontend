@@ -45,7 +45,7 @@ export class LandingPageComponent implements OnInit {
 
   ngOnInit() {
     this._storeEventEmitter.setRouteUrl('Store Manager');
-    this.selectedFacility = this.locker.get('selectedFacility');
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.minorLocations = this.selectedFacility.minorLocations;
     this.getProductTypes();
 

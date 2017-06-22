@@ -29,7 +29,7 @@ export class TransactionHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = this.locker.get('selectedFacility');
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.route.params.subscribe(params => {
       let id = params['id'];
       if (id !== undefined) {

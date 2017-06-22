@@ -1,14 +1,14 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
 	FacilitiesService, PrescriptionService,
 	PrescriptionPriorityService, DictionariesService,
-	RouteService, FrequencyService, DrugListApiService, DrugDetailsApiService
+	RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { drugWeight, durationUnit } from '../../../../../shared-module/helpers/global-config';
+import { durationUnits } from '../../../../../shared-module/helpers/global-config';
 import 'devextreme-intl';
 
 @Component({
@@ -50,7 +50,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
-		private _locker: Locker,
+		private _locker: CoolLocalStorage,
 		private _el: ElementRef,
 		private _route: ActivatedRoute,
 		private _facilityService: FacilitiesService,
@@ -60,22 +60,22 @@ export class PatientPrescriptionComponent implements OnInit {
 		private _frequencyService: FrequencyService,
 		private _routeService: RouteService,
 		private _drugListApi: DrugListApiService,
-		private _drugDetailsApi: DrugDetailsApiService
+		private _drugDetailsApi: DrugDetailsService
 	) {
 
 	}
 
 	ngOnInit() {
-		this.facility = this._locker.get('selectedFacility');
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this._route.params.subscribe(params => {
 			this.patientId = params['id'];
 		});
 
 		this.currentDate = new Date();
 		this.minDate = new Date();
-		this.durationUnits = durationUnit;
+		this.durationUnits = durationUnits;
 		this.refillCount = 0;
-		this.selectedValue = durationUnit[0].name;
+		this.selectedValue = durationUnits[0].name;
 		console.log(this.currentDate);
 		//this.getAllDrugs();
 		this.getAllPriorities();
@@ -92,7 +92,7 @@ export class PatientPrescriptionComponent implements OnInit {
 			drug: ['', [<any>Validators.required]],
 			frequency: ['', [<any>Validators.required]],
 			duration: ['', [<any>Validators.required]],
-			durationUnit: ['', [<any>Validators.required]],
+			durationUnits: ['', [<any>Validators.required]],
 			refillCount: [''],
 			startDate: [''],
 			substitution: [''],
@@ -112,7 +112,7 @@ export class PatientPrescriptionComponent implements OnInit {
 					genericName: value.drug,
 					routeName: value.route,
 					frequency: value.frequency,
-					duration: value.duration + value.durationUnit,
+					duration: value.duration + value.durationUnits,
 					startDate: value.startDate,
 					strength: value.strength,
 					patientInstruction: value.specialInstruction,
@@ -148,7 +148,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
 	onClickSavePrescription(value: any, valid: boolean) {
 		if (valid) {
-			if(this.selectedAppointment.clinicId === undefined) {
+			if (this.selectedAppointment.clinicId === undefined) {
 				this._facilityService.announceNotification({
 					type: "Info",
 					text: "Clinic has not been set!"
@@ -252,25 +252,25 @@ export class PatientPrescriptionComponent implements OnInit {
 		//this._el.nativeElement.getElementsByTagName('input')[0].value = event.srcElement.innerText;
 		let productId = drugId.getAttribute('data-drug-id');
 		this._drugDetailsApi.find({ query: { "productId": productId } })
-				.then(res => {
-					if(res.ingredients.length === 1) {
-						if(res.ingredients[0].strength !== undefined || res.ingredients[0].strengthUnit !== undefined) {
-							this.selectedDrugId = res.ingredients[0].strength + res.ingredients[0].strengthUnit;
-							this.addPrescriptionForm.controls['strength'].setValue(this.selectedDrugId);
-						} else {
-							this.addPrescriptionForm.controls['strength'].setValue("");
-						}
-
-						if(res.route !== "" || res.route !== undefined) {
-							this.addPrescriptionForm.controls['route'].setValue(res.route);
-						} else {
-							this.addPrescriptionForm.controls['route'].setValue("");
-						}
+			.then(res => {
+				if (res.ingredients.length === 1) {
+					if (res.ingredients[0].strength !== undefined || res.ingredients[0].strengthUnit !== undefined) {
+						this.selectedDrugId = res.ingredients[0].strength + res.ingredients[0].strengthUnit;
+						this.addPrescriptionForm.controls['strength'].setValue(this.selectedDrugId);
+					} else {
+						this.addPrescriptionForm.controls['strength'].setValue("");
 					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
+
+					if (res.route !== "" || res.route !== undefined) {
+						this.addPrescriptionForm.controls['route'].setValue(res.route);
+					} else {
+						this.addPrescriptionForm.controls['route'].setValue("");
+					}
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 
 	focusSearch() {

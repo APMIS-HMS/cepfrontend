@@ -60,7 +60,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       });
     });
     this.pageInView.emit('Employee Manager');
-    this.facility = this.locker.get('selectedFacility');
+    this.facility = <Facility> this.locker.getObject('selectedFacility');
     // this.getEmployees(this.limit);
   }
   searchEmployees(searchText: string) {

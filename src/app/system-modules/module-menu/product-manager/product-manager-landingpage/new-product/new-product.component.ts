@@ -56,7 +56,7 @@ export class NewProductComponent implements OnInit {
     private drugListApiService: DrugListApiService, private drugDetailsService: DrugDetailsService) { }
 
   ngOnInit() {
-    this.selectedFacility = this.locker.get('selectedFacility');
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
       categoryId: [, [<any>Validators.required]],

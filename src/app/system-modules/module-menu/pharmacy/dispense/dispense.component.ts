@@ -38,7 +38,7 @@ export class DispenseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.facility = this._locker.get('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this._route.params.subscribe(params => {
       console.log(params)
       this.prescriptionId = params['id'];

@@ -70,7 +70,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedFacility = this.locker.get('selectedFacility');
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     // this.getEmployees();
     this.searchControl.valueChanges.subscribe(value => {
     });

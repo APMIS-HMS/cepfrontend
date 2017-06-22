@@ -83,7 +83,7 @@
                                 <div class="input-group">
                                     <input type="number" formControlName="duration" class="form-control" id="input" required>
                                     <div class="input-group-btn">
-                                        <select formControlName="durationUnit" [(ngModel)]="selectedValue" id="select">
+                                        <select formControlName="durationUnits" [(ngModel)]="selectedValue" id="select">
                                             <option *ngFor="let unit of durationUnits" value="{{ unit.name }}">{{ unit.name }}</option>
                                         </select>
                                     </div>

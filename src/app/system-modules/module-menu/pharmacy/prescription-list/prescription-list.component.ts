@@ -21,7 +21,7 @@ export class PrescriptionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.facility = this._locker.get('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getAllPrescriptions();
   }
 

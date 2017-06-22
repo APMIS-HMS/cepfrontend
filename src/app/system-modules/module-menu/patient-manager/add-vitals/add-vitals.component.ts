@@ -45,8 +45,8 @@ export class AddVitalsComponent implements OnInit {
     private _employeeService: EmployeeService) { }
 
   ngOnInit() {
-    this.selectedFacility = this._locker.get('selectedFacility');
-    let auth = this._locker.get('auth');
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+    const auth: any = this._locker.getObject('auth');
     this._employeeService.find({
       query:
       {
@@ -78,29 +78,26 @@ export class AddVitalsComponent implements OnInit {
     this.getVitalRythm();
 
     this.frmAddVitals.controls['height'].valueChanges.subscribe(value => {
-      let heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
-      let bmiValue = (+this.frmAddVitals.controls['weight'].value) / heightSquare;
+      const heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
+      const bmiValue = (+this.frmAddVitals.controls['weight'].value) / heightSquare;
       this.bmi = Math.round(bmiValue * 10) / 10;
       if (this.bmi < 16) {
         this.bmiWarningMssg = "Severe Thinness";
         this.isWarning = true;
-      }
-      else if (this.bmi >= 25 && this.bmi < 30) {
+      }else if (this.bmi >= 25 && this.bmi < 30) {
         this.bmiWarningMssg = "Overweight";
         this.isWarning = true;
-      }
-      else if (this.bmi > 30) {
+      }else if (this.bmi > 30) {
         this.bmiWarningMssg = "Obese Class";
         this.isWarning = true;
-      }
-      else {
+      }else {
         this.isWarning = false;
       }
     });
 
     this.frmAddVitals.controls['weight'].valueChanges.subscribe(value => {
-      let heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
-      let bmiValue = (+this.frmAddVitals.controls['weight'].value) / heightSquare;
+      const heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
+      const bmiValue = (+this.frmAddVitals.controls['weight'].value) / heightSquare;
       this.bmi = Math.round(bmiValue * 10) / 10;
       if (this.bmi < 16) {
         this.bmiWarningMssg = "Severe Thinness";
@@ -143,7 +140,7 @@ export class AddVitalsComponent implements OnInit {
 
   addVitals(valid, value) {
     if (valid) {
-      let vitalValue: any = <any>{};
+      const vitalValue: any = <any>{};
       this.pulseRate.pulseRateValue = this.frmAddVitals.controls['pulseRate'].value;
       this.pulseRate.location = this.frmAddVitals.controls['pulseLoc'].value;
       this.pulseRate.rythm = this.frmAddVitals.controls['pulseRythm'].value;
