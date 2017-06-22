@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { FacilityModule, FeatureModuleViewModel, AccessControl, Facility } from '../../../../../models/index';
-// tslint:disable-next-line:max-line-length
 import { FacilitiesService, FacilityModuleService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService, PersonService, DepartmentService } from '../../../../../services/facility-manager/setup/index';
 import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
 import { AccessControlService } from '../../../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 @Component({
   selector: 'app-apmis-checkbox',
   templateUrl: './apmis-checkbox.component.html',
@@ -18,16 +17,16 @@ export class ApmisCheckboxComponent implements OnInit {
   @Input() selectedAccessControl = <AccessControl>{};
   @Input() feature;
   accessControlList: AccessControl[] = [];
-  expand = false;
-  expandMain = false;
+  expand: boolean = false;
+  expandMain: boolean = false;
   @Input() cruds: any[] = [];
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: CoolLocalStorage,
+    private locker: Locker,
     private accessControlService: AccessControlService) { }
 
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
-    // this.getAccessList();
+    this.selectedFacility = this.locker.get('selectedFacility');
+    //this.getAccessList();
   }
   getAccessList() {
     this.accessControlService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {

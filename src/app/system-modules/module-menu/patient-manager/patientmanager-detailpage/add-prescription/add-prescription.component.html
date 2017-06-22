@@ -12,10 +12,10 @@
         </div>
         <div class="pres-data">{{ prescription.patientInstruction }}</div>
         <div class="pres-data">{{ prescription.refillCount }}</div>
-        <div class="pres-data padding" id="action-long">
+        <div class="pres-data padding"  id="action-long">
             <div class="text-center">
                 <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
-                <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
+                 <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
                 <button (click)="toggleBill(i);" class="btn btn-default">Bill</button>
             </div>
         </div>
