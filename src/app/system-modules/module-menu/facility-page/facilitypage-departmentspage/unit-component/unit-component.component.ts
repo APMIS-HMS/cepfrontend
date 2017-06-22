@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angu
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, FacilityModuleService, DepartmentService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityModule, Facility, Department } from '../../../../../models/index';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
     selector: 'app-unit-component',
@@ -48,7 +48,7 @@ export class UnitComponentComponent implements OnInit {
     unitshortNameEdit = new FormControl();
     unitDescEdit = new FormControl();
     constructor(private facilityService: FacilitiesService,
-        private locker: Locker) {
+        private locker: CoolLocalStorage) {
         this.facilityService.listner.subscribe(payload => {
             this.facility = payload;
         })
