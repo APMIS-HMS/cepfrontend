@@ -64,3 +64,4 @@ export * from './prescription-priority.service';
 export * from './frequency.service';
 export * from './product-requisition.service';
 export * from './drug-list-api.service';
+export * from './drug-details.service';
