@@ -111,22 +111,17 @@
         </div>
 
         <div class="patientPage-contentArea">
-
-            <!--<<<<<<< HEAD-->
             <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
-            <app-patient-prescription [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
+            <app-patient-prescription [selectedAppointment]="selectedAppointment" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
 
             <!--<div *ngIf="menuForms" class="menuForms">
-=======
     <div class="patientPage-contentArea">
       <!--<app-patient-summary *ngIf="menuSummary"></app-patient-summary>-->
             <!--<app-patient-prescription *ngIf="menuPrescription"></app-patient-prescription>-->
             <!--<div *ngIf="menuForms" class="menuForms">
->>>>>>> ad1998859c441263ad1245d4f38179d31c061d6f
         <legend>Create Form</legend>
         <survey [json]="json"></survey>
-
       </div>-->
         </div>
 
