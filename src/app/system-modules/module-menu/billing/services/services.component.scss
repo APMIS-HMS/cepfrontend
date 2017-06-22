@@ -1,0 +1,26 @@
+@import "../billing-home-page/billing-home-page.component.scss";
+
+i.fa.fa-search {
+    color: #fff;
+    background: #4bb8ef;
+    padding: 6px;
+    margin-left: -29px;
+    border: 1px solid #4bb8ef;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position:relative;
+}
+.searchInputWrap {
+    margin: 0 auto;
+    
+}
+.searchInputWrap {
+    text-align: none !important;
+}
+
+.tblBg {
+    background: #fff;
+}
+.tblBg td {
+    color:#337ab7;
+}

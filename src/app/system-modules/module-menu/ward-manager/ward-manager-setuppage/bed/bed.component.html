@@ -1,0 +1,48 @@
+<div class="c-page-header">
+    <h3 class="c-page-title">List of Beds in {{wardRoom.name}}</h3>
+
+    <div class="back-btn pull-right">
+        <span routerLink="/modules/facility-manager/ward-manager/setup/ward/{{wardId}}"><i class="fa fa-arrow-circle-o-left"></i> Back to Room</span>
+    </div>
+</div>
+<div class="c-page-body">
+    <div class="add-action-box">
+        <div (click)="addBedModal()" class="btn-1 btn-blue pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Bed</div>
+    </div>
+    <div class="inPatients">
+        <div class="table-responsive">
+            <table class="table table-striped no-margin" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table-bordered">
+                        <th style="width: 5%">No</th>
+                        <th>Bed</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="custom-tbody">
+                    <tr *ngIf="bedItems.length == 0">
+                        <td colspan="4"> No data available in table</td>
+                    </tr>
+                    <tr *ngFor="let bed of bedItems;let i = index">
+                        <td>{{i+1}}</td>
+                        <td class="">
+                            <div [hidden]="bedNameEditShow[i]">{{bed.name}}</div>
+                            <input *ngIf="bedNameEditShow[i]" class="edit-control lhs" type="text" value="{{bed.name}}" [formControl]="editBedName">
+                            </td>
+                        <td class="">{{bed.state}}</td>
+                        <td>
+                            <i [hidden]="bedNameEditShow[i]" (click)="bedNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i *ngIf="bedNameEditShow[i]" (click)="bedNameEdit(i,bed)" class="fa fa-check" aria-hidden="true"></i>
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="addbed" class="modal-overlay">
+            <app-add-bed (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-bed>
+        </div>
+    </div>
+</div>

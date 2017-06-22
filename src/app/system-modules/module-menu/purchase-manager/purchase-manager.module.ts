@@ -1,0 +1,39 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../../shared-module/shared.module';
+import { purchaseManagerRoutes } from './purchase-manager.routes';
+import { PurchaseManagerComponent } from './purchase-manager.component';
+import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
+import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
+import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
+import { InvoicesComponent } from './invoices/invoices.component';
+import { NewPurchaseOrderComponent } from './purchase-order/new-purchase-order/new-purchase-order.component';
+import { DxDateBoxModule } from 'devextreme-angular';
+import 'devextreme-intl';
+import { PurchaseEntryComponent } from './purchase-entry/purchase-entry.component';
+import { SupplierService, ProductService, StoreService, PurchaseOrderService, StrengthService, PurchaseEntryService, InventoryService }
+  from '../../../services/facility-manager/setup/index';
+import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
+
+
+@NgModule({
+  declarations: [
+    PurchaseManagerComponent,
+    PurchaseHistoryComponent,
+    PurchaseOrderComponent,
+    InvoicesComponent, NewPurchaseOrderComponent, PurchaseEntryComponent
+  ],
+  exports: [],
+  imports: [
+    SharedModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    purchaseManagerRoutes,
+    DxDateBoxModule
+  ],
+  providers: [PurchaseEmitterService, SupplierService, ProductService, PurchaseOrderService, StoreService, StrengthService,
+    LoginEmployeeResolverService, InventoryService, PurchaseEntryService]
+})
+export class PurchaseManagerModule { }

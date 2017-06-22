@@ -1,0 +1,31 @@
+@import "../new-department/new-department.component.scss";
+
+.frm-item-wrap {
+    padding-bottom: 10px;
+}
+.frm-item-wrap small, .frm-singleItem-wrap small {
+    bottom: -3px;
+}
+.frm-item-inner-wrap{
+    margin-left: 40px;
+}
+.btn-2{
+    width: 100px;
+    margin-top: 15px;
+    margin-left: 0px;
+}
+.frmArrayclinicWrap {
+    width: 354px;
+    border: 1px solid transparent;
+    padding: 3px;
+    margin-bottom: 12px;
+}
+.mainErr {
+    width: 97%;
+}
+.trash{
+    float: right;
+}
+.trash:hover{
+ cursor:pointer;
+}

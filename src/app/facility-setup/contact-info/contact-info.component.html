@@ -1,0 +1,114 @@
+<div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+<div *ngIf="sg1_2_show" class="f_sg_1 animated zoomIn">
+
+  <form [formGroup]="facilityForm1_1" novalidate>
+
+    <div class="lhs">
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitystate.valid || facilityForm1_1.controls.facilitystate.pristine">
+            this field is required.
+          </small>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <select *ngIf="stateAvailable" formControlName="facilitystate" (change)="onStateChange($event.target.value)">
+            <option  value="" disabled selected>State (Location)</option>
+            <option *ngFor="let state of selectedCountry?.states" ng-selected="inputFacility.address.state" [ngValue]="state">{{state.name}}</option>
+          </select>
+        <input type="text" [hidden]="stateAvailable" formControlName="facilitystate" placeholder="Facility State (Location)." autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitycity.valid || facilityForm1_1.controls.facilitycity.pristine">
+            this field is required.
+          </small>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <select *ngIf="stateAvailable" formControlName="facilitycity">
+            <option  value="" disabled selected>Facility City (Location)</option>
+            <option *ngFor="let item of cities" ng-selected="inputFacility.address.city" value = "{{item._id}}">{{item.name}}</option>
+          </select>
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylga.valid || facilityForm1_1.controls.facilitylga.pristine">
+            this field is required.
+          </small>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <select *ngIf="stateAvailable" formControlName="facilitylga">
+            <option  value="" disabled selected>Local Government (Location)</option>
+            <option *ngFor="let item of lgas" ng-selected="inputFacility.address.lga" value = "{{item._id}}">{{item.name}}</option>
+          </select>
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityaddress.valid || facilityForm1_1.controls.facilityaddress.pristine">
+            this field is required.
+          </small>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <input type="text" formControlName="facilityaddress" value="inputFacility.address.street" placeholder="Facility Address (Location)" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylandmark.valid || facilityForm1_1.controls.facilitylandmark.pristine">
+            this field is required.
+          </small>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        <input type="text" formControlName="facilitylandmark" value="inputFacility.address.landmark" placeholder="Major Landmark" autocomplete="off">
+      </div>
+
+    </div>
+    <div class="rhs">
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.contactFName.valid || facilityForm1_1.controls.contactFName.pristine">
+            Contact First Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
+          </small>
+        <i class="fa fa-user-md" aria-hidden="true"></i>
+        <input type="text" formControlName="contactFName" placeholder="Contact Person (First Name)" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.contactLName.valid || facilityForm1_1.controls.contactLName.pristine">
+            Contact Last Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
+          </small>
+        <i class="fa fa-user-md" aria-hidden="true"></i>
+        <input type="text" formControlName="contactLName" placeholder="Contact Person (Last Name)" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityphonNo.valid || facilityForm1_1.controls.facilityphonNo.pristine">
+            a contact number is required (minimum 5 characters).
+          </small>
+        <i class="fa fa-phone" aria-hidden="true"></i>
+        <input type="tel" formControlName="facilityphonNo" placeholder="Contact Number" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.password.valid || facilityForm1_1.controls.password.pristine">
+            This field is required (minimum 5 characters).
+          </small>
+        <i class="fa fa-lock" aria-hidden="true"></i>
+        <input type="password" formControlName="password" placeholder="Password" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="facilityForm1_1.controls.repass.valid || facilityForm1_1.controls.repass.pristine">
+            This field is required (minimum 5 characters).
+          </small>
+        <i class="fa fa-lock" aria-hidden="true"></i>
+        <input type="password" formControlName="repass" placeholder="Confirm Password" autocomplete="off">
+      </div>
+
+    </div>
+
+    <div class="clear"></div>
+
+    <div (click)="back_facilityForm1_1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+    <div (click)="facilitySetup1_1(facilityForm1_1.valid, facilityForm1_1.value)" class="cta-1">
+      CONTINUE
+    </div>
+
+  </form>
+</div>
+<app-verify-token *ngIf="next_key_show" class="f_sg2 animated zoomIn" [backBtnVisible]="true" [inputFacility]="selectedFacility"></app-verify-token>
+<app-facility-info *ngIf="back_key_show" [inputFacility]="selectedFacility"></app-facility-info>

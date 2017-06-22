@@ -1,0 +1,51 @@
+.inner-page-contentArea {
+    padding: 0 !important;
+}
+
+.menuContent {
+    width: 73%;
+}
+
+.inner-menu1-wrap {
+    top: 10px;
+    right: auto;
+    left: 0px;
+}
+
+.content-sec-ico {
+    font-size: 20px;
+    color: #757575;
+    padding: 4px;
+    width: 21px;
+    height: 21px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-sec-ico:hover,
+.content-sec-icoActive {
+    background: #F5F5F5;
+    color: #4bb8ef;
+}
+
+.inner-menu1-wrap {
+    top: 10px;
+    right: 10px;
+    left: auto;
+}
+
+.inner-menu1-wrap .innerMenu-ul {
+    margin-top: 33px;
+}
+
+.content-sec-ico {
+    position: absolute;
+    right: 0;
+}
+
+
+.inner-page-wrap {
+    margin-top: 40px !important;
+}

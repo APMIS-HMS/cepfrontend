@@ -1,0 +1,94 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <div class="facility-title">{{facilityObj.name}}</div>
+
+    <legend class="modal_title">Create Unit</legend>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <div class="f_sg1">
+
+        <form [formGroup]="frmNewUnit" novalidate>
+
+            <div class="frm-item-wrap">
+                <small class="alert-label" [hidden]="frmNewUnit.controls.unitName.valid || frmNewUnit.controls.unitName.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+                <i class="fa fa-building-o" aria-hidden="true"></i>
+                <input type="text" formControlName="unitName" placeholder="Unit Name" autocomplete="off">
+            </div>
+
+            <div class="frm-item-wrap">
+                <small class="alert-label" [hidden]="frmNewUnit.controls.unitAlias.valid || frmNewUnit.controls.unitAlias.pristine">
+            A minimum of 3 characters required.
+          </small>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <input type="text" formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
+            </div>
+
+            <div class="frm-item-wrap">
+                <small class="alert-label" [hidden]="frmNewUnit.controls.unitParent.valid || frmNewUnit.controls.unitParent.pristine">
+            this field is required.
+          </small>
+                <i class="fa fa-object-group" aria-hidden="true"></i>
+                <select formControlName="unitParent">
+            <option  value="null" disabled selected>Select parent department</option>
+            <option *ngFor="let item of deptsObj"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+            </div>
+
+            <div class="frm-item-wrap">
+                <label>
+              <input style="width: auto; margin-right: 5px;" type="checkbox"  formControlName="isClinic"  [(ngModel)]="isClinic">
+              Clinic
+          </label>
+            </div>
+
+
+            <form [formGroup]="clinicForm" class="form-horizontal">
+                <div formArrayName="clinicArray">
+                    <div class="frmArrayclinicWrap" *ngFor="let clinic of clinicForm.controls['clinicArray'].controls; let i = index;">
+                        <div formGroupName="{{i}}">
+                            <div class="mainErr animated shake" [hidden]="mainErrClinic || (clinicForm.controls['clinicArray'].value.length !== (i+1))">{{errMsgClinic}}</div>
+
+                            <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(bill,group)" class="fa fa-times trash" aria-hidden="true"></i></span>
+
+                            <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">
+                                <small class="alert-label" [hidden]="clinic.controls.clinicName.valid || clinic.controls.clinicName.pristine">
+                  this field is required.
+                </small>
+                                <i class="fa fa-building-o" aria-hidden="true"></i>
+                                <input type="text" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
+                            </div>
+                            <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">
+                                <div *ngIf="!clinic.value.readonly" class="btn-1 btn-blue btn-2" (click)="onAddHobby(clinic, clinicForm.valid)"> Add Clinic</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+
+
+
+
+
+
+
+
+            <div class="frm-item-wrap">
+                <small class="alert-label" [hidden]="frmNewUnit.controls.unitDesc.valid || frmNewUnit.controls.unitDesc.pristine">
+            This is a required field (minimum 10 characters).
+          </small>
+                <textarea class="txt-input modal-textarea" formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
+            </div>
+
+            <div (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" class="cta-1">
+                CREATE UNIT
+            </div>
+
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,68 @@
+@import "../../../../../../globals/variables.scss";
+@import "../../../store-manager/new-store/new-store.component.scss";
+legend.modal-title {
+    text-align: center !important;
+    font-family: "Josefin Sans", sans-serif !important;
+    font-size: 20px !important;
+    color: #0D47A1 !important;
+}
+
+.modal-baseWrap {
+    width: 750px;
+}
+
+.sec-1 {
+    width: 45%;
+}
+
+.sec-2 {
+    width: 45%;
+}
+
+.frm-item-wrap small,
+.frm-singleItem-wrap small {
+    bottom: 38px;
+}
+
+.cta-1 {
+    color: #fff;
+    margin: 10px auto;
+}
+
+.frm-item-wrap {
+    padding-bottom: 10px;
+}
+
+.sugestion-wrap {
+    position: absolute;
+    padding: 3px;
+    background: #c3c3c3;
+    border-radius: 10px;
+    width: 100%;
+    z-index: 1;
+    font-size: 12px;
+}
+
+.sugestion-item {
+    margin: 3px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.sugestion-item:hover {
+    background: #b0b0b0;
+}
+.productNameLabel {
+    text-align: center;
+    background: #ccc;
+    padding: 5px;
+    font-size: 12px;
+    margin-top: -15px;
+    margin-bottom: 10px;
+}
+
+.flex {
+    display: flex;
+    float:right;
+    cursor: pointer;
+}

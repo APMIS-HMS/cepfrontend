@@ -1,0 +1,40 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <legend class="modal_title">System Login</legend>
+  <div class="modal_mini_title">All Purpose Medical Information System</div>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="f_sg_1">
+
+    <form [formGroup]="frm_login" novalidate>
+        
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frm_login.controls.username.valid || frm_login.controls.username.pristine">
+          Kindly supply your username.
+        </small>
+        <i class="fa fa-user-md" aria-hidden="true"></i>
+        <input type="text" formControlName="username" [(ngModel)]="input_username" placeholder="Username" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frm_login.controls.password.valid || frm_login.controls.password.pristine">
+          Kindly supply your password.
+        </small>
+        <i class="fa fa-lock" aria-hidden="true"></i>
+        <input type="password" formControlName="password" #showhideinput [(ngModel)]="input_password" placeholder="Password" autocomplete="off">
+        <a (click)="toggleShow($event)" class="absolute"><i class="fa fa-eye"></i></a>
+      </div>
+      <div (click)="reset()" class="forgetPword">forgot password?</div>
+      <div (click)="login(frm_login.valid)" class="cta-1">
+        Log In
+      </div>
+
+    </form>
+  </div>
+
+</div>
+<div *ngIf="loadIndicatorVisible" class="div_loading">
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+</div>
+

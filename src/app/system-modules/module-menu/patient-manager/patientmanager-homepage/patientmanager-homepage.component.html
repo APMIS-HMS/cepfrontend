@@ -1,0 +1,36 @@
+<div class="checkedinPatients">
+    <div class="inPatients">
+        <ul class="inHeader">
+            <li class="patient-img"></li>
+            <li (click)="sortPatientsByName()" class="patient-name" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Name</li>
+            <li (click)="sortPatientsByAge()" class="patient-age" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Age</li>
+            <li (click)="sortPatientsByGender()" class="patient-sex" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Sex</li>
+            <li class="patient-phone">Phone Number</li>
+            <li class="patient-email">Email</li>
+            <li class="patient-address">Address</li>
+            <li class="patient-born">Born</li>
+            <li class="patient-apmis" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Apmis Number</li>
+        </ul>
+        <div class="wrapper-content search-results" infinite-scroll [infiniteScrollDistance]="7" [infiniteScrollUpDistance]="7" [infiniteScrollThrottle]="300" (scrolled)="onScroll()" [scrollWindow]="false" (scrolledUp)="onScrollUp()">
+            <ul (click)="navEpDetail(patient)" *ngFor="let patient of patients; let i = even; let k = odd" [class.color1]="i" [class.color2]="k" class="inBody">
+                <li class="patient-img">
+                    <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                    <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
+                </li>
+                <li class="patient-name">{{patient.personDetails.lastName}} {{patient.personDetails.firstName}}</li>
+                <li class="patient-age">{{patient.personDetails.age}}</li>
+                <li class="patient-sex">
+                    <span *ngIf="patient.personDetails.gender.name==='Male'">M</span>
+                    <span *ngIf="patient.personDetails.gender.name==='Female'">F</span>
+                    <span *ngIf="patient.personDetails.gender.name!='Female' && patient.personDetails.gender.name!='Male'">N</span>
+                </li>
+                <li class="patient-phone">{{patient.personDetails.phoneNumber}}</li>
+                <li class="patient-email">{{patient.personDetails.email}}</li>
+                <li class="patient-address">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}
+                </li>
+                <li class="patient-born">{{patient.personDetails.dateOfBirth | date}}.</li>
+                <li class="patient-apmis">{{patient.personDetails.apmisId}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

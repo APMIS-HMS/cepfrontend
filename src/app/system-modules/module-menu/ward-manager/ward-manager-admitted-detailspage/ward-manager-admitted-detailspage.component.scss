@@ -1,0 +1,75 @@
+@import "../../patient-manager/patientmanager-detailpage/patientmanager-detailpage.component.scss";
+.inPatients {
+    position: relative;
+}
+
+.c-page-header {
+    z-index: 2;
+    .back-btn {
+        padding: 10px;
+        font-size: 16px;
+        font-family: "Josefin Sans", sans-serif;
+        color: #BDBDBD;
+        margin: 0;
+        z-index: 3;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.patient-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    max-width: 450px;
+    img {
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+    }
+}
+
+.action-box {
+    .btn-1 {
+        margin-bottom: 5px;
+    }
+}
+
+.details {
+    padding: 10px;
+    height: auto;
+    min-height: 280px;
+    .detail-left {
+        width: 50%;
+        float: left;
+    }
+    .detail-right {
+        width: 50%;
+        float: right;
+    }
+    .detail-right,
+    .detail-left {
+        .subsect-itemWrap {
+            border: 0px;
+            padding: 5px;
+        }
+        .subsect-label {
+            color: #959595;
+            // width: 50%;
+            // float: left;
+        }
+        .subsect-val {
+            font-size: 12px;
+            // float: left;
+            // width: 50%;
+        }
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+}

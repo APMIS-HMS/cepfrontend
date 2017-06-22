@@ -1,0 +1,40 @@
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+    <div class="inner-menu1-wrap responsive_nav-group">
+        <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+        <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+            <li (click)="changeRoute('facility-page')"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
+            <li (click)="changeRoute('modules')"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
+            <li (click)="changeRoute('departments')"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
+            <li (click)="changeRoute('locations')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
+            <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
+            <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
+            <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
+            <li [routerLink]="['/modules/employee-manager']">Employee</li>
+        </ul>
+    </div>
+    <div class="inner-page-wrap">
+
+        <div class="lhs inner-page-menuTab">
+            <ul class="nav-group">
+                <li (click)="changeRoute('facility-page')" [class.navActive]="homeContentArea">Home</li>
+                <li (click)="changeRoute('modules')" [class.navActive]="modulesContentArea">Modules</li>
+                <li (click)="changeRoute('departments')" [class.navActive]="departmentsContentArea">Departments</li>
+                <li (click)="changeRoute('locations')" [class.navActive]="locationsContentArea">Locations</li>
+                <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>
+                <li (click)="changeRoute('options')" [class.navActive]="optionsContentArea">Options</li>
+                <li (click)="changeRoute('profession')" [class.navActive]="professionContentArea">Profession</li>
+                <li [routerLink]="['/modules/employee-manager']">Employee</li>
+            </ul>
+        </div>
+        <div class="rhs inner-page-contentArea">
+            <router-outlet></router-outlet>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+<div *ngIf="loadIndicatorVisible" class="div_loading">
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+
+</div>

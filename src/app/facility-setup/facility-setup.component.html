@@ -1,0 +1,359 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <legend class="modal_title">Facility Setup</legend>
+  <div class="modal_mini_title">All Purpose Medical Information System</div>
+
+  <div *ngIf="sg1_1_show" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied
+    below</div>
+  <!--<div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>-->
+  <app-facility-info></app-facility-info>
+  <!--<div *ngIf="sg1_show" class="f_sg1">
+
+    <form [formGroup]="facilityForm1" novalidate>
+
+      <div class="lhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityname.valid || facilityForm1.controls.facilityname.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+          <i class="fa fa-building-o" aria-hidden="true"></i>
+          <input type="text" formControlName="facilityname" placeholder="Facility/Organisation Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityalias.valid || facilityForm1.controls.facilityalias.pristine">
+            A minimum of 3 characters required.
+          </small>
+          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <input type="text" formControlName="facilityalias" placeholder="Facility Short Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitytype.valid || facilityForm1.controls.facilitytype.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <i class="fa fa-bullseye" aria-hidden="true"></i>
+          <select formControlName="facilitytype" (change)="onFacilityTypeChange($event.target.value)">
+            <option  value="" disabled selected>Type of Facility/Organisation</option>
+            <option *ngFor="let item of facilityTypes"  value={{item._id}}>{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitycategory.valid || facilityForm1.controls.facilitycategory.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <i class="fa fa-bullseye" aria-hidden="true"></i>
+          <select formControlName="facilitycategory">
+            <option  value="" disabled selected>Facility Category</option>
+            <option *ngFor="let item of selectedFacilityType?.facilityClasses"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="rhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityownership.valid || facilityForm1.controls.facilityownership.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <i class="fa fa-bullseye" aria-hidden="true"></i>
+          <select formControlName="facilityownership">
+            <option  value="" disabled selected>Facility Ownership</option>
+            <option *ngFor="let item of ownerships"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityemail.valid || facilityForm1.controls.facilityemail.pristine">
+            Wrong email format (minimum 5 characters).
+          </small>
+          <small class="alert-label" [hidden]="isEmailExist">
+            Email exist.
+          </small>
+          <i class="fa fa-envelope-o" aria-hidden="true"></i>
+          <input class="txt-input" formControlName="facilityemail" type="email" placeholder="Facility/Organisation Email" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitywebsite.valid || facilityForm1.controls.facilitywebsite.pristine">
+            Wrong website format (eg - www.yourdomain.com).
+          </small>
+          <i class="fa fa-globe" aria-hidden="true"></i>
+          <input class="txt-input" formControlName="facilitywebsite" type="url" placeholder="Official Website" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitycountry.valid || facilityForm1.controls.facilitycountry.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-location-arrow" aria-hidden="true"></i>
+          <select formControlName="facilitycountry">
+            <option value="" disabled selected>Select Country</option>
+            <option *ngFor="let item of countries" value={{item._id}}>{{item.name}}</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="clear"></div>
+
+      <div (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" class="cta-1">
+        CONTINUE
+      </div>
+
+    </form>
+  </div>-->
+
+  <!--<div *ngIf="sg1_1_show" class="f_sg_1 animated zoomIn">
+
+    <form [formGroup]="facilityForm1_1" novalidate>
+
+      <div class="lhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitystate.valid || facilityForm1_1.controls.facilitystate.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          <select *ngIf="stateAvailable" formControlName="facilitystate" (change)="onStateChange($event.target.value)">
+            <option  value="" disabled selected>State (Location)</option>
+            <option *ngFor="let state of selectedCountry?.states" [ngValue]="state">{{state.name}}</option>
+          </select>
+          <input type="text" [hidden]="stateAvailable" formControlName="facilitystate" placeholder="Facility State (Location)." autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitycity.valid || facilityForm1_1.controls.facilitycity.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          <select *ngIf="stateAvailable" formControlName="facilitycity">
+            <option  value="" disabled selected>Facility City (Location)</option>
+            <option *ngFor="let item of cities"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylga.valid || facilityForm1_1.controls.facilitylga.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          <select *ngIf="stateAvailable" formControlName="facilitylga">
+            <option  value="" disabled selected>Local Government (Location)</option>
+            <option *ngFor="let item of lgas"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityaddress.valid || facilityForm1_1.controls.facilityaddress.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          <input type="text" formControlName="facilityaddress" placeholder="Facility Address (Location)" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylandmark.valid || facilityForm1_1.controls.facilitylandmark.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          <input type="text" formControlName="facilitylandmark" placeholder="Major Landmark" autocomplete="off">
+        </div>
+
+      </div>
+      <div class="rhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.contactFName.valid || facilityForm1_1.controls.contactFName.pristine">
+            Contact First Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
+          </small>
+          <i class="fa fa-user-md" aria-hidden="true"></i>
+          <input type="text" formControlName="contactFName" placeholder="Contact Person (First Name)" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.contactLName.valid || facilityForm1_1.controls.contactLName.pristine">
+            Contact Last Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
+          </small>
+          <i class="fa fa-user-md" aria-hidden="true"></i>
+          <input type="text" formControlName="contactLName" placeholder="Contact Person (Last Name)" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityphonNo.valid || facilityForm1_1.controls.facilityphonNo.pristine">
+            a contact number is required (minimum 5 characters).
+          </small>
+          <i class="fa fa-phone" aria-hidden="true"></i>
+          <input type="tel" formControlName="facilityphonNo" placeholder="Contact Number" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.password.valid || facilityForm1_1.controls.password.pristine">
+            This field is required (minimum 5 characters).
+          </small>
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input type="password" formControlName="password" placeholder="Password" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1_1.controls.repass.valid || facilityForm1_1.controls.repass.pristine">
+            This field is required (minimum 5 characters).
+          </small>
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input type="password" formControlName="repass" placeholder="Confirm Password" autocomplete="off">
+        </div>
+
+      </div>
+
+      <div class="clear"></div>
+
+      <div (click)="back_facilityForm1_1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+      <div (click)="facilitySetup1_1(facilityForm1_1.valid, facilityForm1_1.value)" class="cta-1">
+        CONTINUE
+      </div>
+
+    </form>
+  </div>-->
+
+  <!--<div *ngIf="sg2_show" class="f_sg2 animated zoomIn">
+
+    <form [formGroup]="frm_numberVerifier" novalidate>
+
+      <div class="frm-singleItem-wrap">
+        <small class="alert-label" [hidden]="frm_numberVerifier.controls.txt_numberVerifier.valid || frm_numberVerifier.controls.txt_numberVerifier.pristine">
+          Kindly supply the token texted to your phone.
+        </small>
+        <i class="fa fa-mobile" aria-hidden="true"></i>
+        <input type="text" formControlName="txt_numberVerifier" [(ngModel)]="InputedToken" placeholder="Supply Token">
+      </div>
+
+      <div class="noToken_wrap">
+        <div class="noToken_txt1">...Didn't recieve a token on <span>{{input_facilityphonNo}}</span>?</div>
+        <div class="noToken_txt2">Resend Token</div>
+      </div>
+
+      <div (click)="back_verifier()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+      <div (click)="numberVerifier(frm_numberVerifier.valid)" class="cta-1">
+        VERIFY
+      </div>
+
+    </form>
+    
+  </div>-->
+
+
+  <!--<label *ngIf="sg3_show" style="font-size: 11px;margin-left: 5px;">Company's Logo</label>
+  <div *ngIf="sg3_show" class="f_sg3 animated zoomIn">-->
+
+  <!-- file uploader -->
+  <!--<input type="file" (change)="imageChange($event)">-->
+
+  <!-- drag & drop file example-->
+  <!--<style>
+      .file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+    </style>-->
+
+  <!--<div>
+  Response: {{ uploadFile | json }}
+</div>
+
+<div (click)="back_logoUp()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+<div (click)="f_sg4_show()" class="cta-1">
+  CONTINUE
+</div>
+
+</div>-->
+
+
+
+  <!--<div *ngIf="selectModules_show" class="f_sg3_1 animated zoomIn">
+
+  <form [formGroup]="frm_selectModules" novalidate>
+
+    <div class="modal_mini_title2">Select required modules for your facility</div>
+
+    <div class="control-group">
+      <label *ngFor="let module of partOneModules" class="control control--checkbox">{{module.name}}
+          <input type="checkbox" formControlName="chk_pharmacy" [(ngModel)]="module.checked"/>
+          <div class="control__indicator"></div>
+        </label>
+    </div>
+
+    <div class="control-group">
+      <label *ngFor="let module of partTwoModules" class="control control--checkbox">{{module.name}}
+          <input type="checkbox" formControlName="chk_pharmacy" [(ngModel)]="module.checked"/>
+          <div class="control__indicator"></div>
+        </label>
+    </div>
+
+    <div (click)="back_selectModules()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+    <div (click)="selectModules_next()" class="cta-1">
+      CONTINUE
+    </div>
+
+  </form>
+</div>-->
+
+  <!--<div *ngIf="sg4_show" class="f_sg4 animated zoomIn">
+
+  <form [formGroup]="facilityForm4" novalidate>-->
+
+  <!--<div class="lhs">
+
+      <div class="frm-item-wrap">
+        <input type="text" formControlName="buildingtype" placeholder="Type of Building" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <input type="text" formControlName="regPoint_count" placeholder="No. of registeration points" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <input class="txt-input" formControlName="wards_count" type="text" placeholder="No. of wards" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <input class="txt-input" formControlName="paymentPoint_count" type="text" placeholder="No. of payment points" autocomplete="off">
+      </div>
+
+    </div>
+
+    <div class="sides rhs">
+
+      <div class="frm-item-wrap">
+        <input type="text" formControlName="pharmacyDispense_count" placeholder="No. of Pharmacy despensing points" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <input type="text" formControlName="pharmacyStore_count" placeholder="No. of pharmacy stores" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <input type="text" formControlName="theater_count" placeholder="No. of theaters" autocomplete="off">
+      </div>
+
+      <div class="frm-item-wrap">
+        <input type="text" formControlName="lab_Count" placeholder="No. of laboratories" autocomplete="off">
+      </div>
+
+    </div>-->
+
+  <!--<div class="clear"></div>
+
+    <div (click)="back_facilityForm4()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+    <div (click)="facilitySetup_finish(facilityForm4.valid)" class="cta-1">
+      FINISH
+    </div>-->
+
+  <!--</form>
+</div>-->
+
+</div>

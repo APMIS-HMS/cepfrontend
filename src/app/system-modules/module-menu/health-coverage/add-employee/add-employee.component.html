@@ -1,0 +1,49 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="facility-title">Add employee to health cover</div>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="f_sg1">
+
+    <form [formGroup]="frmNewEmp" novalidate>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewEmp.controls.empName.valid || frmNewEmp.controls.empName.pristine">
+          this is a required field (minimum 3 and max of 50 characters).
+        </small>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <input type="text" formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">
+        <div class="suggestionFeeds">
+          <div (click)="onSelectPerson(person)" *ngFor="let person of people" class="suggestedItem">
+            <img *ngIf="person.profileImageObject == undefined" src="assets/images/users/default.png">
+            <img *ngIf="person.profileImageObject != undefined" [src]="facilityService.transform(person.profileImageObject?.thumbnail)">
+            <div class="suggetedName">{{person.lastName}} {{person.firstName}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewEmp.controls.empDept.valid || frmNewEmp.controls.empDept.pristine">
+          this field is required.
+        </small>
+        <i class="fa fa-building-o" aria-hidden="true"></i>
+        <select formControlName="empDept">
+            <option  value="" disabled selected>Department</option>
+            <option *ngFor="let item of departments"  [ngValue]="item">{{item.name}}</option>
+        </select>
+      </div>
+
+      <div class="frm-item-wrap">
+        <i class="fa fa-object-group" aria-hidden="true"></i>
+        <input type="text" formControlName="empId" placeholder="Employee ID" autocomplete="off">
+      </div>
+
+      <button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="cta-1">
+        ADD EMPLOYEE
+      </button>
+
+    </form>
+  </div>
+
+</div>

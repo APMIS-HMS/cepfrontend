@@ -1,0 +1,76 @@
+@import "../../../../../../globals/variables.scss";
+@import "../../../../../../globals/normalize.scss";
+
+.frm-item-wrap {
+    text-align: center;
+}
+.facility-title{
+    margin-bottom: 20px;
+}
+.cta-1{
+    font-size: 14px;
+    margin: 0 auto;
+}
+.modal-baseWrap {
+    width: 340px;
+}
+.suggestionFeeds{
+    width: 245px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.suggestedItem{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 185px;
+    background: #BDBDBD;
+    border-radius: 20px;
+    padding: 3px;
+    border: 0.5px solid #9E9E9E;
+    margin-top: 5px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+.suggestedItem:hover{
+    background: #9E9E9E;
+}
+.suggestedItem img{
+    width: 20px;
+    margin-right: 10px;
+}
+.suggetedName {
+    font-size: 12px;
+}
+.frm-radio-wrap{
+    border: 1px solid #eee;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 0px auto;
+}
+.headWrap {
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: $font-titles;
+    background: #BDBDBD;
+    padding: 10px;
+    border-radius: 7px;
+}
+.service-amount {
+    color: #ff2500;
+    font-weight: bold;
+    text-align: right;
+}
+.service-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+.service-cat{
+    font-size: 12px;
+}
+.f_sg1 form{
+    text-align: center;
+}

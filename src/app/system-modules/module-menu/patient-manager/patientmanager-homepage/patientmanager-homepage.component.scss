@@ -1,0 +1,80 @@
+@import "../../../../../globals/variables.scss";
+
+.page-title{
+    text-align: center;
+    position: relative;
+    top: -20px;
+    font-size: 12px;
+    width: 100%;
+    color: #A6ACAF;
+}
+.checkedinPatients{
+    width: 100%;
+    padding: 10px;
+}
+.inPatients{
+    border: 1px solid #eee;
+    border-radius: 3px;
+    min-height: 400px;
+    font-size: 12px;
+}
+.inHeader{
+    display: flex;
+    background: #85C1E9;
+    color: #000;
+    padding: 3px 2px;
+    text-align: center;
+}
+.inBody{
+    display: flex;
+    padding: 4px;
+    align-items: center;
+}
+.inHeader li{
+    border-left: 1px solid #AED6F1;
+}
+.patient-img{
+    width: 100px;
+}
+.patient-sex, .patient-age{
+    width: 80px;
+    text-align: center;
+}
+.patient-state, .patient-apmis, .patient-phone, .patient-born{
+    width: 200px;
+}
+.patient-name{
+    width: 300px;
+}
+.patient-email{
+    width: 350px;
+}
+.patient-address{
+    width: 450px;
+}
+.inBody .patient-img{
+    text-align: center;
+}
+.patient-img div{
+    width: 40px;
+    border-radius: 100%;
+}
+.patient-img img{
+    width: 40px;
+}
+.patient-img div{
+    position: relative;
+    height: 40px;
+    overflow: hidden;
+}
+.inBody{
+    position: relative;
+    cursor: pointer;
+}
+.inBody:hover{
+    background: #D0D3D4;
+}
+.search-results{
+    height: 20rem;
+    overflow: scroll;
+}

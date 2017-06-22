@@ -1,0 +1,95 @@
+.options {
+    margin-top: 25px;
+}
+.options > .dx-checkbox {
+    margin-right: 20px;
+}
+ .options > h4,
+ .view-type {
+    margin-bottom: 10px;
+}
+ .view-type > span {
+    position: relative;
+    top: 2px;
+    margin-right: 10px;
+}
+ .view-type > .dx-selectbox {
+    display: inline-block;
+    vertical-align: middle;
+ }
+.dx-theme-generic .dx-fieldset {
+    width: 40%;
+    float: left;
+}
+.page-title{
+    text-align: center;
+    position: relative;
+    top: -20px;
+    font-size: 12px;
+    width: 100%;
+    color: #A6ACAF;
+}
+//  img{
+//     width: 30px;
+//     border-radius: 100%;
+//     border: 2px solid #03A9F4;
+//     margin-right: 5px;
+// }
+.field-customization {
+    min-height: 32px;
+}
+.field-customization .dx-lookup-field {
+    padding: 0 5px;
+}
+.custom-field > img {
+    vertical-align: middle;
+    height: 24px;
+    width: 24px;
+    border-radius: 100%;
+    border: 2px solid #03A9F4;
+    margin-bottom: 6px;
+}
+ .custom-field > div {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 30px;
+    font-size: 14px;
+    margin-left: 5px;
+}
+.custom-item > img {
+    height: 48px;
+    width: 38px;
+    margin-right: 10px;
+}
+
+
+.topFilters{
+    display: flex;
+    position: relative;
+    border: 1px solid #eee;
+    padding-top: 20px;
+    margin-bottom: 3px;
+}
+.filter-title{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: #eee;
+    padding: 4px;
+    color: #A6ACAF;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+.filter-wrap{
+    margin: 5px;
+}
+.filter-wrap span{
+    font-size: 12px;
+    color: #A6ACAF;
+    font-style: italic;
+}
+
+.switch-left{
+    float:none;
+    width: 100% !important;
+}

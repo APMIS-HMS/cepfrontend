@@ -1,0 +1,84 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="modal-userStrap">
+    <div class="strapImgWrap">
+      <img [src]="facilityService.transform(loginEmployee.employeeDetails.profileImageObject?.thumbnail)">
+    </div>
+    <div class="strapUser">{{loginEmployee.employeeDetails.lastName}} {{loginEmployee.employeeDetails.firstName}}</div>
+  </div>
+
+  <div class="postStrap-title">Check Into Store</div>
+  <div class="cont-wrap">
+    <div class="cont-item">
+      <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+      <form [formGroup]="storeCheckin" novalidate>
+        <div class="frm-item-wrap">
+          <i class="fa fa-building-o" aria-hidden="true"></i>
+          <label>Location</label>
+          <select formControlName="location">
+              <option value="" disabled selected>Select Location</option>
+              <option *ngFor="let location of clinicHelperService.clinicLocations" value={{location._id}}>{{location.name}}</option>
+            </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <label>Store</label>
+          <select formControlName="room">
+              <option value="" disabled selected>Select Store</option>
+              <option *ngFor="let store of stores" value={{store._id}}>{{store.name}}</option>
+            </select>
+        </div>
+
+        <div class="set-default">
+          <div>Set as default</div>
+          <div class="dx-field-value">
+            <dx-check-box formControlName="isDefault"></dx-check-box>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <div (click)="checkIn(storeCheckin.valid, storeCheckin.value)" class="btn-1 btn-blue">
+            <i class="fa fa-check-circle" aria-hidden="true"></i> Check In
+          </div>
+          <div (click)="close_onClick()" class="btn-1 btn-red" aria-hidden="true">
+            <i class="fa fa-times-circle" aria-hidden="true"></i> Cancel
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="cont-item recent-rooms">
+      <div class="item-title">Recent Stores</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Store</th>
+            <th>Last Check-In</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let checkIn of clinicHelperService.loginEmployee.storeCheckIn">
+            <td>{{checkIn?.minorLocationObject?.name}}</td>
+            <td>{{checkIn?.storeObject?.name}}</td>
+            <td>{{checkIn?.lastLogin | date:'medium'}}</td>
+            <td class="tblMenu">
+              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+              <ul class="popMenu">
+                <li (click)="changeRoom(checkIn)">Switch To Room</li>
+                <li><i class="fa fa-trash tblMenu" aria-hidden="true"></i> Delete History</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

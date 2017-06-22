@@ -1,0 +1,21 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Transfer Segun Alabi</legend>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="padding"></div>
+    <form [formGroup]="transferFormGroup" novalidate>
+        <div class="frm-item-wrap">
+            <small class="alert-label" [hidden]="transferFormGroup.controls.ward.valid || transferFormGroup.controls.ward.pristine">
+			Kindly select an option from the drop down.
+			</small>
+            <i class="fa fa-venus-mars" aria-hidden="true"></i>
+            <select formControlName="ward" (change)="onWardChange($event.target.value)">
+				<option  value="" disabled selected>Select Ward</option>
+				<option  *ngFor="let item of facilityWards"  value="{{item._id}}">{{item.name}}</option>
+			</select>
+        </div>
+        <div class="clear"></div>
+        <button class="cta-1" (click)="onTransfer(transferFormGroup.value, transferFormGroup.valid)"><i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Transfer Patient</button>
+    </form>
+</div>

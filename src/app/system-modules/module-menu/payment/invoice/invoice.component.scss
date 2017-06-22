@@ -1,0 +1,44 @@
+@import "../payment.component.scss";
+.existing-bill-group {
+    top: 0;
+    text-align: center;
+    font-size: 12px;
+    padding: 6px;
+    border-bottom: 1px solid #976;
+    border-left: 1px solid #976;
+    border-top-left-radius: 56px;
+}
+.existing-bill-group:hover{
+    border-left: 5px solid #03A9F4;
+    cursor: pointer;
+}
+ul.invoices_ul {
+    font-size: 12px;
+    color: #979A9A;
+    padding: 5px;
+}
+.invoice_header{
+    border-bottom: 1px solid #E5E7E9;
+    margin-bottom: 10px;
+}
+.invoice_header div{
+    color: #000;
+    font-size: 14px;
+}
+.invoice_li{
+    padding: 3px;
+    background: #ECF0F1;
+    border: 1px solid #ECF0F1;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+.invoice_li:hover{
+    background: transparent;
+}
+.invoice_li div{
+    text-align: left;
+}
+ul.invoices_ul li span{
+    display: inline-block;
+    width: 90px;
+}

@@ -1,0 +1,17 @@
+@import '../stock-taking/stock-taking.component.scss';
+.topItemsWrap{
+    display: flex;
+    align-items: flex-end;
+}
+.frm-item-wrap{
+    margin-right: 10px;
+    padding-bottom: 0;
+}
+.txt-link{
+    height: 15px;
+}
+.cancel{
+    color:#ff2500; 
+    font-size: 14px; 
+    padding: 5px;
+}

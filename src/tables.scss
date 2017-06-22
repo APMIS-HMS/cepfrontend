@@ -1,0 +1,74 @@
+@import"globals/variables.scss";
+
+table{
+    width: 100%;
+    position: relative;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+table, td { 
+    border: 0.5px solid $td-border;
+}
+th {
+    height: 50px;
+    background: $th-background;
+    border: 0.5px solid $th-border;
+}
+td {
+    vertical-align: center;
+    text-align: center;
+}
+tr:hover {background-color: $tr-hover}
+tr:nth-child(even) {background-color: $tr-stripe}
+
+.searchInputWrap{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.searchInputWrap i{
+    position: absolute;
+    color: #939393;
+    margin-left: 10px;
+}
+.searchInput{
+    border: 1px solid #eee;
+    background: #FAFAFA;
+    border-radius: 7px;
+    padding: 7px;
+    padding-left: 30px;
+    text-align: center;
+    width: 250px;
+}
+
+.tbl-actionRow{
+    position: relative;
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+.tbl-actionRow .tbl-title{
+    position: absolute; 
+    left: 10px;
+    font-size: 14px;
+    color: #0288D1;
+}
+.tbl-actionRow .tbl-search{
+    position: absolute; 
+    right: 10px;
+}
+.td-ctaWrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.td-ctaWrap i{
+    cursor: pointer;
+}
+.td-ctaWrap i:hover, th i:hover{
+    color: #0288D1;
+}
+th i{
+    margin-right: 10px;
+    cursor: pointer;
+}

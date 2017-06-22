@@ -1,0 +1,44 @@
+@import "../../../../globals/variables.scss";
+
+.inner-page-contentArea {
+    padding: 0;
+}
+.inner-menu1-wrap {
+    top: 0;
+    text-align: right;
+}
+.inner-menu1-wrap .innerMenu-ul{
+    text-align: left;
+}
+.responsive_nav-group{
+    display: none;
+}
+.content-sec-ico:hover, .content-sec-icoActive{
+    background: #F5F5F5;
+    color: #4bb8ef;
+}
+@media only screen and (max-width: 800px){
+    .responsive_nav-group{
+        display: block;
+    }
+    .responsive_nav-group i{
+        font-size: 24px;
+    }
+    .inner-page-menuTab{
+        display: none;
+    }
+    .inner-page-wrap .rhs{
+        float: none;
+    }
+    .dataMix-wrap .lhs, .dataMix-wrap .rhs{
+        float: none;
+        width: 100%;
+    }
+    .dataMix-wrap i{
+        bottom: 5px;
+    }
+    .dataMix-wrap .rhs .lhs{
+        font-weight: bold;
+        font-size: 16px;
+    }
+}

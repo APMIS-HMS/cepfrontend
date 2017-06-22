@@ -1,0 +1,40 @@
+@import "../../../../globals/variables.scss";
+
+.btn-1{
+    width: 140px;
+}
+.top-tab-search {
+    border: 1px solid #9e9e9e;
+}
+.moduleNav{
+    padding: 0;
+}
+.moduleNav li {
+    padding: 0;
+    margin-right: 5px;
+}
+.modal-overlay{
+    position: fixed;
+    left: 0;
+}
+.searchInputWrap{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 300px;
+    padding: 5px 2px;
+}
+.searchInputWrap i{
+    position: absolute;
+    color: #939393;
+    margin-left: 10px;
+}
+.searchInput{
+    border: 1px solid #eee;
+    background: #FAFAFA;
+    border-radius: 7px;
+    padding: 7px;
+    padding-left: 30px;
+    text-align: center;
+    width: 100%;
+}

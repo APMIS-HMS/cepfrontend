@@ -1,0 +1,30 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico">X</div>
+    <legend class="modal_title">Checkout Patient</legend>
+
+    <div class="contWrap">
+        <div class="CTAs-wrap">
+            <div class="checkoutBtn">No Futher Appointment</div>
+            <div class="checkoutBtn">Follow-Up With Appointment</div>
+            <div (click)="checkoutWard()" class="checkoutBtn">Admit</div>
+            <div class="checkoutBtn">Death</div>
+        </div>
+        <div class="rightsect">
+            <div *ngIf="ward_checkout" class="selectedCheck">
+                <form [formGroup]="admitFormGroup" novalidate>
+                    <div class="frm-item-wrap">
+                        <label>Ward</label>
+                        <dx-lookup formControlName="ward" [items]="wards" [value]="wards.name" displayExpr="name" valueExpr="_id">
+                        </dx-lookup>
+                        <small class="alert-label" [hidden]="admitFormGroup.controls.ward.valid || admitFormGroup.controls.ward.pristine">
+							Kindly search or select an option from the drop down.
+						</small>
+                    </div>
+                    <div class="checkoutBtn" (click)="onClickAdmit(admitFormGroup.value, admitFormGroup.valid);">Checkout</div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

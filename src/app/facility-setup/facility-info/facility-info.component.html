@@ -1,0 +1,101 @@
+<div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+<div *ngIf="sg1_show" class="f_sg1">
+
+    <form [formGroup]="facilityForm1" novalidate>
+
+      <div class="lhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityname.valid || facilityForm1.controls.facilityname.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+          <i class="fa fa-building-o" aria-hidden="true"></i>
+          <input type="text" formControlName="facilityname" value="inputFacility.name" placeholder="Facility/Organisation Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityalias.valid || facilityForm1.controls.facilityalias.pristine">
+            A minimum of 3 characters required.
+          </small>
+          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <input type="text" formControlName="facilityalias" value="inputFacility.shortName" placeholder="Facility Short Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitytype.valid || facilityForm1.controls.facilitytype.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <i class="fa fa-bullseye" aria-hidden="true"></i>
+          <select formControlName="facilitytype" (change)="onFacilityTypeChange($event.target.value)">
+            <option  value="" disabled selected>Type of Facility/Organisation</option>
+            <option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId"  value={{item._id}}>{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitycategory.valid || facilityForm1.controls.facilitycategory.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <i class="fa fa-bullseye" aria-hidden="true"></i>
+          <select formControlName="facilitycategory">
+            <option  value="" disabled selected>Facility Category</option>
+            <option *ngFor="let item of selectedFacilityType?.facilityClasses" selected="inputFacility.facilityClassId"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="rhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityownership.valid || facilityForm1.controls.facilityownership.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <i class="fa fa-bullseye" aria-hidden="true"></i>
+          <select formControlName="facilityownership">
+            <option  value="" disabled selected>Facility Ownership</option>
+            <option *ngFor="let item of ownerships"  value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilityemail.valid || facilityForm1.controls.facilityemail.pristine">
+            Wrong email format (minimum 5 characters).
+          </small>
+          <small class="alert-label" [hidden]="isEmailExist">
+            Email exist.
+          </small>
+          <i class="fa fa-envelope-o" aria-hidden="true"></i>
+          <input class="txt-input" formControlName="facilityemail" value="inputFacility.email" type="email" placeholder="Facility/Organisation Email" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitywebsite.valid || facilityForm1.controls.facilitywebsite.pristine">
+            Wrong website format (eg - www.yourdomain.com).
+          </small>
+          <i class="fa fa-globe" aria-hidden="true"></i>
+          <input class="txt-input" formControlName="facilitywebsite" value="inputFacility.website" type="url" placeholder="Official Website" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="facilityForm1.controls.facilitycountry.valid || facilityForm1.controls.facilitycountry.pristine">
+            this field is required.
+          </small>
+          <i class="fa fa-location-arrow" aria-hidden="true"></i>
+          <select formControlName="facilitycountry">
+            <option value="" disabled selected>Select Country</option>
+            <option *ngFor="let item of countries" selected="inputFacility.address.country" value={{item._id}}>{{item.name}}</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="clear"></div>
+
+      <div (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" class="cta-1">
+        CONTINUE
+      </div>
+
+    </form>
+</div>
+<app-contact-info *ngIf="sg1_1_show" [inputFacility] = "inputFacility"></app-contact-info>
+  

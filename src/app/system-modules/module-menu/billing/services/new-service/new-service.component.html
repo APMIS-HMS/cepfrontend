@@ -1,0 +1,47 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="facility-title">New Service</div>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="f_sg1">
+
+    <form [formGroup]="frmNewservice" novalidate>
+
+      <div class="frm-item-wrap">
+        <!--<small class="alert-label" [hidden]="frmNewservice.controls.serviceName.valid || frmNewservice.controls.serviceName.pristine">
+          required field (minimum 3 and max of 50 characters).
+        </small>-->
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <input type="text" formControlName="serviceName" placeholder="Service Name" autocomplete="off">
+          <div class="suggestionFeeds">
+            <div *ngFor="let dic of dictionaries" class="suggestedItem">
+              <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
+            </div>
+        </div>
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewservice.controls.serviceCat.valid || frmNewservice.controls.serviceCat.pristine">
+          required field.
+        </small>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <select formControlName="serviceCat">
+          <option value="" disabled selected>Service Category</option>
+          <option *ngFor="let item of categories" value="{{item._id}}">{{item.name}}</option>
+        </select>
+      </div>
+
+      <div class="frm-item-wrap">
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <input type="text" formControlName="serviceCode" placeholder="Supply Service Code" autocomplete="off">
+      </div>
+
+      <button (click)="newService(frmNewservice.value, frmNewservice.valid)" class="cta-1">
+        {{btnTitle}}
+      </button>
+
+    </form>
+  </div>
+
+</div>

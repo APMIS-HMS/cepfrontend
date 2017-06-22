@@ -1,0 +1,31 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="facility-title">New Tag</div>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="f_sg1">
+
+    <form [formGroup]="frmNewtag" novalidate>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewtag.controls.tagName.valid || frmNewtag.controls.tagName.pristine">
+          required field (minimum 3 and max of 50 characters).
+        </small>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <input type="text" formControlName="tagName" placeholder="Tag Name" autocomplete="off">
+        <div class="suggestionFeeds">
+            <div *ngFor="let dic of dictionaries" class="suggestedItem">
+              <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
+            </div>
+        </div>
+      </div>
+
+      <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" class="cta-1">
+        CREATE TAG
+      </button>
+
+    </form>
+  </div>
+
+</div>

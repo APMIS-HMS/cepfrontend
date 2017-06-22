@@ -1,0 +1,96 @@
+
+            <div class="row padding-10">
+              <div class="col-sm-5">
+                <label> Client </label>
+                  <div class="input-group-btn">
+                    <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
+                    <select  class="form-control" id="select">
+                      <option>Individual</option>
+                      <option>Corporate</option>
+                      <option>Internal</option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+            <div class="individual-details">
+              <div class="row">
+                <!-- begin individual -->
+                <div *ngIf = "individualShow">
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> Last Name </label>
+                    <dx-text-box value=""></dx-text-box>
+                  </div>
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> First Name </label>
+                    <dx-text-box value=""></dx-text-box>
+                  </div>
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> Phone Number </label>
+                    <dx-text-box value=""></dx-text-box>
+                </div>
+                </div><!--end individual-->
+                <!-- begin corporate -->
+                <div *ngIf = "corporateShow">
+                  <div class="col-sm-8 col-md-8 col-xs-12">
+                    <label> Company Name </label>
+                    <dx-text-box value=""></dx-text-box>
+                  </div>
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> Phone Number </label>
+                    <dx-text-box value=""></dx-text-box>
+                </div>
+                </div><!--end corporate-->
+                <!-- begin Internal -->
+                <div *ngIf = "internalShow">
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> Department </label>
+                     <dx-lookup
+                      [items]="employees"
+                      [value]="employees[0]"
+                      [showPopupTitle]="false">
+                  </dx-lookup>
+                  </div>
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> Unit </label>
+                     <dx-lookup
+                      [items]="employees"
+                      [value]="employees[0]"
+                      [showPopupTitle]="false">
+                  </dx-lookup>
+                  </div>
+                  <div class="col-sm-4 col-md-4 col-xs-12">
+                    <label> Minor Location </label>
+                     <dx-lookup
+                      [items]="employees"
+                      [value]="employees[0]"
+                      [showPopupTitle]="false">
+                  </dx-lookup>
+                </div>
+                </div><!--end Internal-->
+                <div class="col-sm-5 col-md-5 col-xs-12">
+                  <label> Drug </label>
+                   <dx-lookup
+                      [items]="employees"
+                      [value]="employees[0]"
+                      [showPopupTitle]="false">
+                  </dx-lookup>
+                </div>
+                <div class="col-sm-5 col-md-5 col-xs-12">
+                  <label> Quantity </label>
+                  <div class="input-bg cacaca">
+                      <div class="input-group">
+                      <input type="text" name="quantity" class="form-control" aria-label="..." >
+                      <div class="input-group-btn">
+                        <i class="fa fa-caret-right pull-right" style="margin-top: 7px;"></i>
+                        <select>
+                          <option>Cards</option>
+                        </select>
+                      </div><!-- /btn-group -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-xs-2">
+                  <p style="color: red;margin-top: 40px;"> N200 </p>
+                </div>
+              </div>
+            </div>

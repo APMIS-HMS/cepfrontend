@@ -1,0 +1,37 @@
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+
+    <div class="fullwidth-topActions">
+        <ul *ngIf="!homeContentArea" class="moduleNav">
+            <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
+        </ul>
+        <input *ngIf="homeContentArea" class="top-tab-search" type="search" placeholder="Search for employee" [formControl]="searchControl">
+        <div style="margin: 0 20px; width:200px">
+            <dx-lookup [dataSource]="departments" [formControl]="department" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false" displayExpr="name">
+            </dx-lookup>
+        </div>
+        <div style="width:200px">
+            <dx-lookup [dataSource]="units" [formControl]="unit" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false" displayExpr="name">
+            </dx-lookup>
+        </div>
+        <div (click)="newEmpShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Employee</div>
+    </div>
+
+    <div class="inner-page-wrap">
+        <ul class="topmenuwrap">
+            <li (click)="assignUnit_pop()">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>Assign Unit</span>
+            </li>
+        </ul>
+
+        <app-employeemanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea" class="fullwidth"></app-employeemanager-homepage>
+        <app-employeemanager-detailpage [employee]="employee" *ngIf="employeeDetailArea" class="fullwidth"></app-employeemanager-detailpage>
+        <div *ngIf="newEmp" style="z-index:1501;" class="modal-overlay">
+            <app-new-employee (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-employee>
+        </div>
+        <div *ngIf="assignUnitPop" class="modal-overlay">
+            <app-assign-unit [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-assign-unit>
+        </div>
+    </div>
+</div>

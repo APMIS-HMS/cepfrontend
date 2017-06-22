@@ -1,0 +1,327 @@
+@import "../patientmanager-detailpage.component.scss";
+.add-sect {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#prescription {
+    width: 100%;
+    margin-top: 30px;
+    font-size: 12px;
+}
+
+.medical-list-btn {
+    float: right;
+    background: #fff;
+    padding: 10px;
+    font-size: 12px;
+    color: #6b6b6b;
+    border: 1px solid #bebebe;
+}
+
+.input-bg {
+    background: #eeeeee;
+    padding: 4px;
+}
+
+.dropdown-toggle {
+    width: 90px;
+    background: #eee;
+    border: none;
+}
+
+.padding-top-20px {
+    padding-top: 20px;
+}
+
+.after-textarea-btn {
+    margin-right: 35px;
+    padding: 10px 0;
+}
+
+.wrap-th {
+    display: flex;
+    max-width: 1000px;
+    height: 31px;
+    background: #fff;
+}
+
+.pres-col {
+    width: 10%;
+    padding: 5px 10px;
+    border-top: 3px solid #d2d6de;
+    color: #676a6c;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.wrap-tr {
+    display: flex;
+    max-width: 1000px;
+    background-color: #fff;
+}
+
+.wrap-tr:hover {
+    background-color: #f5f5f5;
+}
+
+.pres-data {
+    width: 10%;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-top: 1px solid #f4f4f4;
+}
+
+.survery label {
+    font-size: 12px;
+    color: #676a6c;
+}
+
+#long-text {
+    width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#long-text:hover {
+    overflow: visible;
+    white-space: normal;
+}
+
+.text-amount {
+    margin-top: 20px;
+}
+
+.text-amount p {
+    color: red;
+}
+
+.inner-container {
+    display: flex;
+    border: 1px solid #cacaca;
+    background-color: #efefef;
+    padding: 10px;
+}
+
+.cacaca {
+    background: #cacaca;
+}
+
+.padding-20px {
+    padding: 20px 0;
+}
+
+.padding-10px {
+    padding: 20px 0;
+}
+
+.cta-1 {
+    display: inline-block;
+    color: #fff;
+}
+
+a:hover {
+    cursor: pointer;
+    color: #6b6b6b
+}
+
+.survery a {
+    padding: 5px 3px;
+    color: #000000;
+    text-decoration: none;
+}
+
+.fa-caret-right {
+    float: right;
+    margin-top: 3px;
+}
+
+.dx-lookup {
+    height: 36px;
+}
+
+.save-btn {
+    border-color: #0288d1;
+    color: #0288d1;
+}
+
+.margin-left-14 {
+    margin-left: -14px;
+}
+
+#action-long {
+    width: 130px;
+}
+
+.fly-out {
+    position: absolute;
+    right: -12px;
+    top: 62px;
+    z-index: 99999;
+}
+
+#th-color {
+    background: #bebebe;
+}
+
+#tr-color {
+    background: #eee;
+}
+
+.survery input,
+.survery select {
+    width: 85px;
+    border: none;
+}
+
+.survery .input-group-btn {
+    font-size: 13px;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+.textarea {
+    padding: 10px;
+    border-color: #ddd;
+    resize: none;
+}
+
+.discontinue {
+    color: red;
+    border: 1px solid red;
+}
+
+.started {
+    color: #0288d1;
+}
+
+.restart,
+.reuse,
+start {
+    border: 1px solid #0288d1;
+    color: #0288d1;
+}
+
+.survery .form-control {
+    height: 27px !important;
+}
+
+.cu-search-box {
+    position: relative;
+    min-width: 100px;
+    width: auto;
+    .cu-search {
+        //background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+        background-position: 10px 12px;
+        /* Position the search icon */
+        background-repeat: no-repeat;
+        /* Do not repeat the icon image */
+        width: 100%;
+        /* Full-width */
+        font-size: 16px;
+        /* Increase font-size */
+        padding: 12px 11px;
+        /* Add some padding */
+        border: 1px solid #ddd;
+        /* Add a grey border */
+        margin-bottom: 12px;
+        /* Add some space below the input */
+    }
+    .cu-popup-wrapper {
+        position: absolute;
+        max-height: 736px;
+        width: 90%;
+        height: auto;
+        z-index: 1501;
+        left: 20px;
+        top: 52px;
+        border: 1px solid #ddd;
+        background: #fff;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        border-radius: 6px;
+        color: #333;
+        font-weight: normal;
+        font-size: 14px;
+        font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Verdana, sans-serif;
+        line-height: 1.35715;
+        .cu-popover-arrow {
+            top: -8px;
+            right: auto;
+            bottom: auto;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            z-index: 2000;
+            overflow: hidden;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+            &::after {
+                border: 1px solid #ddd;
+                position: absolute;
+                display: block;
+                width: 15px;
+                height: 15px;
+                overflow: hidden;
+                content: " ";
+            }
+        }
+        .cu-header {
+            padding: 10px 20px;
+        }
+        .cu-dropdown {
+            /* Remove default list styling */
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 240px;
+            overflow-y: auto;
+            li {
+                a {
+                    padding: 8px 16px;
+                    /* Add some padding */
+                    text-decoration: none;
+                    /* Remove default text underline */
+                    font-size: 18px;
+                    /* Increase the font-size */
+                    color: #333;
+                    /* Add a black text color */
+                    display: block;
+                    /* Make it into a block element to fill the whole list */
+                    overflow: hidden;
+                    -ms-text-overflow: ellipsis;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    &.header {
+                        background-color: #e2e2e2;
+                        /* Add a darker background color for headers */
+                        cursor: default;
+                        /* Change cursor style */
+                    }
+                    &:hover:not(.header) {
+                        background-color: #eee;
+                        /* Add a hover effect to all links, except for headers */
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .cu-footer {
+            padding: 20px;
+            overflow: visible;
+            text-align: center;
+            button {
+                padding: 7px 18px 8px;
+            }
+        }
+    }
+}

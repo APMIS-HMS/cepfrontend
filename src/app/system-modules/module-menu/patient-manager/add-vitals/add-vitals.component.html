@@ -1,0 +1,132 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico">X</div>
+  <legend class="modal_title">Add Patient Vitals</legend>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div>
+
+    <form [formGroup]="frmAddVitals" novalidate>
+      <div class="frm-addVitals">
+        <div class="frmGroupWrap">
+          <div class="frmGroupTitle">Pulse Rate</div>
+          <div class="frm-item-wrap">
+            <label class="side-label">Pulse Rate<br>(80-100)</label>
+            <input type="text" formControlName="pulseRate" autocomplete="off">
+            <span class="trailer">Beats per Minute</span>
+          </div>
+
+          <div class="frmSubGroupWrap">
+            <div class="frm-item-wrap">
+              <label>Location</label>
+              <select formControlName="pulseLoc">
+                <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
+              </select>
+            </div>
+
+            <div class="frm-item-wrap">
+              <label>Rythm</label>
+              <select formControlName="pulseRythm">
+                <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="frmGroupWrap">
+          <div class="frmGroupTitle">Respiratory Rate</div>
+          <div class="frm-item-wrap">
+            <label class="side-label">Respiratory Rate<br>(12-20)</label>
+            <input type="number" formControlName="respiratoryRate" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="frmGroupWrap">
+          <div class="frmGroupTitle">Temperature</div>
+          <div class="frm-item-wrap">
+            <label class="side-label">Temperature<br>(92-101) &#8451;</label>
+            <input type="number" formControlName="temp" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="frmGroupWrap">
+          <div class="frmGroupTitle">Height/Weight</div>
+          <div class="frm-item-wrap">
+            <label class="side-label">Height (Inches)</label>
+            <input type="number" formControlName="height" autocomplete="off">
+          </div>
+          <div class="frm-item-wrap">
+            <label class="side-label">Weight (lbs)</label>
+            <input type="number" formControlName="weight" autocomplete="off">
+          </div>
+          <div class="frm-item-wrap">
+            <label class="side-label">BMI</label>
+            <input type="number" formControlName="bmi" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="frmGroupWrap bpGroup">
+          <div class="frmGroupTitle">Blood Pressure</div>
+
+          <div class="frm-row">
+            <div class="frm-item">
+              <div class="frm-item-wrap">
+                <label class="side-label">Systolic<br>(90-119)</label>
+              </div>
+            </div>
+            <div class="frm-slash"></div>
+            <div class="frm-item">
+              <div class="frm-item-wrap">
+                <label class="side-label">Diastolic<br>(60-79)</label>
+              </div>
+            </div>
+            <div class="frm-item"></div>
+            <div class="frm-item"></div>
+          </div>
+
+          <div class="frm-row">
+            <div class="frm-item">
+              <div class="frm-item-wrap">
+                <input type="text" formControlName="systolicBp1" autocomplete="off">
+              </div>
+            </div>
+            <div class="frm-slash">
+              <div class="frm-item-wrap">
+                <span class="slash"><div class="frm-item-wrap">/</div></span>
+              </div>
+            </div>
+            <div class="frm-item">
+              <div class="frm-item-wrap">
+                <input type="text" formControlName="diastolicBp1" autocomplete="off">
+                <span class="trailer inputUnit">mmHg</span>
+              </div>
+            </div>
+            <div class="frm-item">
+              <div class="frm-item-wrap">
+                <label>Location</label>
+                <select formControlName="diastolicBp1Loc">
+                  <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="frm-item">
+              <div class="frm-item-wrap">
+                <label>Position</label>
+                <select formControlName="diastolicBp1Pos">
+                  <option *ngFor="let position of vitalPosition"  value="{{position?.name}}" value="">{{position?.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1">
+        ADD Vitals
+      </div>
+
+    </form>
+  </div>
+
+</div>

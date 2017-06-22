@@ -1,0 +1,43 @@
+
+ <div  class="module-menu rhs">
+        <div  (click)="professionShow()" class="btn-1 btn-blue"><i aria-hidden="true" class="fa fa-plus-square"></i> Add Profession</div>
+</div>
+<div class="survery">
+
+<div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Professions</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tbody><tr>
+                  <th>Profession</th>
+                  <th>Level</th>
+                </tr>
+                <tr>
+                  <td>Doctor</td>
+                  <td>
+                      level2
+                  </td>
+                </tr>
+                 <tr>
+                  <td>Senior</td>
+                  <td>
+                      level3
+                  </td>
+                </tr>
+                 <tr>
+                  <td>Junior</td>
+                  <td>
+                      level4
+                  </td>
+                </tr>
+              </tbody></table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+    <div *ngIf="newProfession" class="modal-overlay">
+      <app-add-profession (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-profession>
+    </div>

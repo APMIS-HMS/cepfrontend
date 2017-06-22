@@ -1,0 +1,89 @@
+<div class="page-title">
+	Appointment</div>
+<div class="topFilters">
+	<div class="filter-title">FILTER BY</div>
+	<div class="filter-wrap">
+		<span>Filter</span>
+		<div class="dx-field-value switch-left">
+			<dx-switch #switch [value]="filtered"></dx-switch>
+		</div>
+	</div>
+	<div class="filter-wrap dx-field">
+		<span>Doctor</span>
+		<dx-lookup #filterDoctor [width]="200" class="field-customization" [items]="employees" valueExpr="_id" displayExpr="employeeDetails.personFullName"
+		 valueExpr="_id" (onValueChanged)="onDoctorValueChanged($event)" title="Select doctor" fieldTemplate="Employee">
+			<div *dxTemplate="let item of 'Employee'">
+				<div class="custom-field">
+					<img *ngIf="selectedDoctor.length > 2" [src]="facilityService.transform(item?.employeeDetails.profileImageObject?.thumbnail)">
+					<div>{{item?.employeeDetails.personFullName }}</div>
+				</div>
+			</div>
+		</dx-lookup>
+	</div>
+	<div class="filter-wrap">
+		<span>Clinic</span>
+		<dx-select-box #filterClinic [items]="clinics" [width]="200" displayExpr="clinicName" valueExpr="_id" (onValueChanged)="onValueChanged($event)">
+		</dx-select-box>
+	</div>
+	<div class="filter-wrap">
+		<span>Location</span>
+		<dx-select-box #filterLocation [items]="clinicLocations" [width]="200" displayExpr="name" valueExpr="_id" (onValueChanged)="onLocationValueChanged($event)">
+		</dx-select-box>
+	</div>
+	<div class="filter-wrap">
+		<span>Units</span>
+		<dx-select-box #filterUnit [items]="loginEmployee.unitDetails" [width]="200" displayExpr="name" valueExpr="_id" (onValueChanged)="onUnitValueChanged($event)">
+		</dx-select-box>
+	</div>
+</div>
+<dx-scheduler id="scheduler" [dataSource]="appointmentData" [views]="['week', 'day', 'timelineDay', 'month']" currentView="day"
+ [firstDayOfWeek]="0" [startDayHour]="9" [endDayHour]="23" [showAllDayPanel]="false" [groups]="clinicArray" [currentDate]="currentDate"
+ [crossScrollingEnabled]="true" [cellDuration]="10" width="100%" [height]="600" appointmentTemplate="appointment-template"
+ appointmentTooltipTemplate="tooltip-template" (onAppointmentAdded)="onAppointmentAdded($event)" (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+ (onAppointmentDblClick)="onAppointmentFormDoubleClick($event)" (onCellClick)="onCellClick($event)" (onAppointmentUpdated)="onAppointmentUpdated($event)">
+
+	<dxo-editing #editingOptions [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true" [allowResizing]="true" [allowDragging]="true"></dxo-editing>
+
+	<dxi-resource field="locationId" [dataSource]="minorLocations">
+	</dxi-resource>
+	<dxi-resource field="clinicId" [dataSource]="clinicResData">
+	</dxi-resource>
+	<dxi-resource field="doctorId" [dataSource]="doctResData">
+	</dxi-resource>
+
+
+
+	<div *dxTemplate="let showtime of 'appointment-template'">
+		<div class='showtime-preview'>
+			<div>{{showtime?.patientDetails?.personDetails?.personFullName}}</div>
+			<div class='custom-field'>Doctor's Name:
+				<img [src]="facilityService.transform(showtime?.employeeDetails?.employeeDetails.profileImageObject?.thumbnail)"><strong>{{showtime?.employeeDetails?.employeeDetails?.personFullName}}</strong>
+			</div>
+			<div>
+				{{(showtime?.startDate | date:'shortTime') + ' - ' + (showtime?.endDate | date:'shortTime')}}
+			</div>
+			<!--<div class='avatar custom-field'>
+				<img [src]="employee.data.avatar" />
+				<img [src]="facilityService.transform(showtime?.employeeDetails?.employeeDetails.profileImageObject?.thumbnail)">
+			</div>-->
+		</div>
+	</div>
+
+	<div *dxTemplate="let showtime of 'tooltip-template'">
+		<div class='movie-tooltip'>
+			<!--<img [src]="getMovieById(showtime.movieId).image" />-->
+			<div class='movie-info'>
+				<div class='movie-title'>
+					{{showtime?.patientDetails?.personDetails.personFullName}}
+				</div>
+				<div>
+					Doctor: {{showtime.employeeDetails.employeeDetails.personFullName}}
+				</div>
+			</div><br />
+			<dx-button text='Edit Appointment' (onClick)='editDetails(showtime)'>
+			</dx-button>
+			<dx-button text='Cancel Appointment' (onClick)='deleteDetails(showtime)'></dx-button>
+			<dx-button text='Send Alert' (onClick)='deleteDetails(showtime)'></dx-button>
+		</div>
+	</div>
+</dx-scheduler>

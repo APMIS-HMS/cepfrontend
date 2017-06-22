@@ -1,0 +1,108 @@
+@import "../../globals/normalize.scss";
+@import "../../globals/variables.scss";
+
+.base-wrap{
+    background: linear-gradient(
+                     rgba(0,0,0, .0), 
+                     rgba(0,0,0, 1));
+    // background-image: url(assets/images/bg/dna.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: $secondaryColor;
+    width: 100%;
+}
+.home-wrap{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.txt1{
+    font-family: $font-titles;
+    font-size: 60px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+}
+.txt2{
+    font-family: $font-titles;
+    color: #eee;
+    text-align: center;
+    width: 100%;
+}
+.logo-wrap{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.logo-wrap img{
+    width: 70px;
+}
+.CTAs-wrap{
+    display: block;
+    width: 500px;
+    border: 0;
+    margin-top: 20px;
+    border-radius: 7px;
+}
+.cta-1{
+    width: 400px;
+}
+.txtLink{
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: bold;
+    padding-left: 10px;
+}
+.txtLink:hover{
+    color: #ff2500;
+}
+.wrapLabel{
+    color: #e8e8e8;
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+}
+.actionTxt{
+    float: right;
+}
+.signin-upWrap{
+    padding: 25px;
+    background: rgba(0,0,0,0.5);
+}
+@media only screen and (max-width: 800px){
+    .base-wrap{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100vh;
+    }
+    .logo-wrap{
+        position: relative;
+        text-align: center;
+        top: 0;
+        left: 0;
+    }
+    .home-wrap{
+        height: auto;
+    }
+    .CTAs-wrap{
+        margin: 0;
+        padding: 0;
+    }
+}
+@media only screen and (max-width: 520px){
+    .CTAs-wrap{
+        width: 100%;
+    }
+    .cta-1{
+        width: 100%;
+    }
+}

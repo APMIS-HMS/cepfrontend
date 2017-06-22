@@ -1,0 +1,103 @@
+<div (click)="innerMenuHide($event)">
+    <div class="inner-menu1-wrap">
+        <i id="submenu_ico" (click)="innerMenuToggle()" class="innerMenu-icon fa fa-bars" aria-hidden="true"></i>
+        <ul *ngIf="innerMenuShow" class="innerMenu-ul shadow">
+            <!--<li>View Units</li>
+          <li>New Unit</li> -->
+            <li (click)="newDeptModal_show()">New Department</li>
+            <li (click)="deptHomeContentArea_show()">View Departments</li>
+        </ul>
+    </div> 
+
+    <ul *ngIf="deptHomeContentArea">
+        <li *ngFor="let depts of deptsObj; let i = even; let k = odd"> 
+            <div class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
+                <div class="lhs">{{depts.name}}</div>
+                <div class="tbl-icoOptions-wrap rhs" style="width: auto;">
+                    <span (click)="deptDetalContentArea_show(depts)" style="color: #388E3C; text-align: right;"><i class="fa fa-eye" aria-hidden="true"></i> View</span>
+                    <span (click)="deptDetalContentArea_remove(depts)" style="color: #ff2500; text-align: right;"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </li>
+    </ul>
+
+    <div *ngIf="deptDetailContentArea">
+
+        <div class="block1">
+            <div class="headers headers1">
+                <div class="block-title">{{deptObj.name}}</div>
+                <ul class="moduleNav">
+                    <li [class.navActive]="homeContentArea" (click)="deptHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
+                </ul>
+            </div>
+
+            <div class="module-menu rhs">
+                <div class="btn-1 btn-blue" (click)="newUnitModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Unit</div>
+            </div>
+            <div class="clear"></div>
+
+            <div class="dataMix-wrap color1">
+                <div>
+                    <div class="lhs">Department Name</div>
+                    <div class="rhs">
+                        <div [hidden]="deptEditNameIcoShow" class="lhs"> {{deptObj.name}} </div>
+                        <input *ngIf="deptEditNameIcoShow" class="edit-control lhs" type="text" value="{{deptObj.name}}" [formControl]="deptNameEdit">
+                        <i [hidden]="deptEditNameIcoShow" (click)="deptEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i *ngIf="deptEditNameIcoShow" (click)="deptEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="dataMix-wrap color2">
+                <div>
+                    <div class="lhs">Short Name</div>
+                    <div class="rhs">
+                        <div [hidden]="deptEditShortNameIcoShow" class="lhs"> {{deptObj.shortName}} </div>
+                        <input *ngIf="deptEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{deptObj.shortName}}" [formControl]="deptshortNameEdit">
+                        <i [hidden]="deptEditShortNameIcoShow" (click)="deptEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i *ngIf="deptEditShortNameIcoShow" (click)="deptEditShortNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="dataMix-wrap color1">
+                <div>
+                    <div class="lhs">Describtion</div>
+                    <div class="rhs">
+                        <div [hidden]="deptEditDescIcoShow" class="lhs"> {{deptObj.description}} </div>
+                        <textarea *ngIf="deptEditDescIcoShow" class="edit-control lhs" value="{{deptObj.description}}" [formControl]="deptDescEdit"
+                            style="width:90%; height:120px;"></textarea>
+                        <i [hidden]="deptEditDescIcoShow" (click)="deptEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i *ngIf="deptEditDescIcoShow" (click)="deptEditDescToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="block2">
+            <div class="block-title-bar">Units</div>
+            <div *ngFor="let unit of deptObj.units; let count = index; let i = even; let k = odd">
+                <app-unit-component [unit]="unit" [department]="deptObj" [facility]="facilityObj"></app-unit-component>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="deptEditContentArea"></div>
+</div>
+
+<div *ngIf="newDeptModal_on" class="modal-overlay">
+    <app-new-department (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-department>
+</div>
+
+<div *ngIf="newUnitModal_on" class="modal-overlay">
+    <app-new-unit [department]="deptObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-unit>
+</div>

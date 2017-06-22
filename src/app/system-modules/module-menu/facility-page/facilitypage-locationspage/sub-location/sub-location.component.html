@@ -1,0 +1,51 @@
+<div class="headers headers2">
+  <div class="block-title2">{{minorLocation.name}}</div>
+
+  <div class="unit-ico-wrap">
+    <div class="btn-1 btn-red"><i class="fa fa-trash" aria-hidden="true"></i> Delete Sub-Location</div>
+  </div>
+</div>
+
+<div>
+  <div class="dataMix-wrap color1">
+    <div>
+      <div class="lhs">Name</div>
+      <div class="rhs">
+        <div [hidden]="sublocEditNameIcoShow" class="lhs"> {{minorLocation.name}} </div>
+        <input *ngIf="sublocEditNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.name}}" [formControl]="sublocNameEdit">
+        <i [hidden]="sublocEditNameIcoShow" (click)="sublocEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+        <i *ngIf="sublocEditNameIcoShow" (click)="sublocEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+  <div class="dataMix-wrap color2">
+    <div>
+      <div class="lhs">Short Name</div>
+      <div class="rhs">
+        <div [hidden]="sublocEditShortNameIcoShow" class="lhs"> {{minorLocation.shortName}} </div>
+        <input *ngIf="sublocEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.shortName}}" [formControl]="sublocshortNameEdit">
+        <i [hidden]="sublocEditShortNameIcoShow" (click)="sublocEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+        <i *ngIf="sublocEditShortNameIcoShow" (click)="sublocEditShortNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+
+<div class="dataMix-wrap color1">
+  <div>
+    <div class="lhs">Describtion</div>
+    <div class="rhs">
+      <div [hidden]="sublocEditDescIcoShow" class="lhs"> {{minorLocation.description}} </div>
+      <textarea *ngIf="sublocEditDescIcoShow" class="edit-control lhs" value="{{minorLocation.description}}" [formControl]="sublocDescEdit"></textarea>
+      <i [hidden]="sublocEditDescIcoShow" (click)="sublocEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+      <i *ngIf="sublocEditDescIcoShow" (click)="sublocEditDescSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>

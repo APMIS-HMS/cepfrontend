@@ -1,0 +1,234 @@
+@import "../../../../../globals/variables.scss";
+.patientPage-mainWrap {
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    width: 100%;
+    background: #fff;
+    padding: 20px 10px 10px 10px;
+    box-sizing: border-box;
+}
+
+.patientPage-sideTab {
+    width: 30%;
+    min-width: 300px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: transparent;
+    margin-top: 30px;
+}
+
+.patientPage-contentArea {
+    position: relative;
+    width: 70%;
+    box-sizing: border-box;
+    margin: 20px 5px;
+    padding: 3px;
+}
+
+.patientPage-contentArea .menuSummary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.sideTab-header {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #eee;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.sideTab-header .patient-img div {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.sideTab-header .patient-img div img {
+    width: 100%;
+}
+
+.headerDetail-wrap {
+    width: 230px;
+}
+
+.patient-name {
+    color: #2874A6;
+    font-size: 16px;
+}
+
+.headDetail-group {
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    color: #154360;
+}
+
+.patient-email {
+    font-size: 11px;
+    color: #154360;
+}
+
+.sideTab-nav {
+    background: #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.menu-sect {
+    border-bottom: 2px solid #aaa;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.menu-item {
+    font-size: 13px;
+    padding: 5px 5px 5px 20px;
+    margin: 2px;
+    border-left: 5px solid transparent;
+    color: #154360;
+    cursor: pointer;
+}
+
+.menu-item:hover,
+.active-menuItem {
+    border-left: 5px solid #aaa;
+    background: #ccc;
+    font-weight: bold;
+}
+.pg-subtitle{
+    text-align: left;
+    color: #0288D1;
+    font-size: 14px;
+    margin-top: -15px;
+    margin-left: 5px;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0px;
+    left: 0;
+}
+
+.page-title {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: #154360;
+    top: 0;
+}
+.checkoutBtn {
+    font-size: 12px;
+    color: #0288D1;
+    border: 1px solid #0288D1;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 7px;
+    width: 70px;
+    text-align: center;
+    margin: 10px auto;
+}
+
+.checkoutBtn:hover {
+    border: 1px solid #0288D1;
+    background: #0288D1;
+    color: #000;
+}
+
+.patientBanner-tableView {
+    margin: 10px 0;
+    border: 1px solid #aaa;
+    padding: 3px;
+    font-size: 12px;
+}
+
+.pbTableView-itemWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px;
+}
+
+.item-height {
+    background: #3E9A3F;
+}
+
+.item-weight {
+    background: #EAD015;
+}
+
+.item-bp {
+    background: #E31608;
+}
+
+.itemLeft {
+    font-style: italic;
+}
+
+.val1 {
+    font-size: 16px;
+}
+
+.val2 {
+    text-align: right;
+    color: #fff;
+}
+
+.accBal-wrap {
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 3px auto;
+    margin-right: 2px;
+    padding: 5px;
+}
+
+.accBal-label {
+    font-size: 10px;
+    display: block;
+    color: #444;
+}
+
+.accBal-val {
+    color: #068411;
+}
+
+.entry-unit {
+    font-size: 10px;
+}
+
+.tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+.tag-item {
+    margin-right: 15px;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 4px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+th {
+    height: 0px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+}
+
+.demo-table {
+    margin: 10px 0;
+    border: none;
+    padding: 3px;
+    font-size: 12px;
+}

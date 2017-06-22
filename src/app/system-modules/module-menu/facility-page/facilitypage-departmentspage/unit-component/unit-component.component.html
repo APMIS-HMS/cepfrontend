@@ -1,0 +1,52 @@
+<div class="headers headers2">
+  <div class="block-title2">{{unit.name}}</div>
+
+  <div class="unit-ico-wrap">
+    <div class="btn-1 btn-red"><i class="fa fa-trash" aria-hidden="true"></i> Delete Unit</div>
+  </div>
+</div>
+
+<div>
+  <i [hidden]="false" #unititem>{{count}}</i>
+  <div class="dataMix-wrap color1">
+    <div>
+      <div class="lhs">Unit Name</div>
+      <div class="rhs">
+        <div [hidden]="unitEditNameIcoShow" class="lhs"> {{unit.name}} </div>
+        <input *ngIf="unitEditNameIcoShow" class="edit-control lhs" type="text" value="{{unit.name}}" [formControl]="unitNameEdit">
+        <i [hidden]="unitEditNameIcoShow" (click)="unitEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+        <i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+  <div class="dataMix-wrap color2">
+    <div>
+      <div class="lhs">Short Name</div>
+      <div class="rhs">
+        <div [hidden]="unitEditShortNameIcoShow" class="lhs"> {{unit.shortName}} </div>
+        <input *ngIf="unitEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{unit.shortName}}" [formControl]="unitshortNameEdit">
+        <i [hidden]="unitEditShortNameIcoShow" (click)="unitEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+        <i *ngIf="unitEditShortNameIcoShow" (click)="unitEditShortNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+
+<div class="dataMix-wrap color1">
+  <div>
+    <div class="lhs">Describtion</div>
+    <div class="rhs">
+      <div [hidden]="unitEditDescIcoShow" class="lhs"> {{unit.description}} </div>
+      <textarea *ngIf="unitEditDescIcoShow" class="edit-control lhs" value="{{unit.description}}" [formControl]="unitDescEdit"></textarea>
+      <i [hidden]="unitEditDescIcoShow" (click)="unitEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+      <i *ngIf="unitEditDescIcoShow" (click)="unitEditDescSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>

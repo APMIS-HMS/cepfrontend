@@ -1,0 +1,124 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Individual Account</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+
+    <div class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied below</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <form [formGroup]="frmPerson" novalidate>
+
+      <div class="lhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.firstname.valid || frmPerson.controls.firstname.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+          <input type="text" formControlName="firstname" placeholder="First Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.lastname.valid || frmPerson.controls.lastname.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+          <input type="text" formControlName="lastname" placeholder="Last Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.othernames.valid || frmPerson.controls.othernames.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+          <input type="text" formControlName="othernames" placeholder="Other Names" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.gender.valid || frmPerson.controls.gender.pristine">
+            A minimum of 3 characters required.
+          </small>
+          <select formControlName="gender">
+            <option  value="" disabled selected>Gender</option>
+            <option *ngFor="let item of genders" value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.dob.valid || frmPerson.controls.dob.pristine">
+            Kindly select your date of birth.
+          </small>
+          <dx-date-box
+              placeholder="Date of Birth"
+              style="width:100%;"
+              formControlName = "dob"
+              type="date">
+          </dx-date-box>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.password.valid || frmPerson.controls.password.pristine">
+            this field is required, minimum of 6 and maximum of 20 characters.
+          </small>
+          <dx-text-box formControlName="password" mode="password"></dx-text-box> 
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.repassword.valid || frmPerson.controls.repassword.pristine">
+            this field is required, minimum of 6 and maximum of 20 characters.
+          </small>
+          <dx-text-box formControlName="repassword" mode="password"></dx-text-box> 
+        </div>
+      </div>
+
+      <div class="rhs">
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.nationality.valid || frmPerson.controls.nationality.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <select formControlName="nationality" (change)="onNationalityChange($event.target.value)">
+            <option  value="" disabled selected>Nationality</option>
+            <option *ngFor="let item of countries" value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.state.valid || frmPerson.controls.state.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <select formControlName="state">
+            <option  value="" disabled selected>State</option>
+            <option *ngFor="let item of selectedCountry?.states" value = "{{item._id}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.address.valid || frmPerson.controls.address.pristine">
+            Kindly select an option from the drop down.
+          </small>
+          <input type="text" class="txt-input" placeholder="Home Address" formControlName="address"/>
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.email.valid || frmPerson.controls.email.pristine">
+            Wrong email format (minimum 5 characters).
+          </small>
+          <input class="txt-input" formControlName="email" type="email" placeholder="Email Address" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmPerson.controls.phone.valid || frmPerson.controls.phone.pristine">
+            Wrong phone number format.
+          </small>
+          <input class="txt-input" formControlName="phone" type="number" placeholder="Phone Number" autocomplete="off">
+        </div>
+
+      </div>
+
+      <div class="clear"></div>
+
+      <div (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
+        Sign Up
+      </div>
+
+    </form>
+</div>

@@ -1,0 +1,43 @@
+<div class="c-page-body">
+    <div class="inPatients">
+        <div class="topFilters">
+            <div class="filter-title">FILTER BY</div>
+            <div class="filter-wrap dx-field">
+                <select class="filter-select" name="" id="">
+                    <option value="">Select Ward</option>
+                    <option value="">SouthWest</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div class="table-responsive">
+                <table id="admission-list-table" class="table table-striped no-margin" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="table-bordered">
+                            <th style="width: 5%">No</th>
+                            <th>Room</th>
+                            <th>Bed</th>
+                            <th>Available Bed</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-tbody" *ngIf="facilityWards.length === 0">
+                        <tr>
+                            <td colspan="4"> No data available in table</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngFor="let wardList of facilityWards">
+                        <tr class="tr-header-group">
+                            <td colspan="4">{{wardList.name}}</td>
+                        </tr>
+                        <tr *ngFor="let room of wardList?.wardDetails?.rooms; let i = index">
+                            <td>{{i+1}}</td>
+                            <td class="">{{room.name}}</td>
+                            <td class="">{{room.beds.length}}</td>
+                            <td class="">{{room.availableBedCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

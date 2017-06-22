@@ -1,0 +1,42 @@
+<div class="pgWrapper">
+  <div class="tblWrap">
+    <div class="tblTitle">Tags</div>
+    <div class="tblTop">
+      <div (click)="newTagPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Tag</div>
+    </div>
+    <table class="tblBg">
+      <thead>
+
+        <tr>
+          <th>Tag</th>
+          <th>Actions</th>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <div class="searchInputWrap">
+              <input type="search" class="searchInput" [formControl]="searchTag" placeholder="search for a tag">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </div>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let tag of tags">
+          <td>{{tag.name}}</td>
+          <td>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="newTagPopup" class="modal-overlay">
+    <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-tag>
+  </div>
+
+</div>

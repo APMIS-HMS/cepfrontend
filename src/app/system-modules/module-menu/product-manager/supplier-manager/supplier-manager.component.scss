@@ -1,0 +1,44 @@
+@import '../../store-manager/landing-page/landing-page.component.scss';
+
+.searchInput {
+    min-width: 200px;
+    max-width: 250px;
+}
+select {
+    min-width: 200px;
+    max-width: 250px;
+}
+.survery a {
+    margin: 0 !important;
+}
+
+.last-td-action span {
+    margin: 0 10px;
+}
+
+thead {
+    border-bottom: 1px solid #c1c1c1 !important;
+}
+.fa {
+    color: #000;
+}
+th {
+    color: #000;
+}
+table {
+    margin: 0 0 0 10px;
+}
+
+.print-pdf span{
+    margin: 0 6px;
+}
+
+.table-borderless {
+    text-align: center;
+}
+.table-container {
+    margin: 10px 0;
+}
+table {
+    margin: 0;
+}

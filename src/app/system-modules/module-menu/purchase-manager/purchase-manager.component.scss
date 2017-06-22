@@ -1,0 +1,21 @@
+@import '../product-manager/product-manager.component.scss';
+
+.content-sec-ico {
+    top: 0px;
+}
+.c-page-wrapper {
+    border: 0;
+}
+.inner-page-wrap {
+    margin-top: 40px !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index: 1700;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+}

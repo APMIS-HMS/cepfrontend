@@ -1,0 +1,55 @@
+<div class="survery">
+    <div class="">
+        <div class="">
+            <div class="table-container">
+                <div class="row">
+                     <div class="col-md-4 pull-right">
+                                <input type="text" placeholder="search here" class="searchInput" />
+                                <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+            <table class="table-responsive table table-striped text-center">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-sort-alpha-asc"></i>Name</th>
+                        <th> <i class="fa fa-sort-alpha-asc"></i>Contact Person</th>
+                        <th><i class="fa fa-sort-alpha-asc"></i>Email</th>
+                        <th><i class="fa fa-sort-alpha-asc"></i>Phone Number</th>
+                        <th><i class="fa fa-sort-alpha-asc"></i>Address</th>
+                        <th style="width:150px"><i class="fa fa-sort-alpha-asc"></i>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="td-col-span-6">
+                           
+                        </td>
+                    </tr>
+                    <tr *ngFor="let supplier of suppliers">
+                        <td>{{supplier.name}}</td>
+                        <td>{{supplier.contact}}</td>
+                        <td>{{supplier.email}}</td>
+                        <td>{{supplier.phoneNumber}}</td>
+                        <td>{{supplier.address}}</td>
+                        <td class="last-td-action">
+                            <span><a (click)="onEdit(supplier)" class=""><i class="fa fa-pencil"></i></a></span>
+                            <span><a class=""><i class="fa  fa-trash"></i></a></span>
+                            <span><a (click)="onSelect(supplier)" class=""><i class="fa fa-eye"></i></a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="col-md-12">
+                <a (click)="newSupplyShow()" id="floating-button">
+                    <p class="plus">+</p>
+                </a>
+            </div>
+        </div>
+
+
+        <div *ngIf="newSupply" class="modal-overlay">
+            <app-new-supplier [selectedSupplier]="selectedSupplier" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-supplier>
+        </div>
+
+    </div>

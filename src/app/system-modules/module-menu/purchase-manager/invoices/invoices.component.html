@@ -1,0 +1,96 @@
+<div class="survery">
+    <div class="">
+         <div class="row margin-bottom">
+            <div class="col-sm-4 col-md-4 col-xs-12">
+               <dx-select-box [formControl]="frmSupplier" [items]="suppliers" placeholder="Filter By" [showClearButton]="true" displayExpr="name" valueExpr="_id">
+                </dx-select-box>
+            </div>
+            <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
+                <dx-text-box value="Search"></dx-text-box>
+            </div>
+        </div>
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Invoice No</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Supplier</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Cost</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="invoices.length === 0">
+                    <td colspan="4"> No data available in table</td>
+                </tr>
+                <tr *ngFor="let invoice of invoices">
+                    <td>{{invoice.invoiceNumber}}</td>
+                    <td>{{invoice.supplierObject?.name}}</td>
+                    <td>&#8358; {{invoice.amountPaid}}</td>
+                    <td>
+                        <a class="action-btn" (click)="slideInvoiceDetailsToggle(invoice, $event)"><i class="fa fa-eye"></i></a>
+                        <a class="action-btn" (click)="onEditInvoice(invoice)"><i class="fa fa-pencil"></i></a>
+                         <a (click)="onNavigateToPayment(invoice)"><span><i class="fa fa-money"></i></span> </a>
+                        <a class="action-btn"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-md-12">
+            <a routerLink="/modules/purchase-manager/purchase-entry" id="floating-button">
+                <p class="plus">+</p>
+            </a>
+        </div>
+    </div>
+
+    <div *ngIf="slideInvoiceDetails" class="inPatient-activityTimeline shadow-RB animated slideInRight">
+        <div (click)="slideInvoiceDetailsToggle(invoice, $event)" class="hide-actionWrap">
+            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+        </div>
+
+        <h4 class="title">{{selectedProduct?.name}}</h4>
+
+        <div class="product-details">
+            <div class="row">
+                <div class="left"></div>
+                <div class="right"></div>
+            </div>
+            <div class="row">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Product</td>
+                            <td>Strength</td>
+                            <td>Qty</td>
+                            <td>Batch No</td>
+                            <td>Exp Date</td>
+                            <td>Cost</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of selectedProduct.products">
+                            <td>{{product.product.name}}</td>
+                            <td>{{product.strenght?.strength}}</td>
+                            <td>{{product.quantity}}</td>
+                            <td>{{product.batchNo}}</td>
+                            <td>{{product.expiryDate | date}}</td>
+                            <td>{{product.costPrice}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
+                            <td colspan="2">_______________________</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="remark">
+                <h3>Remark</h3>
+                <span>All goods received in good condition and have since been distributed
+                  to the various stores in need of supplies.
+                  From this point onwards, its business as usual at all our various store.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

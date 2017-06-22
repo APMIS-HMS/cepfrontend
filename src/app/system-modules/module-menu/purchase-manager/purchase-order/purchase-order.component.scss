@@ -1,0 +1,107 @@
+@import '../../product-manager/product-manager-landingpage/product-manager-landingpage.component.scss';
+.searchInput {
+    width: 200px !important;
+    max-width: 250px !important;
+}
+
+select {
+    width: 200px;
+    max-width: 250px;
+}
+.txt-link{
+    margin-top: 0;
+    padding: 5px;
+}
+.last-td-col{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.last-td-col span {
+    padding: 5px;
+}
+
+.last-td-col span.cancel {
+    border: 1px solid #ff2500;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.last-td-col span a {
+    color: #0288D1;
+    margin: -10px;
+}
+
+
+/*slide in */
+
+table#date-head,
+table#date-head tr,
+table#date-head td,
+table#date-head thead {
+    border: 0;
+    background: transparent;
+}
+
+.remark {
+    color: #a6a6a6;
+}
+
+.remark p {
+    font-style: italic;
+    font-size: 11px;
+}
+
+#second-col-wrap th,
+#second-col-wrap td,
+#second-col-wrap tr,
+#second-col-wrap tbody,
+#second-col-wrap table {
+    border: none !important;
+    background: transparent !important;
+}
+
+#second-col-wrap {
+    width: 100%;
+    float: right;
+}
+
+.table-responsive {
+    // width: 200px;
+    // float: right;
+}
+
+.order-print span {
+    margin: 0 5px;
+}
+
+#third-col-wrap th,
+#third-col-wrap td,
+#third-col-wrap tr,
+#third-col-wrap tbody,
+#third-col-wrap table {
+    border: none !important;
+    background: transparent !important;
+}
+
+.hide-actionWrap {
+    right: 0;
+}
+
+.table-border {
+    margin: 0 auto;
+    border: 1px solid #cacaca;
+}
+
+.container {
+    width: 100%;
+}
+
+th {
+    height: 30px;
+}
+
+.margin-bottom {
+    margin: 0 0 10px 0;
+}
+/**/

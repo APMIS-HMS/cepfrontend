@@ -1,0 +1,267 @@
+import { Component, OnInit } from '@angular/core';
+import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+// tslint:disable-next-line:max-line-length
+import { StoreService, ProductService, StrengthService, ProductRequisitionService, EmployeeService } from '../../../../services/facility-manager/setup/index';
+import { Facility, Requisition, RequisitionProduct, Employee } from '../../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Observable';
+
+@Component({
+  selector: 'app-requisition',
+  templateUrl: './requisition.component.html',
+  styleUrls: ['./requisition.component.scss']
+})
+export class RequisitionComponent implements OnInit {
+  mainErr = true;
+  errMsg = 'You have unresolved errors';
+
+  flyout = false;
+
+  public frm_purchaseOrder: FormGroup;
+
+  suppliers: any[] = [];
+
+  productTableForm: FormGroup;
+  checkAll: FormControl = new FormControl();
+  zeroQuantity: FormControl = new FormControl();
+  reOrderLevelQuantity: FormControl = new FormControl();
+  searchControl = new FormControl();
+  productsControl = new FormControl();
+  desc = new FormControl();
+
+
+  value: Date = new Date(1981, 3, 27);
+  now: Date = new Date();
+  min: Date = new Date(1900, 0, 1);
+  dateClear = new Date(2015, 11, 1, 6);
+  maxLength = null;
+
+  stores: any[] = [];
+  products: any[] = [];
+  productTables: any[] = [];
+  superGroups: any[] = [];
+  strengths: any[] = [];
+  removingRecord = false;
+
+  selectedFacility: Facility = <Facility>{};
+  checkingObject: any = <any>{};
+  loginEmployee: Employee = <Employee>{};
+  constructor(
+    private formBuilder: FormBuilder,
+    private _inventoryEventEmitter: InventoryEmitterService,
+    private storeService: StoreService,
+    private locker: CoolLocalStorage,
+    private productService: ProductService,
+    private strengthService: StrengthService,
+    private employeeService: EmployeeService,
+    private requisitionService: ProductRequisitionService
+  ) { }
+
+  ngOnInit() {
+    this._inventoryEventEmitter.setRouteUrl('Requisition');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.checkingObject = this.locker.getObject('checkingObject');
+    const auth: any = this.locker.getObject('auth');
+    this.frm_purchaseOrder = this.formBuilder.group({
+      product: ['', [<any>Validators.required]],
+      supplier: ['', [<any>Validators.required]],
+      deliveryDate: [this.now, [<any>Validators.required]],
+      desc: ['', [<any>Validators.required]],
+    });
+
+
+    const emp$ = Observable.fromPromise(this.employeeService.find({
+      query: {
+        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+      }
+    }));
+    emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    ]))
+      .subscribe((results: any) => {
+        this.loginEmployee = results[0];
+      });
+
+    this.addNewProductTables();
+    this.getStores();
+    this.getAllProducts();
+    this.getStrengths();
+  }
+
+  getStores() {
+    console.log(this.checkingObject.typeObject.storeId);
+    this.storeService.find({ query: { facilityId: this.selectedFacility } }).subscribe(payload => {
+      payload.data.forEach((item, i) => {
+        if (item._id !== this.checkingObject.typeObject.storeId) {
+          this.stores.push(item);
+        }
+      });
+    });
+  }
+
+  getAllProducts() {
+    this.productService.find({ query: { facilityId: this.selectedFacility._id, $paginate: false } }).then(payload => {
+      this.products = payload;
+      console.log(this.products);
+      this.getProductTables(this.products);
+    });
+  }
+  getProductTables(products: any[]) {
+    this.productTables = products;
+    this.superGroups = [];
+    let group: any[] = [];
+
+    let counter = 0;
+    for (let i = 0; i < this.productTables.length; i++) {
+
+      if (this.superGroups.length < 1) {
+        group = [];
+        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id, product: this.productTables[i] };
+        obj = this.mergeTable(obj);
+        group.push(obj);
+        this.superGroups.push(group);
+      } else {
+        if (counter < 1) {
+          let obj = <any>{
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            product: this.productTables[i]
+          };
+          obj = this.mergeTable(obj);
+          this.superGroups[counter].push(obj);
+          counter = counter + 1;
+        } else {
+          counter = 0;
+          let obj = <any>{
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            product: this.productTables[i]
+          };
+          obj = this.mergeTable(obj);
+          this.superGroups[counter].push(obj);
+          counter = counter + 1;
+        }
+
+      }
+    }
+  }
+
+  mergeTable(obj) {
+    (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
+      const productControlValue: any = (<any>item).controls['id'].value;
+      if (productControlValue === obj._id) {
+        obj.checked = true;
+      }
+    });
+    return obj;
+  }
+  addNewProductTables() {
+    this.productTableForm = this.formBuilder.group({
+      'productTableArray': this.formBuilder.array([
+        this.formBuilder.group({
+          product: ['', [<any>Validators.required]],
+          strength: [, []],
+          qty: ['', [<any>Validators.required]],
+          readOnly: [false],
+          id: ['']
+        })
+      ])
+    });
+    this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+  }
+  getStrengths() {
+    this.strengthService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+      this.strengths = payload.data;
+    });
+  }
+  onProductCheckChange(event, value) {
+    value.checked = event.value;
+
+    // let storeId = this.frm_purchaseOrder.controls['store'].value;
+
+    if (event.value === true) {
+      if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
+        (<FormArray>this.productTableForm.controls['productTableArray'])
+          .push(
+          this.formBuilder.group({
+            product: [value.name, [<any>Validators.required]],
+            strength: [, []],
+            qty: [0, [<any>Validators.required]],
+            readOnly: [false],
+            productObject: [value.product],
+            id: [value._id]
+          })
+          );
+      } else {
+        value.checked = false;
+        this.errMsg = 'Please select the destination store';
+        this.mainErr = false;
+      }
+    } else {
+      let indexToRemove = 0;
+      (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
+        const productControlValue: any = (<any>item).controls['id'].value;
+        if (productControlValue === value._id) {
+          indexToRemove = i;
+        }
+      });
+      const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
+      if (count === 1) {
+        this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+      } else {
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
+      }
+    }
+  }
+
+  removeProduct(index, value) {
+    this.superGroups.forEach((parent, i) => {
+      parent.forEach((group, j) => {
+        if (group._id === value.id) {
+          group.checked = false;
+          this.onProductCheckChange({ value: false }, value);
+          const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
+          if (count === 1) {
+            // this.addNewProductTables();
+          }
+        }
+      });
+    });
+  }
+  resetGroups() {
+    this.superGroups.forEach((parent, i) => {
+      parent.forEach((group, j) => {
+        group.checked = false;
+      });
+    });
+  }
+  save() {
+    const requisition: Requisition = <Requisition>{};
+    requisition.employeeId = this.loginEmployee._id;
+    requisition.facilityId = this.selectedFacility._id;
+    requisition.storeId = this.checkingObject.typeObject.storeId;
+    requisition.comment = this.desc.value;
+    requisition.products = [];
+    (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+      console.log(item.value);
+      const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
+      requisitionProduct.productId = item.value.productObject._id;
+      requisitionProduct.qty = item.value.qty;
+      requisitionProduct.strenghtId = item.value.strength;
+      requisition.products.push(requisitionProduct);
+    });
+    this.requisitionService.create(requisition).subscribe(payload => {
+      this.addNewProductTables();
+      this.desc.reset();
+      this.resetGroups();
+    });
+  }
+
+  flyout_toggle(e) {
+    this.flyout = !this.flyout;
+    e.stopPropagation();
+  }
+  flyout_close(e) {
+    if (this.flyout === true) {
+      this.flyout = false;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
+    <div class="facility-subTitle" (pageInView)="pageInViewLoader($event)">{{pageInView_subTitle}}</div>
+    <div class="inner-menu1-wrap responsive_nav-group">
+        <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+        <ul (focusout)="contentSecMenuToggle()" id="innerMenu-ul" *ngIf="contentSecMenuShow===true" class="innerMenu-ul shadow">
+            <li [routerLink]="['/modules/store/home']">Manage Store</li>
+            <li [routerLink]="['/modules/product-manager/products']">Manage Product</li>
+            <li [routerLink]="['/modules/purchase-manager/orders']">Manage Purchase</li>
+            <li [routerLink]="['/modules/inventory-manager/inventory']">Manage Inventory</li>
+            <li (click)="onChangeCheckedIn()">Change CheckedIn Store</li>
+        </ul>
+    </div>
+    <div class="inner-page-wrap">
+        <div class="lhs inner-page-menuTab">
+            <ul class="nav-group">
+                <!--<li [class.navActive]="purchaseHistoryNavMenu" (click)="onClickPurchaseHistoryNavMenu()" routerLink="/modules/purchase-manager/histories">Purchase History</li>-->
+                <li [class.navActive]="purchaseOrderNavMenu" (click)="onClickPurchaseOrderNavMenu()" routerLink="/modules/purchase-manager/orders">Purchase Orders</li>
+                <li [class.navActive]="invoicesNavMenu" (click)="onClickInvoicesNavMenu()" routerLink="/modules/purchase-manager/invoices">Invoices</li>
+                <!--<li [class.navActive]="purchaseEntryNavMenu" (click)="onClickPurchaseEntryNavMenu()" routerLink="/modules/purchase-manager/purchase-entry">Purchase Entry</li>-->
+                <li [class.navActive]="supplierNavMenu" routerLink="/modules/product-manager/suppliers">Supplier</li>
+            </ul>
+        </div>
+        <div class="rhs inner-page-contentArea c-page-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="clear"></div>
+        <div *ngIf="modal_on" class="modal-overlay">
+            <app-store-check-in [loginEmployee]="loginEmployee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
+        </div>
+    </div>
+</div>

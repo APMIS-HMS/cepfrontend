@@ -1,0 +1,34 @@
+@import "../../../../../../globals/variables.scss";
+
+input, select{
+    border-bottom: 1px solid #9E9E9E;
+    outline: 0;
+}
+.modal-baseWrap {
+    width: 560px;
+    padding: 20px 100px;
+    margin: 0px auto;
+}
+.modal_title{
+    margin-bottom: 20px;
+}
+.cta-1 {
+    font-size: 12px;
+}
+.mainErr {
+    margin: 20px 0;
+}
+.facility-title {
+    font-size: 25px;
+}
+.modal_title {
+    font-size: 15px;
+    margin: 20px auto;
+}
+
+@media screen and (max-width: $break-small) {
+    .modal-baseWrap {
+    width: 278px;
+    min-width: 250px;
+}
+}

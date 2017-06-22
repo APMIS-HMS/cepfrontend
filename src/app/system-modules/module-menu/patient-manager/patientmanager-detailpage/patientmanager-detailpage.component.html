@@ -1,0 +1,144 @@
+<div>
+    <div class="patientPage-mainWrap">
+        <div class="page-title">Patient Page</div>
+        <div class="patientPage-sideTab">
+            <div class="sideTab-header">
+                <div class="patient-img">
+                    <div>
+                        <div *ngIf="patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
+                    </div>
+                    <section class="accBal-wrap">
+                        <span class="accBal-label">Account Balance</span>
+                        <span class="accBal-val">&#8358; 20,000</span>
+                    </section>
+                    <legend (click)="checkoutPatient_show()" class="checkoutBtn">Checkout</legend>
+                </div>
+                <div class="headerDetail-wrap">
+                    <div class="patient-name">{{patient?.personDetails.lastName}} {{patient?.personDetails.firstName}} {{patient?.personDetails.title.name}}</div>
+                    <div class="headDetail-group">
+                        <div class="patient-gender">{{patient?.personDetails.gender.name}}</div>
+                        <div class="patient-apmisNo">{{patient?.personDetails.apmisId}}</div>
+                    </div>
+                    <div class="headDetail-group">
+                        <div class="patient-dob">{{patient?.personDetails.dateOfBirth | date}}</div>
+                        <div class="patient-phone">{{patient?.personDetails.phoneNumber}}</div>
+                    </div>
+                    <div class="patient-email">{{patient?.personDetails.email}}</div>
+                    <div class="patientBanner-vitals">
+                        <div class="demo-table">
+                            <!--<div class="pbTableView-itemWrap item-height">
+                                <div class="itemLeft">Height</div>
+                                <div class="itemRight">
+                                    <div class="val1">72.00<span class="entry-unit">Inch</span></div>
+                                    <div class="val2">183<span class="entry-unit">cm</span></div>
+                                </div>
+                            </div>
+
+                            <div class="pbTableView-itemWrap item-weight">
+                                <div class="itemLeft">Weight</div>
+                                <div class="itemRight">
+                                    <div class="val1">136.7<span class="entry-unit">lbn</span></div>
+                                    <div class="val2">62<span class="entry-unit">kg</span></div>
+                                </div>
+                            </div>
+
+                            <div class="pbTableView-itemWrap item-bp">
+                                <div class="itemLeft">BP</div>
+                                <div class="itemRight">
+                                    <div class="val1">130/90</div>
+                                </div>
+                            </div>-->
+
+                            <table class="demo-table">
+                                <tr>
+                                    <th></th>
+                                    <th>Temp.</th>
+                                    <th>Pulse</th>
+                                    <th>BP</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <dx-sparkline class="sparkline" [dataSource]="tempChart" argumentField="temperature" valueField="0" type="line" [showMinMax]="true">
+                                            <dxo-tooltip format="currency"></dxo-tooltip>
+                                        </dx-sparkline>
+                                    </td>
+                                    <td>
+                                        <dx-sparkline class="sparkline" [dataSource]="pRChart" argumentField="PulseRate" valueField="0" type="spline" [lineWidth]="3" lineColor="#9ab57e" minColor="#6babac" maxColor="#ebdd8f" [showMinMax]="true" [showFirstLast]="false">
+                                            <dxo-tooltip format="currency"></dxo-tooltip>
+                                        </dx-sparkline>
+                                    </td>
+                                    <td>
+                                        <dx-sparkline class="sparkline" [dataSource]="bpChart" argumentField="DiastolicSystolic" valueField="0" type="stepline" lineColor="#e8c267" firstLastColor="#e55253" [pointSize]="6" pointSymbol="square" pointColor="#ebdd8f">
+                                            <dxo-tooltip format="currency"></dxo-tooltip>
+                                        </dx-sparkline>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sideTab-nav">
+                <div class="menu-sect">
+                    <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
+                    <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
+                    <div (click)="menuLists_click()" [class.active-menuItem]="menuLists" class="menu-item">Documentation</div>
+                    <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription</div>
+                    <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
+                </div>
+                <div class="menu-sect">
+                    <div (click)="menuImages_click()" [class.active-menuItem]="menuImages" class="menu-item">Images</div>
+                    <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
+                    <div (click)="menuForms_click()" [class.active-menuItem]="menuForms" class="menu-item">Forms</div>
+                </div>
+                <div class="menu-sect">
+                    <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
+                    <div (click)="menuImaging_click()" [class.active-menuItem]="menuImaging" class="menu-item">Imaging</div>
+                </div>
+                <div class="menu-sect">
+                    <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescriptions</div>
+                    <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Plan</div>
+                </div>
+                <div class="menu-sect">
+                    <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Billing</div>
+                    <div (click)="menuPharmacy_click()" [class.active-menuItem]="menuPharmacy" class="menu-item">Pharmacy</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="patientPage-contentArea">
+
+            <!--<<<<<<< HEAD-->
+            <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
+            <app-patient-prescription [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
+            <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
+
+            <!--<div *ngIf="menuForms" class="menuForms">
+=======
+    <div class="patientPage-contentArea">
+      <!--<app-patient-summary *ngIf="menuSummary"></app-patient-summary>-->
+            <!--<app-patient-prescription *ngIf="menuPrescription"></app-patient-prescription>-->
+            <!--<div *ngIf="menuForms" class="menuForms">
+>>>>>>> ad1998859c441263ad1245d4f38179d31c061d6f
+        <legend>Create Form</legend>
+        <survey [json]="json"></survey>
+
+      </div>-->
+        </div>
+
+        <div *ngIf="addVitalsPop" class="modal-overlay">
+            <!--<app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>-->
+            <app-add-vitals [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+        </div>
+        <div *ngIf="addTagsPop" class="modal-overlay">
+            <app-add-tags (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-tags>
+        </div>
+        <div style="z-index: 1501;" *ngIf="checkoutPatient" class="modal-overlay">
+            <app-checkout-patient [employeeDetails]="employeeDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
+        </div>
+    </div>
+</div>

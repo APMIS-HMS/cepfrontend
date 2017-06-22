@@ -1,0 +1,48 @@
+<div class="side-wrap-full rhs">
+  <div class="btn-1 btn-blue addCoverBtn"><i class="fa fa-plus-square" aria-hidden="true"></i> New Family Cover</div>
+  <div class="covered-orgs lhs">
+
+    <div class="searchInputWrap">
+      <input type="search" autofocus class="searchInput" placeholder="search for a family">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div style="width: 100%;">
+      <div (click)="addPrincipalShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Principal</div>
+    </div>
+
+    <div *ngFor="let active of activeFamilyHealthCovers" (click)="personDependants_show(active)" class="covered-org">
+      <img *ngIf="active.familyPrincipalPerson?.profileImageObject == undefined" src="assets/images/users/default.png">
+      <img *ngIf="active.familyPrincipalPerson?.profileImageObject != undefined" [src]="facilityService.transform(active.familyPrincipalPerson?.profileImageObject?.thumbnail)">
+      <div class="txtWrap">
+        <div class="facility">{{active.familyPrincipalPerson.lastName}} {{active.familyPrincipalPerson.firstName}}</div>
+        <div class="listedFacilityDesc">{{active.count}} Dependants</div>
+      </div>
+    </div>
+  </div>
+  <div class="search-orgs rhs">
+    <div class="secTitle">InActive Family Covers</div>
+
+    <div class="searchInputWrap">
+      <input type="search" autofocus class="searchInput" placeholder="search non active covers">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+
+    <div class="orgWrap" *ngFor="let inActive of inActiveFamilyHealthCovers">
+      <img *ngIf="inActive.familyPrincipalPerson?.profileImageObject == undefined" src="assets/images/users/default.png">
+      <img *ngIf="inActive.familyPrincipalPerson?.profileImageObject != undefined" [src]="facilityService.transform(inActive.familyPrincipalPerson?.profileImageObject?.thumbnail)">
+      <div class="txtWrap">
+        <div class="facility">{{inActive.familyPrincipalPerson.lastName}} {{inActive.familyPrincipalPerson.firstName}}</div>
+        <div class="listedFacilityDesc">{{inActive.count}} Dependants</div>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+  <div *ngIf="personDependants" class="modal-overlay">
+    <app-person-dependants [dependantType]="type" [selectedActiveFamilyHealthCover]="selectedActiveFamilyHealthCover" [selectedActiveCompanyHealthCover]="selectedActiveFamilyHealthCover"
+      [selectedPersonPrincipal]="selectedPersonPrincipal" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-dependants>
+  </div>
+  <div *ngIf="addPrincipalpopup" class="modal-overlay">
+    <app-add-principal (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-principal>
+  </div>
+</div>

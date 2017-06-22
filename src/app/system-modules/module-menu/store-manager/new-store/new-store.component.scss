@@ -1,0 +1,86 @@
+.frm-label{
+    position: absolute;
+    top: -10px;
+    left: 0;
+    font-size: 12px;
+    color: #515151;
+}
+.modal-baseWrap{
+    width: 650px;
+    min-width: auto;
+    padding: 20px;
+}
+.modal_title {
+    text-align: center;
+    border-bottom: 0px;
+    color: #0d47a1;
+    margin-bottom: 0;
+}
+input, select{
+  border-bottom: solid 1px #626262;
+  width: 100%;
+  background: transparent;
+}
+textarea{
+    border: 1px solid #626262;
+    width: 100%;
+    background: transparent;
+    border-radius: 10px;
+    margin-top: 10px;
+    height: 100px;
+}
+input:focus, select:focus, textarea:focus{
+    border: #0099ed;
+}
+.mainfrmwrap{
+    display: flex;
+    justify-content: space-between;
+}
+.sec-1{
+    width: 40%;
+}
+.sec-2{
+    width: 50%;
+}
+.checkbox-wrap{
+    display: flex;
+    width: 100%;
+}
+.check-item{
+    position: relative;
+    display: flex;
+    width: 140px;
+}
+.chk-label{
+    top: -10px;
+    left: 0;
+    font-size: 12px;
+    color: #515151;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+.survery legend {
+    text-align:center !important;
+    margin-top: 4px;
+    margin-left: 10px;
+    border-bottom: 0;
+}
+.chkwrap{
+    background: #ccc;
+    padding: 15px;
+    border-radius: 10px;
+}
+.chk-group-wrap{
+    margin-top: 10px;
+    background: #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    height: 145px;
+    overflow-y: scroll;
+}
+.chk-group-wrap .checkbox-wrap{
+    flex-wrap: wrap;
+}
+.sec-2 .frm-label{
+    top: -20px;
+}

@@ -1,0 +1,80 @@
+@import '../../store-manager/landing-page/landing-page.component.scss';
+@import '../../clinic/check-in-patient/check-in-patient.component.scss';
+.container-width {
+    width: 100%;
+    border: 1px solid gray;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+.border-box {
+    border: 1px solid gray;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#no-color th,
+#no-color td {
+    background-color: transparent;
+    border: 0.5px solid #dddddd;
+}
+
+
+tr:nth-child(even) {
+    background-color: transparent !important;
+}
+
+tr:hover {
+    background-color: transparent;
+}
+
+tr {
+    background: transparent;
+}
+
+.btn-create {
+    background-color: #153d70;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#153d70), to(#4bb8ef));
+    color: #fff;
+}
+
+.searchInput {
+    margin-top: 0;
+}
+
+.inPatient-activityTimeline {
+    width: 400px;
+}
+
+.text-head h3 {
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.text-head {
+    border-bottom: 1px solid #0288d1;
+    margin: 10px 0;
+}
+
+.survery a {
+    margin: 0 10px !important;
+}
+
+.border-div {
+    border: 1px soild #0288d1;
+}
+
+.survery .checkbox {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.active {
+    color: green;
+}
+
+.inactive {
+    color: red;
+}

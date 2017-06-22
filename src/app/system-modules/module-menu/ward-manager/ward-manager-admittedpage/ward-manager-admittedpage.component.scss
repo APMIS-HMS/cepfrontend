@@ -1,0 +1,92 @@
+@import "../../../../../globals/variables.scss";
+@import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
+@import "../../clinic/appointment/appointment.component.scss";
+.inner-page-contentArea {
+    padding: 0 ! important;
+}
+
+.inPatients {
+    border: none;
+    .filter-box {
+        padding: 10px 0;
+        .filter {
+            width: 130px;
+        }
+    }
+    .patient-img {
+        img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+        }
+    }
+    .patient-sex {
+        text-align: left;
+    }
+    .actionWrap {
+        border: 1px solid #ddd;
+        padding: 2px 5px;
+        cursor: pointer;
+        border-radius: 7px;
+        margin-right: 10px;
+    }
+    .actionWrap:hover {
+        background: #ddd;
+    }
+    .filter-select {
+        border: 1px solid #727272;
+        border-radius: 10px;
+        display: block;
+        padding: 10px;
+        width: 150px;
+    }
+    // .btn-1 {
+    //     padding: 5px;
+    //     margin: 5px auto;
+    // }
+    table {
+        thead {
+            background-color: #AED6F1;
+        }
+        tbody {
+            border: 1px solid #ddd !important;
+            tr {
+                td {
+                    padding: 8px;
+                    line-height: 1.42857143;
+                }
+                .tbl-actionRow {
+                    justify-content: space-around;
+                    padding: 20px 0;
+                }
+                .tbl-actionRow .tbl-title {
+                    position: relative;
+                    left: auto;
+                }
+                .tbl-actionRow .tbl-search {
+                    position: relative;
+                    right: auto;
+                }
+            }
+            .tr-header-group {
+                background-color: #0288D1;
+                color: #fff;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .details-link {
+                &:hover {
+                    background-color: #ccc;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+}

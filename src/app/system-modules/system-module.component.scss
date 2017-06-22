@@ -1,0 +1,204 @@
+@import "../../globals/variables.scss";
+// @import "../../bootstrap.css";
+
+.primary-tab{
+    position: relative;
+    background: #0288D1;
+    width: 100%;
+    z-index: 1500;
+}
+.inner-wrap-pri{
+    height: 30px;
+}
+.inner-wrap-sec{
+    height: 50px;
+}
+.inner-wrap-sec ul{
+    margin: 0;
+    padding: 0;
+}
+.inner-wrap-sec ul li:first-child {
+    margin-left: 0;
+    padding-left: 0;
+}
+.menu-ico{
+    font-size: 14px;
+}
+.menu-ico:hover{
+    color: #fff;
+}
+.logo-wrap{
+    padding-top: 5px;
+}
+.logo-wrap img{
+    width: 25px;
+}
+.menu-options{
+    display: none;
+    font-size: 14px;
+}
+.menu-options li{
+    display: inline-block;
+    padding: 5px;
+    margin: 5px 10px;
+    cursor: pointer;
+    text-align: center;
+}
+.menu-options li span{
+    position: relative;
+    text-align: center;
+    display: inline-block;
+}
+.menu-options li span i{
+    display: block;
+    position: absolute;
+    bottom: -56px;
+    width: 100%;
+    font-size: 54px;
+    color: #4bb8ef;
+}
+.menuOptionActive{
+    border-bottom: 2px solid #fff;
+}
+.inner-wrap-pri .menu-options li{
+    color: #fff;
+}
+.inner-wrap-pri .menu-options li:hover{
+    color: #81D4FA;
+}
+.inner-wrap-sec .menu-options li{
+    color: #fff;
+}
+.inner-wrap-sec .menu-options li:hover, .submenuActive{
+    color: #283593;
+}
+.top-right{
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+}
+.profile-pic{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.secondary-tab{
+    position: relative;
+    width: 100%;
+    background: #03A9F4;
+    font-family: $font-titles;
+    letter-spacing: 2px;
+}
+.fronting{
+    position: relative;
+    width: 100%;
+    height: 40px;
+    z-index: 1500;
+    background: #fff;
+    margin-bottom: -40px;
+}
+.fronting .loggedIn-user{
+    position: absolute;
+    right: 35px;
+    bottom: -3px;
+    font-size: 12px;
+    color: #B3B6B7;
+}
+.fronting .loggedIn-user .label{
+    color: #525252;
+    font-style: italic;
+}
+.fronting .loggedIn-user .val{
+    margin-left: 10px;
+    cursor: pointer;
+}
+.fronting .loggedIn-user .val:hover{
+    text-decoration: underline;
+}
+.inRoom {
+    font-size: 10px;
+    width: 100%;
+    text-align: center;
+    background: #aaa;
+    color: #fff;
+}
+.roomLabel {
+    font-style: italic;
+    font-size: 9px;
+    padding-right: 5px;
+    color: #eee;
+}
+
+@media only screen and (max-width: 700px){
+    .logo-wrap {
+        margin-left: 20px;
+    }
+}
+
+/* d-menu signout*/
+.survery .d-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    padding: 1px 0 0 0;
+    border-top-width: 0;
+    width: 280px;
+    margin-top: 0;
+    box-shadow: none;
+    border-color: #eee;
+    border: 1px solid rgba(0,0,0,.15);
+    background-clip: padding-box;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    float: left;
+    min-width: 160px;
+    z-index: 11000;
+}
+.survery li.user-header {
+    height: 175px;
+    padding: 10px;
+    text-align: center;
+}
+
+li.user-header {
+    background-color: #03a9f4;
+}
+li.user-header {
+    height: 175px;
+    padding: 10px;
+    text-align: center;
+}
+li.user-header>img {
+    z-index: 5;
+    height: 90px;
+    width: 90px;
+    border: 3px solid;
+    border-color: transparent;
+    border-color: rgba(255,255,255,0.2);
+}
+li.user-header>p {
+    z-index: 5;
+    color: #fff;
+    color: rgba(255,255,255,0.8);
+    font-size: 17px;
+    margin-top: 10px;
+}
+.user-footer .btn-default {
+    color: #666666;
+}
+
+.btn.btn-flat {
+    border-radius: 0 !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    border-width: 1px !important;
+    margin:10px !important;
+}
+/*end d-menu sign out*/

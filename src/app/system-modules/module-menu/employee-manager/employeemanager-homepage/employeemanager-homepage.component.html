@@ -1,0 +1,34 @@
+<div class="checkedinPatients search-results">
+    <div class="inPatients">
+        <ul class="inHeader">
+            <li class="emp-img"></li>
+            <li class="emp-name" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Name</li>
+            <li class="emp-apmis" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Apmis ID</li>
+            <li class="emp-dept" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Department</li>
+            <li class="emp-status" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Status</li>
+            <li class="emp-action" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Action</li>
+        </ul>
+
+        <div class="wrapper-content">
+             <ul *ngFor="let item of employees" class="inBody">
+            <li (click)="navEpDetail(item)" class="emp-img">
+                    <div *ngIf="item?.employeeDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                    <div *ngIf="item?.employeeDetails?.profileImageObject != undefined"><img [src]="facilityService.transform(item?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                </li>
+                <li (click)="navEpDetail(item)" class="emp-name">{{item.employeeDetails?.lastName}} {{item.employeeDetails?.firstName}}</li>
+                <li class="emp-apmis">{{item.employeeDetails?.apmisId}}</li>
+                <li class="emp-dept">{{item.department?.name}}</li>
+                <li class="emp-status">
+                    <span *ngIf="!item.isActive" style="color:#E53935;">Inactive</span>
+                    <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>
+                </li>
+                <li *ngIf="!item.isActive" class="survery">
+                    <span class="label label-success">Activate</span>
+                </li>
+            </ul>
+            <div *ngIf="loadIndicatorVisible" class="div_loading">
+                <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div>
+    <ul class="moduleNav">
+        <li (click)="allModuleTab()" [class.moduleNav-active]="allModulesShow">All Modules</li>
+        <li (click)="integratedModuleTab()" [class.moduleNav-active]="integratedModulesShow">Integrated Modules</li>
+        <li (click)="unintegratedModuleTab()" [class.moduleNav-active]="unintegratedModulesShow">Unintegrated Modules</li>
+    </ul>
+
+    <div *ngIf="allModulesShow" class="mod-sect-wrap">
+        <ul>
+            <li *ngFor="let systemModule of systemModules; let i = even; let k = odd">
+                <div class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
+                    <div class="lhs">{{systemModule.name}}</div>
+                    <div class="rhs">
+                        <div style="color: #ff2500; text-align: right;" *ngIf="!isIntegrated(systemModule._id)"><i class="fa fa-ban" aria-hidden="true"></i> Disable</div>
+                        <div style="color: #4CAF50; text-align: right;" [hidden]="!isIntegrated(systemModule._id)"><i class="fa fa-check" aria-hidden="true"></i> Integrate</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div *ngIf="integratedModulesShow" class="mod-sect-wrap">
+        <ul>
+            <li *ngFor="let systemModule of facilityModules; let i = even; let k = odd">
+                <div *ngIf="!isIntegrated(systemModule._id)" class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
+                    <div class="lhs">{{systemModule.name}}</div>
+                    <div class="rhs">
+                        <div style="color: #ff2500; text-align: right;" *ngIf="!isIntegrated(systemModule._id)"><i class="fa fa-ban" aria-hidden="true"></i> Disable</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div *ngIf="unintegratedModulesShow" class="mod-sect-wrap">
+        <ul>
+            <li *ngFor="let systemModule of systemModules; let i = even; let k = odd">
+                <div [hidden]="!isIntegrated(systemModule._id)" class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
+                    <div class="lhs">{{systemModule.name}}</div>
+                    <div class="rhs">
+                        <div style="color: #ff2500; text-align: right;" *ngIf="!isIntegrated(systemModule._id)"><i class="fa fa-ban" aria-hidden="true"></i> Disable</div>
+                        <div style="color: #4CAF50; text-align: right;" [hidden]="!isIntegrated(systemModule._id)"><i class="fa fa-check" aria-hidden="true"></i> Integrate</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

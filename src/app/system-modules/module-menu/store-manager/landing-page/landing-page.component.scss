@@ -1,0 +1,80 @@
+@import '../../facility-page/facilitypage-workspace/facilitypage-workspace.component.scss';
+.td-col-span-8 {
+    padding: 22px 15px !important;
+    background: #fff;
+}
+
+.searchInput {
+    min-width: 345px;
+    max-width: 350px;
+}
+
+.survery .table>thead>tr>th,
+.survery .table>tbody>tr>th,
+.survery .table>tfoot>tr>th,
+.survery .table>thead>tr>td,
+.survery .table>tbody>tr>td,
+.survery .table>tfoot>tr>td {
+    padding: 7px;
+    line-height: 1.42857143;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+.survery a {
+    margin: 0 10px;
+    color: #000;
+    cursor: pointer;
+}
+
+.survery a:hover {
+    text-decoration: none;
+}
+
+.survery table {
+    color: #000;
+}
+
+.plus {
+    position: absolute;
+    top: auto;
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0;
+    margin: 0 !important;
+    line-height: 46px;
+    font-size: 38px;
+    font-weight: 300;
+    animation: plus-out 0.3s;
+    transition: all 0.3s;
+}
+
+#floating-button {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #0288d1;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    border: 4px solid #007abc;
+    box-shadow: 1px 1px 5px 9px rgba(0, 0, 0, 0.05);
+    &:hover {
+        background: #0099ed;
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0px;
+    left: 0;
+}
+
+.table-container {
+    margin: 10px 0;
+}

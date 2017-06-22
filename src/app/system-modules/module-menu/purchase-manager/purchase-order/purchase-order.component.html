@@ -1,0 +1,109 @@
+<div id="purchase-order">
+    <div class="survery">
+         <div class="row margin-bottom">
+            <div class="col-sm-4 col-md-4 col-xs-12">
+                <dx-select-box [formControl]="frmSupplier" [items]="suppliers" placeholder="Filter By" [showClearButton]="true" displayExpr="name" valueExpr="_id">
+                </dx-select-box>
+            </div>
+            <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
+                <dx-text-box value="Search"></dx-text-box>
+            </div>
+        </div>
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Order Date</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Supplier</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Expected Delivery Date</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Purchase Order ID</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="orders.length === 0">
+                    <td colspan="5"> No data available in table</td>
+                </tr>
+                <tr *ngFor="let order of orders">
+                    <td>{{order.createdAt | date:'short'}}</td>
+                    <td>{{order.supplierObject.name}}</td>
+                    <td>{{order.expectedDate | date:'short'}}</td>
+                    <td>{{order.purchaseOrderNumber}}</td>
+                    <td class="last-td-col">
+                        <a (click)="slidePurchaseDetailsToggle(order, $event)"><span><i class="fa fa-eye"></i></span></a>
+                        <a (click)="onNavigateToDetail(order)"><span><i class="fa fa-pencil"></i></span></a>
+                        <a style="color:#ff2500;"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <a (click)="onNavigateToAddStore(order)"><span class="txt-link">Add to Stock</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-md-12">
+            <a id="floating-button" routerLink="/modules/purchase-manager/new-order">
+                <p class="plus">+</p>
+            </a>
+        </div>
+        <!-- purchase order details-->
+        <div *ngIf="slidePurchaseDetails" class="inPatient-activityTimeline shadow-RB animated slideInRight">
+            <div class="container">
+                <div (click)="slidePurchaseDetailsToggle(purchases, $event)" class="hide-actionWrap">
+                    <i class="fa fa-close pull-right" aria-hidden="true"></i>
+                </div>
+
+                <div class="purchasedetails">
+                    <div class="wrap-first-row text-center">
+                        <p style="color:#9b5c0b;">{{selectedFacility.name}}</p>
+                        <h4 style="color:#343434;">{{selectedOrder?.supplierObject.name}}</h4>
+                        <p style="color:#e50000">Order Details</p>
+                        <p style="color:#2b6ac8">{{selectedOrder?.purchaseOrderNumber}}</p>
+                    </div>
+                    <div id="second-col-wrap">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Order Date</th>
+                                        <td>{{selectedOrder.createdAt | date:'short'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Delivery Date</th>
+                                        <td>{{selectedOrder?.expectedDate | date:'short'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="order-print pull-right">
+                                <span><i class="fa fa-paperclip"></i></span>
+                                <span><i class="fa fa-file-pdf-o"></i></span>
+                                <span><i class="fa fa-print"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="third-col-wrap">
+                        <div class="">
+                            <table class="table  table-border">
+                                <tbody>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Strength</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                    <tr *ngFor="let product of selectedOrder.orderedProducts">
+                                        <td>{{product.product?.name}}</td>
+                                        <td>{{product.strength?.name}}</td>
+                                        <td>{{product.quantity}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="remark">
+                        <h5>Remark</h5>
+                        <p>All goods received in good condition and have since been distributed to the various stores in need of supplies. From this point onwards, its business as usual at all our various store.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end purchase order details-->
+    </div>
+</div>

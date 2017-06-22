@@ -1,0 +1,31 @@
+<div class="c-page-header">
+    <h3 class="c-page-title">List of wards</h3>
+    <div routerLink="/modules/setup/locations" class="short-cut-link pull-right">
+        <i class="fa fa-arrow-circle-o-right"></i> Create Wards
+    </div>
+</div>
+<div class="c-page-body">
+    <div class="inPatients">
+        <div class="table-responsive">
+            <table class="table table-striped no-margin" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table-bordered">
+                        <th style="width: 5%">No</th>
+                        <th>Ward</th>
+                        <th>No. of Room(s)</th>
+                    </tr>
+                </thead>
+                <tbody class="custom-tbody">
+                    <tr *ngIf="facilityWards.length == 0">
+                        <td colspan="3"> No data available in table</td>
+                    </tr>
+                    <tr class="details-link" routerLink="/modules/ward-manager/setup/ward/{{facilityWard._id}}" *ngFor="let facilityWard of facilityWards;let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{facilityWard.name}}</td>
+                        <td *ngIf="facilityWard?.wardDetails?.rooms?.length == null">0</td>
+                        <td *ngIf="facilityWard?.wardDetails?.rooms?.length">{{facilityWard?.wardDetails?.rooms?.length}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

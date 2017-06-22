@@ -1,0 +1,29 @@
+@import '../../../store-manager/landing-page/landing-page.component.scss';
+.payment-link {
+    padding: 4px;
+    border: 1px solid #0288d1;
+    border-radius: 8px;
+    color: #0288d1 !important;
+    background: transparent;
+    font-size: 10px;
+}
+
+span {
+    color: #03a9f4 !important;
+}
+
+.survery .form-control {
+    width: 50%;
+}
+.inputFilter{
+    width: 100% !important;
+}
+
+.searchInput {
+    min-width: 200px;
+    max-width: 250px;
+}
+
+.survery {
+    margin: 0 5px !important;
+}

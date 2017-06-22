@@ -1,0 +1,43 @@
+<div class="modal-baseWrap animated pulse">
+  
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="facility-title">{{facilityObj.name}}</div>
+
+  <legend class="modal_title">Create Department</legend>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="f_sg1">
+
+    <form [formGroup]="frmNewDept" novalidate>
+                
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmNewDept.controls.deptName.valid || frmNewDept.controls.deptName.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+          <i class="fa fa-building-o" aria-hidden="true"></i>
+          <input type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmNewDept.controls.deptAlias.valid || frmNewDept.controls.deptAlias.pristine">
+            A minimum of 3 characters required.
+          </small>
+          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <input type="text" formControlName="deptAlias" placeholder="Short Name" autocomplete="off">
+        </div>
+
+        <div class="frm-item-wrap">
+          <small class="alert-label" [hidden]="frmNewDept.controls.deptDesc.valid || frmNewDept.controls.deptDesc.pristine">
+            This is a required field (minimum 10 characters).
+          </small>
+          <textarea class="txt-input modal-textarea" formControlName="deptDesc" placeholder="Description" autocomplete="off"></textarea>
+        </div>
+
+      <div (click)="newDept(frmNewDept.valid, frmNewDept.value)" class="cta-1">
+        CREATE DEPARTMENT
+      </div>
+
+    </form>
+  </div>
+
+</div>

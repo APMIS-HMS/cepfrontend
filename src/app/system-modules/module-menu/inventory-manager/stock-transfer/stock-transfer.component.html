@@ -1,0 +1,250 @@
+<div *ngIf="flyout" class="flyout animated slideOut">
+    <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div>
+    <div class="sec-b">
+        <div class="col-a">
+            <div class="filter-sect">
+                <div class="frm-item-wrap">
+                    <input class="search-input" placeholder="search product to transfer...">
+                </div>
+            </div>
+
+            <div class="product-sect">
+                <div class="control-group" *ngFor="let group of superGroups">
+                    <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+                                <div class="control__indicator"> <dx-check-box (onValueChanged)="onProductCheckChange($event,item)" [value]="item.checked"></dx-check-box></div>
+                            </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="survery">-->
+    <div class="container cotainer-width">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="callout callout-info">
+                    <h4>You have no product to transfer</h4>
+                    <p>To transfer product <a (click)="flyout_toggle($event)"> click here.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+             <br>
+                <div class="frm-item-wrap">
+                <dx-select-box [items]="stores" [formControl]="frmDestinationStore" displayExpr="name" valueExpr="_id" placeholder="Choose Destination Stock" [showClearButton]="true"></dx-select-box>
+            </div><br>
+            </div>
+        </div>
+        <div class="tblWrap">
+            <form *ngIf="productTableForm?.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
+                <div formArrayName="productTableArray" class="frmArrayWrap">
+                    <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
+                        <div formGroupName="{{i}}">
+                            <div class="prod-wrap">
+
+                                <div class="inputWrap-productDetail">
+                                    <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
+
+                                    <div style="width: 45%;" class="frm-item-wrap">
+                                        <small class="alert-label" [hidden]="schedule.controls.product.valid || schedule.controls.product.pristine">
+                                                    Kindly select an option from the drop down.
+                                                </small>
+                                        <label>Product</label>
+                                        <dx-text-box formControlName="product" [readOnly]="true" style="width: 100%;"></dx-text-box>
+                                    </div>
+                                    <div style="width: 15%;" class="frm-item-wrap">
+                                        <small class="alert-label" [hidden]="schedule.controls.batchNo.valid || schedule.controls.batchNo.pristine">
+                                                    Kindly select an option from the drop down.
+                                                </small>
+                                        <label>Batch Numbers</label>
+                                        <dx-select-box style="width: 100%;" (onValueChanged)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" [items]="schedule.controls.batchNumbers.value" displayExpr="batchNumber" valueExpr="_id"></dx-select-box>
+                                    </div>
+                                    <div style="width: 10%;" class="frm-item-wrap">
+                                        <small class="alert-label" [hidden]="schedule.controls.product.valid || schedule.controls.product.pristine">
+                                                    Kindly select an option from the drop down.
+                                                </small>
+                                        <label>Batch No</label>
+                                        <dx-text-box formControlName="batchNo" [readOnly]="true" style="width: 100%;"></dx-text-box>
+                                    </div>
+
+                                    <div style="width: 15%;" class="frm-item-wrap">
+                                        <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
+                                                    Kindly type something in the field.
+                                                </small>
+                                        <label>Unit Cost Price</label>
+                                        <dx-number-box [step]="0.01" [readOnly]="true" formControlName="costPrice" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;"></dx-number-box>
+                                    </div>
+                                    <div style="width: 10%;" class="frm-item-wrap">
+                                        <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
+                                                    Kindly type something in the field.
+                                                </small>
+                                        <label>Qantity</label>
+                                        <dx-number-box formControlName="qty" min="0" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;" (onValueChanged)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"></dx-number-box>
+                                        <a class="pull-right" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></a>
+                                    </div>
+                                    <div style="width: 15%;" class="frm-item-wrap">
+                                        <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
+                                                    Kindly type something in the field.
+                                                </small>
+                                        <label>Total Cost Price</label>
+                                        <dx-number-box [step]="0.01" [readOnly]="true" formControlName="totalCostPrice" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;"></dx-number-box>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
+            <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
+            <button class="cta-1" (click)="saveTransfer()"> Send </button>
+        </div>
+    </div>
+    <div *ngIf="preview" class="overlay">
+        <div class="paper">
+            <div class="">
+                <div (click)="previewShow()" class="modal-close-ico" aria-hidden="true">X</div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="box">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                                    <h4 class="apmis-brown">Stock Transfer</h4>
+                                    <!--<p class="apmis-blue">112250AA</p>-->
+                                </div>
+                            </div>
+                            <div class="justwrap">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-xs-12">
+                                        <div class="date-box">
+                                            <div class="col-sm-4 col-md-4">
+                                                <p>From</p>
+                                            </div>
+                                            <div class="col-sm-1 col-md-1">
+                                                <span>-</span>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                {{previewObject?.store}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-xs-12">
+                                        <div class="date-box">
+                                            <div class="col-sm-4 col-md-4">
+                                                <p>To</p>
+                                            </div>
+                                            <div class="col-sm-1 col-md-1">
+                                                <span>-</span>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                <p>{{previewObject?.destinationStore}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 col-md-7 col-xs-12">
+                                    <div class="date-value">
+                                        <div class="col-sm-5 col-md-5">
+                                            <p>Date Transfered</p>
+                                        </div>
+                                        <div class="col-sm-1 col-md-1">
+                                            <span>-</span>
+                                        </div>
+                                        <div class="col-sm-5 col-md-5">
+                                            <p>{{previewObject?.dateTransfer|date:'short'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 col-md-7 col-xs-12">
+                                    <div class="date-value">
+                                        <div class="col-sm-5 col-md-5">
+                                            <p>Date Accepted</p>
+                                        </div>
+                                        <div class="col-sm-1 col-md-1">
+                                            <span>-</span>
+                                        </div>
+                                        <div class="col-sm-5 col-md-5">
+                                            <p>{{previewObject?.dateAccepted}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 col-md-7 col-xs-12">
+                                    <div class="date-value red">
+                                        <div class="col-sm-5 col-md-5">
+                                            <p>Stock Value</p>
+                                        </div>
+                                        <div class="col-sm-1 col-md-1">
+                                            <span>-</span>
+                                        </div>
+                                        <div class="col-sm-5 col-md-5">
+                                            <p>{{previewObject?.stockValue|number:'1.2-2'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="print pull-right">
+                                        <a><span class="fa fa-paperclip"></span></a>
+                                        <a><span class="fa fa-file-pdf-o"></span></a>
+                                        <a><span class="fa fa-print"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" box-border">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4">
+                                        <h4> Products </h4>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4">
+                                        <h4> Value (N) </h4>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4">
+                                        <h4>Qty Transfered</h4>
+                                    </div>
+                                </div>
+                                <div class="row" *ngFor="let previewProduct of previewObject.products">
+                                    <div class="col-sm-4 col-md-4">
+                                        <p> {{previewProduct.product}} </p>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4">
+                                        <p> {{previewProduct?.cost|number:'1.2-2'}} </p>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4">
+                                        <p> {{previewProduct?.quantity}} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end preview -->
+
+
+
+
+
+
+
+
+
+    </div>

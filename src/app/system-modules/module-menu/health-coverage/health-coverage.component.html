@@ -1,0 +1,17 @@
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+
+    <div class="inner-page-wrap">
+        <div class="lhs inner-page-menuTab">
+            <ul class="nav-group">
+                <li [class.navActive]="getActivePath('companyCover')" (click)="companyCover_show()">Company Retainership</li>
+                <li [class.navActive]="getActivePath('familyCover')" (click)="familyCover_show()">Family Cover</li>
+                <li [class.navActive]="getActivePath('hmoCover')" (click)="hmoCover_show()">HMO</li>
+                <li [class.navActive]="getActivePath('staffCover')" (click)="staffCover_show()">Staff</li>
+            </ul>
+        </div>
+
+        <router-outlet class="menuContent"></router-outlet>
+        <div class="clear"></div>
+    </div>
+</div>

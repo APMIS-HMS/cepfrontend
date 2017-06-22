@@ -1,0 +1,117 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">New Product</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+    <div class="modal_mini_title">{{productName}}</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
+
+    <form novalidate [formGroup]="frm_newProduct">
+        <div class="mainfrmwrap">
+            <div class="sec-1">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.productTypeId.valid || frm_newProduct.controls.productTypeId.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Product Type</label>
+                    <select formControlName="productTypeId">
+                        <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
+                    </select>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.presentationId.valid || frm_newProduct.controls.presentationId.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Presentation</label>
+                    <dx-lookup [dataSource]="presentations" formControlName="presentationId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false" displayExpr="name" valueExpr="_id">
+                    </dx-lookup><span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Strength</label>
+                    <dx-lookup [dataSource]="strengths" formControlName="strengthId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false" displayExpr="strength" valueExpr="_id">
+                    </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.manufacturerId.valid || frm_newProduct.controls.manufacturerId.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Manufacturer</label>
+                    <select formControlName="manufacturerId">
+                        <option  *ngFor="let manufacturer of manufacturers" value="{{manufacturer._id}}">{{manufacturer.name}}</option>
+                    </select>
+                    <span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.productTypeId.valid || frm_newProduct.controls.productTypeId.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Service Category</label>
+                    <select formControlName="categoryId">
+                        <option *ngFor="let category of categories" value="{{category._id}}">{{category.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="sec-2">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.packLabel.valid || frm_newProduct.controls.packLabel.pristine">
+                        Kindly type something in the field.
+                    </small>
+                    <label>Pack Label</label>
+                    <input formControlName="packLabel" type="text" name="">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.packSize.valid || frm_newProduct.controls.packSize.pristine">
+                        Kindly type something in the field.
+                    </small>
+                    <label>Pack Size</label>
+                    <input formControlName="packSize" type="text" name="">
+                </div>
+                <!--<div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Strength</label>
+                    <select formControlName="strengthId">
+                        <option  *ngFor="let manufacturer of manufacturers" value="{{manufacturer._id}}">{{manufacturer.name}}</option>
+                    </select>
+                </div>-->
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.genericName || frm_newProduct.controls.genericName.pristine">
+                        Kindly select an option from the drop down.
+                    </small>
+                    <label>Active Ingredient</label>
+                    <input formControlName="genericName" type="text" name="" value="">
+                    <div *ngIf="ingridentSugestion" class="sugestion-wrap shadow-B">
+                        <div (click)="onSelectActiveIngredientSuggestion(active)" *ngFor="let active of activeIngredients" class="sugestion-item">{{active.genericName}}</div>
+                    </div>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.name.valid || frm_newProduct.controls.name.pristine">
+                        Kindly type something in the field.
+                    </small>
+                    <label>Name(Product)</label>
+                    <input formControlName="name" type="text" name="" value="">
+                    <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
+                        <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+        <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; {{createText}}</button>
+    </form>
+    <div *ngIf="manufacturer">
+            <app-manufacturer-manager></app-manufacturer-manager>
+    </div>
+    <div *ngIf="presentation">
+        <app-presentation-manager></app-presentation-manager>
+    </div>
+    <div *ngIf="strength">
+        <app-strength-manager></app-strength-manager>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+@import '../purchase-order/new-purchase-order/new-purchase-order.component.scss';
+
+.sec-a{
+    width: 100%;
+    margin-top: 0;
+}
+.wrap1{
+    width: 70%;
+}
+.wrap2{
+    width: 29.5%;
+}
+.sec-c{
+    max-width: 410px;
+    display: flex;
+    justify-content: space-around;
+    float: right;
+}
+.sec-c .frm-item-wrap{
+    width: 200px;
+}
+.bottomwrap{
+    display: flex;
+    justify-content: space-between;
+}
+.summaries{
+    margin-top: 10px;
+}
+.midwrapsect{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+.txt-link{
+    height: 15px;
+}
+.uploadWrap{
+    width: 150px;
+}

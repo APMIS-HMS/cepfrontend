@@ -1,0 +1,61 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title" style="color:#0d47a1;text-align:center;">Add Supplier</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <form [formGroup]="frm_newSupplier" novalidate>
+
+        <div class="mainfrmwrap">
+            <div class="sec-full">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newSupplier.controls.name.valid || frm_newSupplier.controls.name.pristine">
+              Kindly supply the supplier name.
+            </small>
+                    <span class="frm-label">Name</span>
+                    <input type="text" formControlName="name" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newSupplier.controls.contact.valid || frm_newSupplier.controls.contact.pristine">
+              Kindly supply the supplier contact.
+            </small>
+                    <span class="frm-label">Contact</span>
+                    <input type="text" formControlName="contact" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newSupplier.controls.email.valid || frm_newSupplier.controls.email.pristine">
+              Kindly supply the suppplier email.
+            </small>
+                    <span class="frm-label">Email</span>
+                    <input type="email" formControlName="email" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newSupplier.controls.phoneNumber.valid || frm_newSupplier.controls.phoneNumber.pristine">
+              This is email is not valid.
+            </small>
+                    <span class="frm-label">Phone Number</span>
+                    <input type="text" formControlName="phoneNumber" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frm_newSupplier.controls.address.valid || frm_newSupplier.controls.address.pristine">
+              Kindly supply a brief address of supplier.
+            </small>
+                    <span class="frm-label">Address</span>
+                    <textarea formControlName="address">
+              
+            </textarea>
+                </div>
+            </div>
+        </div>
+
+        <div (click)="create(frm_newSupplier)" class="cta-1">
+            Add
+        </div>
+
+    </form>
+
+</div>
+<div *ngIf="loadIndicatorVisible" class="div_loading">
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+</div>

@@ -1,0 +1,128 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Assign Workspace</legend>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <form [formGroup]="frmNewEmp1" novalidate>
+        <div class="mainfrmwrap">
+            <div class="sec-1">
+                <div class="frm-item-wrap">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <label>Department</label>
+                    <select formControlName="dept">
+					<option value="" disabled selected>Department</option>
+					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
+				</select>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <label>Unit</label>
+                    <select formControlName="unit">
+					<option value="" disabled selected>Unit</option>
+					<option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
+				</select>
+                </div>
+            </div>
+            <div class="sec-2">
+                <div class="frm-item-wrap">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <label>Major Location</label>
+                    <select formControlName="majorLoc">
+					<option value="" disabled selected>Major Location</option>
+					<option *ngFor="let major of majorLocations" [ngValue]="major">{{major.name}}</option>
+				</select>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                    <label>Minor Location</label>
+                    <select formControlName="minorLoc">
+					<option value="" disabled selected>Minor Location</option>
+					<option *ngFor="let minor of minorLocations" [ngValue]="minor">{{minor.name}}</option>
+				</select>
+                </div>
+            </div>
+
+            <div class="emp-wrap">
+                <table cellpadding="0" cellspacing="0" border="0.5">
+                    <thead>
+                        <tr>
+                            <th class="sel-all">
+                                <div class="dx-field">
+                                    <div class="dx-field-value">
+                                        <dx-check-box [formControl]="checkAll"></dx-check-box>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                <span style="padding-left: 3px;">Employee</span>
+                            </th>
+                            <th>
+                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                <span style="padding-left: 3px;">Telephone</span>
+                            </th>
+                            <th>
+                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                <span style="padding-left: 3px;">Email</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td colspan="6">
+                                <div class="tbl-actionRow">
+                                    <div class="tbl-title"></div>
+                                    <div class="tbl-search">
+                                        <div class="searchInputWrap">
+                                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let employee of filteredEmployees">
+                            <td class="sel-all">
+                                <div class="dx-field">
+                                    <div class="dx-field-value">
+                                        <dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="empWrap">
+                                    <div class="list-img">
+                                          <div *ngIf="employee?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                                        <img *ngIf="employee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(employee?.employeeDetails?.profileImageObject?.thumbnail)">
+                                    </div>
+                                    <div>{{employee.employeeDetails.lastName}} {{employee?.employeeDetails.firstName}}</div>
+                                </div>
+                            </td>
+                            <td>{{employee.employeeDetails.phoneNumber}}</td>
+                            <td>{{employee?.employeeDetails.email}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+      Assign Workspace
+    </button>
+
+    </form>
+
+</div>
+<div *ngIf="loadIndicatorVisible" class="div_loading">
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+</div>

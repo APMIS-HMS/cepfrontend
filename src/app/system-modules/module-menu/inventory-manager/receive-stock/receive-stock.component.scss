@@ -1,0 +1,109 @@
+@import '../../store-manager/landing-page/landing-page.component.scss';
+
+.searchStock {
+    width: 200px;
+}
+.td-col-span-6 {
+    padding: 20px 10px;
+}
+.searchStock {
+    box-shadow: none;
+    background: #f5f5f5;
+}
+
+td {
+    padding: 12px 0;
+    color: #323232;
+    font-size: 14px;
+}
+.accepted, .fa-check {
+    color: #28c41c;
+}
+
+.rejected, .fa-close {
+    color: #ff2500;
+}
+
+.pending {
+    color: #0288d1;
+}
+.inner-page-menuTab {
+    width: 23% !important;
+}
+.inner-page-contentArea {
+    width: 77% !important;
+}
+.survery .table > tbody > tr > td {
+    text-align: left !important;
+    padding: 13px;
+}
+
+/* details */
+#slideDetails {
+    width: 600px;
+    background: #fff;
+    height: 100vh;
+    position: fixed;
+    z-index: 9999;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 1px solid #cacaca;
+}
+.box-border {
+    border: 1px solid #cacaca;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+.margin-top-15px {
+    margin-top: 15px;
+}
+.apmis-brown {
+    color: #9b5c0b;
+    font-size: 13px;
+}
+.apmis-blue {
+    color: #2b6ac8;
+    font-size: 12px;
+}
+.pending {
+    color: #34aa00;
+    font-size: 12px;
+}
+.box-border h4{
+    color: #616161;
+    font-size: 16px;
+    line-height: 16px;
+}
+.box-border p{
+    color: #333;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Verdana, sans-serif;
+}
+.box-border .fa {
+     color: #333;
+    font-weight: normal;
+    font-size: 14px; 
+}
+.date-box p, .date-value p {
+    font-size: 12px;
+    color:#000;
+}
+.padding-left-0 {
+    padding-left: 0;
+}
+#slideDetails a {
+    font-size: 20px;
+    line-height: 20px;
+}
+#slideDetails .fa-arrow-circle-right {
+    color: red;
+}
+
+/* end */
+
+.margin-bottom {
+    margin: 0 0 10px 0;
+}

@@ -1,0 +1,17 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="headWrap">
+    <div class="service-name">{{selectedFacilityServicePrice?.service?.name}}</div>
+    <div class="service-cat">{{selectedFacilityServicePrice?.category}}</div>
+    <div class="service-amount">{{selectedFacilityServicePrice?.price}}</div>
+  </div>
+  <div class="tags">
+    <div  *ngFor="let modifier of selectedFacilityServicePrice.modifiers" class="tag">
+      <div (click)="removeTag(modifier)" class="closeTag"><i class="fa fa-times" aria-hidden="true"></i></div>
+      <span>{{modifier?.tagDetails?.name}}</span>
+      <span *ngIf="modifier?.modifierType=='Percentage'">{{modifier?.modifierValue}}%</span>
+      <span *ngIf="modifier?.modifierType=='Amount'">{{modifier?.modifierValue}}(Naira)</span>
+    </div>
+  </div>
+</div>

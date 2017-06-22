@@ -1,0 +1,48 @@
+@import "../../../../../globals/variables.scss";
+@import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
+.inPatients {
+    border: none;
+    .patient-sex {
+        text-align: left;
+    }
+    .btn-1 {
+        padding: 5px;
+        margin-top: 10px;
+    }
+    .moduleNav {
+        li {
+            padding: 10px;
+        }
+    }
+    table {
+        thead {
+            background-color: #AED6F1;
+        }
+        tbody {
+            border: 1px solid #ddd !important;
+            tr {
+                td {
+                    padding: 8px;
+                    line-height: 1.42857143;
+                }
+            }
+            .tr-header-group {
+                background-color: #0288D1;
+                color: #fff;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            tr {
+                td {
+                    line-height: 3;
+                }
+            }
+        }
+    }
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+}

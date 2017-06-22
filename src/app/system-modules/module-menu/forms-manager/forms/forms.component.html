@@ -1,0 +1,39 @@
+<div class="pg-wrap">
+    <div class="survery">
+        <div class="pg-title">Form Generator</div>
+        <div class="dx-field dx-field-full">
+            <dx-select-box [items]="forms" displayExpr="title" valueExpr="_id" [formControl]="txtForm" placeholder="Forms" [showClearButton]="true"></dx-select-box>
+            <button class="on-create-btn" (click)="onCreate()"><i class="fa fa-plus"></i></button>
+        </div>
+        <div class="formWrap">
+            <form [formGroup]="frm_document" novalidate>
+                <div class="form-innerSect">
+                    <div class="dx-fieldset">
+                        <div class="dx-field" style="width:406px;">
+                            <dx-text-box placeholder="Form Name" formControlName="formName"></dx-text-box>
+                        </div>
+                        <div class="dx-field">
+                            <dx-select-box [items]="scopeLevels" displayExpr="name" valueExpr="_id" placeholder="Form Scope" formControlName="scopeLevel" [showClearButton]="true"></dx-select-box>
+                        </div>
+                        <div class="dx-field">
+                            <dx-select-box [items]="documentTypes" displayExpr="name" valueExpr="_id" placeholder="Form Type" formControlName="documentType" [showClearButton]="true"></dx-select-box>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form [formGroup]="frm_checkboxGroup" novalidate>
+                <div class="form-innerSect">
+                    <div class="checkbox-wrap">
+                        <!--<div *ngFor="let control of frm_checkboxGroup.controls['myValues'].controls; let i=index" class="checkbox-itemWrap">
+                            <div class="dx-field">
+                                <div class="checkbox-label">{{modules[i].name}}</div>
+                                <dx-check-box [formControl]="control" (onValueChanged)="onValueChanged($event,modules[i])" value="{{modules[i].checked}}"></dx-check-box>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+        <survey-editor [defaultStrings]="defaultStrings" [editorOptions]="editorOptions"></survey-editor>
+    </div>
+</div>

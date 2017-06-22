@@ -1,0 +1,16 @@
+@import "../facilitypage-departmentspage/facilitypage-departmentspage.component.scss";
+.module-menu {
+    width: 100%;
+    .short-cut-link {
+        color: #153d70;
+        padding: 10px;
+        text-decoration: underline;
+        cursor: pointer;
+        width: 145px;
+        float: right;
+    }
+    .btn-1 {
+        float: right;
+        width: 180px;
+    }
+}

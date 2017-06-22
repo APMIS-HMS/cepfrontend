@@ -1,0 +1,28 @@
+<div class="modal-baseWrap animated pulse">
+
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Discharge Segun Alabi</legend>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <form [formGroup]="dischargeFormGroup" novalidate>
+        <div class="frm-item-wrap">
+            <small class="alert-label" [hidden]="dischargeFormGroup.controls.dischargeType.valid || dischargeFormGroup.controls.dischargeType.pristine">
+				Kindly select an option from the drop down.
+			</small>
+            <i class="fa fa-venus-mars" aria-hidden="true"></i>
+            <select formControlName="dischargeType" (change)="onDischargeTypeChange($event.target.value)">
+				<option  value="" disabled selected>Discharge Type</option>
+				<option  *ngFor="let discharge of dischargeTypeItems"  value="{{discharge._id}}">{{discharge.name}}</option>
+			</select>
+        </div>
+        <div class="frm-item-wrap">
+            <small class="alert-label" [hidden]="dischargeFormGroup.controls.comment.valid || dischargeFormGroup.controls.comment.pristine">
+				this is a required field (minimum 3 and max of 20 characters).
+			</small>
+            <i class="fa fa-building-o" aria-hidden="true"></i>
+            <textarea formControlName="comment" class="edit-control" placeholder="Comment" autocomplete="off"></textarea>
+        </div>
+        <div class="clear"></div>
+        <button class="cta-1" (click)="onDischarge(dischargeFormGroup.value, dischargeFormGroup.valid)"> Discharge Patient</button>
+    </form>
+</div>

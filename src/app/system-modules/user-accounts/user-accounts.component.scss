@@ -1,0 +1,162 @@
+@import "../../../globals/variables.scss";
+
+.userAcc-mainWrap{
+    background: linear-gradient(
+                     rgba(0,0,0, .0), 
+                     rgba(0,0,0, 1));
+    // background-image: url(assets/images/bg/dna.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: $secondaryColor;
+}
+.userAccs-pgHeader{
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 60px;
+    font-family: $font-titles;
+}
+.userAccs-pgHeader img{
+    width: 70px;
+}
+.userAccs-pgTitle {
+    font-size: 21px;
+    color: #e8e8e8;
+}
+.userAccs-listingWrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.listing-title{
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+}
+.userAccs-listing{
+    width: 90%;
+    text-align: center;  
+}
+.acc-listing{
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    padding-top: 15px;
+    border: 1px solid #4bb8ef;
+}
+.acc-listing:hover{
+    border: 1px solid #fff;
+    background: rgba(0,0,0,0.3);
+}
+.listing-imgWrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background: rgba(221, 221, 221, 0.6);
+    margin: 0 auto;
+}
+.listing-imgWrap img{
+    width: 80%;
+}
+.listing-name{
+    font-size: 16px;
+    color: #737373;
+}
+.loggedinUserWrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 14px;
+    color: #fff;
+    padding: 10px;
+}
+.loggedinUser_user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.loggedinUser_user:hover{
+    text-decoration: underline;
+}
+.loggedinUserWrap img{
+    width: 30px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+.logoutLink{
+    margin-left: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+.logoutLink:hover{
+    text-decoration: underline;
+}
+@media only screen and (max-width: 530px){
+    .acc-listing{
+        width: auto;
+        height: auto;
+        padding-top: 0;
+        border: 0px;
+    }
+    .loggedinUserWrap{
+        top: -2px;
+        right: 0px;
+        font-size: 11px;
+    }
+    .userAccs-pgTitle{
+        font-size: 16px;
+    }
+    .listing-imgWrap{
+        width: 30px;
+        height: 30px;
+    }
+    .listing-name{
+        font-size: 12px;
+        max-width: 70px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .f_sg3 input{
+    border-bottom: 0px;
+}
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto; 
+    width: 500px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+}

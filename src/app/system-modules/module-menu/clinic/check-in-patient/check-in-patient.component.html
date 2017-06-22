@@ -1,0 +1,164 @@
+<div class="page-title">Checked-In Patients</div>
+
+<div class="checkedinPatients">
+
+    <table cellpadding="0" cellspacing="0" border="0.5">
+        <thead>
+            <tr>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Name</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Currently In</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Care Giver</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Location</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Checked In</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Time Spent</span>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td colspan="7">
+                    <div class="tbl-actionRow">
+                        <div class="dx-field">
+                            <div>Sort By Doctor</div>
+                            <div class="dx-field-value">
+                                <dx-select-box [items]="employees" displayExpr="employeeDetails.personFullName" valueExpr="_id"></dx-select-box>
+                            </div>
+                        </div>
+                        <div class="dx-field">
+                            <div>Sort By Location</div>
+                            <div class="dx-field-value">
+                                <dx-select-box [items]="clinicHelperService.clinicLocations" displayExpr="name" valueExpr="_id"></dx-select-box>
+                            </div>
+                        </div>
+                        <div class="dx-field">
+                            <div>Sort By Clinic</div>
+                            <div class="dx-field-value">
+                                <dx-select-box [items]="clinics" displayExpr="clinicName" valueExpr="_id"></dx-select-box>
+                            </div>
+                        </div>
+                        <div class="tbl-search">
+                            <div class="searchInputWrap">
+                                <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search checked in patients">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr *ngFor="let appointment of checkedInAppointments">
+                <td>
+                    <div class="empWrap" (click)="goToPatientPage(appointment,false)">
+                        <div class="list-img"> <img [src]="facilityService.transform(appointment.employeeDetails?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                        <div>{{appointment.patientDetails?.personDetails?.lastName}} {{appointment.patientDetails?.personDetails?.firstName}}</div>
+                    </div>
+                </td>
+                <td>{{appointment.clinicDetails?.clinicName}}</td>
+                <td>
+                    <div>{{appointment.employeeDetails?.employeeDetails.lastName}} {{appointment.employeeDetails?.employeeDetails.firstName}}</div>
+                    <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
+                </td>
+                <td>
+                    <span>{{appointment.clinicLocationDetails.name}}</span>
+                    <div class="loc-timeSpent">12<span class="timeLabel">mins,</span>25<span class="timeLabel">secs.</span></div>
+                </td>
+                <td>{{appointment?.attendance.dateCheckIn | date:'shortTime'}}</td>
+                <td><span class="timeLabel">{{appointment?.attendance.dateCheckIn | amTimeAgo}}</span></td>
+                <td>
+                    <div class="td-ctaWrap">
+                        <div class="actionWrap" (click)="showVital(appointment)">
+                            <i class="fa fa-external-link" aria-hidden="true"></i>
+                            <span>Vitals</span>
+                        </div>
+                        <div class="actionWrap" (click)="goToPatientPage(appointment,true)">
+                            <i class="fa fa-medkit" aria-hidden="true"></i>
+                            <span>Attend to Patient</span>
+                        </div>
+                        <div (click)="slideTimeline_toggle(appointment, $event)" class="actionWrap">
+                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                            <span>Timeline</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+
+    <div *ngIf="addVital" class="modal-overlay">
+        <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+    </div>
+
+</div>
+
+<div *ngIf="slideTimeline" class="inPatient-activityTimeline shadow-RB animated slideInRight">
+    <div (click)="slideTimeline_toggle(appointment, $event)" class="hide-actionWrap">
+        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+    </div>
+
+    <div class="timeline-headwrap">
+        <div class="timelinehead-contentWrap">
+            <div class="timelinePatient-imgWrap"><img [src]="facilityService.transform(selectedCheckedInAppointment?.employeeDetails?.employeeDetails?.profileImageObject?.detailthumbnail)"></div>
+            <div class="patientLabelGroup">
+                <div class="patientName">{{selectedCheckedInAppointment?.employeeDetails.employeeDetails.lastName}} {{selectedCheckedInAppointment?.employeeDetails.employeeDetails.firstName}}</div>
+                <div class="label">(Clinical Activity Timeline)</div>
+            </div>
+        </div>
+    </div>
+
+    <div (click)="dontGo()" class="activity-listings">
+        <div *ngFor="let timeline of timelines" class="activity-listing">
+            <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            <div class="activity-content">
+                <div class="activity-time">
+                    <div class="date">{{timeline.startTime | date:'mediumDate'}}</div>
+                    <div class="time">{{timeline.startTime | date:'mediumTime'}}</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-label">{{timeline.label}}</div>
+                    <div class="activity-actor" *ngIf="timeline.person.employeeDetails !== undifined">
+                        <span>{{timeline.person.employeeDetails.personFullName}}</span>
+                        <div  class="actor-wrap"><img [src]="facilityService.transform(timeline.person.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                    </div>
+                    <div class="activity-actor" *ngIf="timeline.person.employeeDetails === undifined">
+                        <span>{{timeline.person.personFullName}}</span>
+                        <div  class="actor-wrap"><img [src]="facilityService.transform(timeline.person?.profileImageObject?.thumbnail)"></div>
+                    </div>
+                    <div class="activity-detail"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="addVital" class="modal-overlay">
+    <app-add-vitals [selectedAppointment]="selectedCheckedInAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+</div>
+
+<div *ngIf="loadIndicatorVisible" class="div_loading">
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+</div>

@@ -1,0 +1,48 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="facility-title">Add Price To List</div>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="f_sg1">
+
+    <form [formGroup]="frmNewprice" novalidate>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewprice.controls.serviceCat.valid || frmNewprice.controls.serviceCat.pristine">
+          required field.
+        </small>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <select formControlName="serviceCat">
+          <option value="" disabled selected>Category</option>
+          <option *ngFor="let category of categories" [ngValue]="category">{{category.name}}</option>
+        </select>
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewprice.controls.service.valid || frmNewprice.controls.service.pristine">
+          required field.
+        </small>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <select formControlName="service">
+          <option value="" disabled selected>Service</option>
+          <option *ngFor="let service of services" [ngValue]="service">{{service.service}}</option>
+        </select>
+      </div>
+
+      <div class="frm-item-wrap">
+        <small class="alert-label" [hidden]="frmNewprice.controls.price.valid || frmNewprice.controls.price.pristine">
+          required field.
+        </small>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <input currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" formControlName="price" placeholder="Amount" autocomplete="off">
+      </div>
+
+      <button (click)="newPrice(frmNewprice.value, frmNewprice.valid)" class="cta-1">
+        ADD PRICE TO LIST
+      </button>
+
+    </form>
+  </div>
+
+</div>

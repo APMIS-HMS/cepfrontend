@@ -1,0 +1,31 @@
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
+    <div class="inner-menu1-wrap responsive_nav-group">
+        <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+        <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+            <li [routerLink]="['/modules/store/home']">Manage Store</li>
+            <li [routerLink]="['/modules/product-manager/products']">Manage Product</li>
+            <li [routerLink]="['/modules/purchase-manager/orders']">Manage Purchase</li>
+            <li [routerLink]="['/modules/inventory-manager/inventory']">Manage Inventory</li>
+        </ul>
+    </div>
+    <div class="inner-page-wrap">
+        <div class="lhs inner-page-menuTab">
+            <ul class="nav-group">
+                <li [class.navActive]="inventoryNavMenu" (click)="onClickInventoryNavMenu()" routerLink="/modules/inventory-manager/inventory">My Inventory</li>
+                <li [class.navActive]="stockTakingNavMenu" (click)="onClickStockTakingNavMenu()" routerLink="/modules/inventory-manager/stock-taking">Stock Auditing</li>
+                <li routerLink="/modules/inventory-manager/stock-transfer" [class.navActive]="stockTransferNavMenu" (click)="onClickStockTransferNavMenu()">Transfer Stock</li>
+                <li [class.navActive]="stockHistoryNavMenu" (click)="onClickStockHistoryNavMenu()" routerLink="/modules/inventory-manager/stock-history">Transfer History</li>
+                <li [class.navActive]="receiveStockNavMenu" (click)="onClickReceiveStockNavMenu()" routerLink="/modules/inventory-manager/receive-stock">Receive Stock</li>
+                <li [class.navActive]="requisitionNavMenu" (click)="onClickRequisitionNavMenu()" routerLink="/modules/inventory-manager/requisition">Requisition</li>
+                <li class="list-break-line"></li>
+                <li [class.navActive]="purchaseManagerNavMenu" routerLink="/modules/purchase-manager/purchases">Purchase Manager</li>
+            </ul>
+        </div>
+        <div class="rhs inner-page-contentArea c-page-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="clear"></div>
+        <div *ngIf="modal_on" class="modal-overlay">
+            <app-store-check-in [loginEmployee]="loginEmployee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
+        </div>

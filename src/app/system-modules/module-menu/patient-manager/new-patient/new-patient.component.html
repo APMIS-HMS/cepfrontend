@@ -1,0 +1,260 @@
+<div class="modal-baseWrap animated pulse">
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">New Patient</legend>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <div *ngIf="apmisId_show" class="newEmp-idWrap">
+        <input type="text" placeholder="Patient's Apmis ID'" [formControl]="newEmpIdControl">
+        <div class="gen_idWrap">Patient has no <strong>apmis ID</strong>? <span (click)="newPerson1_show()">Generate New ID</span></div>
+        <div (click)="empApmisID()" class="btn-1 btn-blue">Add Patient</div>
+    </div>
+
+    <div *ngIf="frmNewPerson1_show">
+        <form [formGroup]="frmNewEmp1" novalidate>
+            <div class="lhs">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empTitle.valid || frmNewEmp1.controls.empTitle.pristine">
+						Kindly select an option from the drop down.
+					</small>
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
+                    <select formControlName="empTitle" (change)="onEmpTitleChange($event.target.value)">
+						<option  value="" disabled selected>Title</option>
+						<option *ngFor="let item of titles"  value="{{item._id}}">{{item.name}}</option>
+					</select>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empFirstName.valid || frmNewEmp1.controls.empFirstName.pristine">
+						this is a required field (minimum 3 and max of 20 characters).
+					</small>
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="empFirstName" placeholder="First Name" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empOtherNames.valid || frmNewEmp1.controls.empOtherNames.pristine">
+						kindly fill in a minimum 3 and max of 20 characters.
+					</small>
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="empOtherNames" placeholder="Other Names" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empLastName.valid || frmNewEmp1.controls.empLastName.pristine">
+						this is a required field (minimum 3 and max of 20 characters).
+					</small>
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="empLastName" placeholder="Sur Name" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empGender.valid || frmNewEmp1.controls.empGender.pristine">
+						Kindly select an option from the drop down.
+					</small>
+                    <i class="fa fa-venus-mars" aria-hidden="true"></i>
+                    <select formControlName="empGender" (change)="onEmpGenderChange($event.target.value)">
+						<option  value="" disabled selected>Gender</option>
+						<option *ngFor="let item of genders"  value="{{item._id}}">{{item.name}}</option>
+					</select>
+                </div>
+            </div>
+            <div class="rhs">
+
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empNationality.valid || frmNewEmp1.controls.empNationality.pristine">
+						Kindly select an option from the drop down.
+					</small>
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
+                    <select formControlName="empNationality" (change)="onEmpNationalityChange($event.target.value)">
+						<option  value="" disabled selected>Nationality</option>
+						<option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
+					</select>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empState.valid || frmNewEmp1.controls.empState.pristine">
+						Kindly select an option from the drop down.
+					</small>
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
+                    <select formControlName="empState" (change)="onEmpStateChange($event.target.value)">
+						<option  value="" disabled selected>State of Origin</option>
+						<option *ngFor="let item of states"  [ngValue]="item">{{item.name}}</option>
+					</select>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empLga.valid || frmNewEmp1.controls.empLga.pristine">
+						Kindly select an option from the drop down.
+					</small>
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
+                    <select formControlName="empLga" (change)="onEmpLgaChange($event.target.value)">
+						<option  value="" disabled selected>LGA</option>
+						<option *ngFor="let item of lgs"  value="{{item._id}}">{{item.name}}</option>
+					</select>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empEmail.valid || frmNewEmp1.controls.empEmail.pristine">
+						Wrong email format (minimum 5 characters).
+					</small>
+                    <small class="alert-label" [hidden]="isEmailExist">
+						<!--Email exist.-->
+					</small>
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    <input class="txt-input" formControlName="empEmail" type="email" placeholder="Email Address" autocomplete="off">
+                </div>
+
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp1.controls.empPhonNo.valid || frmNewEmp1.controls.empPhonNo.pristine">
+						a contact number is required (minimum 5 characters).
+					</small>
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <input type="tel" formControlName="empPhonNo" placeholder="Contact Number" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+            <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div>
+        </form>
+    </div>
+
+    <div *ngIf="frmNewPerson2_show">
+        <form [formGroup]="frmNewEmp2" novalidate>
+            <div class="lhs">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empMaritalStatus.valid || frmNewEmp2.controls.empMaritalStatus.pristine">
+						Kindly select an option from the drop down.
+					</small>
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
+                    <select formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.target.value)">
+						<option  value="" disabled selected>Marital Status</option>
+						<option *ngFor="let item of maritalStatuses"  value="{{item._id}}">{{item.name}}</option>
+					</select>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empDOB.valid || frmNewEmp2.controls.empDOB.pristine">
+						this is a required field.
+					</small>
+                    <!--<ng2-datepicker formControlName="empDOB"></ng2-datepicker>-->
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="date" formControlName="empDOB" placeholder="Date of Birth" autocomplete="off">
+                    <!--<dx-date-box formControlName="empDOB" [value]="now" type="date"></dx-date-box>-->
+                    <!--<div class="date-inputLabel">Date of Birth</div>-->
+                </div>
+                <div class="frm-item-wrap">
+                    <div>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input type="file" ngFileSelect [options]="options" [events]="uploadEvents" (onUpload)="handleUpload($event)" (beforeUpload)="beforeUpload($event)">
+                        <!--<img-cropper (onCrop)="cropped($event)" #cropper [image]="empImg" [settings]="cropperSettings"></img-cropper>-->
+                        <!--<img-cropper [image]="empImg" [settings]="cropperSettings"></img-cropper>-->
+                    </div>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empHomeAddress.valid || frmNewEmp2.controls.empHomeAddress.pristine">
+						this is a required field (minimum 5 and max of 100 characters).
+					</small>
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="empHomeAddress" placeholder="Home Address" autocomplete="off">
+                </div>
+            </div>
+            <div class="rhs">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empCountry.valid || frmNewEmp2.controls.empCountry.pristine">
+						this field is required.
+					</small>
+                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                    <select formControlName="empCountry">
+						<option value="" disabled selected>Select Country</option>
+						<option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
+					</select>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empContactState.valid || frmNewEmp2.controls.empContactState.pristine">
+						this field is required.
+					</small>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <select formControlName="empContactState">
+						<option  value="" disabled selected>State (Residence)</option>
+						<option *ngFor="let item of contactStates"  [ngValue]="item">{{item.name}}</option>
+					</select>
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empCity.valid || frmNewEmp2.controls.empCity.pristine">
+						this field is required.
+					</small>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <select formControlName="empCity">
+						<option  value="" disabled selected>City (Residence)</option>
+						<option *ngFor="let item of cities"  value = "{{item._id}}">{{item.name}}</option>
+					</select>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div (click)="back_newPerson1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+            <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">CONTINUE</div>
+        </form>
+    </div>
+
+    <div *ngIf="frmNewPerson3_show">
+        <form [formGroup]="frmNewEmp3" novalidate>
+            <div class="lhs">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_fullname.valid || frmNewEmp3.controls.nok_fullname.pristine">
+						this is a required field (minimum 3 and max of 20 characters).
+					</small>
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="nok_fullname" placeholder="Next Of Kin's' Full Name" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="nok_apmisID" placeholder="Next Of Kin's' Apmis ID" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_Address.valid || frmNewEmp3.controls.nok_Address.pristine">
+						this is a required field (minimum 5 and max of 100 characters).
+					</small>
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <input type="text" formControlName="nok_Address" placeholder="Next Of Kin's Home Address" autocomplete="off">
+                </div>
+            </div>
+            <div class="rhs">
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_email.valid || frmNewEmp3.controls.nok_email.pristine">
+						Wrong email format (minimum 5 characters).
+					</small>
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    <input class="txt-input" formControlName="nok_email" type="email" placeholder="Next Of Kin's Email Address" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_phoneNo.valid || frmNewEmp3.controls.nok_phoneNo.pristine">
+						a contact number is required (minimum 5 characters).
+					</small>
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <input type="tel" formControlName="nok_phoneNo" placeholder="Next Of Kin's Contact Number" autocomplete="off">
+                </div>
+                <div class="frm-item-wrap">
+                    <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_relationship.valid || frmNewEmp3.controls.nok_relationship.pristine">
+						this is a required field.
+					</small>
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <select formControlName="nok_relationship" (change)="onNokRelationshipChange($event.target.value)">
+						<option  value="" disabled selected>Relationship</option>
+						<option *ngFor="let item of relationships"  value="{{item._id}}">{{item.name}}</option>
+					</select>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="frmNavControls_wrap">
+                <div (click)="back_newPerson2()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+                <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
+            </div>
+            <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div>
+        </form>
+    </div>
+
+    <div *ngIf="frmNewEmp4_show">
+        <form [formGroup]="frmNewEmp4" novalidate>
+            <div class="clear"></div>
+            <div (click)="back_newPerson3()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+            <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">Create Patient</div>
+        </form>
+    </div>
+</div>

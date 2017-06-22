@@ -1,0 +1,42 @@
+@import "../../../../../globals/variables.scss";
+@import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
+@import "../../clinic/appointment/appointment.component.scss";
+.inner-page-contentArea {
+    padding: 10px;
+}
+
+.inPatients {
+    border: none;
+    .patient-sex {
+        text-align: left;
+    }
+    .filter-select {
+        border: 1px solid #727272;
+        border-radius: 10px;
+        display: block;
+        padding: 10px;
+        width: 150px;
+    }
+    table {
+        thead {
+            background-color: #AED6F1;
+        }
+        tbody {
+            border: 1px solid #ddd !important;
+            tr {
+                td {
+                    padding: 8px;
+                    line-height: 1.42857143;
+                }
+            }
+            .tr-header-group {
+                background-color: #0288D1;
+                color: #fff;
+                text-align: left;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

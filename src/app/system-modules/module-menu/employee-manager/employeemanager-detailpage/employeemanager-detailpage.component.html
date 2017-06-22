@@ -1,0 +1,164 @@
+<div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
+    <div class="facility-title">Employee Manager</div>
+    <div class="side-sec lhs">
+        <app-employee-lookup (selectedEmployee)="navEpDetail($event)"></app-employee-lookup>
+    </div>
+
+    <div class="content-sec rhs">
+
+        <div class="inner-menu1-wrap">
+            <i *ngIf="employee !== undefined && employee._id !== undefined" id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+                <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> Generate User</li>
+                <li (click)="generateUnit()"><i class="fa fa-cube-in" aria-hidden="true"></i> Assign Unit</li>
+                <li (click)="generateWorkSpace()"><i class="fa fa-fax-in" aria-hidden="true"></i> Assign Workspace</li>
+                <li *ngIf="selectedUser?._id != undefined" (click)="editUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> User Privileges</li>
+                <li *ngIf="employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user-times" aria-hidden="true"></i> Deactivate Employee</li>
+                <li *ngIf="!employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user" aria-hidden="true"></i> Activate Employee</li>
+                <li><i class="fa fa-heartbeat" aria-hidden="true"></i> Health Care Coverage</li>
+            </ul>
+        </div>
+
+        <div *ngIf="employee != undefined">
+            <div class="empData-header">
+                <div class="lhs emp-data">
+                    <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
+                    <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}</div>
+                    <div class="emp-dept">{{employee?.department?.name}}</div>
+                    <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
+                    <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
+                    <div class="emp-status">
+                        <span *ngIf="!employee?.isActive" style="color:#E53935;">Inactive</span>
+                        <span [hidden]="!employee?.isActive" style="color: #43A047;">Active</span>
+                    </div>
+                </div>
+
+                <div class="rhs emp-img">
+                    <div class="emp-img-wrap">
+                        <div *ngIf="employee?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                        <img *ngIf="employee?.employeeDetails?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(employee?.employeeDetails?.profileImageObject?.detailthumbnail)">
+                        <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="empData-body">
+
+                <div class="empData-block emp-bioData">
+                    <div class="empDataBlock-title">Bio Data</div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">Full Name</div>
+                        <div class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">Gender</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">Marital Status</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">Date of Birth</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.dateOfBirth | date}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+
+                <div class="empData-block emp-bioData">
+                    <div class="empDataBlock-title">Contact Information</div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">Nationality</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">State of Origin</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">LGA</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">Home Address</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">Phone Number</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">Email Address</div>
+                        <div class="rhs"> {{employee?.employeeDetails?.email}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+
+                <div *ngFor="let item of employee?.employeeDetails?.nextOfKin" class="empData-block emp-bioData">
+                    <div class="empDataBlock-title">Next of Kin</div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">Full Name</div>
+                        <div class="rhs"> {{item.fullName}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">Relationship</div>
+                        <div class="rhs"> Brother </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color1">
+                        <div class="lhs">Phone Number</div>
+                        <div class="rhs"> {{item.phoneNumber}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="dataMix-wrap color2">
+                        <div class="lhs">Email</div>
+                        <div class="rhs"> {{item.email}} </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div *ngIf="loadIndicatorVisible" class="div_loading">
+            <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div *ngIf="changeUserImg" class="modal-overlay">
+        <app-image-update [selectedPerson]="selectedPerson" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-image-update>
+    </div>
+    <div *ngIf="createWorkspace" class="modal-overlay">
+        <app-create-workspace [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
+    </div>
+    <div *ngIf="assignUnitPop" class="modal-overlay">
+        <app-assign-unit [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-assign-unit>
+    </div>
+</div>

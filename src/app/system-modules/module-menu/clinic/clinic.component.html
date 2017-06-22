@@ -1,0 +1,24 @@
+<div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+
+    <div class="inner-page-wrap">
+        <div class="inner-menu1-wrap">
+            <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
+                aria-hidden="true"></i>
+            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/appointment']">Appointment</li>
+                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/check-in']">Checked In Patients</li>
+                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/clinic-schedule']">Clinic Schedule</li>
+                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/consulting-room']">Consulting Room</li>
+                <li *ngIf="isDoctor==true" (click)="changeRoom()" >Change Consulting Room</li>
+            </ul>
+        </div>
+
+        <div class="inner-page-contentArea">
+            <router-outlet class="menuContent"></router-outlet>
+        </div>
+        <div *ngIf="modal_on" class="modal-overlay">
+            <app-consulting-room-checkin (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-consulting-room-checkin>
+        </div>
+    </div>
+</div>

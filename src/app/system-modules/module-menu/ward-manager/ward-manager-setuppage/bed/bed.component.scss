@@ -1,0 +1,85 @@
+@import "../../../../../../globals/variables.scss";
+@import "../../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
+.inner-page-contentArea {
+    padding: 10px;
+}
+
+.add-action-box {
+    height: 40px;
+    .btn-1 {
+        float: right;
+    }
+}
+
+.c-page-header {
+    height: 40px;
+    z-index: 2;
+    .c-page-title {
+        float: left;
+    }
+    .back-btn {
+        padding: 10px;
+        font-size: 16px;
+        font-family: "Josefin Sans", sans-serif;
+        color: #BDBDBD;
+        margin: 0;
+        z-index: 3;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.inPatients {
+    border: none;
+    .filter-box {
+        padding: 10px 0;
+        .filter {
+            width: 130px;
+        }
+    }
+    .patient-sex {
+        text-align: left;
+    }
+    .btn-1 {
+        padding: 5px;
+        margin: 0;
+    }
+    table {
+        thead {
+            background-color: #AED6F1;
+        }
+        tbody {
+            border: 1px solid #ddd !important;
+            tr {
+                td {
+                    padding: 8px;
+                    line-height: 1.42857143;
+                    .fa {
+                        font-size: 16px;
+                        padding: 0 5px;
+                        margin: 0 10px;
+                    }
+                }
+            }
+            .tr-header-group {
+                background-color: #0288D1;
+                color: #fff;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .details-link {
+                &:hover {
+                    background-color: #ccc;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+}
