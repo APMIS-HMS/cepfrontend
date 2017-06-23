@@ -41,6 +41,7 @@ export class NewProductComponent implements OnInit {
   categories: any[] = [];
   strengths: any[] = [];
   simpleProducts: any[] = [];
+  productDetails: any = <any>{};
 
   public frm_newProduct: FormGroup;
 
@@ -159,14 +160,11 @@ export class NewProductComponent implements OnInit {
         this.productSugestion = true;
         if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
           this.dictionaries = payload;
-          // payload.forEach(element => {
-          //   var arrElements = element.details.split('(');
-          //   console.log(arrElements);
-          //   element.product = arrElements[0];
-          //   element.activeIngredient = arrElements[1].replace(')', '');
-          //   console.log(element)
-          //   this.dictionaries.push(element);
-          // });
+          payload.forEach(element => {
+            var arrElements = element.details.split('(');
+            element.activeIngredient = arrElements[1].replace(')', '');
+            this.dictionaries.push(element);
+          });
         } else {
           this.dictionaries = [];
           this.productSugestion = false;
@@ -250,7 +248,9 @@ export class NewProductComponent implements OnInit {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
         let service: any = <any>{};
         service.name = value.name;
+        value.productDetail = this.productDetails;
         console.log(value);
+
         this.productService.create(value).then(payload => {
           console.log(value);
           this.selectedFacilityService.categories.forEach((item, i) => {
@@ -290,8 +290,9 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand);
-      this.frm_newProduct.controls['genericName'].setValue(suggestion.details);
+      this.productDetails = payload;
+      this.frm_newProduct.controls['name'].setValue(payload.brand + " " + payload.drugName);
+      this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
       // this.manufacturers = [];
