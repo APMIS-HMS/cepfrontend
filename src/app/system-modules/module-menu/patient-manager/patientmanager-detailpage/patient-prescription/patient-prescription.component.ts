@@ -8,7 +8,7 @@ import {
 	RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { drugWeight, durationUnit } from '../../../../../shared-module/helpers/global-config';
+import { durationUnits } from '../../../../../shared-module/helpers/global-config';
 import 'devextreme-intl';
 
 @Component({
@@ -71,8 +71,8 @@ export class PatientPrescriptionComponent implements OnInit {
 			this.patientId = params['id'];
 		});
 
-		this.durationUnits = durationUnit;
-		this.selectedValue = durationUnit[0].name;
+		this.durationUnits = durationUnits;
+		this.selectedValue = durationUnits[0].name;
 		//this.getAllDrugs();
 		this.getAllPriorities();
 		this.getAllRoutes();
