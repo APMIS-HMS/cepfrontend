@@ -1,6 +1,6 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-    <div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap responsive_nav-group">
+    <!--<div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
         <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
             <li [routerLink]="['/modules/store/home']">Manage Store</li>
@@ -8,11 +8,11 @@
             <li [routerLink]="['/modules/purchase-manager/orders']">Manage Purchase</li>
             <li [routerLink]="['/modules/inventory-manager/inventory']">Manage Inventory</li>
         </ul>
-    </div>
+    </div>-->
     <div class="inner-page-wrap">
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
-                <li [class.navActive]="productNavMenu"  routerLink="/modules/pharmacy/prescription-list">Prescription List</li>
+                <li [class.navActive]="productNavMenu" routerLink="/modules/pharmacy/prescriptions">Prescription List</li>
                 <li [class.navActive]="supplierNavMenu" (click)="onClickSupplierNavMenu()" routerLink="/modules/pharmacy/dispense">Dispense</li>
             </ul>
         </div>

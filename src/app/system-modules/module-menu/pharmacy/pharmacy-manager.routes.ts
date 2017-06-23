@@ -6,8 +6,9 @@ import {DispenseComponent} from './dispense/dispense.component';
 const PHARMACYMODULES_ROUTES: Routes = [
     {
         path: '', component: PharmacyManagerComponent, children: [
-            { path: '', redirectTo: 'prescription-list' },
-            { path: 'prescription-list', component: PrescriptionListComponent },
+            { path: '', redirectTo: 'prescriptions', pathMatch: 'full' },
+            { path: 'prescriptions', component: PrescriptionListComponent },
+            { path: 'prescriptions/:id', component: DispenseComponent },
             { path: 'dispense', component: DispenseComponent }
         ]
     }
