@@ -1,5 +1,46 @@
 @import '../patient-prescription/patient-prescription.component.scss';
 
-.dx-checkbox-container {
-    width: auto !important;
+.td-worspace:hover .workspace-listWrap {
+    display: block;
+}
+.workspace-listWrap:hover {
+    display: block;
+}
+.workspace-listWrap {
+    position: absolute;
+    bottom: 40%;
+    padding: 2px;
+    background: #ddd;
+    z-index: 200;
+    border: 1px solid #989898;
+    border-radius: 7px;
+    font-size: 12px;
+}
+.workspace-listWrap:hover {
+    display: block;
+}
+.workspace-listItem:hover {
+    background: #D0D3D4;
+}
+.workspace-listItem span {
+    padding-right: 2px;
+}
+.workspace-listItem {
+    padding: 5px 20px;
+}
+.pointer-wrap {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.pointer-wrap  i{
+    position: absolute;
+    font-size: 35px;
+    color: #989898;
+    top: -10px;
+    right: 44px;
+    z-index: 1;
+}
+.center {
+    margin-top: 31px;
 }
