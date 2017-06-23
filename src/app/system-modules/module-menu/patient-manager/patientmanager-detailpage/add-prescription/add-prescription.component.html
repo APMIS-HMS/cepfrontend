@@ -22,7 +22,7 @@
     </div>
     <!--inner container onclick-->
     <div *ngIf="billShow && (billShowId == i)" class="inner-container">
-        <div class="row">
+        <div class="row" style="width:100%">
             <div class="col-sm-4 col-md-4">
                 <label>Drugs</label>
                 <dx-lookup [items]="drugs" [value]="drugs.name" displayExpr="name" valueExpr="_id">
@@ -30,10 +30,17 @@
             </div>
             <div class="col-sm-3 col-md-3">
                <div class="center">
-                    <span class="qs">
-                        <a>Store <span class="badge">5</span></a>
-                        <span class="popover1 above">South west store</span>
-                    </span>
+                    <div class="qs">
+                        <a><span class="badge">5</span> Stores </a>
+                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                            <li class="workspace-listItem">
+                                <ng-container>
+                                    <span>south weste</span>
+                                </ng-container>
+                            </li>
+                            <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-3 col-md-3">

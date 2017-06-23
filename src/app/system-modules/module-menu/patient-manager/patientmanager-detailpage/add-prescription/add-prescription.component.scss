@@ -1,90 +1,46 @@
 @import '../patient-prescription/patient-prescription.component.scss';
 
-
-.qs .popover1 {
-  background-color: rgba(0, 0, 0, 0.85);
-  border-radius: 5px;
-  bottom: 42px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-  color: #fff;
-  display: none;
-  font-size: 12px;
-  font-family: 'Helvetica',sans-serif;
-  left: -30px;
-  padding: 7px 10px;
-  position: absolute;
-  width: 200px;
-  z-index: 4;
+.td-worspace:hover .workspace-listWrap {
+    display: block;
 }
-.qs {
-    font-size: 25px;
+.workspace-listWrap:hover {
+    display: block;
+}
+.workspace-listWrap {
+    position: absolute;
+    bottom: 100%;
+    padding: 2px;
+    background: #ddd;
+    z-index: 200;
+    border: 1px solid #989898;
+    border-radius: 7px;
+    font-size: 12px;
+}
+.workspace-listWrap:hover {
+    display: block;
+}
+.workspace-listItem:hover {
+    background: #D0D3D4;
+}
+.workspace-listItem span {
+    padding-right: 2px;
+}
+.workspace-listItem {
+    padding: 5px 20px;
+}
+.pointer-wrap {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.pointer-wrap  i{
+    position: absolute;
+    font-size: 35px;
+    color: #989898;
+    top: -10px;
+    right: 20px;
+    z-index: 1;
 }
 .center {
     margin-top: 20px;
-}
-.qs .popover1:before {
-  border-top: 7px solid rgba(0, 0, 0, 0.85);
-  border-right: 7px solid transparent;
-  border-left: 7px solid transparent;
-  bottom: -7px;
-  content: '';
-  display: block;
-  left: 50%;
-  margin-left: -7px;
-  position: absolute;
-}
-.qs:hover .popover1 {
-  display: block;
-  -webkit-animation: fade-in .3s linear 1, move-up .3s linear 1;
-  -moz-animation: fade-in .3s linear 1, move-up .3s linear 1;
-  -ms-animation: fade-in .3s linear 1, move-up .3s linear 1;
-}
-
-@-webkit-keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-moz-keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-ms-keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes move-up {
-  from {
-    bottom: 30px;
-  }
-  to {
-    bottom: 42px;
-  }
-}
-@-moz-keyframes move-up {
-  from {
-    bottom: 30px;
-  }
-  to {
-    bottom: 42px;
-  }
-}
-@-ms-keyframes move-up {
-  from {
-    bottom: 30px;
-  }
-  to {
-    bottom: 42px;
-  }
 }
