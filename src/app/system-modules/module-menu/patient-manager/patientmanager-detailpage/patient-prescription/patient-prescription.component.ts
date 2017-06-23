@@ -140,13 +140,15 @@ export class PatientPrescriptionComponent implements OnInit {
 				console.log(prescription);
 				this.prescriptions = prescription;
 				this.addPrescriptionForm.reset();
+				this.addPrescriptionForm.controls['refillCount'].reset(0);
+				this.addPrescriptionForm.controls['startDate'].reset(new Date());
+				this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
 			}
 		}
 	}
 
 	onClickSavePrescription(value: any, valid: boolean) {
-		console.log(value);
-		if (valid) {
+		if (valid && (this.prescriptionItems.length > 0)) {
 			if(this.selectedAppointment.clinicId === undefined) {
 				this._facilityService.announceNotification({
 					type: "Info",

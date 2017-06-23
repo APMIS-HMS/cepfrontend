@@ -36,7 +36,7 @@
         </div>
         <div *ngFor="let prescription of prescriptionLists">
             <div class="row">
-                <a routerLink='/modules/pharmacy/prescription-list/prescription._id'>
+                <a routerLink='/modules/pharmacy/prescription-list/{{prescription._id}}'>
                     <div class="table-data">
                         <div class="table-data-inner">
                             {{prescription.updatedAt}}

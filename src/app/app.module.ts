@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { CoolStorageModule } from 'angular2-cool-storage';
 
@@ -55,6 +56,7 @@ import {ApmisCheckboxComponent } from './system-modules/module-menu/patient-mana
     Routing,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     ToastModule.forRoot(),
     CoolStorageModule
   ],
