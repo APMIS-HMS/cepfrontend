@@ -3,7 +3,7 @@ import { FacilityModule, FeatureModuleViewModel, AccessControl, Facility } from 
 import { FacilitiesService, FacilityModuleService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService, PersonService, DepartmentService } from '../../../../../services/facility-manager/setup/index';
 import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
 import { AccessControlService } from '../../../../../services/facility-manager/setup/index';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 @Component({
   selector: 'app-apmis-checkbox',
   templateUrl: './apmis-checkbox.component.html',
@@ -21,11 +21,11 @@ export class ApmisCheckboxComponent implements OnInit {
   expandMain: boolean = false;
   @Input() cruds: any[] = [];
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: Locker,
+    private locker: CoolLocalStorage,
     private accessControlService: AccessControlService) { }
 
   ngOnInit() {
-    this.selectedFacility = this.locker.get('selectedFacility');
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     //this.getAccessList();
   }
   getAccessList() {

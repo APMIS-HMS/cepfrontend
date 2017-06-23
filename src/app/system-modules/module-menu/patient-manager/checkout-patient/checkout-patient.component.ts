@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { FacilitiesService, InPatientListService, InPatientService } from '../../../../services/facility-manager/setup/index';
@@ -26,7 +26,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	constructor(
 		private _facilitiesService: FacilitiesService,
-		private _locker: Locker,
+		private _locker: CoolLocalStorage,
 		private fb: FormBuilder,
 		private _router: Router,
 		private _route: ActivatedRoute,
@@ -34,7 +34,7 @@ export class CheckoutPatientComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.facility = this._locker.get('selectedFacility');
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.getAllWards();
 		console.log(this.facility);
 		console.log(this.selectedAppointment);

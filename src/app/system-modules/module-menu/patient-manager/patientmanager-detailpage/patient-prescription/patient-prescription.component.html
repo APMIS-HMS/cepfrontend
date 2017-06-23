@@ -106,13 +106,14 @@
                             <label>Duration</label>
                             <!--<dx-number-box formControlName="duration" [value]="1" [showSpinButtons]="true"></dx-number-box>-->
                             <div class="input-bg cacaca">
-                            <div class="input-group">
-                                <input type="text" formControlName="strength" class="form-control" id="input"  required>
-                                <div class="input-group-btn">
-                                    <!--<i class="fa fa-caret-right pull-right" style="margin-top: 8px;padding-left: 0;"></i>-->
-                                    <select formControlName="strengthWeight" [(ngModel)]="selectedValue" id="select">
-                                    <option *ngFor="let weight of drugWeight" value="{{ weight.name }}">{{ weight.name }}</option>
-                                </select>
+                                <div class="input-group">
+                                    <input type="number" formControlName="duration" class="form-control" id="input" required>
+                                    <div class="input-group-btn">
+                                        <select formControlName="durationUnits" [(ngModel)]="selectedValue" id="select">
+                                            <option *ngFor="let unit of durationUnits" value="{{ unit.name }}">{{ unit.name }}</option>
+                                        </select>
+                                    </div>
+                                    <!-- /btn-group -->
                                 </div>
                                 <!-- /btn-group -->
                             </div>

@@ -10,7 +10,7 @@ import {
     Department,
     MinorLocation, Gender, Title, Country
 } from '../../../../models/index';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { Observable } from 'rxjs/Observable';
@@ -87,7 +87,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private maritalStatusService: MaritalStatusService,
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
-        private locker: Locker, private patientService: PatientService,
+        private locker: CoolLocalStorage, private patientService: PatientService,
         private personService: PersonService,
         private employeeService: EmployeeService,
         private facilityService: FacilitiesService
@@ -189,7 +189,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // this.uploadEvents = new EventEmitter();
-        this.facility = this.locker.get('selectedFacility');
+        this.facility = <Facility> this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.newEmpIdControl.valueChanges.subscribe(value => {

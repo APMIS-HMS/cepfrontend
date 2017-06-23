@@ -10,7 +10,7 @@ import {
   Facility, User, Patient, Employee, MinorLocation, Appointment, Country, ClinicInteraction,
   Documentation
 } from '../../../../../models/index';
-import { Locker } from 'angular2-locker';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -79,7 +79,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private formsService: FormsService,
     private router: Router, private route: ActivatedRoute,
-    private locker: Locker) {
+    private locker: CoolLocalStorage) {
 
     this.router.events
       .filter(e => e.constructor.name === 'RoutesRecognized')
@@ -95,7 +95,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getForms();
-    this.selectedFacility = this.locker.get('selectedFacility');
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.route.data.subscribe(data => {
       data['patient'].subscribe(payload => {
         this.patient = payload;
