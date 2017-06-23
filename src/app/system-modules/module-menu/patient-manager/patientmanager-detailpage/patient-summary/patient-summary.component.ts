@@ -4,12 +4,13 @@ import {
   CountriesService, EmployeeService, FormsService,
   FacilitiesService, UserService, PersonService,
   PatientService, AppointmentService, DocumentationService
-} from '../../../../../services/facility-manager/setup/index';
+}
+  from '../../../../../services/facility-manager/setup/index';
 import {
   Facility, User, Patient, Employee, MinorLocation, Appointment, Country, ClinicInteraction,
   Documentation
 } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -21,7 +22,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
-  // @Input() vitalDocuments: any;
+ // @Input() vitalDocuments: any;
 
 
   subsect_biodata = true;
@@ -59,11 +60,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
   patients: Patient[] = [];
   documentations: Documentation[] = [];
-  homeAddress = '';
+  homeAddress: string = '';
   selectedUser: User = <User>{};
   loginEmployee: Employee = <Employee>{};
   clinicInteraction: ClinicInteraction = <ClinicInteraction>{};
-  previousUrl = '/';
+  previousUrl: string = '/';
   minorLocationList: MinorLocation[] = [];
   selectedAppointment: Appointment = <Appointment>{};
   json: any = {};
@@ -72,13 +73,13 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
-    public facilityService: FacilitiesService,
+    private facilityService: FacilitiesService,
     private appointmentService: AppointmentService,
     private personService: PersonService,
     private employeeService: EmployeeService,
     private formsService: FormsService,
     private router: Router, private route: ActivatedRoute,
-    private locker: CoolLocalStorage) {
+    private locker: Locker) {
 
     this.router.events
       .filter(e => e.constructor.name === 'RoutesRecognized')
@@ -94,15 +95,16 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getForms();
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.selectedFacility = this.locker.get('selectedFacility');
     this.route.data.subscribe(data => {
       data['patient'].subscribe(payload => {
         this.patient = payload;
         // this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
+        //   
         // });
         this.getCurrentUser();
       });
-      // this.documentations = this.vitalDocuments;
+      //this.documentations = this.vitalDocuments;
       data['loginEmployee'].subscribe(payload => {
         this.loginEmployee = payload.loginEmployee;
         this.minorLocationList = payload.clinicLocations;
@@ -111,9 +113,9 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
           this.route.params.subscribe(payloadk => {
             if (payloadk['checkInId'] !== undefined) {
-              const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
+              let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
               if (isOnList.length > 0) {
-                const isOnObj = isOnList[0];
+                let isOnObj = isOnList[0];
                 isOnObj.isOn = true;
                 this.employeeService.update(this.loginEmployee).then(payloadu => {
                   this.loginEmployee = payloadu;
@@ -121,10 +123,10 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
                     data['appointment'].subscribe(payloada => {
                       this.selectedAppointment = payloada;
                       if (this.selectedAppointment !== undefined) {
-                        const isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
+                        let isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
                         if (isOnList.length > 0) {
-                          const isOn = isOnList[0];
-                          const minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
+                          let isOn = isOnList[0];
+                          let minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
                           if (minorLocationList.length > 0) {
                             this.clinicInteraction.locationName = minorLocationList[0].name;
                             this.clinicInteraction.startAt = new Date();
@@ -460,7 +462,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
         this.selectedAppointment.clinicInteractions = [];
       }
       this.clinicInteraction.endAt = new Date();
-      this.clinicInteraction.title = 'Doctor\'s Encounter';
+      this.clinicInteraction.title = "Doctor's Encounter";
       this.selectedAppointment.clinicInteractions.push(this.clinicInteraction);
       this.appointmentService.update(this.selectedAppointment).then(payload => {
 

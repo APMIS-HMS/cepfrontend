@@ -3,12 +3,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Locker } from 'angular2-locker';
 import {
-  FacilitiesService, PrescriptionService,
-  PrescriptionPriorityService, DictionariesService,
-  RouteService, FrequencyService, DrugListApiService, DrugDetailsService
+	FacilitiesService, PrescriptionService,
+	PrescriptionPriorityService, DictionariesService,
+	RouteService, FrequencyService, DrugListApiService, DrugDetailsApiService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { durationUnits } from '../../../../../shared-module/helpers/global-config';
+import { drugWeight, durationUnit } from '../../../../../shared-module/helpers/global-config';
 import 'devextreme-intl';
 
 @Component({
@@ -44,9 +44,9 @@ export class PatientPrescriptionComponent implements OnInit {
 	drugId: string = "";
 	selectedDrugId: string = "";
 	searchText: string = "";
-	refillCount: number = 0;
-	currentDate: Date = new Date();
-	minDate: Date = new Date();
+	refillCount: number;
+	currentDate: Date;
+	minDate: Date;
 
 	constructor(
 		private fb: FormBuilder,
@@ -60,7 +60,7 @@ export class PatientPrescriptionComponent implements OnInit {
 		private _frequencyService: FrequencyService,
 		private _routeService: RouteService,
 		private _drugListApi: DrugListApiService,
-		private _drugDetails: DrugDetailsService
+		private _drugDetailsApi: DrugDetailsApiService
 	) {
 
 	}
@@ -71,8 +71,12 @@ export class PatientPrescriptionComponent implements OnInit {
 			this.patientId = params['id'];
 		});
 
-		this.durationUnits = durationUnits;
-		this.selectedValue = durationUnits[0].name;
+		this.currentDate = new Date();
+		this.minDate = new Date();
+		this.durationUnits = durationUnit;
+		this.refillCount = 0;
+		this.selectedValue = durationUnit[0].name;
+		console.log(this.currentDate);
 		//this.getAllDrugs();
 		this.getAllPriorities();
 		this.getAllRoutes();
@@ -89,8 +93,9 @@ export class PatientPrescriptionComponent implements OnInit {
 			frequency: ['', [<any>Validators.required]],
 			duration: ['', [<any>Validators.required]],
 			durationUnit: ['', [<any>Validators.required]],
-			refillCount: [this.refillCount],
-			startDate: [this.currentDate],
+			refillCount: [''],
+			startDate: [''],
+			substitution: [''],
 			specialInstruction: ['']
 		});
 	}
@@ -246,7 +251,7 @@ export class PatientPrescriptionComponent implements OnInit {
 		this.addPrescriptionForm.controls['drug'].setValue(event.srcElement.innerText);
 		//this._el.nativeElement.getElementsByTagName('input')[0].value = event.srcElement.innerText;
 		let productId = drugId.getAttribute('data-drug-id');
-		this._drugDetails.find({ query: { "productId": productId } })
+		this._drugDetailsApi.find({ query: { "productId": productId } })
 				.then(res => {
 					if(res.ingredients.length === 1) {
 						if(res.ingredients[0].strength !== undefined || res.ingredients[0].strengthUnit !== undefined) {

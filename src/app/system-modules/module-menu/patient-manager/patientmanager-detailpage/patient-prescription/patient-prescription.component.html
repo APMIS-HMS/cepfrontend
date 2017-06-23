@@ -126,11 +126,14 @@
                         <br><br><br><br><br>
                         <div class="col-sm-4 col-md-4">
                             <label>Refill Count</label>
-                            <dx-number-box formControlName="refillCount" [value]="0" [showSpinButtons]="true" [showClearButton]="true"></dx-number-box>
+                            <input type="number" formControlName="refillCount" [(value)]="refillCount">
+                            <!--<dx-number-box formControlName="refillCount" [(value)]="refillCount" [showSpinButtons]="true" [showClearButton]="true">
+
+                            </dx-number-box>-->
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <label>Start Date</label>
-                            <dx-date-box formControlName="startDate" [value]="now" type="date">
+                            <dx-date-box formControlName="startDate" [(value)]="currentDate" type="date">
                             </dx-date-box>
                         </div>
                         <div class="col-sm-4 col-md-4">
