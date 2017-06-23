@@ -70,6 +70,7 @@ export class PatientPrescriptionComponent implements OnInit {
 		this._route.params.subscribe(params => {
 			this.patientId = params['id'];
 		});
+		this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
 		this.durationUnits = durationUnits;
 		this.selectedValue = durationUnits[0].name;
@@ -110,7 +111,7 @@ export class PatientPrescriptionComponent implements OnInit {
 					duration: value.duration + value.durationUnit,
 					startDate: value.startDate,
 					strength: value.strength,
-					patientInstruction: value.specialInstruction,
+					patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
 					refillCount: value.refillCount
 				};
 
@@ -128,7 +129,7 @@ export class PatientPrescriptionComponent implements OnInit {
 					facilityId: this.facility._id,
 					employeeId: this.employeeDetails.employeeDetails._id,
 					clinicId: this.selectedAppointment.clinicId,
-					priorityId: value.priority,
+					priorityId: "",
 					patientId: this.patientId,
 					prescriptionItems: this.prescriptionItems,
 					isAuthorised: true
@@ -142,6 +143,7 @@ export class PatientPrescriptionComponent implements OnInit {
 	}
 
 	onClickSavePrescription(value: any, valid: boolean) {
+		console.log(value);
 		if (valid) {
 			if(this.selectedAppointment.clinicId === undefined) {
 				this._facilityService.announceNotification({
@@ -149,9 +151,9 @@ export class PatientPrescriptionComponent implements OnInit {
 					text: "Clinic has not been set!"
 				});
 			} else {
-				let itemToSave = this.prescriptions;
-				itemToSave.priorityId = value.priority;
-				this._prescriptionService.create(itemToSave)
+				this.prescriptions.priorityId = value.priority;
+				console.log(this.prescriptions);
+				this._prescriptionService.create(this.prescriptions)
 					.then(res => {
 						this._facilityService.announceNotification({
 							type: "Success",
