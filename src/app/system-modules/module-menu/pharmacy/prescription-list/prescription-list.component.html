@@ -1,64 +1,66 @@
 <section id="presc-list">
-  <div class="survery">
-    <div class="row margin-top-10">
-          <div class="col-sm-5 col-md-5">
-            <div class="dx-field-value">
-              <dx-text-box value="Search"></dx-text-box>
-            </div>
-          </div>
-    </div>
-    <div class="row margin-top-10">
-        <div class="col-sm-4 col-md-4">
-          <a class="presc-anchor">PRESCRIPTION LIST</a>
-        </div>
-    </div>
-    <div class="row margin-top-10">
-        <div class="table-head">
-            <div class="table-head-inner-content">
-              Date
-            </div>
-            <div class="table-head-inner-content" id="patient">
-              Patient
-            </div>
-            <div class="table-head-inner-content">
-              Unit
-            </div>
-            <div class="table-head-inner-content">
-              Priority
-            </div>
-            <div class="table-head-inner-content" id="patient">
-              Prescriber
-            </div>
-            <div class="table-head-inner-content">
-              Status
+    <div class="survery">
+        <div class="row margin-top-10">
+            <div class="col-sm-5 col-md-5">
+                <div class="dx-field-value">
+                    <dx-text-box value="Search"></dx-text-box>
+                </div>
             </div>
         </div>
+        <div class="row margin-top-10">
+            <div class="col-sm-4 col-md-4">
+                <a class="presc-anchor">PRESCRIPTION LIST</a>
+            </div>
+        </div>
+        <div class="row margin-top-10">
+            <div class="table-head">
+                <div class="table-head-inner-content">
+                    Date
+                </div>
+                <div class="table-head-inner-content" id="patient">
+                    Patient
+                </div>
+                <div class="table-head-inner-content">
+                    Clinic
+                </div>
+                <div class="table-head-inner-content">
+                    Priority
+                </div>
+                <div class="table-head-inner-content" id="patient">
+                    Prescriber
+                </div>
+                <div class="table-head-inner-content">
+                    Status
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let presscriptlist of prescriptionLists">
+            <div class="row">
+                <a routerLink='/modules/pharmacy/dispense'>
+                    <div class="table-data">
+                        <div class="table-data-inner">
+                            {{presscriptlist.date}}
+                        </div>
+                        <div class="table-data-inner" id="patient">
+                            <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />
+                            <span class="absolute">{{presscriptlist.patient}}</span>
+                        </div>
+                        <div class="table-data-inner">
+                            {{presscriptlist.unit}}
+                        </div>
+                        <div class="table-data-inner">
+                            {{presscriptlist.priority}}
+                        </div>
+                        <div class="table-data-inner" id="patient">
+                            <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />
+                            <span class="absolute">{{presscriptlist.prescriber}}</span>
+                        </div>
+                        <div *ngFor="let item of status" class="table-data-inner">
+                            {{item}}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
-     <div *ngFor = "let presscriptlist of prescriptionLists">
-      <div class="row">
-        <a routerLink='/modules/pharmacy/dispense'><div class="table-data">
-            <div class="table-data-inner">
-              {{presscriptlist.date}}
-            </div>
-            <div class="table-data-inner" id="patient">
-              <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" /> 
-                <span class="absolute">{{presscriptlist.patient}}</span>
-            </div>
-            <div class="table-data-inner">
-              {{presscriptlist.unit}}
-            </div>
-            <div class="table-data-inner">
-              {{presscriptlist.priority}}
-            </div>
-            <div class="table-data-inner" id="patient">
-              <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" /> 
-                <span class="absolute">{{presscriptlist.prescriber}}</span>
-            </div>
-            <div *ngFor ="let item of status" class="table-data-inner">
-              {{item}}
-            </div>
-       </div></a>
-     </div>
-    </div>
-  </div>
 </section>

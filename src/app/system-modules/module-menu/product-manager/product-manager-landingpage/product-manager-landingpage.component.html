@@ -36,7 +36,7 @@
                 <tr *ngFor="let product of products">
                     <td>{{product.name}}</td>
                     <td>{{product.productType?.name}}</td>
-                    <td>{{product.productPresentation?.name}}</td>
+                    <td>{{product.presentation}}</td>
                     <td>{{product.genericName}}</td>
                     <td>
                         <a class="action-btn" (click)="slideProductDetailsToggle(product, {})"><i class="fa fa-eye"></i></a>
@@ -99,11 +99,11 @@
                         </tr>
                         <tr>
                             <td>Presentation</td>
-                            <td>{{selectedProduct?.productPresentation?.name}}</td>
+                            <td>{{selectedProduct?.presentation}}</td>
                         </tr>
                         <tr>
                             <td>Manufacturer</td>
-                            <td>{{selectedProduct?.manufacturer.name}}</td>
+                            <td>{{selectedProduct?.manufacturer}}</td>
                         </tr>
                     </tbody>
 

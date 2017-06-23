@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 import { Facility, MinorLocation } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 import { ProductTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
@@ -24,7 +24,7 @@ export class LandingPageComponent implements OnInit {
   selMinorLocation = new FormControl();
   selProductType = new FormControl();
   searchControl = new FormControl();
-  constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
+  constructor(private locker: Locker, private productTypeService: ProductTypeService,
     private storeService: StoreService, private _storeEventEmitter: StoreEmitterService) {
     this.storeService.listenerUpdate.subscribe(payload => {
       this.getStores();
@@ -45,7 +45,7 @@ export class LandingPageComponent implements OnInit {
 
   ngOnInit() {
     this._storeEventEmitter.setRouteUrl('Store Manager');
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = this.locker.get('selectedFacility');
     this.minorLocations = this.selectedFacility.minorLocations;
     this.getProductTypes();
 
@@ -91,7 +91,9 @@ export class LandingPageComponent implements OnInit {
     // });
 
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      this.stores = payload.data;
+      if (payload.data.length != 0) {
+        this.stores = payload.data;
+      }
     });
 
   }

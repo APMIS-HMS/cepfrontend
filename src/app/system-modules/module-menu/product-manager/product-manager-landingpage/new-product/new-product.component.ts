@@ -1,11 +1,12 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import {
   ManufacturerService, PresentationService, GenericService, ProductTypeService,
-  ProductService, DictionariesService, FacilitiesServiceCategoryService, StrengthService
+  ProductService, DictionariesService, FacilitiesServiceCategoryService, StrengthService,
+  DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, FacilityService } from '../../../../../models/index';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 
 @Component({
   selector: 'app-new-product',
@@ -14,9 +15,9 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class NewProductComponent implements OnInit {
 
-  manufacturer = false;
-  presentation = false;
-  strength = false;
+  isManufacturer: boolean = false;
+  isPresentation: boolean = false;
+  isStrength: boolean = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedProduct: any = <any>{};
@@ -46,25 +47,25 @@ export class NewProductComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
 
-  createText = 'Create Product';
+  createText: string = 'Create Product';
 
   constructor(private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
     private presentationService: PresentationService, private productTypeService: ProductTypeService,
-    private productService: ProductService, private dictionariesService: DictionariesService, private locker: CoolLocalStorage,
-    public facilityServiceCategoryService: FacilitiesServiceCategoryService,
-    private strengthService: StrengthService) { }
+    private productService: ProductService, private dictionariesService: DictionariesService, private locker: Locker,
+    private facilityServiceCategoryService: FacilitiesServiceCategoryService, private strengthService: StrengthService,
+    private drugListApiService: DrugListApiService, private drugDetailsService: DrugDetailsService) { }
 
   ngOnInit() {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = this.locker.get('selectedFacility');
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
       categoryId: [, [<any>Validators.required]],
       name: ['', [<any>Validators.required, Validators.minLength(3)]],
       packLabel: [''],
       packSize: [''],
-      presentationId: [],
+      presentation: [''],
       strengthId: [],
-      manufacturerId: [[<any>Validators.required]],
+      manufacturer: ['',[<any>Validators.required]],
       genericName: [''],
       facilityId: [this.selectedFacility._id, [<any>Validators.required]]
     });
@@ -81,19 +82,19 @@ export class NewProductComponent implements OnInit {
       }
       this.subscribeToControls();
     });
-    this.frm_newProduct.controls['genericName'].valueChanges.subscribe(payload => {
-      this.productSugestion = false;
-      if (payload !== null && payload !== undefined && payload.length > 0) {
-        this.ingridentSugestion = true;
-      } else {
-        this.ingridentSugestion = false;
-      }
-      this.subscribeToControls();
-    });
+    // this.frm_newProduct.controls['genericName'].valueChanges.subscribe(payload => {
+    //   this.productSugestion = false;
+    //   if (payload !== null && payload !== undefined && payload.length > 0) {
+    //     this.ingridentSugestion = true;
+    //   } else {
+    //     this.ingridentSugestion = false;
+    //   }
+    //   this.subscribeToControls();
+    // });
     this.subscribeToControls();
 
-    this.frm_newProduct.controls['presentationId'].valueChanges.subscribe(value => {
-      const presentation = this.presentations.filter(x => x._id === value);
+    this.frm_newProduct.controls['presentation'].valueChanges.subscribe(value => {
+      let presentation = this.presentations.filter(x => x._id === value);
       if (presentation.length > 0) {
         this.presentationName = presentation[0].name;
         if (this.frm_newProduct.controls['name'].value !== null) {
@@ -103,7 +104,7 @@ export class NewProductComponent implements OnInit {
     });
 
     this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
-      const strength = this.strengths.filter(x => x._id === value);
+      let strength = this.strengths.filter(x => x._id === value);
       if (strength.length > 0) {
         this.strengthName = strength[0].strength;
         if (this.frm_newProduct.controls['name'].value !== null) {
@@ -117,13 +118,14 @@ export class NewProductComponent implements OnInit {
       this.productSugestion = false;
     });
 
-    this.getManufacturers();
-    this.getGenerics();
-    this.getPresentations();
+    //this.getManufacturers();
+    //this.getGenerics();
+    //this.getPresentations();
     this.getProductTypes();
     this.getServiceCategories();
     this.getStrengths();
   }
+
   getStrengths() {
     this.strengthService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.strengths = payload.data;
@@ -140,58 +142,61 @@ export class NewProductComponent implements OnInit {
     });
   }
   subscribeToControls() {
-    const name = this.frm_newProduct.controls['name'].value;
-    const genericName = this.frm_newProduct.controls['genericName'].value;
+    let name = this.frm_newProduct.controls['name'].value;
+    let genericName = this.frm_newProduct.controls['genericName'].value;
     console.log(name);
     console.log(genericName);
     if (name !== null && name !== undefined && name.length > 0) {
-      const dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(400)
+      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(400)
         .distinctUntilChanged()
-        .switchMap((dictionaries: any[]) => this.dictionariesService.find({
+        .switchMap((dictionaries: any[]) => this.drugListApiService.find({
           query: {
-            name: { $regex: this.frm_newProduct.controls['name'].value, '$options': 'i' }
+            searchtext: this.frm_newProduct.controls['name'].value,
+            "po": false,
+            "brandonly": true,
+            "genericonly": false
           }
         }));
       dictionaryObs.subscribe((payload: any) => {
+        console.log(payload)
         this.productSugestion = true;
-        this.ingridentSugestion = false;
-        if (payload.data.length > 0 && payload.data[0].name.length !== this.frm_newProduct.controls['name'].value.length) {
-          this.dictionaries = payload.data;
-        } else {
-          this.dictionaries = [];
-          this.productSugestion = false;
-        }
-
+        if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
+            this.dictionaries = payload;
+          } else {
+            this.dictionaries = [];
+            this.productSugestion = false;
+          }
       });
     } else {
       this.dictionaries = [];
       this.productSugestion = false;
     }
 
-    if (genericName !== null && genericName !== undefined && genericName.length > 0) {
-      const activetIngredientObs = this.frm_newProduct.controls['genericName'].valueChanges.debounceTime(400)
-        .distinctUntilChanged()
-        .switchMap((dictionaries: any[]) => this.dictionariesService.find({
-          query: {
-            genericName: { $regex: this.frm_newProduct.controls['genericName'].value, '$options': 'i' },
-            $distinct: 'genericName'
-          }
-        }));
-      activetIngredientObs.subscribe((payload: any) => {
-        this.productSugestion = false;
-        this.ingridentSugestion = true;
-        if (payload.data.length > 0 && payload.data[0].genericName.length
-          !== this.frm_newProduct.controls['genericName'].value.length) {
-          this.activeIngredients = payload.data;
-        } else {
-          this.activeIngredients = [];
-          this.ingridentSugestion = false;
-        }
-      });
-    } else {
-      this.activeIngredients = [];
-      this.ingridentSugestion = false;
-    }
+    // if (genericName !== null && genericName !== undefined && genericName.length > 0) {
+    //   let activetIngredientObs = this.frm_newProduct.controls['genericName'].valueChanges.debounceTime(400)
+    //     .distinctUntilChanged()
+    //     .switchMap((dictionaries: any[]) => this.dictionariesService.find({
+    //       query: {
+    //         genericName: { $regex: this.frm_newProduct.controls['genericName'].value, '$options': 'i' },
+    //         $distinct: 'genericName'
+    //       }
+    //     }));
+    //   activetIngredientObs.subscribe((payload: any) => {
+    //     this.productSugestion = false;
+    //     this.ingridentSugestion = true;
+    //     if (payload.data.length > 0 && payload.data[0].genericName.length
+    //       !== this.frm_newProduct.controls['genericName'].value.length) {
+    //       this.activeIngredients = payload.data;
+    //     } else {
+    //       this.activeIngredients = [];
+    //       this.ingridentSugestion = false;
+    //     }
+    //   });
+    // } 
+    // else {
+    //   this.activeIngredients = [];
+    //   this.ingridentSugestion = false;
+    // }
   }
   populateProduct() {
     if (this.selectedProduct !== undefined && this.selectedProduct._id !== undefined) {
@@ -199,8 +204,8 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['name'].setValue(this.selectedProduct.name);
       this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
       this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
-      this.frm_newProduct.controls['presentationId'].setValue(this.selectedProduct.presentationId);
-      this.frm_newProduct.controls['manufacturerId'].setValue(this.selectedProduct.manufacturerId);
+      this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
+      this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
       this.frm_newProduct.controls['productTypeId'].setValue(this.selectedProduct.productTypeId);
@@ -238,10 +243,11 @@ export class NewProductComponent implements OnInit {
   create(valid, value) {
     if (valid) {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
-        console.log(1);
-        const service: any = <any>{};
+        let service: any = <any>{};
         service.name = value.name;
+        console.log(value);
         this.productService.create(value).then(payload => {
+          console.log(value);
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
               item.services.push(service);
@@ -277,13 +283,21 @@ export class NewProductComponent implements OnInit {
     }
   }
   onSelectProductSuggestion(suggestion) {
-    this.frm_newProduct.controls['name'].setValue(suggestion.name);
-    this.frm_newProduct.controls['genericName'].setValue(suggestion.genericName);
-    this.dictionaries = [];
-    this.productSugestion = false;
-    this.activeIngredients = [];
-    this.ingridentSugestion = false;
+    this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
+      console.log(payload);
+      this.frm_newProduct.controls['name'].setValue(payload.brand);
+      this.frm_newProduct.controls['genericName'].setValue(suggestion.details);
+      this.frm_newProduct.controls['presentation'].setValue(payload.form);
+      this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
+      // this.manufacturers = [];
+      // var manufacturerItem : any = <any>{};
+      // manufacturerItem = {};
+      // manufacturerItem.name = payload.company;
+      // manufacturerItem._id = "0";
+      // this.manufacturers.push(manufacturerItem);
+    })
   }
+
   onSelectActiveIngredientSuggestion(active) {
     this.frm_newProduct.controls['genericName'].setValue(active.genericName);
     this.dictionaries = [];
@@ -292,19 +306,19 @@ export class NewProductComponent implements OnInit {
     this.ingridentSugestion = false;
   }
   presentationSlide() {
-    this.manufacturer = false;
-    this.presentation = true;
-    this.strength = false;
+    this.isManufacturer = false;
+    this.isPresentation = true;
+    this.isStrength = false;
   }
   manufacturerSlide() {
-    this.manufacturer = true;
-    this.presentation = false;
-    this.strength = false;
+    this.isManufacturer = true;
+    this.isPresentation = false;
+    this.isStrength = false;
   }
 
   strengthSlide() {
-    this.manufacturer = false;
-    this.presentation = false;
-    this.strength = true;
+    this.isManufacturer = false;
+    this.isPresentation = false;
+    this.isStrength = true;
   }
 }
