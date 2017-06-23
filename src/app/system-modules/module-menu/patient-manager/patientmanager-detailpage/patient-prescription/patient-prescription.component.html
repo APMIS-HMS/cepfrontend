@@ -84,13 +84,13 @@
                     </div>
                 </div>
                 <div class="row padding-top-20px">
-                    <div class="col-sm-8 col-md-8 margin-left-14">
-                        <div class="col-sm-6 col-md-6">
+                    <div class="">
+                        <div class="col-sm-4 col-md-4">
                             <label>Frequency</label>
                             <dx-lookup formControlName="frequency" [items]="frequencies" displayExpr="name" valueExpr="name">
                             </dx-lookup>
                         </div>
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-3 col-md-3">
                             <label>Duration</label>
                             <div class="input-bg cacaca">
                                 <div class="input-group">
@@ -104,13 +104,12 @@
                                 </div>
                             </div>
                         </div>
-                        <br><br><br><br><br>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-2 col-md-2">
                             <label>Refill Count</label>
                             <dx-number-box formControlName="refillCount" [showSpinButtons]="true" [showClearButton]="true">
                             </dx-number-box>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-3 col-md-3">
                             <label>Start Date</label>
                             <dx-date-box formControlName="startDate" type="date">
                             </dx-date-box>
@@ -120,7 +119,7 @@
                             <dx-check-box formControlName="substitution" [value]="true" [width]="200" text="Substitution Not Allowed"></dx-check-box>
                         </div>-->
                     </div>
-                    <div class="col-sm-4 col-md-4 pull-right">
+                    <div class="col-sm-12 col-md-12 padding-top-20px">
                         <label> Special Instruction </label>
                         <textarea class="textarea" formControlName="specialInstruction"></textarea>
                         <div class="after-textarea-btn pull-right">
@@ -152,7 +151,7 @@
                         </div>
                     </div>
                 </div>-->
-                <div class="row">
+               <!-- <div class="row">
                      <div class="col-md-4 col-sm-4 col-xs-12">
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -164,10 +163,17 @@
                     </div>
                      <div class="col-md-4 col-sm-4 col-xs-12">
                     </div>
-                </div>  
+                </div> --> 
                 <div class="row">
-                    <div class="padding-20px">
-                        <div class="col-sm-12 col-md-12 text-center">
+                    <div>
+                        <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top: -7px;">
+                         <label> Priority </label>
+                            <div>    
+                                <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                                </dx-lookup>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 text-center">
                             <button (click)="onClickSavePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="cta-1">Authorize RX</button>
                         </div>
                     </div>

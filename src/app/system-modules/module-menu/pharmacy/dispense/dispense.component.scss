@@ -23,6 +23,7 @@
     height: 35px;
     border-bottom: 1px solid #cacaca;
     border-radius: 0;
+    width:100%;
 }
 .table-inner {
     display: flex;
@@ -79,10 +80,10 @@ select {
 .cacaca {
     background: #cacaca;
 }
-
+/*
 #qt, #batch {
     width: 210px;
-}
+}*/
 .margin-top-bottom {
     margin: 10px 0;
 }
