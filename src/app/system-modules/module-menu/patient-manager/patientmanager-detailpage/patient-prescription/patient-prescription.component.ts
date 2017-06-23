@@ -44,9 +44,9 @@ export class PatientPrescriptionComponent implements OnInit {
 	drugId: string = "";
 	selectedDrugId: string = "";
 	searchText: string = "";
-	refillCount: number;
-	currentDate: Date;
-	minDate: Date;
+	refillCount: number = 0;
+	currentDate: Date = new Date();
+	minDate: Date = new Date();
 
 	constructor(
 		private fb: FormBuilder,
@@ -71,12 +71,8 @@ export class PatientPrescriptionComponent implements OnInit {
 			this.patientId = params['id'];
 		});
 
-		this.currentDate = new Date();
-		this.minDate = new Date();
 		this.durationUnits = durationUnit;
-		this.refillCount = 0;
 		this.selectedValue = durationUnit[0].name;
-		console.log(this.currentDate);
 		//this.getAllDrugs();
 		this.getAllPriorities();
 		this.getAllRoutes();
@@ -93,9 +89,8 @@ export class PatientPrescriptionComponent implements OnInit {
 			frequency: ['', [<any>Validators.required]],
 			duration: ['', [<any>Validators.required]],
 			durationUnit: ['', [<any>Validators.required]],
-			refillCount: [''],
-			startDate: [''],
-			substitution: [''],
+			refillCount: [this.refillCount],
+			startDate: [this.currentDate],
 			specialInstruction: ['']
 		});
 	}

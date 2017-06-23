@@ -99,7 +99,7 @@
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <label>Start Date</label>
-                            <dx-date-box formControlName="startDate" [(value)]="currentDate" type="date">
+                            <dx-date-box formControlName="startDate" type="date">
                             </dx-date-box>
                         </div>
                         <!--<div class="col-sm-4 col-md-4">
@@ -118,7 +118,7 @@
                 </div>
             </form>
 
-        <app-add-prescription *ngIf="addPrescriptionShow" [prescriptionItems]="prescriptionItems"></app-add-prescription>
+            <app-add-prescription *ngIf="addPrescriptionShow" [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
             <form [formGroup]="allPrescriptionsForm">
                 <!-- begin total bill-->
