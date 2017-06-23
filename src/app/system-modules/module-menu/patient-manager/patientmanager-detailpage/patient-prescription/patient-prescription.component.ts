@@ -66,7 +66,7 @@ export class PatientPrescriptionComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.facility = this._locker.get('selectedFacility');
+		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this._route.params.subscribe(params => {
 			this.patientId = params['id'];
 		});
