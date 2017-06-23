@@ -10,8 +10,8 @@ import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs');
 
-//const HOST = 'http://192.168.20.6:3030'; // Your base server URL here
-const HOST = 'http://localhost:3030'; // Your base server URL here
+const HOST = 'http://192.168.20.5:3030'; // Your base server URL here
+// const HOST = 'http://localhost:3030'; // Your base server URL here
 
 @Injectable()
 export class SocketService {

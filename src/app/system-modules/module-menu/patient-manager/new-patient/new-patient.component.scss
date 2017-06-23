@@ -11,7 +11,11 @@
     margin: 20px auto;
     padding: 10px;
 }
-
+th {
+    height: 50px;
+    background: transparent;
+    border: 0.5px solid $th-border;
+}
 .gen_idWrap {
     width: 100%;
     text-align: center;
@@ -47,4 +51,9 @@
 
 .modal_title {
     margin-bottom: 20px;
+}
+.dx-dropdowneditor-button-visible .dx-texteditor-input {
+    padding-right: 34px;
+    background: transparent;
+    border-radius: 0;
 }
