@@ -4,37 +4,37 @@ import { FacilitiesService, PrescriptionService } from '../../../../services/fac
 import { Facility, Prescription, PrescriptionItem } from '../../../../models/index';
 
 @Component({
-  selector: 'app-prescription-list',
-  templateUrl: './prescription-list.component.html',
-  styleUrls: ['./prescription-list.component.scss']
+	selector: 'app-prescription-list',
+	templateUrl: './prescription-list.component.html',
+	styleUrls: ['./prescription-list.component.scss']
 })
 export class PrescriptionListComponent implements OnInit {
-  facility: Facility = <Facility>{};
-  status: string[];
-  prescriptionLists: any[] = [];
+	facility: Facility = <Facility>{};
+	status: string[];
+	prescriptionLists: any[] = [];
 
-  constructor(
-    private _locker: CoolLocalStorage,
-    private _prescriptionService: PrescriptionService,
-  ) {
+	constructor(
+		private _locker: CoolLocalStorage,
+		private _prescriptionService: PrescriptionService,
+	) {
 
-  }
+	}
 
-  ngOnInit() {
-    this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.getAllPrescriptions();
-  }
+	ngOnInit() {
+		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.getAllPrescriptions();
+	}
 
-  // Get all drugs from generic
-  getAllPrescriptions() {
-    this._prescriptionService.get(this.facility._id, {})
-      .then(res => {
-        console.log(res);
-        this.prescriptionLists = res.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+	// Get all drugs from generic
+	getAllPrescriptions() {
+		this._prescriptionService.find({ query: { facilityId : this.facility._id }})
+			.then(res => {
+				console.log(res);
+				this.prescriptionLists = res.data;
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
 
 }
