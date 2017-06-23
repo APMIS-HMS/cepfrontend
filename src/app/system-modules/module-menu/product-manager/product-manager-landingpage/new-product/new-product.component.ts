@@ -64,7 +64,9 @@ export class NewProductComponent implements OnInit {
       packLabel: [''],
       packSize: [''],
       presentation: [''],
-      strengthId: [],
+      ingridentName: [],
+      ingridentStrength: [],
+      ingridentStrengthUnit: [],
       manufacturer: ['', [<any>Validators.required]],
       genericName: [''],
       facilityId: [this.selectedFacility._id, [<any>Validators.required]]
