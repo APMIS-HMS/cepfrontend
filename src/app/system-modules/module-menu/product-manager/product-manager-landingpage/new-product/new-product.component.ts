@@ -56,7 +56,7 @@ export class NewProductComponent implements OnInit {
     private drugListApiService: DrugListApiService, private drugDetailsService: DrugDetailsService) { }
 
   ngOnInit() {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
       categoryId: [, [<any>Validators.required]],
@@ -65,7 +65,7 @@ export class NewProductComponent implements OnInit {
       packSize: [''],
       presentation: [''],
       strengthId: [],
-      manufacturer: ['',[<any>Validators.required]],
+      manufacturer: ['', [<any>Validators.required]],
       genericName: [''],
       facilityId: [this.selectedFacility._id, [<any>Validators.required]]
     });
@@ -144,8 +144,6 @@ export class NewProductComponent implements OnInit {
   subscribeToControls() {
     let name = this.frm_newProduct.controls['name'].value;
     let genericName = this.frm_newProduct.controls['genericName'].value;
-    console.log(name);
-    console.log(genericName);
     if (name !== null && name !== undefined && name.length > 0) {
       let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(400)
         .distinctUntilChanged()
@@ -158,14 +156,21 @@ export class NewProductComponent implements OnInit {
           }
         }));
       dictionaryObs.subscribe((payload: any) => {
-        console.log(payload)
         this.productSugestion = true;
         if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
-            this.dictionaries = payload;
-          } else {
-            this.dictionaries = [];
-            this.productSugestion = false;
-          }
+          this.dictionaries = payload;
+          // payload.forEach(element => {
+          //   var arrElements = element.details.split('(');
+          //   console.log(arrElements);
+          //   element.product = arrElements[0];
+          //   element.activeIngredient = arrElements[1].replace(')', '');
+          //   console.log(element)
+          //   this.dictionaries.push(element);
+          // });
+        } else {
+          this.dictionaries = [];
+          this.productSugestion = false;
+        }
       });
     } else {
       this.dictionaries = [];
