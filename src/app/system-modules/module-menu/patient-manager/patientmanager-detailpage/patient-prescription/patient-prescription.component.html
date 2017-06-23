@@ -12,17 +12,13 @@
                 </div>
             </div>
             <div *ngIf="medicalShow">
-                <div class="col-sm-6 col-md-6 pull-right fly-out">
-                    <!--begin medical list slide-->
-                    <!-- begin medical list table-->
+                <!--<div class="col-sm-6 col-md-6 pull-right fly-out">
                     <div class="wrap-th" id="th-color">
                         <div class="pres-col" id="long-text">Drug</div>
                         <div class="pres-col">Status</div>
                         <div class="pres-col">Dispense</div>
                         <div class="pres-col" id="action-long">Action</div>
                     </div>
-                    <!-- end medical list table-->
-                    <!-- begin binding -->
                     <div class="wrap-tr" id="tr-color">
                         <div class="pres-data" id="long-text">Syrup-novaquin 500mg</div>
                         <div class="pres-data">Started</div>
@@ -31,9 +27,26 @@
                             <button class="btn btn-default">Discontinue</button>
                         </div>
                     </div>
-                    <!-- end bind -->
-                </div>
+                </div>-->
                 <!-- end medical list slide-->
+                <table class="table table-bordered" id="table">
+                    <thead>
+                        <tr>
+                            <th>Drugs</th>
+                            <th>Status</th>
+                            <th>Dispense</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Syrup-novaquin 500mg</td>
+                            <td>Started</td>
+                            <td>11-03-20017</td>
+                            <td><button class="btn btn-default">Discontinue</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="add-sect">
@@ -42,7 +55,7 @@
                     <div class="col-sm-6 col-md-6">
                         <label>Drugs</label>
                         <div class="cu-search-box">
-                            <input type="text" formControlName="drug" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">
+                            <input type="text" formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">
                             <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                                 <div class="cu-popover-arrow"></div>
                                 <div class="cu-header">
@@ -52,42 +65,17 @@
                                     <li><a class="header">Select item</a></li>
                                     <li *ngIf="drugs.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                                     <li *ngIf="drugs.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                                    <li *ngFor="let drug of drugs" (click)="onClickCustomSearchItem($event)"><a>{{ drug.details }}</a></li>
+                                    <li *ngFor="let drug of drugs" #drugId [attr.data-drug-id]="drug.productId" (click)="onClickCustomSearchItem($event, drugId)"><a>{{ drug.details }}</a></li>
                                 </ul>
                                 <div class="cu-footer">
                                     <button class="btn btn-default">Cancel</button>
                                 </div>
                             </div>
                         </div>
-                        <!--<dx-lookup formControlName="drug" [items]="drugs" displayExpr="genericName" valueExpr="genericName">
-                        </dx-lookup>-->
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <label>Strength</label>
-                         <div class="input-bg cacaca">
-                            <div class="input-group">
-                                <input type="text" formControlName="strength" class="form-control" id="input"  required>
-                                <div class="input-group-btn">
-                                    <!--<i class="fa fa-caret-right pull-right" style="margin-top: 8px;padding-left: 0;"></i>-->
-                                    <select formControlName="strengthWeight" [(ngModel)]="selectedValue" id="select">
-                                    <option *ngFor="let weight of drugWeight" value="{{ weight.name }}">{{ weight.name }}</option>
-                                </select>
-                                </div>
-                                <!-- /btn-group -->
-                            </div>
-                         </div>
-                        <!--<div class="input-bg">
-                            <div class="input-group">
-                                <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-                                <input type="text" class="form-control" formControlName="strength" placeholder="200" required>
-                                <select formControlName="strengthWeight" [(ngModel)]="selectedValue">
-                                    <option *ngFor="let weight of drugWeight" value="{{ weight.name }}"> {{ weight.name }} </option>
-                                </select>
-                            </div>
-                        </div>-->
-                        <small class="alert alert-danger" [hidden]="addPrescriptionForm.controls.strength.valid || addPrescriptionForm.controls.strength.pristine">
-                            Kindly supply the strength name.
-                        </small>
+                        <dx-text-box formControlName="strength" [(value)]="drugId"></dx-text-box>
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <label>Route</label>
@@ -104,43 +92,33 @@
                         </div>
                         <div class="col-sm-6 col-md-6">
                             <label>Duration</label>
-                            <!--<dx-number-box formControlName="duration" [value]="1" [showSpinButtons]="true"></dx-number-box>-->
                             <div class="input-bg cacaca">
                                 <div class="input-group">
                                     <input type="number" formControlName="duration" class="form-control" id="input" required>
                                     <div class="input-group-btn">
-                                        <select formControlName="durationUnits" [(ngModel)]="selectedValue" id="select">
+                                        <select formControlName="durationUnit" [(ngModel)]="selectedValue" id="select">
                                             <option *ngFor="let unit of durationUnits" value="{{ unit.name }}">{{ unit.name }}</option>
                                         </select>
                                     </div>
                                     <!-- /btn-group -->
                                 </div>
-                                <!-- /btn-group -->
                             </div>
-                         </div>
                         </div>
-                       <!-- <div class="col-sm-4 col-md-4">
-                            <label> Priority </label>
-                            <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
-                            </dx-lookup>
-                        </div>-->
                         <br><br><br><br><br>
                         <div class="col-sm-4 col-md-4">
                             <label>Refill Count</label>
-                            <input type="number" formControlName="refillCount" [(value)]="refillCount">
-                            <!--<dx-number-box formControlName="refillCount" [(value)]="refillCount" [showSpinButtons]="true" [showClearButton]="true">
-
-                            </dx-number-box>-->
+                            <dx-number-box formControlName="refillCount" [showSpinButtons]="true" [showClearButton]="true">
+                            </dx-number-box>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <label>Start Date</label>
-                            <dx-date-box formControlName="startDate" [(value)]="currentDate" type="date">
+                            <dx-date-box formControlName="startDate" type="date">
                             </dx-date-box>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <!--<div class="col-sm-4 col-md-4">
                             <label style="margin-top:13px"></label>
                             <dx-check-box formControlName="substitution" [value]="true" [width]="200" text="Substitution Not Allowed"></dx-check-box>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="col-sm-4 col-md-4 pull-right">
                         <label> Special Instruction </label>
@@ -152,104 +130,50 @@
                     </div>
                 </div>
             </form>
-            <!-- table header start-->
-            <div class="wrap-th">
-                <div class="pres-col" id="long-text">Prescription</div>
-                <div class="pres-col">Instruction</div>
-                <div class="pres-col">Refill Count</div>
-                <div class="pres-col">Action</div>
-            </div>
-            <!-- table header ends here-->
-            <div *ngFor="let prescription of prescriptionItems; let i = index;">
-                <div class="wrap-tr">
-                    <div class="pres-data" id="long-text">
-                        {{ prescription.genericName }} / Tablet - {{ prescription.strength }} - {{ prescription.routeName }} - {{ prescription.frequency }}
-                    </div>
-                    <div class="pres-data">{{ prescription.patientInstruction }}</div>
-                    <div class="pres-data">{{ prescription.refillCount }}</div>
-                    <div class="pres-data" id="padding">
-                        <div class="text-center">
-                            <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
-                            <button (click)="toggleBill(i);" class="btn btn-default">Bill</button>
+
+            <app-add-prescription *ngIf="addPrescriptionShow" [prescriptionItems]="prescriptionItems"></app-add-prescription>
+
+            <form [formGroup]="allPrescriptionsForm">
+                <!-- begin total bill-->
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 padding-10px">
+                        <div class="col-sm-6 pull-right">
+                            <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
                         </div>
                     </div>
                 </div>
-                <!--inner container onclick-->
-                <div *ngIf="billShow && (billShowId == i)" class="inner-container">
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4">
-                            <label>Drugs</label>
-                            <dx-lookup [items]="drugs" [value]="drugs.name" displayExpr="name" valueExpr="_id">
-                            </dx-lookup>
+                <!-- end total bill-->
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-12 padding-10px text-center">
+                        <div class="col-sm-12 col-md-12">
+                                <label class="pull-left"> Priority </label>
+                                <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                                </dx-lookup>
                         </div>
-                        <div class="col-sm-3 col-md-3">
-                            <label>Quantity</label>
-                                <div class="input-bg cacaca">
-                                    <div class="input-group">
-                                        <input type="text" formControlName="strength" class="form-control" id="input"  required>
-                                        <div class="input-group-btn">
-                                            <!--<i class="fa fa-caret-right pull-right" style="margin-top: 8px;padding-left: 0;"></i>-->
-                                            <select formControlName="strengthWeight" [(ngModel)]="selectedValue" id="select">
-                                            <option *ngFor="let weight of drugWeight" value="{{ weight.name }}">{{ weight.name }}</option>
-                                        </select>
-                                        </div>
-                                        <!-- /btn-group -->
-                                    </div>
-                                </div>
-                            <!--<div class="input-bg cacaca">
-                                <div class="input-group">
-                                    <input type="text" name="quantity" class="form-control" aria-label="...">
-                                    <div class="input-group-btn">
-                                        <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-                                        <select>
-                                            <option>Cards</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>-->
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <label style="margin-top:20px"></label>
-                            <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
-                        </div>
-                        <div class="col-sm-1 col-ms-1">
-                            <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="text-amount puul-right">
-                                <button class="btn btn-default save-btn">Save</button>
+                    </div>
+                </div>-->
+                <div class="row">
+                     <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                         <label> Priority </label>
+                            <div>    
+                                <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                                </dx-lookup>
                             </div>
+                    </div>
+                     <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                </div>  
+                <div class="row">
+                    <div class="padding-20px">
+                        <div class="col-sm-12 col-md-12 text-center">
+                            <button (click)="onClickSavePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="cta-1">Authorize RX</button>
                         </div>
                     </div>
                 </div>
-                <!--end inner container on click-->
-            </div>
-            <div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0">
-                <div class="pres-data" style="width: 100%">No data to display in table</div>
-            </div>
-            <!-- begin authorize RX button -->
-            <!-- begin total bill-->
-            <div class="row">
-                <div class="col-sm-6 col-md-6 padding-10px">
-                            <label> Priority </label>
-                            <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
-                            </dx-lookup>
-                </div>
-                <div class="col-sm-6 col-md-6 padding-10px">
-                    <div class="col-sm-12 col-md-12 text-center">
-                        <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
-                    </div>
-                </div>
-            </div>
-            <!-- end total bill-->
-            <div class="row">
-                <div class="padding-20px">
-                    <div class="col-sm-12 col-md-12 text-center">
-                        <button (click)="onClickSavePrescription();" type="submit" class="cta-1">Authorize RX</button>
-                    </div>
-                </div>
-            </div>
-            <!-- end authorize RX button -->
+                <!-- end authorize RX button -->
+            </form>
         </div>
     </div>
     <!-- end survery -->

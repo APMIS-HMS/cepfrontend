@@ -44,9 +44,9 @@ export class PatientPrescriptionComponent implements OnInit {
 	drugId: string = "";
 	selectedDrugId: string = "";
 	searchText: string = "";
-	refillCount: number;
-	currentDate: Date;
-	minDate: Date;
+	refillCount: number = 0;
+	currentDate: Date = new Date();
+	minDate: Date = new Date();
 
 	constructor(
 		private fb: FormBuilder,
@@ -66,17 +66,16 @@ export class PatientPrescriptionComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.facility = <Facility>this._locker.getObject('selectedFacility');
+		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this._route.params.subscribe(params => {
 			this.patientId = params['id'];
 		});
+		
+		// Remove this when you are done
+		this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
-		this.currentDate = new Date();
-		this.minDate = new Date();
 		this.durationUnits = durationUnits;
-		this.refillCount = 0;
 		this.selectedValue = durationUnits[0].name;
-		console.log(this.currentDate);
 		//this.getAllDrugs();
 		this.getAllPriorities();
 		this.getAllRoutes();
@@ -92,10 +91,9 @@ export class PatientPrescriptionComponent implements OnInit {
 			drug: ['', [<any>Validators.required]],
 			frequency: ['', [<any>Validators.required]],
 			duration: ['', [<any>Validators.required]],
-			durationUnits: ['', [<any>Validators.required]],
-			refillCount: [''],
-			startDate: [''],
-			substitution: [''],
+			durationUnit: ['', [<any>Validators.required]],
+			refillCount: [this.refillCount],
+			startDate: [this.currentDate],
 			specialInstruction: ['']
 		});
 	}
@@ -112,10 +110,10 @@ export class PatientPrescriptionComponent implements OnInit {
 					genericName: value.drug,
 					routeName: value.route,
 					frequency: value.frequency,
-					duration: value.duration + value.durationUnits,
+					duration: value.duration + value.durationUnit,
 					startDate: value.startDate,
 					strength: value.strength,
-					patientInstruction: value.specialInstruction,
+					patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
 					refillCount: value.refillCount
 				};
 
@@ -133,7 +131,7 @@ export class PatientPrescriptionComponent implements OnInit {
 					facilityId: this.facility._id,
 					employeeId: this.employeeDetails.employeeDetails._id,
 					clinicId: this.selectedAppointment.clinicId,
-					priorityId: value.priority,
+					priorityId: "",
 					patientId: this.patientId,
 					prescriptionItems: this.prescriptionItems,
 					isAuthorised: true
@@ -142,21 +140,24 @@ export class PatientPrescriptionComponent implements OnInit {
 				console.log(prescription);
 				this.prescriptions = prescription;
 				this.addPrescriptionForm.reset();
+				this.addPrescriptionForm.controls['refillCount'].reset(0);
+				this.addPrescriptionForm.controls['startDate'].reset(new Date());
+				this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
 			}
 		}
 	}
 
 	onClickSavePrescription(value: any, valid: boolean) {
-		if (valid) {
-			if (this.selectedAppointment.clinicId === undefined) {
+		if (valid && (this.prescriptionItems.length > 0)) {
+			if(this.selectedAppointment.clinicId === undefined) {
 				this._facilityService.announceNotification({
 					type: "Info",
 					text: "Clinic has not been set!"
 				});
 			} else {
-				let itemToSave = this.prescriptions;
-				itemToSave.priorityId = value.priority;
-				this._prescriptionService.create(itemToSave)
+				this.prescriptions.priorityId = value.priority;
+				console.log(this.prescriptions);
+				this._prescriptionService.create(this.prescriptions)
 					.then(res => {
 						this._facilityService.announceNotification({
 							type: "Success",
@@ -252,25 +253,25 @@ export class PatientPrescriptionComponent implements OnInit {
 		//this._el.nativeElement.getElementsByTagName('input')[0].value = event.srcElement.innerText;
 		let productId = drugId.getAttribute('data-drug-id');
 		this._drugDetailsApi.find({ query: { "productId": productId } })
-			.then(res => {
-				if (res.ingredients.length === 1) {
-					if (res.ingredients[0].strength !== undefined || res.ingredients[0].strengthUnit !== undefined) {
-						this.selectedDrugId = res.ingredients[0].strength + res.ingredients[0].strengthUnit;
-						this.addPrescriptionForm.controls['strength'].setValue(this.selectedDrugId);
-					} else {
-						this.addPrescriptionForm.controls['strength'].setValue("");
-					}
+				.then(res => {
+					if(res.ingredients.length === 1) {
+						if(res.ingredients[0].strength !== undefined || res.ingredients[0].strengthUnit !== undefined) {
+							this.selectedDrugId = res.ingredients[0].strength + res.ingredients[0].strengthUnit;
+							this.addPrescriptionForm.controls['strength'].setValue(this.selectedDrugId);
+						} else {
+							this.addPrescriptionForm.controls['strength'].setValue("");
+						}
 
-					if (res.route !== "" || res.route !== undefined) {
-						this.addPrescriptionForm.controls['route'].setValue(res.route);
-					} else {
-						this.addPrescriptionForm.controls['route'].setValue("");
+						if(res.route !== "" || res.route !== undefined) {
+							this.addPrescriptionForm.controls['route'].setValue(res.route);
+						} else {
+							this.addPrescriptionForm.controls['route'].setValue("");
+						}
 					}
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			});
+				})
+				.catch(err => {
+					console.log(err);
+				});
 	}
 
 	focusSearch() {
