@@ -214,7 +214,7 @@ select {
 
 .restart,
 .reuse,
-start {
+.start {
     border: 1px solid #0288d1;
     color: #0288d1;
 }
@@ -366,4 +366,10 @@ label:hover {
 }
 .cta-1 {
     color: #fff !important;
+}
+
+#table {
+    width: 50%;
+    float: right;
+    margin-right: 15px;
 }
