@@ -70,6 +70,8 @@ export class PatientPrescriptionComponent implements OnInit {
 		this._route.params.subscribe(params => {
 			this.patientId = params['id'];
 		});
+		
+		// Remove this when you are done
 		this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
 		this.durationUnits = durationUnits;
