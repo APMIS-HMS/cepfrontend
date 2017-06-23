@@ -8,27 +8,97 @@
             <li class="emp-status" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Status</li>
             <li class="emp-action" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Action</li>
         </ul>
-
         <div class="wrapper-content">
-             <ul *ngFor="let item of employees" class="inBody">
+        <ul *ngFor="let item of employees" class="inBody">
             <li (click)="navEpDetail(item)" class="emp-img">
-                    <div *ngIf="item?.employeeDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                    <div *ngIf="item?.employeeDetails?.profileImageObject != undefined"><img [src]="facilityService.transform(item?.employeeDetails?.profileImageObject?.thumbnail)"></div>
-                </li>
-                <li (click)="navEpDetail(item)" class="emp-name">{{item.employeeDetails?.lastName}} {{item.employeeDetails?.firstName}}</li>
-                <li class="emp-apmis">{{item.employeeDetails?.apmisId}}</li>
-                <li class="emp-dept">{{item.department?.name}}</li>
-                <li class="emp-status">
-                    <span *ngIf="!item.isActive" style="color:#E53935;">Inactive</span>
-                    <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>
-                </li>
-                <li *ngIf="!item.isActive" class="survery">
-                    <span class="label label-success">Activate</span>
-                </li>
-            </ul>
+                <div *ngIf="item?.employeeDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                <div *ngIf="item?.employeeDetails?.profileImageObject != undefined"><img [src]="facilityService.transform(item?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+            </li>
+            <li (click)="navEpDetail(item)" class="emp-name">{{item.employeeDetails?.lastName}} {{item.employeeDetails?.firstName}}</li>
+            <li class="emp-apmis">{{item.employeeDetails?.apmisId}}</li>
+            <li class="emp-dept">{{item.department?.name}}</li>
+            <li class="emp-status">
+                <span *ngIf="!item.isActive" style="color:#E53935;">Inactive</span>
+                <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>
+            </li>
+            <li *ngIf="!item.isActive" class="survery">
+                <span class="label label-success">Activate</span>
+            </li>
+         </ul>
             <div *ngIf="loadIndicatorVisible" class="div_loading">
                 <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
             </div>
         </div>
     </div>
-</div>
+</div> 
+
+<!--<table cellpadding="0" cellspacing="0" border="0.5"> 
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Employee</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Apmis ID</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Department</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Status</span>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td colspan="6">
+                <div class="tbl-actionRow">
+                    <div class="tbl-title">Employee Workspace</div>
+                    <div class="tbl-search">
+                        <div class="searchInputWrap">
+                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr *ngFor="let workSpace of workSpaces">
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img *ngIf="workSpace.employeeObject.employeeDetails.profileImageObject == undefined" src="assets/images/users/default.png">
+                        <img *ngIf="workSpace.employeeObject.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(workSpace.employeeObject.employeeDetails.profileImageObject.thumbnail)">
+                    </div>
+                    <div>{{workSpace.employeeObject.employeeDetails.lastName}} {{workSpace.employeeObject.employeeDetails.firstName}}</div>
+                </div>
+            </td>
+            <td>{{workSpace.employeeObject.department?.name}}</td>
+            <td class="td-worspace">
+                <div class="workspace-count">{{getActiveWorkSpaceCount(workSpace)}} workspaces</div>
+                <ul *ngIf="workSpace.locations !== undefined && workSpace.locations.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
+                    <li [hidden]="location.isActive===false" *ngFor="let location of workSpace.locations; let i = index" class="workspace-listItem">
+                        <ng-container *ngIf="location!== undefined">
+                            <span>{{location.minorLoactionDetails?.name}}</span>
+                            <i (click)="removeLocation(location, workSpace, i)" class="fa fa-trash" aria-hidden="true"></i>
+                        </ng-container>
+                    </li>
+                    <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                </ul>
+            </td>
+            <td>
+                <div class="td-ctaWrap">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"></i>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>-->

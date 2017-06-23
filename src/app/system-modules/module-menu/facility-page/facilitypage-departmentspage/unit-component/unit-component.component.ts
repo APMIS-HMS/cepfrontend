@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angu
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, FacilityModuleService, DepartmentService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityModule, Facility, Department } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Locker } from 'angular2-locker';
 
 @Component({
     selector: 'app-unit-component',
@@ -15,8 +15,6 @@ export class UnitComponentComponent implements OnInit {
     @Input() unit: any;
     @Input() department: Department;
     @Input() facility: Facility;
-
-    count = 0;
     modal_on = false;
     newDeptModal_on = false;
     newUnitModal_on = false;
@@ -39,6 +37,8 @@ export class UnitComponentComponent implements OnInit {
     unitEditNameIcoShow = false;
     unitEditShortNameIcoShow = false;
     unitEditDescIcoShow = false;
+    unitEditClinicIcoShow = false;
+    unitEditClinicIcoShow2 = false;
 
     deptNameEdit = new FormControl();
     deptshortNameEdit = new FormControl();
@@ -47,8 +47,8 @@ export class UnitComponentComponent implements OnInit {
     unitNameEdit = new FormControl();
     unitshortNameEdit = new FormControl();
     unitDescEdit = new FormControl();
-    constructor(public facilityService: FacilitiesService,
-        private locker: CoolLocalStorage) {
+    constructor(private facilityService: FacilitiesService,
+        private locker: Locker) {
         this.facilityService.listner.subscribe(payload => {
             this.facility = payload;
         })
@@ -143,6 +143,18 @@ export class UnitComponentComponent implements OnInit {
     unitEditDescSubmit() {
         this.updateFacility();
         this.unitEditDescIcoShow = !this.unitEditDescIcoShow;
+    }
+    unitEditClinicToggle(){
+        this.unitEditClinicIcoShow = !this.unitEditClinicIcoShow;
+    }
+    unitEditClinicSubmit(){
+        this.unitEditClinicIcoShow = !this.unitEditClinicIcoShow;
+    }
+    unitEditClinicToggle2(){
+        this.unitEditClinicIcoShow2 = !this.unitEditClinicIcoShow2;
+    }
+    unitEditClinicSubmit2(){
+        this.unitEditClinicIcoShow2 = !this.unitEditClinicIcoShow2;
     }
 
     newDeptModal_show() {

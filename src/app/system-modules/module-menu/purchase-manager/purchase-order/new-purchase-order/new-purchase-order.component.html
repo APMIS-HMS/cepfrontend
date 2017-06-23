@@ -86,10 +86,36 @@
                             </label>
                         </div>
 
+                        <!--<div class="ps-col1">
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <dx-check-box [value]="true"></dx-check-box>
+                                <label>Panadol</label>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <dx-check-box [value]="true"></dx-check-box>
+                                <label>Panadol</label>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <dx-check-box [value]="true"></dx-check-box>
+                                <label>Panadol</label>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <dx-check-box [value]="true"></dx-check-box>
+                                <label>Panadol</label>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <dx-check-box [value]="true"></dx-check-box>
+                                <label>Panadol</label>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <dx-check-box [value]="true"></dx-check-box>
+                                <label>Panadol</label>
+                            </div>
+                        </div>-->
                     </div>
                 </div>
-                <div class="col-b">
-                    <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
+                <!--<div class="col-b">
+                    <form *ngIf="productTableForm.controls['productTableArray'].controls.length > 0" [formGroup]="productTableForm">
                         <div formArrayName="productTableArray" class="frmArrayWrap">
                             <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
                                 <div formGroupName="{{i}}">
@@ -111,7 +137,7 @@
                                                     Kindly select an option from the drop down.
                                                 </small>
                                                 <label>Strength</label>
-                                                <dx-select-box style="width: 100%;" formControlName="strength" [items]="strengths"></dx-select-box>
+                                                <dx-select-box style="width: 100%;" formControlName="strength" [items]="simpleProducts"></dx-select-box>
                                             </div>
 
                                             <div style="width: 20%;" class="frm-item-wrap">
@@ -135,11 +161,11 @@
 
 
 
-                </div>
+                </div>-->
             </div>
         </div> 
         <div class="col-b">
-            <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
+            <form *ngIf="productTableForm.controls['productTableArray'].controls.length > 0" [formGroup]="productTableForm">
                 <div formArrayName="productTableArray" class="frmArrayWrap">
                     <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
                         <div formGroupName="{{i}}">
@@ -161,7 +187,14 @@
                                                     Kindly select an option from the drop down.
                                                 </small>
                                         <label>Strength</label>
-                                        <dx-select-box style="width: 100%;" formControlName="strength" [items]="strengths" displayExpr="strength" valueExpr="_id"></dx-select-box>
+                                        <dx-lookup
+                                            style="width: 100%;"
+                                            formControlName="strength"
+                                            [items]="strengths"
+                                            displayExpr="strength"
+                                            valueExpr="_id"
+                                            [showPopupTitle]="false">
+                                        </dx-lookup>
                                     </div>
 
                                     <div style="width: 20%;" class="frm-item-wrap">
