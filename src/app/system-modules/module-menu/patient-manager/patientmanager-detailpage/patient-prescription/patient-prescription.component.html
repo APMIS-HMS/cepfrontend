@@ -131,17 +131,17 @@
                 </div>
             </form>
 
-            <app-add-prescription *ngIf="addPrescriptionShow" [prescriptionItems]="prescriptionItems"></app-add-prescription>
+            <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
             <form [formGroup]="allPrescriptionsForm">
                 <!-- begin total bill-->
-                <div class="row">
+                <!--<div class="row">
                     <div class="col-sm-12 col-md-12 padding-10px">
                         <div class="col-sm-6 pull-right">
                             <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <!-- end total bill-->
                 <!--<div class="row">
                     <div class="col-sm-12 col-md-12 padding-10px text-center">
@@ -153,18 +153,18 @@
                     </div>
                 </div>-->
                 <div class="row">
-                     <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-12">
-                         <label> Priority </label>
-                            <div>    
-                                <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
-                                </dx-lookup>
-                            </div>
+                        <label> Priority </label>
+                        <div>
+                            <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                            </dx-lookup>
+                        </div>
                     </div>
-                     <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
                     </div>
-                </div>  
+                </div>
                 <div class="row">
                     <div class="padding-20px">
                         <div class="col-sm-12 col-md-12 text-center">

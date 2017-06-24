@@ -12,10 +12,10 @@
         </div>
         <div class="pres-data">{{ prescription.patientInstruction }}</div>
         <div class="pres-data">{{ prescription.refillCount }}</div>
-        <div class="pres-data padding"  id="action-long">
+        <div class="pres-data padding" id="action-long">
             <div class="text-center">
                 <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
-                 <dx-check-box [value]="true" [width]="100" text="External?"></dx-check-box>
+                <dx-check-box [value]="true" [width]="100" text="External?"></dx-check-box>
                 <button (click)="toggleBill(i);" class="btn btn-default">Bill</button>
             </div>
         </div>
@@ -30,11 +30,7 @@
             </div>
             <div class="col-sm-3 col-md-3">
                 <label>Quantity</label>
-                <dx-number-box
-                    [value]="0"
-                    [showSpinButtons]="true"
-                    [showClearButton]="true"
-                ></dx-number-box>
+                <dx-number-box [value]="0" [showSpinButtons]="true" [showClearButton]="true"></dx-number-box>
                 <!--<div class="input-bg cacaca">
                     <div class="input-group">
                         <input type="text" class="form-control" id="input" required>
@@ -54,8 +50,8 @@
 					</div>
 				</div>-->
             </div>
-              <div class="col-sm-3 col-md-3">
-               <div class="center">
+            <div class="col-sm-3 col-md-3">
+                <div class="center">
                     <div class="qs">
                         <ul class="shadow-RB workspace-listWrap animated zoomIn">
                             <li class="workspace-listItem">
@@ -82,4 +78,11 @@
 </div>
 <div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0">
     <div class="pres-data" style="width: 100%">No data to display in table</div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 padding-10px">
+        <div class="col-sm-6 pull-right">
+            <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
+        </div>
+    </div>
 </div>

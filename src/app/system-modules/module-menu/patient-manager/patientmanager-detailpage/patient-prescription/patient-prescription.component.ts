@@ -47,6 +47,7 @@ export class PatientPrescriptionComponent implements OnInit {
 	refillCount: number = 0;
 	currentDate: Date = new Date();
 	minDate: Date = new Date();
+	priorityValue: String = '';
 
 	constructor(
 		private fb: FormBuilder,
@@ -76,6 +77,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
 		this.durationUnits = durationUnits;
 		this.selectedValue = durationUnits[0].name;
+		this.priorityValue = 'Normal';
 		//this.getAllDrugs();
 		this.getAllPriorities();
 		this.getAllRoutes();
@@ -161,7 +163,7 @@ export class PatientPrescriptionComponent implements OnInit {
 					.then(res => {
 						this._facilityService.announceNotification({
 							type: "Success",
-							text: "Prescription has been added!"
+							text: "Prescription has been sent!"
 						});
 						this.prescriptionItems = [];
 						this.addPrescriptionForm.reset();
