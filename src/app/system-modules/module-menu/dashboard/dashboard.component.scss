@@ -10,6 +10,16 @@
     display: flex;
     align-items: center;
     margin: 20px;
+    cursor: pointer;
+}
+.db-item-wrap:hover{
+    .db-item{
+        background: #0288D1;
+        color: #fff;
+    }
+    .dbItem-label{
+        background: #000;
+    }
 }
 .db-item {
     width: 150px;
@@ -25,13 +35,6 @@
     border-radius: 100%;
     cursor: pointer;
     overflow: hidden;
-}
-.db-item:hover{
-    background: #0288D1;
-    color: #fff;
-    .dbItem-label{
-        background: #000;
-    }
 }
 .dbItem-insider{
     width: 100%;
