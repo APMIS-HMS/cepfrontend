@@ -1,0 +1,47 @@
+@import "../../../../globals/variables.scss";
+
+.db-wrap {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.db-item {
+    width: 115px;
+    height: 115px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #8e8e8e;
+    color: #000;
+    border-radius: 100%;
+    cursor: pointer;
+    margin: 20px;
+    overflow: hidden;
+}
+.db-item:hover{
+    background: #0288D1;
+    color: #fff;
+    .dbItem-label{
+        background: #000;
+    }
+}
+.dbItem-insider{
+    width: 100%;
+}
+.db-item i{
+    font-size: 35px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.dbItem-label {
+    background: #0288D1;
+    font-size: 18px;
+    font-family: $font-titles;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 1.5px;
+    padding: 2px;
+    box-sizing: border-box;
+}

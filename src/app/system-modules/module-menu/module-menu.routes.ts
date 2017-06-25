@@ -1,10 +1,12 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleMenuComponent } from './module-menu.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const MODULEMENU_ROUTES: Routes = [
     {
         path: '', component: ModuleMenuComponent, children: [
-            { path: '', redirectTo: 'setup' },
+            { path: '', redirectTo: 'dashboard' },
+            { path: 'dashboard', component: DashboardComponent },
             {
                 path: 'setup',
                 loadChildren: './facility-page/facility-page.module#FacilityPageModule'
