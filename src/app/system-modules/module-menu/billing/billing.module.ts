@@ -30,9 +30,9 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         DatePickerModule,
         billingRoutes
     ],

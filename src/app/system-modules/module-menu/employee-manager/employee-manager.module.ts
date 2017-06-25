@@ -45,12 +45,12 @@ import { EmployeesResolverService, LoginEmployeeResolverService } from '../../..
     exports: [
     ],
     imports: [
-        DxCheckBoxModule,
+        // DxCheckBoxModule,
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        DatePickerModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // DatePickerModule,
         employeeManagerRoutes
     ],
     providers: [EmployeesResolverService, LoginEmployeeResolverService]

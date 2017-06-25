@@ -14,7 +14,7 @@ import {
     DxButtonModule, DxTextAreaModule, DxCheckBoxModule, DxSelectBoxModule,
     DxTemplateModule, DxAutocompleteModule, DxLookupModule, DxDateBoxModule
 } from 'devextreme-angular';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 import { Service } from '../../../services/facility-manager/setup/devexpress.service';
 import { ConsultingRoomComponent } from './consulting-room/consulting-room.component';
 import { ConsultingRoomCheckinComponent } from './consulting-room-checkin/consulting-room-checkin.component';
@@ -28,7 +28,7 @@ import {
         ClinicComponent,
         ClinicHomeComponent,
         ClinicScheduleComponent,
-        // AppointmentComponent,
+        AppointmentComponent,
         CheckInPatientComponent,
         ConsultingRoomComponent,
         ConsultingRoomCheckinComponent],
@@ -37,13 +37,13 @@ import {
     imports: [
         SharedModule,
         DxSchedulerModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         DatePickerModule,
         clinicRoutes,
-        DxSchedulerModule, DxButtonModule, DxTemplateModule,
-        DxAutocompleteModule, DxLookupModule, DxTextAreaModule, DxDateBoxModule
+        // DxSchedulerModule, DxButtonModule, DxTemplateModule,
+        // DxAutocompleteModule, DxLookupModule, DxTextAreaModule, DxDateBoxModule
     ],
     providers: [
         Service,

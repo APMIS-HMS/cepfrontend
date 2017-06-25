@@ -40,11 +40,11 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         wardManagerRoutes,
-        DatePickerModule
+        // DatePickerModule
     ],
     providers: [WardEmitterService]
 })

@@ -19,7 +19,7 @@ import { NewTagComponent } from '../system-modules/module-menu/billing/services/
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTagComponent } from '../system-modules/module-menu/add-tag/add-tag.component';
 import { DevExtremeModule, DxLoadIndicatorModule, DxLookupModule, DxDateBoxModule, DxSparklineModule } from 'devextreme-angular';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 import { MomentModule } from 'angular2-moment';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
@@ -35,8 +35,8 @@ import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
 @NgModule({
     declarations: [
-        AppointmentComponent,
-        LogoutConfirmComponent,
+        // AppointmentComponent,
+        // LogoutConfirmComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,
         GlobalPatientLookupComponent,
@@ -49,17 +49,17 @@ import { AppointmentComponent } from '../system-modules/module-menu/clinic/appoi
         SurveyEditorComponent,
         ProductSearchComponent,
         StoreCheckInComponent,
-        VerifyTokenComponent,
-        AddLogoComponent,
-        AddFacilityModuleComponent,
-        FacilitySetupComponent,
-        ContactInfoComponent,
-        FacilityInfoComponent,
+        // VerifyTokenComponent,
+        // AddLogoComponent,
+        // AddFacilityModuleComponent,
+        // FacilitySetupComponent,
+        // ContactInfoComponent,
+        // FacilityInfoComponent,
         CreateWorkspaceComponent
     ],
     exports: [
-        AppointmentComponent,
-        LogoutConfirmComponent,
+        // AppointmentComponent,
+        // LogoutConfirmComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,
         ImageCropperModule,
@@ -83,21 +83,24 @@ import { AppointmentComponent } from '../system-modules/module-menu/clinic/appoi
         SurveyComponent,
         SurveyEditorComponent,
         StoreCheckInComponent,
-        VerifyTokenComponent,
-        AddLogoComponent,
-        AddFacilityModuleComponent,
-        FacilitySetupComponent,
-        ContactInfoComponent,
-        FacilityInfoComponent,
-        CreateWorkspaceComponent
+        // VerifyTokenComponent,
+        // AddLogoComponent,
+        // AddFacilityModuleComponent,
+        // FacilitySetupComponent,
+        // ContactInfoComponent,
+        // FacilityInfoComponent,
+        CreateWorkspaceComponent,
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
     ],
     imports: [
         CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
         NgUploaderModule,
         NgPipesModule,
         CurrencyMaskModule,
-        ReactiveFormsModule,
-        FormsModule,
         DevExtremeModule,
         DxLoadIndicatorModule,
         DxLookupModule,

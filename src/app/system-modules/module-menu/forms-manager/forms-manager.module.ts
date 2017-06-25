@@ -18,9 +18,9 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         formsManagerRoutes
     ],
     providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService,

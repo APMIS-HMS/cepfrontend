@@ -36,10 +36,10 @@ import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescr
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        DatePickerModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // DatePickerModule,
         patientManagerRoutes
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FormsService]

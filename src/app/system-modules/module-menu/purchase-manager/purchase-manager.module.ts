@@ -10,10 +10,10 @@ import { PurchaseOrderComponent } from './purchase-order/purchase-order.componen
 import { InvoicesComponent } from './invoices/invoices.component';
 import { NewPurchaseOrderComponent } from './purchase-order/new-purchase-order/new-purchase-order.component';
 import { DxDateBoxModule } from 'devextreme-angular';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 import { PurchaseEntryComponent } from './purchase-entry/purchase-entry.component';
-import { SupplierService, ProductService, StoreService, PurchaseOrderService, StrengthService, PurchaseEntryService, InventoryService }
-  from '../../../services/facility-manager/setup/index';
+// tslint:disable-next-line:max-line-length
+import { SupplierService, ProductService, StoreService, PurchaseOrderService, StrengthService, PurchaseEntryService, InventoryService } from '../../../services/facility-manager/setup/index';
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 
 
@@ -27,11 +27,11 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
   exports: [],
   imports: [
     SharedModule,
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
+    // CommonModule,
+    // ReactiveFormsModule,
+    // FormsModule,
     purchaseManagerRoutes,
-    DxDateBoxModule
+    // DxDateBoxModule
   ],
   providers: [PurchaseEmitterService, SupplierService, ProductService, PurchaseOrderService, StoreService, StrengthService,
     LoginEmployeeResolverService, InventoryService, PurchaseEntryService]
