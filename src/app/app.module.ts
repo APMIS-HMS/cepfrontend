@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { CustomPreloading } from './custom-preloading';
@@ -69,6 +70,7 @@ import {AddFacilityModuleComponent } from './facility-setup/add-facility-module/
     Routing,
     // FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     ToastModule.forRoot(),
     CoolStorageModule
   ],

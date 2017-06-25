@@ -11,6 +11,7 @@ export class PrescriptionService {
   ) {
     this._rest = _restService.getService('prescriptions');
     this._socket = _socketService.getService('prescriptions');
+    this._socket.timeout = 50000;
     this._socket.on('created', function (gender) {
     });
   }

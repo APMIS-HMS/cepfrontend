@@ -35,7 +35,7 @@ export class PatientPrescriptionComponent implements OnInit {
     patientId: string;
     priorities: string[] = [];
     prescriptions: Prescription = <Prescription>{};
-	// prescriptionItems: PrescriptionItem[] = [];
+    // prescriptionItems: PrescriptionItem[] = [];
     drugs: string[] = [];
     routes: string[] = [];
     frequencies: string[] = [];
@@ -71,9 +71,12 @@ export class PatientPrescriptionComponent implements OnInit {
             this.patientId = params['id'];
         });
 
+        // Remove this when you are done
+        this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
+
         this.durationUnits = durationUnits;
         this.selectedValue = durationUnits[0].name;
-		// this.getAllDrugs();
+        // this.getAllDrugs();
         this.getAllPriorities();
         this.getAllRoutes();
         this.getAllFrequencies();
@@ -110,7 +113,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     duration: value.duration + value.durationUnit,
                     startDate: value.startDate,
                     strength: value.strength,
-                    patientInstruction: value.specialInstruction,
+                    patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
                     refillCount: value.refillCount
                 };
 
@@ -128,7 +131,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     facilityId: this.facility._id,
                     employeeId: this.employeeDetails.employeeDetails._id,
                     clinicId: this.selectedAppointment.clinicId,
-                    priorityId: value.priority,
+                    priorityId: '',
                     patientId: this.patientId,
                     prescriptionItems: this.prescriptionItems,
                     isAuthorised: true
@@ -137,21 +140,24 @@ export class PatientPrescriptionComponent implements OnInit {
                 console.log(prescription);
                 this.prescriptions = prescription;
                 this.addPrescriptionForm.reset();
+                this.addPrescriptionForm.controls['refillCount'].reset(0);
+                this.addPrescriptionForm.controls['startDate'].reset(new Date());
+                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
             }
         }
     }
 
     onClickSavePrescription(value: any, valid: boolean) {
-        if (valid) {
+        if (valid && (this.prescriptionItems.length > 0)) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._facilityService.announceNotification({
                     type: 'Info',
                     text: 'Clinic has not been set!'
                 });
             } else {
-                const itemToSave = this.prescriptions;
-                itemToSave.priorityId = value.priority;
-                this._prescriptionService.create(itemToSave)
+                this.prescriptions.priorityId = value.priority;
+                console.log(this.prescriptions);
+                this._prescriptionService.create(this.prescriptions)
                     .then(res => {
                         this._facilityService.announceNotification({
                             type: 'Success',
@@ -210,17 +216,17 @@ export class PatientPrescriptionComponent implements OnInit {
             });
     }
 
-	// Get all drugs from generic
-	// getAllDrugs() {
-	// 	this._dictionaryService.findAll()
-	// 		.then(res => {
-	// 			console.log(res);
-	// 			this.drugs = res.data;
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 		});
-	// }
+    // Get all drugs from generic
+    // getAllDrugs() {
+    // 	this._dictionaryService.findAll()
+    // 		.then(res => {
+    // 			console.log(res);
+    // 			this.drugs = res.data;
+    // 		})
+    // 		.catch(err => {
+    // 			console.log(err);
+    // 		});
+    // }
 
     keyupSearch() {
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
@@ -244,7 +250,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     onClickCustomSearchItem(event, drugId) {
         this.addPrescriptionForm.controls['drug'].setValue(event.srcElement.innerText);
-		// this._el.nativeElement.getElementsByTagName('input')[0].value = event.srcElement.innerText;
+        // this._el.nativeElement.getElementsByTagName('input')[0].value = event.srcElement.innerText;
         const productId = drugId.getAttribute('data-drug-id');
         this._drugDetailsApi.find({ query: { 'productId': productId } })
             .then(res => {

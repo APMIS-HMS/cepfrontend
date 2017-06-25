@@ -6,7 +6,8 @@ import { ModuleMenuComponent } from './module-menu.component';
 import { SharedModule } from '../../shared-module/shared.module';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ClinicalDocumentationComponent } from './clinical-documentation/clinical-documentation.component';
-import {LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
 
 
 
@@ -14,7 +15,8 @@ import {LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
     declarations: [
         ModuleMenuComponent,
         ChangePasswordComponent,
-        ClinicalDocumentationComponent
+        ClinicalDocumentationComponent,
+        DashboardComponent
     ],
 exports: [
     ],

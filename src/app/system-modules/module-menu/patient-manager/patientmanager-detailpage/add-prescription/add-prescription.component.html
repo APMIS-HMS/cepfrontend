@@ -15,14 +15,14 @@
         <div class="pres-data padding"  id="action-long">
             <div class="text-center">
                 <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
-                 <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
+                 <dx-check-box [value]="true" [width]="100" text="External?"></dx-check-box>
                 <button (click)="toggleBill(i);" class="btn btn-default">Bill</button>
             </div>
         </div>
     </div>
     <!--inner container onclick-->
     <div *ngIf="billShow && (billShowId == i)" class="inner-container">
-        <div class="row">
+        <div class="row" style="width:100%">
             <div class="col-sm-4 col-md-4">
                 <label>Drugs</label>
                 <dx-lookup [items]="drugs" [value]="drugs.name" displayExpr="name" valueExpr="_id">
@@ -30,18 +30,18 @@
             </div>
             <div class="col-sm-3 col-md-3">
                 <label>Quantity</label>
-                <div class="input-bg cacaca">
+                <dx-number-box
+                    [value]="0"
+                    [showSpinButtons]="true"
+                    [showClearButton]="true"
+                ></dx-number-box>
+                <!--<div class="input-bg cacaca">
                     <div class="input-group">
                         <input type="text" class="form-control" id="input" required>
                         <div class="input-group-btn">
-                            <!--<i class="fa fa-caret-right pull-right" style="margin-top: 8px;padding-left: 0;"></i>-->
-                            <!--<select formControlName="strengthWeight" [(ngModel)]="selectedValue" id="select">
-								<option *ngFor="let weight of drugWeight" value="{{ weight.name }}">{{ weight.name }}</option>
-							</select>-->
                         </div>
-                        <!-- /btn-group -->
                     </div>
-                </div>
+                </div>-->
                 <!--<div class="input-bg cacaca">
 					<div class="input-group">
 						<input type="text" name="quantity" class="form-control" aria-label="...">
@@ -54,13 +54,25 @@
 					</div>
 				</div>-->
             </div>
-            <div class="col-sm-2 col-md-2">
-                <label style="margin-top:20px"></label>
+              <div class="col-sm-3 col-md-3">
+               <div class="center">
+                    <div class="qs">
+                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                            <li class="workspace-listItem">
+                                <ng-container>
+                                    <span>south weste</span>
+                                </ng-container>
+                            </li>
+                            <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                        </ul>
+                        <a><span class="badge">5</span> Stores </a>
+                    </div>
+                </div>
             </div>
             <div class="col-sm-1 col-ms-1">
                 <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
             </div>
-            <div class="col-sm-2 col-md-2">
+            <div class="col-sm-1 col-md-1">
                 <div class="text-amount puul-right">
                     <button class="btn btn-default save-btn">Save</button>
                 </div>
