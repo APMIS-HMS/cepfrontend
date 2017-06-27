@@ -60,9 +60,28 @@
             </div>
             <!--end Internal-->
             <div class="col-sm-5 col-md-5 col-xs-12">
-                <label> Drug </label>
+                <label>Drugs</label>
+                <div class="cu-search-box">
+                    <input type="text" formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">
+                    <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
+                        <div class="cu-popover-arrow"></div>
+                        <div class="cu-header">
+                            <p></p>
+                        </div>
+                        <ul class="cu-dropdown">
+                            <li><a class="header">Select item</a></li>
+                            <li *ngIf="drugs.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
+                            <li *ngIf="drugs.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
+                            <li *ngFor="let drug of drugs" #drugId [attr.data-drug-id]="drug.productId" (click)="onClickCustomSearchItem($event, drugId)"><a>{{ drug.details }}</a></li>
+                        </ul>
+                        <div class="cu-footer">
+                            <button class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <!--<label> Drug </label>
                 <dx-lookup formControlName="drug" [items]="drugs" displayExpr="name" valueExpr="name" [showPopupTitle]="false">
-                </dx-lookup>
+                </dx-lookup>-->
             </div>
             <div class="col-sm-5 col-md-5 col-xs-12">
                 <label> Quantity </label>
