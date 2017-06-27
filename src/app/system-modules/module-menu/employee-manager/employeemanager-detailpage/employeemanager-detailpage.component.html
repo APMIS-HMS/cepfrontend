@@ -33,7 +33,7 @@
                             <button class="btn btn-default">Save</button>
                         </div>
                     </div>
-                    <div class="emp-dept">{{employee?.department?.name}}
+                    <div *ngIf= "!editDepartment" class="emp-dept">{{employee?.department?.name}}
                         <span (click)="toggleDepartmentShow()"  class="editButton">
                         <i class="fa fa-edit"></i></span>
                     </div>
@@ -208,12 +208,15 @@
                 </div>
 
                 <div *ngFor="let item of employee?.employeeDetails?.nextOfKin" class="empData-block emp-bioData">
-                    <div class="empDataBlock-title">Next of Kin</div>
+                    <div class="empDataBlock-title">Next of Kin
+                        <span (click)="nextofkinShow()"  class="editButton">
+                        <i class="fa fa-edit"></i></span>
+                    </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div class="rhs"> {{item.fullName}} </div>
-                         <div class="survery rhs">
+                         <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
                                 <input type="text" class="form-control" placeholder="">
@@ -229,7 +232,7 @@
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Relationship</div>
                         <div class="rhs"> Brother </div>
-                         <div class="survery rhs">
+                         <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
                                 <input type="text" class="form-control" placeholder="">
@@ -245,7 +248,7 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
                         <div class="rhs"> {{item.phoneNumber}} </div>
-                         <div class="survery rhs">
+                         <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
                                 <input type="text" class="form-control" placeholder="">
@@ -261,7 +264,7 @@
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email</div>
                         <div class="rhs"> {{item.email}} </div>
-                         <div class="survery rhs">
+                         <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
                                 <input type="text" class="form-control" placeholder="">
