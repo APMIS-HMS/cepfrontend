@@ -8,9 +8,17 @@ import { SwitchUserResolverService } from './resolvers/module-menu/index';
 import { CustomPreloading } from './custom-preloading';
 
 const appRoutes: Routes = [
+  // {
+  //   path: 'modules',
+  //   loadChildren: './system-modules/system-module#SystemModule',
+  //   data: { preload: true },
+  //   canActivate: [
+  //     SetupService.CanActivateViaAuthGuardService
+  //   ]
+  // },
   {
     path: 'modules',
-    loadChildren: './system-modules/system-module#SystemModule',
+    loadChildren: './system-modules/dashboard/dashboard-module.ts#DashboardModule',
     data: { preload: true },
     canActivate: [
       SetupService.CanActivateViaAuthGuardService

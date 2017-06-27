@@ -165,7 +165,7 @@
             </div>
         </div> 
         <div class="col-b">
-            <form *ngIf="productTableForm.controls['productTableArray'].controls.length > 0" [formGroup]="productTableForm">
+            <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
                 <div formArrayName="productTableArray" class="frmArrayWrap">
                     <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
                         <div formGroupName="{{i}}">

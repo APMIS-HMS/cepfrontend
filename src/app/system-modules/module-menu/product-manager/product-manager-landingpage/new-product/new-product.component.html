@@ -19,11 +19,11 @@
                     <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
                         <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                     </div>-->
-                    <dx-lookup
+                    <!--<dx-lookup
                         [items]="employees"
                         [value]="employees[0]"
                         [showPopupTitle]="false">
-                    </dx-lookup>
+                    </dx-lookup>-->
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.productTypeId.valid || frm_newProduct.controls.productTypeId.pristine">

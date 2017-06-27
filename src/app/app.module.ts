@@ -38,6 +38,7 @@ import { ContactInfoComponent } from './facility-setup/contact-info/contact-info
 import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import {FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
 import {AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
+import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {AddFacilityModuleComponent } from './facility-setup/add-facility-module/
     // MainMenuComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent,
+    DashboardHomeComponent,
   ],
   imports: [
     // SharedModule,

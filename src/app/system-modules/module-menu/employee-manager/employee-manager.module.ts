@@ -23,6 +23,10 @@ import { WorkspaceHistoryComponent } from './workspace-history/workspace-history
 import { AssignUnitComponent } from './assign-unit/assign-unit.component';
 import { EmployeesResolverService, LoginEmployeeResolverService } from '../../../resolvers/module-menu/index'
 
+
+// should remove
+// tslint:disable-next-line:max-line-length
+import { DxLookupComponent, DevExtremeModule, DxLoadIndicatorModule, DxLookupModule, DxDateBoxModule, DxSparklineModule } from 'devextreme-angular';
 @NgModule({
     declarations: [
         EmployeeManagerComponent,
@@ -40,7 +44,8 @@ import { EmployeesResolverService, LoginEmployeeResolverService } from '../../..
         EditUserFeaturesComponent,
         NewWorkspaceComponent,
         WorkspaceHistoryComponent,
-        AssignUnitComponent
+        AssignUnitComponent,
+        // DxLookupComponent,
     ],
     exports: [
     ],
