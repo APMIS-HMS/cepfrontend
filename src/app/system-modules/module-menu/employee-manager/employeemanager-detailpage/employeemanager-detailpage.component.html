@@ -21,8 +21,21 @@
             <div class="empData-header">
                 <div class="lhs emp-data">
                     <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
-                    <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}</div>
+                    <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
+                    </div>
+                    <div *ngIf= "editDepartment" class="emp-dept">
+                        <div class="survery">
+                            <select>
+                                <option>Surgery Department</option>
+                                <option>Surgery Department</option>
+                                <option>Surgery Department</option>
+                            </select>
+                            <button class="btn btn-default">Save</button>
+                        </div>
+                    </div>
                     <div class="emp-dept">{{employee?.department?.name}}
+                        <span (click)="toggleDepartmentShow()"  class="editButton">
+                        <i class="fa fa-edit"></i></span>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
