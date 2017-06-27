@@ -87,12 +87,7 @@
     border: none;
 }
 
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-}
+
 
 .cacaca {
     background: #cacaca;
@@ -176,4 +171,8 @@ select {
     box-shadow: none;
     outline: 0 !important;
     outline-offset: 0 !important;
+}
+
+.drugs {
+    width: 40%;
 }

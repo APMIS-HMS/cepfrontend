@@ -1,7 +1,5 @@
 @import '../dispense.component.scss';
-.drugs {
-    width: 40%;
-}
+
 .cacaca {
     background: #cacaca;
 }
@@ -11,7 +9,7 @@
     height: 30px;
 }
 #select {
-    width: 96%;
+    width: 100% !important;
     float: right;
 }
 select {
@@ -40,9 +38,6 @@ select {
     padding: 3px;
     border-radius: 4px;
 }
-.survery .input-group-btn {
-    font-size: 13px;
-}
-.survery .input-group-btn {
-    width: 50%;
-}
+
+
+
