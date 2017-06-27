@@ -33,8 +33,10 @@ import { ProductService, StoreService } from '../services/facility-manager/setup
 import { StoreCheckInComponent } from './store-check-in/store-check-in.component';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
+import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
 @NgModule({
     declarations: [
+        AddPrescriptionComponent,
         AppointmentComponent,
         LogoutConfirmComponent,
         LogoUpdateComponent,
@@ -58,6 +60,7 @@ import { AppointmentComponent } from '../system-modules/module-menu/clinic/appoi
         CreateWorkspaceComponent
     ],
     exports: [
+        AddPrescriptionComponent,
         AppointmentComponent,
         LogoutConfirmComponent,
         LogoUpdateComponent,

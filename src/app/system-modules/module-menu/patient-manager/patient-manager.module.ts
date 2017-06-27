@@ -16,7 +16,7 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
 import { PatientSummaryComponent } from './patientmanager-detailpage/patient-summary/patient-summary.component';
 import { PatientPrescriptionComponent } from './patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { MedicationHistoryComponent } from './patientmanager-detailpage/medication-history/medication-history.component';
-import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
+//import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +30,7 @@ import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescr
         PatientSummaryComponent,
         PatientPrescriptionComponent,
         MedicationHistoryComponent,
-        AddPrescriptionComponent
+        //AddPrescriptionComponent
     ],
     exports: [
     ],

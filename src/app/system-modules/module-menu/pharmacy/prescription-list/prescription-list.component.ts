@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Prescription, PrescriptionItem } from '../../../../models/index';
+import { PharmacyEmitterService } from '../../../../services/facility-manager/pharmacy-emitter.service';
 
 @Component({
 	selector: 'app-prescription-list',
@@ -15,12 +16,14 @@ export class PrescriptionListComponent implements OnInit {
 
 	constructor(
 		private _locker: CoolLocalStorage,
+		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
 	) {
 
 	}
 
 	ngOnInit() {
+		this._pharmacyEventEmitter.setRouteUrl('Prescription List');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.getAllPrescriptions();
 	}

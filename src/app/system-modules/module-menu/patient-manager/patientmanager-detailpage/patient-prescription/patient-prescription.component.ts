@@ -8,7 +8,7 @@ import {
 	RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { durationUnits } from '../../../../../shared-module/helpers/global-config';
+import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import 'devextreme-intl';
 
 @Component({
@@ -75,8 +75,8 @@ export class PatientPrescriptionComponent implements OnInit {
 		// Remove this when you are done
 		this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
-		this.durationUnits = durationUnits;
-		this.selectedValue = durationUnits[0].name;
+		this.durationUnits = DurationUnits;
+		this.selectedValue = DurationUnits[0].name;
 		this.priorityValue = 'Normal';
 		//this.getAllDrugs();
 		this.getAllPriorities();
