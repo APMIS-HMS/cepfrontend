@@ -1,11 +1,20 @@
 @import '../patient-prescription/patient-prescription.component.scss';
+.wrap-th {
+    border-radius: 0;
+}
+
+.text-center {
+    text-align: center;
+}
 
 .td-worspace:hover .workspace-listWrap {
     display: block;
 }
+
 .workspace-listWrap:hover {
     display: block;
 }
+
 .workspace-listWrap {
     position: absolute;
     bottom: 40%;
@@ -16,24 +25,30 @@
     border-radius: 7px;
     font-size: 12px;
 }
+
 .workspace-listWrap:hover {
     display: block;
 }
+
 .workspace-listItem:hover {
     background: #D0D3D4;
 }
+
 .workspace-listItem span {
     padding-right: 2px;
 }
+
 .workspace-listItem {
     padding: 5px 20px;
 }
+
 .pointer-wrap {
     width: 100%;
     text-align: center;
     position: relative;
 }
-.pointer-wrap  i{
+
+.pointer-wrap i {
     position: absolute;
     font-size: 35px;
     color: #989898;
@@ -41,6 +56,7 @@
     right: 44px;
     z-index: 1;
 }
+
 .center {
     margin-top: 31px;
 }

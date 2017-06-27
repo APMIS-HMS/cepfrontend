@@ -21,8 +21,21 @@
             <div class="empData-header">
                 <div class="lhs emp-data">
                     <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
-                    <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}</div>
+                    <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
+                    </div>
+                    <div *ngIf= "editDepartment" class="emp-dept">
+                        <div class="survery">
+                            <select>
+                                <option>Surgery Department</option>
+                                <option>Surgery Department</option>
+                                <option>Surgery Department</option>
+                            </select>
+                            <button class="btn btn-default">Save</button>
+                        </div>
+                    </div>
                     <div class="emp-dept">{{employee?.department?.name}}
+                        <span (click)="toggleDepartmentShow()"  class="editButton">
+                        <i class="fa fa-edit"></i></span>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
@@ -48,13 +61,33 @@
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
-                        <div class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
+                        <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
+                        <div *ngIf = "biodatas" class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Gender</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
+                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
+                         <div *ngIf = "biodatas" class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
@@ -78,37 +111,97 @@
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
+                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
+                         <div *ngIf = "contacts" class="survery rhs">
+                            <div *ngIf = "contacts" class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">State of Origin</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
+                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
+                         <div *ngIf = "contacts" class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">LGA</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
+                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
+                         <div class="survery rhs">
+                            <div *ngIf = "contacts" class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Home Address</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
+                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
+                         <div *ngIf = "contacts" class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
+                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
+                         <div *ngIf = "contacts" class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email Address</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.email}} </div>
+                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
+                         <div *ngIf = "contacts" class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
@@ -120,24 +213,64 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div class="rhs"> {{item.fullName}} </div>
+                         <div class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Relationship</div>
                         <div class="rhs"> Brother </div>
+                         <div class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
                         <div class="rhs"> {{item.phoneNumber}} </div>
+                         <div class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email</div>
                         <div class="rhs"> {{item.email}} </div>
+                         <div class="survery rhs">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                <input type="text" class="form-control" placeholder="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                                </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div>
                         <div class="clear"></div>
                     </div>
 
