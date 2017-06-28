@@ -95,7 +95,10 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
+    SetupService.DrugDetailsService, CustomPreloading,
+    SetupService.DrugDetailsService, SetupService.DispenseService, SetupService.FacilityPriceService, SetupService.ProductService,
     SetupService.DrugDetailsService, CustomPreloading
+
   ],
   bootstrap: [AppComponent]
 })

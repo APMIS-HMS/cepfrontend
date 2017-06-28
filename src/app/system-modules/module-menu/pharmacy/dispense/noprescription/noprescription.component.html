@@ -62,7 +62,7 @@
             <div class="col-sm-5 col-md-5 col-xs-12">
                 <label>Drugs</label>
                 <div class="cu-search-box">
-                    <input type="text" formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">
+                    <input type="text" formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...4 characters at least">
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
                         <div class="cu-header">
@@ -70,30 +70,29 @@
                         </div>
                         <ul class="cu-dropdown">
                             <li><a class="header">Select item</a></li>
-                            <li *ngIf="drugs.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
-                            <li *ngIf="drugs.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let drug of drugs" #drugId [attr.data-drug-id]="drug.productId" (click)="onClickCustomSearchItem($event, drugId)"><a>{{ drug.details }}</a></li>
+                            <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
+                            <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
                             <button class="btn btn-default">Cancel</button>
                         </div>
                     </div>
                 </div>
-                <!--<label> Drug </label>
-                <dx-lookup formControlName="drug" [items]="drugs" displayExpr="name" valueExpr="name" [showPopupTitle]="false">
+                <!--<label> product </label>
+                <dx-lookup formControlName="product" [items]="products" displayExpr="name" valueExpr="name" [showPopupTitle]="false">
                 </dx-lookup>-->
             </div>
             <div class="col-sm-5 col-md-5 col-xs-12">
                 <label> Quantity </label>
                 <div class="input-bg cacaca">
                     <div class="input-group" style=" width: 50%;font-size: inherit;">
-                        <input type="number" class="form-control" id="input" required>
-                        <!-- /btn-group -->
+                        <input type="number" formControlName="qty" class="form-control" id="input" required>
                     </div>
                 </div>
             </div>
             <div class="col-sm-2 col-md-2 col-xs-2">
-                <p style="color: red;margin-top: 40px;"> N200 </p>
+                <p style="color: red;margin-top: 40px;"> &#x20A6;{{ itemPrice }}</p>
             </div>
         </div>
     </div>
@@ -123,7 +122,7 @@
     </div>
     <div class="table-inner" *ngFor="let prescription of prescriptions">
         <div class="table-data drugs">
-            <p>{{ prescription.drug }}</p>
+            <p>{{ prescription.product }}</p>
         </div>
         <div class="table-data batch">
             {{ prescription.client }}

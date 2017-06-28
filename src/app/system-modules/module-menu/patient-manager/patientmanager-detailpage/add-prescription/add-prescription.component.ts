@@ -14,6 +14,7 @@ export class AddPrescriptionComponent implements OnInit {
 	billShow: boolean = false;
 	billShowId: number = 0;
 	drugs: string[] = [];
+	isExternal: boolean = false;
 
 	constructor(
 		private _fb: FormBuilder
@@ -30,6 +31,14 @@ export class AddPrescriptionComponent implements OnInit {
 
 	onClickDeleteItem(value: any) {
 		this.prescriptionItems.splice(value, 1);
+	}
+
+	// On click is external checkbox
+	onClickIsExternal(index, value) {
+		console.log(value);
+		console.log(index);
+		this.isExternal = value;
+		this.billShowId = index;
 	}
 
 	toggleBill(index) {

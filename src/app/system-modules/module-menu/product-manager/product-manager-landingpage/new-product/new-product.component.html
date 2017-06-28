@@ -120,27 +120,27 @@
             </div>
             <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
                 <div formArrayName="ingredients">
-                    <div class="frmArr-wrap" *ngFor="let ingredient of ingredientForm.value[ingredients].value; let i=index">
+                    <div class="frmArr-wrap" *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
                         <div class="panel-heading">
-                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls[ingredients].controls > 1" (click)="removeIngredient(i)"></span>
+                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls['ingredients'].controls > 1" (click)="removeIngredient(i)"></span>
                         </div>
-                        <div class="frmArr-wrap" formGroupName="{}">
+                        <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
-                                <small class="alert-label" [hidden]="ingredientForm.controls.ingredientName.valid || ingredientForm.controls.ingridentName.pristine">
+                                <small class="alert-label" [hidden]="ingredient.controls['ingredientName'].valid || ingredient.controls['ingridentName'].pristine">
                             Kindly type something in the field.
                         </small>
                                 <label>Name</label>
                                 <input formControlName="ingredientName" type="text">
                             </div>
                             <div class="frm-item-wrap">
-                                <small class="alert-label" [hidden]="ingredientForm.controls.ingredientStrength.valid || ingredientForm.controls.ingridentStrength.pristine">
+                                <small class="alert-label" >
                             Kindly type something in the field.
                         </small>
                                 <label>Strength</label>
                                 <input formControlName="ingredientStrength" type="text">
                             </div>
                             <div class="frm-item-wrap">
-                                <small class="alert-label" [hidden]="ingredientForm.controls.ingredientStrengthUnit.valid || ingredientForm.controls.ingridentStrengthUnit.pristine">
+                                <small class="alert-label">
                         Kindly type something in the field.
                     </small>
                                 <label>Strength Unit</label>

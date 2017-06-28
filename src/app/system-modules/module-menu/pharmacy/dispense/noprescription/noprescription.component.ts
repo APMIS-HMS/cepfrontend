@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Appointment } from '../../../../../models/index';
@@ -20,8 +20,8 @@ export class NoprescriptionComponent implements OnInit {
 	noPrescriptionForm: FormGroup;
 	units: string[] = [];
 	minorLocations: string[] = [];
-	drugs: any[] = [];
-	selectedDrugs: any[] = [];
+	products: any[] = [];
+	selectedProducts: any[] = [];
 	departments: string[] = [];
 	clients: any[] = [];
 	selectedDept: string = '';
@@ -35,11 +35,13 @@ export class NoprescriptionComponent implements OnInit {
 	// search variables
 	searchText: string = '';
 	cuDropdownLoading: boolean = false;
-	selectedDrugId: string = "";
+	selectedProductId: string = "";
 	showCuDropdown: boolean = false;
+	itemPrice: number = 0;
 
 	constructor(
 		private _fb: FormBuilder,
+		private _el: ElementRef,
 		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _facilityService: FacilitiesService,
@@ -71,7 +73,7 @@ export class NoprescriptionComponent implements OnInit {
 			dept: ['', [<any>Validators.required]],
 			unit: ['', [<any>Validators.required]],
 			minorLocation: ['', [<any>Validators.required]],
-			drug: ['', [<any>Validators.required]],
+			product: ['', [<any>Validators.required]],
 			qty: ['', [<any>Validators.required]]
 		});
 
@@ -79,22 +81,45 @@ export class NoprescriptionComponent implements OnInit {
 			this.selectedDept = val;
 			this.getFacilityData();
 		});
+
+		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
+			if(val > 0) {
+				this.itemPrice = this.itemPrice*val;
+			} else {
+				this._facilityService.announceNotification({
+					type: "Error",
+					text: "Quantity should be greater than 0!"
+				});
+			}
+		});
 	}
 
 	// Add items to the prescriptions array.
 	onClickSaveNoPrescription(value: any, valid: boolean) {
 		console.log(value);
-		let drug = {
-			productId: value.drug
+		let attr = this._el.nativeElement.getElementsByClassName('cu-search')[0].getAttribute('data-selected-p-id');
+		console.log(attr);
+		//this.noPrescriptionForm.controls['product']
+
+		// if(value.client === 'Individual') {
+		// 	if(value.lastName != '' && value.firstName != '' && value.phone != '') {
+		// 		this._facilityService.announceNotification({
+		// 			type: "Error",
+		// 			text: "Some fields are empty!"
+		// 		});
+		// 	}
+		// }
+		let product = {
+			productId: value.product
 		};
 		// put selected drugs in the selectedDrugs array.
-		this.selectedDrugs.push(drug);
+		this.selectedProducts.push(product);
 
 		this.prescription = {
 			client: value.client,
 			//employeeId: this.employeeDetails.employeeDetails._id,
 			employeeId: '',
-			drugs: this.selectedDrugs
+			drugs: this.selectedProducts
 		}
 		switch (value.client) {
 			case 'Individual':
@@ -145,26 +170,62 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Search for products in the product service.
 	keyupSearch() {
-		this.noPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
+		this.noPrescriptionForm.controls['product'].valueChanges.subscribe(val => {
 			this.searchText = val;
 		});
-		//this.drugs = [];
-		this.cuDropdownLoading = true;
-		this._productService.find({ query: { "name": this.searchText } })
-			.then(res => {
-				console.log(res);
-				this.cuDropdownLoading = false;
-				//this.drugs = res;
-			})
-			.catch(err => {
-				this.cuDropdownLoading = false;
-				console.log(err);
-			});
+
+		if (this.searchText.length > 2) {
+			this.products = [];
+			this.cuDropdownLoading = true;
+		
+			this._productService.find({ query: { facilityId : this.facility._id }})
+				.then(res => {
+					let tempArray = [];
+					// Get all products in the facility, then search for the item you are looing for.
+					res.data.forEach(element => {
+						if(element.name.toLowerCase().startsWith(this.searchText.toLowerCase())) {
+							tempArray.push(element);
+						}
+					});
+					console.log(tempArray);
+					if(tempArray.length !== 0) {
+						this.products = tempArray;
+						this.cuDropdownLoading = false;
+					} else {
+						this.products = [];
+						this.cuDropdownLoading = false;
+					}
+				})
+				.catch(err => {
+					this.cuDropdownLoading = false;
+					console.log(err);
+				});
+		}
 	}
 
 	onClickCustomSearchItem(event, drugId) {
-		this.noPrescriptionForm.controls['drug'].setValue(event.srcElement.innerText);
-		let productId = drugId.getAttribute('data-drug-id');
+		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
+		let productId = drugId.getAttribute('data-p-id');
+		let fsId = drugId.getAttribute('data-p-fsid');
+		let sId = drugId.getAttribute('data-p-sid');
+		let cId = drugId.getAttribute('data-p-cid');
+		console.log(productId);
+		console.log(fsId);
+		console.log(sId);
+		console.log(cId);
+		// Get the service for the product
+		this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
+			.then(res => {
+				console.log(res);
+				if(res.data.length > 0) {
+					if(res.data[0].price !== undefined) {
+						this.itemPrice = res.data[0].price;
+					}
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			})
 	}
 
 	focusSearch() {
@@ -199,7 +260,7 @@ export class NoprescriptionComponent implements OnInit {
 
 	onChange(param) {
 		// Once changed, reset all variables
-		this.selectedDrugs = [];
+		this.selectedProducts = [];
 		this.prescriptions = [];
 		this.prescription = {};
 
