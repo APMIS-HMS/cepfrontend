@@ -17,7 +17,7 @@ const appRoutes: Routes = [
   //   ]
   // },
   {
-    path: 'modules',
+    path: 'dashboard',
     loadChildren: './system-modules/dashboard/dashboard-module.ts#DashboardModule',
     data: { preload: true },
     canActivate: [

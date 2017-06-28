@@ -27,13 +27,13 @@
                         <td colspan="6"> No data available in table</td>
                     </tr>
                     <tr class="details-link" *ngFor="let room of roomItems;let i = index">
-                        <td routerLink="/modules/facility-manager/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{i+1}}</td>
+                        <td routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{i+1}}</td>
                         <td>
-                            <div [hidden]="roomNameEditShow[i]" routerLink="/modules/facility-manager/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.name}}</div>
+                            <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.name}}</div>
                             <input *ngIf="roomNameEditShow[i]" class="edit-control lhs" type="text" value="{{room.name}}" [formControl]="editRoomName">
                         </td>
                         <td>
-                            <div [hidden]="roomNameEditShow[i]" routerLink="/modules/facility-manager/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                            <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
                                 {{room.groupName}}
                             </div>
                             <select *ngIf="roomNameEditShow[i]" [formControl]="editRoomGroup">
@@ -42,14 +42,14 @@
                             </select>
                         </td>
                         <td>
-                            <div [hidden]="roomNameEditShow[i]" routerLink="/modules/facility-manager/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                            <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
                                 {{room?.serviceName}} </div>
                             <select *ngIf="roomNameEditShow[i]" [formControl]="editServicePrice">
                                 <option  value="" disabled selected>Select Room's Group</option>
                                 <option *ngFor="let item of wardServicePriceTags" value={{item._id}}>{{item?.name}}</option>
                             </select>
                         </td>
-                        <td class="" routerLink="/modules/facility-manager/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</td>
+                        <td class="" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</td>
                         <td>
                             <i [hidden]="roomNameEditShow[i]" (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <i *ngIf="roomNameEditShow[i]" (click)="roomNameEdit(i,room)" class="fa fa-check" aria-hidden="true"></i>

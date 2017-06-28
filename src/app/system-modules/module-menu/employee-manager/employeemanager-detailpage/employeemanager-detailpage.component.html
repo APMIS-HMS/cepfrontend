@@ -215,7 +215,7 @@
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
-                        <div class="rhs"> {{item.fullName}} </div>
+                        <div *ngIf="!nextofkin" class="rhs"> {{item.fullName}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -231,7 +231,7 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Relationship</div>
-                        <div class="rhs"> Brother </div>
+                        <div *ngIf="!nextofkin" class="rhs"> Brother </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -247,7 +247,7 @@
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
-                        <div class="rhs"> {{item.phoneNumber}} </div>
+                        <div *ngIf="!nextofkin" class="rhs"> {{item.phoneNumber}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -263,7 +263,7 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email</div>
-                        <div class="rhs"> {{item.email}} </div>
+                        <div *ngIf="!nextofkin" class="rhs"> {{item.email}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
