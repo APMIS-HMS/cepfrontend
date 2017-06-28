@@ -32,8 +32,8 @@
 	</div>
 	<div class="filter-wrap">
 		<span>Units</span>
-		<dx-select-box #filterUnit [items]="loginEmployee.unitDetails" [width]="200" displayExpr="name" valueExpr="_id" (onValueChanged)="onUnitValueChanged($event)">
-		</dx-select-box>
+		<!--<dx-select-box #filterUnit [items]="loginEmployee?.unitDetails" [width]="200" displayExpr="name" valueExpr="_id" (onValueChanged)="onUnitValueChanged($event)">
+		</dx-select-box>-->
 	</div>
 </div>
 <dx-scheduler id="scheduler" [dataSource]="appointmentData" [views]="['week', 'day', 'timelineDay', 'month']" currentView="day"

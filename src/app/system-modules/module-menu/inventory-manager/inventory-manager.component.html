@@ -3,10 +3,10 @@
     <div class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
         <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-            <li [routerLink]="['/modules/store/home']">Manage Store</li>
-            <li [routerLink]="['/modules/product-manager/products']">Manage Product</li>
-            <li [routerLink]="['/modules/purchase-manager/orders']">Manage Purchase</li>
-            <li [routerLink]="['/modules/inventory-manager/inventory']">Manage Inventory</li>
+            <li [routerLink]="['/dashboard/store']">Manage Store</li>
+            <li [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
+            <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
+            <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
         </ul>
     </div>
     <div class="inner-page-wrap">

@@ -36,10 +36,10 @@ import { MedicationHistoryComponent } from './patientmanager-detailpage/medicati
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        DatePickerModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // DatePickerModule,
         patientManagerRoutes
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FormsService]

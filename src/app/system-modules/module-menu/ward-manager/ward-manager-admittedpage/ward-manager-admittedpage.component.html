@@ -39,7 +39,7 @@
                         <tr *ngIf="admittedPatient.length == 0">
                             <td colspan="11"> No data available in table</td>
                         </tr>
-                        <tr class="details-link" routerLink="/modules/facility-manager/ward-manager/admitted/{{admittedPatientItem._id}}" *ngFor="let admittedPatientItem of admittedPatient;let i = index">
+                        <tr class="details-link" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" *ngFor="let admittedPatientItem of admittedPatient;let i = index">
                             <td class="">{{i+1}}</td>
                             <td class="patient-img text-center">
                                 <div><img [src]="_inPatientService.transform(admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>

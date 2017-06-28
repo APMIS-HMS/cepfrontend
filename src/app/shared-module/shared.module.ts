@@ -19,7 +19,7 @@ import { NewTagComponent } from '../system-modules/module-menu/billing/services/
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTagComponent } from '../system-modules/module-menu/add-tag/add-tag.component';
 import { DevExtremeModule, DxLoadIndicatorModule, DxLookupModule, DxDateBoxModule, DxSparklineModule } from 'devextreme-angular';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 import { MomentModule } from 'angular2-moment';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
@@ -33,12 +33,14 @@ import { ProductService, StoreService } from '../services/facility-manager/setup
 import { StoreCheckInComponent } from './store-check-in/store-check-in.component';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
+// tslint:disable-next-line:max-line-length
 import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
 @NgModule({
     declarations: [
+        // AppointmentComponent,
+        // LogoutConfirmComponent,
         AddPrescriptionComponent,
-        AppointmentComponent,
-        LogoutConfirmComponent,
+
         LogoUpdateComponent,
         ImageUpdateComponent,
         GlobalPatientLookupComponent,
@@ -51,18 +53,19 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
         SurveyEditorComponent,
         ProductSearchComponent,
         StoreCheckInComponent,
-        VerifyTokenComponent,
-        AddLogoComponent,
-        AddFacilityModuleComponent,
-        FacilitySetupComponent,
-        ContactInfoComponent,
-        FacilityInfoComponent,
+        // VerifyTokenComponent,
+        // AddLogoComponent,
+        // AddFacilityModuleComponent,
+        // FacilitySetupComponent,
+        // ContactInfoComponent,
+        // FacilityInfoComponent,
         CreateWorkspaceComponent
     ],
     exports: [
+        // AppointmentComponent,
+        // LogoutConfirmComponent,
+
         AddPrescriptionComponent,
-        AppointmentComponent,
-        LogoutConfirmComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,
         ImageCropperModule,
@@ -86,21 +89,24 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
         SurveyComponent,
         SurveyEditorComponent,
         StoreCheckInComponent,
-        VerifyTokenComponent,
-        AddLogoComponent,
-        AddFacilityModuleComponent,
-        FacilitySetupComponent,
-        ContactInfoComponent,
-        FacilityInfoComponent,
-        CreateWorkspaceComponent
+        // VerifyTokenComponent,
+        // AddLogoComponent,
+        // AddFacilityModuleComponent,
+        // FacilitySetupComponent,
+        // ContactInfoComponent,
+        // FacilityInfoComponent,
+        CreateWorkspaceComponent,
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
     ],
     imports: [
         CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
         NgUploaderModule,
         NgPipesModule,
         CurrencyMaskModule,
-        ReactiveFormsModule,
-        FormsModule,
         DevExtremeModule,
         DxLoadIndicatorModule,
         DxLookupModule,

@@ -55,8 +55,8 @@
             </div>
             <div class="empData-body">
                 <div class="empData-block emp-bioData">
-                    <div class="empDataBlock-title">Bio Data 
-                        <span (click)="bioDataShow()"  class="editButton">
+                    <div class="empDataBlock-title">Bio Data
+                        <span (click)="bioDataShow()" class="editButton">
                         <i class="fa fa-edit"></i></span>
                     </div>
                     <div class="dataMix-wrap color1">
@@ -107,7 +107,7 @@
 
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Contact Information
-                    <span (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                        <span (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
@@ -215,7 +215,7 @@
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
-                        <div class="rhs"> {{item.fullName}} </div>
+                        <div *ngIf="!nextofkin" class="rhs"> {{item.fullName}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -231,7 +231,7 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Relationship</div>
-                        <div class="rhs"> Brother </div>
+                        <div *ngIf="!nextofkin" class="rhs"> Brother </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -247,7 +247,7 @@
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
-                        <div class="rhs"> {{item.phoneNumber}} </div>
+                        <div *ngIf="!nextofkin" class="rhs"> {{item.phoneNumber}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -263,7 +263,7 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email</div>
-                        <div class="rhs"> {{item.email}} </div>
+                        <div *ngIf="!nextofkin" class="rhs"> {{item.email}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
                             <div class="col-lg-6">
                                 <div class="input-group">

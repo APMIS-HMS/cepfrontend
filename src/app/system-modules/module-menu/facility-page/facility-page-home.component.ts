@@ -9,7 +9,7 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, Naviga
 export class FacilityPageHomeComponent implements OnInit {
   loadIndicatorVisible = false;
   contentSecMenuShow = false;
-  pageInView = '';
+  pageInView = 'Facility';
   homeContentArea = false;
   modulesContentArea = false;
   contentSecMenuToggle = false;
@@ -36,6 +36,6 @@ export class FacilityPageHomeComponent implements OnInit {
   ngOnInit() {
   }
   changeRoute(value: string) {
-    this.router.navigate(['/modules/setup/' + value]);
+    this.router.navigate(['/dashboard/facility/' + value]);
   }
 }

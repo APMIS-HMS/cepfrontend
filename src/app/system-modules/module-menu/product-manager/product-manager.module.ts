@@ -8,8 +8,7 @@ import { SupplierManagerComponent } from './supplier-manager/supplier-manager.co
 import {
     ProductTypeService, StoreService, ProductService, ManufacturerService, GenericService,
     RouteService, SupplierService, PresentationService, StrengthService, PurchaseEntryService
-}
-    from '../../../services/facility-manager/setup/index';
+} from '../../../services/facility-manager/setup/index';
 
 import { ProductEmitterService } from '../../../services/facility-manager/product-emitter.service';
 import { ProductManagerLandingpageComponent } from './product-manager-landingpage/product-manager-landingpage.component';
@@ -47,9 +46,9 @@ import { StrengthManagerComponent } from './strength-manager/strength-manager.co
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         productManagerRoutes
     ],
     providers: [ProductEmitterService, ProductTypeService, StoreService, ProductService, PresentationService,

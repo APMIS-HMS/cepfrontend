@@ -21,9 +21,9 @@ import { SharedModule } from '../../../shared-module/shared.module';
     exports: [
     ],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         DatePickerModule,
         accessManagerRoutes,
         SharedModule

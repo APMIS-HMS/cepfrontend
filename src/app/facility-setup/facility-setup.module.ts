@@ -17,15 +17,15 @@ import { SharedModule } from '../shared-module/shared.module';
   ],
 
   exports: [
-    //FacilitySetupComponent,
+    // FacilitySetupComponent,
     // VerifyTokenComponent,
     // AddLogoComponent,
     // AddFacilityModuleComponent
   ],
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
+    // CommonModule,
+    // ReactiveFormsModule,
+    // FormsModule,
     SharedModule
   ],
   providers: []

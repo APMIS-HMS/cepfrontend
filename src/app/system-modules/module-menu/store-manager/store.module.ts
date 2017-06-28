@@ -18,7 +18,7 @@ import {
     DxButtonModule, DxTextAreaModule, DxCheckBoxModule, DxSelectBoxModule,
     DxTemplateModule, DxAutocompleteModule, DxLookupModule, DxDateBoxModule
 } from 'devextreme-angular';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 
 @NgModule({
     declarations: [
@@ -31,12 +31,12 @@ import 'devextreme-intl';
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         storeRoutes,
-        DxSchedulerModule, DxButtonModule, DxTemplateModule,
-        DxAutocompleteModule, DxLookupModule, DxTextAreaModule, DxDateBoxModule
+        // DxSchedulerModule, DxButtonModule, DxTemplateModule,
+        // DxAutocompleteModule, DxLookupModule, DxTextAreaModule, DxDateBoxModule
     ],
     providers: [StoreEmitterService, ProductTypeService, StoreService, ProductService,
         GenericService, ManufacturerService, RouteService, SupplierService]
