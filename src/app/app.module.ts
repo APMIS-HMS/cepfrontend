@@ -39,7 +39,7 @@ import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
 import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
-import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule} from '@angular/material';
+import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdInputModule} from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +64,7 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
   ],
   imports: [
     MdDatepickerModule,
-    MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+    MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,MdInputModule,
     SharedModule,
     // DxLoadIndicatorModule,
     BrowserModule,
