@@ -343,7 +343,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         console.log(payload);
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.unCheckedAllProducts();
-        this.router.navigate(['/modules/purchase-manager/orders']);
+        this.router.navigate(['/dashboard/purchase-manager/orders']);
         // (<FormArray>this.productTableForm.controls['productTableArray']).set = this.formBuilder.array([]);
       }, error => {
         console.log(error);

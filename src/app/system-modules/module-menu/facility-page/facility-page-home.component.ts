@@ -36,6 +36,6 @@ export class FacilityPageHomeComponent implements OnInit {
   ngOnInit() {
   }
   changeRoute(value: string) {
-    this.router.navigate(['/modules/setup/' + value]);
+    this.router.navigate(['/dashboard/facility/' + value]);
   }
 }
