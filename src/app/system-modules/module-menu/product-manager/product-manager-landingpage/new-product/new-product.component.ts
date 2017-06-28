@@ -5,7 +5,7 @@ import {
   DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, FacilityService } from '../../../../../models/index';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -41,8 +41,10 @@ export class NewProductComponent implements OnInit {
   categories: any[] = [];
   strengths: any[] = [];
   simpleProducts: any[] = [];
+  productDetails: any = <any>{};
 
   public frm_newProduct: FormGroup;
+  public ingredientForm: FormGroup;
 
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
@@ -59,18 +61,24 @@ export class NewProductComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
-      categoryId: [, [<any>Validators.required]],
+      categoryId: ['', [<any>Validators.required]],
       name: ['', [<any>Validators.required, Validators.minLength(3)]],
       packLabel: [''],
       packSize: [''],
       presentation: [''],
-      ingridentName: [],
-      ingridentStrength: [],
-      ingridentStrengthUnit: [],
       manufacturer: ['', [<any>Validators.required]],
       genericName: [''],
-      facilityId: [this.selectedFacility._id, [<any>Validators.required]]
+      facilityId: [this.selectedFacility._id, [<any>Validators.required]],
+
     });
+
+    // this.ingredientForm = this.formBuilder.group({
+    //   ingredients: this.formBuilder.array([
+    //     this.initIngredientsForm(),
+    //   ])
+    //})
+    this.initIngredientsForm();
+
     this.populateProduct();
     this.frm_newProduct.controls['name'].valueChanges.subscribe(payload => {
       this.ingridentSugestion = false;
@@ -105,15 +113,15 @@ export class NewProductComponent implements OnInit {
       }
     });
 
-    this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
-      let strength = this.strengths.filter(x => x._id === value);
-      if (strength.length > 0) {
-        this.strengthName = strength[0].strength;
-        if (this.frm_newProduct.controls['name'].value !== null) {
-          this.productName = this.presentationName + ' ' + this.frm_newProduct.controls['name'].value + ' ' + this.strengthName;
-        }
-      }
-    });
+    // this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
+    //   let strength = this.strengths.filter(x => x._id === value);
+    //   if (strength.length > 0) {
+    //     this.strengthName = strength[0].strength;
+    //     if (this.frm_newProduct.controls['name'].value !== null) {
+    //       this.productName = this.presentationName + ' ' + this.frm_newProduct.controls['name'].value + ' ' + this.strengthName;
+    //     }
+    //   }
+    // });
 
     this.frm_newProduct.valueChanges.subscribe(value => {
       this.mainErr = true;
@@ -126,6 +134,27 @@ export class NewProductComponent implements OnInit {
     this.getProductTypes();
     this.getServiceCategories();
     this.getStrengths();
+  }
+
+  // initIngredientsForm() {
+  //   return this.formBuilder.group({
+  //     ingredientName: [''],
+  //     ingredientStrength: [''],
+  //     ingredientStrengthUnit: ['']
+  //   });
+  // }
+
+  initIngredientsForm() {
+    this.ingredientForm = this.formBuilder.group({
+      'ingredients': this.formBuilder.array([
+        this.formBuilder.group({
+          ingredientName: [''],
+          ingredientStrength: [''],
+          ingredientStrengthUnit: ['']
+        })
+      ])
+    });
+    this.ingredientForm.controls['ingredients'] = this.formBuilder.array([]);
   }
 
   getStrengths() {
@@ -161,14 +190,11 @@ export class NewProductComponent implements OnInit {
         this.productSugestion = true;
         if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
           this.dictionaries = payload;
-          // payload.forEach(element => {
-          //   var arrElements = element.details.split('(');
-          //   console.log(arrElements);
-          //   element.product = arrElements[0];
-          //   element.activeIngredient = arrElements[1].replace(')', '');
-          //   console.log(element)
-          //   this.dictionaries.push(element);
-          // });
+          payload.forEach(element => {
+            var arrElements = element.details.split('(');
+            element.activeIngredient = arrElements[1].replace(')', '');
+            this.dictionaries.push(element);
+          });
         } else {
           this.dictionaries = [];
           this.productSugestion = false;
@@ -252,7 +278,9 @@ export class NewProductComponent implements OnInit {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
         let service: any = <any>{};
         service.name = value.name;
+        value.productDetail = this.productDetails;
         console.log(value);
+
         this.productService.create(value).then(payload => {
           console.log(value);
           this.selectedFacilityService.categories.forEach((item, i) => {
@@ -292,8 +320,9 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand);
-      this.frm_newProduct.controls['genericName'].setValue(suggestion.details);
+      this.productDetails = payload;
+      this.frm_newProduct.controls['name'].setValue(payload.brand + " " + payload.drugName);
+      this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
       // this.manufacturers = [];
@@ -327,5 +356,25 @@ export class NewProductComponent implements OnInit {
     this.isManufacturer = false;
     this.isPresentation = false;
     this.isStrength = true;
+  }
+
+  addIngredient() {
+    const control = <FormArray>this.ingredientForm.controls['ingredients'];
+      control.push(this.ingredientItem());
+      
+  }
+
+  ingredientItem() {
+    return this.formBuilder.group({
+      ingredientName: [''],
+      ingredientStrength: [''],
+      ingredientStrengthUnit: ['']
+    });
+  }
+
+
+  removeIngredient(i: number) {
+    const control = <FormArray>this.frm_newProduct.controls['ingredients'];
+    control.removeAt(i);
   }
 }
