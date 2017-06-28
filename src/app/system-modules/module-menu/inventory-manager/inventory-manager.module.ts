@@ -35,9 +35,9 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         inventoryManagerRoutes
     ],
     providers: [InventoryEmitterService, ProductService, InventoryService, LoginEmployeeResolverService, ProductRequisitionService,

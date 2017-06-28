@@ -23,6 +23,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   editDepartment = false;
   biodatas = false;
   contacts = false;
+  nextofkin = false;
 
   contentSecMenuShow = false;
   modal_on = false;
@@ -254,5 +255,8 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   contactShow(){
     this.contacts = !this.contacts;
+  }
+  nextofkinShow(){
+     this.nextofkin = !this.nextofkin;
   }
 }

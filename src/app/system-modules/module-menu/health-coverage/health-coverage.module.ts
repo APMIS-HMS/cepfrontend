@@ -28,10 +28,10 @@ import { StaffCoverComponent } from './staff-cover/staff-cover.component';
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        DatePickerModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // DatePickerModule,
         healthCoverRoutes
     ],
     providers: []

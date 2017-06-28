@@ -14,7 +14,7 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { AddDepartmentComponent } from './departments/add-department/add-department.component';
 import { CorporateEmitterService } from '../../services/facility-manager/corporate-emitter.service';
-
+import {LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
 @NgModule({
     declarations: [
         CorporateAccountComponent,
@@ -30,11 +30,12 @@ import { CorporateEmitterService } from '../../services/facility-manager/corpora
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         DatePickerModule,
-        corporateAccountRoutes
+        corporateAccountRoutes,
+        LogOutConfirmModule
     ],
     providers: [CorporateEmitterService]
 })

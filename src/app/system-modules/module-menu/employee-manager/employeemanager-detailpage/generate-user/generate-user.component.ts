@@ -25,7 +25,7 @@ export class GenerateUserComponent implements OnInit {
 
   modal_on = false;
 
-
+  simpleProducts: any[] = [];
 
   constructor(private featureModuleService: FeatureModuleService,
     private locker: CoolLocalStorage,
@@ -61,7 +61,7 @@ export class GenerateUserComponent implements OnInit {
     return this.accessControlListString.filter(x => x === id).length > 0;
   }
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
   navEpDetail(val: Employee) {

@@ -19,14 +19,14 @@
           <div class="frmSubGroupWrap">
             <div class="frm-item-wrap">
               <label>Location</label>
-              <select formControlName="pulseLoc" (change)="onPulseLocChange($event.target.value)">
+              <select formControlName="pulseLoc">
                 <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
               </select>
             </div>
 
             <div class="frm-item-wrap">
               <label>Rythm</label>
-              <select formControlName="pulseRythm" (change)="onPulseRythmChange($event.target.value)">
+              <select formControlName="pulseRythm">
                 <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
               </select>
             </div>
@@ -107,7 +107,7 @@
             <div class="frm-item">
               <div class="frm-item-wrap">
                 <label>Location</label>
-                <select formControlName="diastolicBp1Loc" (change)="onPulseLocChange($event.target.value)">
+                <select formControlName="diastolicBp1Loc">
                   <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
                 </select>
               </div>
@@ -115,7 +115,7 @@
             <div class="frm-item">
               <div class="frm-item-wrap">
                 <label>Position</label>
-                <select formControlName="diastolicBp1Pos" (change)="onPulsePosChange($event.target.value)">
+                <select formControlName="diastolicBp1Pos">
                   <option *ngFor="let position of vitalPosition"  value="{{position?.name}}" value="">{{position?.name}}</option>
                 </select>
               </div>

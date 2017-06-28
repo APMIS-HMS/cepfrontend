@@ -50,12 +50,12 @@ import { FacilityPageComponent } from './facility-page.component';
     exports: [
     ],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         facilityPageRoutes,
 
-        DxCheckBoxModule,
+        // DxCheckBoxModule,
         facilityPageRoutes,
         SharedModule
     ],

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Facility, PrescriptionItem } from '../../../../../models/index';
 
 @Component({
   selector: 'app-add-prescription',
@@ -7,7 +8,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./add-prescription.component.scss']
 })
 export class AddPrescriptionComponent implements OnInit {
-	@Input() prescriptionItems: any = [];
+	@Input() prescriptionItems: PrescriptionItem[] = [];
 
 	addBillForm: FormGroup;
 	billShow: boolean = false;

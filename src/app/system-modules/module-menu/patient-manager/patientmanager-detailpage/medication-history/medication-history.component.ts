@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Query from 'devextreme/data/query';
 import { DxSchedulerComponent } from 'devextreme-angular';
 import dataSource from 'devextreme/data/data_source';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 import { Service } from './history.service';
 
 @Component({
