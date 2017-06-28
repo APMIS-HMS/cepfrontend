@@ -55,7 +55,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
             }
           });
         } else {
-          this.router.navigate(['/modules/facility-manager/employee-manager/generate-user', payload.personId]);
+          this.router.navigate(['/dashboard/employee-manager/generate-user', payload.personId]);
         }
 
       });
