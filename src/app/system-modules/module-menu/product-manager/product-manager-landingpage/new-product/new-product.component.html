@@ -15,14 +15,11 @@
                         Kindly type something in the field.
                     </small>
                     <label>Name(Product)</label>
-                    <!--<input formControlName="name" type="text" name="" value="">
+                    <input formControlName="name" type="text" name="" value="">
                     <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
                         <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
-                    </div>-->
-                    <!--<dx-lookup
-                        [items]="employees"
-                        [value]="employees[0]"
-                        [showPopupTitle]="false">
+                    </div>
+                    <!--<dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
                     </dx-lookup>-->
                 </div>
                 <div class="frm-item-wrap">
@@ -65,11 +62,11 @@
                     <input formControlName="manufacturer" type="text" name="" value="">
                     <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
                 </div>
-                
+
             </div>
             <div class="sec-2">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.productTypeId.valid || frm_newProduct.controls.productTypeId.pristine">
+                    <small class="alert-label" [hidden]="frm_newProduct.controls.categoryId.valid || frm_newProduct.controls.categoryId.pristine">
                         Kindly select an option from the drop down.
                     </small>
                     <label>Service Category</label>
@@ -78,16 +75,16 @@
                     </select>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.packLabel.valid || frm_newProduct.controls.packLabel.pristine">
+                    <!--<small class="alert-label" [hidden]="frm_newProduct.controls.packLabel.valid || frm_newProduct.controls.packLabel.pristine">
                         Kindly type something in the field.
-                    </small>
+                    </small>-->
                     <label>Pack Label</label>
                     <input formControlName="packLabel" type="text" name="">
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.packSize.valid || frm_newProduct.controls.packSize.pristine">
+                    <!--<small class="alert-label" [hidden]="frm_newProduct.controls.packSize.valid || frm_newProduct.controls.packSize.pristine">
                         Kindly type something in the field.
-                    </small>
+                    </small>-->
                     <label>Pack Size</label>
                     <input formControlName="packSize" type="text" name="">
                 </div>
@@ -110,7 +107,7 @@
                         <div (click)="onSelectActiveIngredientSuggestion(active)" *ngFor="let active of activeIngredients" class="sugestion-item">{{active.genericName}}</div>
                     </div>-->
                 <!--</div>-->
-                
+
             </div>
         </div>
 
@@ -119,33 +116,43 @@
         <div class="sec-3">
             <div class="sec3-headWrap">
                 <div class="sectLabel">Active Ingrident</div>
-                <i class="fa fa-plus faplus"></i>
+                <i class="fa fa-plus faplus" (click)="addIngredient()"></i>
             </div>
-            <div class="frmArr-wrap">
-                <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.ingridentName.valid || frm_newProduct.controls.ingridentName.pristine">
+            <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
+                <div formArrayName="ingredients">
+                    <div class="frmArr-wrap" *ngFor="let ingredient of ingredientForm.controls[ingredients].controls; let i=index">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls[ingredients].controls > 1" (click)="removeIngredient(i)"></span>
+                        </div>
+                        <div class="frmArr-wrap" formGroupName="{}">
+                            <div class="frm-item-wrap">
+                                <small class="alert-label" [hidden]="ingredientForm.controls.ingredientName.valid || ingredientForm.controls.ingridentName.pristine">
+                            Kindly type something in the field.
+                        </small>
+                                <label>Name</label>
+                                <input formControlName="ingredientName" type="text">
+                            </div>
+                            <div class="frm-item-wrap">
+                                <small class="alert-label" [hidden]="ingredientForm.controls.ingredientStrength.valid || ingredientForm.controls.ingridentStrength.pristine">
+                            Kindly type something in the field.
+                        </small>
+                                <label>Strength</label>
+                                <input formControlName="ingredientStrength" type="text">
+                            </div>
+                            <div class="frm-item-wrap">
+                                <small class="alert-label" [hidden]="ingredientForm.controls.ingredientStrengthUnit.valid || ingredientForm.controls.ingridentStrengthUnit.pristine">
                         Kindly type something in the field.
                     </small>
-                    <label>Name</label>
-                    <input formControlName="ingridentName" type="text">
+                                <label>Strength Unit</label>
+                                <input formControlName="ingredientStrengthUnit" type="text">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.ingridentStrength.valid || frm_newProduct.controls.ingridentStrength.pristine">
-                        Kindly type something in the field.
-                    </small>
-                    <label>Strength</label>
-                    <input formControlName="ingridentStrength" type="text">
-                </div>
-                <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.ingridentStrengthUnit.valid || frm_newProduct.controls.ingridentStrengthUnit.pristine">
-                        Kindly type something in the field.
-                    </small>
-                    <label>Strength Unit</label>
-                    <input formControlName="ingridentStrengthUnit" type="text">
-                </div>
-            </div>
+            </form>
         </div>
-        <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
+    
+    <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
     </form>
     <div *ngIf="isManufacturer">
         <app-manufacturer-manager></app-manufacturer-manager>
