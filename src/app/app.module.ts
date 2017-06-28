@@ -60,13 +60,12 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
     // FacilitySetupComponent,
     // MainMenuComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent,
-    DashboardHomeComponent,
+    ApmisCheckboxComponent
   ],
   imports: [
     MdDatepickerModule,
     MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-    // SharedModule,
+    SharedModule,
     // DxLoadIndicatorModule,
     BrowserModule,
     FormsModule,
