@@ -5,7 +5,7 @@ import {
   DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, FacilityService } from '../../../../../models/index';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -44,6 +44,7 @@ export class NewProductComponent implements OnInit {
   productDetails: any = <any>{};
 
   public frm_newProduct: FormGroup;
+  public ingredientForm: FormGroup;
 
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
@@ -60,18 +61,24 @@ export class NewProductComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
-      categoryId: [, [<any>Validators.required]],
+      categoryId: ['', [<any>Validators.required]],
       name: ['', [<any>Validators.required, Validators.minLength(3)]],
       packLabel: [''],
       packSize: [''],
       presentation: [''],
-      ingridentName: [],
-      ingridentStrength: [],
-      ingridentStrengthUnit: [],
       manufacturer: ['', [<any>Validators.required]],
       genericName: [''],
-      facilityId: [this.selectedFacility._id, [<any>Validators.required]]
+      facilityId: [this.selectedFacility._id, [<any>Validators.required]],
+
     });
+
+    // this.ingredientForm = this.formBuilder.group({
+    //   ingredients: this.formBuilder.array([
+    //     this.initIngredientsForm(),
+    //   ])
+    //})
+    this.initIngredientsForm();
+
     this.populateProduct();
     this.frm_newProduct.controls['name'].valueChanges.subscribe(payload => {
       this.ingridentSugestion = false;
@@ -106,15 +113,15 @@ export class NewProductComponent implements OnInit {
       }
     });
 
-    this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
-      let strength = this.strengths.filter(x => x._id === value);
-      if (strength.length > 0) {
-        this.strengthName = strength[0].strength;
-        if (this.frm_newProduct.controls['name'].value !== null) {
-          this.productName = this.presentationName + ' ' + this.frm_newProduct.controls['name'].value + ' ' + this.strengthName;
-        }
-      }
-    });
+    // this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
+    //   let strength = this.strengths.filter(x => x._id === value);
+    //   if (strength.length > 0) {
+    //     this.strengthName = strength[0].strength;
+    //     if (this.frm_newProduct.controls['name'].value !== null) {
+    //       this.productName = this.presentationName + ' ' + this.frm_newProduct.controls['name'].value + ' ' + this.strengthName;
+    //     }
+    //   }
+    // });
 
     this.frm_newProduct.valueChanges.subscribe(value => {
       this.mainErr = true;
@@ -127,6 +134,27 @@ export class NewProductComponent implements OnInit {
     this.getProductTypes();
     this.getServiceCategories();
     this.getStrengths();
+  }
+
+  // initIngredientsForm() {
+  //   return this.formBuilder.group({
+  //     ingredientName: [''],
+  //     ingredientStrength: [''],
+  //     ingredientStrengthUnit: ['']
+  //   });
+  // }
+
+  initIngredientsForm() {
+    this.ingredientForm = this.formBuilder.group({
+      'ingredients': this.formBuilder.array([
+        this.formBuilder.group({
+          ingredientName: [''],
+          ingredientStrength: [''],
+          ingredientStrengthUnit: ['']
+        })
+      ])
+    });
+    this.ingredientForm.controls['ingredients'] = this.formBuilder.array([]);
   }
 
   getStrengths() {
@@ -328,5 +356,25 @@ export class NewProductComponent implements OnInit {
     this.isManufacturer = false;
     this.isPresentation = false;
     this.isStrength = true;
+  }
+
+  addIngredient() {
+    const control = <FormArray>this.ingredientForm.controls['ingredients'];
+      control.push(this.ingredientItem());
+      
+  }
+
+  ingredientItem() {
+    return this.formBuilder.group({
+      ingredientName: [''],
+      ingredientStrength: [''],
+      ingredientStrengthUnit: ['']
+    });
+  }
+
+
+  removeIngredient(i: number) {
+    const control = <FormArray>this.frm_newProduct.controls['ingredients'];
+    control.removeAt(i);
   }
 }
