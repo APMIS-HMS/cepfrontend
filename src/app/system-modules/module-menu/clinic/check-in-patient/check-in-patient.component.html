@@ -74,7 +74,8 @@
             <tr *ngFor="let appointment of checkedInAppointments">
                 <td>
                     <div class="empWrap" (click)="goToPatientPage(appointment,false)">
-                        <div class="list-img"> <img [src]="facilityService.transform(appointment.employeeDetails?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                        <div class="list-img" *ngIf="appointment.patientDetails?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                        <div class="list-img" *ngIf="appointment.patientDetails?.personDetails?.profileImageObject !== undefined"> <img [src]="facilityService.transform(appointment.patientDetails?.personDetails?.profileImageObject?.thumbnail)"></div>
                         <div>{{appointment.patientDetails?.personDetails?.lastName}} {{appointment.patientDetails?.personDetails?.firstName}}</div>
                     </div>
                 </td>
@@ -107,7 +108,7 @@
                 </td>
             </tr>
         </tbody>
-    </table> 
+    </table>
 
     <div *ngIf="addVital" class="modal-overlay">
         <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
@@ -142,11 +143,11 @@
                     <div class="activity-label">{{timeline.label}}</div>
                     <div class="activity-actor" *ngIf="timeline.person.employeeDetails !== undifined">
                         <span>{{timeline.person.employeeDetails.personFullName}}</span>
-                        <div  class="actor-wrap"><img [src]="facilityService.transform(timeline.person.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                        <div class="actor-wrap"><img [src]="facilityService.transform(timeline.person.employeeDetails?.profileImageObject?.thumbnail)"></div>
                     </div>
                     <div class="activity-actor" *ngIf="timeline.person.employeeDetails === undifined">
                         <span>{{timeline.person.personFullName}}</span>
-                        <div  class="actor-wrap"><img [src]="facilityService.transform(timeline.person?.profileImageObject?.thumbnail)"></div>
+                        <div class="actor-wrap"><img [src]="facilityService.transform(timeline.person?.profileImageObject?.thumbnail)"></div>
                     </div>
                     <div class="activity-detail"></div>
                 </div>

@@ -6,10 +6,10 @@
             <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
                 aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/appointment']">Appointment</li>
-                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/check-in']">Checked In Patients</li>
-                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/clinic-schedule']">Clinic Schedule</li>
-                <li (click)="navItemClick()" [routerLink]="['/modules/clinic/consulting-room']">Consulting Room</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/appointment']">Appointment</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/check-in']">Checked In Patients</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/clinic-schedule']">Clinic Schedule</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/consulting-room']">Consulting Room</li>
                 <li *ngIf="isDoctor==true" (click)="changeRoom()" >Change Consulting Room</li>
             </ul>
         </div>
