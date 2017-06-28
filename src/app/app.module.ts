@@ -94,7 +94,11 @@ import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-hom
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
+<<<<<<< HEAD
     SetupService.DrugDetailsService, CustomPreloading
+=======
+    SetupService.DrugDetailsService, SetupService.DispenseService, SetupService.FacilityPriceService, SetupService.ProductService
+>>>>>>> a87c8c198c3afec9589914b448f4f538cc5476fc
   ],
   bootstrap: [AppComponent]
 })

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility } from '../../../../../models/index';
+import { Facility, Appointment } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService } from '../../../../../services/facility-manager/setup/index';
+import { FacilitiesService, PrescriptionService,
+	 DispenseService, ProductService, FacilityPriceService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
 	selector: 'app-noprescription',
@@ -12,12 +13,15 @@ import { FacilitiesService, PrescriptionService } from '../../../../../services/
 	styleUrls: ['./noprescription.component.scss']
 })
 export class NoprescriptionComponent implements OnInit {
+	@Input() selectedAppointment: Appointment = <Appointment>{};
+	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 
 	noPrescriptionForm: FormGroup;
 	units: string[] = [];
 	minorLocations: string[] = [];
 	drugs: any[] = [];
+	selectedDrugs: any[] = [];
 	departments: string[] = [];
 	clients: any[] = [];
 	selectedDept: string = '';
@@ -26,13 +30,22 @@ export class NoprescriptionComponent implements OnInit {
 	individualShow: boolean = false;
 	internalShow: boolean = false;
 	prescriptions: any[] = [];
+	prescription = {};
+	storeId: string = '';
+	// search variables
+	searchText: string = '';
+	cuDropdownLoading: boolean = false;
+	selectedDrugId: string = "";
+	showCuDropdown: boolean = false;
 
 	constructor(
 		private _fb: FormBuilder,
 		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _facilityService: FacilitiesService,
-		private _dispenseService: FacilitiesService
+		private _dispenseService: DispenseService,
+		private _productService: ProductService,
+		private _facilityPriceService: FacilityPriceService 
 	) {
 
 	}
@@ -71,42 +84,97 @@ export class NoprescriptionComponent implements OnInit {
 	// Add items to the prescriptions array.
 	onClickSaveNoPrescription(value: any, valid: boolean) {
 		console.log(value);
-		let payload = {};
+		let drug = {
+			productId: value.drug
+		};
+		// put selected drugs in the selectedDrugs array.
+		this.selectedDrugs.push(drug);
+
+		this.prescription = {
+			client: value.client,
+			//employeeId: this.employeeDetails.employeeDetails._id,
+			employeeId: '',
+			drugs: this.selectedDrugs
+		}
 		switch (value.client) {
 			case 'Individual':
-				payload['lastname'] = value.lastName;
-				payload['firstname'] = value.firstName;
-				payload['phone'] = value.phone;
+				this.prescription['lastName'] = value.lastName;
+				this.prescription['firstName'] = value.firstName;
+				this.prescription['phoneNumber'] = value.phone;
 				break;
 			case 'Corporate':
-				payload['companyName'] = value.companyName;
-				payload['companyPhone'] = value.companyPhone;
+				this.prescription['companyName'] = value.companyName;
+				this.prescription['companyPhone'] = value.companyPhone;
 				break;
 			case 'Internal':
-				payload['department'] = value.dept;
-				payload['unit'] = value.unit;
-				payload['minorLocation'] = value.minorLocation;
+				this.prescription['departmentId'] = value.dept;
+				this.prescription['unitId'] = value.unit;
+				this.prescription['locationId'] = value.minorLocation;
 				break;
 		}
-
-		payload['client'] = value.client;
-		payload['drug'] = value.drug;
-		payload['qty'] = value.qty;
-		console.log(payload);
-		this.prescriptions.push(payload);	
+		this.prescription['qty'] = value.qty;
+		this.prescription['totalQuantity'] = '';
+		this.prescription['totalCost'] = '';
+		console.log(this.prescription);
+		
+		this.prescriptions.push(this.prescription);	
 	}
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
-		console.log(this.prescriptions);
+		let payload = {
+			facilityId: this.facility._id,
+			nonPrescription: this.prescription,
+			storeId: this.storeId
+		}
+
+		console.log(payload);
 
 		// this._dispenseService.create(this.prescriptions)
 		// 	.then(res => {
 		// 		console.log(res);
+		// 		this._facilityService.announceNotification({
+		// 			type: "Success",
+		// 			text: "Prescription has been sent!"
+		// 		});
 		// 	})
 		// 	.catch(err => {
 		// 		console.log(err);
 		// 	});
+	}
+
+	// Search for products in the product service.
+	keyupSearch() {
+		this.noPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
+			this.searchText = val;
+		});
+		//this.drugs = [];
+		this.cuDropdownLoading = true;
+		this._productService.find({ query: { "name": this.searchText } })
+			.then(res => {
+				console.log(res);
+				this.cuDropdownLoading = false;
+				//this.drugs = res;
+			})
+			.catch(err => {
+				this.cuDropdownLoading = false;
+				console.log(err);
+			});
+	}
+
+	onClickCustomSearchItem(event, drugId) {
+		this.noPrescriptionForm.controls['drug'].setValue(event.srcElement.innerText);
+		let productId = drugId.getAttribute('data-drug-id');
+	}
+
+	focusSearch() {
+		this.showCuDropdown = !this.showCuDropdown;
+	}
+
+	focusOutSearch() {
+		setTimeout(() => {
+			this.showCuDropdown = !this.showCuDropdown;
+		}, 300);
 	}
 
 	// Get facility data then extract the departments, minorlocations, and units.
@@ -130,6 +198,11 @@ export class NoprescriptionComponent implements OnInit {
 	}
 
 	onChange(param) {
+		// Once changed, reset all variables
+		this.selectedDrugs = [];
+		this.prescriptions = [];
+		this.prescription = {};
+
 		switch (param) {
 			case 'Individual':
 				this.individualShow = true;
