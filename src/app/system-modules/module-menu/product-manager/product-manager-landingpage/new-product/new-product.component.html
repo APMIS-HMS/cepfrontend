@@ -120,7 +120,7 @@
             </div>
             <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
                 <div formArrayName="ingredients">
-                    <div class="frmArr-wrap" *ngFor="let ingredient of ingredientForm.controls[ingredients].controls; let i=index">
+                    <div class="frmArr-wrap" *ngFor="let ingredient of ingredientForm.value[ingredients].value; let i=index">
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls[ingredients].controls > 1" (click)="removeIngredient(i)"></span>
                         </div>
