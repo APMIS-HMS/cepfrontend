@@ -154,6 +154,7 @@ export class NewProductComponent implements OnInit {
         })
       ])
     });
+    console.log(this.ingredientForm)
     this.ingredientForm.controls['ingredients'] = this.formBuilder.array([]);
   }
 
