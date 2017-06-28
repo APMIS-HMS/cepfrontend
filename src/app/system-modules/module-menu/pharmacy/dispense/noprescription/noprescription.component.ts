@@ -38,6 +38,9 @@ export class NoprescriptionComponent implements OnInit {
 	selectedProductId: string = "";
 	showCuDropdown: boolean = false;
 	itemPrice: number = 0;
+	itemQuantity: number = 0;
+	totalItemPrice: number = 0;
+	totalItemQuantity: number = 0;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -74,7 +77,9 @@ export class NoprescriptionComponent implements OnInit {
 			unit: ['', [<any>Validators.required]],
 			minorLocation: ['', [<any>Validators.required]],
 			product: ['', [<any>Validators.required]],
-			qty: ['', [<any>Validators.required]]
+			batchNumber: ['', [<any>Validators.required]],
+			qty: [0, [<any>Validators.required]],
+			cost: ['']
 		});
 
 		this.noPrescriptionForm.controls['dept'].valueChanges.subscribe(val => {
@@ -84,7 +89,10 @@ export class NoprescriptionComponent implements OnInit {
 
 		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
 			if(val > 0) {
-				this.itemPrice = this.itemPrice*val;
+				//this.itemPrice = this.itemPrice*val;
+				this.itemQuantity = val;
+				this.itemPrice = 100*val;
+				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
 			} else {
 				this._facilityService.announceNotification({
 					type: "Error",
@@ -110,7 +118,8 @@ export class NoprescriptionComponent implements OnInit {
 		// 	}
 		// }
 		let product = {
-			productId: value.product
+			productId: this.selectedProductId,
+			batchNumber: value.batchNumber
 		};
 		// put selected drugs in the selectedDrugs array.
 		this.selectedProducts.push(product);
@@ -137,9 +146,14 @@ export class NoprescriptionComponent implements OnInit {
 				this.prescription['locationId'] = value.minorLocation;
 				break;
 		}
+		this.totalItemPrice = this.totalItemPrice + this.itemPrice;
+		this.totalItemQuantity = this.totalItemQuantity + this.itemQuantity;
+		this.prescription['productName'] = value.product;
 		this.prescription['qty'] = value.qty;
-		this.prescription['totalQuantity'] = '';
-		this.prescription['totalCost'] = '';
+		this.prescription['cost'] = value.cost;
+		this.prescription['batchNumber'] = value.batchNumber;
+		this.prescription['totalQuantity'] = this.totalItemQuantity;
+		this.prescription['totalCost'] = this.totalItemPrice;
 		console.log(this.prescription);
 		
 		this.prescriptions.push(this.prescription);	
@@ -205,14 +219,10 @@ export class NoprescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
-		let productId = drugId.getAttribute('data-p-id');
+		this.selectedProductId = drugId.getAttribute('data-p-id');
 		let fsId = drugId.getAttribute('data-p-fsid');
 		let sId = drugId.getAttribute('data-p-sid');
 		let cId = drugId.getAttribute('data-p-cid');
-		console.log(productId);
-		console.log(fsId);
-		console.log(sId);
-		console.log(cId);
 		// Get the service for the product
 		this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
 			.then(res => {
@@ -226,6 +236,13 @@ export class NoprescriptionComponent implements OnInit {
 			.catch(err => {
 				console.log(err);
 			})
+	}
+
+	// Delete item from stack
+	onClickDeleteItem(index, item) {
+		this.prescriptions.splice(item, 1);
+		this.totalItemPrice = this.totalItemPrice - item.cost;
+		this.totalItemQuantity = this.totalItemQuantity - item.qty;
 	}
 
 	focusSearch() {
@@ -263,6 +280,11 @@ export class NoprescriptionComponent implements OnInit {
 		this.selectedProducts = [];
 		this.prescriptions = [];
 		this.prescription = {};
+		this.totalItemPrice = 0;
+		this.itemPrice = 0;
+		this.noPrescriptionForm.reset();
+		this.noPrescriptionForm.controls['qty'].reset(0);
+		this.noPrescriptionForm.controls['client'].reset(param);
 
 		switch (param) {
 			case 'Individual':
