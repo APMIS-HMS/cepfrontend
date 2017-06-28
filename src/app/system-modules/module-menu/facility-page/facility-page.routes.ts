@@ -17,7 +17,7 @@ const FACLITYPAGE_ROUTES: Routes = [
     {
         path: '', component: FacilityPageHomeComponent, children: [
             { path: '', component: FacilitypageHomepageComponent },
-            { path: 'facility-page', component: FacilitypageHomepageComponent },
+            { path: 'facility', component: FacilitypageHomepageComponent },
             {
                 path: 'modules', component: FacilitypageModulespageComponent, resolve: {
                     systemModules: SystemModulesResolverService,

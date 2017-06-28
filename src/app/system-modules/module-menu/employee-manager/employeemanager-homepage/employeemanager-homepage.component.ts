@@ -70,7 +70,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     this.getByDepartment(department);
   }
   navEpDetail(val) {
-    this.router.navigate(['/modules/facility-manager/employee-manager/employee-manager-detail']).then(result => {
+    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail']).then(result => {
       this.employeeService.announceEmployee(val);
     });
   }

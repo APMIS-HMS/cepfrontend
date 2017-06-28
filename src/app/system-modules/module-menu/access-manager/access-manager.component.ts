@@ -43,10 +43,10 @@ export class AccessManagerComponent implements OnInit {
   }
   edit(item: any) {
     console.log(item);
-    this.router.navigate(['/modules/facility-manager/employee-manager/generate-user', item.person._id]);
+    this.router.navigate(['/dashboard/employee-manager/generate-user', item.person._id]);
   }
   empDetail(val: any) {
-    this.router.navigate(['/modules/facility-manager/employee-manager/employee-manager-detail', val.personId]);
+    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', val.personId]);
   }
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;

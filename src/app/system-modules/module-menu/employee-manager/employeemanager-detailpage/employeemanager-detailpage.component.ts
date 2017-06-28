@@ -165,7 +165,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     // });
   }
   navEpDetail(val: Employee) {
-    this.router.navigate(['/modules/facility-manager/employee-manager/employee-manager-detail', val.personId]);
+    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', val.personId]);
   }
   getEmployees() {
     this.employeeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
@@ -216,11 +216,11 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.contentSecMenuShow = false;
   }
   generateUserShow() {
-    this.router.navigate(['/modules/facility-manager/employee-manager/generate-user', this.employee.employeeDetails._id]);
+    this.router.navigate(['/dashboard/employee-manager/generate-user', this.employee.employeeDetails._id]);
     this.contentSecMenuShow = false;
   }
   editUserShow() {
-    this.router.navigate(['/modules/facility-manager/employee-manager/edit-user',
+    this.router.navigate(['/dashboard/employee-manager/edit-user',
       this.selectedUser._id, this.employee.employeeDetails._id]);
     this.contentSecMenuShow = false;
   }
