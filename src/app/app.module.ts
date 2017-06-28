@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { CustomPreloading } from './custom-preloading';
@@ -36,10 +36,10 @@ import { LogoutConfirmComponent } from './system-modules/module-menu/logout-conf
 import { FacilitySetupComponent } from './facility-setup/facility-setup.component';
 import { ContactInfoComponent } from './facility-setup/contact-info/contact-info.component';
 import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
-import {FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
-import {AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
+import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
+import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
-
+import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule} from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +64,9 @@ import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-hom
     DashboardHomeComponent,
   ],
   imports: [
-    SharedModule,
+    MdDatepickerModule,
+    MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+    // SharedModule,
     // DxLoadIndicatorModule,
     BrowserModule,
     FormsModule,
