@@ -34,8 +34,11 @@ export class PharmacyManagerComponent implements OnInit {
 
 	productRoute = false;
 
-	constructor(private _pharmacyEventEmitter: PharmacyEmitterService, private _router: Router,
-		public facilityService: FacilitiesService) {
+	constructor(
+		private _router: Router,
+		private _pharmacyEventEmitter: PharmacyEmitterService, 
+		public facilityService: FacilitiesService
+	) {
 		this.facilityService.sliderAnnounced$.subscribe(value => {
 			if (value === false) {
 				this.addPharmacy = false;

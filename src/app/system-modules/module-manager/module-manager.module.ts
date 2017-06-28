@@ -19,9 +19,9 @@ import { OptionScopeLevelComponent } from './option-scope-level/option-scope-lev
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         moduleManagerRoutes
     ],
     providers: []

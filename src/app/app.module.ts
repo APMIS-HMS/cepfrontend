@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { CoolStorageModule } from 'angular2-cool-storage';
-
-import {Routing} from './app.routes';
+import { CustomPreloading } from './custom-preloading';
+import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -25,36 +25,52 @@ import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/se
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
 import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
-import { MainMenuComponent } from './main-menu/main-menu.component';
+// import { MainMenuComponent } from './main-menu/main-menu.component';
 
 // tslint:disable-next-line:max-line-length
-import {ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
-import {ApmisCheckboxComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox.component';
-
+import { ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
+import { ApmisCheckboxComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox.component';
+import { DxDateBoxComponent } from 'devextreme-angular';
+import { VerifyTokenComponent } from './facility-setup/verify-token/verify-token.component';
+import { LogoutConfirmComponent } from './system-modules/module-menu/logout-confirm/logout-confirm.component';
+import { FacilitySetupComponent } from './facility-setup/facility-setup.component';
+import { ContactInfoComponent } from './facility-setup/contact-info/contact-info.component';
+import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
+import {FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
+import {AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
+import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    UserAccountsComponent,
-    UserAccountsInnerPopupComponent,
-    CorporateSignupComponent,
+    // UserAccountsComponent,
+    // UserAccountsInnerPopupComponent,
+    // CorporateSignupComponent,
     PasswordResetComponent,
-    SignupComponent,
-    PersonAccountComponent,
-    MainMenuComponent,
-    // AppointmentComponent,
+    // SignupComponent,
+    // PersonAccountComponent,
+    // VerifyTokenComponent,
+    // LogoutConfirmComponent,
+    // ContactInfoComponent,
+    // AddLogoComponent,
+    // FacilityInfoComponent,
+    // AddFacilityModuleComponent
+    // FacilitySetupComponent,
+    // MainMenuComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent,
+    DashboardHomeComponent,
   ],
   imports: [
     SharedModule,
+    // DxLoadIndicatorModule,
     BrowserModule,
     FormsModule,
-    HttpModule,
+    // HttpModule,
     Routing,
-    FormsModule,
+    // FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastModule.forRoot(),
@@ -78,7 +94,11 @@ import {ApmisCheckboxComponent } from './system-modules/module-menu/patient-mana
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
-    SetupService.DrugDetailsService
+<<<<<<< HEAD
+    SetupService.DrugDetailsService, CustomPreloading
+=======
+    SetupService.DrugDetailsService, SetupService.DispenseService, SetupService.FacilityPriceService, SetupService.ProductService
+>>>>>>> a87c8c198c3afec9589914b448f4f538cc5476fc
   ],
   bootstrap: [AppComponent]
 })

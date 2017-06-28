@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DxDateBoxModule } from 'devextreme-angular';
-import 'devextreme-intl';
+// import 'devextreme-intl';
 import { ConsultingRoomService, SchedulerTypeService } from '../../../../services/facility-manager/setup/index';
 import { RoomModel, Facility, Location, ConsultingRoomModel } from '../../../../models/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';

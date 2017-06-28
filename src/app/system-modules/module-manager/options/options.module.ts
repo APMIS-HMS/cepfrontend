@@ -1,7 +1,7 @@
 import { NgModule, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared-module/shared.module';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 
 
 import { OptionsComponent } from './options.component';
@@ -23,11 +23,12 @@ import { DocumentationPageComponent } from './documentation-page/documentation-p
     exports: [
     ],
     imports: [
-        CommonModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         SharedModule,
         optionsRoutes,
-        ReactiveFormsModule,
-        FormsModule
+
     ],
     providers: []
 })

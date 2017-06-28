@@ -5,6 +5,7 @@ const MODULEMENU_ROUTES: Routes = [
     {
         path: '', component: ModuleMenuComponent, children: [
             { path: '', redirectTo: 'setup' },
+            // { path: 'dashboard', component: DashboardComponent },
             {
                 path: 'setup',
                 loadChildren: './facility-page/facility-page.module#FacilityPageModule'

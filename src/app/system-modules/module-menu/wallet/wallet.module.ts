@@ -17,9 +17,9 @@ import { walletRoutes } from './wallet.routes';
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         walletRoutes
     ],
     providers: []

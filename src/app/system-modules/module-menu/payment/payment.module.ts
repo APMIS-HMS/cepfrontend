@@ -32,9 +32,9 @@ import { BillGroupComponent } from './bill-lookup/bill-group/bill-group.componen
     ],
     imports: [
         SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         paymentRoutes
     ],
     providers: []

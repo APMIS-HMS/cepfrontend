@@ -18,6 +18,7 @@ export class UnitComponentComponent implements OnInit {
     modal_on = false;
     newDeptModal_on = false;
     newUnitModal_on = false;
+    count = '';
 
     innerMenuShow = false;
 
