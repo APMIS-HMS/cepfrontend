@@ -9,51 +9,30 @@ const appRoutes: Routes = [
     {
         path: 'facility-page',
         loadChildren: '../module-menu/facility-page/facility-page.module.ts#FacilityPageModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
     },
     {
         path: 'employee-manager',
         loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
     },
     {
         path: 'employee-manager/:id',
         loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
     },
     {
         path: 'access-manager',
-        loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
+        loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
     },
     {
         path: 'patient-manager',
         loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
     },
     {
         path: 'patient-manager/:id',
         loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
     },
     {
         path: 'ward-manager',
         loadChildren: '../module-menu/ward-manager/ward-manager.module#WardManagerModule',
-        canActivate: [
-            SetupService.CanActivateViaAuthGuardService
-        ]
     },
     {
         path: 'health-coverage',
@@ -73,10 +52,10 @@ const appRoutes: Routes = [
         path: 'payment',
         loadChildren: '../module-menu/payment/payment.module#PaymentModule'
     },
-    {
-        path: 'wallet',
-        loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
-    },
+    // {
+    //     path: 'wallet',
+    //     loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
+    // },
     {
         path: 'clinic',
         loadChildren: '../module-menu/clinic/clinic.module#ClinicModule'

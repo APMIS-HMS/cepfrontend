@@ -64,7 +64,7 @@ import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-hom
     DashboardHomeComponent,
   ],
   imports: [
-    // SharedModule,
+    SharedModule,
     // DxLoadIndicatorModule,
     BrowserModule,
     FormsModule,
