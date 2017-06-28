@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 // tslint:disable-next-line:max-line-length
@@ -9,13 +9,13 @@ import {
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ClinicHelperService } from '../services/clinic-helper.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
   selector: 'app-check-in-patient',
   templateUrl: './check-in-patient.component.html',
   styleUrls: ['./check-in-patient.component.scss'],
 })
-export class CheckInPatientComponent implements OnInit, AfterContentChecked {
+export class CheckInPatientComponent implements OnInit, AfterContentChecked, OnDestroy {
   patientItem: any;
   addVital = false;
   slideTimeline = false;
@@ -40,6 +40,7 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked {
 
   isDoctor = false;
   counter = 0;
+  subscription: Subscription;
   constructor(private appointmentService: AppointmentService,
     private router: Router,
     private route: ActivatedRoute,
@@ -51,13 +52,13 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked {
     public clinicHelperService: ClinicHelperService,
     private locker: CoolLocalStorage, public facilityService: FacilitiesService) {
     this.clinicHelperService.getConsultingRoom();
-    this.employeeService.listner.subscribe(payload => {
+    this.subscription = this.employeeService.listner.subscribe(payload => {
       this.loginEmployee = payload;
     });
-    this.appointmentService.updatelistner.subscribe(payload => {
+    this.subscription = this.appointmentService.updatelistner.subscribe(payload => {
       this.selectedCheckedInAppointment = payload;
     });
-    this.appointmentService.timelineAnnounced$.subscribe(value => {
+    this.subscription = this.appointmentService.timelineAnnounced$.subscribe(value => {
       if (value === true) {
         this.slideTimeline = false;
       }
@@ -75,7 +76,7 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked {
       //  data.loginEmployee.subscribe(me=>{
       //    console.log(me);
       //  })
-      data['checkInPatients'].subscribe((payload: any[]) => {
+      this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
         // data['loginEmployee'].subscribe(payloadl => {
         //   console.log(payloadl);
         //   this.loginEmployee = payloadl.loginEmployee;
@@ -89,7 +90,8 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked {
             facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
           }
         }));
-        emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+        // tslint:disable-next-line:max-line-length
+        this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
         ]))
           .subscribe((results: any) => {
             this.loginEmployee = results[0];
@@ -326,12 +328,13 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked {
     }
   }
   ngAfterContentChecked() {
-    if (this.clinicHelperService.loginEmployee._id !== undefined) {
-      if (this.counter === 0) {
-        this.getEmployees();
-      }
-      this.counter++;
-    }
+    console.log('erro');
+    // if (this.clinicHelperService.loginEmployee._id !== undefined) {
+    //   if (this.counter === 0) {
+    //     this.getEmployees();
+    //   }
+    //   this.counter++;
+    // }
   }
   show_addVital() {
     this.addVital = true;
@@ -383,5 +386,8 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked {
   showVital(appointment) {
     this.addVital = true;
     this.selectedCheckedInAppointment = appointment;
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
