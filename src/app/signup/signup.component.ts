@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -13,6 +14,12 @@ export class SignupComponent implements OnInit {
   pwdReset_on = false;
   login_on = false;
 
+  genders = [
+    { name: 'steak-0', _id: 'Steak' },
+    { name: 'pizza-1', _id: 'Pizza' },
+    { name: 'tacos-2', _id: 'Tacos' }
+  ];
+  gender: FormControl = new FormControl();
   constructor() { }
 
   ngOnInit() {
