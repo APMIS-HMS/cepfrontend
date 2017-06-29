@@ -12,54 +12,46 @@
       <div class="lhs">
 
         <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.firstname.valid || frmPerson.controls.firstname.pristine">
-            this is a required field (minimum 3 and max of 50 characters).
-          </small>
-          <input type="text" formControlName="firstname" placeholder="First Name" autocomplete="off">
+          <md-input-container class="example-full-width">
+            <input mdInput md-error placeholder="First Name" formControlName="firstname">
+          </md-input-container>
         </div>
 
         <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.lastname.valid || frmPerson.controls.lastname.pristine">
-            this is a required field (minimum 3 and max of 50 characters).
-          </small>
-          <input type="text" formControlName="lastname" placeholder="Last Name" autocomplete="off">
+          <md-input-container class="example-full-width">
+            <input mdInput md-error placeholder="Last Name" formControlName="lastname">
+          </md-input-container>
         </div>
 
         <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.othernames.valid || frmPerson.controls.othernames.pristine">
-            this is a required field (minimum 3 and max of 50 characters).
-          </small>
-          <input type="text" formControlName="othernames" placeholder="Other Names" autocomplete="off">
+          <md-input-container class="example-full-width">
+            <input mdInput md-error placeholder="Other Names" formControlName="othernames">
+          </md-input-container>
         </div>
 
         <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.gender.valid || frmPerson.controls.gender.pristine">
-            A minimum of 3 characters required.
-          </small>
-          <select formControlName="gender">
-            <option  value="" disabled selected>Gender</option>
-            <option *ngFor="let item of genders" value = "{{item._id}}">{{item.name}}</option>
-          </select>
+          <md-input-container class="example-full-width">
+            <md-select placeholder="Gender" formControlName="gender">
+              <md-option *ngFor="let item of genders" value = "{{item._id}}">{{item.name}}</md-option>
+            </md-select>
+          </md-input-container>
         </div>
 
         <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.dob.valid || frmPerson.controls.dob.pristine">
-            Kindly select your date of birth.
-          </small>
-          <dx-date-box
-              placeholder="Date of Birth"
-              style="width:100%;"
-              formControlName = "dob"
-              type="date">
-          </dx-date-box>
+          <md-input-container class="example-full-width">
+            <input mdInput [mdDatepicker]="picker" placeholder="Date of Birth" formControlName = "dob">
+            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+          </md-input-container>
+          <md-datepicker #picker></md-datepicker>
         </div>
 
         <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.password.valid || frmPerson.controls.password.pristine">
-            this field is required, minimum of 6 and maximum of 20 characters.
-          </small>
-          <input class="txt-input" formControlName="password" type="password" placeholder="Confirm Password" autocomplete="off">
-        </div>
+          <md-input-container class="example-full-width">
+            <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock absolute" aria-hidden="true"></i>
+            <input type="password" mdInput md-error formControlName="password"  #showhideinput placeholder="Confirm Password">
+            <a [hidden]="show" (click)="toggleShow($event)" class="absolute"><i class="fa fa-eye"></i></a>
+          </md-input-container>
+        </div> 
       </div>
 
       <div class="rhs">

@@ -25,7 +25,6 @@ import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/se
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
 import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
-// import { MainMenuComponent } from './main-menu/main-menu.component';
 
 // tslint:disable-next-line:max-line-length
 import { ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
@@ -39,43 +38,27 @@ import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
 import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
-import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule} from '@angular/material';
+import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
-    // UserAccountsComponent,
-    // UserAccountsInnerPopupComponent,
-    // CorporateSignupComponent,
     PasswordResetComponent,
-    // SignupComponent,
-    // PersonAccountComponent,
-    // VerifyTokenComponent,
-    // LogoutConfirmComponent,
-    // ContactInfoComponent,
-    // AddLogoComponent,
-    // FacilityInfoComponent,
-    // AddFacilityModuleComponent
-    // FacilitySetupComponent,
-    // MainMenuComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent
   ],
   imports: [
-    MdDatepickerModule,
-    MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     SharedModule,
-    // DxLoadIndicatorModule,
     BrowserModule,
     FormsModule,
-    // HttpModule,
     Routing,
-    // FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastModule.forRoot(),
-    CoolStorageModule
+    CoolStorageModule,
+    SingUpAccountsSharedModule
   ],
   providers: [
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,

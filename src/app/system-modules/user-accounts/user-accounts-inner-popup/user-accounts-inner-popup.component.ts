@@ -34,7 +34,7 @@ export class UserAccountsInnerPopupComponent implements OnInit {
   }
   loadEmployeeRecord() {
     this.locker.setObject('selectedFacility', this.selectedFacility);
-    this.router.navigate(['/dashboard']).then(() => {
+    this.router.navigate(['dashboard']).then(() => {
       this.userService.announceMission('in');
     });
   }

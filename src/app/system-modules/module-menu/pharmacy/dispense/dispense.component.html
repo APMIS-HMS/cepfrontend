@@ -1,17 +1,7 @@
 <section id="prescription">
     <div class="survery">
-        <!--<div class="row">
-            <div class="col-md-12 col-sm-12">
-                <div style="display: flex; float: right;">
-                    <button *ngIf="hasPrescriptionId" (click)="hasPrescriptionShow()" class="btn btn-default prescription-btn">Prescription</button>
-                    <button *ngIf="!hasPrescriptionId" (click)="noPrescriptionShow()" class="btn btn-default prescription-btn">No Prescription</button>
-                </div>
-            </div>
-        </div>-->
         <div class="sec-border">
-            <!--<app-prescription *ngIf="hasPrescription && !hasPrescriptionId"></app-prescription>-->
-
-            <app-noprescription></app-noprescription>
+            <app-noprescription [employeeDetails]="employeeDetails"></app-noprescription>
         </div>
     </div>
 </section>

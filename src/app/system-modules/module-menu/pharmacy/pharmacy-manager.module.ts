@@ -15,6 +15,7 @@ import { PrescriptionListComponent } from './prescription-list/prescription-list
 import { DispenseComponent } from './dispense/dispense.component';
 import { PrescriptionComponent } from './dispense/prescription/prescription.component';
 import { NoprescriptionComponent } from './dispense/noprescription/noprescription.component';
+import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 
 @NgModule({
     declarations: [
@@ -36,7 +37,8 @@ import { NoprescriptionComponent } from './dispense/noprescription/noprescriptio
         pharmacyManagerRoutes
     ],
     providers: [PharmacyEmitterService, StoreService, PresentationService,
-        GenericService, ManufacturerService, RouteService, SupplierService, StrengthService, PurchaseEntryService]
+        GenericService, ManufacturerService, RouteService, SupplierService, 
+        StrengthService, PurchaseEntryService, LoginEmployeeResolverService]
 })
 export class PharmacyManagerModule { }
 

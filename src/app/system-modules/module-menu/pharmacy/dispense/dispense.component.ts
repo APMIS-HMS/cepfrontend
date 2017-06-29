@@ -12,37 +12,24 @@ import { FacilitiesService, PrescriptionService } from '../../../../services/fac
 })
 export class DispenseComponent implements OnInit {
 	@Output() prescriptionItems: PrescriptionItem[] = [];
+	@Output() employeeDetails: any;
 	facility: Facility = <Facility>{};
-	//prescriptionId: string = '';
-	//hasPrescriptionId: boolean = false;
-	//hasPrescription: boolean = true;
-	//noPrescription: boolean = false;
 
 	constructor(
 		private _locker: CoolLocalStorage,
-		//private _route: ActivatedRoute,
+		private _router: Router,
+		private _route: ActivatedRoute
 	) {
 
 	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		// this._route.params.subscribe(params => {
-		// 	console.log(params)
-		// 	this.prescriptionId = params['id'];
-		// 	if(params['id']){
-		// 		this.hasPrescriptionId = true;
-		// 	}
-		// });
-	}
-	
-	// hasPrescriptionShow() {
-	// 	this.hasPrescription = true;
-	// 	this.noPrescription = false;
-	// }
-	// noPrescriptionShow() {
-	// 	this.noPrescription = true;
-	// 	this.hasPrescription = false;
-	// }
 
+		this._route.data.subscribe(data => {
+			data['loginEmployee'].subscribe(payload => {
+				this.employeeDetails = payload.loginEmployee;
+			});
+		});
+	}
 }

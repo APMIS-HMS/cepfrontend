@@ -15,7 +15,8 @@ import { DxDateBoxComponent } from 'devextreme-angular';
 import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
 import { Routing } from './signup-routes';
 import { SignupHomeComponent } from './signup-home.component';
-import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module'
+import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
+import { MaterialModule } from '../shared-common-modules/material-module';
 
 @NgModule({
     declarations: [
@@ -23,12 +24,6 @@ import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-acco
         FacilitySetupComponent,
         PersonAccountComponent,
         CorporateSignupComponent,
-        // ContactInfoComponent,
-        // AddLogoComponent,
-        // FacilityInfoComponent,
-        // VerifyTokenComponent,
-        // AddFacilityModuleComponent,
-        // DxDateBoxComponent,
         SignupHomeComponent
     ],
     exports: [
@@ -38,7 +33,8 @@ import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-acco
         ReactiveFormsModule,
         FormsModule,
         Routing,
-        SingUpAccountsSharedModule
+        SingUpAccountsSharedModule,
+         MaterialModule
     ],
     providers: [
     ]

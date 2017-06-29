@@ -79,21 +79,29 @@
                         <div class="lhs">Gender</div>
                         <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
                          <div *ngIf = "biodatas" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                             <div class="survery">
+                            <select>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                            <button class="btn btn-default">Save</button>
+                            </div>
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Marital Status</div>
-                        <div class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
+                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
+                         <div *ngIf = "biodatas" class="survery rhs">
+                             <div class="survery">
+                                <select>
+                                    <option>Single</option>
+                                    <option>Married</option>
+                                </select>
+                                <button class="btn btn-default">Save</button>
+                            </div>
+                        </div>
                         <div class="clear"></div>
                     </div>
 
@@ -114,12 +122,13 @@
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
                             <div *ngIf = "contacts" class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
+                                <div class="survery">
+                                <select>
+                                    <option>Nigeria</option>
+                                    <option>Ghana</option>
+                                </select>
+                                <button class="btn btn-default">Save</button>
+                            </div>
                             </div><!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
@@ -129,14 +138,13 @@
                         <div class="lhs">State of Origin</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                              <div class="survery">
+                                <select>
+                                    <option>Kogi</option>
+                                    <option>Lagos</option>
+                                </select>
+                                <button class="btn btn-default">Save</button>
+                            </div>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -146,12 +154,13 @@
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
                          <div class="survery rhs">
                             <div *ngIf = "contacts" class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
+                                 <div class="survery">
+                                <select>
+                                    <option>Mushin</option>
+                                    <option>Yaba</option>
+                                </select>
+                                <button class="btn btn-default">Save</button>
+                            </div>
                             </div><!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
