@@ -165,7 +165,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     });
   }
   navEpDetail(val: Patient) {
-    this.router.navigate(['/modules/patient-manager/patient-manager-detail', val.personId]);
+    this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', val.personId]);
   }
   getSelectedState() {
     this.selectedNationality.states.forEach((item, i) => {
@@ -212,7 +212,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this.contentSecMenuShow = false;
   }
   generateUserShow() {
-    this.router.navigate(['/modules/patient-manager/generate-user', this.patient._id]);
+    this.router.navigate(['/dashboard/patient-manager/generate-user', this.patient._id]);
     this.contentSecMenuShow = false;
   }
   toggleActivate() {

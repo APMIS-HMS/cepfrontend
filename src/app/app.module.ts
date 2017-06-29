@@ -39,12 +39,13 @@ import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
 import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
-import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule} from '@angular/material';
+import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule } from '@angular/material';
+import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
+    // LoginComponent,
     // UserAccountsComponent,
     // UserAccountsInnerPopupComponent,
     // CorporateSignupComponent,
@@ -63,8 +64,8 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
     ApmisCheckboxComponent
   ],
   imports: [
-    MdDatepickerModule,
-    MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+    // MdDatepickerModule,
+    // MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     SharedModule,
     // DxLoadIndicatorModule,
     BrowserModule,
@@ -75,7 +76,8 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastModule.forRoot(),
-    CoolStorageModule
+    CoolStorageModule,
+    SingUpAccountsSharedModule
   ],
   providers: [
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,

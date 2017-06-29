@@ -94,7 +94,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
   }
   navEpDetail(patient) {
-    this.router.navigate(['/modules/patient-manager/patient-manager-detail', patient.personId]);
+    this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]);
   }
   getPatients(limit) {
     console.log('event called');
