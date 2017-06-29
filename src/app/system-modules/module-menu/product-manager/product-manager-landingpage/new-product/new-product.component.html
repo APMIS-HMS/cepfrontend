@@ -86,7 +86,7 @@
                         Kindly type something in the field.
                     </small>-->
                     <label>Pack Size</label>
-                    <input formControlName="packSize" type="text" name="">
+                    <input formControlName="packSize" type="number" name="">
                 </div>
                 <!--<div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
@@ -126,33 +126,27 @@
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
-                                <small class="alert-label" [hidden]="ingredient.controls['ingredientName'].valid || ingredient.controls['ingridentName'].pristine">
+                                <!--<small class="alert-label" [hidden]="ingredient.controls['ingredientName'].valid || ingredient.controls['ingridentName'].pristine">
                             Kindly type something in the field.
-                        </small>
+                        </small>-->
                                 <label>Name</label>
-                                <input formControlName="ingredientName" type="text">
+                                <input formControlName="name" type="text">
                             </div>
                             <div class="frm-item-wrap">
-                                <small class="alert-label" >
-                            Kindly type something in the field.
-                        </small>
                                 <label>Strength</label>
-                                <input formControlName="ingredientStrength" type="text">
+                                <input formControlName="strength" type="number">
                             </div>
                             <div class="frm-item-wrap">
-                                <small class="alert-label">
-                        Kindly type something in the field.
-                    </small>
                                 <label>Strength Unit</label>
-                                <input formControlName="ingredientStrengthUnit" type="text">
+                                <input formControlName="strengthUnit" type="text">
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-    
-    <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
+
+        <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
     </form>
     <div *ngIf="isManufacturer">
         <app-manufacturer-manager></app-manufacturer-manager>
