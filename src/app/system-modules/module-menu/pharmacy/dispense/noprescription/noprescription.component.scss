@@ -3,6 +3,14 @@
     width: 40%;
 }
 
+.table-inner {
+    .table-data {
+        width: 100%;
+        padding: 5px 0;
+        text-align: center;
+    }
+}
+
 .cu-search-box {
     position: relative;
     min-width: 100px;

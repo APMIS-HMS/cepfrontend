@@ -3,6 +3,7 @@ import { PharmacyManagerComponent } from './pharmacy-manager.component';
 import { PrescriptionListComponent } from './prescription-list/prescription-list.component';
 import { PrescriptionComponent } from './dispense/prescription/prescription.component';
 import {DispenseComponent} from './dispense/dispense.component';
+import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 
 const PHARMACYMODULES_ROUTES: Routes = [
     {
@@ -10,7 +11,11 @@ const PHARMACYMODULES_ROUTES: Routes = [
             { path: '', redirectTo: 'prescriptions', pathMatch: 'full' },
             { path: 'prescriptions', component: PrescriptionListComponent },
             { path: 'prescriptions/:id', component: PrescriptionComponent },
-            { path: 'dispense', component: DispenseComponent }
+            { 
+                path: 'dispense', 
+                component: DispenseComponent,
+                resolve: { loginEmployee: LoginEmployeeResolverService }
+            }
         ]
     }
 ];
