@@ -15,6 +15,14 @@ import { Facility, FacilityType, Country } from '../../../../models/index';
 export class FacilitypageHomepageComponent implements OnInit {
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
+  selectedValue: string;
+
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   facilityObj: Facility = <Facility>{};
   facilityTypes: FacilityType[] = [];
   facilityClassess: any[] = [];
