@@ -24,14 +24,7 @@ import { MaterialModule } from '../shared-common-modules/material-module';
         FacilitySetupComponent,
         PersonAccountComponent,
         CorporateSignupComponent,
-        // ContactInfoComponent,
-        // AddLogoComponent,
-        // FacilityInfoComponent,
-        // VerifyTokenComponent,
-        // AddFacilityModuleComponent,
-        // DxDateBoxComponent,
-        SignupHomeComponent,
-        // LoginComponent
+        SignupHomeComponent
     ],
     exports: [
     ],
