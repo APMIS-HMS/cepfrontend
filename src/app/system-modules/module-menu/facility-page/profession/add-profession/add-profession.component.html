@@ -8,23 +8,35 @@
   <div  class="f_sg_1">
 
     <form [formGroup]="frm_profession" novalidate>
-        <div class="mainfrmwrap">
-          <div class="frm-item-wrap">
-            <small class="alert-label" [hidden]="frm_profession.controls.profession.valid || frm_profession.controls.profession.pristine">
+        <div class="">
+          <div class="">
+            <!--<small class="alert-label" [hidden]="frm_profession.controls.profession.valid || frm_profession.controls.profession.pristine">
                 Kindly supply the professon name.
               </small>
             <span class="frm-label">Profession</span>
-            <input type="text"  autocomplete="off" style="width:350px">
+            <input type="text"  autocomplete="off" style="width:350px">-->
+             <md-input-container class="example-full-width">
+                <input mdInput placeholder="Profession">
+                <md-hint align="end" [hidden]="frm_profession.controls.profession.valid || frm_profession.controls.profession.pristine">
+                  Kindly supply a profession.
+                </md-hint>
+              </md-input-container>
           </div>
         </div>
-        <div class="mainfrmwrap">
-            <div class="frm-item-wrap">
-            <small class="alert-label" [hidden]="frm_profession.controls.level.valid || frm_profession.controls.level.pristine">
-                Kindly supply a level.
+        <div class="">
+            <div class="">
+              <!--<small class="alert-label" [hidden]="frm_profession.controls.level.valid || frm_profession.controls.level.pristine">
+                  Kindly supply a level.
               </small>
-            <span class="frm-label">Level</span>
-            <input type="text"  autocomplete="off" style="width:350px">
-          </div>
+              <span class="frm-label">Level</span>
+              <input type="text"  autocomplete="off" style="width:350px">-->
+              <md-input-container class="example-full-width">
+                <input mdInput placeholder="Level">
+                <md-hint align="end" [hidden]="frm_profession.controls.level.valid || frm_profession.controls.level.pristine">
+                  Kindly supply a level.
+                </md-hint>
+              </md-input-container>
+            </div>
         </div>
         <div  class="cta-1">
             Add
