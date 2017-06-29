@@ -4,8 +4,8 @@
     <div class="inner-page-wrap">
         <div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap">
             <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
-            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow==true" class="innerMenu-ul shadow">
-                <li [routerLink]="['/dashboard/store']">Manage Store</li>
+            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+                <li [routerLink]="['/dashboard/store/home']">Manage Store</li>
                 <li [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
                 <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
                 <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>

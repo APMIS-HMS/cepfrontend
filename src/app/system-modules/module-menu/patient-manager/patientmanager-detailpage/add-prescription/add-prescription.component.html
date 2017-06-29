@@ -15,8 +15,8 @@
         <div class="pres-data padding" id="action-long">
             <div class="text-center">
                 <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
-                <dx-check-box [value]="true" [width]="100" text="External?"></dx-check-box>
-                <button (click)="toggleBill(i);" class="btn btn-default">Bill</button>
+                <label for="isExternal-{{i}}"><input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked);" />External?</label>
+                <button *ngIf="!isExternal && (billShowId == i)" (click)="toggleBill(i);" class="btn btn-default">Bill</button>
             </div>
         </div>
     </div>

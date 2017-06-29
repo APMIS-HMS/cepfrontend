@@ -44,9 +44,10 @@ export class PrescriptionComponent implements OnInit {
 
 	// Get all drugs from generic
 	getPrescriptionDetails() {
-		this._prescriptionService.find({ query: { facilityId : this.facility._id, prescriptionId: this.prescriptionId }})
+		this._prescriptionService.get(this.prescriptionId, {})
 			.then(res => {
 				console.log(res);
+				this.prescriptionItems = res.prescriptionItems;
 			})
 			.catch(err => {
 				console.log(err);

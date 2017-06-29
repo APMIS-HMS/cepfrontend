@@ -3,7 +3,7 @@
         <div class="row margin-top-10">
             <div class="col-sm-5 col-md-5">
                 <div class="dx-field-value">
-                    <dx-text-box value="Search"></dx-text-box>
+                    <dx-text-box></dx-text-box>
                 </div>
             </div>
         </div>
@@ -43,17 +43,17 @@
                         </div>
                         <div class="table-data-inner" id="patient">
                             <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />
-                            <span class="absolute">{{prescription}}</span>
+                            <span class="absolute">{{prescription?.patient}}</span>
                         </div>
                         <div class="table-data-inner">
-                            {{prescription}}
+                            {{prescription.clinicDetails.clinicName}}
                         </div>
                         <div class="table-data-inner">
-                            {{prescription}}
+                            {{prescription?.priority}}
                         </div>
                         <div class="table-data-inner" id="patient">
                             <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />
-                            <span class="absolute">{{prescription}}</span>
+                            <span class="absolute">{{prescription?.prescriber}}</span>
                         </div>
                         <div class="table-data-inner">
                             Assessed

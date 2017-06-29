@@ -59,10 +59,10 @@
                 </div>
             </div>
             <!--end Internal-->
-            <div class="col-sm-5 col-md-5 col-xs-12">
+            <div class="col-sm-4 col-md-4 col-xs-12">
                 <label>Drugs</label>
                 <div class="cu-search-box">
-                    <input type="text" formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">
+                    <input type="text" formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...4 characters at least">
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
                         <div class="cu-header">
@@ -70,30 +70,38 @@
                         </div>
                         <ul class="cu-dropdown">
                             <li><a class="header">Select item</a></li>
-                            <li *ngIf="drugs.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
-                            <li *ngIf="drugs.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let drug of drugs" #drugId [attr.data-drug-id]="drug.productId" (click)="onClickCustomSearchItem($event, drugId)"><a>{{ drug.details }}</a></li>
+                            <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
+                            <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
                             <button class="btn btn-default">Cancel</button>
                         </div>
                     </div>
                 </div>
-                <!--<label> Drug </label>
-                <dx-lookup formControlName="drug" [items]="drugs" displayExpr="name" valueExpr="name" [showPopupTitle]="false">
+                <!--<label> product </label>
+                <dx-lookup formControlName="product" [items]="products" displayExpr="name" valueExpr="name" [showPopupTitle]="false">
                 </dx-lookup>-->
             </div>
-            <div class="col-sm-5 col-md-5 col-xs-12">
+            <div class="col-sm-3 col-md-3 col-xs-12">
                 <label> Quantity </label>
                 <div class="input-bg cacaca">
                     <div class="input-group" style=" width: 50%;font-size: inherit;">
-                        <input type="number" class="form-control" id="input" required>
-                        <!-- /btn-group -->
+                        <input type="number" formControlName="qty" class="form-control" id="input" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-xs-12">
+                <label> Batch Number </label>
+                <div class="input-bg cacaca">
+                    <div class="input-group" style=" width: 50%;font-size: inherit;">
+                        <input type="text" formControlName="batchNumber" class="form-control" id="input" required>
                     </div>
                 </div>
             </div>
             <div class="col-sm-2 col-md-2 col-xs-2">
-                <p style="color: red;margin-top: 40px;"> N200 </p>
+                <input type="hidden" formControlName="cost">
+                <p style="color: red;margin-top: 40px;"> &#x20A6;{{ itemPrice }}</p>
             </div>
         </div>
     </div>
@@ -120,39 +128,39 @@
         <div class="table-head-inner-content">
             <p>Cost</p>
         </div>
+        <div class="table-head-inner-content">
+            <p>Action</p>
+        </div>
     </div>
-    <div class="table-inner" *ngFor="let prescription of prescriptions">
+    <div class="table-inner" *ngFor="let prescription of prescriptions; let i = index;">
         <div class="table-data drugs">
-            <p>{{ prescription.drug }}</p>
+            <p>{{ prescription.productName }}</p>
         </div>
         <div class="table-data batch">
             {{ prescription.client }}
         </div>
         <div class="table-data qt">
-            <div class="input-bg cacaca">
-                <div class="input-group">
-                    <input type="text" class="form-control" value="{{ prescription.qty }}">
-                    <div class="input-group-btn">
-                        <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-                        <select>
-                            <option>Cards</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <span class="plus"><i class="fa fa-plus"></i></span>
+            {{ prescription.qty }}
         </div>
         <div class="table-data">
-            <dx-text-box></dx-text-box>
+            {{ prescription.batchNumber }}
         </div>
         <div class="table-data">
-            <p style="color:red;">200</p>
+            <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
+        </div>
+        <div class="table-data">
+            <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i>
         </div>
     </div>
+</div>
+<div class="row">
+    <p class="total pull-right">Total Quantity: {{ totalItemQuantity }}</p>
+</div>
+<div class="row">
+    <p class="total pull-right">Total Cost: {{ totalItemPrice }}</p>
 </div>
 <div class="row margin-top-15">
     <div class="col-sm-12 col-md-12 text-center">
         <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
-        <p class="total pull-right">N200</p>
     </div>
 </div>

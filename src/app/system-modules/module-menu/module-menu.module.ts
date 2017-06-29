@@ -14,7 +14,7 @@ import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module'
 @NgModule({
     declarations: [
         ModuleMenuComponent,
-        ChangePasswordComponent,
+        // ChangePasswordComponent,
         ClinicalDocumentationComponent
     ],
 exports: [
