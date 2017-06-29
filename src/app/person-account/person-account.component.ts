@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CountriesService, GenderService, PersonService, UserService, FacilitiesService } from '../services/facility-manager/setup/index';
 import { Gender, User, Person, Address } from '../models/index';
@@ -11,6 +11,9 @@ import { Gender, User, Person, Address } from '../models/index';
 export class PersonAccountComponent implements OnInit {
 
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@ViewChild('showhideinput') input;
+
+	show = false;
 
 	countries: any[] = [];
 	selectedCountry: any = <any>{};
@@ -114,5 +117,14 @@ export class PersonAccountComponent implements OnInit {
 	close_onClick() {
 		this.closeModal.emit(true);
 	}
+
+	toggleShow(e) {
+    this.show = !this.show;
+    if (this.show) {
+      this.input.nativeElement.type = 'text';
+    } else {
+      this.input.nativeElement.type = 'password';
+    }
+  }
 
 }

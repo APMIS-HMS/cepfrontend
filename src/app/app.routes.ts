@@ -16,14 +16,14 @@ const appRoutes: Routes = [
   //     SetupService.CanActivateViaAuthGuardService
   //   ]
   // },
-  {
-    path: 'dashboard',
-    loadChildren: './system-modules/dashboard/dashboard-module.ts#DashboardModule',
-    data: { preload: true },
-    canActivate: [
-      SetupService.CanActivateViaAuthGuardService
-    ]
-  },
+  // {
+  //   path: 'dashboard',
+  //   loadChildren: './system-modules/dashboard/dashboard-module.ts#DashboardModule',
+  //   data: { preload: true },
+  //   canActivate: [
+  //     SetupService.CanActivateViaAuthGuardService
+  //   ]
+  // },
   {
     path: 'login', component: HomeComponent
   },

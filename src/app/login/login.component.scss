@@ -16,6 +16,15 @@
 .forgetPword:hover {
     text-decoration: underline
 }
+.mat-input-container{
+    width: 90%;
+}
+.absolute {
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    cursor: pointer;
+}
 
 @media only screen and (max-width: 430px) {
     input {
@@ -48,13 +57,4 @@
         width: 95%;
         margin-bottom: 10px;
     }
-}
-
-.absolute {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-}
-a:hover {
-    cursor: pointer;
 }
