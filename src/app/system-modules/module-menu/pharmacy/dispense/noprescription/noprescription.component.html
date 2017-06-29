@@ -153,10 +153,14 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <p class="total pull-right">Total Quantity: {{ totalItemQuantity }}</p>
+</div>
+<div class="row">
+    <p class="total pull-right">Total Cost: {{ totalItemPrice }}</p>
+</div>
 <div class="row margin-top-15">
     <div class="col-sm-12 col-md-12 text-center">
         <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
-        <p class="total pull-right">{{ totalItemQuantity }}</p>
-        <p class="total pull-right">&#x20A6;{{ totalItemPrice }}</p>
     </div>
 </div>
