@@ -35,12 +35,10 @@ import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
 // tslint:disable-next-line:max-line-length
 import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
+import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
 @NgModule({
     declarations: [
-        // AppointmentComponent,
-        // LogoutConfirmComponent,
         AddPrescriptionComponent,
-
         LogoUpdateComponent,
         ImageUpdateComponent,
         GlobalPatientLookupComponent,
@@ -53,18 +51,9 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
         SurveyEditorComponent,
         ProductSearchComponent,
         StoreCheckInComponent,
-        // VerifyTokenComponent,
-        // AddLogoComponent,
-        // AddFacilityModuleComponent,
-        // FacilitySetupComponent,
-        // ContactInfoComponent,
-        // FacilityInfoComponent,
         CreateWorkspaceComponent
     ],
     exports: [
-        // AppointmentComponent,
-        // LogoutConfirmComponent,
-
         AddPrescriptionComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,
@@ -89,16 +78,11 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
         SurveyComponent,
         SurveyEditorComponent,
         StoreCheckInComponent,
-        // VerifyTokenComponent,
-        // AddLogoComponent,
-        // AddFacilityModuleComponent,
-        // FacilitySetupComponent,
-        // ContactInfoComponent,
-        // FacilityInfoComponent,
         CreateWorkspaceComponent,
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
+        SingUpAccountsSharedModule
     ],
     imports: [
         CommonModule,

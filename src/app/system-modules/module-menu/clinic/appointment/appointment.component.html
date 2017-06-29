@@ -55,9 +55,10 @@
 
 	<div *dxTemplate="let showtime of 'appointment-template'">
 		<div class='showtime-preview'>
-			<div>{{showtime?.patientDetails?.personDetails?.personFullName}}</div>
-			<div class='custom-field'>Doctor's Name:
-				<img [src]="facilityService.transform(showtime?.employeeDetails?.employeeDetails.profileImageObject?.thumbnail)"><strong>{{showtime?.employeeDetails?.employeeDetails?.personFullName}}</strong>
+			<div class='custom-field'>
+				<img *ngIf="showtime.patientDetails?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+				<img *ngIf="showtime.patientDetails?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(showtime?.patientDetails?.personDetails.profileImageObject?.thumbnail)">
+				<div>{{showtime?.patientDetails?.personDetails?.personFullName}}</div>
 			</div>
 			<div>
 				{{(showtime?.startDate | date:'shortTime') + ' - ' + (showtime?.endDate | date:'shortTime')}}
@@ -87,3 +88,6 @@
 		</div>
 	</div>
 </dx-scheduler>
+<div *ngIf="loadIndicatorVisible" class="div_loading">
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+</div>

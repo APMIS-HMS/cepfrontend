@@ -67,6 +67,7 @@ export class AppointmentComponent implements OnInit {
 
     newScheduleStartDate;
     newScheduleEndDate;
+    loadIndicatorVisible = false;
 
     constructor(private service: Service, private locker: CoolLocalStorage,
         private locationService: LocationService,
@@ -551,8 +552,10 @@ export class AppointmentComponent implements OnInit {
         }
     }
     getClinicLocation(locationsList: any, appointment$, employee$: any) {
+        this.loadIndicatorVisible = true;
         Observable.forkJoin([appointment$, employee$]).subscribe((results: any) => {
             this.appointmentData = results[0].data;
+            console.log(this.appointmentData);
 
             const employees = results[1].data;
             if (this.isDoctor) {
@@ -579,6 +582,7 @@ export class AppointmentComponent implements OnInit {
                 doc2.text = unAssinged.employeeDetails.personFullName;
                 this.doctResData.push(doc2);
                 this.clinicArray = ['locationId', 'clinicId', 'doctorId'];
+                this.loadIndicatorVisible = false;
             } else {
                 employees.forEach((itemi, i) => {
                     const doc: doctRes = <doctRes>{};
@@ -603,6 +607,7 @@ export class AppointmentComponent implements OnInit {
                 doc2.text = unAssinged.employeeDetails.personFullName;
                 this.doctResData.push(doc2);
                 this.clinicArray = ['locationId', 'clinicId', 'doctorId'];
+                this.loadIndicatorVisible = false;
             }
 
         });
