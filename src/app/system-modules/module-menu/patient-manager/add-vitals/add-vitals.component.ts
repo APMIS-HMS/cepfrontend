@@ -14,7 +14,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./add-vitals.component.scss']
 })
 export class AddVitalsComponent implements OnInit {
-  @Input() selectedAppointment: any;
+  @Input() patientId:  any = <any>{}
   mainErr = true;
   errMsg = 'you have unresolved errors';
   vitalRythm: any[] = [];
@@ -159,10 +159,14 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.temperature = this.temperature;
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
+      console.log(vitalValue);
       this.documentation.facilityId = this.selectedFacility._id;
-      this.documentation.patientId = this.selectedAppointment.patientDetails._id;
+      this.documentation.patientId = this.patientId;
+      
       this.documentation.createdBy = this.loginedUser._id;
+      console.log(this.loginedUser._id);
       this.documentation.document = vitalValue;
+      
 
       this.documentationService.create(this.documentation).then(payload => {
         this.frmAddVitals.reset();

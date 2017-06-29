@@ -122,6 +122,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
                   if (data['appointment'] !== null) {
                     data['appointment'].subscribe(payloada => {
                       this.selectedAppointment = payloada;
+                      console.log(this.selectedAppointment);
                       if (this.selectedAppointment !== undefined) {
                         let isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
                         if (isOnList.length > 0) {
@@ -447,6 +448,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   }
 
   addVitalsPop_show() {
+    console.log(this.selectedAppointment);
     this.addVitalsPop = true;
   }
   checkoutPatient_show() {
