@@ -38,10 +38,7 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
 import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
 @NgModule({
     declarations: [
-        // AppointmentComponent,
-        // LogoutConfirmComponent,
         AddPrescriptionComponent,
-
         LogoUpdateComponent,
         ImageUpdateComponent,
         GlobalPatientLookupComponent,
@@ -54,18 +51,9 @@ import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accou
         SurveyEditorComponent,
         ProductSearchComponent,
         StoreCheckInComponent,
-        // VerifyTokenComponent,
-        // AddLogoComponent,
-        // AddFacilityModuleComponent,
-        // FacilitySetupComponent,
-        // ContactInfoComponent,
-        // FacilityInfoComponent,
         CreateWorkspaceComponent
     ],
     exports: [
-        // AppointmentComponent,
-        // LogoutConfirmComponent,
-
         AddPrescriptionComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,
@@ -90,12 +78,6 @@ import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accou
         SurveyComponent,
         SurveyEditorComponent,
         StoreCheckInComponent,
-        // VerifyTokenComponent,
-        // AddLogoComponent,
-        // AddFacilityModuleComponent,
-        // FacilitySetupComponent,
-        // ContactInfoComponent,
-        // FacilityInfoComponent,
         CreateWorkspaceComponent,
         CommonModule,
         ReactiveFormsModule,

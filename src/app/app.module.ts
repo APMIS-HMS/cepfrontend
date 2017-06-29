@@ -25,8 +25,7 @@ import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/se
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
 import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
-// import { MainMenuComponent } from './main-menu/main-menu.component';
- 
+
 // tslint:disable-next-line:max-line-length
 import { ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
 import { ApmisCheckboxComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox.component';
@@ -46,32 +45,15 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
   declarations: [
     AppComponent,
     HomeComponent,
-    // LoginComponent,
-    // UserAccountsComponent,
-    // UserAccountsInnerPopupComponent,
-    // CorporateSignupComponent,
     PasswordResetComponent,
-    // SignupComponent,
-    // PersonAccountComponent,
-    // VerifyTokenComponent,
-    // LogoutConfirmComponent,
-    // ContactInfoComponent,
-    // AddLogoComponent,
-    // FacilityInfoComponent,
-    // AddFacilityModuleComponent
-    // FacilitySetupComponent,
-    // MainMenuComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent
   ],
   imports: [
     SharedModule,
-    // DxLoadIndicatorModule,
     BrowserModule,
     FormsModule,
-    // HttpModule,
     Routing,
-    // FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastModule.forRoot(),

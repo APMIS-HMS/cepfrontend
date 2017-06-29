@@ -17,8 +17,7 @@ import { MaterialModule } from './material-module';
         ContactInfoComponent,
         FacilityInfoComponent,
         AddFacilityModuleComponent,
-        LoginComponent,
-        // DxDateBoxComponent
+        LoginComponent
     ],
     exports: [
         VerifyTokenComponent,
@@ -26,7 +25,6 @@ import { MaterialModule } from './material-module';
         ContactInfoComponent,
         FacilityInfoComponent,
         AddFacilityModuleComponent,
-        // DxDateBoxComponent,
         DxDateBoxModule,
         CommonModule,
         SharedModuleSignUpAccountModule,
