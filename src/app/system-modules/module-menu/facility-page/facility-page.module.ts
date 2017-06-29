@@ -44,7 +44,7 @@ import { FacilityPageComponent } from './facility-page.component';
         FacilitypageWorkspaceComponent,
         ProfessionComponent,
         AddProfessionComponent,
-        FacilityPageComponent
+        FacilityPageComponent,
 
     ],
     exports: [

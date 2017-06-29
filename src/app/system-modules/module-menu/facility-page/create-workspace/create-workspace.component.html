@@ -13,7 +13,13 @@
                     <select formControlName="dept">
 					<option value="" disabled selected>Department</option>
 					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
-				</select>
+				    </select>
+                    <!--<md-select placeholder="Department">
+                        <md-option value="" disabled selected>Department</md-option>
+                        <md-option *ngFor="let department of departments" [ngValue]="department">
+                        {{department.name}}
+                        </md-option>
+                    </md-select>-->
                 </div>
 
                 <div class="frm-item-wrap">

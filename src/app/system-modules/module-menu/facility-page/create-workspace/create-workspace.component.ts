@@ -6,6 +6,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { LocationService } from '../../../../services/module-manager/setup/location.service';
 import { Observable } from 'rxjs/Observable';
 
+
 @Component({
   selector: 'app-create-workspace',
   templateUrl: './create-workspace.component.html',
