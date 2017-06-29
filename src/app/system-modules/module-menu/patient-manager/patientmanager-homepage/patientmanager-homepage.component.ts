@@ -120,4 +120,5 @@ export class PatientmanagerHomepageComponent implements OnInit {
   slideEdit() {
     this.editPatient = true;
   }
+  
 }
