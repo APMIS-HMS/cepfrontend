@@ -9,17 +9,17 @@
             <div class="sec-1">
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <label>Department</label>
+                    <!--<label>Department</label>
                     <select formControlName="dept">
 					<option value="" disabled selected>Department</option>
 					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
-				    </select>
-                    <!--<md-select placeholder="Department">
+				    </select>-->
+                    <md-select placeholder="Department">
                         <md-option value="" disabled selected>Department</md-option>
                         <md-option *ngFor="let department of departments" [ngValue]="department">
                         {{department.name}}
                         </md-option>
-                    </md-select>-->
+                    </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
