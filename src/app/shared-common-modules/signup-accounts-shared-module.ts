@@ -6,8 +6,10 @@ import { AddLogoComponent } from '../facility-setup/add-logo/add-logo.component'
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { ContactInfoComponent } from '../facility-setup/contact-info/contact-info.component';
 import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
-import {SharedModuleSignUpAccountModule } from './sharedmodule-signupaccountsmodule'
+import { SharedModuleSignUpAccountModule } from './sharedmodule-signupaccountsmodule'
 import { DxDateBoxModule } from 'devextreme-angular';
+import { LoginComponent } from '../login/login.component';
+import { MaterialModule } from './material-module';
 @NgModule({
     declarations: [
         VerifyTokenComponent,
@@ -15,6 +17,7 @@ import { DxDateBoxModule } from 'devextreme-angular';
         ContactInfoComponent,
         FacilityInfoComponent,
         AddFacilityModuleComponent,
+        LoginComponent,
         // DxDateBoxComponent
     ],
     exports: [
@@ -26,14 +29,17 @@ import { DxDateBoxModule } from 'devextreme-angular';
         // DxDateBoxComponent,
         DxDateBoxModule,
         CommonModule,
-        SharedModuleSignUpAccountModule
+        SharedModuleSignUpAccountModule,
+        LoginComponent,
+        MaterialModule
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
         DxDateBoxModule,
-        SharedModuleSignUpAccountModule
+        SharedModuleSignUpAccountModule,
+        MaterialModule
     ],
     providers: []
 })

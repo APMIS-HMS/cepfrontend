@@ -16,14 +16,14 @@ const appRoutes: Routes = [
   //     SetupService.CanActivateViaAuthGuardService
   //   ]
   // },
-  {
-    path: 'dashboard',
-    loadChildren: './system-modules/dashboard/dashboard-module.ts#DashboardModule',
-    data: { preload: true },
-    canActivate: [
-      SetupService.CanActivateViaAuthGuardService
-    ]
-  },
+  // {
+  //   path: 'dashboard',
+  //   loadChildren: './system-modules/dashboard/dashboard-module.ts#DashboardModule',
+  //   data: { preload: true },
+  //   canActivate: [
+  //     SetupService.CanActivateViaAuthGuardService
+  //   ]
+  // },
   {
     path: 'login', component: HomeComponent
   },
@@ -41,4 +41,4 @@ const appRoutes: Routes = [
 ];
 
 // export default RouterModule.forRoot(appRoutes);
-export const Routing = RouterModule.forRoot(appRoutes, { preloadingStrategy: CustomPreloading });
+export const Routing = RouterModule.forRoot(appRoutes, { useHash: true, preloadingStrategy: CustomPreloading });

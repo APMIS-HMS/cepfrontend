@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 // tslint:disable-next-line:max-line-length
@@ -15,7 +15,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
   templateUrl: './check-in-patient.component.html',
   styleUrls: ['./check-in-patient.component.scss'],
 })
-export class CheckInPatientComponent implements OnInit, AfterContentChecked, OnDestroy {
+export class CheckInPatientComponent implements OnInit, OnDestroy {
   patientItem: any;
   addVital = false;
   slideTimeline = false;
@@ -67,6 +67,7 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked, OnD
 
   ngOnInit() {
     // this.getProfessions();
+    this.getEmployees();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     // this.getCheckedInPatients();
@@ -327,15 +328,6 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked, OnD
 
     }
   }
-  ngAfterContentChecked() {
-    console.log('erro');
-    // if (this.clinicHelperService.loginEmployee._id !== undefined) {
-    //   if (this.counter === 0) {
-    //     this.getEmployees();
-    //   }
-    //   this.counter++;
-    // }
-  }
   show_addVital() {
     this.addVital = true;
   }
@@ -364,14 +356,14 @@ export class CheckInPatientComponent implements OnInit, AfterContentChecked, OnD
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
-        this.router.navigate(['/modules/patient-manager/patient-manager-detail',
+        this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.employeeDetails.personId, { appId: appointment._id, checkInId: isOnList[0]._id }]);
       } else {
-        this.router.navigate(['/modules/patient-manager/patient-manager-detail',
+        this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.employeeDetails.personId, { appId: appointment._id }]);
       }
     } else {
-      this.router.navigate(['/modules/patient-manager/patient-manager-detail',
+      this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
         appointment.employeeDetails.personId]);
     }
 
