@@ -26,7 +26,7 @@ import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
 import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 // import { MainMenuComponent } from './main-menu/main-menu.component';
-
+ 
 // tslint:disable-next-line:max-line-length
 import { ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
 import { ApmisCheckboxComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox.component';
@@ -39,7 +39,7 @@ import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
 import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
-import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule} from '@angular/material';
+import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdInputModule} from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +64,7 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
   ],
   imports: [
     MdDatepickerModule,
+    MdInputModule,
     MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     SharedModule,
     // DxLoadIndicatorModule,

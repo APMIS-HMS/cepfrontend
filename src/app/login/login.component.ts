@@ -97,7 +97,6 @@ export class LoginComponent implements OnInit {
   }
   toggleShow(e) {
     this.show = !this.show;
-    console.log(this.input);
     if (this.show) {
       this.input.nativeElement.type = 'text';
     } else {
