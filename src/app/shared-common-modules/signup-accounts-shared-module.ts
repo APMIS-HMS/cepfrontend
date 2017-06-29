@@ -9,7 +9,7 @@ import { AddFacilityModuleComponent } from '../facility-setup/add-facility-modul
 import { SharedModuleSignUpAccountModule } from './sharedmodule-signupaccountsmodule'
 import { DxDateBoxModule } from 'devextreme-angular';
 import { LoginComponent } from '../login/login.component';
-import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule } from '@angular/material';
+import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdInputModule} from '@angular/material';
 @NgModule({
     declarations: [
         VerifyTokenComponent,
@@ -31,8 +31,7 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
         CommonModule,
         SharedModuleSignUpAccountModule,
         LoginComponent,
-        MdDatepickerModule,
-        MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+        MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdInputModule
     ],
     imports: [
         CommonModule,
@@ -40,8 +39,7 @@ import { MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinner
         FormsModule,
         DxDateBoxModule,
         SharedModuleSignUpAccountModule,
-         MdDatepickerModule,
-        MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+        MdDatepickerModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdInputModule
     ],
     providers: []
 })
