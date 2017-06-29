@@ -138,9 +138,9 @@ export class NewProductComponent implements OnInit {
 
   // initIngredientsForm() {
   //   return this.formBuilder.group({
-  //     ingredientName: [''],
-  //     ingredientStrength: [''],
-  //     ingredientStrengthUnit: ['']
+  //     name: [''],
+  //     strength: [''],
+  //     strengthUnit: ['']
   //   });
   // }
 
@@ -148,9 +148,9 @@ export class NewProductComponent implements OnInit {
     this.ingredientForm = this.formBuilder.group({
       'ingredients': this.formBuilder.array([
         this.formBuilder.group({
-          ingredientName: [''],
-          ingredientStrength: [''],
-          ingredientStrengthUnit: ['']
+          name: [''],
+          strength: [''],
+          strengthUnit: ['']
         })
       ])
     });
@@ -274,16 +274,28 @@ export class NewProductComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+
+  stringifyGeneric(values: any[]) {
+    let generic = "";
+    values.forEach((item) => {
+      generic += item.name + " " + item.strength + " " + item.strengthUnit + "/ ";
+    });
+    return generic;
+  }
+
   create(valid, value) {
     if (valid) {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
         let service: any = <any>{};
         service.name = value.name;
+        this.productDetails.ingredients = [];
+        this.productDetails.ingredients = this.ingredientForm.controls['ingredients'].value;
+        if (value.genericName == undefined) {
+          value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
+        }
         value.productDetail = this.productDetails;
         console.log(value);
-
         this.productService.create(value).then(payload => {
-          console.log(value);
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
               item.services.push(service);
@@ -305,6 +317,8 @@ export class NewProductComponent implements OnInit {
             });
           });
           this.close_onClick();
+        }, error => {
+          console.log(error);
         });
       } else {
         console.log(value);
@@ -321,11 +335,13 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.productDetails = payload;
       this.frm_newProduct.controls['name'].setValue(payload.brand + " " + payload.drugName);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
+      this.initIngredientsForm();
+      this.setIngredientItem(payload.ingredients);
+      this.productDetails = payload;
       // this.manufacturers = [];
       // var manufacturerItem : any = <any>{};
       // manufacturerItem = {};
@@ -361,18 +377,36 @@ export class NewProductComponent implements OnInit {
 
   addIngredient() {
     const control = <FormArray>this.ingredientForm.controls['ingredients'];
-      control.push(this.ingredientItem());
-      
+    control.push(this.ingredientItem());
+
   }
 
   ingredientItem() {
     return this.formBuilder.group({
-      ingredientName: [''],
-      ingredientStrength: [''],
-      ingredientStrengthUnit: ['']
+      name: [''],
+      strength: [''],
+      strengthUnit: ['']
     });
   }
 
+  setIngredientItem(values: any[]) {
+    var control = <FormArray>this.ingredientForm.controls['ingredients'];
+
+    values.forEach((item) => {
+      control.push(
+        this.formBuilder.group({
+          name: [item.name],
+          strength: [item.strength],
+          strengthUnit: [item.strengthUnit]
+        }));
+    })
+  }
+
+  // day: ['', [<any>Validators.required]],
+  //       startTime: [this.now, [<any>Validators.required]],
+  //       endTime: [this.now, [<any>Validators.required]],
+  //       location: ['', [<any>Validators.required]],
+  //       readOnly: [false]
 
   removeIngredient(i: number) {
     const control = <FormArray>this.frm_newProduct.controls['ingredients'];

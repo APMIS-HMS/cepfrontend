@@ -62,5 +62,10 @@
                 </a>
             </div>
         </div>
+        <div *ngIf="prescriptionLists.length === 0">
+            <div class="row text-center">
+                <p>No data to display in table</p>
+            </div>
+        </div>
     </div>
 </section>

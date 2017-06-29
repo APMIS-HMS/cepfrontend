@@ -152,6 +152,11 @@
             <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i>
         </div>
     </div>
+    <div class="table-inner" *ngIf="prescriptions.length === 0">
+        <div class="table-data">
+            <p>No data to display in table</p>
+        </div>
+    </div>
 </div>
 <div class="row">
     <p class="total pull-right">Total Quantity: {{ totalItemQuantity }}</p>

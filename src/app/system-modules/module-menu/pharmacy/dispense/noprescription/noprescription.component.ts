@@ -152,14 +152,31 @@ export class NoprescriptionComponent implements OnInit {
 
 		this.prescriptions.forEach(element => {
 			let product = {};
+			console.log(element);
+			switch (element.client) {
+				case 'Individual':
+					prescription['lastName'] = element.lastName;
+					prescription['firstName'] = element.firstName;
+					prescription['phoneNumber'] = element.phoneNumber;
+					break;
+				case 'Corporate':
+					prescription['companyName'] = element.companyName;
+					prescription['companyPhone'] = element.companyPhone;
+					break;
+				case 'Internal':
+					prescription['departmentId'] = element.dept;
+					prescription['unitId'] = element.unit;
+					prescription['locationId'] = element.minorLocation;
+					break;
+			}
 			product['productId'] = element.productId;
 			product['batchNumber'] = element.batchNumber;
 			product['productName'] = element.productName;
 			product['cost'] = element.cost;
 			product['quantity'] = element.qty;
 			prescription['client'] = element.client;
-			prescription['employeeId'] = '';
-			//prescription['employeeId'] = this.employeeDetails.employeeDetails._id;
+			prescription['client'] = element.client;
+			prescription['employeeId'] = this.employeeDetails.employeeDetails._id;
 			prescription['totalQuantity'] = this.totalItemQuantity;
 			prescription['totalCost'] = this.totalItemPrice;
 			drugs.push(product);
@@ -174,17 +191,17 @@ export class NoprescriptionComponent implements OnInit {
 
 		console.log(payload);
 
-		// this._dispenseService.create(this.prescriptions)
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		this._facilityService.announceNotification({
-		// 			type: "Success",
-		// 			text: "Prescription has been sent!"
-		// 		});
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 	});
+		this._dispenseService.create(payload)
+			.then(res => {
+				console.log(res);
+				this._facilityService.announceNotification({
+					type: "Success",
+					text: "Prescription has been sent!"
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 
 	// Search for products in the product service.
