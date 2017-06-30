@@ -157,7 +157,7 @@
 </div>
 
 <div *ngIf="addVital" class="modal-overlay">
-    <app-add-vitals [selectedAppointment]="selectedCheckedInAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+    <app-add-vitals [patientId]="patientId" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
 </div>
 
 <div *ngIf="loadIndicatorVisible" class="div_loading">
