@@ -17,20 +17,20 @@
     margin-bottom: 0;
 }
 input, select{
-  border-bottom: solid 1px #626262;
-  width: 100%;
-  background: transparent;
+//   border-bottom: solid 1px #626262;
+//   width: 100%;
+//   background: transparent;
 }
 textarea{
-    border: 1px solid #626262;
-    width: 100%;
-    background: transparent;
-    border-radius: 10px;
-    margin-top: 10px;
-    height: 100px;
+    // border: 1px solid #626262;
+    // width: 100%;
+    // background: transparent;
+    // border-radius: 10px;
+    // margin-top: 10px;
+    // height: 100px;
 }
 input:focus, select:focus, textarea:focus{
-    border: #0099ed;
+    // border: #0099ed;
 }
 .mainfrmwrap{
     display: flex;

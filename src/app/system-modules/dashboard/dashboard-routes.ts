@@ -51,14 +51,14 @@ const appRoutes: Routes = [
                     SetupService.CanActivateViaAuthGuardService
                 ]
             },
-             {
-                 path: 'payment',
-                 loadChildren: '../module-menu/payment/payment.module#PaymentModule'
-             },
-             {
-                 path: 'wallet',
-                 loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
-             },
+            {
+                path: 'payment',
+                loadChildren: '../module-menu/payment/payment.module#PaymentModule'
+            },
+            {
+                path: 'wallet',
+                loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
+            },
             {
                 path: 'clinic',
                 loadChildren: '../module-menu/clinic/clinic.module#ClinicModule'
@@ -86,7 +86,12 @@ const appRoutes: Routes = [
             {
                 path: 'pharmacy',
                 loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
-            }
+            },
+            {
+                path: 'corporate',
+                loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
+                data: { preload: false },
+            },
         ]
     }
 ];

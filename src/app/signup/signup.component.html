@@ -16,10 +16,6 @@
                 <div class="cta-1" (click)="facilitySetup1_show()">Health Facility</div>
                 <div class="cta-1" (click)="corporateSignup_show()">Corporate Facility</div>
 
-
-                <md-select placeholder="Gender" [formControl]="gender">
-                    <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
                 <!--<div class="wrapLabel actionTxt">Already have an account? <span routerLink='' class="txtLink">Log In</span></div>-->
                 <div class="wrapLabel actionTxt">Already have an account? <span (click)="login_show()" class="txtLink">Log In</span></div>
             </div>
