@@ -29,8 +29,10 @@ export class FacilitypageModulespageComponent implements OnInit {
       data['systemModules'].subscribe((payload: any[]) => {
         this.systemModules = payload;
       });
-       data['facility'].subscribe((payload: any) => {
-        this.facilityModules = payload.facilityModules;
+      data['facility'].subscribe((payload: any) => {
+        if (payload.facilityModules !== undefined) {
+          this.facilityModules = payload.facilityModules;
+        }
       });
     });
   }

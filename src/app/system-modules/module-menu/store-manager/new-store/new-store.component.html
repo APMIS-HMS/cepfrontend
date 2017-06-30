@@ -1,74 +1,68 @@
 <div class="modal-baseWrap animated pulse">
 
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <legend class="modal_title">New Store</legend>
-  <div class="modal_mini_title">All Purpose Medical Information System</div>
-  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">New Store</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-  <form [formGroup]="frm_newStore" novalidate>
+    <form [formGroup]="frm_newStore" novalidate>
 
-    <div class="mainfrmwrap">
-      <div class="sec-1">
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frm_newStore.controls.name.valid || frm_newStore.controls.name.pristine">
-              Kindly supply the store name.
-            </small>
-          <span class="frm-label">Name</span>
-          <input type="text" formControlName="name" #name autocomplete="off">
-        </div>
+        <div class="mainfrmwrap">
+            <div class="sec-1">
+                <div class="frm-item-wrap">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Name" formControlName="name">
+                    </md-input-container>
+                </div>
 
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frm_newStore.controls.minorLocationId.valid || frm_newStore.controls.minorLocationId.pristine">
-              Kindly supply a location.
-            </small>
-          <span class="frm-label">Location</span>
-          <select formControlName="minorLocationId">
-					    <option  *ngFor="let minorLocation of minorLocations" value="{{minorLocation._id}}">{{minorLocation.name}}</option>
-            </select>
-        </div>
-        <div class="frm-item-wrap">
-          <!--<small class="alert-label" [hidden]="frm_newStore.controls.description.valid || frm_newStore.controls.description.pristine">
-              Kindly supply a brief description for this store.
-            </small>-->
-          <span class="frm-label">Description</span>
-          <textarea formControlName="description"></textarea>
-        </div>
-      </div>
-      <div class="sec-2">
-
-        <div class="frm-item-wrap">
-          <span class="frm-label">Product Type</span>
-          <div class="chk-group-wrap">
-            <div class="checkbox-wrap">
-              <div *ngFor="let productType of productTypes" class="check-item">
-                <dx-check-box (onValueChanged)="onValueChanged($event,productType)" [value]="productType.isChecked"></dx-check-box>
-                <span class="chk-label">{{productType.name}}</span>
-              </div>
+                <div class="frm-item-wrap">
+                    <md-select class="example-full-width" placeholder="Location" formControlName="minorLocationId">
+                        <md-option *ngFor="let minorLocation of minorLocations" [value]="minorLocation._id">{{minorLocation.name}}</md-option>
+                    </md-select>
+                </div>
+                <div class="frm-item-wrap">
+                    <!--<span class="frm-label">Description</span>
+                    <textarea formControlName="description"></textarea>-->
+                    <md-input-container class="example-full-width">
+                        <textarea formControlName="description" mdInput placeholder="Description"></textarea>
+                    </md-input-container>
+                </div>
             </div>
-          </div>
+            <div class="sec-2">
+
+                <div class="frm-item-wrap">
+                    <span class="frm-label">Product Type</span>
+                    <div class="chk-group-wrap">
+                        <div class="checkbox-wrap">
+                            <div *ngFor="let productType of productTypes" class="check-item">
+                                <dx-check-box (onValueChanged)="onValueChanged($event,productType)" [value]="productType.isChecked"></dx-check-box>
+                                <span class="chk-label">{{productType.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-wrap chkwrap">
+                    <div class="check-item">
+                        <dx-check-box formControlName="canDespense"></dx-check-box>
+                        <span class="chk-label">Dispense</span>
+                    </div>
+                    <div class="check-item">
+                        <dx-check-box formControlName="canReceivePurchaseOrder"></dx-check-box>
+                        <span class="chk-label">Recieve Purchase</span>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="checkbox-wrap chkwrap">
-          <div class="check-item">
-            <dx-check-box formControlName="canDespense" ></dx-check-box>
-            <span class="chk-label">Dispense</span>
-          </div>
-          <div class="check-item">
-            <dx-check-box formControlName="canReceivePurchaseOrder"></dx-check-box>
-            <span class="chk-label">Recieve Purchase</span>
-          </div>
+        <div (click)="create(frm_newStore.valid, frm_newStore.value)" class="cta-1">
+            {{createText}}
         </div>
 
-      </div>
-    </div>
-
-    <div (click)="create(frm_newStore.valid, frm_newStore.value)" class="cta-1">
-      {{createText}}
-    </div>
-
-  </form>
+    </form>
 
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-  <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
 </div>

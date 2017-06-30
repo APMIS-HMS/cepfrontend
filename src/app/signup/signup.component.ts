@@ -14,12 +14,6 @@ export class SignupComponent implements OnInit {
   pwdReset_on = false;
   login_on = false;
 
-  genders = [
-    { name: 'steak-0', _id: 'Steak' },
-    { name: 'pizza-1', _id: 'Pizza' },
-    { name: 'tacos-2', _id: 'Tacos' }
-  ];
-  gender: FormControl = new FormControl();
   constructor() { }
 
   ngOnInit() {
@@ -57,6 +51,7 @@ export class SignupComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.modal_on = false;
     this.personAccount_on = false;
+    this.login_on = false;
   }
   login_show() {
     this.login_on = true;
