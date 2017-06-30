@@ -37,6 +37,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   selectedProfession: Profession = <Profession>{};
   clinic: Location = <Location>{};
+  patientId: any = <any>{};
 
   isDoctor = false;
   counter = 0;
@@ -353,6 +354,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.slideTimeline = false;
   }
   goToPatientPage(appointment, append) {
+
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
@@ -376,6 +378,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
   showVital(appointment) {
+    this.patientId = appointment.patientId;
     this.addVital = true;
     this.selectedCheckedInAppointment = appointment;
   }

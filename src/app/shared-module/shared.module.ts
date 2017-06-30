@@ -35,7 +35,12 @@ import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
 // tslint:disable-next-line:max-line-length
 import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
-import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
+import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
+import { MaterialModule } from '../shared-common-modules/material-module';
+import {
+    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+    MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule
+} from '@angular/material';
 @NgModule({
     declarations: [
         AddPrescriptionComponent,
@@ -82,7 +87,16 @@ import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accou
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
-        SingUpAccountsSharedModule
+        SingUpAccountsSharedModule,
+        // MdNativeDateModule,
+        // MdDatepickerModule,
+        // MdButtonModule,
+        // MdCheckboxModule,
+        // MdProgressSpinnerModule,
+        // MdInputModule,
+        // MdOptionModule,
+        // MdSelectionModule,
+        // MdSelectModule
     ],
     imports: [
         CommonModule,
@@ -99,7 +113,17 @@ import {SingUpAccountsSharedModule } from '../shared-common-modules/signup-accou
         MomentModule,
         Ng2PaginationModule,
         InfiniteScrollModule,
-        ImageCropperModule
+        ImageCropperModule,
+        MaterialModule,
+        // MdNativeDateModule,
+        // MdDatepickerModule,
+        // MdButtonModule,
+        // MdCheckboxModule,
+        // MdProgressSpinnerModule,
+        // MdInputModule,
+        // MdOptionModule,
+        // MdSelectionModule,
+        // MdSelectModule
     ],
     providers: [StoreService]
 })
