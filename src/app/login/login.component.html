@@ -17,9 +17,9 @@
 
       <div class="frm-item-wrap">
         <md-input-container class="example-full-width">
-          <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock absolute" aria-hidden="true"></i>
+          <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
           <input type="password" mdInput md-error formControlName="password"  #showhideinput [(ngModel)]="input_password" placeholder="Password">
-          <a [hidden]="show" (click)="toggleShow($event)" class="absolute"><i class="fa fa-eye"></i></a>
+          <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
         </md-input-container>
       </div>
 

@@ -25,7 +25,7 @@
 
             <div class="frm-item-wrap">
                 <md-input-container class="example-full-width">
-                    <input mdInput md-error placeholder="Other Names" formControlName="othernames">
+                    <input mdInput placeholder="Other Names" formControlName="othernames">
                 </md-input-container>
             </div>
 
@@ -45,67 +45,57 @@
 
             <div class="frm-item-wrap">
                 <md-input-container class="example-full-width">
-                    <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock absolute" aria-hidden="true"></i>
-                    <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Confirm Password">
-                    <a [hidden]="show" (click)="toggleShow($event)" class="absolute"><i class="fa fa-eye"></i></a>
+                    <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
+                    <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Password">
+                    <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
                 </md-input-container>
             </div>
         </div>
 
         <div class="rhs">
+            
+            <div class="frm-item-wrap">
+                <md-select placeholder="Nationality"  formControlName="nationality" (change)="onNationalityChange($event.target.value)">
+                    <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
+            </div>
+            
+            <div class="frm-item-wrap">
+                <md-select placeholder="State"  formControlName="state">
+                    <md-option *ngFor="let item of selectedCountry?.states" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
+            </div>
 
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.nationality.valid || frmPerson.controls.nationality.pristine">
-            Kindly select an option from the drop down.
-          </small>
-          <select formControlName="nationality" (change)="onNationalityChange($event.target.value)">
-            <option  value="" disabled selected>Nationality</option>
-            <option *ngFor="let item of countries" value = "{{item._id}}">{{item.name}}</option>
-          </select>
+            <div class="frm-item-wrap">
+                <md-input-container class="example-full-width">
+                    <input mdInput md-error placeholder="Home Address" formControlName="address">
+                </md-input-container>
+            </div>
+
+            <div class="frm-item-wrap">
+                <md-input-container class="example-full-width">
+                    <input type="email" mdInput md-error placeholder="Email Address" formControlName="email">
+                </md-input-container>
+            </div>
+
+            <div class="frm-item-wrap">
+                <md-input-container class="example-full-width">
+                    <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
+                </md-input-container>
+            </div>
+
+            <div class="frm-item-wrap">
+                <md-input-container class="example-full-width">
+                    <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
+                    <input type="password" mdInput md-error formControlName="repassword" #showhideinput placeholder="Confirm Password">
+                    <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
+                </md-input-container>
+            </div>
+
         </div>
-
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.state.valid || frmPerson.controls.state.pristine">
-            Kindly select an option from the drop down.
-          </small>
-          <select formControlName="state">
-            <option  value="" disabled selected>State</option>
-            <option *ngFor="let item of selectedCountry?.states" value = "{{item._id}}">{{item.name}}</option>
-          </select>
-        </div>
-
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.address.valid || frmPerson.controls.address.pristine">
-            Kindly select an option from the drop down.
-          </small>
-          <input type="text" class="txt-input" placeholder="Home Address" formControlName="address"/>
-        </div>
-
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.email.valid || frmPerson.controls.email.pristine">
-            Wrong email format (minimum 5 characters).
-          </small>
-          <input class="txt-input" formControlName="email" type="email" placeholder="Email Address" autocomplete="off">
-        </div>
-
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.phone.valid || frmPerson.controls.phone.pristine">
-            Wrong phone number format.
-          </small>
-          <input class="txt-input" formControlName="phone" type="number" placeholder="Phone Number" autocomplete="off">
-        </div>
-
-        <div class="frm-item-wrap">
-          <small class="alert-label" [hidden]="frmPerson.controls.repassword.valid || frmPerson.controls.repassword.pristine">
-            this field is required, minimum of 6 and maximum of 20 characters.
-          </small>
-          <input class="txt-input" formControlName="repassword" type="password" placeholder="Confirm Password" autocomplete="off">
-        </div>
-
-      </div>
 
         <div class="clear"></div>
-
+        <!--<button md-raised-button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">Sign Up</button>-->
         <div (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
             Sign Up
         </div>

@@ -11,38 +11,27 @@
         <form [formGroup]="facilityForm1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1.controls.facilityname.valid || facilityForm1.controls.facilityname.pristine">
-						this is a required field (minimum 3 and max of 50 characters).
-					</small>
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="facilityname" placeholder="Company/Organisation Name" autocomplete="off">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Company Name" formControlName="facilityname">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1.controls.facilityemail.valid || facilityForm1.controls.facilityemail.pristine">
-						Wrong email format (minimum 5 characters).
-					</small>
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <input class="txt-input" formControlName="facilityemail" type="email" placeholder="Facility/Organisation Email" autocomplete="off">
+                    <md-input-container class="example-full-width">
+                        <input type="email" mdInput md-error placeholder="Company Email" formControlName="facilityemail">
+                    </md-input-container>
                 </div>
             </div>
 
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1.controls.facilitywebsite.valid || facilityForm1.controls.facilitywebsite.pristine">
-						Wrong website format (eg - www.yourdomain.com).
-					</small>
-                    <i class="fa fa-globe" aria-hidden="true"></i>
-                    <input class="txt-input" formControlName="facilitywebsite" type="url" placeholder="Official Website" autocomplete="off">
+                    <md-input-container class="example-full-width">
+                        <input type="url" mdInput md-error placeholder="Official Website" formControlName="facilitywebsite">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1.controls.facilitycountry.valid || facilityForm1.controls.facilitycountry.pristine">
-						this field is required.
-					</small>
-                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <select formControlName="facilitycountry">
-						<option value="" disabled selected>Select Country</option>
-						<option *ngFor="let item of countries" value={{item._id}}>{{item.name}}</option>
-					</select>
+                    <md-select placeholder="Select Country"  formControlName="facilitycountry">
+                        <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
             </div>
             <div class="clear"></div>
@@ -54,86 +43,57 @@
         <form [formGroup]="facilityForm1_1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitystate.valid || facilityForm1_1.controls.facilitystate.pristine">
-						this field is required.
-					</small>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <select *ngIf="stateAvailable" formControlName="facilitystate" (change)="onStateChange($event.target.value)">
-						<option  value="" disabled selected>State (Location)</option>
-						<option *ngFor="let state of selectedCountry?.states" [ngValue]="state">{{state.name}}</option>
-					</select>
-                    <input type="text" [hidden]="stateAvailable" formControlName="facilitystate" placeholder="Facility State (Location)." autocomplete="off">
+                    <md-select *ngIf="stateAvailable" placeholder="Facility State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.target.value)">
+                        <md-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</md-option>
+                    </md-select>
+                    <input [hidden]="stateAvailable" mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate">
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitycity.valid || facilityForm1_1.controls.facilitycity.pristine">
-						this field is required.
-					</small>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <select *ngIf="stateAvailable" formControlName="facilitycity">
-						<option  value="" disabled selected>Facility City (Location)</option>
-						<option *ngFor="let item of cities"  value = "{{item._id}}">{{item.name}}</option>
-					</select>
+                    <md-select placeholder="City (Location)" *ngIf="stateAvailable" formControlName="facilitycity">
+                        <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylga.valid || facilityForm1_1.controls.facilitylga.pristine">
-						this field is required.
-					</small>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <select *ngIf="stateAvailable" formControlName="facilitylga">
-						<option  value="" disabled selected>Local Government (Location)</option>
-						<option *ngFor="let item of lgas"  value = "{{item._id}}">{{item.name}}</option>
-					</select>
+                    <md-select placeholder="Local Government (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
+                        <md-option *ngFor="let item of lgas" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityaddress.valid || facilityForm1_1.controls.facilityaddress.pristine">
-						this field is required.
-					</small>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <input type="text" formControlName="facilityaddress" placeholder="Facility Address (Location)" autocomplete="off">
+                    <md-input-container>
+                        <input mdInput md-error placeholder="Facility Address (Location)" formControlName="facilityaddress">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylandmark.valid || facilityForm1_1.controls.facilitylandmark.pristine">
-						this field is required.
-					</small>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <input type="text" formControlName="facilitylandmark" placeholder="Major Landmark" autocomplete="off">
+                    <md-input-container>
+                        <input mdInput md-error placeholder="Major Landmark" formControlName="facilitylandmark">
+                    </md-input-container>
                 </div>
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.contactFName.valid || facilityForm1_1.controls.contactFName.pristine">
-						Contact First Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
-					</small>
-                    <i class="fa fa-user-md" aria-hidden="true"></i>
-                    <input type="text" formControlName="contactFName" placeholder="Contact Person (First Name)" autocomplete="off">
+                    <md-input-container>
+                        <input mdInput md-error placeholder="Contact Person (First Name)" formControlName="contactFName">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.contactLName.valid || facilityForm1_1.controls.contactLName.pristine">
-						Contact Last Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
-					</small>
-                    <i class="fa fa-user-md" aria-hidden="true"></i>
-                    <input type="text" formControlName="contactLName" placeholder="Contact Person (Last Name)" autocomplete="off">
+                    <md-input-container>
+                        <input mdInput md-error placeholder="Contact Person (Last Name)" formControlName="contactLName">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityphonNo.valid || facilityForm1_1.controls.facilityphonNo.pristine">
-						a contact number is required (minimum 5 characters).
-					</small>
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    <input type="tel" formControlName="facilityphonNo" placeholder="Contact Number" autocomplete="off">
+                    <md-input-container>
+                        <input type="tel" mdInput md-error placeholder="Contact Number" formControlName="facilityphonNo">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.password.valid || facilityForm1_1.controls.password.pristine">
-						This field is required (minimum 5 characters).
-					</small>
-                    <i class="fa fa-lock" aria-hidden="true"></i>
-                    <input type="password" formControlName="password" placeholder="Password" autocomplete="off">
+                    <md-input-container>
+                        <input type="password" mdInput md-error placeholder="Password" formControlName="password">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="facilityForm1_1.controls.repass.valid || facilityForm1_1.controls.repass.pristine">
-						This field is required (minimum 5 characters).
-					</small>
-                    <i class="fa fa-lock" aria-hidden="true"></i>
-                    <input type="password" formControlName="repass" placeholder="Confirm Password" autocomplete="off">
+                    <md-input-container>
+                        <input type="password" mdInput md-error placeholder="Confirm Password" formControlName="repass">
+                    </md-input-container>
                 </div>
             </div>
             <div class="clear"></div>
@@ -145,11 +105,9 @@
     <div *ngIf="sg2_show" class="f_sg2 animated zoomIn">
         <form [formGroup]="frm_numberVerifier" novalidate>
             <div class="frm-singleItem-wrap">
-                <small class="alert-label" [hidden]="frm_numberVerifier.controls.txt_numberVerifier.valid || frm_numberVerifier.controls.txt_numberVerifier.pristine">
-					Kindly supply the token texted to your phone.
-				</small>
-                <i class="fa fa-mobile" aria-hidden="true"></i>
-                <input type="text" formControlName="txt_numberVerifier" [(ngModel)]="InputedToken" placeholder="Supply Token">
+                <md-input-container>
+                    <input mdInput md-error [(ngModel)]="InputedToken" placeholder="Supply Token" formControlName="txt_numberVerifier">
+                </md-input-container>
             </div>
             <div class="noToken_wrap">
                 <div class="noToken_txt1">...Didn't recieve a token on <span>{{input_facilityphonNo}}</span>?</div>
