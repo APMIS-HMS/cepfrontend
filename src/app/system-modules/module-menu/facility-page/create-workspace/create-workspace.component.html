@@ -14,9 +14,9 @@
 					<option value="" disabled selected>Department</option>
 					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
 				    </select>
-                    <!--<md-select placeholder="Department">
+                    <!--<md-select>
                         <md-option value="" disabled selected>Department</md-option>
-                        <md-option *ngFor="let department of departments" [value]="department">
+                        <md-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">
                         {{department.name}}
                         </md-option>
                     </md-select>-->
