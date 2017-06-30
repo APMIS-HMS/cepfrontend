@@ -9,7 +9,7 @@
     height: 30px;
 }
 .secondary-tab {
-    z-index: 1500;
+    z-index: 10;
 }
 .inner-wrap-sec{
     height: 45px;
@@ -76,7 +76,7 @@
     font-size: 14px;
     width: 100%;
     border-radius: 0;
-    z-index: 1499;
+    z-index: 9;
 }
 .menuGroup{
     margin: 20px;
@@ -155,7 +155,7 @@
 .slideContentWrapper{
     position: relative;
     width: 100%;
-    z-index: 4000;
+    z-index: 9;
 }
 .notification-sect{
     position: absolute;
