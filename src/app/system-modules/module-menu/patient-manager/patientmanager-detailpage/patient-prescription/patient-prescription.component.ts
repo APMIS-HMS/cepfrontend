@@ -18,6 +18,7 @@ import 'devextreme-intl';
 })
 export class PatientPrescriptionComponent implements OnInit {
     @Input() employeeDetails: any;
+	@Input() patientDetails: any;
     @Input() selectedAppointment: Appointment = <Appointment>{};
     @Output() prescriptionItems: PrescriptionItem[] = [];
     facility: Facility = <Facility>{};
@@ -68,17 +69,12 @@ export class PatientPrescriptionComponent implements OnInit {
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
-        this._route.params.subscribe(params => {
-            this.patientId = params['id'];
-        });
-
         // Remove this when you are done
         this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
         this.durationUnits = DurationUnits;
         this.selectedValue = DurationUnits[0].name;
         this.priorityValue = 'Normal';
-        //this.getAllDrugs();
         this.getAllPriorities();
         this.getAllRoutes();
         this.getAllFrequencies();
@@ -131,10 +127,10 @@ export class PatientPrescriptionComponent implements OnInit {
 
                 let prescription = <Prescription>{
                     facilityId: this.facility._id,
-                    employeeId: this.employeeDetails.employeeDetails._id,
+                    employeeId: this.employeeDetails._id,
                     clinicId: this.selectedAppointment.clinicId,
                     priorityId: "",
-                    patientId: this.patientId,
+                    patientId: this.patientDetails._id,
                     prescriptionItems: this.prescriptionItems,
                     isAuthorised: true
                 };

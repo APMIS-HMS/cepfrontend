@@ -87,8 +87,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 #action {
-    width:20%;
+    width: 20%;
 }
 
 #long-text:hover {
@@ -168,12 +169,16 @@ a:hover {
     z-index: 99999;
     background: #f5f5f5;
 }
-.textarea, .dx-date-box {
+
+.textarea,
+.dx-date-box {
     width: 100%;
 }
+
 thead {
     background: #cacaca;
 }
+
 #th-color {
     background: #bebebe;
 }
@@ -264,28 +269,6 @@ select {
         font-size: 14px;
         font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Verdana, sans-serif;
         line-height: 1.35715;
-        // .cu-popover-arrow {
-        //     top: -8px;
-        //     right: auto;
-        //     bottom: auto;
-        //     left: 50%;
-        //     width: 15px;
-        //     height: 15px;
-        //     position: absolute;
-        //     z-index: 2000;
-        //     overflow: hidden;
-        //     -webkit-transform: rotate(45deg);
-        //     transform: rotate(45deg);
-        //     &::after {
-        //         border: 1px solid #ddd;
-        //         position: absolute;
-        //         display: block;
-        //         width: 15px;
-        //         height: 15px;
-        //         overflow: hidden;
-        //         content: " ";
-        //     }
-        // }
         .cu-header {
             padding: 10px 20px;
         }
@@ -366,9 +349,11 @@ select {
 .survery .btn {
     padding: 2px 12px;
 }
+
 label:hover {
     cursor: pointer;
 }
+
 .cta-1 {
     color: #fff !important;
 }
@@ -379,12 +364,15 @@ label:hover {
     margin-right: 15px;
     background: #f5f5f5;
 }
+
 .dx-checkbox-container {
     width: auto !important;
 }
+
 .dx-checkbox-text {
     padding: 0 !important;
 }
+
 .fa {
     margin: 0 6px !important;
 }

@@ -16,7 +16,7 @@
             <div class="text-center">
                 <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
                 <label for="isExternal-{{i}}"><input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked);" />External?</label>
-                <button *ngIf="!isExternal && (billShowId == i)" (click)="toggleBill(i);" class="btn btn-default">Bill</button>
+                <button *ngIf="!isExternal && (billShowId == i)" (click)="toggleBill(i, prescription);" class="btn btn-default">Bill</button>
             </div>
         </div>
     </div>
@@ -24,9 +24,12 @@
     <div *ngIf="billShow && (billShowId == i)" class="inner-container">
         <div class="row" style="width:100%">
             <div class="col-sm-4 col-md-4">
-                <label>Drugs</label>
+                <md-select placeholder="Drug" [(ngModel)]="myState">
+                    <md-option *ngFor="let drug of drugs" [value]="drug.code">{{ drug.name }}</md-option>
+                </md-select>
+                <!--<label>Drugs</label>
                 <dx-lookup [items]="drugs" [value]="drugs.name" displayExpr="name" valueExpr="_id">
-                </dx-lookup>
+                </dx-lookup>-->
             </div>
             <div class="col-sm-3 col-md-3">
                 <label>Quantity</label>
