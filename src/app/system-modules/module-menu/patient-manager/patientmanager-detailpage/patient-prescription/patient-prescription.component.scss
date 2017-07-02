@@ -23,9 +23,19 @@
 }
 
 .input-bg {
-    background: #eeeeee;
-    padding: 3px;
-    border-radius: 4px;
+    //background: #eeeeee;
+    //padding: 3px;
+    //border-radius: 4px;
+    .input-group {
+        md-input-container {
+            float: left;
+            width: 50%;
+        }
+        .input-group-btn {
+            float: left;
+            width: 50%;
+        }
+    }
 }
 
 .dropdown-toggle {
@@ -233,30 +243,44 @@ select {
     height: 30px !important;
 }
 
+.mat-input-container {
+    width: 100%;
+}
+
+.mat-select {
+    margin-top: 5px;
+}
+
+// md-select,
+// md-input-container input {
+//     border: 1px solid #ccc;
+// }
 .cu-search-box {
     position: relative;
     min-width: 100px;
     width: auto;
+    margin-top: -20px;
     .cu-search {
         //background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-        background-position: 10px 12px;
+        //background-position: 10px 12px;
         /* Position the search icon */
-        background-repeat: no-repeat;
+        //background-repeat: no-repeat;
         /* Do not repeat the icon image */
         width: 100%;
         /* Full-width */
         /* Increase font-size */
-        padding: 12px 11px;
+        //padding: 12px 11px;
         /* Add some padding */
-        border: 1px solid #ddd;
+        //border: 1px solid #ddd;
         /* Add a grey border */
-        margin-bottom: 12px;
+        //margin-bottom: 12px;
         /* Add some space below the input */
     }
     .cu-popup-wrapper {
         position: absolute;
         max-height: 736px;
         width: 100%;
+        margin-top: 20px;
         height: auto;
         z-index: 1501;
         top: 35px;

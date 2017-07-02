@@ -5,7 +5,7 @@
     <div class="pres-col">Refill Count</div>
     <div class="pres-col" id="action-long">Action</div>
 </div>
-<div *ngFor="let prescription of prescriptionItems; let i = index;">
+<div *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;">
     <div class="wrap-tr">
         <div class="pres-data" id="long-text">
             {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}
@@ -15,69 +15,56 @@
         <div class="pres-data padding" id="action-long">
             <div class="text-center">
                 <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
-                <label for="isExternal-{{i}}"><input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked);" />External?</label>
-                <button *ngIf="!isExternal && (billShowId == i)" (click)="toggleBill(i, prescription);" class="btn btn-default">Bill</button>
+                <label *ngIf="!prescription.isBilled" for="isExternal-{{i}}">
+                    <input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked, prescription);" />External?
+                </label>
+                <button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
+                    <span *ngIf="!prescription.isBilled">Bill</span>
+                    <span *ngIf="prescription.isBilled" style="color: #fff;">Billed <i class="fa fa-check"></i></span>
+                </button>
             </div>
         </div>
     </div>
     <!--inner container onclick-->
-    <div *ngIf="billShow && (billShowId == i)" class="inner-container">
-        <div class="row" style="width:100%">
-            <div class="col-sm-4 col-md-4">
-                <md-select placeholder="Drug" [(ngModel)]="myState">
-                    <md-option *ngFor="let drug of drugs" [value]="drug.code">{{ drug.name }}</md-option>
-                </md-select>
-                <!--<label>Drugs</label>
-                <dx-lookup [items]="drugs" [value]="drugs.name" displayExpr="name" valueExpr="_id">
-                </dx-lookup>-->
-            </div>
-            <div class="col-sm-3 col-md-3">
-                <label>Quantity</label>
-                <dx-number-box [value]="0" [showSpinButtons]="true" [showClearButton]="true"></dx-number-box>
-                <!--<div class="input-bg cacaca">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="input" required>
-                        <div class="input-group-btn">
+    <!--<div *ngIf="billShow && (billShowId == i)" class="inner-container" [formGroup]="addBillForm">
+        <div class="row" style="width:100%" formArrayName="bill">
+            <div [formGroupName]="j" *ngIf="j == i">
+                <div class="col-sm-4 col-md-4">
+                    <md-select formControlName="drug" placeholder="Drug">
+                        <md-option *ngFor="let drug of drugs" [(value)]="drug._id">{{ drug.name }}</md-option>
+                    </md-select>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <md-input-container>
+                        <input mdInput formControlName="qty" type="number" placeholder="Quantity">
+                    </md-input-container>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="center">
+                        <div class="qs">
+                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                <li class="workspace-listItem">
+                                    <ng-container>
+                                        <span>south weste</span>
+                                    </ng-container>
+                                </li>
+                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                            </ul>
+                            <a><span class="badge">5</span> Stores </a>
                         </div>
                     </div>
-                </div>-->
-                <!--<div class="input-bg cacaca">
-					<div class="input-group">
-						<input type="text" name="quantity" class="form-control" aria-label="...">
-						<div class="input-group-btn">
-							<i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-							<select>
-								<option>Cards</option>
-							</select>
-						</div>
-					</div>
-				</div>-->
-            </div>
-            <div class="col-sm-3 col-md-3">
-                <div class="center">
-                    <div class="qs">
-                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
-                            <li class="workspace-listItem">
-                                <ng-container>
-                                    <span>south weste</span>
-                                </ng-container>
-                            </li>
-                            <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                        </ul>
-                        <a><span class="badge">5</span> Stores </a>
-                    </div>
                 </div>
-            </div>
-            <div class="col-sm-1 col-ms-1">
-                <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
-            </div>
-            <div class="col-sm-1 col-md-1">
-                <div class="text-amount puul-right">
-                    <button class="btn btn-default save-btn">Save</button>
+                <div class="col-sm-1 col-ms-1">
+                    <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <div class="text-amount puul-right">
+                        <button class="btn btn-default save-btn" (click)="onClickSaveCost(i, j);">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 <div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0">
     <div class="pres-data" style="width: 100%">No data to display in table</div>
@@ -85,7 +72,9 @@
 <div class="row">
     <div class="col-sm-12 col-md-12 padding-10px">
         <div class="col-sm-6 pull-right">
-            <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
+            <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">&#x20A6; 200</span></p>
         </div>
     </div>
 </div>
+
+<app-bill-prescription *ngIf="billShow" [prescriptionData]="prescriptionData"></app-bill-prescription>
