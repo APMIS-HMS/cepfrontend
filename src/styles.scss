@@ -369,7 +369,17 @@ select {
 
 .frm-item-wrap {
     position: relative;
-    padding-bottom: 35px;
+    // padding-bottom: 35px;
+}
+.mat-select {
+    padding: 1.29688em 0;
+    width: 90%;
+}
+.toggle-pass {
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    cursor: pointer;
 }
 
 .frm-item-wrap small,
