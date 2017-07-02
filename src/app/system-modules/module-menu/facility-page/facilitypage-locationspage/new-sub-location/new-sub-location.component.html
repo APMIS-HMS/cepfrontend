@@ -11,43 +11,61 @@
     <form [formGroup]="frmNewSubLoc" novalidate>
 
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocName.valid || frmNewSubLoc.controls.sublocName.pristine">
+        <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocName.valid || frmNewSubLoc.controls.sublocName.pristine">
             this is a required field (minimum 3 and max of 50 characters).
           </small>
         <i class="fa fa-building-o" aria-hidden="true"></i>
-        <input type="text" formControlName="sublocName" placeholder="Location Name" autocomplete="off">
+        <input type="text" formControlName="sublocName" placeholder="Location Name" autocomplete="off">-->
+         <i class="fa fa-building-o" aria-hidden="true"></i>
+        <md-input-container class="example-full-width">
+          <input mdInput formControlName="sublocName" placeholder="Location Name" autocomplete="off">
+        </md-input-container>
       </div>
 
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocAlias.valid || frmNewSubLoc.controls.sublocAlias.pristine">
+        <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocAlias.valid || frmNewSubLoc.controls.sublocAlias.pristine">
             A minimum of 3 characters required.
-          </small>
+          </small>-->
         <i class="fa fa-circle-o" aria-hidden="true"></i>
-        <input type="text" formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">
+        <!--<input type="text" formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">-->
+        <md-input-container class="example-full-width">
+          <input mdInput formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">
+        </md-input-container>
       </div>
 
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocParent.valid || frmNewSubLoc.controls.sublocParent.pristine">
+        <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocParent.valid || frmNewSubLoc.controls.sublocParent.pristine">
             this field is required.
-          </small>
+          </small>-->
         <i class="fa fa-object-group" aria-hidden="true"></i>
-        <select formControlName="sublocParent">
+        <!--<select formControlName="sublocParent">
             <option  value="" disabled selected>Parent Location</option>
             <option *ngFor="let item of locations"  value = "{{item?._id}}">{{item?.name}}</option>
-          </select>
+          </select>-->
+           <md-select formControlName="sublocParent">
+             <md-option  value="" disabled selected>Parent Location</md-option>
+              <md-option *ngFor="let item of locations" [value] = "item?._id">
+                {{item?.name}}
+              </md-option>
+            </md-select>
       </div>
 
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocDesc.valid || frmNewSubLoc.controls.sublocDesc.pristine">
+        <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocDesc.valid || frmNewSubLoc.controls.sublocDesc.pristine">
             This is a required field (minimum 10 characters).
           </small>
-        <textarea class="txt-input modal-textarea" formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>
+        <textarea class="txt-input modal-textarea" formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>-->
+         <md-input-container class="example-full-width">
+          <textarea mdInput formControlName="sublocDesc"  placeholder="Description" autocomplete="off"></textarea>
+        </md-input-container>
       </div>
 
-      <div (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" class="cta-1">
+      <!--<div (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" class="cta-1">
         CREATE CHILD LOCATION
+      </div>-->
+      <div class="example-full-width" id="example-full-width">
+          <button (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" md-raised-button>Raised button</button>
       </div>
-
     </form>
   </div>
 

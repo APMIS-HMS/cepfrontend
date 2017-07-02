@@ -58,7 +58,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
         return this.corporateFacilityService.get(auth.data.corporateOrganisationId, {}).then(single => {
           this.locker.setObject('selectedFacility', single);
           this.locker.setObject('isCorporate', true);
-          this.router.navigate(['/modules/corporate']);
+          this.router.navigate(['/dashboard/corporate']);
           return Observable.of(null);
         });
       }

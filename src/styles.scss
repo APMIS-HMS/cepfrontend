@@ -29,19 +29,12 @@ select {
     width: 245px;
 }
 
-textarea {
-    width: 90%;
-    height: 120px;
-    outline: 0;
-    color: #37474F;
-}
-
-.modal-textarea {
-    background: transparent;
-    border-radius: 17px;
-    padding: 10px;
-    border: 1px solid #9E9E9E;
-}
+// .modal-textarea {
+//     background: transparent;
+//     border-radius: 17px;
+//     padding: 10px;
+//     border: 1px solid #9E9E9E;
+// }
 
 .lhs {
     float: left;
@@ -368,7 +361,7 @@ textarea {
 .modal-overlay {
     position: absolute;
     top: 0px;
-    z-index: 1700;
+    z-index: 10;
     width: 100%;
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
@@ -376,7 +369,17 @@ textarea {
 
 .frm-item-wrap {
     position: relative;
-    padding-bottom: 35px;
+    // padding-bottom: 35px;
+}
+.mat-select {
+    padding: 1.29688em 0;
+    width: 90%;
+}
+.toggle-pass {
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    cursor: pointer;
 }
 
 .frm-item-wrap small,
