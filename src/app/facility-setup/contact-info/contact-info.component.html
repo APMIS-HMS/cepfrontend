@@ -5,7 +5,7 @@
 
     <div class="lhs">
       <div class="frm-item-wrap">
-          <md-select *ngIf="stateAvailable" placeholder="State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.target.value)">
+          <md-select *ngIf="stateAvailable" placeholder="State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.value)">
               <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
           </md-select>
           <!--<md-input-container [hidden]="stateAvailable">

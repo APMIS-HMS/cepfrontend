@@ -100,7 +100,7 @@
             <option  value="" disabled selected>Nationality</option>
             <option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
           </select>-->
-                    <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.target.value)">
+                    <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
                         <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -114,7 +114,7 @@
             <option  value="" disabled selected>State of Origin</option>
             <option *ngFor="let item of states"  [ngValue]="item">{{item.name}}</option>
           </select>-->
-                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.target.value)">
+                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
                         <md-option *ngFor="let item of states" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -128,7 +128,7 @@
             <option  value="" disabled selected>LGA</option>
             <option *ngFor="let item of lgs"  value="{{item._id}}">{{item.name}}</option>
           </select>-->
-                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.target.value)">
+                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
                         <md-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -183,7 +183,7 @@
             <option  value="" disabled selected>Marital Status</option>
             <option *ngFor="let item of maritalStatuses"  value="{{item._id}}">{{item.name}}</option>
           </select>-->
-                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.target.value)">
+                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
                         <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -348,7 +348,7 @@
               <option  value="" disabled selected>Relationship</option>
               <option  *ngFor="let item of relationships"  value="{{item._id}}">{{item.name}}</option>
 </select>-->
-                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.target.value)">
+                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
                         <md-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
 
@@ -386,7 +386,7 @@
               <option  value="" disabled selected>Asign Department</option>
               <option *ngFor="let item of departments"  value="{{item._id}}">{{item.name}}</option>
             </select>-->
-                    <md-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.target.value)">
+                    <md-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
                         <md-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -400,7 +400,7 @@
               <option  value="" disabled selected>Asign Unit</option>
               <option *ngFor="let item of units"  value="{{item._id}}">{{item.name}}</option>
             </select>-->
-                    <md-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.target.value)">
+                    <md-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
                         <md-option *ngFor="let item of units" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -414,7 +414,7 @@
               <option  value="" disabled selected>Asign Work Location</option>
               <option *ngFor="let item of minorLocations"  value="{{item._id}}">{{item.name}}</option>
             </select>-->
-                    <md-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.target.value)">
+                    <md-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
                         <md-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -428,7 +428,7 @@
               <option  value="" disabled selected>Job Title</option>
               <option *ngFor="let item of professions"  [ngValue]="item">{{item.name}}</option>
             </select>-->
-                    <md-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.target.value)">
+                    <md-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
                         <md-option *ngFor="let item of professions" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -446,7 +446,7 @@
               <option *ngFor="let item of cadres"  value="{{item._id}}">{{item.name}}</option>
             </select>-->
 
-                    <md-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.target.value)">
+                    <md-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
                         <md-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
