@@ -11,36 +11,23 @@
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.name.valid || frm_newProduct.controls.name.pristine">
-                        Kindly type something in the field.
-                    </small>
-                    <label>Name(Product)</label>
-                    <input formControlName="name" type="text" name="" value="">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Name(Product)" formControlName="name">
+                    </md-input-container>
                     <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
                         <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                     </div>
-                    <!--<dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
-                    </dx-lookup>-->
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.productTypeId.valid || frm_newProduct.controls.productTypeId.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Product Type</label>
-                    <select formControlName="productTypeId">
-                        <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
-                    </select>
+                    <md-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
+                        <md-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.presentation.valid || frm_newProduct.controls.presentation.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Presentation</label>
-                    <!--<dx-lookup [dataSource]="presentations" formControlName="presentationId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
-                        displayExpr="name" valueExpr="_id">
-                    </dx-lookup>-->
-                    <input formControlName="presentation" type="text" name="" value="">
-                    <span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Presentation" formControlName="presentation">
+                    </md-input-container>
+                    <!--<span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
                 </div>
                 <!--<div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
@@ -52,41 +39,29 @@
                     </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
                 </div>-->
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.manufacturer.valid || frm_newProduct.controls.manufacturer.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Manufacturer</label>
-                    <!--<select formControlName="manufacturerId">
-                        <option  *ngFor="let manufacturer of manufacturers" value="{{manufacturer._id}}">{{manufacturer.name}}</option>
-                    </select>-->
-                    <input formControlName="manufacturer" type="text" name="" value="">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Manufacturer" formControlName="manufacturer">
+                    </md-input-container>
                     <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
                 </div>
 
             </div>
             <div class="sec-2">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.categoryId.valid || frm_newProduct.controls.categoryId.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Service Category</label>
-                    <select formControlName="categoryId">
-                        <option *ngFor="let category of categories" value="{{category._id}}">{{category.name}}</option>
-                    </select>
+                    <md-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
+                        <md-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</md-option>
+                    </md-select>
+
                 </div>
                 <div class="frm-item-wrap">
-                    <!--<small class="alert-label" [hidden]="frm_newProduct.controls.packLabel.valid || frm_newProduct.controls.packLabel.pristine">
-                        Kindly type something in the field.
-                    </small>-->
-                    <label>Pack Label</label>
-                    <input formControlName="packLabel" type="text" name="">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Pack Label" formControlName="packLabel">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <!--<small class="alert-label" [hidden]="frm_newProduct.controls.packSize.valid || frm_newProduct.controls.packSize.pristine">
-                        Kindly type something in the field.
-                    </small>-->
-                    <label>Pack Size</label>
-                    <input formControlName="packSize" type="number" name="">
+                    <md-input-container class="example-full-width">
+                        <input type="number" mdInput md-error placeholder="Pack Size" formControlName="packSize">
+                    </md-input-container>
                 </div>
                 <!--<div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
@@ -120,25 +95,25 @@
             </div>
             <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
                 <div formArrayName="ingredients">
-                    <div class="frmArr-wrap" *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
+                    <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls['ingredients'].controls > 1" (click)="removeIngredient(i)"></span>
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
-                                <!--<small class="alert-label" [hidden]="ingredient.controls['ingredientName'].valid || ingredient.controls['ingridentName'].pristine">
-                            Kindly type something in the field.
-                        </small>-->
-                                <label>Name</label>
-                                <input formControlName="name" type="text">
+                                <md-input-container class="example-full-width">
+                                    <input mdInput md-error placeholder="Name" formControlName="name">
+                                </md-input-container>
                             </div>
                             <div class="frm-item-wrap">
-                                <label>Strength</label>
-                                <input formControlName="strength" type="number">
+                                <md-input-container class="example-full-width">
+                                    <input type="number" mdInput md-error placeholder="Strength" formControlName="strength">
+                                </md-input-container>
                             </div>
                             <div class="frm-item-wrap">
-                                <label>Strength Unit</label>
-                                <input formControlName="strengthUnit" type="text">
+                                <md-input-container class="example-full-width">
+                                    <input type="number" mdInput md-error placeholder="Strength Unit" formControlName="strengthUnit">
+                                </md-input-container>
                             </div>
                         </div>
                     </div>
