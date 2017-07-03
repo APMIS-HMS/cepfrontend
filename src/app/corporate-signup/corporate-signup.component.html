@@ -86,13 +86,17 @@
                     </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input type="password" mdInput md-error placeholder="Password" formControlName="password">
+                    <md-input-container class="example-full-width">
+                        <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
+                        <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Password">
+                        <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
                     </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input type="password" mdInput md-error placeholder="Confirm Password" formControlName="repass">
+                    <md-input-container class="example-full-width">
+                        <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
+                        <input type="password" mdInput md-error formControlName="repass" #showhideinput placeholder="Confirm Password">
+                        <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
                     </md-input-container>
                 </div>
             </div>

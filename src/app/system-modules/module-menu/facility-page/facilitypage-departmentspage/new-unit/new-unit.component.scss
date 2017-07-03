@@ -20,6 +20,9 @@
     padding: 3px;
     margin-bottom: 12px;
 }
+input, select {
+    border: none;
+}
 .mainErr {
     width: 97%;
 }
@@ -28,4 +31,13 @@
 }
 .trash:hover{
  cursor:pointer;
+}
+.mat-raised-button {
+    max-width: 200px;
+    text-align: center;
+    background: #153d70;
+    color: #fff;
+}
+#example-full-width{
+    text-align: center;
 }

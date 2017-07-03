@@ -13,7 +13,10 @@
       <div class="lhs">Unit Name</div>
       <div class="rhs">
         <div [hidden]="unitEditNameIcoShow" class="lhs"> {{unit.name}} </div>
-        <input *ngIf="unitEditNameIcoShow" class="edit-control lhs" type="text" value="{{unit.name}}" [formControl]="unitNameEdit">
+        <!--<input *ngIf="unitEditNameIcoShow" class="edit-control lhs" type="text" value="{{unit.name}}" [formControl]="unitNameEdit">-->
+        <md-input-container *ngIf="unitEditNameIcoShow"  class="example-full-width">
+            <input mdInput  value="{{unit.name}}" [formControl]="unitNameEdit">
+        </md-input-container>
         <i [hidden]="unitEditNameIcoShow" (click)="unitEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
         <i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
         <div class="clear"></div>
@@ -27,7 +30,10 @@
       <div class="lhs">Short Name</div>
       <div class="rhs">
         <div [hidden]="unitEditShortNameIcoShow" class="lhs"> {{unit.shortName}} </div>
-        <input *ngIf="unitEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{unit.shortName}}" [formControl]="unitshortNameEdit">
+        <!--<input *ngIf="unitEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{unit.shortName}}" [formControl]="unitshortNameEdit">-->
+        <md-input-container *ngIf="unitEditShortNameIcoShow"  class="example-full-width">
+            <input mdInput  value="{{unit.shortName}}" [formControl]="unitshortNameEdit">
+        </md-input-container>
         <i [hidden]="unitEditShortNameIcoShow" (click)="unitEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
         <i *ngIf="unitEditShortNameIcoShow" (click)="unitEditShortNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
         <div class="clear"></div>
@@ -42,7 +48,10 @@
     <div class="lhs">Describtion</div>
     <div class="rhs">
       <div [hidden]="unitEditDescIcoShow" class="lhs"> {{unit.description}} </div>
-      <textarea *ngIf="unitEditDescIcoShow" class="edit-control lhs" value="{{unit.description}}" [formControl]="unitDescEdit"></textarea>
+      <!--<textarea *ngIf="unitEditDescIcoShow" class="edit-control lhs" value="{{unit.description}}" [formControl]="unitDescEdit"></textarea>-->
+      <md-input-container *ngIf="unitEditDescIcoShow" class="example-full-width">
+        <textarea mdInput value="{{unit.description}}" [formControl]="unitDescEdit"></textarea>
+      </md-input-container>
       <i [hidden]="unitEditDescIcoShow" (click)="unitEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
       <i *ngIf="unitEditDescIcoShow" (click)="unitEditDescSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
       <div class="clear"></div>
@@ -58,22 +67,28 @@
       <div class="clinicsWrap">
         <div class="clinicWrap">
           <div [hidden]="unitEditClinicIcoShow" class="lhs"> Authopeadic Clinic </div>
-          <dx-lookup
+          <!--<dx-lookup
                 class="edit-control lhs"
                 *ngIf="unitEditClinicIcoShow"
                 [showPopupTitle]="false">
-            </dx-lookup>
+            </dx-lookup>-->
+            <md-select *ngIf="unitEditClinicIcoShow">
+              <md-option></md-option>
+            </md-select>
           <i [hidden]="unitEditClinicIcoShow" (click)="unitEditClinicToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
           <i *ngIf="unitEditClinicIcoShow" (click)="unitEditClinicSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
           <div class="clear"></div>
         </div>
         <div class="clinicWrap">
           <div [hidden]="unitEditClinicIcoShow2" class="lhs"> Authopeadic Clinic </div>
-          <dx-lookup
+          <!--<dx-lookup
                 class="edit-control lhs"
                 *ngIf="unitEditClinicIcoShow2"
                 [showPopupTitle]="false">
-            </dx-lookup>
+            </dx-lookup>-->
+            <md-select *ngIf="unitEditClinicIcoShow">
+              <md-option></md-option>
+            </md-select>
           <i [hidden]="unitEditClinicIcoShow2" (click)="unitEditClinicToggle2()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
           <i *ngIf="unitEditClinicIcoShow2" (click)="unitEditClinicSubmit2()" class="done-ico fa fa-check" aria-hidden="true"></i>
           <div class="clear"></div>
