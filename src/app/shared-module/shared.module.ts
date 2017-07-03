@@ -35,6 +35,7 @@ import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
 // tslint:disable-next-line:max-line-length
 import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
+import { BillPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/bill-prescription/bill-prescription.component';
 import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from '../shared-common-modules/material-module';
 import {
@@ -43,6 +44,7 @@ import {
 } from '@angular/material';
 @NgModule({
     declarations: [
+        BillPrescriptionComponent,
         AddPrescriptionComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,
@@ -59,6 +61,7 @@ import {
         CreateWorkspaceComponent
     ],
     exports: [
+        BillPrescriptionComponent,
         AddPrescriptionComponent,
         LogoUpdateComponent,
         ImageUpdateComponent,

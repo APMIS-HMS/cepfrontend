@@ -173,11 +173,11 @@ export class RequisitionComponent implements OnInit {
     });
   }
   onProductCheckChange(event, value) {
-    value.checked = event.value;
+    value.checked = event.checked;
 
     // let storeId = this.frm_purchaseOrder.controls['store'].value;
 
-    if (event.value === true) {
+    if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
         (<FormArray>this.productTableForm.controls['productTableArray'])
           .push(
@@ -217,7 +217,7 @@ export class RequisitionComponent implements OnInit {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
-          this.onProductCheckChange({ value: false }, value);
+          this.onProductCheckChange({ checked: false }, value);
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
           if (count === 1) {
             // this.addNewProductTables();

@@ -73,16 +73,13 @@
 
 <div class="row margin-top-bottom">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="btn bnt-default"> Save </button>
+        <button class="btn bnt-default" (click)="onClickSavePrescription();"> Save </button>
     </div>
 </div>
 <div class="sec-border">
     <div class="table-head">
         <div class="table-head-inner-content" id="drugs">
             <p>Drugs</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Client</p>
         </div>
         <div class="table-head-inner-content" id="qt">
             <p>Qty</p>
@@ -96,36 +93,22 @@
     </div>
     <div class="table-inner" *ngFor="let prescription of prescriptions">
         <div class="table-data drugs">
-            <p>{{ prescription.drug }}</p>
-        </div>
-        <div class="table-data batch">
-            {{ prescription.client }}
+            <p>{{ prescription.genericName }}</p>
         </div>
         <div class="table-data qt">
-            <div class="input-bg cacaca">
-                <div class="input-group">
-                    <input type="text" class="form-control" value="{{ prescription.qty }}">
-                    <div class="input-group-btn">
-                        <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-                        <select>
-                            <option>Cards</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <span class="plus"><i class="fa fa-plus"></i></span>
+            {{ prescription.quantity }}
         </div>
         <div class="table-data">
-            <dx-text-box></dx-text-box>
+            {{ prescription.batch }}
         </div>
         <div class="table-data">
-            <p style="color:red;">200</p>
+            <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
         </div>
     </div>
 </div>
 <div class="row margin-top-15">
     <div class="col-sm-12 col-md-12 text-center">
         <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
-        <p class="total pull-right">N200</p>
+        <p class="total pull-right">&#x20A6;200</p>
     </div>
 </div>

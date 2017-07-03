@@ -84,11 +84,11 @@ export class InvoicesComponent implements OnInit {
     this.slideInvoiceDetails = !this.slideInvoiceDetails;
   }
   onNavigateToPayment(value) {
-    this.router.navigate(['/modules/product-manager/supplier-detail', value.supplierId]);
+    this.router.navigate(['/dashboard/product-manager/supplier-detail', value.supplierId]);
   }
 
   onEditInvoice(invoice) {
-    this.router.navigate(['/modules/purchase-manager/purchase-entry-edit', invoice._id]);
+    this.router.navigate(['/dashboard/purchase-manager/purchase-entry-edit', invoice._id]);
   }
 
 }

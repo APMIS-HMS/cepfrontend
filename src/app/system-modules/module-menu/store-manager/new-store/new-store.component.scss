@@ -1,27 +1,32 @@
-.frm-label{
+.frm-label {
     position: absolute;
     top: -10px;
     left: 0;
     font-size: 12px;
     color: #515151;
 }
-.modal-baseWrap{
+
+.modal-baseWrap {
     width: 650px;
     min-width: auto;
     padding: 20px;
 }
+
 .modal_title {
     text-align: center;
     border-bottom: 0px;
     color: #0d47a1;
     margin-bottom: 0;
 }
-input, select{
-//   border-bottom: solid 1px #626262;
-//   width: 100%;
-//   background: transparent;
+
+input,
+select {
+    //   border-bottom: solid 1px #626262;
+    //   width: 100%;
+    //   background: transparent;
 }
-textarea{
+
+textarea {
     // border: 1px solid #626262;
     // width: 100%;
     // background: transparent;
@@ -29,58 +34,73 @@ textarea{
     // margin-top: 10px;
     // height: 100px;
 }
-input:focus, select:focus, textarea:focus{
+
+input:focus,
+select:focus,
+textarea:focus {
     // border: #0099ed;
 }
-.mainfrmwrap{
+
+.mainfrmwrap {
     display: flex;
     justify-content: space-between;
 }
-.sec-1{
+
+.sec-1 {
     width: 40%;
 }
-.sec-2{
+
+.sec-2 {
     width: 50%;
 }
-.checkbox-wrap{
+
+.checkbox-wrap {
     display: flex;
     width: 100%;
 }
-.check-item{
+
+.check-item {
     position: relative;
     display: flex;
     width: 140px;
 }
-.chk-label{
+
+.chk-label {
     top: -10px;
     left: 0;
     font-size: 12px;
     color: #515151;
     margin-top: 4px;
-    margin-left: 4px;
+    margin-left: 2px;
 }
+
 .survery legend {
-    text-align:center !important;
+    text-align: center !important;
     margin-top: 4px;
     margin-left: 10px;
     border-bottom: 0;
 }
-.chkwrap{
-    background: #ccc;
+
+.chkwrap {
+    border: 1px solid #ccc;
     padding: 15px;
     border-radius: 10px;
 }
-.chk-group-wrap{
+
+.chk-group-wrap {
     margin-top: 10px;
-    background: #ccc;
     border-radius: 10px;
+    border: 1px solid #ccc;
     padding: 15px;
     height: 145px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    margin-bottom: 10px;
 }
-.chk-group-wrap .checkbox-wrap{
+
+.chk-group-wrap .checkbox-wrap {
     flex-wrap: wrap;
 }
-.sec-2 .frm-label{
+
+.sec-2 .frm-label {
     top: -20px;
 }

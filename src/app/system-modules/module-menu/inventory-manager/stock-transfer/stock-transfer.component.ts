@@ -31,6 +31,7 @@ export class StockTransferComponent implements OnInit {
   stores: any[] = [];
 
   frmDestinationStore: FormControl = new FormControl();
+  product: FormControl = new FormControl();
   productTableForm: FormGroup;
   selectedTransactionId = '';
   newTransfer: InventoryTransfer = <InventoryTransfer>{};
@@ -49,7 +50,7 @@ export class StockTransferComponent implements OnInit {
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
 
     this.route.data.subscribe(data => {
@@ -167,8 +168,8 @@ export class StockTransferComponent implements OnInit {
   }
 
   onProductCheckChange(event, value) {
-    value.checked = event.value;
-    if (event.value === true) {
+    value.checked = event.checked;
+    if (event.checked === true) {
       this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
         if (payload.data.length > 0) {
           (<FormArray>this.productTableForm.controls['productTableArray'])
@@ -210,7 +211,7 @@ export class StockTransferComponent implements OnInit {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
-          this.onProductCheckChange({ value: false }, value);
+          this.onProductCheckChange({ checked: false }, value);
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
           if (count === 1) {
             this.addNewProductTables();

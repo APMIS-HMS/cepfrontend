@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility, PrescriptionItem } from '../../../../../models/index';
+import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, PrescriptionService } from '../../../../../services/facility-manager/setup/index';
@@ -12,7 +12,7 @@ import { FacilitiesService, PrescriptionService } from '../../../../../services/
 	styleUrls: ['./prescription.component.scss']
 })
 export class PrescriptionComponent implements OnInit {
-	@Output() prescriptionItems: PrescriptionItem[] = [];
+	@Output() prescriptionItems: Prescription = <Prescription>{};
 	facility: Facility = <Facility>{};
 	billshow: boolean = false;
 	prescriptionId: string = '';
@@ -38,6 +38,12 @@ export class PrescriptionComponent implements OnInit {
 		this.getPrescriptionDetails();
 	}
 
+	// Save prescription
+	onClickSavePrescription() {
+		console.log(this.prescriptionItems);
+	}
+
+	// Dispense prescription
 	onClickDispense() {
 		console.log();
 	}
@@ -47,7 +53,12 @@ export class PrescriptionComponent implements OnInit {
 		this._prescriptionService.get(this.prescriptionId, {})
 			.then(res => {
 				console.log(res);
-				this.prescriptionItems = res.prescriptionItems;
+				this.prescriptionItems = res;
+				res.prescriptionItems.forEach(element => {
+					if(element.isBilled) {
+						this.prescriptions.push(element);
+					}
+				});
 			})
 			.catch(err => {
 				console.log(err);

@@ -17,41 +17,56 @@
 						Kindly select an option from the drop down.
 					</small>
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <select formControlName="empTitle" (change)="onEmpTitleChange($event.target.value)">
+                    <!--<select formControlName="empTitle" (change)="onEmpTitleChange($event.target.value)">
 						<option  value="" disabled selected>Title</option>
 						<option *ngFor="let item of titles"  value="{{item._id}}">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.target.value)">
+                        <md-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp1.controls.empFirstName.valid || frmNewEmp1.controls.empFirstName.pristine">
 						this is a required field (minimum 3 and max of 20 characters).
 					</small>
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="empFirstName" placeholder="First Name" autocomplete="off">
+                    <!--<input type="text" formControlName="empFirstName" placeholder="First Name" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="First Name" formControlName="empFirstName">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp1.controls.empOtherNames.valid || frmNewEmp1.controls.empOtherNames.pristine">
 						kindly fill in a minimum 3 and max of 20 characters.
 					</small>
                     <i class="fa fa-circle-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="empOtherNames" placeholder="Other Names" autocomplete="off">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Other Name" formControlName="empOtherNames">
+                    </md-input-container>
+                    <!--<input type="text" formControlName="empOtherNames" placeholder="Other Names" autocomplete="off">-->
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp1.controls.empLastName.valid || frmNewEmp1.controls.empLastName.pristine">
 						this is a required field (minimum 3 and max of 20 characters).
 					</small>
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="empLastName" placeholder="Sur Name" autocomplete="off">
+                    <!--<input type="text" formControlName="empLastName" placeholder="Sur Name" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Sur Name" formControlName="empLastName">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp1.controls.empGender.valid || frmNewEmp1.controls.empGender.pristine">
 						Kindly select an option from the drop down.
 					</small>
                     <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                    <select formControlName="empGender" (change)="onEmpGenderChange($event.target.value)">
+                    <!--<select formControlName="empGender" (change)="onEmpGenderChange($event.target.value)">
 						<option  value="" disabled selected>Gender</option>
 						<option *ngFor="let item of genders"  value="{{item._id}}">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.target.value)">
+                        <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
             </div>
             <div class="rhs">
@@ -61,20 +76,26 @@
 						Kindly select an option from the drop down.
 					</small>
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <select formControlName="empNationality" (change)="onEmpNationalityChange($event.target.value)">
+                    <!--<select formControlName="empNationality" (change)="onEmpNationalityChange($event.target.value)">
 						<option  value="" disabled selected>Nationality</option>
 						<option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.target.value)">
+                        <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp1.controls.empState.valid || frmNewEmp1.controls.empState.pristine">
 						Kindly select an option from the drop down.
 					</small>
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <select formControlName="empState" (change)="onEmpStateChange($event.target.value)">
+                    <!--<select formControlName="empState" (change)="onEmpStateChange($event.target.value)">
 						<option  value="" disabled selected>State of Origin</option>
 						<option *ngFor="let item of states"  [ngValue]="item">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.target.value)">
+                        <md-option *ngFor="let item of states" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
@@ -82,10 +103,13 @@
 						Kindly select an option from the drop down.
 					</small>
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <select formControlName="empLga" (change)="onEmpLgaChange($event.target.value)">
+                    <!--<select formControlName="empLga" (change)="onEmpLgaChange($event.target.value)">
 						<option  value="" disabled selected>LGA</option>
 						<option *ngFor="let item of lgs"  value="{{item._id}}">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.target.value)">
+                        <md-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
@@ -96,7 +120,10 @@
 						<!--Email exist.-->
 					</small>
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <input class="txt-input" formControlName="empEmail" type="email" placeholder="Email Address" autocomplete="off">
+                    <!--<input class="txt-input" formControlName="empEmail" type="email" placeholder="Email Address" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input type="email" mdInput md-error placeholder="Email Address" formControlName="empEmail">
+                    </md-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
@@ -104,7 +131,10 @@
 						a contact number is required (minimum 5 characters).
 					</small>
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <input type="tel" formControlName="empPhonNo" placeholder="Contact Number" autocomplete="off">
+                    <!--<input type="tel" formControlName="empPhonNo" placeholder="Contact Number" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input type="tel" mdInput md-error placeholder="Contact Number" formControlName="empPhonNo">
+                    </md-input-container>
                 </div>
             </div>
 
@@ -124,22 +154,26 @@
 						Kindly select an option from the drop down.
 					</small>
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <select formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.target.value)">
+                    <!--<select formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.target.value)">
 						<option  value="" disabled selected>Marital Status</option>
 						<option *ngFor="let item of maritalStatuses"  value="{{item._id}}">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.target.value)">
+                        <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp2.controls.empDOB.valid || frmNewEmp2.controls.empDOB.pristine">
 						this is a required field.
 					</small>
-                    <dx-date-box
-                        [value]="now"
-                        formControlName="empDOB" 
-                        style="width: 100%; background: transparent; border-radius:0; border: 0px; border-bottom:0.5px solid #37474F;"
-                        placeholder="Date of Birth"
-                        type="date">
-                    </dx-date-box>
+                    <!--<dx-date-box [value]="now" formControlName="empDOB" style="width: 100%; background: transparent; border-radius:0; border: 0px; border-bottom:0.5px solid #37474F;"
+                        placeholder="Date of Birth" type="date">
+                    </dx-date-box>-->
+                    <md-input-container>
+                        <input mdInput [mdDatepicker]="picker" formControlName="empDOB" [startAt]="now" placeholder="Date of Birth">
+                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    </md-input-container>
+                    <md-datepicker #picker></md-datepicker>
                 </div>
                 <div class="frm-item-wrap">
                     <div>
@@ -154,7 +188,10 @@
 						this is a required field (minimum 5 and max of 100 characters).
 					</small>
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="empHomeAddress" placeholder="Home Address" autocomplete="off">
+                    <!--<input type="text" formControlName="empHomeAddress" placeholder="Home Address" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Home Address" formControlName="empHomeAddress">
+                    </md-input-container>
                 </div>
             </div>
             <div class="rhs">
@@ -163,30 +200,39 @@
 						this field is required.
 					</small>
                     <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <select formControlName="empCountry">
+                    <!--<select formControlName="empCountry">
 						<option value="" disabled selected>Select Country</option>
 						<option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="Select Country" formControlName="empCountry">
+                        <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp2.controls.empContactState.valid || frmNewEmp2.controls.empContactState.pristine">
 						this field is required.
 					</small>
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <select formControlName="empContactState">
+                    <!--<select formControlName="empContactState">
 						<option  value="" disabled selected>State (Residence)</option>
 						<option *ngFor="let item of contactStates"  [ngValue]="item">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="State (Residence)" formControlName="empContactState">
+                        <md-option *ngFor="let item of contactStates" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp2.controls.empCity.valid || frmNewEmp2.controls.empCity.pristine">
 						this field is required.
 					</small>
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <select formControlName="empCity">
+                    <!--<select formControlName="empCity">
 						<option  value="" disabled selected>City (Residence)</option>
 						<option *ngFor="let item of cities"  value = "{{item._id}}">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="City (Residence)" formControlName="empCity">
+                        <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
             </div>
             <div class="clear"></div>
@@ -203,18 +249,27 @@
 						this is a required field (minimum 3 and max of 20 characters).
 					</small>
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="nok_fullname" placeholder="Next Of Kin's' Full Name" autocomplete="off">
+                    <!--<input type="text" formControlName="nok_fullname" placeholder="Next Of Kin's' Full Name" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="nok_apmisID" placeholder="Next Of Kin's' Apmis ID" autocomplete="off">
+                    <!--<input type="text" formControlName="nok_apmisID" placeholder="Next Of Kin's' Apmis ID" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_Address.valid || frmNewEmp3.controls.nok_Address.pristine">
 						this is a required field (minimum 5 and max of 100 characters).
 					</small>
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="nok_Address" placeholder="Next Of Kin's Home Address" autocomplete="off">
+                    <!--<input type="text" formControlName="nok_Address" placeholder="Next Of Kin's Home Address" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
+                    </md-input-container>
                 </div>
             </div>
             <div class="rhs">
@@ -223,24 +278,33 @@
 						Wrong email format (minimum 5 characters).
 					</small>
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <input class="txt-input" formControlName="nok_email" type="email" placeholder="Next Of Kin's Email Address" autocomplete="off">
+                    <!--<input class="txt-input" formControlName="nok_email" type="email" placeholder="Next Of Kin's Email Address" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput type="email" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_phoneNo.valid || frmNewEmp3.controls.nok_phoneNo.pristine">
 						a contact number is required (minimum 5 characters).
 					</small>
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <input type="tel" formControlName="nok_phoneNo" placeholder="Next Of Kin's Contact Number" autocomplete="off">
+                    <!--<input type="tel" formControlName="nok_phoneNo" placeholder="Next Of Kin's Contact Number" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                        <input mdInput type="text" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frmNewEmp3.controls.nok_relationship.valid || frmNewEmp3.controls.nok_relationship.pristine">
 						this is a required field.
 					</small>
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <select formControlName="nok_relationship" (change)="onNokRelationshipChange($event.target.value)">
+                    <!--<select formControlName="nok_relationship" (change)="onNokRelationshipChange($event.target.value)">
 						<option  value="" disabled selected>Relationship</option>
 						<option *ngFor="let item of relationships"  value="{{item._id}}">{{item.name}}</option>
-					</select>
+					</select>-->
+                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.target.value)">
+                        <md-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
                 </div>
             </div>
             <div class="clear"></div>
