@@ -8,15 +8,15 @@
           <md-select *ngIf="stateAvailable" placeholder="State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.target.value)">
               <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
           </md-select>
-          <md-input-container [hidden]="stateAvailable">
+          <!--<md-input-container [hidden]="stateAvailable">
               <input mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate" value="inputFacility.website">
-          </md-input-container>
+          </md-input-container>-->
       </div>
-      <div class="frm-item-wrap">
+      <!--<div class="frm-item-wrap">
           <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitycity">
               <md-option *ngFor="let item of cities" selected="inputFacility.address.city" [value]="item._id">{{item.name}}</md-option>
           </md-select>
-      </div>
+      </div>-->
       <div class="frm-item-wrap">
           <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
               <md-option *ngFor="let item of lgas" selected="inputFacility.address.lga" [value]="item._id">{{item.name}}</md-option>
