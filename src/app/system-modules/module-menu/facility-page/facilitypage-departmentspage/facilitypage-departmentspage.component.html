@@ -42,7 +42,10 @@
                     <div class="lhs">Department Name</div>
                     <div class="rhs">
                         <div [hidden]="deptEditNameIcoShow" class="lhs"> {{deptObj.name}} </div>
-                        <input *ngIf="deptEditNameIcoShow" class="edit-control lhs" type="text" value="{{deptObj.name}}" [formControl]="deptNameEdit">
+                        <!--<input *ngIf="deptEditNameIcoShow" class="edit-control lhs" type="text" value="{{deptObj.name}}" [formControl]="deptNameEdit">-->
+                        <md-input-container *ngIf="deptEditNameIcoShow" class="example-full-width">
+                            <input mdInput value="{{deptObj.name}}" [formControl]="deptNameEdit">
+                        </md-input-container>
                         <i [hidden]="deptEditNameIcoShow" (click)="deptEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i *ngIf="deptEditNameIcoShow" (click)="deptEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                         <div class="clear"></div>
@@ -56,7 +59,10 @@
                     <div class="lhs">Short Name</div>
                     <div class="rhs">
                         <div [hidden]="deptEditShortNameIcoShow" class="lhs"> {{deptObj.shortName}} </div>
-                        <input *ngIf="deptEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{deptObj.shortName}}" [formControl]="deptshortNameEdit">
+                        <!--<input *ngIf="deptEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{deptObj.shortName}}" [formControl]="deptshortNameEdit">-->
+                        <md-input-container *ngIf="deptEditShortNameIcoShow" class="example-full-width">
+                            <input mdInput value="{{deptObj.shortName}}" [formControl]="deptshortNameEdit">
+                        </md-input-container>
                         <i [hidden]="deptEditShortNameIcoShow" (click)="deptEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i *ngIf="deptEditShortNameIcoShow" (click)="deptEditShortNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                         <div class="clear"></div>
@@ -70,8 +76,11 @@
                     <div class="lhs">Describtion</div>
                     <div class="rhs">
                         <div [hidden]="deptEditDescIcoShow" class="lhs"> {{deptObj.description}} </div>
-                        <textarea *ngIf="deptEditDescIcoShow" class="edit-control lhs" value="{{deptObj.description}}" [formControl]="deptDescEdit"
-                            style="width:90%; height:120px;"></textarea>
+                        <!--<textarea *ngIf="deptEditDescIcoShow" class="edit-control lhs" value="{{deptObj.description}}" [formControl]="deptDescEdit"
+                            style="width:90%; height:120px;"></textarea>-->
+                            <md-input-container *ngIf="deptEditDescIcoShow" class="example-full-width">
+                            <textarea mdInput value="{{deptObj.description}}" [formControl]="deptDescEdit"></textarea>
+                            </md-input-container>
                         <i [hidden]="deptEditDescIcoShow" (click)="deptEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i *ngIf="deptEditDescIcoShow" (click)="deptEditDescToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                         <div class="clear"></div>
