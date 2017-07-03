@@ -13,7 +13,10 @@
           required field (minimum 3 and max of 50 characters).
         </small>
         <i class="fa fa-user" aria-hidden="true"></i>
-        <input type="text" formControlName="tagName" placeholder="Tag Name" autocomplete="off">
+        <!--<input type="text" formControlName="tagName" placeholder="Tag Name" autocomplete="off">-->
+        <md-input-container class="example-full-width">
+          <input mdInput formControlName="tagName" placeholder="Tag Name" autocomplete="off">
+        </md-input-container>
         <div class="suggestionFeeds">
             <div *ngFor="let dic of dictionaries" class="suggestedItem">
               <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
@@ -21,9 +24,12 @@
         </div>
       </div>
 
-      <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" class="cta-1">
+      <!--<button (click)="newTag(frmNewtag.value, frmNewtag.valid)" class="cta-1">
         CREATE TAG
-      </button>
+      </button>-->
+       <div class="example-full-width" id="example-full-width">
+          <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" md-raised-button>CREATE TAG</button>
+      </div>
 
     </form>
   </div>

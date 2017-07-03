@@ -16,6 +16,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 .suggestedItem{
     display: flex;
     align-items: center;
@@ -38,4 +39,13 @@
 }
 .suggetedName {
     font-size: 12px;
+}
+.mat-raised-button {
+    max-width: 200px;
+    text-align: center;
+    background: #153d70;
+    color: #fff;
+}
+#example-full-width{
+    text-align: center;
 }
