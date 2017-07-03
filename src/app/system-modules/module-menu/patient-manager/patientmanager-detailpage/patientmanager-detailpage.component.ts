@@ -22,6 +22,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
+  @Output() patientDetails: any;
   @Input() patient: Patient;
 
 
@@ -302,6 +303,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       console.log(data);
       data['patient'].subscribe(payload => {
         this.patient = payload;
+        this.patientDetails = payload;
         this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
           this.documentations = payloadPatient.data;
           this.setGraph();

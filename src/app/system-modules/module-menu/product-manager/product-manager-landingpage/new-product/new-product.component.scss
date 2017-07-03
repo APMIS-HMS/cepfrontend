@@ -39,7 +39,7 @@ legend.modal-title {
     background: #c3c3c3;
     border-radius: 10px;
     width: 100%;
-    z-index: 1;
+    // z-index: 1;
     font-size: 12px;
 }
 
@@ -52,6 +52,7 @@ legend.modal-title {
 .sugestion-item:hover {
     background: #b0b0b0;
 }
+
 .productNameLabel {
     text-align: center;
     background: #ccc;
@@ -63,33 +64,50 @@ legend.modal-title {
 
 .flex {
     display: flex;
-    float:right;
+    float: right;
     cursor: pointer;
 }
-.sec-3{
+
+.sec-3 {
     margin: 10px 0;
-    overflow-y: scroll;
+    overflow-y: auto;
+    border: 1px solid #ccc;
     height: 120px;
+    padding: 10px;
+    box-sizing: border-box;
 }
-.frmArr-wrap{
+
+.frmArr-wrap {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    background: #ccc;
+    border: 1px solid #ccc;
     padding: 10px;
 }
-.frmArr-wrap .frm-item-wrap{
+
+infrmArr-wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    // border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.frmArr-wrap .frm-item-wrap {
     width: 30%;
 }
-.sectLabel{
+
+.sectLabel {
     margin-bottom: 10px;
 }
-.sec3-headWrap{
+
+.sec3-headWrap {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.faplus{
+
+.faplus {
     border: 1px solid #8e8e8e;
     color: #8e8e8e;
     padding: 5px;
@@ -99,7 +117,8 @@ legend.modal-title {
     border-radius: 100%;
     cursor: pointer;
 }
-.faplus:hover{
+
+.faplus:hover {
     background: #8e8e8e;
     color: #fff;
 }

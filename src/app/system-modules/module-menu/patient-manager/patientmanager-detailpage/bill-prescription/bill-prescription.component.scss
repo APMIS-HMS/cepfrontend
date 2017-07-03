@@ -1,0 +1,17 @@
+@import '../../../clinic/check-in-patient/check-in-patient.component.scss';
+@import '../../../product-manager/category-manager/category-manager.component.scss';
+.inPatient-activityTimeline {
+    z-index: 10000;
+}
+
+.cdk-overlay-pane {
+    z-index: 10001 !important;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.border-box {
+    padding: 20px;
+}

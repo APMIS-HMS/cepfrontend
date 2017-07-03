@@ -34,7 +34,7 @@
     color: #fff;
 }
 .survery input, .survery select {
-    width: inherit;
+    /*width: inherit;*/
 }
 .survery .modal-title {
     margin: 0;

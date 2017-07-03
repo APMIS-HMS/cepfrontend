@@ -116,7 +116,7 @@
 
         <div class="patientPage-contentArea">
             <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
-            <app-patient-prescription [selectedAppointment]="selectedAppointment" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
+            <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
 
             <!--<div *ngIf="menuForms" class="menuForms">

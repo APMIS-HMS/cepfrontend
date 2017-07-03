@@ -1,62 +1,51 @@
 <div class="np-mainwrap">
-  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
         <div class="sec-a">
             <div class="wrap1">
                 <div class="row">
                     <div class="frm-item-wrap">
-                        <small class="alert-label" [hidden]="frm_purchaseOrder.controls.store.valid || frm_purchaseOrder.controls.store.pristine">
-                            Kindly select an option from the drop down.
-                        </small>
-                        <label>Store</label>
-                        <dx-select-box style="width: 350px;" formControlName="store" [items]="stores" displayExpr="name" valueExpr="_id"></dx-select-box>
+                        <md-select style="width: 350px;" class="example-full-width" placeholder="Store" formControlName="store">
+                            <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
+                        </md-select>
                     </div>
                     <div class="frm-item-wrap">
-                        <small class="alert-label" [hidden]="frm_purchaseOrder.controls.supplier.valid || frm_purchaseOrder.controls.supplier.pristine">
-                            Kindly select an option from the drop down.
-                        </small>
-                        <label>Supplier</label>
-                        <dx-select-box style="width: 350px;" formControlName="supplier" [items]="suppliers" displayExpr="name" valueExpr="_id"></dx-select-box>
+                        <md-select style="width: 350px;" class="example-full-width" placeholder="Supplier" formControlName="supplier">
+                            <md-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</md-option>
+                        </md-select>
                     </div>
                     <div class="frm-item-wrap">
-                        <label>Order Id</label>
-                        <dx-select-box formControlName="orderId" [items]="orders" displayExpr="purchaseOrderNumber" valueExpr="_id" style="width: 200px;" [searchEnabled]="true"></dx-select-box>
+                        <md-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
+                            <md-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</md-option>
+                        </md-select>
                     </div>
                 </div>
 
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_purchaseOrder.controls.deliveryDate.valid || frm_purchaseOrder.controls.deliveryDate.pristine">
-                        Kindly type something in the field.
-                    </small>
-                    <label>Delivery Date</label>
-                    <dx-date-box formControlName="deliveryDate" [value]="now" style="width: 200px;" type="date">
-                    </dx-date-box>
+                    <md-input-container>
+                        <input mdInput formControlName="deliveryDate" [mdDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
+                    </md-input-container>
+                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    <md-datepicker #picker></md-datepicker>
                 </div>
             </div>
             <div class="wrap2">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_purchaseOrder.controls.invoiceNo.valid || frm_purchaseOrder.controls.invoiceNo.pristine">
-                            Kindly select an option from the drop down.
-                        </small>
-                    <label>Invoice Number</label>
-                    <dx-text-box formControlName="invoiceNo" style="width: 100%;"></dx-text-box>
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Invoice Number" formControlName="invoiceNo">
+                    </md-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_purchaseOrder.controls.amount.valid || frm_purchaseOrder.controls.amount.pristine">
-                            Kindly type something in the field.
-                        </small>
-                    <label>Amount</label>
-                    <dx-number-box formControlName="amount" [step]="0.1" [showSpinButtons]="true"   [readOnly]="true" [showClearButton]="true"></dx-number-box>
+                    <md-input-container class="example-full-width">
+                        <input type="number" mdInput md-error placeholder="Amount" formControlName="amount">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_purchaseOrder.controls.amount.valid || frm_purchaseOrder.controls.amount.pristine">
-                        Kindly type something in the field.
-                    </small>
-                    <label>Remark</label>
-                    <dx-text-area formControlName="desc" [height]="90">
-                    </dx-text-area>
+                    <md-input-container class="example-full-width">
+                        <textarea mdInput md-error placeholder="Remark" formControlName="desc"></textarea>
+                    </md-input-container>
                 </div>
             </div>
         </div>
@@ -64,11 +53,7 @@
         <div class="midwrapsect">
             <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
             <div class="uploadWrap">
-                <dx-file-uploader
-                    selectButtonText="Select photo"
-                    labelText=""
-                    accept="image/*"
-                    uploadMode="useForm">
+                <dx-file-uploader selectButtonText="Select photo" labelText="" accept="image/*" uploadMode="useForm">
                 </dx-file-uploader>
             </div>
         </div>
@@ -78,39 +63,38 @@
                 <div class="col-a">
                     <div class="filter-sect">
                         <div class="frm-item-wrap">
-                            <input [formControl]="searchControl" class="search-input" placeholder="search product here...">
+                            <md-input-container class="example-full-width">
+                                <input mdInput md-error placeholder="search product here..." [formControl]="searchControl">
+                            </md-input-container>
                         </div>
+
 
                         <div class="check-filterWrap">
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="checkAll"></dx-check-box>
-                                <label>All</label>
+                                <md-checkbox [formControl]="checkAll">All</md-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="myInventory"></dx-check-box>
-                                <label>My Inventory</label>
+                                <md-checkbox [formControl]="myInventory">My Inventory</md-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="zeroQuantity"></dx-check-box>
-                                <label>Out of stock</label>
+                                <md-checkbox [formControl]="zeroQuantity">Out of stock</md-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="reOrderLevelQuantity"></dx-check-box>
-                                <label>Re-order Level</label>
+                                <md-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</md-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="expired"></dx-check-box>
-                                <label>Expired</label>
+                                <md-checkbox [formControl]="expired">Expired</md-checkbox>
                             </div>
                         </div>
                     </div>
                     <div class="product-sect">
                         <div class="control-group" *ngFor="let group of superGroups">
                             <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
-                                <div class="control__indicator"> <dx-check-box (onValueChanged)="onProductCheckChange($event,item)" [value]="item.checked"></dx-check-box></div>
+                                <div class="control__indicator"> 
+                                     <md-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></md-checkbox>
+                                 </div>
                             </label>
                         </div>
-
                     </div>
                 </div>
 
@@ -145,13 +129,16 @@
             </div>
 
             <div class="sec-c">
-                <div class="frm-item-wrap">
-                    <label>Discount</label>
-                    <dx-number-box formControlName="discount" [showSpinButtons]="true" [showClearButton]="true"></dx-number-box>
+                <div class="frm-item-wrap" style="width:50%">
+                    <md-input-container class="example-full-width">
+                        <input type="number" mdInput md-error placeholder="Discount" formControlName="discount">
+                    </md-input-container>
+
                 </div>
-                <div class="frm-item-wrap">
-                    <label>VAT</label>
-                    <dx-number-box formControlName="vat" [showSpinButtons]="true" [showClearButton]="true"></dx-number-box>
+                <div class="frm-item-wrap" style="width:50%">
+                    <md-input-container class="example-full-width">
+                        <input type="number" mdInput md-error placeholder="VAT" formControlName="vat">
+                    </md-input-container>
                 </div>
             </div>
         </div>
@@ -170,51 +157,48 @@
                                     <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
 
                                     <div style="width: 45%;" class="frm-item-wrap">
-                                        <small class="alert-label" [hidden]="schedule.controls.product.valid || schedule.controls.product.pristine">
-                                                    Kindly select an option from the drop down.
-                                                </small>
-                                        <label>Product</label>
-                                        <dx-text-box formControlName="product" [readOnly]="true" style="width: 100%;"></dx-text-box>
+                                        <md-input-container class="example-full-width">
+                                            <input mdInput md-error placeholder="Product" formControlName="product">
+                                        </md-input-container>
                                     </div>
-                                     <div style="width: 10%;" class="frm-item-wrap">
-                                        <small class="alert-label" [hidden]="schedule.controls.product.valid || schedule.controls.product.pristine">
-                                                    Kindly select an option from the drop down.
-                                                </small>
-                                        <label>Batch No</label>
-                                        <dx-text-box formControlName="batchNo" [readOnly]="false" style="width: 100%;"></dx-text-box>
+                                    <div style="width: 10%;" class="frm-item-wrap">
+                                        <md-input-container class="example-full-width">
+                                            <input mdInput md-error placeholder="Batch No" formControlName="batchNo">
+                                        </md-input-container>
                                     </div>
 
                                     <div style="width: 15%;" class="frm-item-wrap">
-                                        <small class="alert-label" [hidden]="schedule.controls.strength.valid || schedule.controls.strength.pristine">
-                                                    Kindly select an option from the drop down.
-                                                </small>
-                                        <label>Strength</label>
-                                        <dx-select-box style="width: 100%;" formControlName="strength" [items]="strengths" displayExpr="strength" valueExpr="_id"></dx-select-box>
+                                        <md-select class="example-full-width" placeholder="Strength" formControlName="strength">
+                                            <md-option *ngFor="let strength of strengths" [value]="strength._id">{{strength.strength}}</md-option>
+                                        </md-select>
                                     </div>
 
                                     <div style="width: 15%;" class="frm-item-wrap">
-                                        <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
-                                                    Kindly type something in the field.
-                                                </small>
-                                        <label>Cost Price</label>
-                                        <dx-number-box [step]="0.01" (onValueChanged)="getCostSummary(schedule)" formControlName="costPrice" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;"></dx-number-box>
+                                        <md-input-container class="example-full-width">
+                                            <input [step]="0.01" (change)="getCostSummary(schedule)" mdInput md-error placeholder="Cost Price" formControlName="costPrice">
+                                        </md-input-container>
                                     </div>
 
                                     <div style="width: 10%;" class="frm-item-wrap">
-                                        <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
-                                                    Kindly type something in the field.
-                                                </small>
-                                        <label>Qantity</label>
-                                        <dx-number-box formControlName="qty" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;"></dx-number-box>
+                                        <md-input-container class="example-full-width">
+                                            <input type="number" (change)="getCostSummary(schedule)" mdInput md-error placeholder="Quantity" formControlName="qty">
+                                        </md-input-container>
                                     </div>
 
                                     <div style="width: 15%;" class="frm-item-wrap">
-                                        <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
+                                        <md-input-container>
+                                            <input mdInput formControlName="expiryDate" [mdDatepicker]="picker" placeholder="Expiry Date">
+                                        </md-input-container>
+                                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                        <md-datepicker #picker></md-datepicker>
+
+
+                                        <!--<small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
                                                     Kindly type something in the field.
                                                 </small>
                                         <label>Expiry Date</label>
                                         <dx-date-box formControlName="expiryDate" [value]="now" style="width: 130px;" type="date">
-                                        </dx-date-box>
+                                        </dx-date-box>-->
                                     </div>
                                 </div>
                             </div>
