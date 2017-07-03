@@ -177,7 +177,7 @@ export class NewProductComponent implements OnInit {
     let name = this.frm_newProduct.controls['name'].value;
     let genericName = this.frm_newProduct.controls['genericName'].value;
     if (name !== null && name !== undefined && name.length > 0) {
-      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(400)
+      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
         .distinctUntilChanged()
         .switchMap((dictionaries: any[]) => this.drugListApiService.find({
           query: {
@@ -298,6 +298,7 @@ export class NewProductComponent implements OnInit {
         this.productService.create(value).then(payload => {
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
+              console.log("I here");
               item.services.push(service);
             }
           });
@@ -335,7 +336,7 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand + " " + payload.drugName);
+      this.frm_newProduct.controls['name'].setValue(payload.brand + "-" + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
@@ -391,7 +392,6 @@ export class NewProductComponent implements OnInit {
 
   setIngredientItem(values: any[]) {
     var control = <FormArray>this.ingredientForm.controls['ingredients'];
-
     values.forEach((item) => {
       control.push(
         this.formBuilder.group({
