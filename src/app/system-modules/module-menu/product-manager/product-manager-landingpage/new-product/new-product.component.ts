@@ -298,6 +298,7 @@ export class NewProductComponent implements OnInit {
         this.productService.create(value).then(payload => {
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
+              console.log("I here");
               item.services.push(service);
             }
           });
