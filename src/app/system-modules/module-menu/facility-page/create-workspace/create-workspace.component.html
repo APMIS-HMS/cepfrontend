@@ -14,9 +14,9 @@
 					<option value="" disabled selected>Department</option>
 					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
 				    </select>-->
-                    <md-select>
+                    <md-select formControlName="dept">
                         <md-option value="" disabled selected>Department</md-option>
-                        <md-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">
+                        <md-option  *ngFor="let department of departments" [value]="department">
                         {{department.name}}
                         </md-option>
                     </md-select>
@@ -31,7 +31,7 @@
 				    </select>-->
                      <md-select formControlName="unit">
                         <md-option value="" disabled selected>Unit</md-option>
-                        <md-option [disabled]="disableDepartment" *ngFor="let unit of units" [value]="unit">
+                        <md-option *ngFor="let unit of units" [value]="unit">
                         {{unit.name}}
                         </md-option>
                     </md-select>
@@ -47,7 +47,7 @@
 				    </select>-->
                     <md-select formControlName="majorLoc">
                         <md-option value="" disabled selected>Major Location</md-option>
-                        <md-option [disabled]="disableDepartment" *ngFor="let major of majorLocations" [value]="major">
+                        <md-option  *ngFor="let major of majorLocations" [value]="major">
                         {{major.name}}
                         </md-option>
                     </md-select>
@@ -62,7 +62,7 @@
 				</select>-->
                 <md-select formControlName="minorLoc">
                         <md-option value="" disabled selected>Minor Location</md-option>
-                        <md-option [disabled]="disableDepartment" *ngFor="let minor of minorLocations" [value]="minor">
+                        <md-option  *ngFor="let minor of minorLocations" [value]="minor">
                         {{minor.name}}
                         </md-option>
                     </md-select>

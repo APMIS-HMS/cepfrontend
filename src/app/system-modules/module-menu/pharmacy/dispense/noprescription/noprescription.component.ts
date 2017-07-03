@@ -92,7 +92,7 @@ export class NoprescriptionComponent implements OnInit {
 			if(val > 0) {
 				//this.itemPrice = this.price*val;
 				this.itemQuantity = val;
-				this.itemPrice = 100*val;
+				this.itemPrice = this.price*val;
 				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
 			} else {
 				this._facilityService.announceNotification({
@@ -231,7 +231,7 @@ export class NoprescriptionComponent implements OnInit {
 					let tempArray = [];
 					// Get all products in the facility, then search for the item you are looing for.
 					res.data.forEach(element => {
-						if(element.name.toLowerCase().startsWith(this.searchText.toLowerCase())) {
+						if(element.name.toLowerCase().includes(this.searchText.toLowerCase())) {
 							tempArray.push(element);
 						}
 					});
