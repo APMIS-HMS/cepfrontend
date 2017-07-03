@@ -391,7 +391,6 @@ export class NewProductComponent implements OnInit {
 
   setIngredientItem(values: any[]) {
     var control = <FormArray>this.ingredientForm.controls['ingredients'];
-
     values.forEach((item) => {
       control.push(
         this.formBuilder.group({
