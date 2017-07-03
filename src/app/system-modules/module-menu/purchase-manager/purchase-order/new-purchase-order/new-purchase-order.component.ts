@@ -150,8 +150,10 @@ export class NewPurchaseOrderComponent implements OnInit {
     });
   }
   onProductCheckChange(event, value) {
-    value.checked = event.value;
-    if (event.value === true) {
+    console.log(event);
+    console.log(value);
+    value.checked = event.checked;
+    if (event.checked === true) {
       (<FormArray>this.productTableForm.controls['productTableArray'])
         .push(
         this.formBuilder.group({
@@ -186,7 +188,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         if (group._id === value.id) {
           group.checked = false;
           if (true) {
-            const event: any = { value: false };
+            const event: any = { checked: false };
             this.onProductCheckChange(event, value);
           }
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
@@ -202,7 +204,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       parent.forEach((group, j) => {
         group.checked = false;
         if (this.selectedPurchaseOrder._id !== undefined) {
-          const event: any = { value: false };
+          const event: any = { checked: false };
           // this.onProductCheckChange(event, value);
         }
         const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
@@ -267,7 +269,8 @@ export class NewPurchaseOrderComponent implements OnInit {
   }
   getSuppliers() {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id }, $paginate: false }).then(payload => {
-      this.suppliers = payload;
+      this.suppliers = payload.data;
+      console.log(this.suppliers);
     });
   }
   getStrengths() {

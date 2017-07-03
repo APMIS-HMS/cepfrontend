@@ -14,9 +14,9 @@
 					<option value="" disabled selected>Department</option>
 					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
 				    </select>-->
-                    <md-select placeholder="Department">
+                    <md-select>
                         <md-option value="" disabled selected>Department</md-option>
-                        <md-option *ngFor="let department of departments" [value]="department">
+                        <md-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">
                         {{department.name}}
                         </md-option>
                     </md-select>
@@ -24,30 +24,48 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <label>Unit</label>
-                    <select formControlName="unit">
-					<option value="" disabled selected>Unit</option>
-					<option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
-				</select>
+                    <!--<label>Unit</label>
+                        <select formControlName="unit">
+                        <option value="" disabled selected>Unit</option>
+                        <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
+				    </select>-->
+                     <md-select formControlName="unit">
+                        <md-option value="" disabled selected>Unit</md-option>
+                        <md-option [disabled]="disableDepartment" *ngFor="let unit of units" [value]="unit">
+                        {{unit.name}}
+                        </md-option>
+                    </md-select>
                 </div>
             </div>
             <div class="sec-2">
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <label>Major Location</label>
+                    <!--<label>Major Location</label>
                     <select formControlName="majorLoc">
 					<option value="" disabled selected>Major Location</option>
 					<option *ngFor="let major of majorLocations" [ngValue]="major">{{major.name}}</option>
-				</select>
+				    </select>-->
+                    <md-select formControlName="majorLoc">
+                        <md-option value="" disabled selected>Major Location</md-option>
+                        <md-option [disabled]="disableDepartment" *ngFor="let major of majorLocations" [value]="major">
+                        {{major.name}}
+                        </md-option>
+                    </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-circle-o" aria-hidden="true"></i>
-                    <label>Minor Location</label>
+                    <!--<label>Minor Location</label>
                     <select formControlName="minorLoc">
 					<option value="" disabled selected>Minor Location</option>
 					<option *ngFor="let minor of minorLocations" [ngValue]="minor">{{minor.name}}</option>
-				</select>
+				</select>-->
+                <md-select formControlName="minorLoc">
+                        <md-option value="" disabled selected>Minor Location</md-option>
+                        <md-option [disabled]="disableDepartment" *ngFor="let minor of minorLocations" [value]="minor">
+                        {{minor.name}}
+                        </md-option>
+                    </md-select>
                 </div>
             </div>
 

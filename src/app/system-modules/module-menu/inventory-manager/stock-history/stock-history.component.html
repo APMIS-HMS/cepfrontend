@@ -1,115 +1,14 @@
-<!--<div class="survery">
-        <div class="row margin-bottom">
-            <div class="col-sm-4 col-md-4 col-xs-12">
-                <dx-select-box [items]="simpleProducts" placeholder="Choose Product" [showClearButton]="true">
-                </dx-select-box>
-            </div>
-            <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-                <dx-text-box value="Search"></dx-text-box>
-            </div>
-        </div>
-        <table class="table table-striped text-center">
-            <thead>
-                <tr>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Transfered To</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Value</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Date</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Transfer ID</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Status</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngIf="histories.length === 0">
-                    <td colspan="6"> No data available in table</td>
-                </tr>
-                <tr (click) = "trCollapse()">
-                    <td>South West Pharmacy</td>
-                    <td>#200,000</td>
-                    <td>21-2-2019</td>
-                    <td>BB290102</td>
-                    <td class="accepted">Accepted</td>
-                    <td>
-                    </td>
-                </tr>
-                <tr *ngIf = "trdropDown" >
-                    <td colspan="6">
-                            <div class=" box-border">
-                        <div class="row">
-                            <div class="col-sm-4 col-md-4">
-                                <h4> Products </h4>
-                            </div>
-                            <div class="col-sm-4 col-md-4">
-                                <h4> Value (N) </h4>
-                            </div>
-                            <div class="col-sm-4 col-md-4">
-                                <h4> Transfer Qty </h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 col-md-4">
-                                <dx-check-box [value]="false" [width]="80" text="Panadol"></dx-check-box>
-                            </div>
-                            <div class="col-sm-4 col-md-4">
-                                <p> 50,000 </p>
-                            </div>
-                            <div class="col-sm-4 col-md-4">
-                                <p> 200 </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12 col-xs-12 text-center margin-top-15px">
-                                <button class="btn btn-default btn-accept">Edit </button>
-                                <button class="btn btn-success btn-reject"> Resend </button>
-                            </div>
-                        </div>
-                    </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</div>
--->
-<!--<section id="container-wrap">
-    <div class="survery">
-      <div class="container">
-        <div class="row margin-bottom">
-            <div class="col-sm-4 col-md-4 col-xs-12">
-                <dx-select-box [items]="simpleProducts" placeholder="Choose Product" [showClearButton]="true">
-                </dx-select-box>
-            </div>
-            <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-                <dx-text-box value="Search"></dx-text-box>
-            </div>
-        </div>
-        <div class="row-cover">
-          <div class="row">
-            <div class="col-xs-12 col-sm-3 col-md-3">
-                <p>Transfer To</p>
-            </div>
-            <div class="col-xs-12 col-sm-3 col-md-3">
-                <p>Value</p>
-            </div>
-            <div class="col-xs-12 col-sm-3 col-md-3">
-                <p>Date</p>
-            </div>
-            <div class="col-xs-12 col-sm-3 col-md-3">
-                <p>Transfer ID</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-</section>-->
-
 <div class="survery">
     <div class="row margin-bottom">
         <div class="col-sm-4 col-md-4 col-xs-12">
-            <dx-select-box  placeholder="Choose" [showClearButton]="true">
-            </dx-select-box>
+            <md-select class="example-full-width" placeholder="Choose">
+                <md-option></md-option>
+            </md-select>
         </div>
         <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-            <dx-text-box></dx-text-box>
+            <md-input-container class="example-full-width">
+                <input mdInput md-error placeholder="">
+            </md-input-container>
         </div>
     </div>
     <div class="product-parentWrap">
@@ -138,7 +37,7 @@
                     </div>
                     <div class="prodBatch-row batchContent" *ngFor="let transaction of producthistory.inventoryTransferTransactions">
                         <div class="prodBatch-item batchItem1">
-                            <dx-check-box [value]="false" text="{{transaction.productObject.name}}"></dx-check-box>
+                            <md-checkbox [checked]="false">{{transaction?.productObject?.name}}</md-checkbox>
                         </div>
                         <div class="prodBatch-item batchItem5">{{transaction.batchNumber}}</div>
                         <div class="prodBatch-item batchItem2">{{transaction.lineCostPrice|number:'1.2-2'}}</div>

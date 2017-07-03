@@ -45,7 +45,10 @@
                     <div class="lhs">Location Name</div>
                     <div class="rhs">
                         <div [hidden]="locationEditNameIcoShow" class="lhs"> {{locationObj.name}} </div>
-                        <input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">
+                        <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
+                        <md-input-container *ngIf="locationEditNameIcoShow" class="example-full-width">
+                        <input mdInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
+                        </md-input-container>
                         <i [hidden]="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i *ngIf="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                         <div class="clear"></div>
@@ -59,7 +62,10 @@
                     <div class="lhs">Description</div>
                     <div class="rhs">
                         <div [hidden]="locationEditDescIcoShow" class="lhs"> {{locationObj.description}} </div>
-                        <textarea *ngIf="locationEditDescIcoShow" class="edit-control lhs" value="{{locationObj.desc}}" [formControl]="locationDescEdit" style="width:90%; height:120px;"></textarea>
+                        <!--<textarea *ngIf="locationEditDescIcoShow" class="edit-control lhs" value="{{locationObj.desc}}" [formControl]="locationDescEdit" style="width:90%; height:120px;"></textarea>-->
+                        <md-input-container *ngIf="locationEditDescIcoShow" class="example-full-width">
+                            <textarea mdInput value="{{locationObj.desc}}" [formControl]="locationDescEdit"></textarea>
+                        </md-input-container>
                         <i [hidden]="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i *ngIf="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                         <div class="clear"></div>

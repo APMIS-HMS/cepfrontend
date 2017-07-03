@@ -1,1 +1,18 @@
 @import "../../facilitypage-departmentspage/new-department/new-department.component.scss";
+input {
+    border: none;
+}
+
+.mat-raised-button {
+    max-width: 200px;
+    text-align: center;
+    background: #153d70;
+    color: #fff;
+}
+#example-full-width {
+    text-align: center;
+}
+
+.modal-overlay {
+    z-index: 999 !important;
+}

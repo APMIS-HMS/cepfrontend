@@ -49,27 +49,21 @@
                                         <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
 
                                         <div style="width: 59%;" class="frm-item-wrap">
-                                            <small class="alert-label" [hidden]="schedule.controls.product.valid || schedule.controls.product.pristine">
-                                                    Kindly select an option from the drop down.
-                                                </small>
-                                            <label>Product</label>
-                                            <dx-text-box formControlName="product" style="width: 100%;"></dx-text-box>
+                                            <md-input-container class="example-full-width">
+                                                <input mdInput md-error placeholder="Product" formControlName="product">
+                                            </md-input-container>
                                         </div>
 
                                         <div style="width: 20%;" class="frm-item-wrap">
-                                            <small class="alert-label" [hidden]="schedule.controls.systemQuantity.valid || schedule.controls.systemQuantity.pristine">
-                                                    Kindly select an option from the drop down.
-                                                </small>
-                                            <label>System Quantity</label>
-                                            <dx-number-box formControlName="systemQuantity" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;"></dx-number-box>
+                                            <md-input-container class="example-full-width">
+                                                <input mdInput md-error placeholder="System Quantity" type="number" formControlName="systemQuantity">
+                                            </md-input-container>
                                         </div>
 
                                         <div style="width: 20%;" class="frm-item-wrap">
-                                            <small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
-                                                    Kindly type something in the field.
-                                                </small>
-                                            <label>Actual Qantity</label>
-                                            <dx-number-box formControlName="qty" [showSpinButtons]="true" [showClearButton]="false" style="width: 100%;"></dx-number-box>
+                                            <md-input-container class="example-full-width">
+                                                <input mdInput md-error placeholder="Actual Qantity" type="number" formControlName="qty">
+                                            </md-input-container>
                                         </div>
                                     </div>
                                 </div>
@@ -97,12 +91,9 @@
         <div class="sec-a" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
             <div class="wrap2">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_purchaseOrder.controls.desc.valid || frm_purchaseOrder.controls.desc.pristine">
-                        Kindly type something in the field.
-                    </small>
-                    <label>Remark</label>
-                    <dx-text-area formControlName="desc" [height]="90">
-                    </dx-text-area>
+                    <md-input-container class="example-full-width">
+                        <textarea mdInput md-error placeholder="Remark"  formControlName="desc"></textarea>
+                    </md-input-container>
                 </div>
             </div>
         </div>

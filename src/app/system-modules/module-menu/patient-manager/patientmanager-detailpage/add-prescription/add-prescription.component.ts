@@ -1,6 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Facility, PrescriptionItem } from '../../../../../models/index';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
+import {
+    FacilitiesService, ProductService
+} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-add-prescription',
@@ -8,41 +12,97 @@ import { Facility, PrescriptionItem } from '../../../../../models/index';
   styleUrls: ['./add-prescription.component.scss']
 })
 export class AddPrescriptionComponent implements OnInit {
-	@Input() prescriptionItems: PrescriptionItem[] = [];
+	@Input() prescriptionItems: Prescription = <Prescription>{};
+	@Output() prescriptionData: Prescription = <Prescription>{};
+	facility: Facility = <Facility>{};
 
-	addBillForm: FormGroup;
 	billShow: boolean = false;
 	billShowId: number = 0;
-	drugs: string[] = [];
 	isExternal: boolean = false;
 
 	constructor(
-		private _fb: FormBuilder
+		private _locker: CoolLocalStorage,
+		private _productService: ProductService
 	) {
 
 	}
 
 	ngOnInit() {
-		 console.log(this.prescriptionItems);
-		 this.addBillForm = this._fb.group({
-
-		 });
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
+		console.log(this.prescriptionItems);
 	}
 
 	onClickDeleteItem(value: any) {
-		this.prescriptionItems.splice(value, 1);
+		this.prescriptionItems.prescriptionItems.splice(value, 1);
 	}
 
 	// On click is external checkbox
-	onClickIsExternal(index, value) {
-		console.log(value);
-		console.log(index);
+	onClickIsExternal(index, value, prescription) {
 		this.isExternal = value;
 		this.billShowId = index;
+		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
 	}
 
-	toggleBill(index) {
-		this.billShow = !this.billShow;
-		this.billShowId = index;
+	toggleBill(index, item) {
+		if(!item.isBilled) {
+			this.billShow = true;
+			this.billShowId = index;
+			console.log(item);
+			this.prescriptionItems.index = index;
+			this.prescriptionData = this.prescriptionItems;
+			// let genericName = item.genericName.split(' ');
+			// // Get the list of products from a facility, and then search if the generic
+			// // that was entered by the doctor in contained in the list of products
+			// this._productService.find({ query: { facilityId : this.facility._id }})
+			// 	.then(res => {
+			// 		console.log(res);
+			// 		let tempArray = [];
+			// 		// Get all products in the facility, then search for the item you are looking for.
+			// 		res.data.forEach(element => {
+			// 			if(element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
+			// 				tempArray.push(element);
+			// 			}
+			// 		});
+			// 		console.log(tempArray);
+			// 		if(tempArray.length !== 0) {
+			// 			this.prescriptionData = this.prescriptionItems;
+			// 			this.drugs = tempArray;
+			// 		} else {
+			// 			this.drugs = [];
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		console.log(err);
+			// 	});
+		}
 	}
+
+	// This method is to save pricing for each drug
+	// onClickSaveCost(indexI, indexJ):void {
+	// 	console.log(indexI);
+	// 	console.log(indexJ);
+	// 	let control: FormArray = this.addBillForm.controls['bill'] as FormArray;
+	// 	let billFormGroup: FormGroup = control.at(indexJ) as FormGroup;
+	// 	let drugName: string = billFormGroup.controls['drug'].value;
+	// 	let qty: number = billFormGroup.controls['qty'].value;
+	// }
+
+	// addItem(): void {
+	// 	let control: FormArray  = <FormArray> this.addBillForm.controls['bill'];
+	// 	control.push(this.createItem());
+	// }
+
+	// createItem(): FormGroup {
+	// 	return this._fb.group({
+	// 		drug: [''],
+	// 		qty: [''],
+	// 	});
+	// }
+
+	// setItemValue(value) {
+	// 	return this._fb.group({
+	// 		drug: [value.drug],
+	// 		qty: [value.qty],
+	// 	})
+	// }
 }

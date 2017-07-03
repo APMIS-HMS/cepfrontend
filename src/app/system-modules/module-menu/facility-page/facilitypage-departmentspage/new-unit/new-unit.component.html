@@ -15,7 +15,10 @@
             this is a required field (minimum 3 and max of 50 characters).
           </small>
                 <i class="fa fa-building-o" aria-hidden="true"></i>
-                <input type="text" formControlName="unitName" placeholder="Unit Name" autocomplete="off">
+                <!--<input type="text" formControlName="unitName" placeholder="Unit Name" autocomplete="off">-->
+                <md-input-container class="example-full-width">
+                    <input mdInput formControlName="unitName" placeholder="Unit Name" autocomplete="off">
+                </md-input-container>
             </div>
 
             <div class="frm-item-wrap">
@@ -23,7 +26,10 @@
             A minimum of 3 characters required.
           </small>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
-                <input type="text" formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
+                <!--<input type="text" formControlName="unitAlias" placeholder="Short Name" autocomplete="off">-->
+                  <md-input-container class="example-full-width">
+                    <input mdInput formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
+                </md-input-container>
             </div>
 
             <div class="frm-item-wrap">
@@ -31,17 +37,22 @@
             this field is required.
           </small>
                 <i class="fa fa-object-group" aria-hidden="true"></i>
-                <select formControlName="unitParent">
+               <!-- <select formControlName="unitParent">
             <option  value="null" disabled selected>Select parent department</option>
             <option *ngFor="let item of deptsObj"  value = "{{item._id}}">{{item.name}}</option>
-          </select>
+          </select>-->
+            <md-select formControlName="unitParent">
+            <md-option  value="null" disabled selected>Select parent department</md-option>
+            <md-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</md-option>
+            </md-select>
             </div>
 
             <div class="frm-item-wrap">
-                <label>
+               <!-- <label>
               <input style="width: auto; margin-right: 5px;" type="checkbox"  formControlName="isClinic"  [(ngModel)]="isClinic">
               Clinic
-          </label>
+          </label>-->
+            <md-checkbox formControlName="isClinic" [(ngModel)]="isClinic">Clinic</md-checkbox>
             </div>
 
 
@@ -81,12 +92,18 @@
                 <small class="alert-label" [hidden]="frmNewUnit.controls.unitDesc.valid || frmNewUnit.controls.unitDesc.pristine">
             This is a required field (minimum 10 characters).
           </small>
-                <textarea class="txt-input modal-textarea" formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
+               <!-- <textarea class="txt-input modal-textarea" formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>-->
+            <md-input-container class="example-full-width">
+                <textarea mdInput formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
+            </md-input-container>
             </div>
 
-            <div (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" class="cta-1">
+            <!--<div (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" class="cta-1">
                 CREATE UNIT
-            </div>
+            </div>-->
+             <div class="example-full-width" id="example-full-width">
+             <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" md-raised-button> CREATE UNIT</button>
+             </div>
 
         </form>
     </div>

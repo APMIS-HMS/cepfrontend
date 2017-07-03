@@ -1,5 +1,6 @@
 export interface PrescriptionItem {
-    id?: number,
+    drugName?: string,
+    drugId?: string,
     genericName: string,
     frequency: string,
     duration: string,
@@ -7,5 +8,7 @@ export interface PrescriptionItem {
     quantity?: number,
     patientInstruction: string,
     isRefill?: Boolean,
-    refillCount: number
+    refillCount: number,
+    initiateBill: boolean,
+    isBilled: boolean
 }

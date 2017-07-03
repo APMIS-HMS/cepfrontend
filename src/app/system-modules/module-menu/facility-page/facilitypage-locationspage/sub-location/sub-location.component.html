@@ -12,7 +12,10 @@
       <div class="lhs">Name</div>
       <div class="rhs">
         <div [hidden]="sublocEditNameIcoShow" class="lhs"> {{minorLocation.name}} </div>
-        <input *ngIf="sublocEditNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.name}}" [formControl]="sublocNameEdit">
+        <!--<input *ngIf="sublocEditNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.name}}" [formControl]="sublocNameEdit">-->
+        <md-input-container *ngIf="sublocEditNameIcoShow" class="example-full-width">
+          <input mdInput value="{{minorLocation.name}}" [formControl]="sublocNameEdit">
+        </md-input-container>
         <i [hidden]="sublocEditNameIcoShow" (click)="sublocEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
         <i *ngIf="sublocEditNameIcoShow" (click)="sublocEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
         <div class="clear"></div>
@@ -26,7 +29,10 @@
       <div class="lhs">Short Name</div>
       <div class="rhs">
         <div [hidden]="sublocEditShortNameIcoShow" class="lhs"> {{minorLocation.shortName}} </div>
-        <input *ngIf="sublocEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.shortName}}" [formControl]="sublocshortNameEdit">
+        <!--<input *ngIf="sublocEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.shortName}}" [formControl]="sublocshortNameEdit">-->
+        <md-input-container *ngIf="sublocEditShortNameIcoShow" class="example-full-width">
+          <input mdInput value="{{minorLocation.shortName}}" [formControl]="sublocshortNameEdit">
+        </md-input-container>
         <i [hidden]="sublocEditShortNameIcoShow" (click)="sublocEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
         <i *ngIf="sublocEditShortNameIcoShow" (click)="sublocEditShortNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
         <div class="clear"></div>
@@ -41,7 +47,10 @@
     <div class="lhs">Describtion</div>
     <div class="rhs">
       <div [hidden]="sublocEditDescIcoShow" class="lhs"> {{minorLocation.description}} </div>
-      <textarea *ngIf="sublocEditDescIcoShow" class="edit-control lhs" value="{{minorLocation.description}}" [formControl]="sublocDescEdit"></textarea>
+      <!--<textarea *ngIf="sublocEditDescIcoShow" class="edit-control lhs" value="{{minorLocation.description}}" [formControl]="sublocDescEdit"></textarea>-->
+      <md-input-container *ngIf="sublocEditDescIcoShow" class="example-full-width">
+         <textarea mdInput value="{{minorLocation.description}}" [formControl]="sublocDescEdit"></textarea>
+      </md-input-container>
       <i [hidden]="sublocEditDescIcoShow" (click)="sublocEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
       <i *ngIf="sublocEditDescIcoShow" (click)="sublocEditDescSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>
       <div class="clear"></div>

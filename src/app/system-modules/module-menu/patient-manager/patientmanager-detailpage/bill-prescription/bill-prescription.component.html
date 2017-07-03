@@ -1,0 +1,47 @@
+<div class="survery">
+    <div class="">
+        <!-- purchase order details-->
+        <div class="inPatient-activityTimeline shadow-RB animated slideInRight" #closeclick>
+            <div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+            </div>
+            <div class="purchasedetails">
+                <div class="container container-width">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xs-12">
+                            <h5>Generate Bill for</h5>
+                            <h6>{{ title }}</h6>
+                            <div class="border-box">
+                                <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+                                <form [formGroup]="addBillForm" novalidate>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12" style="margin-top: 20px">
+                                            <md-select placeholder="Drug" formControlName="drug" class="example-full-width">
+                                                <md-option *ngFor="let drug of drugs" [(value)]="drug._id">{{ drug.name }}</md-option>
+                                            </md-select>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
+                                            <div class="col-xs-6">
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="number" formControlName="qty" placeholder="Quantity">
+                                                </md-input-container>
+                                            </div>
+                                            <div class="col-xs-6" style="margin-top: 20px;">
+                                                <p>Cost: <b>&#x20A6; {{ itemCost }}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <button (click)="onClickSaveCost(addBillForm.value, addBillForm.valid)" class="btn btn-default">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -125,7 +125,7 @@ export class StockTakingComponent implements OnInit {
         .push(
         this.formBuilder.group({
           product: [value.name, [<any>Validators.required]],
-          systemQuantity: [, [<any>Validators.required]],
+          systemQuantity: [0, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
           readOnly: [false],
           id: [value._id]
@@ -168,7 +168,7 @@ export class StockTakingComponent implements OnInit {
       'productTableArray': this.formBuilder.array([
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
-          systemQuantity: [, [<any>Validators.required]],
+          systemQuantity: [0, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
           readOnly: [false],
           id: ['']

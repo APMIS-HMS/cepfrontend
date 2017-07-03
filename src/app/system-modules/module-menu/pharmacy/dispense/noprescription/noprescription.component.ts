@@ -194,6 +194,18 @@ export class NoprescriptionComponent implements OnInit {
 		this._dispenseService.create(payload)
 			.then(res => {
 				console.log(res);
+				// Once changed, reset all variables
+				this.selectedProducts = [];
+				this.prescriptions = [];
+				this.prescription = {};
+				this.totalItemPrice = 0;
+				this.itemPrice = 0;
+				this.totalItemQuantity = 0;
+				this.itemQuantity = 0;
+				this.price = 0;
+				this.noPrescriptionForm.reset();
+				this.noPrescriptionForm.controls['qty'].reset(0);
+				this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
 				this._facilityService.announceNotification({
 					type: "Success",
 					text: "Prescription has been sent!"
@@ -304,6 +316,9 @@ export class NoprescriptionComponent implements OnInit {
 		this.prescription = {};
 		this.totalItemPrice = 0;
 		this.itemPrice = 0;
+		this.totalItemQuantity = 0;
+		this.itemQuantity = 0;
+		this.price = 0;
 		this.noPrescriptionForm.reset();
 		this.noPrescriptionForm.controls['qty'].reset(0);
 		this.noPrescriptionForm.controls['client'].reset(param);
