@@ -43,7 +43,7 @@
         <form [formGroup]="facilityForm1_1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-select *ngIf="stateAvailable" placeholder="Facility State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.target.value)">
+                    <md-select *ngIf="stateAvailable" placeholder="Facility State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.value)">
                         <md-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</md-option>
                     </md-select>
                     <input [hidden]="stateAvailable" mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate">
