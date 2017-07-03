@@ -212,6 +212,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         });
         this.frmNewEmp1.controls['empNationality'].valueChanges.subscribe((value: Country) => {
+            console.log(value);
             this.states = value.states;
         });
 
@@ -226,7 +227,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empContactState: ['', [<any>Validators.required]],
             empCity: ['', [<any>Validators.required]],
             empHomeAddress: ['', [<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]],
-            empDOB: ['', [<any>Validators.required]]
+            empDOB: [new Date(), [<any>Validators.required]]
 
         });
         this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
