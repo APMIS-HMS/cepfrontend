@@ -18,8 +18,9 @@ import 'devextreme-intl';
 })
 export class PatientPrescriptionComponent implements OnInit {
     @Input() employeeDetails: any;
+	@Input() patientDetails: any;
     @Input() selectedAppointment: Appointment = <Appointment>{};
-    @Output() prescriptionItems: PrescriptionItem[] = [];
+    @Output() prescriptionItems: any = {};
     facility: Facility = <Facility>{};
 
     showCuDropdown: boolean = false;
@@ -35,7 +36,7 @@ export class PatientPrescriptionComponent implements OnInit {
     patientId: string;
     priorities: string[] = [];
     prescriptions: Prescription = <Prescription>{};
-    //prescriptionItems: PrescriptionItem[] = [];
+    prescriptionArray: PrescriptionItem[] = [];
     drugs: string[] = [];
     routes: string[] = [];
     frequencies: string[] = [];
@@ -68,17 +69,12 @@ export class PatientPrescriptionComponent implements OnInit {
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
-        this._route.params.subscribe(params => {
-            this.patientId = params['id'];
-        });
-
         // Remove this when you are done
         this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
         this.durationUnits = DurationUnits;
         this.selectedValue = DurationUnits[0].name;
         this.priorityValue = 'Normal';
-        //this.getAllDrugs();
         this.getAllPriorities();
         this.getAllRoutes();
         this.getAllFrequencies();
@@ -92,7 +88,7 @@ export class PatientPrescriptionComponent implements OnInit {
             route: ['', [<any>Validators.required]],
             drug: ['', [<any>Validators.required]],
             frequency: ['', [<any>Validators.required]],
-            duration: ['', [<any>Validators.required]],
+            duration: [0, [<any>Validators.required]],
             durationUnit: ['', [<any>Validators.required]],
             refillCount: [this.refillCount],
             startDate: [this.currentDate],
@@ -116,33 +112,37 @@ export class PatientPrescriptionComponent implements OnInit {
                     startDate: value.startDate,
                     strength: value.strength,
                     patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
-                    refillCount: value.refillCount
+                    refillCount: value.refillCount,
+                    initiateBill: false,
+                    isBilled: false
                 };
 
-                let length = this.prescriptionItems.length;
-                if (value.id === undefined) {
-                    prescriptionItem.id = ++length;
-                } else {
-                    prescriptionItem.id = value.id;
-                }
+                // let length = this.prescriptionItems.length;
+                // if (value.id === undefined) {
+                //     prescriptionItem.id = ++length;
+                // } else {
+                //     prescriptionItem.id = value.id;
+                // }
 
                 this.addPrescriptionShow = true;
-                this.prescriptionItems.push(prescriptionItem);
+                this.prescriptionArray.push(prescriptionItem);
 
                 let prescription = <Prescription>{
                     facilityId: this.facility._id,
-                    employeeId: this.employeeDetails.employeeDetails._id,
+                    employeeId: this.employeeDetails._id,
                     clinicId: this.selectedAppointment.clinicId,
                     priorityId: "",
-                    patientId: this.patientId,
-                    prescriptionItems: this.prescriptionItems,
+                    patientId: this.patientDetails._id,
+                    prescriptionItems: this.prescriptionArray,
                     isAuthorised: true
                 };
 
                 console.log(prescription);
+                this.prescriptionItems = prescription;
                 this.prescriptions = prescription;
                 this.addPrescriptionForm.reset();
                 this.addPrescriptionForm.controls['refillCount'].reset(0);
+                this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
                 this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
             }
@@ -150,7 +150,7 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     onClickSavePrescription(value: any, valid: boolean) {
-        if (valid && (this.prescriptionItems.length > 0)) {
+        if (valid && (this.prescriptionArray.length > 0)) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._facilityService.announceNotification({
                     type: "Info",
@@ -167,6 +167,10 @@ export class PatientPrescriptionComponent implements OnInit {
                         });
                         this.prescriptionItems = [];
                         this.addPrescriptionForm.reset();
+                        this.addPrescriptionForm.controls['refillCount'].reset(0);
+                        this.addPrescriptionForm.controls['duration'].reset(0);
+                        this.addPrescriptionForm.controls['startDate'].reset(new Date());
+                        this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
                     })
                     .catch(err => {
                         this._facilityService.announceNotification({
