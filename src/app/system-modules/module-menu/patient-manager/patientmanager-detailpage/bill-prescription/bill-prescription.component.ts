@@ -3,7 +3,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
-    FacilitiesService, ProductService
+    FacilitiesService, ProductService, FacilityPriceService
 } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -19,6 +19,7 @@ export class BillPrescriptionComponent implements OnInit {
 	drugs: any[] = [];
 	itemCost: number = 0;
 	title: string = '';
+	price: number = 0;
 
 	mainErr: boolean = true;
 	errMsg: string = 'You have unresolved errors';
@@ -26,7 +27,8 @@ export class BillPrescriptionComponent implements OnInit {
 	constructor(
 		private _fb: FormBuilder,
 		private _locker: CoolLocalStorage,
-		private _productService: ProductService
+		private _productService: ProductService,
+		private _facilityPriceService: FacilityPriceService
 	) { }
 
 	ngOnInit() {
@@ -42,7 +44,22 @@ export class BillPrescriptionComponent implements OnInit {
 
 		this.addBillForm.controls['drug'].valueChanges.subscribe(val => {
 			console.log(val);
-			//getProductService();
+			let fsId: string = '';
+			let sId: string = '';
+			let cId: string = '';
+			// Get the service for the product
+			this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
+				.then(res => {
+					console.log(res);
+					if(res.data.length > 0) {
+						if(res.data[0].price !== undefined) {
+							this.price = res.data[0].price;
+						}
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				})
 		})
 	}
 
@@ -86,5 +103,22 @@ export class BillPrescriptionComponent implements OnInit {
 					console.log(err);
 				});
 	}
+
+	// Get the price for product selected
+	// getProductService() {
+	// 	// Get the service for the product
+	// 	this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
+	// 		.then(res => {
+	// 			console.log(res);
+	// 			if(res.data.length > 0) {
+	// 				if(res.data[0].price !== undefined) {
+	// 					this.price = res.data[0].price;
+	// 				}
+	// 			}
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		})
+	// }
 
 }
