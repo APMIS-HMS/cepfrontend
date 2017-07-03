@@ -5,7 +5,7 @@
 
 .table-inner {
     .table-data {
-        width: 100%;
+        //width: 100%;
         padding: 5px 0;
         text-align: center;
     }
@@ -30,7 +30,6 @@
         /* Add a grey border */
         margin-bottom: 12px;
         /* Add some space below the input */
-
     }
     .cu-popup-wrapper {
         position: absolute;
@@ -154,6 +153,7 @@ p {
     border-radius: 5px;
     background: #fff;
 }
+
 .total {
     font-size: 13px !important;
 }
