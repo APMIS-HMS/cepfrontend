@@ -2,11 +2,9 @@
 <form [formGroup]="frm_numberVerifier" *ngIf="verify_show" novalidate>
 
   <div class="frm-singleItem-wrap">
-    <small class="alert-label" [hidden]="frm_numberVerifier.controls.txt_numberVerifier.valid || frm_numberVerifier.controls.txt_numberVerifier.pristine">
-          Kindly supply the token texted to your phone.
-        </small>
-    <i class="fa fa-mobile" aria-hidden="true"></i>
-    <input type="text" formControlName="txt_numberVerifier" [(ngModel)]="InputedToken" placeholder="Supply Token">
+      <md-input-container class="example-full-width">
+          <input mdInput md-error placeholder="Supply Token" formControlName="txt_numberVerifier" [(ngModel)]="InputedToken">
+      </md-input-container>
   </div>
 
   <div class="noToken_wrap">

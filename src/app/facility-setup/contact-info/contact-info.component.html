@@ -4,98 +4,65 @@
   <form [formGroup]="facilityForm1_1" novalidate>
 
     <div class="lhs">
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitystate.valid || facilityForm1_1.controls.facilitystate.pristine">
-            this field is required.
-          </small>
-        <i class="fa fa-map-marker" aria-hidden="true"></i>
-        <select *ngIf="stateAvailable" formControlName="facilitystate" (change)="onStateChange($event.target.value)">
-            <option  value="" disabled selected>State (Location)</option>
-            <option *ngFor="let state of selectedCountry?.states" ng-selected="inputFacility.address.state" [ngValue]="state">{{state.name}}</option>
-          </select>
-        <input type="text" [hidden]="stateAvailable" formControlName="facilitystate" placeholder="Facility State (Location)." autocomplete="off">
+          <md-select *ngIf="stateAvailable" placeholder="State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.target.value)">
+              <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
+          </md-select>
+          <md-input-container [hidden]="stateAvailable">
+              <input mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate" value="inputFacility.website">
+          </md-input-container>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitycity.valid || facilityForm1_1.controls.facilitycity.pristine">
-            this field is required.
-          </small>
-        <i class="fa fa-map-marker" aria-hidden="true"></i>
-        <select *ngIf="stateAvailable" formControlName="facilitycity">
-            <option  value="" disabled selected>Facility City (Location)</option>
-            <option *ngFor="let item of cities" ng-selected="inputFacility.address.city" value = "{{item._id}}">{{item.name}}</option>
-          </select>
+          <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitycity">
+              <md-option *ngFor="let item of cities" selected="inputFacility.address.city" [value]="item._id">{{item.name}}</md-option>
+          </md-select>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylga.valid || facilityForm1_1.controls.facilitylga.pristine">
-            this field is required.
-          </small>
-        <i class="fa fa-map-marker" aria-hidden="true"></i>
-        <select *ngIf="stateAvailable" formControlName="facilitylga">
-            <option  value="" disabled selected>Local Government (Location)</option>
-            <option *ngFor="let item of lgas" ng-selected="inputFacility.address.lga" value = "{{item._id}}">{{item.name}}</option>
-          </select>
+          <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
+              <md-option *ngFor="let item of lgas" selected="inputFacility.address.lga" [value]="item._id">{{item.name}}</md-option>
+          </md-select>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityaddress.valid || facilityForm1_1.controls.facilityaddress.pristine">
-            this field is required.
-          </small>
-        <i class="fa fa-map-marker" aria-hidden="true"></i>
-        <input type="text" formControlName="facilityaddress" value="inputFacility.address.street" placeholder="Facility Address (Location)" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Facility Address (Location)" formControlName="facilityaddress" value="inputFacility.address.street">
+          </md-input-container>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilitylandmark.valid || facilityForm1_1.controls.facilitylandmark.pristine">
-            this field is required.
-          </small>
-        <i class="fa fa-map-marker" aria-hidden="true"></i>
-        <input type="text" formControlName="facilitylandmark" value="inputFacility.address.landmark" placeholder="Major Landmark" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Major Landmark" formControlName="facilitylandmark" value="inputFacility.address.landmark">
+          </md-input-container>
       </div>
 
     </div>
     <div class="rhs">
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.contactFName.valid || facilityForm1_1.controls.contactFName.pristine">
-            Contact First Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
-          </small>
-        <i class="fa fa-user-md" aria-hidden="true"></i>
-        <input type="text" formControlName="contactFName" placeholder="Contact Person (First Name)" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Contact Person (First Name)" formControlName="contactFName">
+          </md-input-container>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.contactLName.valid || facilityForm1_1.controls.contactLName.pristine">
-            Contact Last Name is a required field and accepts alphabets only (minimum 3 and max of 15 characters).
-          </small>
-        <i class="fa fa-user-md" aria-hidden="true"></i>
-        <input type="text" formControlName="contactLName" placeholder="Contact Person (Last Name)" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Contact Person (Last Name)" formControlName="contactLName">
+          </md-input-container>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.facilityphonNo.valid || facilityForm1_1.controls.facilityphonNo.pristine">
-            a contact number is required (minimum 5 characters).
-          </small>
-        <i class="fa fa-phone" aria-hidden="true"></i>
-        <input type="tel" formControlName="facilityphonNo" placeholder="Contact Number" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <input type="tel" mdInput md-error placeholder="Contact Number" formControlName="facilityphonNo">
+          </md-input-container>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.password.valid || facilityForm1_1.controls.password.pristine">
-            This field is required (minimum 5 characters).
-          </small>
-        <i class="fa fa-lock" aria-hidden="true"></i>
-        <input type="password" formControlName="password" placeholder="Password" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
+              <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Password">
+              <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
+          </md-input-container>
       </div>
-
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="facilityForm1_1.controls.repass.valid || facilityForm1_1.controls.repass.pristine">
-            This field is required (minimum 5 characters).
-          </small>
-        <i class="fa fa-lock" aria-hidden="true"></i>
-        <input type="password" formControlName="repass" placeholder="Confirm Password" autocomplete="off">
+          <md-input-container class="example-full-width">
+              <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
+              <input type="password" mdInput md-error formControlName="repass" #showhideinput placeholder="Confirm Password">
+              <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
+          </md-input-container>
       </div>
 
     </div>
