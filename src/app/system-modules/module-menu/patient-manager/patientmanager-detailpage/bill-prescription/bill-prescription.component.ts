@@ -48,18 +48,18 @@ export class BillPrescriptionComponent implements OnInit {
 			let sId: string = '';
 			let cId: string = '';
 			// Get the service for the product
-			this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-				.then(res => {
-					console.log(res);
-					if(res.data.length > 0) {
-						if(res.data[0].price !== undefined) {
-							this.price = res.data[0].price;
-						}
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				})
+			// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
+			// 	.then(res => {
+			// 		console.log(res);
+			// 		if(res.data.length > 0) {
+			// 			if(res.data[0].price !== undefined) {
+			// 				this.price = res.data[0].price;
+			// 			}
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		console.log(err);
+			// 	})
 		})
 	}
 
@@ -102,6 +102,27 @@ export class BillPrescriptionComponent implements OnInit {
 				.catch(err => {
 					console.log(err);
 				});
+	}
+
+	onClickCustomSearchItem(event, drugId) {
+		//this.addBillForm.controls['product'].setValue(event.srcElement.innerText);
+		//this.selectedProductId = drugId.getAttribute('data-p-id');
+		let fsId = drugId.getAttribute('data-p-fsid');
+		let sId = drugId.getAttribute('data-p-sid');
+		let cId = drugId.getAttribute('data-p-cid');
+		// Get the service for the product
+		// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
+		// 	.then(res => {
+		// 		console.log(res);
+		// 		if(res.data.length > 0) {
+		// 			if(res.data[0].price !== undefined) {
+		// 				this.price = res.data[0].price;
+		// 			}
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		console.log(err);
+		// 	})
 	}
 
 	// Get the price for product selected
