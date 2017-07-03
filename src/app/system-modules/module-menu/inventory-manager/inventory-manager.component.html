@@ -7,19 +7,20 @@
             <li [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
             <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
             <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
+            <li (click)="onChangeCheckedIn()">Change CheckedIn Store</li>
         </ul>
     </div>
     <div class="inner-page-wrap">
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
-                <li [class.navActive]="inventoryNavMenu" (click)="onClickInventoryNavMenu()" routerLink="/modules/inventory-manager/inventory">My Inventory</li>
-                <li [class.navActive]="stockTakingNavMenu" (click)="onClickStockTakingNavMenu()" routerLink="/modules/inventory-manager/stock-taking">Stock Auditing</li>
-                <li routerLink="/modules/inventory-manager/stock-transfer" [class.navActive]="stockTransferNavMenu" (click)="onClickStockTransferNavMenu()">Transfer Stock</li>
-                <li [class.navActive]="stockHistoryNavMenu" (click)="onClickStockHistoryNavMenu()" routerLink="/modules/inventory-manager/stock-history">Transfer History</li>
-                <li [class.navActive]="receiveStockNavMenu" (click)="onClickReceiveStockNavMenu()" routerLink="/modules/inventory-manager/receive-stock">Receive Stock</li>
-                <li [class.navActive]="requisitionNavMenu" (click)="onClickRequisitionNavMenu()" routerLink="/modules/inventory-manager/requisition">Requisition</li>
+                <li [class.navActive]="inventoryNavMenu" (click)="onClickInventoryNavMenu()" routerLink="/dashboard/inventory-manager/inventory">My Inventory</li>
+                <li [class.navActive]="stockTakingNavMenu" (click)="onClickStockTakingNavMenu()" routerLink="/dashboard/inventory-manager/stock-taking">Stock Auditing</li>
+                <li routerLink="/dashboard/inventory-manager/stock-transfer" [class.navActive]="stockTransferNavMenu" (click)="onClickStockTransferNavMenu()">Transfer Stock</li>
+                <li [class.navActive]="stockHistoryNavMenu" (click)="onClickStockHistoryNavMenu()" routerLink="/dashboard/inventory-manager/stock-history">Transfer History</li>
+                <li [class.navActive]="receiveStockNavMenu" (click)="onClickReceiveStockNavMenu()" routerLink="/dashboard/inventory-manager/receive-stock">Receive Stock</li>
+                <li [class.navActive]="requisitionNavMenu" (click)="onClickRequisitionNavMenu()" routerLink="/dashboard/inventory-manager/requisition">Requisition</li>
                 <li class="list-break-line"></li>
-                <li [class.navActive]="purchaseManagerNavMenu" routerLink="/modules/purchase-manager/purchases">Purchase Manager</li>
+                <li [class.navActive]="purchaseManagerNavMenu" routerLink="/dashboard/purchase-manager/purchases">Purchase Manager</li>
             </ul>
         </div>
         <div class="rhs inner-page-contentArea c-page-wrapper">

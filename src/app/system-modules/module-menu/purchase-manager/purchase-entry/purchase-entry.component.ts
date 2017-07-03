@@ -376,7 +376,7 @@ export class PurchaseEntryComponent implements OnInit {
   }
   getSuppliers() {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id }, $paginate: false }).then(payload => {
-      this.suppliers = payload;
+      this.suppliers = payload.data;
     });
   }
   getStrengths() {
@@ -402,11 +402,11 @@ export class PurchaseEntryComponent implements OnInit {
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
   onProductCheckChange(event, value) {
-    value.checked = event.value;
+    value.checked = event.checked;
 
     const storeId = this.frm_purchaseOrder.controls['store'].value;
 
-    if (event.value === true) {
+    if (event.checked === true) {
       this.inventoryService.find({ query: { facilityId: this.selectedFacility._id, storeId: storeId, productId: value._id } })
         .subscribe(result => {
           let existingInventory = {};
@@ -457,7 +457,7 @@ export class PurchaseEntryComponent implements OnInit {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
-          this.onProductCheckChange({ value: false }, value);
+          this.onProductCheckChange({ checked: false }, value);
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
           if (count === 0) {
             this.addNewProductTables();
@@ -564,7 +564,7 @@ export class PurchaseEntryComponent implements OnInit {
             this.frm_purchaseOrder.controls['invoiceNo'].reset();
             this.getAllProducts();
             this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-            this.router.navigate(['modules/purchase-manager/invoices']);
+            this.router.navigate(['dashboard/purchase-manager/invoices']);
           });
         }
         if (existingInventories.length > 0) {
@@ -573,7 +573,7 @@ export class PurchaseEntryComponent implements OnInit {
               this.frm_purchaseOrder.controls['invoiceNo'].reset();
               this.getAllProducts();
               this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-              this.router.navigate(['modules/purchase-manager/invoices']);
+              this.router.navigate(['dashboard/purchase-manager/invoices']);
             });
           });
 

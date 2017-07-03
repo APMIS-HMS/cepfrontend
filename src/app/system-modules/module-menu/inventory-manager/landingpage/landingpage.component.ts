@@ -65,7 +65,9 @@ export class LandingpageComponent implements OnInit {
     });
   }
 
+  onSelectProduct(product) {
 
+  }
   slideInventoryDetailsToggle(value) {
     this.slideInventoryDetails = !this.slideInventoryDetails;
     if (value !== null && value !== undefined && value.productId !== undefined) {

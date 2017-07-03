@@ -60,9 +60,9 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   onNavigateToDetail(value) {
-    this.router.navigate(['/modules/purchase-manager/order-details', value._id]);
+    this.router.navigate(['/dashboard/purchase-manager/order-details', value._id]);
   }
   onNavigateToAddStore(value) {
-    this.router.navigate(['/modules/purchase-manager/purchase-entry', value._id]);
+    this.router.navigate(['/dashboard/purchase-manager/purchase-entry', value._id]);
   }
 }
