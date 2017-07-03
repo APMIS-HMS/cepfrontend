@@ -17,7 +17,7 @@
             <input type="text" formControlName="dependant" placeholder="Dependant" autocomplete="off">
           </div>
           <div class="frm-item-wrap">
-            <select formControlName="relationship" (change)="onrelationshipChange($event.target.value)">
+            <select formControlName="relationship" (change)="onrelationshipChange($event.value)">
               <option  value="" disabled selected>Relationship</option>
               <option value="Spouse">Spouse</option>
               <option value="Father">Father</option>

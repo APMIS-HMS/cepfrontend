@@ -55,7 +55,7 @@
         <div class="rhs">
             
             <div class="frm-item-wrap">
-                <md-select placeholder="Nationality"  formControlName="nationality" (change)="onNationalityChange($event.target.value)">
+                <md-select placeholder="Nationality"  formControlName="nationality" (change)="onNationalityChange($event.value)">
                     <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
                 </md-select>
             </div>

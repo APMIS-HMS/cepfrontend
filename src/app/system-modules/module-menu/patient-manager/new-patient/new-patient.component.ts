@@ -230,6 +230,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         });
         this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
+            console.log(value);
             this.contactStates = value.states;
         });
         this.frmNewEmp2.controls['empContactState'].valueChanges.subscribe((value) => {

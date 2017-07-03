@@ -21,7 +21,7 @@
 						<option  value="" disabled selected>Title</option>
 						<option *ngFor="let item of titles"  value="{{item._id}}">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.target.value)">
+                    <md-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
                         <md-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -64,7 +64,7 @@
 						<option  value="" disabled selected>Gender</option>
 						<option *ngFor="let item of genders"  value="{{item._id}}">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.target.value)">
+                    <md-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
                         <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -80,7 +80,7 @@
 						<option  value="" disabled selected>Nationality</option>
 						<option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.target.value)">
+                    <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
                         <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -93,7 +93,7 @@
 						<option  value="" disabled selected>State of Origin</option>
 						<option *ngFor="let item of states"  [ngValue]="item">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.target.value)">
+                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
                         <md-option *ngFor="let item of states" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -107,7 +107,7 @@
 						<option  value="" disabled selected>LGA</option>
 						<option *ngFor="let item of lgs"  value="{{item._id}}">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.target.value)">
+                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
                         <md-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -158,7 +158,7 @@
 						<option  value="" disabled selected>Marital Status</option>
 						<option *ngFor="let item of maritalStatuses"  value="{{item._id}}">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.target.value)">
+                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
                         <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -196,10 +196,10 @@
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frmNewEmp2.controls.empCountry.valid || frmNewEmp2.controls.empCountry.pristine">
+                    <!--<small class="alert-label" [hidden]="frmNewEmp2.controls.empCountry.valid || frmNewEmp2.controls.empCountry.pristine">
 						this field is required.
 					</small>
-                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                    <i class="fa fa-location-arrow" aria-hidden="true"></i>-->
                     <!--<select formControlName="empCountry">
 						<option value="" disabled selected>Select Country</option>
 						<option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
@@ -302,7 +302,7 @@
 						<option  value="" disabled selected>Relationship</option>
 						<option *ngFor="let item of relationships"  value="{{item._id}}">{{item.name}}</option>
 					</select>-->
-                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.target.value)">
+                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
                         <md-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
