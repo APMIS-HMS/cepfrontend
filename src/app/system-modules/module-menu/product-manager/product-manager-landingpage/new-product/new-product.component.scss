@@ -36,11 +36,13 @@ legend.modal-title {
 .sugestion-wrap {
     position: absolute;
     padding: 3px;
-    background: #c3c3c3;
+    background: #eee;
     border-radius: 10px;
     width: 100%;
-    // z-index: 1;
+    z-index: 10;
     font-size: 12px;
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .sugestion-item {

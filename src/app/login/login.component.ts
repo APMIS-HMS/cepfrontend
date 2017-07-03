@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
-  toggleShow(e) {
+  toggleShow(e) { 
     this.show = !this.show;
     if (this.show) {
       this.input.nativeElement.type = 'text';

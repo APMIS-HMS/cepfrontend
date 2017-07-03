@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
 	CountriesService, FacilityTypesService, FacilitiesService, GenderService,
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
 	selector: 'app-contact-info',
 	templateUrl: './contact-info.component.html',
-	styleUrls: ['../facility-setup.component.scss']
+	styleUrls: ['../facility-setup.component.scss', './contact-info.component.scss']
 })
 export class ContactInfoComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -19,6 +19,9 @@ export class ContactInfoComponent implements OnInit {
 
 	selectedCountry_key = []; //states of the selected country load key
 	stateAvailable = false; //boolean variable to check if the list of user selected state exists in code
+	
+	show = false;
+  	@ViewChild('showhideinput') input;
 
 	countries: any[] = [];
 	titles: Title[] = [];
@@ -41,8 +44,6 @@ export class ContactInfoComponent implements OnInit {
 	next_key_show = false;
 
 	public facilityForm1_1: FormGroup;
-
-
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -224,6 +225,14 @@ export class ContactInfoComponent implements OnInit {
 
 	close_onClick() {
 		this.closeModal.emit(true);
+	}
+	toggleShow(e) { 
+		this.show = !this.show;
+		if (this.show) {
+		this.input.nativeElement.type = 'text';
+		} else {
+		this.input.nativeElement.type = 'password';
+		}
 	}
 
 }
