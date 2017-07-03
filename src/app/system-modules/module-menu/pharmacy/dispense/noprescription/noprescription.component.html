@@ -116,9 +116,9 @@
         <div class="table-head-inner-content" id="drugs">
             <p>Drugs</p>
         </div>
-        <div class="table-head-inner-content">
+        <!--<div class="table-head-inner-content">
             <p>Client</p>
-        </div>
+        </div>-->
         <div class="table-head-inner-content" id="qt">
             <p>Qty</p>
         </div>
@@ -137,16 +137,16 @@
             <p>{{ prescription.productName }}</p>
         </div>
         <div class="table-data qt">
-            {{ prescription.qty }}
+           <p> {{ prescription.qty }}</p>
         </div>
         <div class="table-data">
-            {{ prescription.batchNumber }}
+           <p> {{ prescription.batchNumber }}</p>
         </div>
         <div class="table-data">
             <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
         </div>
         <div class="table-data">
-            <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i>
+           <p> <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></p>
         </div>
     </div>
     <div class="table-inner" *ngIf="prescriptions.length === 0">

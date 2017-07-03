@@ -177,7 +177,7 @@ export class NewProductComponent implements OnInit {
     let name = this.frm_newProduct.controls['name'].value;
     let genericName = this.frm_newProduct.controls['genericName'].value;
     if (name !== null && name !== undefined && name.length > 0) {
-      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(400)
+      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
         .distinctUntilChanged()
         .switchMap((dictionaries: any[]) => this.drugListApiService.find({
           query: {
@@ -391,7 +391,6 @@ export class NewProductComponent implements OnInit {
 
   setIngredientItem(values: any[]) {
     var control = <FormArray>this.ingredientForm.controls['ingredients'];
-
     values.forEach((item) => {
       control.push(
         this.formBuilder.group({
