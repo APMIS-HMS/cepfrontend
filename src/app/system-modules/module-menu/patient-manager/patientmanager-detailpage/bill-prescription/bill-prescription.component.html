@@ -17,7 +17,7 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px">
                                             <md-select placeholder="Drug" formControlName="drug" class="example-full-width">
-                                                <md-option *ngFor="let drug of drugs" [(value)]="drug._id">{{ drug.name }}</md-option>
+                                                <md-option *ngFor="let drug of drugs" [(value)]="drug._id" #productId [attr.data-p-id]="drug._id" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" (click)="onClickCustomSearchItem($event, productId)">{{ drug.name }}</md-option>
                                             </md-select>
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
