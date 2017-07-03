@@ -12,13 +12,13 @@
               <input mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate" value="inputFacility.website">
           </md-input-container>-->
       </div>
-      <!--<div class="frm-item-wrap">
+      <div class="frm-item-wrap">
           <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitycity">
               <md-option *ngFor="let item of cities" selected="inputFacility.address.city" [value]="item._id">{{item.name}}</md-option>
           </md-select>
-      </div>-->
+      </div>
       <div class="frm-item-wrap">
-          <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
+          <md-select placeholder="Facility LGA (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
               <md-option *ngFor="let item of lgas" selected="inputFacility.address.lga" [value]="item._id">{{item.name}}</md-option>
           </md-select>
       </div>
