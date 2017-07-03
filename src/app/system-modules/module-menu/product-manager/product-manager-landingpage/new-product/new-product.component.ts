@@ -336,7 +336,7 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand + " " + payload.drugName);
+      this.frm_newProduct.controls['name'].setValue(payload.brand + "-" + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
