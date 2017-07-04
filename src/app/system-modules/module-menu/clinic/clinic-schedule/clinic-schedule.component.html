@@ -7,10 +7,13 @@
                 <div class="frmitemwrap">
                     <div class="frm-label">Clinic</div>
                     <div class="dx-field">
-                        <dx-lookup [dataSource]="clinics" [formControl]="locationTypeControl" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
+                       <dx-lookup [dataSource]="clinics" [formControl]="locationTypeControl" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
                             displayExpr="clinicName">
                         </dx-lookup>
                     </div>
+                   <!-- <md-select placeholder="Clinic" [formControl]="locationTypeControl">
+                        <md-option *ngFor="let clinic of clinics" value="_id">{{ clinic.clinicName }}</md-option>
+                    </md-select>-->
                 </div>
                 <form *ngIf="locationTypeControl.value != null" [formGroup]="clinicScheduleForm" class="form-horizontal" (ngSubmit)="onSubmit()">
                     <div formArrayName="clinicScheduleArray" class="frmArrayWrap">

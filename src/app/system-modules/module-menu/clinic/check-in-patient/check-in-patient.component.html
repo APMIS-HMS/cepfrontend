@@ -1,6 +1,40 @@
 <div class="page-title">Checked-In Patients</div>
 
 <div class="checkedinPatients">
+    <div class="survery">
+        <div class="row">
+            <div class="col-sm-3">
+                <md-select placeholder="Doctor">
+                    <md-option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</md-option>
+                </md-select>
+            </div>
+            <div class="col-sm-3">
+                 <!--<div class="dx-field-value">
+                                <dx-select-box [items]="clinicHelperService.clinicLocations" displayExpr="name" valueExpr="_id"></dx-select-box>
+                 </div>-->
+                <md-select placeholder="Sort By Location">
+                    <md-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</md-option>
+                </md-select>
+            </div>
+            <div class="col-sm-3">
+                <!--
+                <div>Sort By Clinic</div>
+                    <div class="dx-field-value">
+                    <dx-select-box [items]="clinics" displayExpr="clinicName" valueExpr="_id"></dx-select-box>
+                </div>
+                -->
+                <md-select placeholder="Sort By Clinics">
+                    <md-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</md-option>
+                </md-select>
+            </div>
+            <div class="col-sm-3">
+                <md-input-container class="example-full-width">
+                            <input mdInput placeholder="Search Checked in Patient">
+                </md-input-container>
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
 
     <table cellpadding="0" cellspacing="0" border="0.5">
         <thead>
@@ -40,37 +74,6 @@
         </thead>
 
         <tbody>
-            <tr>
-                <td colspan="7">
-                    <div class="tbl-actionRow">
-                        <div class="dx-field">
-                            <div>Sort By Doctor</div>
-                            <div class="dx-field-value">
-                                <dx-select-box [items]="employees" displayExpr="employeeDetails.personFullName" valueExpr="_id"></dx-select-box>
-                            </div>
-                        </div>
-                        <div class="dx-field">
-                            <div>Sort By Location</div>
-                            <div class="dx-field-value">
-                                <dx-select-box [items]="clinicHelperService.clinicLocations" displayExpr="name" valueExpr="_id"></dx-select-box>
-                            </div>
-                        </div>
-                        <div class="dx-field">
-                            <div>Sort By Clinic</div>
-                            <div class="dx-field-value">
-                                <dx-select-box [items]="clinics" displayExpr="clinicName" valueExpr="_id"></dx-select-box>
-                            </div>
-                        </div>
-                        <div class="tbl-search">
-                            <div class="searchInputWrap">
-                                <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search checked in patients">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
             <tr *ngFor="let appointment of checkedInAppointments">
                 <td>
                     <div class="empWrap" (click)="goToPatientPage(appointment,false)">
