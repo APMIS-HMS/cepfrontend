@@ -19,6 +19,7 @@ import { MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModul
         MdNativeDateModule,
         MdDatepickerModule,
         MdButtonModule,
+        MdRadioModule,
         MdCheckboxModule,
         MdProgressSpinnerModule,
         MdInputModule,
