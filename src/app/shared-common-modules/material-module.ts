@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule } from '@angular/material';
+     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioModule } from '@angular/material';
 @NgModule({
     declarations: [],
     exports: [
@@ -12,7 +12,8 @@ import { MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModul
         MdInputModule,
         MdOptionModule,
         MdSelectionModule,
-        MdSelectModule
+        MdSelectModule,
+        MdRadioModule
     ],
     imports: [
         MdNativeDateModule,
@@ -23,7 +24,8 @@ import { MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModul
         MdInputModule,
         MdOptionModule,
         MdSelectionModule,
-        MdSelectModule
+        MdSelectModule,
+        MdRadioModule
     ],
     providers: []
 })
