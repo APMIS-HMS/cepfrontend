@@ -5,16 +5,11 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form [formGroup]="addBedFormGroup" novalidate>
-        <div class="lhs padding-up">
-            <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="addBedFormGroup.controls.bed.valid || addBedFormGroup.controls.bed.pristine">
-					Kindly enter the bed name.
-				</small>
-                <i class="fa fa-bullseye" aria-hidden="true"></i>
-                <input formControlName="bed" type="text" placeholder="Enter room name">
-            </div>
+        <div class="frm-item-wrap">
+            <md-input-container>
+                <input mdInput md-error placeholder="Enter room name" formControlName="bed">
+            </md-input-container>
         </div>
-        <div class="clear"></div>
         <button (click)="addbed(addBedFormGroup.value, addBedFormGroup.valid)" class="cta-1">Add Bed</button>
     </form>
 </div>

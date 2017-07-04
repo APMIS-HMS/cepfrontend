@@ -18,6 +18,7 @@ import { AddBedComponent } from './ward-manager-setuppage/add-bed/add-bed.compon
 import { DischargePatientComponent } from './discharge-patient/discharge-patient.component';
 import { TransferPatientComponent } from './transfer-patient/transfer-patient.component';
 import { WardEmitterService } from '../../../services/facility-manager/ward-emitter.service';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-details/bill-details.component';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
     ],
     imports: [
         SharedModule,
+        MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,

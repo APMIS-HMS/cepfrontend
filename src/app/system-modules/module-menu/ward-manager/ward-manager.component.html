@@ -3,10 +3,10 @@
     <div class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle"  [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
         <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-            <li routerLink="/modules/ward-manager/admission"><i class="fa fa-home" aria-hidden="true"></i> Admission</li>
-            <li routerLink="/modules/ward-manager/admitted"><i class="fa fa-home" aria-hidden="true"></i> Admitted Patients</li>
-            <li routerLink="/modules/ward-manager/setup"><i class="fa fa-braille" aria-hidden="true"></i> Ward Setup</li>
-            <li routerLink="/modules/ward-manager/wards"><i class="fa fa-building" aria-hidden="true"></i> Wards</li>
+            <li routerLink="/dashboard/ward-manager/admission"><i class="fa fa-home" aria-hidden="true"></i> Admission</li>
+            <li routerLink="/dashboard/ward-manager/admitted"><i class="fa fa-home" aria-hidden="true"></i> Admitted Patients</li>
+            <li routerLink="/dashboard/ward-manager/setup"><i class="fa fa-braille" aria-hidden="true"></i> Ward Setup</li>
+            <li routerLink="/dashboard/ward-manager/wards"><i class="fa fa-building" aria-hidden="true"></i> Wards</li>
         </ul>
     </div>
     <!--<div class="fullwidth-topActions">
@@ -24,10 +24,10 @@
 
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
-                <li [class.navActive]="admissionNavMenu" (click)="onClickAdmissionNavMenu()" routerLink="/modules/ward-manager/admission">Admission List</li>
-                <li [class.navActive]="admittedNavMenu" (click)="onClickAdmittedNavMenu()" routerLink="/modules/ward-manager/admitted">Admitted Patients</li>
-                <li [class.navActive]="setupNavMenu" (click)="onClickSetupNavMenu()" routerLink="/modules/ward-manager/setup">Setup</li>
-                <li [class.navActive]="wardNavMenu" (click)="onClickWardNavMenu()" routerLink="/modules/ward-manager/wards">Wards</li>
+                <li [class.navActive]="admissionNavMenu" (click)="onClickAdmissionNavMenu()" routerLink="/dashboard/ward-manager/admission">Admission List</li>
+                <li [class.navActive]="admittedNavMenu" (click)="onClickAdmittedNavMenu()" routerLink="/dashboard/ward-manager/admitted">Admitted Patients</li>
+                <li [class.navActive]="setupNavMenu" (click)="onClickSetupNavMenu()" routerLink="/dashboard/ward-manager/setup">Setup</li>
+                <li [class.navActive]="wardNavMenu" (click)="onClickWardNavMenu()" routerLink="/dashboard/ward-manager/wards">Wards</li>
             </ul>
         </div>
         <div class="rhs inner-page-contentArea c-page-wrapper">
