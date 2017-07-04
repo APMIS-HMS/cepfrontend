@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-access-manager',
   templateUrl: './access-manager.component.html',
   styleUrls: ['./access-manager.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AccessManagerComponent implements OnInit {
 
@@ -18,10 +18,10 @@ export class AccessManagerComponent implements OnInit {
 
   innerMenuShow = false;
   selectedFacility: Facility = <Facility>{};
-  users: User[] = [];
+  users: any[] = [];
 
   pageSize = 1;
-  limit = 10;
+  limit = 100;
 
   constructor(private locker: CoolLocalStorage, private router: Router,
     public facilityService: FacilitiesService,
@@ -29,9 +29,9 @@ export class AccessManagerComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    this.searchControl.valueChanges.subscribe(value => {
-      // do something with value here
-    });
+    // this.searchControl.valueChanges.subscribe(value => {
+    //   // do something with value here
+    // });
     this.getUsers(this.limit);
   }
   getUsers(limit) {
@@ -57,19 +57,19 @@ export class AccessManagerComponent implements OnInit {
     }
   }
 
-  onScroll() {
-    this.pageSize = this.pageSize + 1;
-     console.log(this.pageSize);
-    const limit = this.limit * this.pageSize;
-    this.getUsers(limit);
-  }
-  onScrollUp() {
-    console.log(this.pageSize);
-    if (this.pageSize > 1) {
-      this.pageSize = this.pageSize - 1;
-    }
-    const limit = this.limit * this.pageSize;
-    this.getUsers(limit);
-  }
+  // onScroll() {
+  //   this.pageSize = this.pageSize + 1;
+  //    console.log(this.pageSize);
+  //   const limit = this.limit * this.pageSize;
+  //   this.getUsers(limit);
+  // }
+  // onScrollUp() {
+  //   console.log(this.pageSize);
+  //   if (this.pageSize > 1) {
+  //     this.pageSize = this.pageSize - 1;
+  //   }
+  //   const limit = this.limit * this.pageSize;
+  //   this.getUsers(limit);
+  // }
 
 }
