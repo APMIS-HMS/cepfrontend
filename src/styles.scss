@@ -35,7 +35,6 @@ select {
 //     padding: 10px;
 //     border: 1px solid #9E9E9E;
 // }
-
 .lhs {
     float: left;
     padding-right: 25px;
@@ -63,9 +62,11 @@ select {
 .text-green {
     color: green;
 }
+
 .text-red {
     color: red;
 }
+
 .padding {
     padding: 10px;
 }
@@ -112,7 +113,7 @@ select {
     width: 200px;
     height: 49px;
     cursor: pointer;
-    background: rgb(21, 61, 112);
+    background: #0288D1;
     color: #fff;
     margin: 10px auto;
     border: 0;
@@ -121,19 +122,19 @@ select {
     border-radius: 30px;
     -moz-border-radius: 30px;
     -webkit-border-radius: 30px;
-    background: -webkit-gradient(linear, left top, right top, from(rgb(21, 61, 112)), to(rgb(75, 184, 239)));
-    background: -webkit-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -moz-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -ms-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -o-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
+    background: -webkit-gradient(linear, left top, right top, from(#0288D1), to(rgb(75, 184, 239)));
+    background: -webkit-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    background: -moz-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    background: -ms-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    background: -o-linear-gradient(left, #0288D1, rgb(75, 184, 239));
 }
 
 .cta-1:hover {
-    background: -webkit-gradient(linear, right top, left top, from(rgb(21, 61, 112)), to(rgb(75, 184, 239)));
-    background: -webkit-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -moz-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -ms-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -o-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
+    background: -webkit-gradient(linear, right top, left top, from(#0288D1), to(rgb(75, 184, 239)));
+    background: -webkit-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -moz-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -ms-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -o-linear-gradient(right, #0288D1, rgb(75, 184, 239));
     border-right: 0;
     border-left: 1px solid #fff;
 }
@@ -190,6 +191,16 @@ select {
     border-radius: 4px;
 }
 
+.btn {
+    padding: 6px 12px;
+}
+
+.mat-lg-btn {
+    background-color: #0288D1 !important;
+    color: #fff !important;
+    padding: 12px 16px !important;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #03a9f4;
@@ -200,20 +211,21 @@ select {
 }
 
 .btn-blue {
-    background: rgb(21, 61, 112);
-    background: -webkit-gradient(linear, left top, right top, from(rgb(21, 61, 112)), to(rgb(75, 184, 239)));
-    background: -webkit-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -moz-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -ms-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -o-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
+    background: #0288D1;
+    background: -webkit-gradient(linear, left top, right top, from(#0288D1), to(rgb(75, 184, 239)));
+    background: -webkit-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    background: -moz-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    background: -ms-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    background: -o-linear-gradient(left, #0288D1, rgb(75, 184, 239));
+    //background: -o-linear-gradient(left, rgb(21, 61, 112), rgb(75, 184, 239));
 }
 
 .btn-blue:hover {
-    background: -webkit-gradient(linear, right top, left top, from(rgb(21, 61, 112)), to(rgb(75, 184, 239)));
-    background: -webkit-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -moz-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -ms-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -o-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
+    background: -webkit-gradient(linear, right top, left top, from(#0288D1), to(rgb(75, 184, 239)));
+    background: -webkit-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -moz-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -ms-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -o-linear-gradient(right, #0288D1, rgb(75, 184, 239));
 }
 
 .btn-gray {
@@ -372,10 +384,12 @@ select {
     position: relative;
     // padding-bottom: 35px;
 }
+
 .mat-select {
     padding: 1.29688em 0;
     width: 90%;
 }
+
 .toggle-pass {
     position: absolute;
     right: 0;
@@ -636,11 +650,11 @@ select {
 
 .checkOpt-inner-blue {
     background: rgb(75, 184, 239);
-    background: -webkit-gradient(linear, right top, left top, from(rgb(21, 61, 112), to(rgb(75, 184, 239))));
-    background: -webkit-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -moz-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -ms-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
-    background: -o-linear-gradient(right, rgb(21, 61, 112), rgb(75, 184, 239));
+    background: -webkit-gradient(linear, right top, left top, from(#0288D1, to(rgb(75, 184, 239))));
+    background: -webkit-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -moz-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -ms-linear-gradient(right, #0288D1, rgb(75, 184, 239));
+    background: -o-linear-gradient(right, #0288D1, rgb(75, 184, 239));
 }
 
 .inner-page-wrap {
@@ -1139,7 +1153,7 @@ select {
     display: none;
 }
 
-.mat-input-container{
+.mat-input-container {
     width: 90%;
 }
 

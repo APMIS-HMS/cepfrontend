@@ -12,6 +12,7 @@ import { ItemDetailComponent } from './item-detail/item-detail.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { BillLookupComponent } from './bill-lookup/bill-lookup.component';
 import { BillGroupComponent } from './bill-lookup/bill-group/bill-group.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { BillGroupComponent } from './bill-lookup/bill-group/bill-group.componen
     ],
     imports: [
         SharedModule,
+        MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,

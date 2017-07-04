@@ -14,26 +14,6 @@
     </div>
 </div>
 
-<div *ngIf="productCat">
-    <!--<app-category-manager></app-category-manager>-->
+<div *ngIf="modal_on" class="modal-overlay">
+    <app-store-check-in [loginEmployee]="loginEmployee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
 </div>
-
-<div *ngIf="generic">
-    <!--<app-generic-manager></app-generic-manager>-->
-</div>
-
-<div *ngIf="productRoute">
-    <!--<app-route-manager></app-route-manager>-->
-</div>
-
-<div *ngIf="manufacturer">
-    <!--<app-manufacturer-manager></app-manufacturer-manager>-->
-</div>
-
-<div *ngIf="presentation">
-    <!--<app-presentation-manager></app-presentation-manager>-->
-</div>
-
-<!--<div *ngIf="strength">
-    <app-strength-manager></app-strength-manager>
-</div>-->

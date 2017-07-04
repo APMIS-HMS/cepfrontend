@@ -43,6 +43,7 @@ export class GenerateUserComponent implements OnInit {
           this.selectedPerson = payload;
           this.userService.find({ query: { personId: id } }).then(users => {
             if (users.data.length > 0) {
+              console.log(1)
               users.data[0].facilitiesRole.forEach((item, i) => {
                 if (!this.checkAccessControlList(item.feature.accessControlId)) {
                   this.accessControlListString.push(item.feature.accessControlId);
@@ -50,7 +51,8 @@ export class GenerateUserComponent implements OnInit {
               });
               this.getAccessList();
             } else {
-              this.getAccessList();
+              console.log(2)
+              // this.getAccessList();
             }
           });
         });
@@ -65,7 +67,7 @@ export class GenerateUserComponent implements OnInit {
   }
 
   navEpDetail(val: Employee) {
-    this.router.navigate(['/modules/employee-manager/generate-user', val._id]);
+    this.router.navigate(['/dashboard/employee-manager/generate-user', val._id]);
   }
   getAccessList() {
     this.accessControlService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
@@ -78,7 +80,8 @@ export class GenerateUserComponent implements OnInit {
         });
         itemj.featureList.forEach((item, i) => {
           item.cruds = [];
-          for (let ii = 0; i < 4; ii++) {
+          console.log(item)
+          for (let ii = 0; ii < 4; ii++) {
             if (ii === 0) {
               item.cruds.push(<CrudModel>{ id: ii + 1, isChecked: false, name: 'Create' });
             } else if (ii === 1) {
