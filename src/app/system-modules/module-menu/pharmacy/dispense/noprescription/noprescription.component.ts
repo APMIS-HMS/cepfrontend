@@ -76,16 +76,16 @@ export class NoprescriptionComponent implements OnInit {
 		// Nonprescription form group
 		this.noPrescriptionForm = this._fb.group({
 			client: ['', [<any>Validators.required]],
-			lastName: ['', [<any>Validators.required]],
-			firstName: ['', [<any>Validators.required]],
+			lastName: [''],
+			firstName: [''],
 			phone: [''],
-			companyName: ['', [<any>Validators.required]],
+			companyName: [''],
 			companyPhone: [''],
 			dept: ['', [<any>Validators.required]],
 			unit: ['', [<any>Validators.required]],
 			minorLocation: ['', [<any>Validators.required]],
 			product: ['', [<any>Validators.required]],
-			batchNumber: ['', [<any>Validators.required]],
+			batchNumber: [{value: '', disabled: true}, [<any>Validators.required]],
 			qty: [0, [<any>Validators.required]],
 			cost: ['']
 		});
@@ -142,8 +142,9 @@ export class NoprescriptionComponent implements OnInit {
 			prescription['productId'] = this.selectedProductId;
 			prescription['client'] = value.client;
 			prescription['qty'] = value.qty;
-			prescription['cost'] = value.cost;
-			prescription['batchNumber'] = value.batchNumber;
+			prescription['cost'] = value.cost * value.qty;
+			prescription['unitPrice'] = value.cost;
+			prescription['batchNumber'] = this.noPrescriptionForm.controls['batchNumber'].value;
 			prescription['totalQuantity'] = this.totalItemQuantity;
 			prescription['totalCost'] = this.totalItemPrice;
 			console.log(prescription);
@@ -270,25 +271,26 @@ export class NoprescriptionComponent implements OnInit {
 		let sId = drugId.getAttribute('data-p-sid');
 		let cId = drugId.getAttribute('data-p-cid');
 		let batchNumber = drugId.getAttribute('data-p-batchNumber');
-		console.log(batchNumber);
-		// Get the service for the product
-		// this._purchaseEntryService.find({ query : { 
-		// 		facilityId : this.facility._id,
-		// 		productId: this.selectedProductId,
-		// 		facilityServiceId: fsId,
-		// 		serviceId: sId, categoryId: cId
-		// 	}})
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		// if(res.data.length > 0) {
-		// 		// 	if(res.data[0].price !== undefined) {
-		// 		// 		this.price = res.data[0].price;
-		// 		// 	}
-		// 		// }
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 	})
+		this.price = drugId.getAttribute('data-p-costPrice');
+		this.noPrescriptionForm.controls['batchNumber'].setValue(batchNumber);
+		// Get the selling price for the product
+		this._facilityPriceService.find({ query : { 
+				facilityId : this.facility._id,
+				productId: this.selectedProductId,
+				facilityServiceId: fsId,
+				serviceId: sId, categoryId: cId
+			}})
+			.then(res => {
+				console.log(res);
+				// if(res.data.length > 0) {
+				// 	if(res.data[0].price !== undefined) {
+				// 		this.price = res.data[0].price;
+				// 	}
+				// }
+			})
+			.catch(err => {
+				console.log(err);
+			})
 	}
 
 	// Delete item from stack
