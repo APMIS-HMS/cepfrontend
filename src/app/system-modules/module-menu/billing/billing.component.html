@@ -6,7 +6,7 @@
       <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
         <li (click)="servicesShow()"><i class="fa fa-home" aria-hidden="true"></i> Services</li>
         <li (click)="pricelistShow()"><i class="fa fa-file-text-o" aria-hidden="true"></i> Price List</li>
-        <li (click)="navFpDepartments()"><i class="fa fa-money" aria-hidden="true"></i> Payment</li>
+        <li  [routerLink]="['/dashboard/access-manager/access-manager']"><i class="fa fa-money" aria-hidden="true"></i> Payment</li>
       </ul>
     </div>
     <div class="inner-page-wrap">

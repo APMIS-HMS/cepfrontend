@@ -9,11 +9,9 @@
     <form [formGroup]="frmAddModifier" novalidate>
 
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmAddModifier.controls.modifier.valid || frmAddModifier.controls.modifier.pristine">
-          required field.
-        </small>
-        <i class="fa fa-object-group" aria-hidden="true"></i>
-        <input type="text" formControlName="modifier"  placeholder="Select Modifier" autocomplete="off">
+        <md-input-container>
+            <input mdInput md-error placeholder="Select Modifier" formControlName="modifier">
+        </md-input-container>
         <div class="suggestionFeeds">
           <div (click)="onSelectModifier(modifier)" *ngFor="let modifier of modifiers" class="suggestedItem">
             <span class="suggetedName">{{modifier?.tagDetails?.name}}</span>

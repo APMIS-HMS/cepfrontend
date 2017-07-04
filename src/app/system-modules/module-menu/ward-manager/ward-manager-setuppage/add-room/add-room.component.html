@@ -7,33 +7,20 @@
     <form [formGroup]="addRoomFormGroup" novalidate>
         <div class="lhs padding-up">
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="addRoomFormGroup.controls.room.valid || addRoomFormGroup.controls.room.pristine">
-					Kindly enter the room name.
-				</small>
-                <i class="fa fa-bullseye" aria-hidden="true"></i>
-                <input type="text" formControlName="room" placeholder="Room Name">
+                <md-input-container>
+                    <input mdInput md-error placeholder="Room Name" formControlName="room">
+                </md-input-container>
             </div>
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="addRoomFormGroup.controls.group.valid || addRoomFormGroup.controls.group.pristine">
-					Kindly select an option from the drop down.
-				</small>
-                <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                <select formControlName="group">
-					<option  value="" disabled selected>Group</option>
-					<option  *ngFor="let item of roomGroupItems" value="{{item._id}}">{{item.name}}</option>
-                    </select>
+                <md-select placeholder="Group" formControlName="group">
+                    <md-option *ngFor="let item of roomGroupItems" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
             </div>
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="addRoomFormGroup.controls.group.valid || addRoomFormGroup.controls.group.pristine">
-					Kindly select an option from the drop down.
-				</small>
-                <i class="fa fa-money" aria-hidden="true"></i>
-                <select formControlName="service">
-					<option  value="" disabled selected>Select Service</option>
-					<option  *ngFor="let item of wardServicePriceTags" value="{{item._id}}">{{item.name}}</option>
-				</select>
+                <md-select placeholder="Select Service" formControlName="service">
+                    <md-option *ngFor="let item of wardServicePriceTags" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
             </div>
-            <div class="clear"></div>
             <button (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="cta-1">Add Room</button>
         </div>
     </form>

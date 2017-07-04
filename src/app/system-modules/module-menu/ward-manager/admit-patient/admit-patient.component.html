@@ -5,46 +5,29 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form [formGroup]="admitFormGroup" novalidate>
-        <div class="lhs">
-            <!--<div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="admitFormGroup.controls.ward.valid || admitFormGroup.controls.ward.pristine">
-					Kindly select an option from the drop down.
-				</small>
-                <i class="fa fa-bullseye" aria-hidden="true"></i>
-                <select formControlName="ward" (change)="onWardChange($event.target.value)">
-					<option  value="" disabled selected>Ward</option>
-					<option *ngFor="let ward of wardLocationItems"  value="{{ward._id}}">{{ward.name}}</option>
-				</select>
-            </div>-->
+        <div>
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="admitFormGroup.controls.room.valid || admitFormGroup.controls.room.pristine">
-					Kindly select an option from the drop down.
-				</small>
-                <i class="fa fa-hotel" aria-hidden="true"></i>
-                <select formControlName="room" (change)="onRoomChange($event.target.value)">
-					<option  value="" disabled selected>Select Room</option>
-					<option  *ngFor="let roomItem of wardRoomLocationItems"  value="{{roomItem?._id}}" value="">{{roomItem?.name}}</option>
-				</select>
+                <md-select placeholder="Select Room" formControlName="room" (change)="onRoomChange($event.value)">
+                    <md-option *ngFor="let roomItem of wardRoomLocationItems" [value]="roomItem?._id">{{roomItem?.name}}</md-option>
+                </md-select> 
             </div>
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="admitFormGroup.controls.bed.valid || admitFormGroup.controls.bed.pristine">
-					Kindly select an option from the drop down.
-				</small>
-                <i class="fa fa-bed" aria-hidden="true"></i>
-                <select formControlName="bed">
-					<option  value="" disabled selected>Select Bed</option>
-					<option  *ngFor="let bedItem of wardRoomBedLocationItems"  value="{{bedItem._id}}" value="">{{bedItem.name}}</option>
-				</select>
+                <md-select placeholder="Select Bed" formControlName="bed">
+                    <md-option *ngFor="let bedItem of wardRoomBedLocationItems" [value]="bedItem._id">{{bedItem.name}}</md-option>
+                </md-select> 
             </div>
+
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="admitFormGroup.controls.desc.valid || admitFormGroup.controls.desc.pristine">
+                <md-input-container class="example-full-width">
+                    <textarea mdInput formControlName="desc" placeholder="Description"></textarea>
+                </md-input-container>
+                <!--<small class="alert-label" [hidden]="admitFormGroup.controls.desc.valid || admitFormGroup.controls.desc.pristine">
 					this is a required field (minimum 3 and max of 20 characters).
 				</small>
                 <i class="fa fa-building-o" aria-hidden="true"></i>
-                <textarea class="edit-control lhs modal-textarea" formControlName="desc" placeholder="Description" autocomplete="off" style="width:90%; height:120px;"></textarea>
+                <textarea class="edit-control lhs modal-textarea" formControlName="desc" placeholder="Description" autocomplete="off" style="width:90%; height:120px;"></textarea>-->
             </div>
         </div>
-        <div class="clear"></div>
         <button (click)="onAdmit(admitFormGroup.value, admitFormGroup.valid)" class="cta-1"> <i class="fa fa-plus"></i>&nbsp; Admit Patient</button>
     </form>
 </div>

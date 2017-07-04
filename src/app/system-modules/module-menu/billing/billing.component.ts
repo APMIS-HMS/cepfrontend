@@ -19,7 +19,7 @@ export class BillingComponent implements OnInit {
   pageInViewLoader(title) {
     this.pageInView = title;
   }
-  contentSecMenuToggle(){
+  contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
   close_onClick(e) {
@@ -31,11 +31,11 @@ export class BillingComponent implements OnInit {
       this.contentSecMenuShow = false;
     }
   }
-  servicesShow(){
+  servicesShow() {
     this.pricelist = false;
     this.services = true;
   }
-  pricelistShow(){
+  pricelistShow() {
     this.pricelist = true;
     this.services = false;
   }

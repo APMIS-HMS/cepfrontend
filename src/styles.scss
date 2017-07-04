@@ -1135,6 +1135,10 @@ select {
     font-size: 14px;
     color: #37474F;
 }
+.text-center{
+    text-align: center;
+   line-height: inherit;
+}
 
 .list-img img {
     width: 40px;
@@ -1155,4 +1159,16 @@ select {
 
 .mat-input-container {
     width: 90%;
+}
+
+.apmis-blue {
+    color: #fff;
+    background: #0288D1;
+    margin: 5px 2px;
+}
+
+.apmis-danger {
+    color: #fff;
+    background: red;
+    margin: 5px 2px;
 }
