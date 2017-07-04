@@ -1,12 +1,11 @@
 <form [formGroup]="noPrescriptionForm" novalidate>
-    <div class="row padding-10">
+    <div class="row padding-10" style="margin-top: 20px;">
         <div class="col-sm-5">
-            <label> Client </label>
             <div class="input-group-btn">
                 <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
-                <select formControlName="client" [(ngModel)]="selectedClient" class="form-control" id="select" (change)="onChange($event.target.value)">
-                    <option *ngFor="let client of clients" value="{{ client.name }}">{{ client.name }}</option>
-                </select>
+                <md-select placeholder="Client" formControlName="client" [(ngModel)]="selectedClient" (change)="onChange($event.value)" class="example-full-width">
+                    <md-option *ngFor="let client of clients" [value]="client.name">{{ client.name }}</md-option>
+                </md-select>
             </div>
         </div>
     </div>
@@ -15,54 +14,60 @@
             <!-- begin individual -->
             <div *ngIf="individualShow">
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> Last Name </label>
-                    <dx-text-box formControlName="lastName"></dx-text-box>
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="lastName" placeholder="Last Name">
+                    </md-input-container>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> First Name </label>
-                    <dx-text-box formControlName="firstName"></dx-text-box>
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="firstName" placeholder="First Name">
+                    </md-input-container>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> Phone Number </label>
-                    <dx-text-box formControlName="phone"></dx-text-box>
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="phone" placeholder="Phone Number">
+                    </md-input-container>
                 </div>
             </div>
             <!--end individual-->
             <!-- begin corporate -->
             <div *ngIf="corporateShow">
                 <div class="col-sm-8 col-md-8 col-xs-12">
-                    <label> Company Name </label>
-                    <dx-text-box formControlName="companyName"></dx-text-box>
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="companyName" placeholder="Company Name">
+                    </md-input-container>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> Phone Number </label>
-                    <dx-text-box formControlName="companyPhone"></dx-text-box>
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="companyPhone" placeholder="Company Phone">
+                    </md-input-container>
                 </div>
             </div>
             <!--end corporate-->
             <!-- begin Internal -->
             <div *ngIf="internalShow">
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> Department </label>
-                    <dx-lookup formControlName="dept" [items]="departments" displayExpr="name" valueExpr="_id">
-                    </dx-lookup>
+                    <md-select placeholder="Department" formControlName="dept" class="example-full-width">
+                        <md-option *ngFor="let dept of departments" [(value)]="dept._id">{{ dept.name }}</md-option>
+                    </md-select>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> Unit </label>
-                    <dx-lookup formControlName="unit" [items]="units" displayExpr="name" valueExpr="_id">
-                    </dx-lookup>
+                    <md-select placeholder="Unit" formControlName="unit" class="example-full-width">
+                        <md-option *ngFor="let unit of units" [(value)]="unit._id">{{ unit.name }}</md-option>
+                    </md-select>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
-                    <label> Minor Location </label>
-                    <dx-lookup formControlName="minorLocation" [items]="minorLocations" displayExpr="name" valueExpr="_id" [showPopupTitle]="false">
-                    </dx-lookup>
+                    <md-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
+                        <md-option *ngFor="let location of minorLocations" [(value)]="location._id">{{ location.name }}</md-option>
+                    </md-select>
                 </div>
             </div>
             <!--end Internal-->
-            <div class="col-sm-4 col-md-4 col-xs-12">
-                <label>Drugs</label>
+            <div class="col-sm-4 col-md-4 col-xs-12" style="margin-top: 20px;">
                 <div class="cu-search-box">
-                    <input type="text" formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...4 characters at least">
+                    <md-input-container>
+                        <input mdInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
+                    </md-input-container>
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
                         <div class="cu-header">
@@ -72,36 +77,30 @@
                             <li><a class="header">Select item</a></li>
                             <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                             <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.name }}</a></li>
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions"
+                                (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.productObject.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
                             <button class="btn btn-default">Cancel</button>
                         </div>
                     </div>
                 </div>
-                <!--<label> product </label>
-                <dx-lookup formControlName="product" [items]="products" displayExpr="name" valueExpr="name" [showPopupTitle]="false">
-                </dx-lookup>-->
+            </div>
+            <div class="col-sm-2 col-md-2 col-xs-12">
+                <md-input-container class="example-full-width">
+                    <input mdInput type="number" formControlName="qty" placeholder="Quantity">
+                </md-input-container>
             </div>
             <div class="col-sm-3 col-md-3 col-xs-12">
-                <label> Quantity </label>
-                <div class="input-bg cacaca">
-                    <div class="input-group" style=" width: 50%;font-size: inherit;">
-                        <input type="number" formControlName="qty" class="form-control" id="input" required>
-                    </div>
-                </div>
+                <md-input-container class="example-full-width">
+                    <input mdInput formControlName="batchNumber" placeholder="Batch Number">
+                </md-input-container>
             </div>
-            <div class="col-sm-3 col-md-3 col-xs-12">
-                <label> Batch Number </label>
-                <div class="input-bg cacaca">
-                    <div class="input-group" style=" width: 50%;font-size: inherit;">
-                        <input type="text" formControlName="batchNumber" class="form-control" id="input" required>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-md-2 col-xs-2">
+            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 30px;">
                 <input type="hidden" formControlName="cost">
-                <p style="color: red;margin-top: 40px;"> &#x20A6;{{ itemPrice }}</p>
+                <span style="margin-top: 40px;"> 
+                    <small><b>Unit price: &#x20A6;{{ price }}</b></small><br>
+                </span>
             </div>
         </div>
     </div>
@@ -116,14 +115,17 @@
         <div class="table-head-inner-content" id="drugs">
             <p>Drugs</p>
         </div>
-        <div class="table-head-inner-content">
+        <!--<div class="table-head-inner-content">
             <p>Client</p>
-        </div>
+        </div>-->
         <div class="table-head-inner-content" id="qt">
             <p>Qty</p>
         </div>
         <div class="table-head-inner-content" id="batch">
             <p>Batch</p>
+        </div>
+        <div class="table-head-inner-content">
+            <p>Unit Price</p>
         </div>
         <div class="table-head-inner-content">
             <p>Cost</p>
@@ -137,16 +139,19 @@
             <p>{{ prescription.productName }}</p>
         </div>
         <div class="table-data qt">
-            {{ prescription.qty }}
+            <p> {{ prescription.qty }}</p>
         </div>
         <div class="table-data">
-            {{ prescription.batchNumber }}
+            <p> {{ prescription.batchNumber }}</p>
         </div>
         <div class="table-data">
-            <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
+            <p><b>&#x20A6;{{ prescription.price }}</b></p>
         </div>
         <div class="table-data">
-            <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i>
+            <p><b>&#x20A6;{{ prescription.cost }}</b></p>
+        </div>
+        <div class="table-data">
+            <p> <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></p>
         </div>
     </div>
     <div class="table-inner" *ngIf="prescriptions.length === 0">
@@ -156,13 +161,10 @@
     </div>
 </div>
 <div class="row">
-    <p class="total pull-right">Total Quantity: {{ totalItemQuantity }}</p>
-</div>
-<div class="row">
     <p class="total pull-right">Total Cost: {{ totalItemPrice }}</p>
 </div>
-<div class="row margin-top-15">
+<div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
+        <button class="mat-lg-btn" (click)="onClickDispense();" md-raised-button>Dispense</button>
     </div>
 </div>
