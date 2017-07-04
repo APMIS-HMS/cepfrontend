@@ -77,7 +77,8 @@
                             <li><a class="header">Select item</a></li>
                             <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                             <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.name }}</a></li>
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions"
+                                (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.productObject.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
                             <button class="btn btn-default">Cancel</button>
@@ -164,8 +165,6 @@
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">
-        <div class="example-container">
-            <button class="mat-lg-btn" (click)="onClickDispense();" md-raised-button>Dispense</button>
-        </div>
+        <button class="mat-lg-btn" (click)="onClickDispense();" md-raised-button>Dispense</button>
     </div>
 </div>

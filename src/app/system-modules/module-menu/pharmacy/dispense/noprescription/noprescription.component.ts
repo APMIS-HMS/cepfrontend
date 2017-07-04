@@ -4,7 +4,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Appointment } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService,
+import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
 	 DispenseService, ProductService, FacilityPriceService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -53,7 +53,8 @@ export class NoprescriptionComponent implements OnInit {
 		private _productService: ProductService,
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
-		private _employeeService: EmployeeService
+		private _employeeService: EmployeeService,
+		private _purchaseEntryService: PurchaseEntryService
 	) {
 
 	}
@@ -239,7 +240,10 @@ export class NoprescriptionComponent implements OnInit {
 					let tempArray = [];
 					// Get all products in the facility, then search for the item you are looing for.
 					res.data.forEach(element => {
-						if(element.productObject.name.toLowerCase().includes(this.searchText.toLowerCase())) {
+						if(
+							(element.totalQuantity > 0) &&
+							element.productObject.name.toLowerCase().includes(this.searchText.toLowerCase())
+						) {
 							tempArray.push(element);
 						}
 					});
@@ -265,24 +269,26 @@ export class NoprescriptionComponent implements OnInit {
 		let fsId = drugId.getAttribute('data-p-fsid');
 		let sId = drugId.getAttribute('data-p-sid');
 		let cId = drugId.getAttribute('data-p-cid');
+		let batchNumber = drugId.getAttribute('data-p-batchNumber');
+		console.log(batchNumber);
 		// Get the service for the product
-		this._inventoryService.find({ query : { 
-				facilityId : this.facility._id,
-				productId: this.selectedProductId,
-				facilityServiceId: fsId,
-				serviceId: sId, categoryId: cId
-			}})
-			.then(res => {
-				console.log(res);
-				// if(res.data.length > 0) {
-				// 	if(res.data[0].price !== undefined) {
-				// 		this.price = res.data[0].price;
-				// 	}
-				// }
-			})
-			.catch(err => {
-				console.log(err);
-			})
+		// this._purchaseEntryService.find({ query : { 
+		// 		facilityId : this.facility._id,
+		// 		productId: this.selectedProductId,
+		// 		facilityServiceId: fsId,
+		// 		serviceId: sId, categoryId: cId
+		// 	}})
+		// 	.then(res => {
+		// 		console.log(res);
+		// 		// if(res.data.length > 0) {
+		// 		// 	if(res.data[0].price !== undefined) {
+		// 		// 		this.price = res.data[0].price;
+		// 		// 	}
+		// 		// }
+		// 	})
+		// 	.catch(err => {
+		// 		console.log(err);
+		// 	})
 	}
 
 	// Delete item from stack
