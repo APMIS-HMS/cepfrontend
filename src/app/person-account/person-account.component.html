@@ -30,7 +30,7 @@
             </div>
 
             <div class="frm-item-wrap">
-                <md-select placeholder="Gender"  formControlName="gender">
+                <md-select placeholder="Gender" formControlName="gender">
                     <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
                 </md-select>
             </div>
@@ -53,19 +53,23 @@
         </div>
 
         <div class="rhs">
-            
+
             <div class="frm-item-wrap">
-                <md-select placeholder="Nationality"  formControlName="nationality" (change)="onNationalityChange($event.value)">
+                <md-select placeholder="Nationality" formControlName="nationality" (change)="onNationalityChange($event.value)">
                     <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
                 </md-select>
             </div>
-            
+
             <div class="frm-item-wrap">
-                <md-select placeholder="State"  formControlName="state">
-                    <md-option *ngFor="let item of selectedCountry?.states" [value]="item._id">{{item.name}}</md-option>
+                <md-select placeholder="State" formControlName="state">
+                    <md-option *ngFor="let item of selectedCountry?.states" [value]="item">{{item.name}}</md-option>
                 </md-select>
             </div>
-
+            <div class="frm-item-wrap">
+                <md-select placeholder="Local Government" formControlName="lga">
+                    <md-option *ngFor="let item of selectedState?.lgs" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
+            </div>
             <div class="frm-item-wrap">
                 <md-input-container class="example-full-width">
                     <input mdInput md-error placeholder="Home Address" formControlName="address">
