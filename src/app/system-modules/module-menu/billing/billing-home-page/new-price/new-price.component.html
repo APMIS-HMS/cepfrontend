@@ -24,7 +24,6 @@
                 <md-input-container class="example-full-width">
                     <input style="text-align:left" currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" mdInput md-error placeholder="Amount" formControlName="price">
                 </md-input-container>
-                <!--<input currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" formControlName="price" placeholder="Amount" autocomplete="off">-->
             </div>
              <div class="text-center">
                 <button md-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)" class="mat-lg-btn">
