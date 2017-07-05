@@ -9,20 +9,21 @@
     <div class="wrap-tr">
         <div class="pres-data" id="long-text">
             {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}
+            <br><br>
+            <span *ngIf="prescription.isBilled">
+                <small>Drug:</small>{{ prescription.drugName }} <br>
+                <small>Quantity: </small>{{ prescription.quantity }}
+            </span>
         </div>
         <div class="pres-data">{{ prescription.patientInstruction }}</div>
         <div class="pres-data">{{ prescription.refillCount }}</div>
-        <div class="pres-data padding" id="action-long">
-            <div class="text-center">
-                <button md-raised-button (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></button>
-                <label *ngIf="!prescription.isBilled" for="isExternal-{{i}}">
-                    <input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked, prescription);" />External?
-                </label>
-                <button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
-                    <span *ngIf="!prescription.isBilled">Bill</span>
-                    <span *ngIf="prescription.isBilled" style="color: #fff;">Billed <i class="fa fa-check"></i></span>
-                </button>
-            </div>
+        <div class="pres-data" id="action-long">
+            <a class="trash-box" (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
+            <md-checkbox (change)="onClickIsExternal(i, $event.value, prescription);">External?</md-checkbox>
+            <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
+                <span *ngIf="!prescription.isBilled">Bill</span>
+                <span *ngIf="prescription.isBilled" style="color: #fff;">Billed <i class="fa fa-check"></i></span>
+            </button>
         </div>
     </div>
     <!--inner container onclick-->

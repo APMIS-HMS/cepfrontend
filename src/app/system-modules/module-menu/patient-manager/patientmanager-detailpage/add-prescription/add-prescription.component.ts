@@ -31,6 +31,7 @@ export class AddPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionItems);
+		console.log(this.loading);
 	}
 
 	onClickDeleteItem(value: any) {

@@ -142,4 +142,8 @@ export class BillPrescriptionComponent implements OnInit {
 	// 		})
 	// }
 
+	onClickClose() {
+
+	}
+
 }

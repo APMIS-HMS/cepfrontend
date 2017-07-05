@@ -13,7 +13,7 @@ import { FacilitiesService, PrescriptionService } from '../../../../../services/
 })
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
-	@Output() loading: boolean;
+	@Output() loading: boolean = true;
 	facility: Facility = <Facility>{};
 	billshow: boolean = false;
 	prescriptionId: string = '';

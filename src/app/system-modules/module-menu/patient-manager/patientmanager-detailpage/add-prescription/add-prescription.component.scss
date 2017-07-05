@@ -3,8 +3,19 @@
     border-radius: 0;
 }
 
+.wrap-tr {
+    height: auto;
+    min-height: 65px;
+}
+
 .btn {
     padding: 5px !important;
+}
+
+.trash-box {
+    .fa-trash {
+        font-size: 17px;
+    }
 }
 
 .text-center {
