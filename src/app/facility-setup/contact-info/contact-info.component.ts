@@ -19,9 +19,9 @@ export class ContactInfoComponent implements OnInit {
 
 	selectedCountry_key = []; //states of the selected country load key
 	stateAvailable = false; //boolean variable to check if the list of user selected state exists in code
-	
+
 	show = false;
-  	@ViewChild('showhideinput') input;
+	@ViewChild('showhideinput') input;
 
 	countries: any[] = [];
 	titles: Title[] = [];
@@ -59,7 +59,7 @@ export class ContactInfoComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-
+		console.log(this.inputFacility);
 		this.getTitles();
 		this.getGenders();
 		this.getMaritalStatus();
@@ -96,7 +96,6 @@ export class ContactInfoComponent implements OnInit {
 				this.stateAvailable = true;
 			}
 		})
-
 
 		this.facilityForm1_1.controls['facilitystate'].valueChanges.subscribe(payload => {
 			this.cities = payload.cities;
@@ -226,12 +225,12 @@ export class ContactInfoComponent implements OnInit {
 	close_onClick() {
 		this.closeModal.emit(true);
 	}
-	toggleShow(e) { 
+	toggleShow(e) {
 		this.show = !this.show;
 		if (this.show) {
-		this.input.nativeElement.type = 'text';
+			this.input.nativeElement.type = 'text';
 		} else {
-		this.input.nativeElement.type = 'password';
+			this.input.nativeElement.type = 'password';
 		}
 	}
 
