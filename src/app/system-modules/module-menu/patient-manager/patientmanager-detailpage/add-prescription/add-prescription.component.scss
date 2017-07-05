@@ -1,15 +1,29 @@
 @import '../patient-prescription/patient-prescription.component.scss';
+.table-wrapper {
+    border: 1px solid #ddd;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+md-input-container {
+    textarea {
+        height: 60px !important;
+    }
+}
+
 .wrap-th {
     border-radius: 0;
+    border-top: 0;
 }
 
 .wrap-tr {
     height: auto;
     min-height: 65px;
+    border-bottom: 1px solid #ddd;
 }
 
 .btn {
-    padding: 5px !important;
+    padding: 0px 6px !important;
 }
 
 .trash-box {

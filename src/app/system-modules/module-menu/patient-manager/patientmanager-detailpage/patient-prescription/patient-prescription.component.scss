@@ -210,19 +210,6 @@ thead {
     font-size: 13px;
 }
 
-select {
-    /* -webkit-appearance: none;
-    -moz-appearance: none;*/
-    text-indent: 1px;
-    text-overflow: '';
-}
-
-.textarea {
-    padding: 10px;
-    border-color: #ddd;
-    resize: none;
-}
-
 .discontinue {
     color: red;
     border: 1px solid red;
@@ -248,7 +235,7 @@ select {
 }
 
 .mat-select {
-    margin-top: 5px;
+    //margin-top: 5px;
 }
 
 // md-select,
@@ -349,23 +336,20 @@ select {
     display: block;
 }
 
-#input {
-    width: 50%;
-    float: left;
-}
-
-#select {
-    width: 96%;
-    float: right;
-}
-
-#input,
-#select {
-    border: 1px solid #fff;
-    background: #fff;
-    height: 30px;
-}
-
+// #input {
+//     width: 50%;
+//     float: left;
+// }
+// #select {
+//     width: 96%;
+//     float: right;
+// }
+// #input,
+// #select {
+//     border: 1px solid #fff;
+//     background: #fff;
+//     height: 30px;
+// }
 .padding {
     padding: 0 !important;
 }
@@ -389,12 +373,8 @@ label:hover {
     background: #f5f5f5;
 }
 
-.dx-checkbox-container {
-    width: auto !important;
-}
-
-.dx-checkbox-text {
-    padding: 0 !important;
+.md-select {
+    margin-top: -11px;
 }
 
 .fa {

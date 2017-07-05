@@ -53,7 +53,7 @@ export class PrescriptionComponent implements OnInit {
 	getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {})
 			.then(res => {
-				this.loading = true;
+				this.loading = false;
 				console.log(res);
 				this.prescriptionItems = res;
 				res.prescriptionItems.forEach(element => {

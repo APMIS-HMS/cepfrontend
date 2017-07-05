@@ -43,6 +43,7 @@ export class AddPrescriptionComponent implements OnInit {
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
+		console.log(this.prescriptionItems);
 	}
 
 	toggleBill(index, item) {
@@ -107,4 +108,8 @@ export class AddPrescriptionComponent implements OnInit {
 	// 		qty: [value.qty],
 	// 	})
 	// }
+
+	close_onClick(e) {
+		this.billShow = false;
+	}
 }
