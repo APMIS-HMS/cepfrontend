@@ -17,6 +17,7 @@ export class PersonAccountComponent implements OnInit {
 
   countries: any[] = [];
   selectedCountry: any = <any>{};
+  selectedState: any = <any>{};
   genders: Gender[] = [];
   errMsg: string;
   mainErr = true;
@@ -42,21 +43,27 @@ export class PersonAccountComponent implements OnInit {
       othernames: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(200)]],
       password: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
       repassword: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
-      gender: [ [<any>Validators.minLength(2)]],
+      gender: [[<any>Validators.minLength(2)]],
       dob: [new Date(), [<any>Validators.required]],
       nationality: ['', [<any>Validators.required]],
 
       state: ['', [<any>Validators.required]],
+      lga: ['', [<any>Validators.required]],
       address: ['', [<any>Validators.required]],
       email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phone: ['', [<any>Validators.required]]
     });
+
+    this.frmPerson.controls['state'].valueChanges.subscribe((value: any) => {
+      this.selectedState = value;
+    })
   }
+
 
   getGenders() {
     this.genderService.findAll().then((payload) => {
       this.genders = payload.data;
-	  console.log(this.genders);
+      console.log(this.genders);
     })
   }
 
@@ -87,7 +94,8 @@ export class PersonAccountComponent implements OnInit {
           email: this.frmPerson.controls['email'].value,
           phoneNumber: this.frmPerson.controls['phone'].value,
           nationalityId: this.frmPerson.controls['nationality'].value,
-          stateOfOriginId: this.frmPerson.controls['state'].value
+          stateOfOriginId: this.frmPerson.controls['state'].value._id,
+          lgaOfOriginId: this.frmPerson.controls['lga'].value
         };
         console.log(personModel);
         const userModel = <User>{
@@ -100,6 +108,9 @@ export class PersonAccountComponent implements OnInit {
           console.log('Person');
           this.userService.create(userModel).then((upayload) => {
             console.log('user created');
+          }, error => {
+            this.mainErr = false;
+            this.errMsg = 'An error has occured, please check and try again!';
           });
           this.facilitiesService.announceNotification({
             type: 'Success',
@@ -112,6 +123,9 @@ export class PersonAccountComponent implements OnInit {
           console.log(err);
         });
       }
+    } else {
+      this.mainErr = false;
+      this.errMsg = 'An error has occured, please check and try again!';
     }
   }
 
