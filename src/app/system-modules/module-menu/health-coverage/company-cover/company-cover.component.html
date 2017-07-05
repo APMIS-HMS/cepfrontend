@@ -28,7 +28,7 @@
       <div *ngIf="tabB" class="tab">
         <div class="tblWrap">
           <div class="tblTop">
-            <div (click)="newCat_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</div>
+             <button (click)="newCat_show()" md-raised-button class="apmis-blue">New Category</button>
           </div>
           <table class="tblBg">
             <thead>
@@ -40,8 +40,10 @@
               <tr>
                 <td colspan="4">
                   <div class="searchInputWrap">
-                    <input type="search" class="searchInput" placeholder="search for a category">
-                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <md-input-container class="example-full-width">
+                          <input mdInput placeholder="search for a category">
+                    </md-input-container>
+                    <div id="search"><i class="fa fa-search" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -66,10 +68,12 @@
 
           <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
           <legend class="modal_title">Create Category</legend>
-
-          <input type="text" [formControl]="catInput" placeholder="Enter New Category" autocomplete="off">
-          <div (click)="createCat()" class="cta-1">Create Category</div>
-
+          <md-input-container class="example-full-width">
+                <input mdInput [formControl]="catInput" placeholder="Enter New Category" autocomplete="off">
+          </md-input-container>
+           <div style="width:50%; margin:0 auto;">
+             <button (click)="createCat()" md-raised-button class="apmis-blue">Create Category</button>
+           </div>
         </div>
       </div>
     </div>
@@ -93,13 +97,19 @@
       <div class="coveredDetailBodyTitle">Covered Employees</div>
 
       <div class="searchInputWrap">
-        <input [formControl]="searchEmployeeControl" type="search" autofocus class="searchInput" placeholder="search for covered employee">
-        <i class="fa fa-search" aria-hidden="true"></i>
+        <md-input-container class="example-full-width">
+              <input mdInput [formControl]="searchEmployeeControl" autofocus placeholder="search for covered employee">
+        </md-input-container>
+        <div id="search">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
 
     <div class="coveredEmployees">
-      <div (click)="addEmpShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Employee</div>
+         <div class="example-full-width">
+          <button (click)="addEmpShow()" md-raised-button class="apmis-blue"> Add Employee</button>
+        </div>
 
       <div *ngFor="let cover of selectedActiveCompanyHealthCover.personFacilityPrincipals" (click)="dependants_popup(cover)" class="coveredEmployee color1">
         <div class="nameImgWrap">
@@ -115,11 +125,10 @@
 
   <div class="search-orgs rhs">
     <div class="secTitle">Pending Request(s)</div>
+     <md-input-container class="example-full-width">
+            <input mdInput  [formControl]="searchPendingControl" autofocus placeholder="search pending requests">
+      </md-input-container>
 
-    <div class="searchInputWrap">
-      <input type="search" [formControl]="searchPendingControl" autofocus class="searchInput" placeholder="search pending requests">
-      <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
 
     <div (click)="acceptRequest_show(pending)" *ngFor="let pending of pendingCompanyHealthCovers" class="orgWrap">
       <img *ngIf="pending.corporateFacility?.logoObject == undefined" src="assets/images/logos/default.jpg">

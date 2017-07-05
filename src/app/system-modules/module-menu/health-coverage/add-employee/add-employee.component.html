@@ -13,7 +13,10 @@
           this is a required field (minimum 3 and max of 50 characters).
         </small>
         <i class="fa fa-user" aria-hidden="true"></i>
-        <input type="text" formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">
+        <!--<input type="text" formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">-->
+        <md-input-container class="example-full-width">
+              <input mdInput formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">
+        </md-input-container>
         <div class="suggestionFeeds">
           <div (click)="onSelectPerson(person)" *ngFor="let person of people" class="suggestedItem">
             <img *ngIf="person.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -28,20 +31,29 @@
           this field is required.
         </small>
         <i class="fa fa-building-o" aria-hidden="true"></i>
-        <select formControlName="empDept">
+        <!--<select formControlName="empDept">
             <option  value="" disabled selected>Department</option>
             <option *ngFor="let item of departments"  [ngValue]="item">{{item.name}}</option>
-        </select>
+        </select>-->
+        <md-select placeholder="Department">
+          <md-option  value="" disabled selected>Department</md-option>
+          <md-option *ngFor="let item of departments" [value]="item">{{ item.name }}</md-option>
+        </md-select>
       </div>
 
       <div class="frm-item-wrap">
         <i class="fa fa-object-group" aria-hidden="true"></i>
-        <input type="text" formControlName="empId" placeholder="Employee ID" autocomplete="off">
+        <md-input-container class="example-full-width">
+              <input mdInput type="text" formControlName="empId" placeholder="Employee ID" autocomplete="off">
+        </md-input-container>
       </div>
 
-      <button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="cta-1">
+      <!--<button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="cta-1">
         ADD EMPLOYEE
-      </button>
+      </button>-->
+       <div class="example-full-width" id="example-full-width">
+          <button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="apmis-blue" md-raised-button>ADD EMPLOYEE</button>
+       </div>
 
     </form>
   </div>
