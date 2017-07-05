@@ -1,13 +1,16 @@
 <div class="inner-wrap-b body-wrap">
-    <div class="facility-title">{{pageInView}}</div> 
+    <div class="facility-title">{{pageInView}}</div>
 
     <div class="fullwidth-topActions">
         <ul *ngIf="!homeContentArea" class="moduleNav">
             <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
-        </ul>  
+        </ul>
         <div style="display: flex; justify-content: center; align-items: center;">
             <div class="searchInputWrap">
-                <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search patients">
+                <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search patients">-->
+                <md-input-container class="example-full-width">
+                    <input mdInput [formControl]="searchControl" type="search" autofocus>
+                </md-input-container>
                 <i class="fa fa-search" aria-hidden="true"></i>
             </div>
             <div (click)="newEmpShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Patient</div>
@@ -15,10 +18,11 @@
     </div>
 
     <div class="inner-page-wrap">
-        <app-patientmanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea" class="fullwidth"></app-patientmanager-homepage>
+        <app-patientmanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
+            class="fullwidth"></app-patientmanager-homepage>
         <app-patientmanager-detailpage [patient]="patient" *ngIf="employeeDetailArea" class="fullwidth"></app-patientmanager-detailpage>
-        <div *ngIf="newEmp"  class="modal-overlay">
+        <div *ngIf="newEmp" class="modal-overlay">
             <app-new-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-patient>
         </div>
-    </div> 
+    </div>
 </div>

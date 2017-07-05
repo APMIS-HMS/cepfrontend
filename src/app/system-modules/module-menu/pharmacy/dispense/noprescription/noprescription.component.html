@@ -46,6 +46,13 @@
             <!--end corporate-->
             <!-- begin Internal -->
             <div *ngIf="internalShow">
+                <div class="col-xs-12">
+                    <label class="example-margin">Internal Type:</label>
+                    <md-radio-group [(ngModel)]="internalType">
+                        <md-radio-button class="example-margin" value="Department">Department/Unit</md-radio-button>
+                        <md-radio-button class="example-margin" value="Location">Location</md-radio-button>
+                    </md-radio-group>
+                </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Department" formControlName="dept" class="example-full-width">
                         <md-option *ngFor="let dept of departments" [(value)]="dept._id">{{ dept.name }}</md-option>
@@ -77,8 +84,8 @@
                             <li><a class="header">Select item</a></li>
                             <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                             <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions"
-                                (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.productObject.name }}</a></li>
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions[product.transactions?.length - 1].batchNumber"
+                                [attr.data-p-costPrice]="product.transactions[product.transactions?.length - 1].costPrice" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.productObject.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
                             <button class="btn btn-default">Cancel</button>
@@ -96,7 +103,7 @@
                     <input mdInput formControlName="batchNumber" placeholder="Batch Number">
                 </md-input-container>
             </div>
-            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 30px;">
+            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
                 <span style="margin-top: 40px;"> 
                     <small><b>Unit price: &#x20A6;{{ price }}</b></small><br>
@@ -107,27 +114,24 @@
 </form>
 <div class="row margin-top-bottom">
     <div class="col-sm-12 col-md-12 text-center">
-        <button (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);" class="btn bnt-default"> Save </button>
+        <button md-raised-button (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);" class="btn btn-blue"> Save </button>
     </div>
 </div>
 <div class="sec-border">
     <div class="table-head">
-        <div class="table-head-inner-content" id="drugs">
+        <div class="table-head-inner-content drugs">
             <p>Drugs</p>
         </div>
-        <!--<div class="table-head-inner-content">
-            <p>Client</p>
-        </div>-->
-        <div class="table-head-inner-content" id="qt">
+        <div class="table-head-inner-content">
             <p>Qty</p>
         </div>
-        <div class="table-head-inner-content" id="batch">
+        <div class="table-head-inner-content batch">
             <p>Batch</p>
         </div>
-        <div class="table-head-inner-content">
+        <div class="table-head-inner-content unit-price">
             <p>Unit Price</p>
         </div>
-        <div class="table-head-inner-content">
+        <div class="table-head-inner-content cost-price">
             <p>Cost</p>
         </div>
         <div class="table-head-inner-content">
@@ -138,16 +142,16 @@
         <div class="table-data drugs">
             <p>{{ prescription.productName }}</p>
         </div>
-        <div class="table-data qt">
+        <div class="table-data">
             <p> {{ prescription.qty }}</p>
         </div>
-        <div class="table-data">
+        <div class="table-data batch">
             <p> {{ prescription.batchNumber }}</p>
         </div>
-        <div class="table-data">
-            <p><b>&#x20A6;{{ prescription.price }}</b></p>
+        <div class="table-data unit-price">
+            <p><b>&#x20A6;{{ prescription.unitPrice }}</b></p>
         </div>
-        <div class="table-data">
+        <div class="table-data cost-price">
             <p><b>&#x20A6;{{ prescription.cost }}</b></p>
         </div>
         <div class="table-data">
@@ -155,13 +159,11 @@
         </div>
     </div>
     <div class="table-inner" *ngIf="prescriptions.length === 0">
-        <div class="table-data">
-            <p>No data to display in table</p>
-        </div>
+        <p class="text-center" style="width: 100%;">No data to display in table</p>
     </div>
 </div>
-<div class="row">
-    <p class="total pull-right">Total Cost: {{ totalItemPrice }}</p>
+<div class="row" style="padding-right: 20px;">
+    <p class="pull-right"> <b>Total Cost: &#x20A6;{{ totalItemPrice }}</b></p>
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">

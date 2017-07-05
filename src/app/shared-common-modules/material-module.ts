@@ -25,7 +25,8 @@ import { MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModul
         MdInputModule,
         MdOptionModule,
         MdSelectionModule,
-        MdSelectModule
+        MdSelectModule,
+        MdRadioModule
     ],
     providers: []
 })

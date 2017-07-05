@@ -1088,7 +1088,8 @@ select {
     background: #153d70;
     color: #fff;
 }
-#example-full-width{
+
+#example-full-width {
     text-align: center;
 }
 
@@ -1134,6 +1135,11 @@ select {
     text-align: center;
     font-size: 14px;
     color: #37474F;
+}
+
+.text-center {
+    text-align: center;
+    line-height: inherit;
 }
 
 .list-img img {

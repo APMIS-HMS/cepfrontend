@@ -12,7 +12,8 @@
             <li class="patient-apmis" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Apmis Number</li>
             <li>Action</li>
         </ul>
-        <div class="wrapper-content search-results" infinite-scroll [infiniteScrollDistance]="7" [infiniteScrollUpDistance]="7" [infiniteScrollThrottle]="300" (scrolled)="onScroll()" [scrollWindow]="false" (scrolledUp)="onScrollUp()">
+        <div class="wrapper-content search-results" infinite-scroll [infiniteScrollDistance]="7" [infiniteScrollUpDistance]="7" [infiniteScrollThrottle]="300"
+            (scrolled)="onScroll()" [scrollWindow]="false" (scrolledUp)="onScrollUp()">
             <ul *ngFor="let patient of patients; let i = even; let k = odd" [class.color1]="i" [class.color2]="k" class="inBody">
                 <li (click)="navEpDetail(patient)" class="patient-img">
                     <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
@@ -27,7 +28,8 @@
                 </li>
                 <li (click)="navEpDetail(patient)" class="patient-phone">{{patient.personDetails.phoneNumber}}</li>
                 <li (click)="navEpDetail(patient)" class="patient-email">{{patient.personDetails.email}}</li>
-                <li (click)="navEpDetail(patient)" class="patient-address">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}
+                <li (click)="navEpDetail(patient)" class="patient-address">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}}
+                    {{patient.personDetails.addressObj.country}}
                 </li>
                 <li (click)="navEpDetail(patient)" class="patient-born">{{patient.personDetails.dateOfBirth | date}}.</li>
                 <li class="patient-apmis">{{patient.personDetails.apmisId}}</li>
@@ -37,76 +39,94 @@
     </div>
 </div>
 
-<div *ngIf = "editPatient">
+<div *ngIf="editPatient">
     <!--<div class="slidePage">
         <p>whoopy</p>
     </div>-->
-<div class="survery">
-    <div class="cover-edit" #close>
-     <form class="form-signin">
-    <div class="container">
-        <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <label (click)="close.hidden = !close.hidden" class="pull-right">[close]</label>
-                    <h5 class="text-center">Edit Patient Page</h5>
-                    <form class="form form-signup" role="form">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user"></i>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Full Name" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <input type="Text" class="form-control" placeholder="Last Name" />
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-genderless"></i></span>
-                            <select class="form-control">
+    <div class="survery">
+        <div class="cover-edit" #close>
+            <form class="form-signin">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <label (click)="close.hidden = !close.hidden" class="pull-right">[close]</label>
+                                    <h5 class="text-center">Edit Patient Page</h5>
+                                    <form class="form form-signup" role="form">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i>
+                                                </span>
+                                                <!--<input type="text" class="form-control" placeholder="Full Name" />-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="text" placeholder="Full Name">
+                                                </md-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                <!--<input type="Text" class="form-control" placeholder="Last Name" />-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput placeholder="Last Name">
+                                                </md-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-genderless"></i></span>
+                                                <select class="form-control">
                                 <option>Male</option>
                                 <option>Female</option>
                             </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                <!--<input type="Text" class="form-control" placeholder="Age" />-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput placeholder="Age">
+                                                </md-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                                <!--<input type="Text" class="form-control" placeholder="Address" />-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput placeholder="Address">
+                                                </md-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                                <!--<input type="text" class="form-control" placeholder="Mobile Number" />-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="number" placeholder="Mobile Number">
+                                                </md-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                                <!--<input type="text" class="form-control" placeholder="Email" />-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="email" placeholder="Email">
+                                                </md-input-container>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <a class="cta-1" role="button">
+                    Save</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <input type="Text" class="form-control" placeholder="Age" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="Text" class="form-control" placeholder="Address" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                            <input type="text" class="form-control" placeholder="Mobile Number" />
-                        </div>
-                    </div> 
-                     <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                            <input type="text" class="form-control" placeholder="Email" />
-                        </div>
-                    </div>    
-               </form>                    
                 </div>
-                <a class="cta-1" role="button">
-                    Save</a> 
-             </div>
-            </div>
+            </form>
         </div>
-     </div>
-</form>
-</div>
-</div>
+    </div>
 </div>

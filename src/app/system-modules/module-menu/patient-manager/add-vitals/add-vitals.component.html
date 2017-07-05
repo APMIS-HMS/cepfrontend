@@ -11,24 +11,33 @@
         <div class="frmGroupWrap">
           <div class="frmGroupTitle">Pulse Rate</div>
           <div class="frm-item-wrap">
-            <label class="side-label">Pulse Rate<br>(80-100)</label>
-            <input type="text" formControlName="pulseRate" autocomplete="off">
+            <!--<label class="side-label">Pulse Rate<br>(80-100)</label>
+            <input type="text" formControlName="pulseRate" autocomplete="off">-->
+            <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Pulse Rate (80-100)" formControlName="pulseRate">
+            </md-input-container>
             <span class="trailer">Beats per Minute</span>
           </div>
 
           <div class="frmSubGroupWrap">
             <div class="frm-item-wrap">
-              <label>Location</label>
+              <!--<label>Location</label>
               <select formControlName="pulseLoc">
                 <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
-              </select>
+              </select>-->
+              <md-select placeholder="Location" formControlName="pulseLoc">
+                <md-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</md-option>
+              </md-select>
             </div>
 
             <div class="frm-item-wrap">
-              <label>Rythm</label>
+              <!--<label>Rythm</label>
               <select formControlName="pulseRythm">
                 <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
-              </select>
+              </select>-->
+              <md-select placeholder="Rythm" formControlName="pulseRythm">
+                <md-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</md-option>
+              </md-select>
             </div>
           </div>
         </div>
@@ -36,32 +45,47 @@
         <div class="frmGroupWrap">
           <div class="frmGroupTitle">Respiratory Rate</div>
           <div class="frm-item-wrap">
-            <label class="side-label">Respiratory Rate<br>(12-20)</label>
-            <input type="number" formControlName="respiratoryRate" autocomplete="off">
+            <!--<label class="side-label">Respiratory Rate<br>(12-20)</label>
+            <input type="number" formControlName="respiratoryRate" autocomplete="off">-->
+            <md-input-container class="example-full-width">
+              <input mdInput type="number" placeholder="Respiratory Rate (12-20)" formControlName="respiratoryRate">
+            </md-input-container>
           </div>
         </div>
 
         <div class="frmGroupWrap">
           <div class="frmGroupTitle">Temperature</div>
           <div class="frm-item-wrap">
-            <label class="side-label">Temperature<br>(92-101) &#8451;</label>
-            <input type="number" formControlName="temp" autocomplete="off">
+            <!--<label class="side-label">Temperature<br>(92-101) &#8451;</label>
+            <input type="number" formControlName="temp" autocomplete="off">-->
+            <md-input-container class="example-full-width">
+              <input mdInput type="number" placeholder="Temperature (92-101)" formControlName="temp">
+            </md-input-container>
           </div>
         </div>
 
         <div class="frmGroupWrap">
           <div class="frmGroupTitle">Height/Weight</div>
           <div class="frm-item-wrap">
-            <label class="side-label">Height (m)</label>
-            <input type="number" formControlName="height" value="">
+            <!--<label class="side-label">Height (m)</label>
+            <input type="number" formControlName="height" value="">-->
+            <md-input-container class="example-full-width">
+              <input mdInput type="number" placeholder="Height (m)" formControlName="height">
+            </md-input-container>
           </div>
           <div class="frm-item-wrap">
-            <label class="side-label">Weight (kg)</label>
-            <input type="number" formControlName="weight" value="">
+            <!--<label class="side-label">Weight (kg)</label>
+            <input type="number" formControlName="weight" value="">-->
+            <md-input-container class="example-full-width">
+              <input mdInput type="number" placeholder="Weight (kg)" formControlName="weight">
+            </md-input-container>
           </div>
           <div class="frm-item-wrap">
-            <label class="side-label">BMI</label>
-            <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">
+            <!--<label class="side-label">BMI</label>
+            <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">-->
+            <md-input-container class="example-full-width">
+              <input mdInput type="number" [class.warning-flag]="isWarning" [value]="bmi" placeholder="BMI" [readonly]="true" formControlName="weight">
+            </md-input-container>
             <small class="alert-label" *ngIf="isWarning">
             {{bmiWarningMssg}}
           </small>
@@ -90,7 +114,10 @@
           <div class="frm-row">
             <div class="frm-item">
               <div class="frm-item-wrap">
-                <input type="text" formControlName="systolicBp1" autocomplete="off">
+                <!--<input type="text" formControlName="systolicBp1" autocomplete="off">-->
+                <md-input-container class="example-full-width">
+                  <input mdInput type="number" formControlName="systolicBp1">
+                </md-input-container>
               </div>
             </div>
             <div class="frm-slash">
@@ -100,7 +127,10 @@
             </div>
             <div class="frm-item">
               <div class="frm-item-wrap">
-                <input type="text" formControlName="diastolicBp1" autocomplete="off">
+                <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
+                <md-input-container class="example-full-width">
+                  <input mdInput type="number" formControlName="diastolicBp1">
+                </md-input-container>
                 <span class="trailer inputUnit">mmHg</span>
               </div>
             </div>

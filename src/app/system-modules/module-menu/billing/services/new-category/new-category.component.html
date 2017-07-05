@@ -10,14 +10,15 @@
 
             <div class="frm-item-wrap">
                 <md-input-container class="example-full-width">
-                    <input type="text"  mdInput md-error placeholder="Category Name" formControlName="catName">
+                    <input type="text" mdInput md-error placeholder="Category Name" formControlName="catName">
                 </md-input-container>
             </div>
 
-            <button md-raised-button (click)="newcat(frmNewcat.value, frmNewcat.valid)" class="cta-1 mat-lg-btn">
-        {{btnTitle}}
-      </button>
-
+            <div class="text-center">
+                <button md-raised-button (click)="newcat(frmNewcat.value, frmNewcat.valid)" class="cta-1 mat-lg-btn">
+                 {{btnTitle}}
+                </button>
+            </div>
         </form>
     </div>
 
