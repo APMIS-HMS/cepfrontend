@@ -1,8 +1,9 @@
 <div class="survery">
     <div class="">
         <!-- purchase order details-->
-        <div class="inPatient-activityTimeline shadow-RB animated slideInRight" #closeclick>
-            <div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">
+        <div class="inPatient-activityTimeline shadow-RB animated slideInRight">
+            <!--<div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">-->
+            <div (click)="onClickClose($event);" class="hide-actionWrap">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
             </div>
             <div class="purchasedetails">
@@ -34,7 +35,7 @@
                                 </form>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12">
-                                        <button (click)="onClickSaveCost(addBillForm.value, addBillForm.valid)" class="btn btn-default">Save</button>
+                                        <button md-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid)" class="btn btn-default">Save</button>
                                     </div>
                                 </div>
                             </div>

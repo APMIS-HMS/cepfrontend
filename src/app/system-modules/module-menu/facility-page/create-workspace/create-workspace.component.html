@@ -20,8 +20,8 @@
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <md-select formControlName="unit">
                         <md-option value="" disabled selected>Unit</md-option>
-                        <md-option *ngFor="let unit of units" [value]="unit.name">
-                            {{unit.name}}
+                        <md-option *ngFor="let unit of units" [value]="unit">
+                        {{unit.name}}
                         </md-option>
                     </md-select>
                 </div>
@@ -51,11 +51,12 @@
                     <thead>
                         <tr>
                             <th class="sel-all">
-                                <div class="dx-field">
+                               <!-- <div class="dx-field">
                                     <div class="dx-field-value">
                                         <dx-check-box [formControl]="checkAll"></dx-check-box>
                                     </div>
-                                </div>
+                                </div>-->
+                                <md-checkbox class="example-margin" [formControl]="checkAll">Check All</md-checkbox>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -82,8 +83,11 @@
                                     <div class="tbl-title"></div>
                                     <div class="tbl-search">
                                         <div class="searchInputWrap">
-                                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">
-                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                            <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">-->
+                                            <md-input-container class="example-full-width">
+                                                <input mdInput [formControl]="searchControl" autofocus placeholder="search organizations">
+                                            </md-input-container>
+                                          <!--<i class="fa fa-search" aria-hidden="true"></i>-->
                                         </div>
                                     </div>
                                 </div>
@@ -117,10 +121,12 @@
 
 
 
-        <button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+    <!--<button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
       Assign Workspace
-    </button>
-
+    </button>-->
+    <div class="example-full-width" id="example-full-width">
+          <button class="apmis-bllue" [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button> Assign Workspace</button>
+    </div>
     </form>
 
 </div>

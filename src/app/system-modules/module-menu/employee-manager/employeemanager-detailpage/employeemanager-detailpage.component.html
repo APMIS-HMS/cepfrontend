@@ -24,14 +24,12 @@
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
                     </div>
                     <div *ngIf= "editDepartment" class="emp-dept">
-                        <div class="survery">
-                            <select>
-                                <option>Surgery Department</option>
-                                <option>Surgery Department</option>
-                                <option>Surgery Department</option>
-                            </select>
-                            <button class="btn btn-default">Save</button>
-                        </div>
+                          <md-select placeholder="Departments" [(ngModel)]="selectedValue" name="food">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <a><i class="fa fa-check"></i></a>
                     </div>
                     <div *ngIf= "!editDepartment" class="emp-dept">{{employee?.department?.name}}
                         <span (click)="toggleDepartmentShow()"  class="editButton">
@@ -63,14 +61,10 @@
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
                         <div *ngIf = "biodatas" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                          <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -79,13 +73,12 @@
                         <div class="lhs">Gender</div>
                         <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
                          <div *ngIf = "biodatas" class="survery rhs">
-                             <div class="survery">
-                            <select>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                            <button class="btn btn-default">Save</button>
-                            </div>
+                            <md-select placeholder="Gender" [(ngModel)]="selectedValue" name="food">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -94,13 +87,12 @@
                         <div class="lhs">Marital Status</div>
                         <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
                          <div *ngIf = "biodatas" class="survery rhs">
-                             <div class="survery">
-                                <select>
-                                    <option>Single</option>
-                                    <option>Married</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
+                            <md-select placeholder="Marital Status" [(ngModel)]="selectedValue" name="food">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -121,14 +113,13 @@
                         <div class="lhs">Nationality</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <div *ngIf = "contacts" class="col-lg-6">
-                                <div class="survery">
-                                <select>
-                                    <option>Nigeria</option>
-                                    <option>Ghana</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
+                            <div *ngIf = "contacts">
+                              <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <a><i class="fa fa-check"></i></a>
                             </div><!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
@@ -138,13 +129,12 @@
                         <div class="lhs">State of Origin</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                              <div class="survery">
-                                <select>
-                                    <option>Kogi</option>
-                                    <option>Lagos</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
+                            <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -153,14 +143,13 @@
                         <div class="lhs">LGA</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
                          <div class="survery rhs">
-                            <div *ngIf = "contacts" class="col-lg-6">
-                                 <div class="survery">
-                                <select>
-                                    <option>Mushin</option>
-                                    <option>Yaba</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
+                            <div *ngIf = "contacts" class="">
+                               <md-select placeholder="LGA" [(ngModel)]="selectedValue" name="food">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <a><i class="fa fa-check"></i></a>
                             </div><!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
@@ -170,14 +159,10 @@
                         <div class="lhs">Home Address</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                           <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -186,14 +171,10 @@
                         <div class="lhs">Phone Number</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                             <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -202,14 +183,10 @@
                         <div class="lhs">Email Address</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                             <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -226,14 +203,10 @@
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.fullName}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -242,14 +215,10 @@
                         <div class="lhs">Relationship</div>
                         <div *ngIf="!nextofkin" class="rhs"> Brother </div>
                          <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -258,14 +227,10 @@
                         <div class="lhs">Phone Number</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.phoneNumber}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                           <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -274,14 +239,10 @@
                         <div class="lhs">Email</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.email}} </div>
                          <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                          <md-input-container class="example-full-width">
+                                <input mdInput placeholder="edit input">
+                            </md-input-container>
+                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
