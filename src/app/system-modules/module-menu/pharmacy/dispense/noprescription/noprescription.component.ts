@@ -43,6 +43,7 @@ export class NoprescriptionComponent implements OnInit {
 	totalItemPrice: number = 0;
 	totalItemQuantity: number = 0;
 	internalType: string = 'Department';
+	deptLocationShow: boolean = true;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -98,7 +99,6 @@ export class NoprescriptionComponent implements OnInit {
 
 		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
 			if(val > 0) {
-				//this.itemPrice = this.price*val;
 				this.itemQuantity = val;
 				this.itemPrice = this.price*val;
 				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
@@ -283,6 +283,21 @@ export class NoprescriptionComponent implements OnInit {
 					text: "You need to check into store."
 				});
 			}
+		}
+	}
+
+	onChangeInternalType(value) {
+		// Reset all three values before hide/show.
+		this.noPrescriptionForm.controls['dept'].setValue('');
+		this.noPrescriptionForm.controls['unit'].setValue('');
+		this.noPrescriptionForm.controls['minorLocation'].setValue('');
+		switch(value) {
+			case 'Department':
+				this.deptLocationShow = true;
+				break;
+			case 'Location':
+				this.deptLocationShow = false;
+				break;
 		}
 	}
 

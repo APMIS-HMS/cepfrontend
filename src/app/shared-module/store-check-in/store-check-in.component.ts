@@ -12,7 +12,7 @@ import { ClinicHelperService } from '../../system-modules/module-menu/clinic/ser
 export class StoreCheckInComponent implements OnInit {
 
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   @Input() loginEmployee: Employee = <Employee>{};
 
   public storeCheckin: FormGroup;
