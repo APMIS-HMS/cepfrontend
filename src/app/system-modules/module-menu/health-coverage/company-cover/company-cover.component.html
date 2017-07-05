@@ -3,8 +3,11 @@
   <div *ngIf="!coveredDetailView" class="covered-orgs lhs">
 
     <div class="searchInputWrap">
-      <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">
-      <i class="fa fa-search" aria-hidden="true"></i>
+      <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">-->
+      <md-input-container class="example-full-width">
+            <input mdInput  [formControl]="searchControl" placeholder="Search for an Organization">
+      </md-input-container>
+       <div id="search"><i class="fa fa-search" aria-hidden="true"></i></div>
     </div>
     <div class="innerBodyTab">
       <div class="tablinkWrap">
