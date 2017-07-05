@@ -1,7 +1,8 @@
 <div class="check-group-wide">
   <div class="check-item">
     <label class="control control--checkbox checkLabelColor">{{selectedAccessControl.name}}
-      <input type="checkbox"  (change)="checkedMain($event)" [(ngModel)]="selectedAccessControl.isChecked" />
+      <!--<input type="checkbox"  (change)="checkedMain($event)" [(ngModel)]="selectedAccessControl.isChecked" />-->
+      <md-checkbox (change)="checkedMain($event)" [(ngModel)]="selectedAccessControl.isChecked"></md-checkbox>
       <div class="control__indicator"></div>
     </label>
     <div class="check-group-wrapper" *ngIf="expandMain">

@@ -8,7 +8,7 @@
     <form [formGroup]="frmNewEmp1" novalidate>
         <div class="frm-item-wrap">
             <i class="fa fa-building-o" aria-hidden="true"></i>
-            <label>Department</label>
+            <!--<label>Department</label>-->
             <!--<select formControlName="dept">
         <option value="" disabled selected>Department</option>
         <option [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
@@ -20,7 +20,7 @@
 
         <div class="frm-item-wrap">
             <i class="fa fa-building-o" aria-hidden="true"></i>
-            <label>Unit</label>
+            <!--<label>Unit</label>-->
             <!--<select formControlName="unit">
         <option value="" disabled selected>Unit</option>
         <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
@@ -37,8 +37,9 @@
                         <th class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <dx-check-box [formControl]="checkAll"></dx-check-box>
-                                </div>
+                                    <!--<dx-check-box [formControl]="checkAll"></dx-check-box>-->
+                                    <md-checkbox [formControl]="checkAll"></md-checkbox>
+                                    </div>
                             </div>
                         </th>
                         <th>
@@ -70,7 +71,10 @@
                                 <div class="tbl-title"></div>
                                 <div class="tbl-search">
                                     <div class="searchInputWrap">
-                                        <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">
+                                        <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">-->
+                                        <md-input-container class="example-full-width">
+                                            <input mdInput [formControl]="searchControl" class="searchInput" type="search" autofocus>
+                                        </md-input-container>
                                         <i class="fa fa-search" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -82,7 +86,8 @@
                         <td class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>
+                                    <!--<dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>-->
+                                    <md-checkbox [formControl]="checkAll" (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
                                 </div>
                             </div>
                         </td>

@@ -1,14 +1,20 @@
 <div class="check-group-wide">
   <div class="check-item">
     <label class="control control--checkbox">{{selectedAccessControl.name}}
-              <input type="checkbox" (change)="checkedMain($event)" [(ngModel)]="selectedAccessControl.isChecked" />
+              <!--<input type="checkbox" (change)="checkedMain($event)" [(ngModel)]="selectedAccessControl.isChecked" />-->
+              <md-input-container class="example-full-width">
+              <input mdInput type="checkbox" (change)="checkedMain($event)" [(ngModel)]="selectedAccessControl.isChecked">
+            </md-input-container>
               <div class="control__indicator"></div>
             </label>
     <div *ngIf="expandMain">
       <div class="check-group" *ngFor="let selectedFeature of selectedAccessControl.featureList">
         <div (click)="clicMe(selectedFeature)" class="check-item">
           <label class="control control--checkbox">{{selectedFeature.name}}
-              <input type="checkbox" (change)="checked($event, selectedFeature)" [(ngModel)]="selectedFeature.checked" />
+              <!--<input type="checkbox" (change)="checked($event, selectedFeature)" [(ngModel)]="selectedFeature.checked" />-->
+              <md-input-container class="example-full-width">
+                        <input mdInput md-error type="checkbox" (change)="checked($event, selectedFeature)" [(ngModel)]="selectedFeature.checked">
+                    </md-input-container>
               <div class="control__indicator"></div>
             </label>
           <div *ngIf="expand" class="checker-subgroup">
