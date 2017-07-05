@@ -42,6 +42,7 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
     this.departments = this.selectedFacility.departments;
     this.department.valueChanges.subscribe(value => {
       this.units = value.units;
+      console.log(value);
       this.employeeManagerComponent.getByDepartment(value._id);
     });
     this.unit.valueChanges.subscribe(value => {

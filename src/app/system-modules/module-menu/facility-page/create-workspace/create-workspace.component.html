@@ -31,7 +31,7 @@
 				    </select>-->
                      <md-select formControlName="unit">
                         <md-option value="" disabled selected>Unit</md-option>
-                        <md-option *ngFor="let unit of units" [value]="unit">
+                        <md-option *ngFor="let unit of units" [value]="unit.name">
                         {{unit.name}}
                         </md-option>
                     </md-select>

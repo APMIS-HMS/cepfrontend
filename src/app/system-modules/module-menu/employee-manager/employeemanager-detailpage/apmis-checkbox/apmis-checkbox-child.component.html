@@ -1,4 +1,5 @@
 <label class="control control--checkbox">{{crudItem.name}}
-  <input type="checkbox"  [(ngModel)]="crudItem.isChecked" />
+  <!--<input type="checkbox"  [(ngModel)]="crudItem.isChecked" />-->
+  <md-checkbox [(ngModel)]="crudItem.isChecked"></md-checkbox>
   <div class="control__indicator"></div>
 </label>

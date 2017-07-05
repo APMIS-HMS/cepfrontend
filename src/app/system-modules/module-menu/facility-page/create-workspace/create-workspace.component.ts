@@ -80,7 +80,7 @@ export class CreateWorkspaceComponent implements OnInit {
     this.checkAll.valueChanges.subscribe(value => {
       this.checkAllEmployees(value);
     });
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     this.getMajorLocations();
 
@@ -98,10 +98,13 @@ export class CreateWorkspaceComponent implements OnInit {
         console.log(2);
         console.log(item);
         console.log(this.selectedEmployee.units);
-        const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
+        const unitsList = this.selectedEmployee.units.filter(x => x === item._id);
+        console.log(unitsList);
+        console.log(unitsList.length);
         if (unitsList.length > 0) {
-          console.log(i);
-          this.units.push(unitsList[0]);
+          console.log("Ok");
+          //this.units.push(unitsList[0]);
+          this.units.push(item);
         }
       });
       // this.units = this.frmNewEmp1.controls['dept'].value.units;
@@ -146,7 +149,7 @@ export class CreateWorkspaceComponent implements OnInit {
   getMinorLocation(majorLocation: Location) {
     this.facilityService.get(this.selectedFacility._id, {}).then(payload => {
       this.locker.setObject('selectedFacility', payload);
-      this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.minorLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === majorLocation._id);
       this.getWorkSpace();
     });

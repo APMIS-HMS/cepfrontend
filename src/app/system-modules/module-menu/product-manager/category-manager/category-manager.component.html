@@ -15,9 +15,9 @@
                                 <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                 <form [formGroup]="categoryGroup">
                                     <div class="form-group">
-                                        <label for="name">New Category</label>
+                                        <!--<label for="name">New Category</label>-->
                                         <md-input-container class="example-full-width">
-                                            <input mdInput md-error placeholder="Name" formControlName="name">
+                                            <input mdInput md-error placeholder="New Category" formControlName="name">
                                         </md-input-container>
                                         <button (click)="onClickAdd(categoryGroup.value, categoryGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
                                         <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
@@ -28,7 +28,8 @@
                     </div><br><br>
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-xs-12">
-                            <input type="text" class="form-control" placeholder="search categories"><br>
+                            <input type="text" class="form-control" placeholder="search categories">
+                            <br>
                         </div>
                     </div>
                     <div class="row border-row">

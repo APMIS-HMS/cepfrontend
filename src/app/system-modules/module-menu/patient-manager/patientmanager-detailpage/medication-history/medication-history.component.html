@@ -1,59 +1,58 @@
-
 <section id="history">
   <div class="survery">
     <div class="row">
       <div class="col-sm-6 col-md-6">
         <div class="dx-field-value">
-            <dx-lookup
-                [items]="employees"
-                [value]="employees[0]"
-                [showPopupTitle]="false">
-            </dx-lookup>
+          <!--<dx-lookup [items]="employees" [value]="employees[0]" [showPopupTitle]="false">
+          </dx-lookup>-->
+          <select>
+            <option *ngFor="let item of employees"  value="{{item}}"></option>
+          </select>
         </div>
       </div>
       <div class="col-sm-6 col-md-6">
-        <div class="pull-right" >
+        <div class="pull-right">
           <button class="btn btn-default"><i class="fa fa-long-arrow-right"></i>Past Medication</button>
           <button class="btn btn-default"><i class="fa fa-long-arrow-right"></i>Past Medication</button>
         </div>
       </div>
     </div>
-      <div class="table-th margin-top-20">
-        <div class="inner-tb-th">
-          Date
-        </div>
-        <div class="inner-tb-th" style="width:300px">
-          Drug
-        </div>
-        <div class="inner-tb-th">
-          Status
-        </div>
-        <div class="inner-tb-th" style="width:200px;">
-          Prescriber
-        </div>
-        <div class="inner-tb-th">
-          Actions
-        </div>
+    <div class="table-th margin-top-20">
+      <div class="inner-tb-th">
+        Date
       </div>
-      <div *ngFor ="let history of medicationHistory" class="table-tr">
-            <div class="inner-tr">
-             {{history.date}}
-            </div>
-            <div class="inner-tr" style="width:300px">
-              {{history.drugs}}
-            </div>
-            <div class="inner-tr">
-              <ul *ngFor = "let items of status">
-                <li>{{items}} </li>
-              </ul>
-            </div>
-            <div class="inner-tr" style="width:200px;">
-              <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" /> <span class="absolute">{{history.prescriber}}</span>
-            </div>
-            <div class="inner-tr">
-              <button class="btn btn-default">Discontinew</button>
-            </div>
+      <div class="inner-tb-th" style="width:300px">
+        Drug
       </div>
+      <div class="inner-tb-th">
+        Status
+      </div>
+      <div class="inner-tb-th" style="width:200px;">
+        Prescriber
+      </div>
+      <div class="inner-tb-th">
+        Actions
+      </div>
+    </div>
+    <div *ngFor="let history of medicationHistory" class="table-tr">
+      <div class="inner-tr">
+        {{history.date}}
+      </div>
+      <div class="inner-tr" style="width:300px">
+        {{history.drugs}}
+      </div>
+      <div class="inner-tr">
+        <ul *ngFor="let items of status">
+          <li>{{items}} </li>
+        </ul>
+      </div>
+      <div class="inner-tr" style="width:200px;">
+        <img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" /> <span class="absolute">{{history.prescriber}}</span>
+      </div>
+      <div class="inner-tr">
+        <button class="btn btn-default">Discontinew</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -231,5 +230,3 @@
   </div>
 </section>
 -->
-
-
