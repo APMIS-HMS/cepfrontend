@@ -42,6 +42,7 @@ export class NoprescriptionComponent implements OnInit {
 	itemQuantity: number = 0;
 	totalItemPrice: number = 0;
 	totalItemQuantity: number = 0;
+	internalType: string = 'Department';
 
 	constructor(
 		private _fb: FormBuilder,
