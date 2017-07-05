@@ -24,4 +24,5 @@ export interface Facility {
     logoObject: any;
     description: string;
     facilityClassItem: any;
+    facilityOwnershipId: any;
 }

@@ -35,7 +35,7 @@
             <option  value="" disabled selected>Department</option>
             <option *ngFor="let item of departments"  [ngValue]="item">{{item.name}}</option>
         </select>-->
-        <md-select placeholder="Department">
+        <md-select placeholder="Department"  formControlName="empDept">
           <md-option  value="" disabled selected>Department</md-option>
           <md-option *ngFor="let item of departments" [value]="item">{{ item.name }}</md-option>
         </md-select>

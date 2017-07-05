@@ -156,11 +156,17 @@
             </div>
           </div>
 
-          <select [formControl]="selectCategory">
+          <!--<select [formControl]="selectCategory">
               <option  value="" disabled selected>Select Category</option>
               <option [value]="category._id" *ngFor="let category of categories">{{category?.name}}</option>
-          </select>
-          <div (click)="acceptReq()" class="cta-1">Accept Request</div>
+          </select>-->
+          <md-select [formControl]="selectCategory" placeholder="Categories">
+            <option  value="" disabled selected>Select Category</option>
+            <md-option *ngFor="let category of categories" [value]="category._id">{{category?.name}}</md-option>
+          </md-select>
+           <div class="example-full-width" id="example-full-width">
+              <button (click)="acceptReq()" class="apmis-blue" md-raised-button>Accept Request</button>
+          </div>
 
         </div>
       </div>
