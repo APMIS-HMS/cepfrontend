@@ -40,7 +40,7 @@ import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-acco
 import { MaterialModule } from '../shared-common-modules/material-module';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-    MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule
+    MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioButton
 } from '@angular/material';
 @NgModule({
     declarations: [
@@ -99,7 +99,8 @@ import {
         // MdInputModule,
         // MdOptionModule,
         // MdSelectionModule,
-        // MdSelectModule
+        // MdSelectModule,
+        // MdRadioButton
     ],
     imports: [
         CommonModule,
@@ -126,7 +127,8 @@ import {
         // MdInputModule,
         // MdOptionModule,
         // MdSelectionModule,
-        // MdSelectModule
+        // MdSelectModule,
+        // MdRadioButton
     ],
     providers: [StoreService]
 })

@@ -13,6 +13,7 @@ import {
 })
 export class AddPrescriptionComponent implements OnInit {
 	@Input() prescriptionItems: Prescription = <Prescription>{};
+	@Input() loading: boolean;
 	@Output() prescriptionData: Prescription = <Prescription>{};
 	facility: Facility = <Facility>{};
 

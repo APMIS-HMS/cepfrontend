@@ -14,7 +14,7 @@
         <div class="pres-data">{{ prescription.refillCount }}</div>
         <div class="pres-data padding" id="action-long">
             <div class="text-center">
-                <a (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
+                <button md-raised-button (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></button>
                 <label *ngIf="!prescription.isBilled" for="isExternal-{{i}}">
                     <input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked, prescription);" />External?
                 </label>
@@ -66,7 +66,10 @@
         </div>
     </div>-->
 </div>
-<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0">
+<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0 && loading">
+    <div class="pres-data" style="width: 100%"><i class="fa fa-spinner fa-spin"></i></div>
+</div>
+<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0 && !loading">
     <div class="pres-data" style="width: 100%">No data to display in table</div>
 </div>
 <div class="row">
