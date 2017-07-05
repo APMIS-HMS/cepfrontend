@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/Subscription';
 export class EditUserComponent implements OnInit, OnDestroy {
 
   @Output() selectedEmployee: EventEmitter<Employee> = new EventEmitter<Employee>();
-  // employee: Employee = <Employee>{};
   selectedPerson: Person = <Person>{};
   selectedFacility: Facility = <Facility>{};
   selectedUser: User = <User>{};
@@ -39,17 +38,12 @@ export class EditUserComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private accessControlService: AccessControlService) {
     this.employeeSubscription = this.employeeService.employeeAnnounced$.subscribe(payload => {
-      console.log(payload);
-      // console.log(this.locker.getObject('auth'));
       this.userService.find({ query: { personId: payload.personId } }).then(payload2 => {
-        console.log(payload2);
         if (payload2.data.length > 0) {
           this.selectedUser = payload2.data[0];
           this.selectedPerson = this.selectedUser.person;
-          console.log(this.selectedUser);
           this.accessControlList = [];
           this.selectedUser.facilitiesRole.forEach((item, i) => {
-            console.log('here and her');
             if (!this.checkAccessControlList(item.feature.accessControlId)) {
               this.accessControlList.push(item.feature.accessControlId);
             }
@@ -59,7 +53,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
         }
 
       });
-      // this.getPerson(payload.personId);
     });
     this.route.params.subscribe(params => {
       const id = params['id'];
@@ -83,7 +76,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.userService.get(id, {}).then(
       payload => {
         this.selectedUser = payload;
-        console.log(this.selectedUser);
         this.selectedUser.facilitiesRole.forEach((item, i) => {
           if (!this.checkAccessControlList(item.feature.accessControlId)) {
             this.accessControlList.push(item.feature.accessControlId);
@@ -96,7 +88,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
     );
   }
   goToEdit() {
-    this.router.navigate(['/modules/employee-manager/generate-user', this.selectedPerson._id]);
+    this.router.navigate(['/dashboard/employee-manager/generate-user', this.selectedPerson._id]);
   }
   checkAccessControlList(id: string) {
     const result = this.accessControlList.filter(x => x === id);
@@ -111,7 +103,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
 
   navEpDetail(val: Employee) {
-    this.router.navigate(['/modules/employee-manager/generate-user', this.selectedPerson._id]);
+    this.router.navigate(['/dashboard/employee-manager/generate-user', this.selectedPerson._id]);
   }
 
   ngOnDestroy() {

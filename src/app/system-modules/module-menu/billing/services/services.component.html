@@ -1,129 +1,82 @@
 <div class="pgWrapper">
 
-  <div class="tblWrap">
-    <div class="tblTitle">Services</div>
-    <div class="tblTop">
-      <div (click)="newServicePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Service</div>
-      <input type="search" autofocus class="searchInput" placeholder="search for a service" [formControl]="searchService">
-    </div>
-    <table class="tblBg">
-      <thead>
-
-        <tr>
-          <th>Service</th>
-          <th>Category</th>
-          <th>Service Code</th>
-          <th>Actions</th>
-        </tr>
-
-         <!--<tr>
-          <td colspan="4">
-           <div class="searchInputWrap">
-              <input type="search" autofocus class="searchInput" placeholder="search for a service" [formControl]="searchService">
-              <i class="fa fa-search" aria-hidden="true"></i>
+    <div class="service">
+        <div class="tblWrap">
+            <div class="tblTitle">Services</div>
+            <div class="tblTop">
+                <div (click)="newServicePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Service</div>
+                <md-input-container class="example-full-width">
+                    <input type="search" autofocus mdInput md-error placeholder="search for a service" [formControl]="searchService">
+                </md-input-container>
             </div>
-          </td>
-        </tr>-->
+            <table class="tblBg">
+                <thead>
 
-      </thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Category</th>
+                        <th>Service Code</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-      <tbody>
-        <tr (dblclick)="onDoubleClick(category)" *ngFor="let category of globalCategories">
-          <td>{{category.service}} <span class="scope" *ngIf="category.isGlobal">GLOBAL</span></td>
-          <td>{{category.category}}</td>
-          <td>{{category.serviceCode}}</td>
-          <td>
-            <i (click)="onDoubleClick(category)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </td>
-        </tr>
+                <tbody>
+                    <tr (dblclick)="onDoubleClick(category)" *ngFor="let category of globalCategories">
+                        <td>{{category.service}} <span class="scope" *ngIf="category.isGlobal">GLOBAL</span></td>
+                        <td>{{category.category}}</td>
+                        <td>{{category.serviceCode}}</td>
+                        <td>
+                            <i (click)="onDoubleClick(category)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </td>
+                    </tr>
 
-      </tbody>
-    </table>
-  </div>
-
-  <div class="tblWrap">
-    <div class="tblTitle">Service Categories</div>
-    <div class="tblTop">
-      <div (click)="newCategoryPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</div>
-       <input type="search" autofocus class="searchInput" placeholder="search for a category" [formControl]="searchCategory">
+                </tbody>
+            </table>
+        </div>
     </div>
-    <table class="tblBg">
-      <thead>
-
-        <tr>
-          <th>Category</th>
-          <th>Actions</th>
-        </tr>
-
-        <!--<tr>
-          <td colspan="2">
-            <div class="searchInputWrap">
-              <input type="search" autofocus class="searchInput" placeholder="search for a category" [formControl]="searchCategory">
-              <i class="fa fa-search" aria-hidden="true"></i>
+    <div class="category">
+        <div class="tblWrap">
+            <div class="tblTitle">Service Categories</div>
+            <div class="tblTop">
+                <div (click)="newCategoryPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</div>
+                <md-input-container class="example-full-width">
+                    <input type="search" autofocus mdInput md-error placeholder="search for a category" [formControl]="searchCategory">
+                </md-input-container>
             </div>
-          </td>
-        </tr>-->
-      </thead>
+            <table class="tblBg">
+                <thead>
 
-      <tbody>
+                    <tr>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-        <tr (dblclick)="onDoubleClickCategory(category)"  *ngFor="let category of categories">
-          <td>{{category.name}}</td>
-          <td>
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+                <tbody>
 
-  <!--<div class="tblWrap">
-    <div class="tblTitle">Tags</div>
-    <div class="tblTop">
-      <div (click)="newTagPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Tag</div>
+                    <tr (dblclick)="onDoubleClickCategory(category)" *ngFor="let category of categories">
+                        <td>{{category.name}}</td>
+                        <td>
+                            <i (click)="onDoubleClickCategory(category)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <table class="tblBg">
-      <thead>
 
-        <tr>
-          <th>Tag</th>
-          <th>Actions</th>
-        </tr>
 
-        <tr>
-          <td colspan="2">
-            <div class="searchInputWrap">
-              <input type="search" class="searchInput" [formControl]="searchTag" placeholder="search for a tag">
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </div>
-          </td>
-        </tr>
-      </thead>
+    <div *ngIf="newServicePopup" class="modal-overlay">
+        <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
+    </div>
 
-      <tbody>
+    <div *ngIf="newCategoryPopup" class="modal-overlay">
+        <app-new-category [selectedCategory]='selectedCategory' (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
+    </div>
 
-        <tr *ngFor="let tag of tags">
-          <td>{{tag.name}}</td>
-          <td>
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>-->
-
-  <div *ngIf="newServicePopup" class="modal-overlay">
-    <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
-  </div>
-
-  <div *ngIf="newCategoryPopup" class="modal-overlay">
-    <app-new-category [selectedCategory]='selectedCategory' (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
-  </div>
-
-  <!--<div *ngIf="newTagPopup" class="modal-overlay">
+    <!--<div *ngIf="newTagPopup" class="modal-overlay">
     <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-tag>
   </div>-->
 

@@ -3,10 +3,24 @@
     width: 40%;
 }
 
-.table-inner {
+.table-inner,
+.table-head {
+    width: 100%;
+    .drugs {
+        width: 35% !important;
+    }
+    .batch,
+    .cost-price,
+    .unit-price {
+        width: 15% !important;
+    }
+    .table-head-inner-content {
+        width: 10%;
+        padding: 5px;
+    }
     .table-data {
-        //width: 100%;
-        padding: 5px 0;
+        width: 10%;
+        padding: 5px;
         text-align: center;
     }
 }
@@ -15,26 +29,13 @@
     position: relative;
     min-width: 100px;
     width: auto;
-    .cu-search {
-        //background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-        background-position: 10px 12px;
-        /* Position the search icon */
-        background-repeat: no-repeat;
-        /* Do not repeat the icon image */
-        width: 100%;
-        /* Full-width */
-        /* Increase font-size */
-        padding: 12px 11px;
-        /* Add some padding */
-        border: 1px solid #ddd;
-        /* Add a grey border */
-        margin-bottom: 12px;
-        /* Add some space below the input */
-    }
+    margin-top: -20px;
+    .cu-search {}
     .cu-popup-wrapper {
         position: absolute;
         max-height: 736px;
         width: 100%;
+        margin-top: 20px;
         height: auto;
         z-index: 1501;
         top: 35px;
@@ -146,12 +147,6 @@ select {
 
 p {
     margin: 6px 0;
-}
-
-.cu-search-box .cu-search {
-    height: 37px !important;
-    border-radius: 5px;
-    background: #fff;
 }
 
 .total {

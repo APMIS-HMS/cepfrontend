@@ -53,16 +53,21 @@ label{
     background: #fff;
 }
 .cont-wrap .set-default{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    margin-top: -20px;
+    /* margin-top: -20px; */
     font-size: 12px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     margin-bottom: 15px;
-    background: #ccc;
-    justify-content: space-around;
+    /* background: #ccc; */
+    -ms-flex-pack: distribute;
+    /* justify-content: space-around; */
     padding: 5px;
-    border-radius: 10px;
-    border: 1px solid #bbb;
+    /* border-radius: 10px; */
+    /* border: 1px solid #bbb; */
 }
 tr, td{
     cursor: default;

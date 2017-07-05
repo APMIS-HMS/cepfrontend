@@ -10,7 +10,9 @@
     text-decoration: underline;
     cursor: pointer;
     width: 145px;
-    float: right;
+    position: absolute;
+    top: -31px;
+    right: 0;
 }
 
 .inPatients {

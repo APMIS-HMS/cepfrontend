@@ -1,26 +1,25 @@
 <div class="modal-baseWrap animated pulse">
 
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <div class="facility-title">New Service Category</div>
-  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <div class="facility-title">New Service Category</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-  <div class="f_sg1">
+    <div class="f_sg1">
 
-    <form [formGroup]="frmNewcat" novalidate>
+        <form [formGroup]="frmNewcat" novalidate>
 
-      <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmNewcat.controls.catName.valid || frmNewcat.controls.catName.pristine">
-          required field (minimum 3 and max of 50 characters).
-        </small>
-        <i class="fa fa-user" aria-hidden="true"></i>
-        <input type="text" formControlName="catName" placeholder="Category Name" autocomplete="off">
-      </div>
+            <div class="frm-item-wrap">
+                <md-input-container class="example-full-width">
+                    <input type="text" mdInput md-error placeholder="Category Name" formControlName="catName">
+                </md-input-container>
+            </div>
 
-      <button (click)="newcat(frmNewcat.value, frmNewcat.valid)" class="cta-1">
-        {{btnTitle}}
-      </button>
-
-    </form>
-  </div>
+            <div class="text-center">
+                <button md-raised-button (click)="newcat(frmNewcat.value, frmNewcat.valid)" class="cta-1 mat-lg-btn">
+                 {{btnTitle}}
+                </button>
+            </div>
+        </form>
+    </div>
 
 </div>

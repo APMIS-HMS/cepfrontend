@@ -12,7 +12,7 @@
     border: 1px solid #eee;
     padding: 3px;
     min-height: 340px;
-    width: 64%;
+    width: 62%;
 }
 li.listHeader{
     font-weight: bold;
@@ -160,4 +160,9 @@ li.listHeader, li.li-itemWrap {
 }
 .li-Item {
     min-width: 200px;
+}
+.apmis-blue {
+    color: #fff;
+    background: #0288D1;
+    margin: 5px 2px;
 }

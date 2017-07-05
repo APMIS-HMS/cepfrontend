@@ -39,6 +39,7 @@
         <app-employeemanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
             class="fullwidth"></app-employeemanager-homepage>
         <app-employeemanager-detailpage [employee]="employee" *ngIf="employeeDetailArea" class="fullwidth"></app-employeemanager-detailpage>
+
         <div *ngIf="newEmp" class="modal-overlay">
             <app-new-employee (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-employee>
         </div>

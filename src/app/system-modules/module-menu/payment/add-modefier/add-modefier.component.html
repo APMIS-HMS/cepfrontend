@@ -6,24 +6,22 @@
 
   <div class="f_sg1">
 
-    <form [formGroup]="frmAddModifier" novalidate>
-      
+    <form class="mod-frm" [formGroup]="frmAddModifier" novalidate>
+
       <div class="frm-item-wrap">
-        <small class="alert-label" [hidden]="frmAddModifier.controls.modifier.valid || frmAddModifier.controls.modifier.pristine">
-          required field.
-        </small>
-        <i class="fa fa-arrows" aria-hidden="true"></i>
-        <input type="text" formControlName="modifier" placeholder="Enter Discount" autocomplete="off">
+        <md-input-container>
+            <input mdInput md-error placeholder="Enter Discount" formControlName="modifier">
+        </md-input-container>
       </div>
 
       <div class="frm-radio-wrap">
         <div style=" font-size: 12px; color: #0288D1; width: 80px; display: inline-block;">
-          <input style="width: 60px;" type="radio" formControlName="valueCheck" value="Percentage"> %
+          <md-radio-button style="width: 60px;" formControlName="valueCheck" value="Percentage"> %</md-radio-button>
         </div>
         <div style=" font-size: 12px; color: #0288D1; width: 110px; display: inline-block;">
-          <input style="width: 60px;" type="radio" formControlName="valueCheck" value="Amount">Amount
+          <md-radio-button style="width: 60px;"  formControlName="valueCheck" value="Amount">Amount</md-radio-button>
         </div>
-      </div>
+      </div>      
 
       <button (click)="addModifier(frmAddModifier.value, frmAddModifier.valid)" class="cta-1">
         ADD DISCOUNT
