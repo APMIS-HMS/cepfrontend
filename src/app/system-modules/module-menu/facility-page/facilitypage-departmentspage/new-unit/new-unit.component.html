@@ -52,7 +52,7 @@
               <input style="width: auto; margin-right: 5px;" type="checkbox"  formControlName="isClinic"  [(ngModel)]="isClinic">
               Clinic
           </label>-->
-            <md-checkbox formControlName="isClinic" [(ngModel)]="isClinic">Clinic</md-checkbox>
+            <md-checkbox formControlName="isClinic" >Clinic</md-checkbox>
             </div>
 
 
@@ -61,15 +61,11 @@
                     <div class="frmArrayclinicWrap" *ngFor="let clinic of clinicForm.controls['clinicArray'].controls; let i = index;">
                         <div formGroupName="{{i}}">
                             <div class="mainErr animated shake" [hidden]="mainErrClinic || (clinicForm.controls['clinicArray'].value.length !== (i+1))">{{errMsgClinic}}</div>
-
-                            <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(bill,group)" class="fa fa-times trash" aria-hidden="true"></i></span>
-
-                            <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">
-                                <!--<small class="alert-label" [hidden]="clinic.controls.clinicName.valid || clinic.controls.clinicName.pristine">
-                  this field is required.
-                </small>
-                                <i class="fa fa-building-o" aria-hidden="true"></i>-->
-                                <input type="text" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
+                            <div class="valSpan">
+                                <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
+                                    <input type="text" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
+                                </div>
+                                <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(clinic,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                             </div>
                             <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">
                                 <div *ngIf="!clinic.value.readonly" class="btn-1 btn-blue btn-2" (click)="onAddHobby(clinic, clinicForm.valid)"> Add Clinic</div>

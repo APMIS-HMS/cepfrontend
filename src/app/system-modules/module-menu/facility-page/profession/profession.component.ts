@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profession.component.scss']
 })
 export class ProfessionComponent implements OnInit {
-
   newProfession = false;
 
   constructor() { }

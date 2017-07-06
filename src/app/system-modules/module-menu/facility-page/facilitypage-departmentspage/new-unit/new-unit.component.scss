@@ -14,6 +14,11 @@
     margin-top: 15px;
     margin-left: 0px;
 }
+.valSpan {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 .frmArrayclinicWrap {
     width: 354px;
     border: 1px solid transparent;

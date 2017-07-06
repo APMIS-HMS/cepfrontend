@@ -33,33 +33,57 @@ export class NewUnitComponent implements OnInit {
     this.addNew();
     this.addNew2();
     this.frmNewUnit.controls['unitParent'].valueChanges.subscribe(payload => {
-
+      this.frmNewUnit.controls['isClinic'].valueChanges.subscribe(value => {
+        this.isClinic = value;
+        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
+          this.addNew2();
+        }
+      })
     });
     // this.getFacility();
-    this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
+    this.facilityObj = <Facility> this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
     this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
+
+
+
+    (<FormGroup>(<FormArray>this.clinicForm.controls['clinicArray']).controls[0]).controls['clinicName'].valueChanges
+      .subscribe(value => {
+        this.mainErrClinic = true;
+        this.errMsgClinic = '';
+      });
   }
   addNew() {
     this.frmNewUnit = this.formBuilder.group({
       unitName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       unitAlias: ['', [<any>Validators.minLength(2)]],
       unitParent: ['', [<any>Validators.required]],
-      isClinic: ['', []],
+      isClinic: [false, []],
       unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
     });
+
+
   }
 
   addNew2() {
     this.clinicForm = this.formBuilder.group({
       'clinicArray': this.formBuilder.array([
         this.formBuilder.group({
-          // clinicLocation: ['', [<any>Validators.required]],
+          clinicLocation: ['', [<any>Validators.required]],
           clinicName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
           'readonly': [false],
         })
       ])
     });
+  }
+  onRemoveBill(clinic, i) {
+    console.log(clinic);
+    console.log(i);
+    (<FormArray>this.clinicForm.controls['clinicArray']).controls.splice(i, 1);
+    if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
+      this.frmNewUnit.controls['isClinic'].reset(false);
+      this.addNew2();
+    }
   }
   onAddHobby(children: any, valid: boolean) {
     if (valid) {
@@ -67,9 +91,11 @@ export class NewUnitComponent implements OnInit {
         this.mainErrClinic = false;
         this.errMsgClinic = 'you left out a required field';
       } else {
-        console.log(children);
+
         if (children != null) {
           children.value.readonly = true;
+          console.log(children);
+          // children.disabled = true;
           (<FormArray>this.clinicForm.controls['clinicArray'])
             .push(
             this.formBuilder.group({
@@ -77,8 +103,8 @@ export class NewUnitComponent implements OnInit {
               'readonly': [false],
             })
             );
-          this.mainErrClinic = true;
-          this.errMsgClinic = '';
+            this.mainErrClinic = true;
+            this.errMsgClinic = '';
         } else {
           const innerChildren: any = children.value;
         }
@@ -114,7 +140,10 @@ export class NewUnitComponent implements OnInit {
         });
         this.facilityService.update(this.facilityObj).then((payload) => {
           this.facilityObj = payload;
-          this.addNew();
+          // this.addNew();
+          this.frmNewUnit.controls['isClinic'].reset(false);
+          this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
+          this.frmNewUnit.reset();
         })
 
         this.mainErr = true;

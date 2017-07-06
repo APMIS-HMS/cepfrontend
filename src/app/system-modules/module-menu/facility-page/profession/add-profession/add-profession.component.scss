@@ -25,19 +25,29 @@
 .survery input, .survery select {
     width: 350px !important;
 }
+.frmArrayclinicWrap {
+    width: 354px;
+    border: 1px solid transparent;
+    padding: 3px;
+    margin-bottom: 12px;
+}
+.valSpan {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.btn-2{
+    width: 100px;
+    margin-top: 15px;
+    padding: 15px;
+}
+
 .frm-item-wrap {
-    margin: 0 auto;
+    padding-bottom: 10px;
 }
-.apmis-blue {
-    color: #fff;
-    background: #0288D1;
-    padding: 10px;
+.frm-item-wrap small, .frm-singleItem-wrap small {
+    bottom: -3px;
 }
-.mat-mini-fab i {
-    padding: 8px 0;
-    color: rgba(0,0,0,.38);
-    line-height: 24px;
-}
-.white-background {
-    background-color: #fff;
+.frm-item-inner-wrap{
+    margin-left: 40px;
 }
