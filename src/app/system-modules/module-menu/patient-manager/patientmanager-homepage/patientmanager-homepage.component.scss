@@ -96,32 +96,11 @@
     bottom: 0;
 }*/
 
-.form-signin {
-    max-width: 280px;
-    padding: 15px;
-    margin:100px;
-    margin-top:70px;
-  }
 
-.input-group-addon
-{
-    background-color: #35a7e0;
-    border-color: #35a7e0;
-    color: rgb(255, 255, 255);
-}
-.form-control:focus
-{
-    background-color: #fff;
-    border-color: #35a7e0;
-    color: #000;
-}
-.form-signup input[type="text"],.form-signup input[type="password"] { 
-    border: 1px solid #35a7e0; 
-}
 
 .cover-edit {
     position: fixed;
-    z-index: 99999;
+    z-index: 100;
     top: 0;
     right: 0;
     bottom: 0;
@@ -130,6 +109,39 @@
     background-position: 50% 50%;
     background-repeat: repeat;
     background: rgba(0, 0, 0, 0.62);
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
   }
 
 /* end */
+.modal_title {
+    font-family: "Josefin Sans", sans-serif;
+    margin: 0px auto;
+    font-size: 20px;
+    color: #0D47A1;
+    border-bottom: 0;
+    text-align: center;
+}
+form {
+    margin: 0 auto;
+}
+.apmis-blue {
+    color: #fff;
+    background: #0288D1;
+    padding:7px;
+}
+.modal-close-ico {
+    position: absolute;
+    top: 8px;
+    right: 27px;
+    background-color: #ff2500;
+    color: #fff;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+#example-full-width {
+    margin-bottom: 10px;
+}
