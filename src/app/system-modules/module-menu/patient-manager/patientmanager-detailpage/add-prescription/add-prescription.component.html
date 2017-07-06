@@ -1,22 +1,22 @@
 <!-- table header start-->
 <div class="row table-wrapper">
     <div class="wrap-th">
-        <div class="pres-col" id="long-text">Prescription</div>
+        <div class="pres-col long-text">Prescription</div>
         <div class="pres-col">Instruction</div>
         <div class="pres-col">Refill Count</div>
-        <div class="pres-col" id="action-long">Action</div>
+        <div class="pres-col action-long">Action</div>
     </div>
     <div *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;">
         <div class="wrap-tr">
-            <div class="pres-data" id="long-text">
-                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}
+            <div class="pres-data long-text">
+                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
                 <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
-                Drug: {{ prescription.drugName }}, Quantity: {{ prescription.quantity }}
-            </span>
+                    Drug: {{ prescription.drugName }}, Quantity: {{ prescription.quantity }}, Price: {{ prescription.cost }}
+                </span>
             </div>
-            <div class="pres-data">{{ prescription.patientInstruction }}</div>
+            <div class="pres-data instruction-text">{{ prescription.patientInstruction }}</div>
             <div class="pres-data">{{ prescription.refillCount }}</div>
-            <div class="pres-data" id="action-long">
+            <div class="pres-data action-long">
                 <a class="trash-box" (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
                 <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.value, prescription);">External?</md-checkbox>
                 <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">

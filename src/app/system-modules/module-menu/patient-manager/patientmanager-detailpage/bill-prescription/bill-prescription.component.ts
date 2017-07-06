@@ -3,7 +3,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
-    FacilitiesService, ProductService, FacilityPriceService
+    FacilitiesService, ProductService, FacilityPriceService, InventoryService
 } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -14,6 +14,7 @@ import {
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	//@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 
 	addBillForm: FormGroup;
@@ -22,6 +23,8 @@ export class BillPrescriptionComponent implements OnInit {
 	itemCost: number = 0;
 	title: string = '';
 	price: number = 0;
+	qtyInStores: number = 0;
+	storeId: string = '';
 
 	mainErr: boolean = true;
 	errMsg: string = 'You have unresolved errors';
@@ -31,12 +34,20 @@ export class BillPrescriptionComponent implements OnInit {
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService,
 		private _facilityService: FacilitiesService,
-		private _facilityPriceService: FacilityPriceService
+		private _facilityPriceService: FacilityPriceService,
+		private _inventoryService: InventoryService 
 	) { }
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionData);
+
+		// if(this.employeeDetails.storeCheckIn !== undefined) {
+		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
+		// }
+		
+		// Remove this when you are done.
+		this.storeId = '591d71d971108943a0499665';
 
 		this.getProductsForGeneric();
 
@@ -69,11 +80,12 @@ export class BillPrescriptionComponent implements OnInit {
 	// 
 	onClickSaveCost(value, valid) {
 		if(valid) {
-			//if(this.price > 0) {
+			//if(this.price > 0 || value.qty > 0) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].drugId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].drugName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
+				this.prescriptionData.prescriptionItems[index].cost = this.price;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				console.log(this.prescriptionData);
 
@@ -81,7 +93,7 @@ export class BillPrescriptionComponent implements OnInit {
 			// } else {
 			// 	this._facilityService.announceNotification({
 			// 		type: "Error",
-			// 		text: "Unit price is less than 0!"
+			// 		text: "Unit price or Quantity is less than 0!"
 			// 	});
 			// }
 		} else {
@@ -124,18 +136,39 @@ export class BillPrescriptionComponent implements OnInit {
 		let fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
 		let cId = drugId._element.nativeElement.getAttribute('data-p-cid');
 		// Get the service for the product
-		this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-			.then(res => {
-				console.log(res);
-				if(res.data.length > 0) {
-					if(res.data[0].price !== undefined) {
-						this.price = res.data[0].price;
-					}
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			})
+		if(this.storeId !== '') {
+			this._inventoryService.find({ query: { facilityId : this.facility._id, storeId: this.storeId }})
+				.then(res => {
+					console.log(res);
+					// if(res.data.length > 0) {
+					// 	if(res.data[0].price !== undefined) {
+					// 		this.price = res.data[0].price;
+					// 	}
+					// }
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		} else {
+			this._facilityService.announceNotification({
+				type: "Error",
+				text: "You need to check into store."
+			});
+		}
+
+
+		// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
+		// 	.then(res => {
+		// 		console.log(res);
+		// 		if(res.data.length > 0) {
+		// 			if(res.data[0].price !== undefined) {
+		// 				this.price = res.data[0].price;
+		// 			}
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		console.log(err);
+		// 	})
 	}
 
 	// Get the price for product selected

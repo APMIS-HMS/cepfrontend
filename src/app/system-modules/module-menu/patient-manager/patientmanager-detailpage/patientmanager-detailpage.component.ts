@@ -10,6 +10,7 @@ import {
   Facility, User, Patient, Employee, MinorLocation, Appointment, Country, ClinicInteraction,
   Documentation
 } from '../../../../models/index';
+import { Observable } from 'rxjs/Observable';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -51,7 +52,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuPrescriptions = false;
 
   contentSecMenuShow = false;
-  modal_on = false;
+  modal_on: boolean = false;
   changeUserImg = false;
   logoutConfirm_on = false;
   empDetailPg = true;
@@ -292,8 +293,59 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+		const auth: any = this.locker.getObject('auth');
+		const emp$ = Observable.fromPromise(this.employeeService.find({
+			query: {
+				facilityId: this.selectedFacility._id,
+				personId: auth.data.personId,
+				showbasicinfo: true
+			}
+		}));
+		emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+		]))
+			.subscribe((results: any) => {
+				this.loginEmployee = results[0];
+				console.log(results);
+				if ((this.loginEmployee.storeCheckIn === undefined
+					|| this.loginEmployee.storeCheckIn.length === 0)) {
+					this.modal_on = true;
+				} else {
+					let isOn = false;
+					this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+						if (itemr.isDefault === true) {
+							itemr.isOn = true;
+							itemr.lastLogin = new Date();
+							isOn = true;
+							let checkingObject = { typeObject: itemr, type: 'store' };
+							this.employeeService.announceCheckIn(checkingObject);
+							console.log('sent');
+							this.employeeService.update(this.loginEmployee).then(payload => {
+								this.loginEmployee = payload;
+								checkingObject = { typeObject: itemr, type: 'store' };
+								this.employeeService.announceCheckIn(checkingObject);
+								this.locker.setObject('checkingObject', checkingObject);
+							});
+						}
+					});
+					if (isOn === false) {
+						this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+							if (r === 0) {
+								itemr.isOn = true;
+								itemr.lastLogin = new Date();
+								this.employeeService.update(this.loginEmployee).then(payload => {
+									this.loginEmployee = payload;
+									const checkingObject = { typeObject: itemr, type: 'store' };
+									this.employeeService.announceCheckIn(checkingObject);
+									this.locker.setObject('checkingObject', checkingObject);
+								});
+							}
+						});
+					}
+				}
+			});
+
     this.getForms();
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     // this.route.params.subscribe(params => {
     //   this.routeId = +params['id'];
     //   console.log(params['id']);
@@ -437,6 +489,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.addVitalsPop = false;
     this.addTagsPop = false;
     this.checkoutPatient = false;
+    this.modal_on = false;
   }
   show_changeUserImg() {
     this.changeUserImg = true;
@@ -742,6 +795,20 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
       });
     }
+
+    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
+			this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+				if (itemr.isDefault === true && itemr.isOn === true) {
+					itemr.isOn = false;
+					this.employeeService.update(this.loginEmployee).then(payload => {
+						this.loginEmployee = payload;
+					});
+				}
+			});
+		}
+		this.employeeService.announceCheckIn(undefined);
+		this.locker.setObject('checkingObject', {});
   }
+
 
 }
