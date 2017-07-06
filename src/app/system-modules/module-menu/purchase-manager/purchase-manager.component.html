@@ -3,7 +3,7 @@
     <div class="facility-subTitle" (pageInView)="pageInViewLoader($event)">{{pageInView_subTitle}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
-        <ul (focusout)="contentSecMenuToggle()" id="innerMenu-ul" *ngIf="contentSecMenuShow===true" class="innerMenu-ul shadow">
+        <ul style="z-index: 7;" (focusout)="contentSecMenuToggle()" id="innerMenu-ul" *ngIf="contentSecMenuShow===true" class="innerMenu-ul shadow">
             <li [routerLink]="['/dashboard/store/home']">Manage Store</li>
             <li [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
             <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>

@@ -1,76 +1,37 @@
 <!-- table header start-->
-<div class="wrap-th">
-    <div class="pres-col" id="long-text">Prescription</div>
-    <div class="pres-col">Instruction</div>
-    <div class="pres-col">Refill Count</div>
-    <div class="pres-col" id="action-long">Action</div>
-</div>
-<div *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;">
-    <div class="wrap-tr">
-        <div class="pres-data" id="long-text">
-            {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}
-        </div>
-        <div class="pres-data">{{ prescription.patientInstruction }}</div>
-        <div class="pres-data">{{ prescription.refillCount }}</div>
-        <div class="pres-data padding" id="action-long">
-            <div class="text-center">
-                <button md-raised-button (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></button>
-                <label *ngIf="!prescription.isBilled" for="isExternal-{{i}}">
-                    <input type="checkbox" id="isExternal-{{i}}" (change)="onClickIsExternal(i, $event.target.checked, prescription);" />External?
-                </label>
-                <button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
-                    <span *ngIf="!prescription.isBilled">Bill</span>
-                    <span *ngIf="prescription.isBilled" style="color: #fff;">Billed <i class="fa fa-check"></i></span>
-                </button>
+<div class="row table-wrapper">
+    <div class="wrap-th">
+        <div class="pres-col long-text">Prescription</div>
+        <div class="pres-col">Instruction</div>
+        <div class="pres-col">Refill Count</div>
+        <div class="pres-col action-long">Action</div>
+    </div>
+    <div *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;">
+        <div class="wrap-tr">
+            <div class="pres-data long-text">
+                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
+                <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
+                    Drug: {{ prescription.drugName }}, Quantity: {{ prescription.quantity }}, Price: {{ prescription.cost }}
+                </span>
+            </div>
+            <div class="pres-data instruction-text">{{ prescription.patientInstruction }}</div>
+            <div class="pres-data">{{ prescription.refillCount }}</div>
+            <div class="pres-data action-long">
+                <a class="trash-box" (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
+                <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.value, prescription);">External?</md-checkbox>
+                <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
+                <span *ngIf="!prescription.isBilled">Bill</span>
+                <span *ngIf="prescription.isBilled" style="color: #fff;">Billed</span>
+            </button>
             </div>
         </div>
     </div>
-    <!--inner container onclick-->
-    <!--<div *ngIf="billShow && (billShowId == i)" class="inner-container" [formGroup]="addBillForm">
-        <div class="row" style="width:100%" formArrayName="bill">
-            <div [formGroupName]="j" *ngIf="j == i">
-                <div class="col-sm-4 col-md-4">
-                    <md-select formControlName="drug" placeholder="Drug">
-                        <md-option *ngFor="let drug of drugs" [(value)]="drug._id">{{ drug.name }}</md-option>
-                    </md-select>
-                </div>
-                <div class="col-sm-3 col-md-3">
-                    <md-input-container>
-                        <input mdInput formControlName="qty" type="number" placeholder="Quantity">
-                    </md-input-container>
-                </div>
-                <div class="col-sm-3 col-md-3">
-                    <div class="center">
-                        <div class="qs">
-                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
-                                <li class="workspace-listItem">
-                                    <ng-container>
-                                        <span>south weste</span>
-                                    </ng-container>
-                                </li>
-                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                            </ul>
-                            <a><span class="badge">5</span> Stores </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-1 col-ms-1">
-                    <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
-                </div>
-                <div class="col-sm-1 col-md-1">
-                    <div class="text-amount puul-right">
-                        <button class="btn btn-default save-btn" (click)="onClickSaveCost(i, j);">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-</div>
-<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0 && loading">
-    <div class="pres-data" style="width: 100%"><i class="fa fa-spinner fa-spin"></i></div>
-</div>
-<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0 && !loading">
-    <div class="pres-data" style="width: 100%">No data to display in table</div>
+    <div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0 && loading">
+        <div class="pres-data" style="width: 100%"><i class="fa fa-spinner fa-spin"></i></div>
+    </div>
+    <div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0 && !loading">
+        <div class="pres-data" style="width: 100%">No data to display in table</div>
+    </div>
 </div>
 <div class="row">
     <div class="col-sm-12 col-md-12 padding-10px">
@@ -80,4 +41,6 @@
     </div>
 </div>
 
-<app-bill-prescription *ngIf="billShow" [prescriptionData]="prescriptionData"></app-bill-prescription>
+<div *ngIf="billShow">
+    <app-bill-prescription [prescriptionData]="prescriptionData" (closeModal)="close_onClick($event)"></app-bill-prescription>
+</div>

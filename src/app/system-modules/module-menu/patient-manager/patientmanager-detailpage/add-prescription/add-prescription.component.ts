@@ -31,6 +31,7 @@ export class AddPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionItems);
+		console.log(this.loading);
 	}
 
 	onClickDeleteItem(value: any) {
@@ -42,6 +43,7 @@ export class AddPrescriptionComponent implements OnInit {
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
+		console.log(this.prescriptionItems);
 	}
 
 	toggleBill(index, item) {
@@ -106,4 +108,8 @@ export class AddPrescriptionComponent implements OnInit {
 	// 		qty: [value.qty],
 	// 	})
 	// }
+
+	close_onClick(e) {
+		this.billShow = false;
+	}
 }

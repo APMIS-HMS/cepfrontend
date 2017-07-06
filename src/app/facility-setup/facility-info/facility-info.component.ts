@@ -102,7 +102,7 @@ export class FacilityInfoComponent implements OnInit {
 				this.mainErr = false;
 				this.errMsg = 'you left out a required field';
 			} else {
-
+				console.log(this.inputFacility);
 				this.inputFacility.name = this.facilityForm1.controls['facilityname'].value;
 				this.inputFacility.shortName = this.facilityForm1.controls['facilityalias'].value;
 				this.inputFacility.facilityTypeId = this.facilityForm1.controls['facilitytype'].value._id;
@@ -110,7 +110,10 @@ export class FacilityInfoComponent implements OnInit {
 				this.inputFacility.email = this.facilityForm1.controls['facilityemail'].value;
 				this.inputFacility.website = this.facilityForm1.controls['facilitywebsite'].value;
 				this.inputFacility.facilityOwnershipId = this.facilityForm1.controls['facilityownership'].value;
-				this.inputFacility.address = {};
+				if (this.inputFacility.address === undefined) {
+					this.inputFacility.address = {};
+				}
+
 				this.inputFacility.address.country = this.facilityForm1.controls['facilitycountry'].value;
 
 				this.sg1_show = false;

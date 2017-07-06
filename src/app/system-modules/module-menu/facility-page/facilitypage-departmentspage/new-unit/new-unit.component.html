@@ -58,17 +58,17 @@
 
             <form [formGroup]="clinicForm" class="form-horizontal">
                 <div formArrayName="clinicArray">
-                    <div class="frmArrayclinicWrap" *ngFor="let clinic of clinicForm.controls['clinicArray'].value; let i = index;">
+                    <div class="frmArrayclinicWrap" *ngFor="let clinic of clinicForm.controls['clinicArray'].controls; let i = index;">
                         <div formGroupName="{{i}}">
                             <div class="mainErr animated shake" [hidden]="mainErrClinic || (clinicForm.controls['clinicArray'].value.length !== (i+1))">{{errMsgClinic}}</div>
 
                             <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(bill,group)" class="fa fa-times trash" aria-hidden="true"></i></span>
 
                             <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">
-                                <small class="alert-label" [hidden]="clinic.controls.clinicName.valid || clinic.controls.clinicName.pristine">
+                                <!--<small class="alert-label" [hidden]="clinic.controls.clinicName.valid || clinic.controls.clinicName.pristine">
                   this field is required.
                 </small>
-                                <i class="fa fa-building-o" aria-hidden="true"></i>
+                                <i class="fa fa-building-o" aria-hidden="true"></i>-->
                                 <input type="text" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
                             </div>
                             <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">

@@ -5,26 +5,23 @@
 
     <div class="lhs">
       <div class="frm-item-wrap">
-          <md-select *ngIf="stateAvailable" placeholder="State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+          <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
               <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
           </md-select>
-          <!--<md-input-container [hidden]="stateAvailable">
-              <input mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate" value="inputFacility.website">
-          </md-input-container>-->
       </div>
       <div class="frm-item-wrap">
-          <md-select placeholder="Facility City (Location)" *ngIf="stateAvailable" formControlName="facilitycity">
+          <md-select placeholder="Facility City" *ngIf="stateAvailable" formControlName="facilitycity">
               <md-option *ngFor="let item of cities" selected="inputFacility.address.city" [value]="item._id">{{item.name}}</md-option>
           </md-select>
       </div>
       <div class="frm-item-wrap">
-          <md-select placeholder="Facility LGA (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
+          <md-select placeholder="Facility LGA" *ngIf="stateAvailable" formControlName="facilitylga">
               <md-option *ngFor="let item of lgas" selected="inputFacility.address.lga" [value]="item._id">{{item.name}}</md-option>
           </md-select>
       </div>
       <div class="frm-item-wrap">
           <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Facility Address (Location)" formControlName="facilityaddress" value="inputFacility.address.street">
+              <input mdInput md-error placeholder="Facility Address" formControlName="facilityaddress" value="inputFacility.address.street">
           </md-input-container>
       </div>
       <div class="frm-item-wrap">
@@ -77,5 +74,5 @@
 
   </form>
 </div>
-<app-verify-token *ngIf="next_key_show" class="f_sg2 animated zoomIn" [backBtnVisible]="true" [inputFacility]="selectedFacility"></app-verify-token>
+<app-verify-token *ngIf="next_key_show" class="f_sg2 animated zoomIn" [backBtnVisible]="true" [inputFacility]="inputFacility"></app-verify-token>
 <app-facility-info *ngIf="back_key_show" [inputFacility]="inputFacility"></app-facility-info>

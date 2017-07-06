@@ -1,6 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
+import { Employee, Facility } from '../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { PatientmanagerHomepageComponent } from './patientmanager-homepage/patientmanager-homepage.component'
 
 @Component({
@@ -24,7 +27,13 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
     'logo': 'assets/images/logos/red.jpg'
   };
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute,
+    private _locker: CoolLocalStorage,
+    public facilityService: FacilitiesService,
+		private _employeeService: EmployeeService
+  ) { }
 
   ngAfterViewInit() {
     this.searchControl.valueChanges.subscribe(searchText => {

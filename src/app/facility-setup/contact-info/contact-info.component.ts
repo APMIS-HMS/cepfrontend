@@ -6,6 +6,7 @@ import {
 } from '../../services/facility-manager/setup/index';
 import { Address, Role, Facility, Gender, ModuleViewModel, User, Title, MaritalStatus, Person } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
 	selector: 'app-contact-info',
@@ -17,8 +18,8 @@ export class ContactInfoComponent implements OnInit {
 	@Input() inputFacility: Facility = <Facility>{};
 
 
-	selectedCountry_key = []; //states of the selected country load key
-	stateAvailable = false; //boolean variable to check if the list of user selected state exists in code
+	selectedCountry_key = []; // states of the selected country load key
+	stateAvailable = false; // boolean variable to check if the list of user selected state exists in code
 
 	show = false;
 	@ViewChild('showhideinput') input;
@@ -60,9 +61,10 @@ export class ContactInfoComponent implements OnInit {
 
 	ngOnInit() {
 		console.log(this.inputFacility);
-		this.getTitles();
-		this.getGenders();
-		this.getMaritalStatus();
+		// this.getTitles();
+		// this.getGenders();
+		// this.getMaritalStatus();
+		this.prime();
 
 		this.facilityForm1_1 = this.formBuilder.group({
 			facilitystate: ['', [<any>Validators.required]],
@@ -84,18 +86,17 @@ export class ContactInfoComponent implements OnInit {
 		})
 
 
-
-		this.countriesService.findAll().then((payload) => {
-			this.countries = payload.data;
-			this.stateAvailable = false;
-			console.log(this.countries);
-			let country = this.countries.find(item => item._id === this.inputFacility.address.country);
-			this.selectedCountry = country;
-			console.log(this.selectedCountry);
-			if (this.selectedCountry.states.length > 0) {
-				this.stateAvailable = true;
-			}
-		})
+		// this.countriesService.findAll().then((payload) => {
+		// 	this.countries = payload.data;
+		// 	this.stateAvailable = false;
+		// 	console.log(this.countries);
+		// 	const country = this.countries.find(item => item._id === this.inputFacility.address.country);
+		// 	this.selectedCountry = country;
+		// 	console.log(this.selectedCountry);
+		// 	if (this.selectedCountry.states.length > 0) {
+		// 		this.stateAvailable = true;
+		// 	}
+		// })
 
 		this.facilityForm1_1.controls['facilitystate'].valueChanges.subscribe(payload => {
 			this.cities = payload.cities;
@@ -117,77 +118,127 @@ export class ContactInfoComponent implements OnInit {
 				this.mainErr = false;
 				this.errMsg = 'your passwords do not match';
 			} else {
-				this.sg1_2_show = false;
-				this.next_key_show = true;
-				this.back_key_show = false;
-				this.mainErr = true;
+				if (this.inputFacility._id === undefined) {
+					const model: Facility = <Facility>{
+						name: this.inputFacility.name,
+						email: this.inputFacility.email,
+						contactPhoneNo: val.facilityphonNo,
+						contactFullName: val.contactLName + ' ' + val.contactFName,
+						facilityTypeId: this.inputFacility.facilityTypeId,
+						facilityClassId: this.inputFacility.facilityClassId,
+						facilityOwnershipId: this.inputFacility.facilityOwnershipId,
+						address: <Address>({
+							state: this.facilityForm1_1.controls['facilitystate'].value._id,
+							lga: this.facilityForm1_1.controls['facilitylga'].value,
+							city: this.facilityForm1_1.controls['facilitycity'].value,
+							street: this.facilityForm1_1.controls['facilityaddress'].value,
+							landmark: this.facilityForm1_1.controls['facilitylandmark'].value,
+							country: this.inputFacility.address.country,
+						}),
+						website: this.inputFacility.website,
+						shortName: this.inputFacility.shortName,
+						password: this.facilityForm1_1.controls['password'].value,
 
-				let model: Facility = <Facility>{
-					name: this.inputFacility.name,
-					email: this.inputFacility.email,
-					contactPhoneNo: val.facilityphonNo,
-					contactFullName: val.contactLName + ' ' + val.contactFName,
-					facilityTypeId: this.inputFacility.facilityTypeId,
-					facilityClassId: this.inputFacility.facilityClassId,
-					address: <Address>({
-						state: this.facilityForm1_1.controls['facilitystate'].value._id,
-						lga: this.facilityForm1_1.controls['facilitylga'].value,
-						city: this.facilityForm1_1.controls['facilitycity'].value,
-						street: this.facilityForm1_1.controls['facilityaddress'].value,
-						landmark: this.facilityForm1_1.controls['facilitylandmark'].value,
-						country: this.inputFacility.address.country,
-					}),
-					website: this.inputFacility.website,
-					shortName: this.inputFacility.shortName,
+					}
+					this.facilityService.create(model).then((payload) => {
+						this.selectedFacility = payload;
+						this.inputFacility = payload;
 
-				}
-				this.facilityService.create(model).then((payload) => {
-					this.selectedFacility = payload;
+						const personModel = <Person>{
+							titleId: this.titles[0]._id,
+							firstName: this.facilityForm1_1.controls['contactFName'].value,
+							lastName: this.facilityForm1_1.controls['contactLName'].value,
+							genderId: this.genders[0]._id,
+							homeAddress: model.address,
+							phoneNumber: model.contactPhoneNo,
+							lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
+							nationalityId: this.inputFacility.address.country,
+							stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
+							email: model.email,
+							maritalStatusId: this.maritalStatuses[0]._id
+						};
+						const userModel = <User>{
+							email: model.email,
+							password: this.facilityForm1_1.controls['password'].value
+						};
 
-					// create person and user
-					let personModel = <Person>{
-						titleId: this.titles[0]._id,
-						firstName: this.facilityForm1_1.controls['contactFName'].value,
-						lastName: this.facilityForm1_1.controls['contactLName'].value,
-						genderId: this.genders[0]._id,
-						homeAddress: model.address,
-						phoneNumber: model.contactPhoneNo,
-						lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
-						nationalityId: this.inputFacility.address.country,
-						stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
-						email: model.email,
-						maritalStatusId: this.maritalStatuses[0]._id
-					};
-					let userModel = <User>{
-						email: model.email,
-						password: this.facilityForm1_1.controls['password'].value
-					};
+						this.personService.create(personModel).then((ppayload) => {
+							userModel.personId = ppayload._id;
+							console.log('Person');
+							if (userModel.facilitiesRole === undefined) {
+								userModel.facilitiesRole = [];
+								console.log('facilitiesRole is undefine');
+							}
+							userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
+							this.userService.create(userModel).then((upayload) => {
+								console.log('user created');
+								this.sg1_2_show = false;
+								this.next_key_show = true;
+								this.back_key_show = false;
+								this.mainErr = true;
+							});
 
-					this.personService.create(personModel).then((ppayload) => {
-						userModel.personId = ppayload._id;
-						console.log("Person");
-						if (userModel.facilitiesRole === undefined) {
-							userModel.facilitiesRole = [];
-							console.log("facilitiesRole is undefine");
-						}
-						userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
-						this.userService.create(userModel).then((upayload) => {
-							console.log("user created");
+
 						});
-
-
-					});
-				},
-					error => {
-						console.log(error);
-					});
+					},
+						error => {
+							console.log(error);
+						});
+				} else {
+					this.sg1_2_show = false;
+					this.next_key_show = true;
+					this.back_key_show = false;
+					this.mainErr = true;
+					console.log('please update');
+				}
 
 			}
 		} else {
 			this.mainErr = false;
 		}
 	}
+	prime() {
 
+		const title$ = Observable.fromPromise(this.titleService.findAll());
+		const gender$ = Observable.fromPromise(this.genderService.findAll());
+		const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
+		const country$ = Observable.fromPromise(this.countriesService.findAll());
+
+		Observable.forkJoin([title$, gender$, maritalStatus$, country$]).subscribe((results: any) => {
+			this.titles = results[0].data;
+			this.genders = results[1].data;
+			this.maritalStatuses = results[2].data;
+
+			this.countries = results[3].data;
+			this.stateAvailable = false;
+			const country = this.countries.find(item => item._id === this.inputFacility.address.country);
+			this.selectedCountry = country;
+			if (this.selectedCountry.states.length > 0) {
+				this.stateAvailable = true;
+			}
+
+			if (this.inputFacility.contactFullName !== undefined && this.inputFacility.contactFullName.length > 0) {
+
+				console.log('is contact');
+
+
+				const filterState = this.selectedCountry.states.filter(x => x._id === this.inputFacility.address.state);
+				if (filterState.length > 0) {
+					this.facilityForm1_1.controls['facilitystate'].setValue(filterState[0]);
+				}
+				this.facilityForm1_1.controls['facilityphonNo'].setValue(this.inputFacility.contactPhoneNo);
+				this.facilityForm1_1.controls['contactFName'].setValue(this.inputFacility.contactFullName.split(' ')[0]);
+				this.facilityForm1_1.controls['contactLName'].setValue(this.inputFacility.contactFullName.split(' ')[1]);
+				this.facilityForm1_1.controls['facilitylga'].setValue(this.inputFacility.address.lga);
+				this.facilityForm1_1.controls['facilitycity'].setValue(this.inputFacility.address.city);
+				this.facilityForm1_1.controls['facilityaddress'].setValue(this.inputFacility.address.street);
+				this.facilityForm1_1.controls['facilitylandmark'].setValue(this.inputFacility.address.landmark);
+				this.facilityForm1_1.controls['password'].setValue(this.inputFacility.password);
+				this.facilityForm1_1.controls['repass'].setValue(this.inputFacility.password);
+
+			}
+		})
+	}
 	getTitles() {
 		this.titleService.findAll().then((payload: any) => {
 			this.titles = payload.data;
