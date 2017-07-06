@@ -91,20 +91,29 @@
     color: #676a6c;
 }
 
-#long-text {
+.long-text {
     width: 60%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:hover {
+        overflow: visible;
+        white-space: normal;
+    }
+}
+
+.instruction-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:hover {
+        overflow: visible;
+        white-space: normal;
+    }
 }
 
 #action {
     width: 20%;
-}
-
-#long-text:hover {
-    overflow: visible;
-    white-space: normal;
 }
 
 .text-amount {
@@ -168,7 +177,7 @@ a:hover {
     margin-left: -14px;
 }
 
-#action-long {
+.action-long {
     width: 20%;
 }
 
@@ -180,9 +189,8 @@ a:hover {
     background: #f5f5f5;
 }
 
-.textarea,
-.dx-date-box {
-    width: 100%;
+.textarea {
+    height: 60px;
 }
 
 thead {
@@ -234,14 +242,6 @@ thead {
     width: 100%;
 }
 
-.mat-select {
-    //margin-top: 5px;
-}
-
-// md-select,
-// md-input-container input {
-//     border: 1px solid #ccc;
-// }
 .cu-search-box {
     position: relative;
     min-width: 100px;

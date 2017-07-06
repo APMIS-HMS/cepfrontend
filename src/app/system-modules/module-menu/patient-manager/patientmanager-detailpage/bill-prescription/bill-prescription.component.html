@@ -2,7 +2,6 @@
     <div class="">
         <!-- purchase order details-->
         <div class="inPatient-activityTimeline shadow-RB animated slideInRight">
-            <!--<div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">-->
             <div (click)="onClickClose($event);" class="hide-actionWrap">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
             </div>
@@ -29,6 +28,11 @@
                                             </div>
                                             <div class="col-xs-6" style="margin-top: 20px;">
                                                 <p>Cost: <b>&#x20A6; {{ itemCost }}</b></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
+                                            <div class="col-xs-12" style="margin-top: 20px;">
+                                                <p>Qty Available in Stores: <span class="badge">{{ qtyInStores }}</span></p>
                                             </div>
                                         </div>
                                     </div>
