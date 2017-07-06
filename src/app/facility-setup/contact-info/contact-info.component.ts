@@ -86,7 +86,6 @@ export class ContactInfoComponent implements OnInit {
 		})
 
 
-
 		// this.countriesService.findAll().then((payload) => {
 		// 	this.countries = payload.data;
 		// 	this.stateAvailable = false;
@@ -119,71 +118,79 @@ export class ContactInfoComponent implements OnInit {
 				this.mainErr = false;
 				this.errMsg = 'your passwords do not match';
 			} else {
-				this.sg1_2_show = false;
-				this.next_key_show = true;
-				this.back_key_show = false;
-				this.mainErr = true;
+				if (this.inputFacility._id === undefined) {
+					const model: Facility = <Facility>{
+						name: this.inputFacility.name,
+						email: this.inputFacility.email,
+						contactPhoneNo: val.facilityphonNo,
+						contactFullName: val.contactLName + ' ' + val.contactFName,
+						facilityTypeId: this.inputFacility.facilityTypeId,
+						facilityClassId: this.inputFacility.facilityClassId,
+						facilityOwnershipId: this.inputFacility.facilityOwnershipId,
+						address: <Address>({
+							state: this.facilityForm1_1.controls['facilitystate'].value._id,
+							lga: this.facilityForm1_1.controls['facilitylga'].value,
+							city: this.facilityForm1_1.controls['facilitycity'].value,
+							street: this.facilityForm1_1.controls['facilityaddress'].value,
+							landmark: this.facilityForm1_1.controls['facilitylandmark'].value,
+							country: this.inputFacility.address.country,
+						}),
+						website: this.inputFacility.website,
+						shortName: this.inputFacility.shortName,
+						password: this.facilityForm1_1.controls['password'].value,
 
-				let model: Facility = <Facility>{
-					name: this.inputFacility.name,
-					email: this.inputFacility.email,
-					contactPhoneNo: val.facilityphonNo,
-					contactFullName: val.contactLName + ' ' + val.contactFName,
-					facilityTypeId: this.inputFacility.facilityTypeId,
-					facilityClassId: this.inputFacility.facilityClassId,
-					address: <Address>({
-						state: this.facilityForm1_1.controls['facilitystate'].value._id,
-						lga: this.facilityForm1_1.controls['facilitylga'].value,
-						city: this.facilityForm1_1.controls['facilitycity'].value,
-						street: this.facilityForm1_1.controls['facilityaddress'].value,
-						landmark: this.facilityForm1_1.controls['facilitylandmark'].value,
-						country: this.inputFacility.address.country,
-					}),
-					website: this.inputFacility.website,
-					shortName: this.inputFacility.shortName,
+					}
+					this.facilityService.create(model).then((payload) => {
+						this.selectedFacility = payload;
+						this.inputFacility = payload;
 
-				}
-				this.facilityService.create(model).then((payload) => {
-					this.selectedFacility = payload;
-					this.inputFacility = payload;
+						const personModel = <Person>{
+							titleId: this.titles[0]._id,
+							firstName: this.facilityForm1_1.controls['contactFName'].value,
+							lastName: this.facilityForm1_1.controls['contactLName'].value,
+							genderId: this.genders[0]._id,
+							homeAddress: model.address,
+							phoneNumber: model.contactPhoneNo,
+							lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
+							nationalityId: this.inputFacility.address.country,
+							stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
+							email: model.email,
+							maritalStatusId: this.maritalStatuses[0]._id
+						};
+						const userModel = <User>{
+							email: model.email,
+							password: this.facilityForm1_1.controls['password'].value
+						};
 
-					// create person and user
-					const personModel = <Person>{
-						titleId: this.titles[0]._id,
-						firstName: this.facilityForm1_1.controls['contactFName'].value,
-						lastName: this.facilityForm1_1.controls['contactLName'].value,
-						genderId: this.genders[0]._id,
-						homeAddress: model.address,
-						phoneNumber: model.contactPhoneNo,
-						lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
-						nationalityId: this.inputFacility.address.country,
-						stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
-						email: model.email,
-						maritalStatusId: this.maritalStatuses[0]._id
-					};
-					const userModel = <User>{
-						email: model.email,
-						password: this.facilityForm1_1.controls['password'].value
-					};
+						this.personService.create(personModel).then((ppayload) => {
+							userModel.personId = ppayload._id;
+							console.log('Person');
+							if (userModel.facilitiesRole === undefined) {
+								userModel.facilitiesRole = [];
+								console.log('facilitiesRole is undefine');
+							}
+							userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
+							this.userService.create(userModel).then((upayload) => {
+								console.log('user created');
+								this.sg1_2_show = false;
+								this.next_key_show = true;
+								this.back_key_show = false;
+								this.mainErr = true;
+							});
 
-					this.personService.create(personModel).then((ppayload) => {
-						userModel.personId = ppayload._id;
-						console.log('Person');
-						if (userModel.facilitiesRole === undefined) {
-							userModel.facilitiesRole = [];
-							console.log('facilitiesRole is undefine');
-						}
-						userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
-						this.userService.create(userModel).then((upayload) => {
-							console.log('user created');
+
 						});
-
-
-					});
-				},
-					error => {
-						console.log(error);
-					});
+					},
+						error => {
+							console.log(error);
+						});
+				} else {
+					this.sg1_2_show = false;
+					this.next_key_show = true;
+					this.back_key_show = false;
+					this.mainErr = true;
+					console.log('please update');
+				}
 
 			}
 		} else {
@@ -191,23 +198,6 @@ export class ContactInfoComponent implements OnInit {
 		}
 	}
 	prime() {
-		// this.getTitles();
-		// this.getGenders();
-		// this.getMaritalStatus();
-
-
-
-		// this.countriesService.findAll().then((payload) => {
-		// 	this.countries = payload.data;
-		// 	this.stateAvailable = false;
-		// 	console.log(this.countries);
-		// 	const country = this.countries.find(item => item._id === this.inputFacility.address.country);
-		// 	this.selectedCountry = country;
-		// 	console.log(this.selectedCountry);
-		// 	if (this.selectedCountry.states.length > 0) {
-		// 		this.stateAvailable = true;
-		// 	}
-		// })
 
 		const title$ = Observable.fromPromise(this.titleService.findAll());
 		const gender$ = Observable.fromPromise(this.genderService.findAll());
@@ -232,37 +222,19 @@ export class ContactInfoComponent implements OnInit {
 				console.log('is contact');
 
 
-				// facilitystate: ['', [<any>Validators.required]],
-				// 		facilitylga: ['', [<any>Validators.required]],
-				// 		facilitycity: ['', [<any>Validators.required]],
-				// 		facilityaddress: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-				// 		facilitylandmark: ['', [<any>Validators.required]],
-
-				// 		contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
-				// 		contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
-				// 		facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
-				// 		password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-				// 		repass: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
-
-				this.facilityForm1_1.controls['facilitystate'].setValue(this.inputFacility.address.state);
+				const filterState = this.selectedCountry.states.filter(x => x._id === this.inputFacility.address.state);
+				if (filterState.length > 0) {
+					this.facilityForm1_1.controls['facilitystate'].setValue(filterState[0]);
+				}
 				this.facilityForm1_1.controls['facilityphonNo'].setValue(this.inputFacility.contactPhoneNo);
 				this.facilityForm1_1.controls['contactFName'].setValue(this.inputFacility.contactFullName.split(' ')[0]);
 				this.facilityForm1_1.controls['contactLName'].setValue(this.inputFacility.contactFullName.split(' ')[1]);
 				this.facilityForm1_1.controls['facilitylga'].setValue(this.inputFacility.address.lga);
 				this.facilityForm1_1.controls['facilitycity'].setValue(this.inputFacility.address.city);
 				this.facilityForm1_1.controls['facilityaddress'].setValue(this.inputFacility.address.street);
-				// 	facilityTypeId: this.inputFacility.facilityTypeId,
-				// 	facilityClassId: this.inputFacility.facilityClassId,
-				// 	address: <Address>({
-				// 		state: this.facilityForm1_1.controls['facilitystate'].value._id,
-				// 		lga: this.facilityForm1_1.controls['facilitylga'].value,
-				// 		city: this.facilityForm1_1.controls['facilitycity'].value,
-				// 		street: this.facilityForm1_1.controls['facilityaddress'].value,
-				// 		landmark: this.facilityForm1_1.controls['facilitylandmark'].value,
-				// 		country: this.inputFacility.address.country,
-				// 	}),
-				// 	website: this.inputFacility.website,
-				// 	shortName: this.inputFacility.shortName,
+				this.facilityForm1_1.controls['facilitylandmark'].setValue(this.inputFacility.address.landmark);
+				this.facilityForm1_1.controls['password'].setValue(this.inputFacility.password);
+				this.facilityForm1_1.controls['repass'].setValue(this.inputFacility.password);
 
 			}
 		})
