@@ -12,6 +12,13 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./patientmanager-homepage.component.scss']
 })
 export class PatientmanagerHomepageComponent implements OnInit {
+    selectedValue: string;
+
+  foods = [
+    {value: 'steak-0', viewValue: 'male'},
+    {value: 'pizza-1', viewValue: 'female'},
+  ];
+
   editPatient = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
