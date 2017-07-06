@@ -37,6 +37,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
             this.listOfFacilities = payload.data;
             if (this.listOfFacilities.length === 1) {
 
+
               this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
               if (this.listOfFacilities[0].isTokenVerified === true) {
                 this.router.navigate(['dashboard']);
