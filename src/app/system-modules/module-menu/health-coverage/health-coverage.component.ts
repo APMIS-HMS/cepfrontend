@@ -61,28 +61,28 @@ export class HealthCoverageComponent implements OnInit {
     this.familyCover = false;
     this.hmoCover = false;
     this.staffCover = false;
-    this.router.navigate(['/modules/health-coverage/company-cover']);
+    this.router.navigate(['/dashboard/health-coverage/company-cover']);
   }
   familyCover_show() {
     this.companyCover = false;
     this.familyCover = true;
     this.hmoCover = false;
     this.staffCover = false;
-    this.router.navigate(['/modules/health-coverage/family-cover']);
+    this.router.navigate(['/dashboard/health-coverage/family-cover']);
   }
   hmoCover_show() {
     this.companyCover = false;
     this.familyCover = false;
     this.hmoCover = true;
     this.staffCover = false;
-    this.router.navigate(['/modules/health-coverage/hmo-cover']);
+    this.router.navigate(['/dashboard/health-coverage/hmo-cover']);
   }
   staffCover_show() {
     this.companyCover = false;
     this.familyCover = false;
     this.hmoCover = false;
     this.staffCover = true;
-    this.router.navigate(['/modules/health-coverage/staff-cover']);
+    this.router.navigate(['/dashboard/health-coverage/staff-cover']);
   }
 
 }

@@ -18,7 +18,7 @@
                     <tr *ngIf="facilityWards.length == 0">
                         <td colspan="3"> No data available in table</td>
                     </tr>
-                    <tr class="details-link" routerLink="/modules/ward-manager/setup/ward/{{facilityWard._id}}" *ngFor="let facilityWard of facilityWards;let i = index">
+                    <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{facilityWard._id}}" *ngFor="let facilityWard of facilityWards;let i = index">
                         <td>{{i+1}}</td>
                         <td>{{facilityWard.name}}</td>
                         <td *ngIf="facilityWard?.wardDetails?.rooms?.length == null">0</td>

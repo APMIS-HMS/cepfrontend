@@ -75,7 +75,7 @@ export class DischargePatientComponent implements OnInit {
 														bed.isAvailable = true;
 														this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
 															// console.log("Complete");
-															this._router.navigate(['/modules/ward-manager/admitted']);
+															this._router.navigate(['/dashboard/ward-manager/admitted']);
 														})
 													}
 												})

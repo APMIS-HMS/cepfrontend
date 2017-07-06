@@ -44,7 +44,7 @@ export class SupplierManagerComponent implements OnInit {
     });
   }
   onSelect(supplier) {
-    this.router.navigate(['/modules/product-manager/supplier-detail', supplier._id]);
+    this.router.navigate(['/dashboard/product-manager/supplier-detail', supplier._id]);
   }
   onEdit(supplier) {
     this.selectedSupplier = supplier;

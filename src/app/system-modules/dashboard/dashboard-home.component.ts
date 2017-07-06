@@ -88,7 +88,7 @@ export class DashboardHomeComponent implements OnInit {
   }
   onHealthCoverage() {
     this.innerMenuShow = false;
-    this.router.navigate(['/modules/health-coverage']);
+    this.router.navigate(['/dashboard/health-coverage']);
   }
   facilityMenuShow() {
     this.facilityManagerActive = true;

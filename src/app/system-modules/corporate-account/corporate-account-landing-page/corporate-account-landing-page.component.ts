@@ -75,13 +75,13 @@ export class CorporateAccountLandingPageComponent implements OnInit {
           if (companyHealthCover.isAccepted === false) {
             this.hasPending = true;
           } else {
-            this.router.navigate(['/modules/corporate/covering-facility']);
+            this.router.navigate(['/dashboard/corporate/covering-facility']);
           }
         }
       });
   }
   deptsShow() {
-    this.router.navigate(['/modules/corporate/department'])
+    this.router.navigate(['/dashboard/corporate/department'])
   }
   homeShow() {
     this.logoutConfirm_on = false;

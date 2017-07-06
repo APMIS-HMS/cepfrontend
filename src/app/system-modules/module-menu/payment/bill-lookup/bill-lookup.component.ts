@@ -117,7 +117,7 @@ export class BillLookupComponent implements OnInit {
       billGroup.grandAmount = this.total;
       console.log(billGroup);
       this.invoiceService.create(billGroup).then(payload => {
-        this.router.navigate(['/modules/payment/invoice', payload.patientId]);
+        this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
       }, error => {
         console.log(error);
       });

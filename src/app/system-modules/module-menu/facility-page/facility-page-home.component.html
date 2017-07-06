@@ -4,13 +4,13 @@
         <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
         <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
             <li (click)="changeRoute('')"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-            <li (click)="changeRoute('modules')"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
+            <li (click)="changeRoute('dashboard')"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
             <li (click)="changeRoute('departments')"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
             <li (click)="changeRoute('locations')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
             <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
-            <li [routerLink]="['/modules/employee-manager']">Employee</li>
+            <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
         </ul>
     </div>
     <div class="inner-page-wrap">
@@ -18,7 +18,7 @@
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
                 <li (click)="changeRoute('')" [class.navActive]="homeContentArea">Home</li>
-                <li (click)="changeRoute('modules')" [class.navActive]="modulesContentArea">Modules</li>
+                <li (click)="changeRoute('dashboard')" [class.navActive]="dashboardContentArea">Modules</li>
                 <li (click)="changeRoute('departments')" [class.navActive]="departmentsContentArea">Departments</li>
                 <li (click)="changeRoute('locations')" [class.navActive]="locationsContentArea">Locations</li>
                 <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>

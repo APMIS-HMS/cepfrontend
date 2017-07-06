@@ -39,7 +39,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
 
               this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
               if (this.listOfFacilities[0].isTokenVerified === true) {
-                this.router.navigate(['/modules']);
+                this.router.navigate(['dashboard']);
                 return Observable.of({ selectedPerson: this.selectedPerson, listOfFacilities: this.listOfFacilities });
               } else {
                 return Observable.of({

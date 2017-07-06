@@ -116,7 +116,7 @@ export class GenerateUserComponent implements OnInit {
     return retVal;
   }
   person_onClick() {
-    this.router.navigate(['/modules/employee-manager/employee-manager-detail', this.selectedPerson._id]);
+    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', this.selectedPerson._id]);
   }
   generate() {
     const user = <User>{

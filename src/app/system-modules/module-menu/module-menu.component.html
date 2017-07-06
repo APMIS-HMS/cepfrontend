@@ -5,25 +5,25 @@
   <div class="menuGroup animated fadeIn">
     <div class="menu-title">System Modules</div>
     <div class="menuGroup-inner lhs"> 
-      <li (click)="facilitySubmenuShow()" [routerLink]="['/modules/facility-page']"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['/modules/employee-manager']"><i class="fa fa-users" aria-hidden="true"></i> <span>Employee Manager</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Patient Manager</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/payment']"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
-      <li (click)="userSubmenuShow()" [routerLink]="['/modules/access-manager']"><i class="fa fa-first-order" aria-hidden="true"></i> <span>Order Management</span></li>
+      <li (click)="facilitySubmenuShow()" [routerLink]="['/dashboard/facility-page']"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
+      <li (click)="employeeSubmenuShow()" [routerLink]="['/dashboard/employee-manager']"><i class="fa fa-users" aria-hidden="true"></i> <span>Employee Manager</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Patient Manager</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/payment']"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
+      <li (click)="userSubmenuShow()" [routerLink]="['/dashboard/access-manager']"><i class="fa fa-first-order" aria-hidden="true"></i> <span>Order Management</span></li>
     </div>
     <div class="menuGroup-inner lhs">
-      <li (click)="facilitySubmenuShow()" [routerLink]="['/modules/clinic']"><i class="fa fa-medkit" aria-hidden="true"></i> <span>Clinic Management</span></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['/modules/employee-manager']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Clinical Documentation</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/store']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Store</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/pharmacy']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Pharmacy</span></li>
+      <li (click)="facilitySubmenuShow()" [routerLink]="['/dashboard/clinic']"><i class="fa fa-medkit" aria-hidden="true"></i> <span>Clinic Management</span></li>
+      <li (click)="employeeSubmenuShow()" [routerLink]="['/dashboard/employee-manager']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Clinical Documentation</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/store']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Store</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/pharmacy']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Pharmacy</span></li>
     </div>
     <div class="menuGroup-inner lhs">
-      <li (click)="facilitySubmenuShow()" [routerLink]="['/modules/facility-page']"><i class="fa fa-flask" aria-hidden="true"></i> <span>Laboratory</span></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['/modules/employee-manager']"><i class="fa fa-picture-o" aria-hidden="true"></i> <span>Radiology</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['/modules/patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
+      <li (click)="facilitySubmenuShow()" [routerLink]="['/dashboard/facility-page']"><i class="fa fa-flask" aria-hidden="true"></i> <span>Laboratory</span></li>
+      <li (click)="employeeSubmenuShow()" [routerLink]="['/dashboard/employee-manager']"><i class="fa fa-picture-o" aria-hidden="true"></i> <span>Radiology</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
+      <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
     </div>
     <div class="clear"></div>
   </div>
@@ -31,21 +31,21 @@
   <div class="menuGroup animated fadeIn">
     <div class="menu-title">User Menu</div>
     <li><i class="fa fa-user" aria-hidden="true"></i> <span>User Profile</span></li>
-    <li (click)="patientSubmenuShow()" [routerLink]="['/modules/payment']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
-    <li (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['/modules/health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
+    <li (click)="patientSubmenuShow()" [routerLink]="['/dashboard/payment']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
+    <li (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['/dashboard/health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
     <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li>
     <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li>
-    <li (click)="onTags()" [routerLink]="['/modules/billing/tags']"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
+    <li (click)="onTags()" [routerLink]="['/dashboard/billing/tags']"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
   </div>
 
   <div class="menuGroup animated fadeIn">
     <div class="menu-title">Settings</div>
-    <li (click)="facilitySubmenuShow()" [routerLink]="['/modules/facility-page']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Facility Settings</span></li>
-    <li (click)="employeeSubmenuShow()" [routerLink]="['/modules/employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li>
-    <li (click)="userSubmenuShow()" [routerLink]="['/modules/access-manager']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li>
+    <li (click)="facilitySubmenuShow()" [routerLink]="['/dashboard/facility-page']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Facility Settings</span></li>
+    <li (click)="employeeSubmenuShow()" [routerLink]="['/dashboard/employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li>
+    <li (click)="userSubmenuShow()" [routerLink]="['/dashboard/access-manager']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li>
     <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li>
-    <li (click)="billingSubmenuShow()" [routerLink]="['/modules/billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
-    <li (click)="formsSubmenuShow()"  [routerLink]="['/modules/forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Forms Manager</span></li>
+    <li (click)="billingSubmenuShow()" [routerLink]="['/dashboard/billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
+    <li (click)="formsSubmenuShow()"  [routerLink]="['/dashboard/forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Forms Manager</span></li>
   </div>
 </ul>
 

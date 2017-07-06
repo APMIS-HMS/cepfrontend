@@ -133,7 +133,7 @@ export class AdmitPatientComponent implements OnInit {
 						// Update the checkOutDate of the last tranfer
 						this._inPatientService.update(payload)
 							.then(payload1 => {
-								this.router.navigate(['/modules/ward-manager/admitted']);
+								this.router.navigate(['/dashboard/ward-manager/admitted']);
 							}, err => {
 								console.log(err);
 							})
