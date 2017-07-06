@@ -12,11 +12,11 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./patientmanager-homepage.component.scss']
 })
 export class PatientmanagerHomepageComponent implements OnInit {
-    selectedValue: string;
+  selectedValue: string;
 
   foods = [
-    {value: 'steak-0', viewValue: 'male'},
-    {value: 'pizza-1', viewValue: 'female'},
+    { value: 'steak-0', viewValue: 'male' },
+    { value: 'pizza-1', viewValue: 'female' },
   ];
 
   editPatient = false;
@@ -56,7 +56,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   }
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
-    this.facility = <Facility> this.locker.getObject('selectedFacility');
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatients(this.limit);
     // this.route.params.subscribe((params: any) => {
     //   this.patientService.find({ query: { personId: params.id, facilityId: this.facility._id } }).then(payload => {
@@ -127,5 +127,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   slideEdit() {
     this.editPatient = true;
   }
-  
+  close_onClick() {
+    this.editPatient = false;
+  }
 }
