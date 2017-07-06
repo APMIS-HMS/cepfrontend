@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
-import { SupplierService, StrengthService, ProductService, PurchaseOrderService, StoreService } from '../../../../../services/facility-manager/setup/index';
+import { SupplierService, StrengthService, ProductService, PurchaseOrderService, StoreService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { PurchaseOrder } from '../../../../../models/index';
@@ -50,12 +50,12 @@ export class NewPurchaseOrderComponent implements OnInit {
 
   saveBtnText: string = 'Done';
 
-  constructor(private formBuilder: FormBuilder, private supplierService: SupplierService,
+  constructor(private formBuilder: FormBuilder, private supplierService: SupplierService, private facilitiesService: FacilitiesService,
     private storeService: StoreService, private route: ActivatedRoute, private router: Router, private strengthService: StrengthService,
     private locker: CoolLocalStorage, private productService: ProductService, private purchaseOrderService: PurchaseOrderService) { }
 
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.route.data.subscribe(data => {
       data['loginEmployee'].subscribe((payload) => {
         this.loginEmployee = payload.loginEmployee;
@@ -129,7 +129,6 @@ export class NewPurchaseOrderComponent implements OnInit {
                 .push(
                 this.formBuilder.group({
                   product: [itemg.name, [<any>Validators.required]],
-                  strength: [, [<any>Validators.required]],
                   qty: [item.quantity, [<any>Validators.required]],
                   readOnly: [false],
                   id: [item.productId]
@@ -158,7 +157,6 @@ export class NewPurchaseOrderComponent implements OnInit {
         .push(
         this.formBuilder.group({
           product: [value.name, [<any>Validators.required]],
-          strength: [, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
           readOnly: [false],
           id: [value._id]
@@ -284,7 +282,6 @@ export class NewPurchaseOrderComponent implements OnInit {
       'productTableArray': this.formBuilder.array([
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
-          strength: [, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
           readOnly: [false],
           id: ['']
@@ -309,13 +306,16 @@ export class NewPurchaseOrderComponent implements OnInit {
         const item = itemi.value;
         const product: any = <any>{};
         product.productId = item.id;
-        product.strengthId = item.strength;
         product.quantity = item.qty;
         purchaseOrder.orderedProducts.push(product);
       });
       console.log(purchaseOrder);
       this.purchaseOrderService.create(purchaseOrder).subscribe(payload => {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+        this.facilitiesService.announceNotification({
+          type: "Success",
+          text: payload.purchaseOrderNumber + " was created"
+        });
       }, error => {
         console.log(error);
       });
@@ -335,7 +335,6 @@ export class NewPurchaseOrderComponent implements OnInit {
         const item = itemi.value;
         const product: any = <any>{};
         product.productId = item.id;
-        product.strengthId = item.strength;
         product.quantity = item.qty;
         console.log(product);
         this.selectedPurchaseOrder.orderedProducts.push(product);

@@ -55,8 +55,10 @@
                     <div class="col-sm-6 col-md-6">
                         <div class="cu-search-box">
                             <md-input-container>
-                                <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
+                                <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();"
+                                    (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
                             </md-input-container>
+                            <!--<input type="text" formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">-->
                             <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                                 <div class="cu-popover-arrow"></div>
                                 <div class="cu-header">
@@ -80,7 +82,7 @@
                         </md-input-container>
                     </div>
                     <div class="col-sm-3 col-md-3">
-                        <md-select formControlName="route" placeholder="Route" class="md-select">
+                        <md-select formControlName="route" placeholder="Route">
                             <md-option *ngFor="let route of routes" [(value)]="route.name">
                                 {{ route.name }}
                             </md-option>
@@ -90,7 +92,7 @@
                 <div class="row padding-top-20px">
                     <div class="">
                         <div class="col-sm-3 col-md-3">
-                            <md-select formControlName="frequency" placeholder="Frequency" class="example-full-width md-select">
+                            <md-select formControlName="frequency" placeholder="Frequency" class="example-full-width">
                                 <md-option *ngFor="let frequency of frequencies" [value]="frequency.name">
                                     {{ frequency.name }}
                                 </md-option>
@@ -102,12 +104,16 @@
                                     <md-input-container>
                                         <input mdInput type="number" formControlName="duration" placeholder="Duration">
                                     </md-input-container>
+                                    <!--<input type="number" formControlName="duration" class="form-control" id="input" required>-->
                                     <div class="input-group-btn">
-                                        <md-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue" class="md-select">
+                                        <md-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue">
                                             <md-option *ngFor="let unit of durationUnits" [value]="unit.name">
                                                 {{ unit.name }}
                                             </md-option>
                                         </md-select>
+                                        <!--<select formControlName="durationUnit" [(ngModel)]="selectedValue" id="select">
+                                            <option *ngFor="let unit of durationUnits" value="{{ unit.name }}">{{ unit.name }}</option>
+                                        </select>-->
                                     </div>
                                 </div>
                             </div>
@@ -125,13 +131,14 @@
                             <md-datepicker #picker></md-datepicker>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-12 col-md-12 padding-top-20px">
                         <md-input-container>
                             <textarea mdInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
+                            <!--<input mdInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction">-->
                         </md-input-container>
                         <div class="after-textarea-btn pull-right">
-                            <button md-raised-button class="mat-lg-btn" [disabled]="!addPrescriptionForm.valid" (click)="onClickAddPrescription(addPrescriptionForm.value, addPrescriptionForm.valid);"> Add </button>
-                            <button md-raised-button class="mat-lg-btn" (click)="onClickReset();"> Reset </button>
+                            <button class="btn btn-defalut" [disabled]="!addPrescriptionForm.valid" (click)="onClickAddPrescription(addPrescriptionForm.value, addPrescriptionForm.valid);"> Add </button>
+                            <button class="btn btn-defalut" (click)="onClickReset();"> Reset </button>
                         </div>
                     </div>
                 </div>
@@ -140,23 +147,57 @@
             <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
             <form [formGroup]="allPrescriptionsForm">
+                <!-- begin total bill-->
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-12 padding-10px">
+                        <div class="col-sm-6 pull-right">
+                            <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- end total bill-->
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-12 padding-10px text-center">
+                        <div class="col-sm-12 col-md-12">
+                                <label class="pull-left"> Priority </label>
+                                <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                                </dx-lookup>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- <div class="row">
+                     <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label> Priority </label>
+                        <div>
+                            <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                            </dx-lookup>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                </div> -->
                 <div class="row">
-                    <div class="col-xs-12 no-padding">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8">
-                            <div class="col-sm-6">
-                                <md-select placeholder="Priority" formControlName="priority" class="md-select">
-                                    <md-option *ngFor="let priority of priorities" [value]="priority._id">{{ priority.name }}</md-option>
-                                </md-select>
-                            </div>
-                            <div class="col-sm-6 text-center">
-                                <button md-raised-button (click)="onClickSavePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">Authorize RX</button>
+                    <div>
+                        <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top: -7px;">
+                            <label> Priority </label>
+                            <div>
+                                <!--<dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                                </dx-lookup>-->
+                            <select formControlName="priority">
+                                <option *ngFor="let item of priorities" placeholder="Priority"  value="{{item._id}}" >{{item.name}}</option>
+                            </select>
                             </div>
                         </div>
-                        <div class="col-sm-2"></div>
+                        <div class="col-sm-6 col-md-6 text-center">
+                            <button (click)="onClickSavePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="cta-1">Authorize RX</button>
+                        </div>
                     </div>
                 </div>
+                <!-- end authorize RX button -->
             </form>
         </div>
     </div>
+    <!-- end survery -->
 </section>

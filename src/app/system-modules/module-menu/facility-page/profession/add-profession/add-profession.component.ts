@@ -24,9 +24,5 @@ export class AddProfessionComponent implements OnInit {
  close_onClick() {
     this.closeModal.emit(true);
   }
-   inputs = [{value: "target.value"}];
-  addInput()  {
-    this.inputs.push({value: ''});
-  }
 
 }

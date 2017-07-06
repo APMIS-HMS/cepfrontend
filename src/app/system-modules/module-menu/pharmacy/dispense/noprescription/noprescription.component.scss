@@ -3,15 +3,6 @@
     width: 40%;
 }
 
-.example-margin {
-    margin: 0 10px;
-}
-
-.no-padding {
-    padding-left: 0;
-    padding-right: 0;
-}
-
 .table-inner,
 .table-head {
     width: 100%;
@@ -43,8 +34,8 @@
     .cu-popup-wrapper {
         position: absolute;
         max-height: 736px;
-        width: 90%;
-        margin-top: 12px;
+        width: 100%;
+        margin-top: 20px;
         height: auto;
         z-index: 1501;
         top: 35px;

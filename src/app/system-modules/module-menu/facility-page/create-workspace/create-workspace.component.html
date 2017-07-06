@@ -9,18 +9,29 @@
             <div class="sec-1">
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <!--<label>Department</label>
+                    <select formControlName="dept">
+					<option value="" disabled selected>Department</option>
+					<option  [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
+				    </select>-->
                     <md-select formControlName="dept">
-                        <md-option *ngFor="let department of departments" [value]="department">
-                            {{department.name}}
+                        <md-option value="" disabled selected>Department</md-option>
+                        <md-option  *ngFor="let department of departments" [value]="department">
+                        {{department.name}}
                         </md-option>
                     </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-select formControlName="unit">
+                    <!--<label>Unit</label>
+                        <select formControlName="unit">
+                        <option value="" disabled selected>Unit</option>
+                        <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
+				    </select>-->
+                     <md-select formControlName="unit">
                         <md-option value="" disabled selected>Unit</md-option>
-                        <md-option *ngFor="let unit of units" [value]="unit">
+                        <md-option *ngFor="let unit of units" [value]="unit.name">
                         {{unit.name}}
                         </md-option>
                     </md-select>
@@ -29,18 +40,30 @@
             <div class="sec-2">
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <!--<label>Major Location</label>
+                    <select formControlName="majorLoc">
+					<option value="" disabled selected>Major Location</option>
+					<option *ngFor="let major of majorLocations" [ngValue]="major">{{major.name}}</option>
+				    </select>-->
                     <md-select formControlName="majorLoc">
-                        <md-option *ngFor="let major of majorLocations" [value]="major">
-                            {{major.name}}
+                        <md-option value="" disabled selected>Major Location</md-option>
+                        <md-option  *ngFor="let major of majorLocations" [value]="major">
+                        {{major.name}}
                         </md-option>
                     </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-circle-o" aria-hidden="true"></i>
-                    <md-select formControlName="minorLoc">
-                        <md-option *ngFor="let minor of minorLocations" [value]="minor">
-                            {{minor.name}}
+                    <!--<label>Minor Location</label>
+                    <select formControlName="minorLoc">
+					<option value="" disabled selected>Minor Location</option>
+					<option *ngFor="let minor of minorLocations" [ngValue]="minor">{{minor.name}}</option>
+				</select>-->
+                <md-select formControlName="minorLoc">
+                        <md-option value="" disabled selected>Minor Location</md-option>
+                        <md-option  *ngFor="let minor of minorLocations" [value]="minor">
+                        {{minor.name}}
                         </md-option>
                     </md-select>
                 </div>
@@ -51,12 +74,11 @@
                     <thead>
                         <tr>
                             <th class="sel-all">
-                               <!-- <div class="dx-field">
+                                <div class="dx-field">
                                     <div class="dx-field-value">
                                         <dx-check-box [formControl]="checkAll"></dx-check-box>
                                     </div>
-                                </div>-->
-                                <md-checkbox class="example-margin" [formControl]="checkAll">Check All</md-checkbox>
+                                </div>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -83,11 +105,8 @@
                                     <div class="tbl-title"></div>
                                     <div class="tbl-search">
                                         <div class="searchInputWrap">
-                                            <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">-->
-                                            <md-input-container class="example-full-width">
-                                                <input mdInput [formControl]="searchControl" autofocus placeholder="search organizations">
-                                            </md-input-container>
-                                          <!--<i class="fa fa-search" aria-hidden="true"></i>-->
+                                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +124,7 @@
                             <td>
                                 <div class="empWrap">
                                     <div class="list-img">
-                                        <div *ngIf="employee?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                                          <div *ngIf="employee?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
                                         <img *ngIf="employee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(employee?.employeeDetails?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div>{{employee.employeeDetails.lastName}} {{employee?.employeeDetails.firstName}}</div>
@@ -121,12 +140,10 @@
 
 
 
-    <!--<button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+        <button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
       Assign Workspace
-    </button>-->
-    <div class="example-full-width" id="example-full-width">
-          <button class="apmis-bllue" [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button> Assign Workspace</button>
-    </div>
+    </button>
+
     </form>
 
 </div>

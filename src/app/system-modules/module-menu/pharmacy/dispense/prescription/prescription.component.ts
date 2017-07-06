@@ -13,7 +13,6 @@ import { FacilitiesService, PrescriptionService } from '../../../../../services/
 })
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
-	@Output() loading: boolean = true;
 	facility: Facility = <Facility>{};
 	billshow: boolean = false;
 	prescriptionId: string = '';
@@ -53,7 +52,6 @@ export class PrescriptionComponent implements OnInit {
 	getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {})
 			.then(res => {
-				this.loading = false;
 				console.log(res);
 				this.prescriptionItems = res;
 				res.prescriptionItems.forEach(element => {

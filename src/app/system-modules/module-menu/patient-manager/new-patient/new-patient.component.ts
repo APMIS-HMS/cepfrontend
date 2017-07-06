@@ -33,8 +33,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
 
-    shouldMoveFirst = false;
-    nextOfKinReadOnly = false;
+    shouldMoveFirst: boolean = false;
 
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
@@ -190,7 +189,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // this.uploadEvents = new EventEmitter();
-        this.facility = <Facility>this.locker.getObject('selectedFacility');
+        this.facility = <Facility> this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.newEmpIdControl.valueChanges.subscribe(value => {
@@ -246,31 +245,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             nok_email: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$')]],
             nok_phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
             nok_Address: ['', [<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]]
-        });
-
-        const apmisIdObs = this.frmNewEmp3.controls['nok_apmisID'].valueChanges.debounceTime(400)
-            .distinctUntilChanged()
-            .switchMap((term: Person[]) => this.personService.find({
-                query: {
-                    apmisId: this.frmNewEmp3.controls['nok_apmisID'].value.toUpperCase()
-                }
-            }));
-        apmisIdObs.subscribe((payload: any) => {
-            console.log(payload.data);
-            if (payload.data.length > 0) {
-                const person = payload.data[0];
-                this.frmNewEmp3.controls['nok_Address'].setValue(person.fullAddress);
-                this.frmNewEmp3.controls['nok_email'].setValue(person.email);
-                this.frmNewEmp3.controls['nok_fullname'].setValue(person.personFullName);
-                this.frmNewEmp3.controls['nok_phoneNo'].setValue(person.phoneNumber);
-                this.nextOfKinReadOnly = true;
-            } else {
-                this.frmNewEmp3.controls['nok_Address'].reset();
-                this.frmNewEmp3.controls['nok_email'].reset();
-                this.frmNewEmp3.controls['nok_fullname'].reset();
-                this.frmNewEmp3.controls['nok_phoneNo'].reset();
-                this.nextOfKinReadOnly = false;
-            }
         });
 
         this.frmNewEmp4 = this.formBuilder.group({
@@ -518,7 +492,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
                 this.personService.create(person).then(payload => {
                     this.selectedPerson = payload;
-                    // this.uploadButton();
+                    this.uploadButton();
                     this.frmNewPerson1_show = false;
                     this.frmNewPerson2_show = false;
                     this.frmNewPerson3_show = false;
@@ -573,7 +547,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.mainErr = true;
                         console.log('333');
                         this.savePerson();
-                        // this.closeModal.emit(true);
+                        this.closeModal.emit(true);
                     }
                 } else {
                     this.mainErr = false;
@@ -687,10 +661,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     close_onClick() {
         this.closeModal.emit(true);
-        // this.facilityService.announceNotification({
-        //     type: 'Info',
-        //     text: 'This operation has been canceled!'
-        // });
+        this.facilityService.announceNotification({
+            type: 'Info',
+            text: 'This operation has been canceled!'
+        });
     }
 
 }

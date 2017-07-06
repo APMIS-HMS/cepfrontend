@@ -6,7 +6,6 @@ export interface PrescriptionItem {
     duration: string,
     routeName: String,
     quantity?: number,
-    cost: number,
     patientInstruction: string,
     isRefill?: Boolean,
     refillCount: number,

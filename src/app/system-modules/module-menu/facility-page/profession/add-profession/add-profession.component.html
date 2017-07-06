@@ -23,23 +23,24 @@
               </md-input-container>
           </div>
         </div>
-    
+        <div class="">
+            <div class="">
               <!--<small class="alert-label" [hidden]="frm_profession.controls.level.valid || frm_profession.controls.level.pristine">
                   Kindly supply a level.
               </small>
               <span class="frm-label">Level</span>
               <input type="text"  autocomplete="off" style="width:350px">-->
-
-              <div *ngFor="let input of inputs">
-                <md-input-container class="example-full-width">
-                  <input mdInput placeholder="Level" [(ngModel)]="input.value">
-                </md-input-container>
-              </div>
-              <button (click)="addInput()" class="white-background" md-mini-fab><i class="fa fa-plus"></i></button>
-  
-        <div class="example-full-width" id="example-full-width">
-        <button  class="apmis-blue" md-raised-button >Add</button>
-    </div>
+              <md-input-container class="example-full-width">
+                <input mdInput placeholder="Level">
+                <md-hint align="end" [hidden]="frm_profession.controls.level.valid || frm_profession.controls.level.pristine">
+                  Kindly supply a level.
+                </md-hint>
+              </md-input-container>
+            </div>
+        </div>
+        <div  class="cta-1">
+            Add
+          </div>
     </form>
   </div>
 
