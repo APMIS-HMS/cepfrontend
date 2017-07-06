@@ -16,13 +16,6 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./employeemanager-detailpage.component.scss']
 })
 export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
-  selectedValue: string;
-
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() employee: Employee;

@@ -41,7 +41,7 @@ export class NewUnitComponent implements OnInit {
       })
     });
     // this.getFacility();
-    this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
+    this.facilityObj = <Facility> this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
     this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
 
@@ -69,7 +69,7 @@ export class NewUnitComponent implements OnInit {
     this.clinicForm = this.formBuilder.group({
       'clinicArray': this.formBuilder.array([
         this.formBuilder.group({
-          // clinicLocation: ['', [<any>Validators.required]],
+          clinicLocation: ['', [<any>Validators.required]],
           clinicName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
           'readonly': [false],
         })
@@ -103,8 +103,8 @@ export class NewUnitComponent implements OnInit {
               'readonly': [false],
             })
             );
-          this.mainErrClinic = true;
-          this.errMsgClinic = '';
+            this.mainErrClinic = true;
+            this.errMsgClinic = '';
         } else {
           const innerChildren: any = children.value;
         }

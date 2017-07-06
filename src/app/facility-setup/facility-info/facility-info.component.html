@@ -15,8 +15,8 @@
             </md-input-container>
         </div>
         <div class="frm-item-wrap">
-            <md-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
-                <md-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</md-option>
+            <md-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value)">
+                <md-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item._id">{{item.name}}</md-option>
             </md-select>
         </div>
         <div class="frm-item-wrap">

@@ -19,7 +19,6 @@
                 <tr>
                     <th><i class="fa fa-sort-alpha-asc"></i>Name(Brand)</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Type</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Presentation</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Generic Name</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Actions</th>
                 </tr>
@@ -36,7 +35,6 @@
                 <tr *ngFor="let product of products">
                     <td>{{product.name}}</td>
                     <td>{{product.productType?.name}}</td>
-                    <td>{{product.presentation}}</td>
                     <td>{{product.genericName}}</td>
                     <td>
                         <a class="action-btn" (click)="slideProductDetailsToggle(product, {})"><i class="fa fa-eye"></i></a>

@@ -5,15 +5,22 @@
         <ul *ngIf="!homeContentArea" class="moduleNav">
             <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
         </ul>
-        <md-input-container style="width:30%;margin-right: 10px;" *ngIf="homeContentArea" class="example-full-width">
-              <input mdInput md-error type="search"  placeholder="Search for employee" [formControl]="searchControl">
+        <!--<input *ngIf="homeContentArea" class="top-tab-search" type="search" placeholder="Search for employee" [formControl]="searchControl">-->
+        <md-input-container *ngIf="homeContentArea" class="example-full-width">
+              <input mdInput md-error type="search" class="top-tab-search" placeholder="Search for employee" [formControl]="searchControl">
             </md-input-container>
-        <div style="width:20%">
-            <md-select placeholder="Department" [formControl]="department">
+        <div>
+            <!--<dx-lookup [dataSource]="departments" [formControl]="department" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
+                displayExpr="name">
+            </dx-lookup>-->
+            <md-select placeholder="departments" [formControl]="department">
                 <md-option *ngFor="let item of departments" [value]="item">{{item.name}}</md-option>
             </md-select>
         </div>
-        <div style="width:20%">
+        <div>
+            <!--<dx-lookup [dataSource]="units" [formControl]="unit" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
+                displayExpr="name">
+            </dx-lookup>-->
             <md-select placeholder="Unit" [formControl]="unit">
                 <md-option *ngFor="let item of units" [value]="item.name">{{item.name}}</md-option>
             </md-select>

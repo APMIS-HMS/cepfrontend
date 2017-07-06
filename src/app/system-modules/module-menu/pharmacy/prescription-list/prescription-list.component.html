@@ -1,67 +1,69 @@
 <section id="presc-list">
     <div class="survery">
-        <div class="col-xs-12" style="margin-left: -30px;">
-            <md-input-container class="col-sm-5">
-                <input mdInput placeholder="Search">
-            </md-input-container>
+        <div class="row margin-top-10">
+            <div class="col-sm-5 col-md-5">
+                <div class="dx-field-value">
+                    <dx-text-box></dx-text-box>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-12 table-wrapper no-padding">
+        <div class="row margin-top-10">
+            <div class="col-sm-4 col-md-4">
+                <a class="presc-anchor">PRESCRIPTION LIST</a>
+            </div>
+        </div>
+        <div class="row margin-top-10">
+            <div class="table-head">
+                <div class="table-head-inner-content">
+                    Date
+                </div>
+                <div class="table-head-inner-content" id="patient">
+                    Patient
+                </div>
+                <div class="table-head-inner-content">
+                    Clinic
+                </div>
+                <div class="table-head-inner-content">
+                    Priority
+                </div>
+                <div class="table-head-inner-content" id="patient">
+                    Prescriber
+                </div>
+                <div class="table-head-inner-content">
+                    Status
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let prescription of prescriptionLists">
             <div class="row">
-                <div class="table-head">
-                    <div class="table-head-inner-content">
-                        Date
-                    </div>
-                    <div class="table-head-inner-content">
-                        Patient
-                    </div>
-                    <div class="table-head-inner-content">
-                        Clinic
-                    </div>
-                    <div class="table-head-inner-content">
-                        Priority
-                    </div>
-                    <div class="table-head-inner-content">
-                        Prescriber
-                    </div>
-                    <div class="table-head-inner-content">
-                        Status
-                    </div>
-                </div>
-            </div>
-            <div class="row" *ngFor="let prescription of prescriptionLists">
-                <div>
-                    <a routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
-                        <div class="table-data">
-                            <div class="table-data-inner">
-                                {{prescription.updatedAt}}
-                            </div>
-                            <div class="table-data-inner">
-                                <span class="absolute">{{prescription?.patientName}}</span>
-                            </div>
-                            <div class="table-data-inner">
-                                {{prescription.clinicDetails.clinicName}}
-                            </div>
-                            <div class="table-data-inner">
-                                {{prescription?.priorityObject?.name}}
-                            </div>
-                            <div class="table-data-inner">
-                                <!--<img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />-->
-                                <span class="absolute">{{prescription?.employeeName}}</span>
-                            </div>
-                            <div class="table-data-inner">
-                                Assessed
-                            </div>
+                <a routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
+                    <div class="table-data">
+                        <div class="table-data-inner">
+                            {{prescription.updatedAt}}
                         </div>
-                    </a>
-                </div>
+                        <div class="table-data-inner" id="patient">
+                            <span class="absolute">{{prescription?.patientName}}</span>
+                        </div>
+                        <div class="table-data-inner">
+                            {{prescription.clinicDetails.clinicName}}
+                        </div>
+                        <div class="table-data-inner">
+                            {{prescription?.priority}}
+                        </div>
+                        <div class="table-data-inner" id="patient">
+                            <!--<img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />-->
+                            <span class="absolute">{{prescription?.employeeName}}</span>
+                        </div>
+                        <div class="table-data-inner">
+                            Assessed
+                        </div>
+                    </div>
+                </a>
             </div>
-            <div class="row" *ngIf="prescriptionLists.length === 0 && !loading">
-                <div class="text-center">
-                    <p>No data to display in table</p>
-                </div>
-            </div>
-            <div class="row" *ngIf="prescriptionLists.length === 0 && loading">
-                <div class="text-center"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+        </div>
+        <div *ngIf="prescriptionLists.length === 0">
+            <div class="row text-center">
+                <p>No data to display in table</p>
             </div>
         </div>
     </div>
