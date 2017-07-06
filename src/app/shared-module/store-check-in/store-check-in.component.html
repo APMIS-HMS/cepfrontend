@@ -15,12 +15,14 @@
 
             <form [formGroup]="storeCheckin" novalidate>
                 <div class="frm-item-wrap">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
                     <md-select class="example-full-width" placeholder="Location" formControlName="location">
                         <md-option *ngFor="let location of clinicHelperService.clinicLocations" [value]="location._id">{{location.name}}</md-option>
                     </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
                     <md-select class="example-full-width" placeholder="Store" formControlName="room">
                         <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
                     </md-select>

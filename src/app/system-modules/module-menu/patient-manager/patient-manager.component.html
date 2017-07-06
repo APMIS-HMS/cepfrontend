@@ -21,7 +21,8 @@
     </div>
 
     <div class="inner-page-wrap">
-        <app-patientmanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea" class="fullwidth"></app-patientmanager-homepage>
+        <app-patientmanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
+            class="fullwidth"></app-patientmanager-homepage>
         <app-patientmanager-detailpage [patient]="patient" *ngIf="employeeDetailArea" class="fullwidth"></app-patientmanager-detailpage>
         <div *ngIf="newEmp" class="modal-overlay">
             <app-new-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-patient>

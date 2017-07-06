@@ -13,10 +13,7 @@
           this is a required field (minimum 3 and max of 50 characters).
         </small>
         <i class="fa fa-user" aria-hidden="true"></i>
-        <!--<input type="text" formControlName="principalName" placeholder="Principal Name or APMIS ID" autocomplete="off">-->
-        <md-input-container class="example-full-width">
-              <input mdInput formControlName="principalName" placeholder="Principal Name or APMIS ID" autocomplete="off" >
-        </md-input-container>
+        <input type="text" formControlName="principalName" placeholder="Principal Name or APMIS ID" autocomplete="off">
         <div class="suggestionFeeds">
           <div *ngFor="let person of people" (click)="onSelectPerson(person)" class="suggestedItem empImageWrap">
             <img *ngIf="person.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -26,12 +23,9 @@
         </div>
       </div>
 
-      <!--<button (click)="newFamilyCover(frmNewPrincipal.value, frmNewPrincipal.valid)" class="cta-1">
+      <button (click)="newFamilyCover(frmNewPrincipal.value, frmNewPrincipal.valid)" class="cta-1">
         CREATE PRINCIPAL
-      </button>-->
-      <div class="example-full-width" id="example-full-width">
-          <button (click)="newFamilyCover(frmNewPrincipal.value, frmNewPrincipal.valid)" class="apmis-blue "md-raised-button>CREATE PRINCIPAL</button>
-      </div>
+      </button>
 
     </form>
   </div>

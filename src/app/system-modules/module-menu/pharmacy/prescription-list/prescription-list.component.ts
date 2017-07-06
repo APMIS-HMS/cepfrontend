@@ -13,7 +13,6 @@ export class PrescriptionListComponent implements OnInit {
 	facility: Facility = <Facility>{};
 	status: string[];
 	prescriptionLists: any[] = [];
-	loading: boolean = true;
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -34,7 +33,6 @@ export class PrescriptionListComponent implements OnInit {
 		this._prescriptionService.find({ query: { facilityId : this.facility._id }})
 			.then(res => {
 				console.log(res);
-				this.loading = false;
 				this.prescriptionLists = res.data;
 			})
 			.catch(err => {

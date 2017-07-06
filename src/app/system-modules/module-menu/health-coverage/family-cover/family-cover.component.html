@@ -3,20 +3,11 @@
   <div class="covered-orgs lhs">
 
     <div class="searchInputWrap">
-      <!--<input type="search" autofocus class="searchInput" placeholder="search for a family">-->
-      <md-input-container class="example-full-width">
-          <input mdInput autofocus placeholder="search for a family">
-      </md-input-container>
-      <div id="search">
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </div>
+      <input type="search" autofocus class="searchInput" placeholder="search for a family">
+      <i class="fa fa-search" aria-hidden="true"></i>
     </div>
     <div style="width: 100%;">
-      <!--<div (click)="addPrincipalShow()" class="btn-1 btn-blue">
-        <i class="fa fa-plus-square" aria-hidden="true"></i> Add Principal</div>-->
-      <div class="example-full-width" id="example-full-width">
-          <button (click)="addPrincipalShow()" class="apmis-blue" md-raised-button>Add Principal</button>
-      </div>
+      <div (click)="addPrincipalShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Principal</div>
     </div>
 
     <div *ngFor="let active of activeFamilyHealthCovers" (click)="personDependants_show(active)" class="covered-org">
@@ -32,13 +23,8 @@
     <div class="secTitle">InActive Family Covers</div>
 
     <div class="searchInputWrap">
-     <!-- <input type="search" autofocus class="searchInput" placeholder="search non active covers">-->
-    <md-input-container class="example-full-width">
-      <input mdInput autofocus placeholder="search non active covers">
-    </md-input-container>
-    <div id="search">
+      <input type="search" autofocus class="searchInput" placeholder="search non active covers">
       <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
     </div>
 
     <div class="orgWrap" *ngFor="let inActive of inActiveFamilyHealthCovers">
