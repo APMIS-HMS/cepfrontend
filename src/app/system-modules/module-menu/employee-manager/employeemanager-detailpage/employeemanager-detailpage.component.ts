@@ -19,9 +19,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedValue: string;
 
   foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
+    {value: 'steak-0', viewValue: 'edit here'},
+    {value: 'pizza-1', viewValue: 'edit here'},
+    {value: 'tacos-2', viewValue: 'edit here'}
   ];
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
