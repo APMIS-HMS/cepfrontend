@@ -13,7 +13,6 @@ import {
 })
 export class AddPrescriptionComponent implements OnInit {
 	@Input() prescriptionItems: Prescription = <Prescription>{};
-	@Input() loading: boolean;
 	@Output() prescriptionData: Prescription = <Prescription>{};
 	facility: Facility = <Facility>{};
 
@@ -31,7 +30,6 @@ export class AddPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionItems);
-		console.log(this.loading);
 	}
 
 	onClickDeleteItem(value: any) {
@@ -40,9 +38,11 @@ export class AddPrescriptionComponent implements OnInit {
 
 	// On click is external checkbox
 	onClickIsExternal(index, value, prescription) {
+		console.log(value);
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
+		this.prescriptionItems.prescriptionItems[index].isExternal = value;
 		console.log(this.prescriptionItems);
 	}
 
@@ -108,8 +108,4 @@ export class AddPrescriptionComponent implements OnInit {
 	// 		qty: [value.qty],
 	// 	})
 	// }
-
-	close_onClick(e) {
-		this.billShow = false;
-	}
 }
