@@ -4,7 +4,6 @@ export interface InventoryTransaction {
     expiryDate: Date;
     costPrice: number;
     quantity: number;
-    strengthId: string;
     purchaseEntryId: string;
     purchaseEntryDetailId: string;
     transactionTypeId: string;

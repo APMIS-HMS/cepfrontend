@@ -61,12 +61,6 @@
                                         </md-input-container>
                                     </div>
 
-                                    <div style="width: 15%;" class="frm-item-wrap">
-                                        <md-select class="example-full-width" placeholder="Strength" formControlName="strength">
-                                            <md-option *ngFor="let strength of strengths" [value]="strength._id">{{strength.strength}}</md-option>
-                                        </md-select>
-                                    </div>
-
                                     <div style="width: 10%;" class="frm-item-wrap">
                                         <md-input-container class="example-full-width">
                                             <input type="number" min="0" mdInput md-error placeholder="Qantity" formControlName="qty">
@@ -90,11 +84,9 @@
                 </div>
             </div>
         </div>
-
         <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
             <div (click)="save()" class="cta-1">Save Progress</div>
             <div (click)="save()" class="cta-1">Send Requisition</div>
         </div>
-
     </form>
 </div>

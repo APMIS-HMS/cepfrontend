@@ -127,13 +127,4 @@
 
         <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
     </form>
-    <div *ngIf="isManufacturer">
-        <app-manufacturer-manager></app-manufacturer-manager>
-    </div>
-    <div *ngIf="isPresentation">
-        <app-presentation-manager></app-presentation-manager>
-    </div>
-    <div *ngIf="isStrength">
-        <app-strength-manager></app-strength-manager>
-    </div>
 </div>

@@ -15,4 +15,4 @@
   <div (click)="f_sg4_show()" class="cta-1">CONTINUE</div>
 </div>
 <!--<app-verify-token *ngIf="back_selectModules_show"></app-verify-token>-->
-<app-add-facility-module *ngIf="selectModules_show" class="f_sg3 animated zoomIn" [inputFacility]="inputFacility"></app-add-facility-module>
+<app-add-facility-module *ngIf="selectModules_show" (closeModal)="close_onClick($event)" class="f_sg3 animated zoomIn" [inputFacility]="inputFacility"></app-add-facility-module>
