@@ -82,8 +82,8 @@ export class BillPrescriptionComponent implements OnInit {
 		if(valid) {
 			//if(this.price > 0 || value.qty > 0) {
 				let index = this.prescriptionData.index;
-				this.prescriptionData.prescriptionItems[index].drugId = value.drug; 
-				this.prescriptionData.prescriptionItems[index].drugName = this.selectedDrug; 
+				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
+				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].cost = this.price;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;

@@ -1,90 +1,19 @@
-<!--<div class="table-head">
-    <div class="table-head-inner-content">
-        <p>Date</p>
-    </div>
-    <div class="table-head-inner-content" id="drugs">
-        <p>Drugs</p>
-    </div>
-    <div class="table-head-inner-content">
-        <p>Refill</p>
-    </div>
-    <div class="table-head-inner-content">
-        <p>Start Date</p>
-    </div>
-    <div class="table-head-inner-content">
-        <p>Action</p>
-    </div>
-</div>
-<div class="table-inner">
-    <div class="table-data">
-        <p>11-12-2017</p>
-    </div>
-    <div class="table-data" id="drugs">
-        <p>drugs name</p>
-    </div>
-    <div class="table-data">
-        <p>---</p>
-    </div>
-    <div class="table-data">
-        <p>11-23-2017</p>
-    </div>
-    <div class="table-data text-center" id="table-data">
-        <a><i class="fa fa-pencil"></i></a>
-        <a><i class="fa fa-trash"></i></a>
-        <button (click)="billToggle()" class="btn btn-default bill">Bill</button>
-    </div>
-</div>
-<div *ngIf="billshow" class="inner-container">
-    <div class="row">
-        <div class="col-sm-4 col-md-4">
-            <label>Drugs</label>
-            <dx-lookup>
-            </dx-lookup>
-        </div>
-        <div class="col-sm-3 col-md-3">
-            <label>Quantity</label>
-            <div class="input-bg cacaca">
-                <div class="input-group">
-                    <input type="text" class="form-control">
-                    <div class="input-group-btn">
-                        <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-                        <select>
-							<option>Cards</option>
-						</select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <label style="margin-top:20px"></label>
-            <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
-        </div>
-        <div class="col-sm-1 col-ms-1">
-            <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <div class="text-amount puul-right">
-                <button class="btn btn-default save-btn">Save</button>
-            </div>
-        </div>
-    </div>
-</div>-->
-<app-add-prescription [prescriptionItems]="prescriptionItems" [loading]="loading"></app-add-prescription>
+<app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
 <div class="row margin-top-bottom">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="btn-default" (click)="onClickSavePrescription();" md-raised-button>Save <i class="fa fa-check"></i></button>
+        <button class="btn bnt-default" (click)="onClickSavePrescription();"> Save </button>
     </div>
 </div>
 <div class="sec-border">
     <div class="table-head">
-        <div class="table-head-inner-content drugs">
+        <div class="table-head-inner-content" id="drugs">
             <p>Drugs</p>
         </div>
-        <div class="table-head-inner-content qty">
+        <div class="table-head-inner-content" id="qt">
             <p>Qty</p>
         </div>
-        <div class="table-head-inner-content batch">
+        <div class="table-head-inner-content" id="batch">
             <p>Batch</p>
         </div>
         <div class="table-head-inner-content">
@@ -93,25 +22,25 @@
     </div>
     <div class="table-inner" *ngFor="let prescription of prescriptions">
         <div class="table-data drugs">
-            <p>{{ prescription.genericName }}</p>
+            {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
+            <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
+                Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Price: {{ prescription.cost }}
+            </span>
         </div>
-        <div class="table-data qty">
+        <div class="table-data qt">
             {{ prescription.quantity }}
         </div>
-        <div class="table-data batch">
+        <div class="table-data">
             {{ prescription.batch }}
         </div>
         <div class="table-data">
-            <p>&#x20A6;{{ prescription.cost }}</p>
+            <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
         </div>
-    </div>
-    <div class="table-inner" *ngIf="prescriptions.length === 0">
-        <p class="text-center" style="width: 100%;">No data to display in table</p>
     </div>
 </div>
 <div class="row margin-top-15">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="mat-lg-btn" (click)="onClickDispense();" md-raised-button>Dispense</button>
+        <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
+        <!--<p class="total pull-right">&#x20A6;200</p>-->
     </div>
-    <!--<p class="total pull-right">&#x20A6;200</p>-->
 </div>

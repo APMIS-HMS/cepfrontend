@@ -35,7 +35,11 @@ export class PrescriptionListComponent implements OnInit {
 			.then(res => {
 				console.log(res);
 				this.loading = false;
-				this.prescriptionLists = res.data;
+				res.data.forEach(element => {
+					if(!element.isDispensed) {
+						this.prescriptionLists.push(element);
+					}
+				});
 			})
 			.catch(err => {
 				console.log(err);

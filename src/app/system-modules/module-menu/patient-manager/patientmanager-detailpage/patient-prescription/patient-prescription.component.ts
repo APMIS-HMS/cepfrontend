@@ -111,9 +111,9 @@ export class PatientPrescriptionComponent implements OnInit {
                     duration: value.duration + value.durationUnit,
                     startDate: value.startDate,
                     strength: value.strength,
-                    cost: 0,
                     patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
                     refillCount: value.refillCount,
+                    isExternal: false,
                     initiateBill: false,
                     isBilled: false
                 };
@@ -162,17 +162,16 @@ export class PatientPrescriptionComponent implements OnInit {
                 console.log(this.prescriptions);
                 this._prescriptionService.create(this.prescriptions)
                     .then(res => {
-                        //this.prescriptions = {};
+                        this._facilityService.announceNotification({
+                            type: "Success",
+                            text: "Prescription has been sent!"
+                        });
                         this.prescriptionItems = [];
                         this.addPrescriptionForm.reset();
                         this.addPrescriptionForm.controls['refillCount'].reset(0);
                         this.addPrescriptionForm.controls['duration'].reset(0);
                         this.addPrescriptionForm.controls['startDate'].reset(new Date());
                         this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                        this._facilityService.announceNotification({
-                            type: "Success",
-                            text: "Prescription has been sent!"
-                        });
                     })
                     .catch(err => {
                         this._facilityService.announceNotification({

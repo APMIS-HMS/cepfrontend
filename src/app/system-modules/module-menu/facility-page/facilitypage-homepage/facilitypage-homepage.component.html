@@ -8,8 +8,9 @@
             <md-input-container *ngIf="facilityNameEditShow"  class="example-full-width">
                 <input mdInput value="{{facilityObj.name}}" [formControl]="facilityNameEdit">
             </md-input-container>
+                        <i *ngIf="facilityNameEditShow" (click)="facilityNameEditToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
             <i [hidden]="facilityNameEditShow" (click)="facilityNameEditToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
-            <i *ngIf="facilityNameEditShow" (click)="facilityNameEditToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+
             <div class="clear"></div>
         </div>
         <div class="clear"></div>
