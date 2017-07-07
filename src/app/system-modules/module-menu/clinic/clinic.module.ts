@@ -22,6 +22,8 @@ import {
     PatientResolverService, AppointmentsResolverService, AppointmentTypeResolverService,
     ProfessionsResolverService, LoginEmployeeResolverService, LoginEmployeeWorkspaceResolverService
 } from '../../../resolvers/module-menu/index';
+import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
+import { ScheduleFrmComponent } from './new-appointment/schedule-frm/schedule-frm.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +33,9 @@ import {
         AppointmentComponent,
         CheckInPatientComponent,
         ConsultingRoomComponent,
-        ConsultingRoomCheckinComponent],
+        ConsultingRoomCheckinComponent,
+        NewAppointmentComponent,
+        ScheduleFrmComponent],
     exports: [
     ],
     imports: [

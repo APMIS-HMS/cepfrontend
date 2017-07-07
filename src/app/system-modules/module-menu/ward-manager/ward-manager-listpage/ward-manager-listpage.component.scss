@@ -11,11 +11,12 @@
         text-align: left;
     }
     .filter-select {
-        border: 1px solid #727272;
+        border: 1px solid #eee;
         border-radius: 10px;
         display: block;
-        padding: 10px;
+        padding: 4px;
         width: 150px;
+        margin: 5px;
     }
     table {
         thead {
@@ -39,4 +40,15 @@
             }
         }
     }
+}
+.topFilters {
+    display: flex;
+    justify-content: flex-end;
+}
+.filter-title {
+    position: absolute;
+    left: 0;
+    top: -14px;
+    color: #8e8e8e;
+    font-size: 10px;
 }
