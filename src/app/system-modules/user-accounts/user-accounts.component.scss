@@ -1,20 +1,14 @@
 @import "../../../globals/variables.scss";
 
 .userAcc-mainWrap{
-    background: linear-gradient(
-                     rgba(0,0,0, .0), 
-                     rgba(0,0,0, 1));
-    // background-image: url(assets/images/bg/dna.jpg);
+    position: fixed;
+    min-height:100vh;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url(../../../assets/images/bg/dna.jpg) no-repeat center center;
+    background-size:cover;
+    width:100%;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: $secondaryColor;
 }
 .userAccs-pgHeader{
     text-align: center;
@@ -24,6 +18,7 @@
 }
 .userAccs-pgHeader img{
     width: 70px;
+    margin-top: 50px;
 }
 .userAccs-pgTitle {
     font-size: 21px;
@@ -42,8 +37,10 @@
     margin-bottom: 30px;
 }
 .userAccs-listing{
-    width: 90%;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
     text-align: center;  
+    border-top: 2px solid #fff;
 }
 .acc-listing{
     text-align: center;
@@ -75,7 +72,8 @@
 }
 .listing-name{
     font-size: 16px;
-    color: #737373;
+    color: #fff;
+    margin-top: 5px;
 }
 .loggedinUserWrap{
     display: flex;

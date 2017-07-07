@@ -1,11 +1,5 @@
+<div class="page-title">Locations</div>
 <div (click)="innerMenuHide($event)">
-    <!--<div class="inner-menu1-wrap">
-        <i id="submenu_ico" (click)="innerMenuToggle()" class="innerMenu-icon fa fa-bars" aria-hidden="true"></i>
-        <ul *ngIf="innerMenuShow" class="innerMenu-ul shadow">
-            <li (click)="newSubLocationModal_show()">New Minor Location</li>
-            <li (click)="locationHomeContentArea_show()">View Locations</li>
-        </ul>
-    </div>-->
 
     <ul *ngIf="locationHomeContentArea">
         <li *ngFor="let locs of locationsObj; let i = even; let k = odd">

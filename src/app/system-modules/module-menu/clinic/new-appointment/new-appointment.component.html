@@ -1,12 +1,13 @@
-<div class="page-title">Appointments</div>
+<div class="page-title">Schedule Appointment</div>
 
 <ul class="topmenuwrap">
-    <li [routerLink]="['/dashboard/clinic/schedule-appointment']">
-        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        <span>Schedule Appointment</span>
+    <li [routerLink]="['/dashboard/clinic/appointment']">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+        <span>Appointments</span>
     </li>
 </ul>
 
+<app-schedule-frm></app-schedule-frm>
 <table cellpadding="0" cellspacing="0" border="0.5"> 
     <thead>
         <tr>
@@ -153,5 +154,65 @@
                 <div class="tr-act-btn"><i class="fa fa-sign-in" aria-hidden="true"></i> Check In</div>
             </td>
         </tr>
+    </tbody>
+</table>
+
+<div class="facility-title">Patient Appointment History</div>
+
+<table cellpadding="0" cellspacing="0" border="0.5"> 
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Date/Time</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Clinic</span>
+            </th>
+			      <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Provider</span>
+            </th>
+			      <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Status</span>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+            
+        <td>10th July, 2017. 10:00am</td>
+			  <td>Eye Clinic</td>
+			  <td>
+            <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div>Lara Jonah</div>
+            </div>
+        </td>
+        <td>Checked In</td>
+      </tr>
+
+		<tr>
+      <td>10th July, 2017. 10:00am</td>
+			<td>Eye Clinic</td>
+			<td>
+        <div class="empWrap">
+            <div class="list-img">
+                <img src="assets/images/users/default.png">
+            </div>
+            <div>Lara Jonah</div>
+        </div>
+        </td>
+        <td>Scheduled</td>
+    </tr>
     </tbody>
 </table>
