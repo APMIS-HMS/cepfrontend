@@ -40,11 +40,6 @@ export class AddProfessionComponent implements OnInit {
       ])
     });
   }
-  getProfessions() {
-    this.professionService.findAll().then(payload => {
-      this.professions = payload.data;
-    })
-  }
   onRemoveBill(cadre, i) {
     console.log(cadre);
     console.log(i);
@@ -104,6 +99,7 @@ export class AddProfessionComponent implements OnInit {
           this.professionService.create(profession).then((payload) => {
             this.frm_profession.reset();
             this.cadreForm.controls['cadreArray'] = this.formBuilder.array([]);
+            this.addNewProfessionArray();
           })
 
         this.mainErr = true;

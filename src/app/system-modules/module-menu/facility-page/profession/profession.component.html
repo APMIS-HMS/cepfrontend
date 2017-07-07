@@ -13,26 +13,14 @@
               <table class="table table-striped">
                 <tbody><tr>
                   <th>Profession</th>
-                  <th>Level</th>
+                  <th>Cadre</th>
                 </tr>
-                <tr>
-                  <td>Doctor</td>
+                <tr *ngFor="let profession of professions">
+                  <td>{{profession.name}}</td>
                   <td>
-                      level2
+                    {{profession.caders?.length}} <span *ngIf="profession.caders?.length > 0">Records</span>
                   </td>
-                </tr>
-                 <tr>
-                  <td>Senior</td>
-                  <td>
-                      level3
-                  </td>
-                </tr>
-                 <tr>
-                  <td>Junior</td>
-                  <td>
-                      level4
-                  </td>
-                </tr>
+         
               </tbody></table>
             </div>
             <!-- /.box-body -->

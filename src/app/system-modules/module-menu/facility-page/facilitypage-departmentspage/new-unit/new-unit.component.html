@@ -85,18 +85,10 @@
 
 
             <div class="frm-item-wrap">
-                <small class="alert-label" [hidden]="frmNewUnit.controls.unitDesc.valid || frmNewUnit.controls.unitDesc.pristine">
-            This is a required field (minimum 10 characters).
-          </small>
-               <!-- <textarea class="txt-input modal-textarea" formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>-->
             <md-input-container class="example-full-width">
                 <textarea mdInput formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
             </md-input-container>
             </div>
-
-            <!--<div (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" class="cta-1">
-                CREATE UNIT
-            </div>-->
              <div class="example-full-width" id="example-full-width">
              <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" md-raised-button> CREATE UNIT</button>
              </div>

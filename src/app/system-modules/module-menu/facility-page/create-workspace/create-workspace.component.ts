@@ -54,12 +54,12 @@ export class CreateWorkspaceComponent implements OnInit {
       majorLoc: ['', [Validators.required]],
       minorLoc: ['', [Validators.required]]
     });
-    // this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
-    //   this.selectedDepartment = value;
-    //   this.units = value.units;
-    //   this.employees = [];
-    //   this.filteredEmployees = [];
-    // });
+    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
+      this.selectedDepartment = value;
+      this.units = value.units;
+      this.employees = [];
+      this.filteredEmployees = [];
+    });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
       this.selectedUnit = value;
       this.employees = [];
@@ -89,7 +89,8 @@ export class CreateWorkspaceComponent implements OnInit {
     if (this.selectedEmployee !== undefined) {
       console.log(1);
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.department._id);
+      const deptList = this.departments.filter(x => this.selectedEmployee.department !== undefined
+        && x._id === this.selectedEmployee.department._id);
       if (deptList.length > 0) {
         this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
       }
@@ -102,8 +103,7 @@ export class CreateWorkspaceComponent implements OnInit {
         console.log(unitsList);
         console.log(unitsList.length);
         if (unitsList.length > 0) {
-          console.log("Ok");
-          //this.units.push(unitsList[0]);
+          console.log('Ok');
           this.units.push(item);
         }
       });

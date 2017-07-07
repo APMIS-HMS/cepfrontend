@@ -8,8 +8,7 @@
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-select formControlName="dept">
+                    <md-select formControlName="dept" placeholder="Department">
                         <md-option *ngFor="let department of departments" [value]="department">
                             {{department.name}}
                         </md-option>
@@ -17,19 +16,16 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-select formControlName="unit">
-                        <md-option value="" disabled selected>Unit</md-option>
+                    <md-select formControlName="unit" placeholder="Unit" >
                         <md-option *ngFor="let unit of units" [value]="unit">
-                        {{unit.name}}
+                            {{unit.name}}
                         </md-option>
                     </md-select>
                 </div>
             </div>
             <div class="sec-2">
                 <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-select formControlName="majorLoc">
+                    <md-select formControlName="majorLoc" placeholder ="Major Location" >
                         <md-option *ngFor="let major of majorLocations" [value]="major">
                             {{major.name}}
                         </md-option>
@@ -37,8 +33,7 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                    <i class="fa fa-circle-o" aria-hidden="true"></i>
-                    <md-select formControlName="minorLoc">
+                    <md-select formControlName="minorLoc" placeholder="Minor Location" >
                         <md-option *ngFor="let minor of minorLocations" [value]="minor">
                             {{minor.name}}
                         </md-option>
@@ -51,26 +46,18 @@
                     <thead>
                         <tr>
                             <th class="sel-all">
-                               <!-- <div class="dx-field">
-                                    <div class="dx-field-value">
-                                        <dx-check-box [formControl]="checkAll"></dx-check-box>
-                                    </div>
-                                </div>-->
                                 <md-checkbox class="example-margin" [formControl]="checkAll">Check All</md-checkbox>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                 <span style="padding-left: 3px;">Employee</span>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                 <span style="padding-left: 3px;">Telephone</span>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                 <span style="padding-left: 3px;">Email</span>
                             </th>
                         </tr>
@@ -83,11 +70,9 @@
                                     <div class="tbl-title"></div>
                                     <div class="tbl-search">
                                         <div class="searchInputWrap">
-                                            <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">-->
                                             <md-input-container class="example-full-width">
                                                 <input mdInput [formControl]="searchControl" autofocus placeholder="search organizations">
                                             </md-input-container>
-                                          <!--<i class="fa fa-search" aria-hidden="true"></i>-->
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +83,8 @@
                             <td class="sel-all">
                                 <div class="dx-field">
                                     <div class="dx-field-value">
-                                        <dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>
+                                        <md-checkbox (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
+                                        <!--<dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>-->
                                     </div>
                                 </div>
                             </td>
@@ -121,15 +107,15 @@
 
 
 
-    <!--<button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+        <!--<button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
       Assign Workspace
     </button>-->
-    <div class="example-full-width" id="example-full-width">
-          <button class="apmis-bllue" [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button> Assign Workspace</button>
-    </div>
+        <div class="example-full-width" id="example-full-width">
+            <button class="apmis-bllue" [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button> Assign Workspace</button>
+        </div>
     </form>
 
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+    <md-spinner></md-spinner>
 </div>

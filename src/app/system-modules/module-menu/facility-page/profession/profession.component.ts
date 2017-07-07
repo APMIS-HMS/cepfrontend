@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FacilitiesService, ProfessionService } from '../../../../services/facility-manager/setup/index';
+import { Facility, Profession } from '../../../../models/index';
 @Component({
   selector: 'app-profession',
   templateUrl: './profession.component.html',
@@ -7,13 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfessionComponent implements OnInit {
   newProfession = false;
-
-  constructor() { }
+  professions: Profession[] = [];
+  constructor(private professionService: ProfessionService) { }
 
   ngOnInit() {
+    this.getProfessions();
   }
   professionShow() {
     this.newProfession = true;
+  }
+  getProfessions() {
+    this.professionService.findAll().then(payload => {
+      this.professions = payload.data;
+    })
   }
   close_onClick($event) {
     this.newProfession = false;

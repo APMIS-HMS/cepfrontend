@@ -69,7 +69,6 @@ export class NewUnitComponent implements OnInit {
     this.clinicForm = this.formBuilder.group({
       'clinicArray': this.formBuilder.array([
         this.formBuilder.group({
-          clinicLocation: ['', [<any>Validators.required]],
           clinicName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
           'readonly': [false],
         })
@@ -86,6 +85,8 @@ export class NewUnitComponent implements OnInit {
     }
   }
   onAddHobby(children: any, valid: boolean) {
+    console.log(valid);
+    console.log(children);
     if (valid) {
       if (children.clinicName === '' || children.clinicName === ' ') {
         this.mainErrClinic = false;
