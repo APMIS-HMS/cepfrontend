@@ -19,17 +19,19 @@ export class AddPrescriptionComponent implements OnInit {
 	billShow: boolean = false;
 	billShowId: number = 0;
 	isExternal: boolean = false;
+	loading: boolean = true;
 
 	constructor(
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService
 	) {
-
+	
 	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionItems);
+		this.prescriptionItems.prescriptionItems = [];
 	}
 
 	onClickDeleteItem(value: any) {
@@ -79,35 +81,6 @@ export class AddPrescriptionComponent implements OnInit {
 			// 	});
 		}
 	}
-
-	// This method is to save pricing for each drug
-	// onClickSaveCost(indexI, indexJ):void {
-	// 	console.log(indexI);
-	// 	console.log(indexJ);
-	// 	let control: FormArray = this.addBillForm.controls['bill'] as FormArray;
-	// 	let billFormGroup: FormGroup = control.at(indexJ) as FormGroup;
-	// 	let drugName: string = billFormGroup.controls['drug'].value;
-	// 	let qty: number = billFormGroup.controls['qty'].value;
-	// }
-
-	// addItem(): void {
-	// 	let control: FormArray  = <FormArray> this.addBillForm.controls['bill'];
-	// 	control.push(this.createItem());
-	// }
-
-	// createItem(): FormGroup {
-	// 	return this._fb.group({
-	// 		drug: [''],
-	// 		qty: [''],
-	// 	});
-	// }
-
-	// setItemValue(value) {
-	// 	return this._fb.group({
-	// 		drug: [value.drug],
-	// 		qty: [value.qty],
-	// 	})
-	// }
 
 	close_onClick(e) {
 		this.billShow = false;

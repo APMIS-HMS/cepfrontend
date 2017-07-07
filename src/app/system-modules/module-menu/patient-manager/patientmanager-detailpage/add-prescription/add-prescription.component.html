@@ -11,7 +11,7 @@
             <div class="pres-data long-text">
                 {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
                 <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
-                    Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Price: {{ prescription.cost }}
+                    Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.cost }}
                 </span>
             </div>
             <div class="pres-data instruction-text">{{ prescription.patientInstruction }}</div>
@@ -26,14 +26,17 @@
             </div>
         </div>
     </div>
-</div>
-<div class="wrap-tr text-center" *ngIf="prescriptionItems.length === 0">
-    <div class="pres-data" style="width: 100%">No data to display in table</div>
+    <div class="wrap-tr text-center" *ngIf="prescriptionItems.prescriptionItems.length === 0 && !loading">
+        <div class="pres-data" style="width: 100%">No data to display in table</div>
+    </div>
+    <div class="wrap-tr text-center" *ngIf="prescriptionItems.prescriptionItems.length === 0 && loading">
+        <div class="pres-data" style="width: 100%"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+    </div>
 </div>
 <div class="row">
-    <div class="col-sm-12 col-md-12 padding-10px">
-        <div class="col-sm-6 pull-right">
-            <p class="pull-right"><strong>Total Bill</strong> <span>&#x20A6; 0</span></p>
+    <div class="col-sm-12 col-md-12" style="padding-top: 10px;">
+        <div class="col-sm-6 pull-right" style="padding-right: 20px;">
+            <p class="pull-right"><strong>Total Bill:</strong> <span>&#x20A6;0</span></p>
         </div>
     </div>
 </div>

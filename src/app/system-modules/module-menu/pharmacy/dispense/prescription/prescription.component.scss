@@ -2,3 +2,30 @@
 .text-center {
     text-align: center;
 }
+
+.table-head {
+    line-height: 0;
+}
+
+.table-data,
+.table-head-inner-content {
+    width: 10%;
+    padding: 0;
+}
+
+.cost,
+.batch {
+    width: 20%;
+}
+
+.drug {
+    width: 60%;
+}
+
+.table-padding {
+    padding: 5px 10px;
+}
+
+.mat-lg-btn {
+    line-height: 1;
+}
