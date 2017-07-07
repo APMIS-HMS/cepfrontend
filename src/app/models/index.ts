@@ -75,3 +75,7 @@ export * from './facility-manager/setup/prescription';
 export * from './facility-manager/setup/prescription-item';
 export * from './facility-manager/setup/requisition';
 export * from './facility-manager/setup/requisitionproduct';
+export * from './facility-manager/setup/dispense';
+export * from './facility-manager/setup/dispense-item';
+export * from './facility-manager/setup/dispense-by-prescription';
+export * from './facility-manager/setup/dispense-by-noprescription';

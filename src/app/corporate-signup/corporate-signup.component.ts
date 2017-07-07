@@ -80,7 +80,7 @@ export class CorporateSignupComponent implements OnInit {
 
     // ------------- End of image init values -----------------------
 
-    this.getCountries(); 
+    this.getCountries();
     this.getTitles();
     this.getGenders();
     this.getMaritalStatus();
@@ -103,8 +103,8 @@ export class CorporateSignupComponent implements OnInit {
       facilityaddress: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
       facilitylandmark: ['', [<any>Validators.required]],
 
-      contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
-      contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
+      contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
+      contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
       facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
       password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
       repass: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
@@ -142,7 +142,6 @@ export class CorporateSignupComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
   beforeUpload(uploadingFile): void {
-    console.log(uploadingFile);
     this.getDataUri(uploadingFile.originalName, function (dataUri) {
       // Do whatever you'd like with the Data URI!
     });
@@ -158,10 +157,8 @@ export class CorporateSignupComponent implements OnInit {
       let reader = new FileReader();
 
       reader.onload = function (e: any) {
-        //console.log(e.target.result);
       };
       reader.onprogress = function (e: any) {
-        //console.log(e);
       };
 
       reader.readAsDataURL(fileInput.target.files[0]);
@@ -351,7 +348,7 @@ export class CorporateSignupComponent implements OnInit {
           if (payload.data.length > 0) {
             this.mainErr = true;
             this.errMsg = '';
-            this.sg3_show = true;
+            this.sg3_show = false;
             this.sg2_show = false;
             this.sg1_show = false;
             this.sg1_1_show = false;
@@ -359,7 +356,9 @@ export class CorporateSignupComponent implements OnInit {
             this.sg4_show = false;
 
             this.selectedFacility.isTokenVerified = true;
-            this.corporateFacilityService.update(this.selectedFacility).then(payload2 => { });
+            this.corporateFacilityService.update(this.selectedFacility).then(payload2 => {
+              this.router.navigate(['/']);
+            });
           } else {
             this.mainErr = false;
             this.errMsg = 'Wrong Token, try again.';

@@ -16,7 +16,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
   foods = [
     { value: 'steak-0', viewValue: 'male' },
-    { value: 'pizza-1', viewValue: 'female' },
+    { value: 'pizza1', viewValue: 'female' },
   ];
 
   editPatient = false;
