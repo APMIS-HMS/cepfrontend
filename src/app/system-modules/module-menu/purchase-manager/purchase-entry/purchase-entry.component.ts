@@ -208,7 +208,6 @@ export class PurchaseEntryComponent implements OnInit {
                     this.formBuilder.group({
                       product: [itemg.name, [<any>Validators.required]],
                       batchNo: [item.batchNo, [<any>Validators.required]],
-                      strength: [item.strengthId, []],
                       costPrice: [item.costPrice, [<any>Validators.required]],
                       qty: [item.quantity, [<any>Validators.required]],
                       expiryDate: [item.expiryDate, [<any>Validators.required]],
@@ -260,7 +259,6 @@ export class PurchaseEntryComponent implements OnInit {
                     this.formBuilder.group({
                       product: [itemg.name, [<any>Validators.required]],
                       batchNo: ['', [<any>Validators.required]],
-                      strength: [item.strengthId, []],
                       costPrice: [0, [<any>Validators.required]],
                       qty: [item.quantity, [<any>Validators.required]],
                       expiryDate: [this.now, [<any>Validators.required]],
@@ -390,7 +388,6 @@ export class PurchaseEntryComponent implements OnInit {
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
           batchNo: ['', [<any>Validators.required]],
-          strength: [, []],
           costPrice: ['', [<any>Validators.required]],
           qty: ['', [<any>Validators.required]],
           expiryDate: ['', [<any>Validators.required]],
@@ -420,7 +417,6 @@ export class PurchaseEntryComponent implements OnInit {
               this.formBuilder.group({
                 product: [value.name, [<any>Validators.required]],
                 batchNo: ['', [<any>Validators.required]],
-                strength: [, []],
                 costPrice: [0.00, [<any>Validators.required]],
                 qty: [0, [<any>Validators.required]],
                 expiryDate: [this.now, [<any>Validators.required]],
@@ -496,7 +492,6 @@ export class PurchaseEntryComponent implements OnInit {
         product.expiryDate = productObj.expiryDate;
         product.productId = productObj.id;
         product.quantity = productObj.qty;
-        product.strengthId = productObj.strength;
         purchaseEntry.products.push(product);
         if (productObj.existingInventory !== undefined && productObj.existingInventory._id === undefined) {
           const inventory: Inventory = <Inventory>{};
@@ -517,7 +512,6 @@ export class PurchaseEntryComponent implements OnInit {
           inventoryTransaction.costPrice = productObj.costPrice;
           inventoryTransaction.expiryDate = productObj.expiryDate;
           inventoryTransaction.quantity = productObj.qty;
-          inventoryTransaction.strengthId = productObj.strength;
           inventory.transactions.push(inventoryTransaction);
 
           inventories.push(inventory);
@@ -533,7 +527,6 @@ export class PurchaseEntryComponent implements OnInit {
           inventoryTransaction.costPrice = productObj.costPrice;
           inventoryTransaction.expiryDate = productObj.expiryDate;
           inventoryTransaction.quantity = productObj.qty;
-          inventoryTransaction.strengthId = productObj.strength;
           inventory.transactions.push(inventoryTransaction);
 
           existingInventories.push(inventory);

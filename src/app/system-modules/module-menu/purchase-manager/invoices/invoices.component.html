@@ -59,7 +59,6 @@
                     <thead>
                         <tr>
                             <td>Product</td>
-                            <td>Strength</td>
                             <td>Qty</td>
                             <td>Batch No</td>
                             <td>Exp Date</td>
@@ -69,7 +68,6 @@
                     <tbody>
                         <tr *ngFor="let product of selectedProduct.products">
                             <td>{{product.product.name}}</td>
-                            <td>{{product.strenght?.strength}}</td>
                             <td>{{product.quantity}}</td>
                             <td>{{product.batchNo}}</td>
                             <td>{{product.expiryDate | date}}</td>

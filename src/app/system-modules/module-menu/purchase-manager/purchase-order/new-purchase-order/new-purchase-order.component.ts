@@ -73,7 +73,7 @@ export class NewPurchaseOrderComponent implements OnInit {
     this.getSuppliers();
     this.getAllProducts();
     this.getStores();
-    this.getStrengths();
+    //this.getStrengths();
     this.frm_purchaseOrder = this.formBuilder.group({
       product: ['', [<any>Validators.required]],
       store: ['', [<any>Validators.required]],
@@ -309,12 +309,12 @@ export class NewPurchaseOrderComponent implements OnInit {
         const item = itemi.value;
         const product: any = <any>{};
         product.productId = item.id;
-        product.strengthId = item.strength;
         product.quantity = item.qty;
         purchaseOrder.orderedProducts.push(product);
       });
       console.log(purchaseOrder);
       this.purchaseOrderService.create(purchaseOrder).subscribe(payload => {
+        console.log(payload);
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       }, error => {
         console.log(error);
@@ -335,7 +335,6 @@ export class NewPurchaseOrderComponent implements OnInit {
         const item = itemi.value;
         const product: any = <any>{};
         product.productId = item.id;
-        product.strengthId = item.strength;
         product.quantity = item.qty;
         console.log(product);
         this.selectedPurchaseOrder.orderedProducts.push(product);
