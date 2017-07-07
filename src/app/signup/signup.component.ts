@@ -52,6 +52,7 @@ export class SignupComponent implements OnInit {
     this.modal_on = false;
     this.personAccount_on = false;
     this.login_on = false;
+    this.corporateSignup_on = false;
   }
   login_show() {
     this.login_on = true;

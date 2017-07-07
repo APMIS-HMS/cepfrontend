@@ -83,8 +83,7 @@
                             <td class="sel-all">
                                 <div class="dx-field">
                                     <div class="dx-field-value">
-                                        <md-checkbox (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
-                                        <!--<dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>-->
+                                        <md-checkbox (change)="onValueChanged($event,employee)" [checked]="employee.isChecked"></md-checkbox>
                                     </div>
                                 </div>
                             </td>
