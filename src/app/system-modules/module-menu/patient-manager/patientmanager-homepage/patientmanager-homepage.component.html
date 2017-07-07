@@ -53,12 +53,10 @@
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
                                     <legend  class="modal_title">Edit Patient</legend>
-                                    <md-tab-group>
-                                        <md-tab label="Tab 1">Content 1</md-tab>
-                                        <md-tab label="Tab 2">Content 2</md-tab>
-                                    </md-tab-group>
                                     <form class="form form-signup" role="form">
-                                                <!--<input type="text" class="form-control" placeholder="Full Name" />-->
+                                        <md-tab-group>
+                                            <md-tab label="Patient">
+                                                  <!--<input type="text" class="form-control" placeholder="Full Name" />-->
                                                 <md-input-container class="example-full-width">
                                                     <input mdInput type="text" placeholder="Full Name">
                                                 </md-input-container>
@@ -81,9 +79,32 @@
                                                 </md-input-container>                        
                                                     <md-input-container class="example-full-width">
                                                         <input mdInput type="email" placeholder="Email">
-                                                    </md-input-container>
-                                                </form>
-                                            </div>
+                                                </md-input-container>
+
+                                            </md-tab>
+                                            <md-tab label="Next Of Kin">
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="text" placeholder="Full Name">
+                                                </md-input-container>   
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput placeholder="Address">
+                                                </md-input-container>
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="number" placeholder="Mobile Number">
+                                                </md-input-container>                        
+                                                <md-input-container class="example-full-width">
+                                                        <input mdInput type="email" placeholder="Email">
+                                                </md-input-container>
+                                                <md-select placeholder="Relationship" [(ngModel)]="selectedValue" name="food">
+                                                    <md-option *ngFor="let food of foods" [value]="food.value">
+                                                    {{food.viewValue}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-tab>
+                                        </md-tab-group>
+                                              
+                                        </form>
+                                    </div>
                                 <div class="example-full-width" id="example-full-width">
                                         <button class="apmis-blue" md-raised-button> Save </button>
                                 </div>
