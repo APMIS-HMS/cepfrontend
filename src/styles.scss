@@ -356,7 +356,7 @@ select {
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    color: #0D47A1;
+    color: #fff;
 }
 
 .menubar_facilityLogo {
@@ -586,7 +586,14 @@ select {
     color: #424242;
     letter-spacing: 1.5px;
 }
-
+.page-title{
+    text-align: center;
+    position: relative;
+    top: -20px;
+    font-size: 12px;
+    width: 100%;
+    color: #A6ACAF;
+}
 .checker-wrap {
     display: flex;
     align-items: center;
@@ -1088,8 +1095,7 @@ select {
     background: #153d70;
     color: #fff;
 }
-
-#example-full-width {
+#example-full-width{
     text-align: center;
 }
 
@@ -1137,11 +1143,6 @@ select {
     color: #37474F;
 }
 
-.text-center {
-    text-align: center;
-    line-height: inherit;
-}
-
 .list-img img {
     width: 40px;
 }
@@ -1162,15 +1163,19 @@ select {
 .mat-input-container {
     width: 90%;
 }
-
-.apmis-blue {
-    color: #fff;
-    background: #0288D1;
-    margin: 5px 2px;
+.tr-act-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #0288D1;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 7px;
 }
-
-.apmis-danger {
-    color: #fff;
-    background: red;
-    margin: 5px 2px;
+.tr-act-btn:hover{
+    background: #0288D1;
+    color: #000;
+}
+.tr-act-btn i{
+    padding-right: 10px;
 }
