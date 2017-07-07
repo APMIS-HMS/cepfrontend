@@ -108,4 +108,8 @@ export class AddPrescriptionComponent implements OnInit {
 	// 		qty: [value.qty],
 	// 	})
 	// }
+
+	close_onClick(e) {
+		this.billShow = false;
+	}
 }
