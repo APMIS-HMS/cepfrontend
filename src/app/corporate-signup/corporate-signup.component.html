@@ -43,24 +43,24 @@
         <form [formGroup]="facilityForm1_1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-select *ngIf="stateAvailable" placeholder="Facility State (Location)"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+                    <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
                         <md-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</md-option>
                     </md-select>
-                    <input [hidden]="stateAvailable" mdInput md-error placeholder="Facility State (Location)" formControlName="facilitystate">
+                    <input [hidden]="stateAvailable" mdInput md-error placeholder="Facility State" formControlName="facilitystate">
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="City (Location)" *ngIf="stateAvailable" formControlName="facilitycity">
+                    <md-select placeholder="City" *ngIf="stateAvailable" formControlName="facilitycity">
                         <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Local Government (Location)" *ngIf="stateAvailable" formControlName="facilitylga">
+                    <md-select placeholder="Local Government" *ngIf="stateAvailable" formControlName="facilitylga">
                         <md-option *ngFor="let item of lgas" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <md-input-container>
-                        <input mdInput md-error placeholder="Facility Address (Location)" formControlName="facilityaddress">
+                        <input mdInput md-error placeholder="Facility Address" formControlName="facilityaddress">
                     </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
