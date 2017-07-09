@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
@@ -22,15 +23,18 @@ export class AddPrescriptionComponent implements OnInit {
 	loading: boolean = false;
 
 	constructor(
+		private _route: ActivatedRoute,
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService
 	) {
-	
+		let url = window.location.href;
+		if(!url.includes('patient-manager-detail')) {
+			this.loading = true;
+		}
 	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		console.log(this.prescriptionItems);
 		this.prescriptionItems.prescriptionItems = [];
 	}
 
