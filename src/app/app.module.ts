@@ -79,7 +79,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
     SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService, 
-    SetupService.FacilityPriceService, SetupService.ProductService
+    SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService
 
   ],
   bootstrap: [AppComponent]

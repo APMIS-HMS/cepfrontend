@@ -19,7 +19,7 @@ export class AddPrescriptionComponent implements OnInit {
 	billShow: boolean = false;
 	billShowId: number = 0;
 	isExternal: boolean = false;
-	loading: boolean = true;
+	loading: boolean = false;
 
 	constructor(
 		private _locker: CoolLocalStorage,
