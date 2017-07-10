@@ -133,7 +133,7 @@ export class NewProductComponent implements OnInit {
     //this.getPresentations();
     this.getProductTypes();
     this.getServiceCategories();
-    this.getStrengths();
+    //this.getStrengths();
   }
 
   // initIngredientsForm() {
@@ -239,11 +239,13 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
       this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
       this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
-      this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer.name);
+      console.log(this.selectedProduct.manufacturer);
+      this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
       this.frm_newProduct.controls['productTypeId'].setValue(this.selectedProduct.productTypeId);
       this.frm_newProduct.controls['categoryId'].setValue(this.selectedProduct.categoryId);
+      this.setIngredientItem(this.selectedProduct.productDetail.ingredients);
     } else {
       this.createText = 'Create Product';
       this.frm_newProduct.reset();
@@ -296,9 +298,9 @@ export class NewProductComponent implements OnInit {
         value.productDetail = this.productDetails;
         console.log(value);
         this.productService.create(value).then(payload => {
+          console.log(payload);
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
-              console.log("I here");
               item.services.push(service);
             }
           });

@@ -107,7 +107,7 @@
 </form>
 <div class="row margin-top-bottom">
     <div class="col-sm-12 col-md-12 text-center">
-        <button md-raised-button (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);" class="btn btn-blue"> Save </button>
+        <button md-raised-button class="mat-lg-btn" (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);"> Save </button>
     </div>
 </div>
 <div class="sec-border">
@@ -151,7 +151,7 @@
             <p> <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></p>
         </div>
     </div>
-    <div class="table-inner" *ngIf="prescriptions.length === 0">
+    <div class="table-inner" *ngIf="prescriptions.length === 0" style="font-size: 13px; padding: 10px;">
         <p class="text-center" style="width: 100%;">No data to display in table</p>
     </div>
 </div>

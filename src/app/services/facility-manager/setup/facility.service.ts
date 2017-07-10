@@ -55,8 +55,16 @@ export class FacilitiesService {
     return this._socket.get(id, query);
   }
   getSelectedFacilityId() {
-    const facility =  <any> this.locker.getObject('selectedFacility');
+    const facility = <any>this.locker.getObject('selectedFacility');
     return facility;
+  }
+  getLoginUserId() {
+    const auth: any = this.locker.getObject('auth');
+    if (auth !== undefined) {
+      const userId = auth._id;
+      return userId;
+    }
+    return '';
   }
   create(facility: any) {
     return this._socket.create(facility);

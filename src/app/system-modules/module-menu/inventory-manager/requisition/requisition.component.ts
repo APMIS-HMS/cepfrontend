@@ -158,7 +158,6 @@ export class RequisitionComponent implements OnInit {
       'productTableArray': this.formBuilder.array([
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
-          strength: [, []],
           qty: ['', [<any>Validators.required]],
           readOnly: [false],
           id: ['']
@@ -183,7 +182,6 @@ export class RequisitionComponent implements OnInit {
           .push(
           this.formBuilder.group({
             product: [value.name, [<any>Validators.required]],
-            strength: [, []],
             qty: [0, [<any>Validators.required]],
             readOnly: [false],
             productObject: [value.product],
@@ -245,7 +243,6 @@ export class RequisitionComponent implements OnInit {
       const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
       requisitionProduct.productId = item.value.productObject._id;
       requisitionProduct.qty = item.value.qty;
-      requisitionProduct.strenghtId = item.value.strength;
       requisition.products.push(requisitionProduct);
     });
     this.requisitionService.create(requisition).subscribe(payload => {

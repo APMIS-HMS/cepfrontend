@@ -84,12 +84,10 @@
                                 <tbody>
                                     <tr>
                                         <th>Product</th>
-                                        <th>Strength</th>
                                         <th>Qty</th>
                                     </tr>
                                     <tr *ngFor="let product of selectedOrder.orderedProducts">
                                         <td>{{product.product?.name}}</td>
-                                        <td>{{product.strength?.name}}</td>
                                         <td>{{product.quantity}}</td>
                                     </tr>
                                 </tbody>
