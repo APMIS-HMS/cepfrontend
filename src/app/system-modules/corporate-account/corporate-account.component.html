@@ -21,9 +21,7 @@
             <img *ngIf="facility?.logoObject" [src]="facilityService.transform(facility?.logoObject?.thumbnail)">
             <div class="txtWrap">
                 <div class="facility">{{ facility.name }}</div>
-                <div class="listedFacilityDesc">
-                    {{ facility.description }}
-                </div>
+                <div class="listedFacilityDesc">{{ facility.description }}</div>
             </div>
         </div>
     </div>

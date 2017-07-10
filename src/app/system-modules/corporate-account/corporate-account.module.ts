@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
-import { SharedModule } from '../../shared-module/shared.module';
+//import { DatePickerModule } from 'ng2-datepicker';
+//import { SharedModule } from '../../shared-module/shared.module';
 import { corporateAccountRoutes } from './corporate-account.routes';
 
 import { CorporateAccountComponent } from './corporate-account.component';
@@ -15,6 +15,8 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { AddDepartmentComponent } from './departments/add-department/add-department.component';
 import { CorporateEmitterService } from '../../services/facility-manager/corporate-emitter.service';
 import {LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
+import { MaterialModule } from '../../shared-common-modules/material-module';
+
 @NgModule({
     declarations: [
         CorporateAccountComponent,
@@ -29,11 +31,12 @@ import {LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
     exports: [
     ],
     imports: [
-        SharedModule,
+        MaterialModule,
+        //SharedModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
-        DatePickerModule,
+        //DatePickerModule,
         corporateAccountRoutes,
         LogOutConfirmModule
     ],
