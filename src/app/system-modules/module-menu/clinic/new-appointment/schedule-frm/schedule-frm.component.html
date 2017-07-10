@@ -1,6 +1,6 @@
 <div class="schedule-wrap">
   <div class="frm-appointment">
-    <div class="sect-wrap">   
+    <div class="sect-wrap">
       <div>
         <md-input-container>
           <input mdInput placeholder="Patient" [mdAutocomplete]="auto" [formControl]="patient">
@@ -14,11 +14,26 @@
       </div>
 
       <div>
-        <md-input-container>
+        <!--<md-input-container>
           <input mdInput [mdDatepicker]="picker" placeholder="Date" [formControl]="date">
           <button mdSuffix [mdDatepickerToggle]="picker"></button>
         </md-input-container>
-        <md-datepicker #picker></md-datepicker>
+        <md-datepicker #picker></md-datepicker>-->
+        <div class="survery">
+          <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
+          
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="date"
+                      name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-addon" (click)="d.toggle()" >
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
 
       <div>
@@ -80,9 +95,9 @@
       </div>
 
       <div>
-          <md-input-container class="example-full-width">
-              <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
-          </md-input-container>
+        <md-input-container class="example-full-width">
+          <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
+        </md-input-container>
       </div>
 
     </div>
