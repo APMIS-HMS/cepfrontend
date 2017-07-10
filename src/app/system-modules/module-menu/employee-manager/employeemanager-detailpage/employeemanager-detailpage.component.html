@@ -122,7 +122,7 @@
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
                             <div *ngIf = "contacts">
-                              <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
+                              <md-select placeholder="Nationality" [(ngModel)]="selectedValue" name="food">
                             <md-option *ngFor="let food of foods" [value]="food.value">
                             {{food.viewValue}}
                             </md-option>
@@ -137,7 +137,7 @@
                         <div class="lhs">State of Origin</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
+                            <md-select placeholder="State of Origin" [(ngModel)]="selectedValue" name="food">
                             <md-option *ngFor="let food of foods" [value]="food.value">
                             {{food.viewValue}}
                             </md-option>
