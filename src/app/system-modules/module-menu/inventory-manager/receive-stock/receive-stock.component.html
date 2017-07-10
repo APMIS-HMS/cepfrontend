@@ -2,11 +2,11 @@
     <div class="">
         <div class="row margin-bottom">
             <div class="col-sm-4 col-md-4 col-xs-12">
-                <dx-select-box  placeholder="Choose" [showClearButton]="true">
-                </dx-select-box>
+                <!--<dx-select-box  placeholder="Choose" [showClearButton]="true">
+                </dx-select-box>-->
             </div>
             <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-                <dx-text-box value="Search"></dx-text-box>
+                <!--<dx-text-box value="Search"></dx-text-box>-->
             </div>
         </div>
         <table class="table table-responsive table-striped text-center">
@@ -133,7 +133,7 @@
                 </div>
                 <div class="row" *ngFor="let transaction of selectedInventoryTransfer.inventoryTransferTransactions">
                     <div class="col-sm-6 col-md-6">
-                        <dx-check-box [disabled]="shouldDisabled(transaction)" (onValueChanged)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked" text="{{transaction.productObject.name}}"></dx-check-box>
+                        <!--<dx-check-box [disabled]="shouldDisabled(transaction)" (onValueChanged)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked" text="{{transaction.productObject.name}}"></dx-check-box>-->
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <p> {{transaction.lineCostPrice|number:'1.2-2'}}</p>

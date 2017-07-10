@@ -8,8 +8,7 @@ import {
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
-import 'devextreme-intl';
+import { DurationUnits } from '../../../../../shared-module/helpers/global-config';;
 
 @Component({
     selector: 'app-patient-prescription',
@@ -20,7 +19,7 @@ export class PatientPrescriptionComponent implements OnInit {
     @Input() employeeDetails: any;
 	@Input() patientDetails: any;
     @Input() selectedAppointment: Appointment = <Appointment>{};
-    @Output() prescriptionItems: any = {};
+    @Output() prescriptionItems: Prescription = <Prescription>{};
     facility: Facility = <Facility>{};
 
     showCuDropdown: boolean = false;
@@ -72,9 +71,9 @@ export class PatientPrescriptionComponent implements OnInit {
         // Remove this when you are done
         this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
+        this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
         this.selectedValue = DurationUnits[0].name;
-        this.priorityValue = 'Normal';
         this.getAllPriorities();
         this.getAllRoutes();
         this.getAllFrequencies();
@@ -113,17 +112,11 @@ export class PatientPrescriptionComponent implements OnInit {
                     strength: value.strength,
                     patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
                     refillCount: value.refillCount,
+                    cost: 0,
                     isExternal: false,
                     initiateBill: false,
                     isBilled: false
                 };
-
-                // let length = this.prescriptionItems.length;
-                // if (value.id === undefined) {
-                //     prescriptionItem.id = ++length;
-                // } else {
-                //     prescriptionItem.id = value.id;
-                // }
 
                 this.addPrescriptionShow = true;
                 this.prescriptionArray.push(prescriptionItem);
@@ -166,7 +159,8 @@ export class PatientPrescriptionComponent implements OnInit {
                             type: "Success",
                             text: "Prescription has been sent!"
                         });
-                        this.prescriptionItems = [];
+                        this.prescriptionItems = <Prescription>{};
+                        this.prescriptionItems.prescriptionItems = [];
                         this.addPrescriptionForm.reset();
                         this.addPrescriptionForm.controls['refillCount'].reset(0);
                         this.addPrescriptionForm.controls['duration'].reset(0);

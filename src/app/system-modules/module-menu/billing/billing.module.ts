@@ -14,6 +14,7 @@ import { NewPriceComponent } from './billing-home-page/new-price/new-price.compo
 import { NewModefierComponent } from './billing-home-page/new-modefier/new-modefier.component';
 import { ServiceDetailComponent } from './billing-home-page/service-detail/service-detail.component';
 import { AddTagComponent } from '../add-tag/add-tag.component';
+//import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
+        //MaterialModule,
         DatePickerModule,
         billingRoutes
     ],

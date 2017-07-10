@@ -7,3 +7,22 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
 }
+.box-title {
+    color: #A6ACAF;
+    top: -23px;
+    position: absolute;
+}
+.table > tbody > tr > th {
+    color: #000;
+}
+.mat-raised-button {
+    max-width: 200px;
+    text-align: center;
+    background: #0288D1;
+    color: #fff;
+}
+#example-full-width {
+    right: 21px;
+    top: -36px;
+    position: absolute;
+}

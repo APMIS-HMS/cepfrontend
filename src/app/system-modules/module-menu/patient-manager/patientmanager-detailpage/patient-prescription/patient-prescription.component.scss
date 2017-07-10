@@ -7,6 +7,11 @@
     padding: 5px;
 }
 
+.text-center {
+    text-align: center;
+    padding: 10px;
+}
+
 #prescription {
     width: 100%;
     margin-top: 30px;
@@ -185,7 +190,7 @@ a:hover {
     position: absolute;
     right: -12px;
     top: 62px;
-    z-index: 99999;
+    z-index: 8;
     background: #f5f5f5;
 }
 
@@ -270,11 +275,12 @@ thead {
         margin-top: 20px;
         height: auto;
         z-index: 1501;
-        top: 35px;
+        top: 37px;
         border: 1px solid #ddd;
         background: #fff;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-        border-radius: 6px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
         color: #333;
         font-weight: normal;
         font-size: 14px;
@@ -358,6 +364,10 @@ thead {
     padding: 2px 12px;
 }
 
+.td-small {
+    width: 10%;
+}
+
 label:hover {
     cursor: pointer;
 }
@@ -367,7 +377,7 @@ label:hover {
 }
 
 #table {
-    width: 50%;
+    width: 99%;
     float: right;
     margin-right: 15px;
     background: #f5f5f5;

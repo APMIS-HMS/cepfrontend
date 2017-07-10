@@ -11,7 +11,6 @@ import { ContactInfoComponent } from '../facility-setup/contact-info/contact-inf
 import { AddLogoComponent } from '../facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { VerifyTokenComponent } from '../facility-setup/verify-token/verify-token.component';
-import { DxDateBoxComponent } from 'devextreme-angular';
 import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
 import { Routing } from './signup-routes';
 import { SignupHomeComponent } from './signup-home.component';

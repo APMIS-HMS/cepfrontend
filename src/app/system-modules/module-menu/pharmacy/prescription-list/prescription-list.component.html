@@ -56,12 +56,14 @@
                 </div>
             </div>
             <div class="row" *ngIf="prescriptionLists.length === 0 && !loading">
-                <div class="text-center">
+                <div class="text-center" style="padding: 10px; font-size: 13px;">
                     <p>No data to display in table</p>
                 </div>
             </div>
             <div class="row" *ngIf="prescriptionLists.length === 0 && loading">
-                <div class="text-center"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                <div class="text-center" style="padding: 10px; font-size: 13px;">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </div>
             </div>
         </div>
     </div>

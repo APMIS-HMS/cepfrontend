@@ -1,46 +1,83 @@
-<app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+<div class="survey">
+    <div class="row patient-details">
+        <div class="col-xs-12" style="padding: 10px;width: 100%;">
+            <div class="col-xs-4" style="width:7%; float: left;">
+                <img class="img-responsive" src="http://placeholder.pics/svg/30" />
+            </div>
+            <div class="col-xs-8" style="width:93%; float: left;">
+                <small>Patient Name: <b>{{ prescriptionItems?.patientName }}</b></small><br>
+                <small>Age: <b>42years</b></small><br>
+                <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                <small>Prescription Priotity: <b>{{ prescriptionItems?.priorityObject?.name}}</b></small>
+            </div>
+        </div>
+    </div>
 
-<div class="row margin-top-bottom">
-    <div class="col-sm-12 col-md-12 text-center">
-        <button class="btn bnt-default" (click)="onClickSavePrescription();"> Save </button>
+    <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
+        <b>Prescription by {{ prescriptionItems?.employeeName }}</b>
     </div>
-</div>
-<div class="sec-border">
-    <div class="table-head">
-        <div class="table-head-inner-content" id="drugs">
-            <p>Drugs</p>
-        </div>
-        <div class="table-head-inner-content" id="qt">
-            <p>Qty</p>
-        </div>
-        <div class="table-head-inner-content" id="batch">
-            <p>Batch</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Cost</p>
+
+    <div class="row">
+        <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+    </div>
+
+    <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
+        <div class="col-sm-12 col-md-12 text-center">
+            <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();"> Save </button>
         </div>
     </div>
-    <div class="table-inner" *ngFor="let prescription of prescriptions">
-        <div class="table-data drugs">
-            {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
-            <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
-                Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Price: {{ prescription.cost }}
-            </span>
+    <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
+        <b>Added prescription items to dispense</b>
+    </div>
+    <div class="sec-border">
+        <div class="table-head">
+            <div class="table-head-inner-content drug">
+                <p class="table-padding">Drugs</p>
+            </div>
+            <div class="table-head-inner-content qty">
+                <p class="table-padding">Qty</p>
+            </div>
+            <div class="table-head-inner-content batch">
+                <p class="table-padding">Batch</p>
+            </div>
+            <div class="table-head-inner-content cost">
+                <p class="table-padding">Cost</p>
+            </div>
         </div>
-        <div class="table-data qt">
-            {{ prescription.quantity }}
+        <div class="table-inner" *ngFor="let prescription of prescriptions">
+            <div class="table-data drug">
+                <span class="table-padding">
+                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
+                <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
+                    Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.cost }}
+                </span>
+                </span>
+            </div>
+            <div class="table-data qty">
+                <p class="table-padding">{{ prescription.quantity }}</p>
+            </div>
+            <div class="table-data batch">
+                <p class="table-padding">{{ prescription.batch }}</p>
+            </div>
+            <div class="table-data cost">
+                <p class="table-padding">&#x20A6;{{ prescription.cost }}</p>
+            </div>
         </div>
-        <div class="table-data">
-            {{ prescription.batch }}
+        <div class="table-inner text-center" *ngIf="prescriptions.length === 0 && !loading">
+            <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
         </div>
-        <div class="table-data">
-            <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
+        <div class="table-inner text-center" *ngIf="prescriptions.length === 0 && loading">
+            <div style="width: 100%; padding: 10px; font-size: 13px;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
         </div>
     </div>
-</div>
-<div class="row margin-top-15">
-    <div class="col-sm-12 col-md-12 text-center">
-        <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
-        <!--<p class="total pull-right">&#x20A6;200</p>-->
+    <div class="row">
+        <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:20px;">
+            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Bill:</strong> <span>&#x20A6;0</span></p>
+        </div>
+    </div>
+    <div class="row margin-top-15" style="margin-bottom: 40px;">
+        <div class="col-sm-12 col-md-12 text-center">
+            <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();"> Dispense </button>
+        </div>
     </div>
 </div>

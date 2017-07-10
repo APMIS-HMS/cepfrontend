@@ -13,24 +13,24 @@
 
                         <div class="check-filterWrap">
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="checkAll"></dx-check-box>
-                                <label>All</label>
+                                <!--<dx-check-box [formControl]="checkAll"></dx-check-box>
+                                <label>All</label>-->
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="zeroQuantity"></dx-check-box>
-                                <label>Out of stock</label>
+                                <!--<dx-check-box [formControl]="zeroQuantity"></dx-check-box>
+                                <label>Out of stock</label>-->
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <dx-check-box [formControl]="reOrderLevelQuantity"></dx-check-box>
-                                <label>Re-order Level</label>
+                                <!--<dx-check-box [formControl]="reOrderLevelQuantity"></dx-check-box>
+                                <label>Re-order Level</label>-->
                             </div>
                         </div>
                     </div>
                     <div class="product-sect">
                         <div class="control-group" *ngFor="let group of superGroups">
-                            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+                            <!--<label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> <dx-check-box (onValueChanged)="onProductCheckChange($event,item)" [value]="item.checked"></dx-check-box></div>
-                            </label>
+                            </label>-->
                         </div>
                     </div>
                 </div>

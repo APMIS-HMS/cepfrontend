@@ -17,7 +17,6 @@
                     <legend class="modal_title">Create Group Role</legend>
                 </div>
             </div>
-
             <div class="featuresMainWrap">
                 <div class="accessInputWrap">
                     <md-input-container class="">
@@ -26,29 +25,23 @@
                     <!--<input id="txtAccessName" class="top-tab-search" type="text" autofocus placeholder="Supply Access Name" [formControl]="txtAccessName">-->
                 </div>
                 <legend class="title-label">Select accessible features</legend>
-
                 <div class="searchWrap">
                     <md-input-container *ngIf="searchfeatureActive" class="animated fadeIn">
-                        <input  type="text" mdInput md-error placeholder="Search for Feature" [formControl]="searchFeature">
+                        <input type="text" mdInput md-error placeholder="Search for Feature" [formControl]="searchFeature">
                     </md-input-container>
                     <!--<input *ngIf="searchfeatureActive" class="top-tab-search animated fadeIn" type="search" placeholder="Search for Feature" [formControl]="searchFeature">-->
                     <i (click)="searchFeatureToggle()" [hidden]="searchfeatureActive" style="margin-top: 7px;" class="fa fa-search-plus" aria-hidden="true"></i>
                     <i (click)="searchFeatureToggle()" *ngIf="searchfeatureActive" class="fa fa-search-minus" aria-hidden="true"></i>
                 </div>
-
                 <div class="modal-content-wrap">
-
                     <div class="control-group" *ngFor="let group of superGroups">
                         <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                           <input type="checkbox" [(ngModel)]="item.checked" />
                           <div class="control__indicator"></div>
                         </label>
                     </div>
-
                 </div>
-
                 <div class="btn-1 btn-blue" (click)="create()"><i class="fa fa-sign-in" aria-hidden="true"></i>{{btnTitle}}</div>
-
             </div>
         </div>
     </div>

@@ -37,7 +37,6 @@
                         <th class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <!--<dx-check-box [formControl]="checkAll"></dx-check-box>-->
                                     <md-checkbox [formControl]="checkAll"></md-checkbox>
                                     </div>
                             </div>
@@ -57,10 +56,6 @@
                             <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Email</span>
                         </th>
-                        <!--<th>
-              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-              <span style="padding-left: 3px;">Gender</span>
-            </th>-->
                     </tr>
                 </thead>
 
@@ -71,7 +66,6 @@
                                 <div class="tbl-title"></div>
                                 <div class="tbl-search">
                                     <div class="searchInputWrap">
-                                        <!--<input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">-->
                                         <md-input-container class="example-full-width">
                                             <input mdInput [formControl]="searchControl" class="searchInput" type="search" autofocus>
                                         </md-input-container>
@@ -86,7 +80,6 @@
                         <td class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <!--<dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>-->
                                     <md-checkbox [formControl]="checkAll" (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
                                 </div>
                             </div>
@@ -102,7 +95,6 @@
                         </td>
                         <td>{{employee.employeeDetails.phoneNumber}}</td>
                         <td>{{employee.employeeDetails.email}}</td>
-                        <!--<td>{{employee.employeeDetails.gender.name}}</td>-->
                     </tr>
                 </tbody>
             </table>

@@ -3,7 +3,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
-    FacilitiesService, ProductService, FacilityPriceService, InventoryService
+    FacilitiesService, ProductService, FacilityPriceService, InventoryService, AssessmentDispenseService
 } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -35,7 +35,8 @@ export class BillPrescriptionComponent implements OnInit {
 		private _productService: ProductService,
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
-		private _inventoryService: InventoryService 
+		private _inventoryService: InventoryService,
+		private _assessmentDispenseService: AssessmentDispenseService
 	) { }
 
 	ngOnInit() {
@@ -137,7 +138,7 @@ export class BillPrescriptionComponent implements OnInit {
 		let cId = drugId._element.nativeElement.getAttribute('data-p-cid');
 		// Get the service for the product
 		if(this.storeId !== '') {
-			this._inventoryService.find({ query: { facilityId : this.facility._id, storeId: this.storeId }})
+			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
 				.then(res => {
 					console.log(res);
 					// if(res.data.length > 0) {

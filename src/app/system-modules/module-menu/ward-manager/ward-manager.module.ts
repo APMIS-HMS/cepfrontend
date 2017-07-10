@@ -40,7 +40,7 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
     exports: [
     ],
     imports: [
-        SharedModule,
+        // SharedModule,
         MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,

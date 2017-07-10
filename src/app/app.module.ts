@@ -29,7 +29,6 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
 // tslint:disable-next-line:max-line-length
 import { ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
 import { ApmisCheckboxComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox.component';
-import { DxDateBoxComponent } from 'devextreme-angular';
 import { VerifyTokenComponent } from './facility-setup/verify-token/verify-token.component';
 import { LogoutConfirmComponent } from './system-modules/module-menu/logout-confirm/logout-confirm.component';
 import { FacilitySetupComponent } from './facility-setup/facility-setup.component';
@@ -50,7 +49,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     ApmisCheckboxComponent
   ],
   imports: [
-    SharedModule,
+    // SharedModule,
     BrowserModule,
     FormsModule,
     Routing,
@@ -79,7 +78,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
     SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService, 
-    SetupService.FacilityPriceService, SetupService.ProductService
+    SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService
 
   ],
   bootstrap: [AppComponent]

@@ -5,7 +5,7 @@ import { Facility, Appointment } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
-	 DispenseService, ProductService, FacilityPriceService } from '../../../../../services/facility-manager/setup/index';
+	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
 	selector: 'app-noprescription',
@@ -54,7 +54,8 @@ export class NoprescriptionComponent implements OnInit {
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
 		private _employeeService: EmployeeService,
-		private _purchaseEntryService: PurchaseEntryService
+		private _purchaseEntryService: PurchaseEntryService,
+		private _assessmentDispenseService: AssessmentDispenseService
 	) {
 
 	}
@@ -114,7 +115,7 @@ export class NoprescriptionComponent implements OnInit {
 	onClickSaveNoPrescription(value: any, valid: boolean) {
 		let prescription = {};
 
-		if(this.storeId !== '') {
+		// if(this.storeId !== '') {
 			if(value.drug == '' || value.qty == '' || value.batchNumber == '') {
 				this._facilityService.announceNotification({
 					type: "Error",
@@ -152,12 +153,12 @@ export class NoprescriptionComponent implements OnInit {
 				
 				this.prescriptions.push(prescription);
 			}	
-		} else {
-			this._facilityService.announceNotification({
-				type: "Error",
-				text: "You need to check into store."
-			});
-		}
+		// } else {
+		// 	this._facilityService.announceNotification({
+		// 		type: "Error",
+		// 		text: "You need to check into store."
+		// 	});
+		// }
 	}
 
 	// Save Nonpresciption form data in to the database.
@@ -295,7 +296,13 @@ export class NoprescriptionComponent implements OnInit {
 		this.price = drugId.getAttribute('data-p-costPrice');
 		this.noPrescriptionForm.controls['batchNumber'].setValue(batchNumber);
 		// Get the selling price for the product
-		this._facilityPriceService.find({ query : { 
+		// this._facilityPriceService.find({ query : { 
+		// 		facilityId : this.facility._id,
+		// 		productId: this.selectedProductId,
+		// 		facilityServiceId: fsId,
+		// 		serviceId: sId, categoryId: cId
+		// 	}})
+		this._assessmentDispenseService.find({ query : { 
 				facilityId : this.facility._id,
 				productId: this.selectedProductId,
 				facilityServiceId: fsId,

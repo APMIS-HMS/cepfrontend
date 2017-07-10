@@ -9,7 +9,7 @@
 <div>
   <i [hidden]="false" #unititem>{{count}}</i>
   <div class="dataMix-wrap color1">
-    <div>
+    <div class="display-flex">
       <div class="lhs">Unit Name</div>
       <div class="rhs">
         <div [hidden]="unitEditNameIcoShow" class="lhs"> {{unit.name}} </div>
@@ -67,11 +67,6 @@
       <div class="clinicsWrap">
         <div class="clinicWrap">
           <div [hidden]="unitEditClinicIcoShow" class="lhs"> Authopeadic Clinic </div>
-          <!--<dx-lookup
-                class="edit-control lhs"
-                *ngIf="unitEditClinicIcoShow"
-                [showPopupTitle]="false">
-            </dx-lookup>-->
             <md-select *ngIf="unitEditClinicIcoShow">
               <md-option></md-option>
             </md-select>
@@ -81,11 +76,6 @@
         </div>
         <div class="clinicWrap">
           <div [hidden]="unitEditClinicIcoShow2" class="lhs"> Authopeadic Clinic </div>
-          <!--<dx-lookup
-                class="edit-control lhs"
-                *ngIf="unitEditClinicIcoShow2"
-                [showPopupTitle]="false">
-            </dx-lookup>-->
             <md-select *ngIf="unitEditClinicIcoShow">
               <md-option></md-option>
             </md-select>

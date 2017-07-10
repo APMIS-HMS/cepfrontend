@@ -1,5 +1,4 @@
 .schedule-wrap {
-    background: rgba(3, 169, 244,0.03);
     padding: 5px 20px;
     box-sizing: border-box;
     margin-bottom: 10px;
@@ -9,7 +8,14 @@
     justify-content: space-between;
 }
 .sect-wrap{
+    position: relative;
     width: 33%;
+}
+.sect-wrap .tr-act-btn {
+    width: 180px;
+    font-size: 12px;
+    position: absolute;
+    top: 90px;
 }
 .cta-1{
     height: 35px;
@@ -17,4 +23,7 @@
 }
 .sect-wrap .frm-item-wrap{
     width: 100%;
+}
+.mat-input-infix {
+    border-top: 0em solid transparent !important;
 }

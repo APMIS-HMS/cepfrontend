@@ -21,6 +21,7 @@ export class PrescriptionComponent implements OnInit {
 	storeId: string = '';
 	totalQuantity: number = 0;
 	totalCost: number = 0;
+	loading: boolean = true;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -102,6 +103,7 @@ export class PrescriptionComponent implements OnInit {
 		this._prescriptionService.get(this.prescriptionId, {})
 			.then(res => {
 				console.log(res);
+				this.loading = false;
 				this.prescriptionItems = res;
 				res.prescriptionItems.forEach(element => {
 					if(element.isBilled) {
