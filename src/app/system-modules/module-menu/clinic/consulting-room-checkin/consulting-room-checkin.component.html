@@ -41,22 +41,12 @@
         </div>
 
         <div class="set-default">
-          <!--<div>Set as default</div>
-          <div class="dx-field-value">
-            <dx-check-box formControlName="isDefault"></dx-check-box>
-          </div>-->
           <md-checkbox formControlName="isDefault" >Set as default!</md-checkbox>
         </div>
 
         <div class="btn-group">
-          <!--<div (click)="checkIn(roomCheckin.valid, roomCheckin.value)" class="btn-1 btn-blue">
-            <i class="fa fa-check-circle" aria-hidden="true"></i> Check In
-          </div>-->
             <button (click)="checkIn(roomCheckin.valid, roomCheckin.value)" class="apmis-blue" md-raised-button >Check In</button>
             <button class="apmis-danger" (click)="close_onClick()" md-raised-button>Cancel</button>
-          <!--<div (click)="close_onClick()" class="btn-1 btn-red" aria-hidden="true">
-            <i class="fa fa-times-circle" aria-hidden="true"></i> Cancel
-          </div>-->
         </div>
 
       </form>

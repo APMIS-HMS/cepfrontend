@@ -9,20 +9,11 @@
                 </md-select>
             </div>
             <div class="col-sm-3">
-                 <!--<div class="dx-field-value">
-                                <dx-select-box [items]="clinicHelperService.clinicLocations" displayExpr="name" valueExpr="_id"></dx-select-box>
-                 </div>-->
                 <md-select placeholder="Sort By Location">
                     <md-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</md-option>
                 </md-select>
             </div>
             <div class="col-sm-3">
-                <!--
-                <div>Sort By Clinic</div>
-                    <div class="dx-field-value">
-                    <dx-select-box [items]="clinics" displayExpr="clinicName" valueExpr="_id"></dx-select-box>
-                </div>
-                -->
                 <md-select placeholder="Sort By Clinics">
                     <md-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</md-option>
                 </md-select>

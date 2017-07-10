@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DxDateBoxModule } from 'devextreme-angular';
-// import 'devextreme-intl';
 import { SchedulerService, SchedulerTypeService } from '../../../../services/facility-manager/setup/index';
 import { ClinicModel, Facility, Location, ScheduleRecordModel } from '../../../../models/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
@@ -161,7 +159,6 @@ export class ClinicScheduleComponent implements OnInit {
         readOnly: [false]
       })
       );
-    // (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.reverse();
     this.subscribToFormControls();
   }
   onCreateSchedule() {
@@ -179,13 +176,22 @@ export class ClinicScheduleComponent implements OnInit {
       this.selectedManager.schedules = [];
       (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray'])
         .controls.forEach((itemi, i) => {
-           console.log(itemi.value)
+          const startTime = new Date();
+          startTime.setHours(itemi.value.startTime.hour);
+          startTime.setMinutes(itemi.value.startTime.minute);
+          itemi.value.startTime = startTime;
+
+          const endTime = new Date();
+          endTime.setHours(itemi.value.endTime.hour);
+          endTime.setMinutes(itemi.value.endTime.minute);
+          itemi.value.endTime = endTime;
+          console.log(itemi.value)
           this.selectedManager.schedules.push(itemi.value);
         });
-      // this.schedulerService.update(this.selectedManager).then(payload => {
-      //   this.selectedManager = payload;
-      //   this.loadManagerSchedules(true);
-      // });
+      this.schedulerService.update(this.selectedManager).then(payload => {
+        this.selectedManager = payload;
+        this.loadManagerSchedules(true);
+      });
     } else {
       const manager: ScheduleRecordModel = <ScheduleRecordModel>{ schedules: [] };
       manager.locationType = this.locationTypeControl.value;
@@ -196,10 +202,6 @@ export class ClinicScheduleComponent implements OnInit {
           console.log(itemi.value)
           manager.schedules.push(itemi.value);
         });
-      // this.schedulerService.create(manager).then(payload => {
-      //   this.scheduleManagers = payload.data;
-      //   this.loadManagerSchedules(true);
-      // });
     }
   }
   closeClinicSchedule(clinic: any, i: any) {

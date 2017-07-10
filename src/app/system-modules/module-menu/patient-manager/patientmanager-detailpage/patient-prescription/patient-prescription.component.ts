@@ -8,8 +8,7 @@ import {
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
-import 'devextreme-intl';
+import { DurationUnits } from '../../../../../shared-module/helpers/global-config';;
 
 @Component({
     selector: 'app-patient-prescription',

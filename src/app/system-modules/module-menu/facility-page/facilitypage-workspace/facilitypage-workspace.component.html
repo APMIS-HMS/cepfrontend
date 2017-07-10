@@ -76,12 +76,7 @@
     <app-create-workspace (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
 </div>
 
-<!--<app-notification class="notification-tag"></app-notification>-->
-
 <div *ngIf="globalDialog">
     <app-global-dialog (deleteRecord)="delete_onClick($event)" [gdTitle]="gdTitle" [gdItem]="gdItem" [gdComponent]="gdComponent"
         (closeModal)="close_onClick($event)"></app-global-dialog>
 </div>
-<!--<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
-</div>-->
