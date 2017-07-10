@@ -41,6 +41,8 @@
     "feathers-rest": "^1.5.2",
     "feathers-socketio": "^1.4.2",
     "localstorage-memory": "~1.0.2",
+    "ng-pick-daterange": "^1.0.0",
+    "ng-pick-datetime": "^4.2.2",
     "ng2-currency-mask": "~4.0.2",
     "ng2-datepicker": "~1.8.3",
     "ng2-img-cropper": "~0.8.8",
