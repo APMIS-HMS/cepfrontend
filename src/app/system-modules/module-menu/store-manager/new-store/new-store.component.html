@@ -6,7 +6,6 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form [formGroup]="frm_newStore" novalidate>
-
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
@@ -50,14 +49,12 @@
 
             </div>
         </div>
-
-        <div (click)="create(frm_newStore.valid, frm_newStore.value)" class="cta-1">
-            {{createText}}
+        <div class="text-center">
+            <button md-raised-button class="mat-lg-btn" (click)="create(frm_newStore.valid, frm_newStore.value)">{{createText}}</button>
         </div>
-
     </form>
 
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+    <md-spinner id="large-indicator" height="60" width="60"></md-spinner>
 </div>
