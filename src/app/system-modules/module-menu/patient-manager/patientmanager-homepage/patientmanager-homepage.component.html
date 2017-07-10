@@ -12,8 +12,7 @@
             <li class="patient-apmis" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Apmis Number</li>
             <li>Action</li>
         </ul>
-        <div class="wrapper-content search-results" infinite-scroll [infiniteScrollDistance]="7" [infiniteScrollUpDistance]="7" [infiniteScrollThrottle]="300"
-            (scrolled)="onScroll()" [scrollWindow]="false" (scrolledUp)="onScrollUp()">
+        <div class="wrapper-content">
             <ul *ngFor="let patient of patients; let i = even; let k = odd" [class.color1]="i" [class.color2]="k" class="inBody">
                 <li (click)="navEpDetail(patient)" class="patient-img">
                     <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>

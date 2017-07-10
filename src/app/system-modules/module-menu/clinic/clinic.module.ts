@@ -24,6 +24,7 @@ import {
 } from '../../../resolvers/module-menu/index';
 import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
 import { ScheduleFrmComponent } from './new-appointment/schedule-frm/schedule-frm.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 @NgModule({
     declarations: [
@@ -39,13 +40,14 @@ import { ScheduleFrmComponent } from './new-appointment/schedule-frm/schedule-fr
     exports: [
     ],
     imports: [
-        SharedModule,
-        DxSchedulerModule,
+        // SharedModule,
+        // DxSchedulerModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
         DatePickerModule,
         clinicRoutes,
+        MaterialModule
         // DxSchedulerModule, DxButtonModule, DxTemplateModule,
         // DxAutocompleteModule, DxLookupModule, DxTextAreaModule, DxDateBoxModule
     ],

@@ -22,7 +22,7 @@ import { NewWorkspaceComponent } from './new-workspace/new-workspace.component';
 import { WorkspaceHistoryComponent } from './workspace-history/workspace-history.component';
 import { AssignUnitComponent } from './assign-unit/assign-unit.component';
 import { EmployeesResolverService, LoginEmployeeResolverService } from '../../../resolvers/module-menu/index'
-
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 // should remove
 // tslint:disable-next-line:max-line-length
@@ -51,12 +51,13 @@ import { DxLookupComponent, DevExtremeModule, DxLoadIndicatorModule, DxLookupMod
     ],
     imports: [
         // DxCheckBoxModule,
-        SharedModule,
+        // SharedModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
         // DatePickerModule,
-        employeeManagerRoutes
+        employeeManagerRoutes,
+        MaterialModule
     ],
     providers: [EmployeesResolverService, LoginEmployeeResolverService]
 })

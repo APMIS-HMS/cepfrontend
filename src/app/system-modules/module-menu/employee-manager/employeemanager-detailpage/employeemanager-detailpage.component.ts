@@ -19,9 +19,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedValue: string;
 
   foods = [
-    {value: 'steak-0', viewValue: 'edit here'},
-    {value: 'pizza-1', viewValue: 'edit here'},
-    {value: 'tacos-2', viewValue: 'edit here'}
+    { value: 'steak-0', viewValue: 'edit here' },
+    { value: 'pizza-1', viewValue: 'edit here' },
+    { value: 'tacos-2', viewValue: 'edit here' }
   ];
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -53,6 +53,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   assignUnitPop: boolean = false;
 
   employeeSubscription: Subscription;
+  departments: any[] = [];
   constructor(private countryService: CountriesService,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -73,12 +74,14 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
     this.employeeSubscription = this.employeeService.employeeAnnounced$.subscribe(employee => {
       this.getEmployee(employee);
+      console.log(employee);
     });
 
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.departments = this.selectedFacility.departments;
     // this.getEmployees();
     this.searchControl.valueChanges.subscribe(value => {
     });
@@ -93,6 +96,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.selectedPerson = <Person>{};
       this.loadIndicatorVisible = false;
       this.employee = <any>results[0];
+      this.selectedValue = this.employee.departmentId;
       this.selectedPerson = this.employee.employeeDetails;
       this.getCurrentUser(results[1]);
     });
@@ -254,16 +258,24 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.employeeSubscription.unsubscribe();
   }
+  updateEmployee() {
+    this.employee.departmentId = this.selectedValue;
+    this.employeeService.update(this.employee).subscribe(value => {
+      this.employee = value;
+      console.log(value);
+      this.editDepartment = !this.editDepartment;
+    });
+  }
   toggleDepartmentShow() {
     this.editDepartment = !this.editDepartment;
   }
   bioDataShow() {
     this.biodatas = !this.biodatas;
   }
-  contactShow(){
+  contactShow() {
     this.contacts = !this.contacts;
   }
-  nextofkinShow(){
-     this.nextofkin = !this.nextofkin;
+  nextofkinShow() {
+    this.nextofkin = !this.nextofkin;
   }
 }
