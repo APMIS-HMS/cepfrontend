@@ -1,16 +1,17 @@
 <div class="pgWrapper">
+
     <div class="service">
         <div class="tblWrap">
             <div class="tblTitle">Services</div>
             <div class="tblTop">
-                <button md-raised-button (click)="newServicePopup_show()" class="mat-lg-btn"><i class="fa fa-plus-square" aria-hidden="true"></i> New Service</button>
-                <!--<div (click)="newServicePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Service</div>-->
+                <div (click)="newServicePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Service</div>
                 <md-input-container class="example-full-width">
                     <input type="search" autofocus mdInput md-error placeholder="search for a service" [formControl]="searchService">
                 </md-input-container>
             </div>
             <table class="tblBg">
                 <thead>
+
                     <tr>
                         <th>Service</th>
                         <th>Category</th>
@@ -38,20 +39,22 @@
         <div class="tblWrap">
             <div class="tblTitle">Service Categories</div>
             <div class="tblTop">
-                <button md-raised-button (click)="newCategoryPopup_show()" class="mat-lg-btn"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</button>
-                <!--<div (click)="newCategoryPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</div>-->
+                <div (click)="newCategoryPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</div>
                 <md-input-container class="example-full-width">
                     <input type="search" autofocus mdInput md-error placeholder="search for a category" [formControl]="searchCategory">
                 </md-input-container>
             </div>
             <table class="tblBg">
                 <thead>
+
                     <tr>
                         <th>Category</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
+
                 <tbody>
+
                     <tr (dblclick)="onDoubleClickCategory(category)" *ngFor="let category of categories">
                         <td>{{category.name}}</td>
                         <td>
@@ -63,6 +66,7 @@
             </table>
         </div>
     </div>
+
 
     <div *ngIf="newServicePopup" class="modal-overlay">
         <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
