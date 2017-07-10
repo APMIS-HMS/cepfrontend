@@ -38,7 +38,12 @@
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Date/Time</span>
+                <span style="padding-left: 3px;">Date</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Time</span>
             </th>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -61,7 +66,7 @@
 
     <tbody>
         <tr>
-            <td colspan="6">
+            <td colspan="7">
                 <div class="tbl-actionRow">
 					<div>
 						<md-input-container>
@@ -137,46 +142,22 @@
 
         <tr>
             <td>
-                <div [routerLink]="['/dashboard/patient-manager']" class="empWrap">
+                <div class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div class="emp-label">Johanna James</div>
+                    <div>Johanna James</div>
                 </div>
             </td>
-            <td>10th July, 2017. 10:00am</td>
+            <td>10th July, 2017.</td>
+            <td> 10:00am</td>
 			<td>Eye Clinic</td>
 			<td>
-                <div [routerLink]="['/dashboard/employee-manager']" class="empWrap">
+                <div class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div class="emp-label">Lara Jonah</div>
-                </div>
-            </td>
-            <td>Checked In</td>
-            <td>
-                <div class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
-            </td>
-        </tr>
-
-		<tr>
-            <td>
-                <div [routerLink]="['/dashboard/patient-manager']" class="empWrap">
-                    <div class="list-img">
-                        <img src="assets/images/users/default.png">
-                    </div>
-                    <div class="emp-label">Johanna James</div>
-                </div>
-            </td>
-            <td>10th July, 2017. 10:00am</td>
-			<td>Eye Clinic</td>
-			<td>
-                <div [routerLink]="['/dashboard/employee-manager']" class="empWrap">
-                    <div class="list-img">
-                        <img src="assets/images/users/default.png">
-                    </div>
-                    <div class="emp-label">Lara Jonah</div>
+                    <div>Lara Jonah</div>
                 </div>
             </td>
             <td>Checked In</td>

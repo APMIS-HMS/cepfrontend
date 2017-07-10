@@ -2,16 +2,27 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
+// import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+
+// const now = new Date();
 
 @Component({
   selector: 'app-schedule-frm',
   templateUrl: './schedule-frm.component.html',
   styleUrls: ['./schedule-frm.component.scss']
 })
+
 export class ScheduleFrmComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+
+//   model: NgbDateStruct;
+//   dateVal: {year: number, month: number};
+
+//   selectToday() {
+//     this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+//   }
 
   filteredStates: any;
   patient: FormControl;

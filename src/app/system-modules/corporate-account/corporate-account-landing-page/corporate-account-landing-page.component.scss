@@ -11,6 +11,10 @@
 
 .listedFacilityDesc {
     font-size: 14px !important;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .mainContentArea {

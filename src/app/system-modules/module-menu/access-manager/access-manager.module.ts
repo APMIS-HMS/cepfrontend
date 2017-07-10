@@ -9,7 +9,8 @@ import { ViewAccessComponent } from './view-access/view-access.component';
 
 import { AccessManagerHomeComponent } from './access-manager-home.component';
 import { accessManagerRoutes} from './access-manager.routes';
-import { SharedModule } from '../../../shared-module/shared.module';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
+// import { SharedModule } from '../../../shared-module/shared.module';
 
 @NgModule({
     declarations: [
@@ -24,9 +25,10 @@ import { SharedModule } from '../../../shared-module/shared.module';
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
+        MaterialModule,
         DatePickerModule,
         accessManagerRoutes,
-        SharedModule
+        // SharedModule
     ],
     providers: []
 })
