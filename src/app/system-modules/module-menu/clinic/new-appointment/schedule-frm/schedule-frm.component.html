@@ -21,8 +21,11 @@
         <md-datepicker #picker></md-datepicker>-->
                 <div class="survery">
                     <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
+                    <md-input-container>
+                    <input mdInput placeholder="Date" [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly>
+                </md-input-container>
 
-                    <input [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly />
+                    <!--<input [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly />-->
                 </div>
             </div>
 
