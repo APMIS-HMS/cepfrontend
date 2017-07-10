@@ -1179,3 +1179,7 @@ select {
 .tr-act-btn i{
     padding-right: 10px;
 }
+*, ::after, ::before {
+    -webkit-box-sizing: initial;
+    box-sizing: initial; 
+}
