@@ -20,6 +20,18 @@
         </md-input-container>
         <md-datepicker #picker></md-datepicker>
       </div>
+
+      <div>
+        <md-input-container>
+          <input mdInput placeholder="Appointment Type" [mdAutocomplete]="auto" [formControl]="type">
+        </md-input-container>
+
+        <md-autocomplete #auto="mdAutocomplete">
+          <md-option *ngFor="let state of filteredStates | async" [value]="state">
+            {{ state }}
+          </md-option>
+        </md-autocomplete>
+      </div>
     </div>
 
     <div class="sect-wrap">
@@ -35,6 +47,11 @@
         </md-autocomplete>
       </div>
 
+      <div class="tr-act-btn">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        <span>Next Available Date</span>
+      </div>
+
     </div>
 
     <div class="sect-wrap">
@@ -45,6 +62,18 @@
 
         <md-autocomplete #auto="mdAutocomplete">
           <md-option *ngFor="let stat of filteredStates | async" [value]="stat">
+            {{ state }}
+          </md-option>
+        </md-autocomplete>
+      </div>
+
+      <div>
+        <md-input-container>
+          <input mdInput placeholder="Appointment Category" [mdAutocomplete]="auto" [formControl]="category">
+        </md-input-container>
+
+        <md-autocomplete #auto="mdAutocomplete">
+          <md-option *ngFor="let state of filteredStates | async" [value]="state">
             {{ state }}
           </md-option>
         </md-autocomplete>

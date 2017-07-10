@@ -16,6 +16,7 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
 import { PatientSummaryComponent } from './patientmanager-detailpage/patient-summary/patient-summary.component';
 import { PatientPrescriptionComponent } from './patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { MedicationHistoryComponent } from './patientmanager-detailpage/medication-history/medication-history.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 //import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
 //import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
 
@@ -29,7 +30,7 @@ import { MedicationHistoryComponent } from './patientmanager-detailpage/medicati
         CheckoutPatientComponent,
         AddTagsComponent,
         PatientSummaryComponent,
-        PatientPrescriptionComponent,
+        // PatientPrescriptionComponent,
         MedicationHistoryComponent,
         //BillPrescriptionComponent,
         //AddPrescriptionComponent
@@ -37,12 +38,13 @@ import { MedicationHistoryComponent } from './patientmanager-detailpage/medicati
     exports: [
     ],
     imports: [
-        SharedModule,
+        // SharedModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
         // DatePickerModule,
-        patientManagerRoutes
+        patientManagerRoutes,
+        MaterialModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FormsService]
 })

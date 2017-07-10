@@ -26,6 +26,7 @@ import {
 import { ProfessionComponent } from './profession/profession.component';
 import { AddProfessionComponent } from './profession/add-profession/add-profession.component';
 import { FacilityPageComponent } from './facility-page.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { FacilityPageComponent } from './facility-page.component';
 
         // DxCheckBoxModule,
         facilityPageRoutes,
-        SharedModule
+        MaterialModule
+        // SharedModule
     ],
     providers: [
         WorkspaceResolverService, LocationsResolverService,

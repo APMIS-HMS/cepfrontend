@@ -24,12 +24,12 @@
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
                     </div>
                     <div *ngIf= "editDepartment" class="emp-dept">
-                          <md-select placeholder="Departments" [(ngModel)]="selectedValue" name="food">
-                            <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
+                          <md-select placeholder="Departments" [(ngModel)]="selectedValue">
+                            <md-option *ngFor="let department of departments" [value]="department._id">
+                            {{department.name}}
                             </md-option>
                         </md-select>
-                        <a><i class="fa fa-check"></i></a>
+                        <a (click)="updateEmployee()"><i class="fa fa-check"></i></a>
                     </div>
                     <div *ngIf= "!editDepartment" class="emp-dept">{{employee?.department?.name}}
                         <span (click)="toggleDepartmentShow()"  class="editButton">
@@ -122,7 +122,7 @@
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
                             <div *ngIf = "contacts">
-                              <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
+                              <md-select placeholder="Nationality" [(ngModel)]="selectedValue" name="food">
                             <md-option *ngFor="let food of foods" [value]="food.value">
                             {{food.viewValue}}
                             </md-option>
@@ -137,7 +137,7 @@
                         <div class="lhs">State of Origin</div>
                         <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                          <div *ngIf = "contacts" class="survery rhs">
-                            <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
+                            <md-select placeholder="State of Origin" [(ngModel)]="selectedValue" name="food">
                             <md-option *ngFor="let food of foods" [value]="food.value">
                             {{food.viewValue}}
                             </md-option>
@@ -260,7 +260,7 @@
             </div>
         </div>
         <div *ngIf="loadIndicatorVisible" class="div_loading">
-            <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+          <md-spinner></md-spinner>
         </div>
     </div>
     <div class="clear"></div>

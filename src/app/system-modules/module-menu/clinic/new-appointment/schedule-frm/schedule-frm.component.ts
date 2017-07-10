@@ -17,6 +17,8 @@ export class ScheduleFrmComponent implements OnInit {
   patient: FormControl;
   clinic: FormControl;
   provider: FormControl;
+  type: FormControl;
+  category: FormControl;
   date: FormControl = new FormControl();
   reason: FormControl = new FormControl();
 
@@ -86,6 +88,16 @@ export class ScheduleFrmComponent implements OnInit {
 
         this.provider = new FormControl();
         this.filteredStates = this.provider.valueChanges
+            .startWith(null)
+            .map(name => this.filterStates(name));
+
+        this.type = new FormControl();
+        this.filteredStates = this.type.valueChanges
+            .startWith(null)
+            .map(name => this.filterStates(name));
+
+        this.category = new FormControl();
+        this.filteredStates = this.category.valueChanges
             .startWith(null)
             .map(name => this.filterStates(name));
   }
