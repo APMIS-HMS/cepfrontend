@@ -1,7 +1,7 @@
 @import "../../../../../../globals/variables.scss";
 
 input, select{
-    border-bottom: 1px solid #9E9E9E;
+    border:0;
     outline: 0;
 }
 .modal-baseWrap {
@@ -31,4 +31,11 @@ input, select{
     width: 278px;
     min-width: 250px;
 }
+}
+
+.mat-raised-button {
+    max-width: 200px;
+    text-align: center;
+    background: #153d70;
+    color: #fff;
 }

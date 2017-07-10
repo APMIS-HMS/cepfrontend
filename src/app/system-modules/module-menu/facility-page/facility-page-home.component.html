@@ -18,7 +18,7 @@
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
                 <li (click)="changeRoute('')" [class.navActive]="homeContentArea">Home</li>
-                <li (click)="changeRoute('dashboard')" [class.navActive]="dashboardContentArea">Modules</li>
+                <li (click)="changeRoute('modules')" [class.navActive]="dashboardContentArea">Modules</li>
                 <li (click)="changeRoute('departments')" [class.navActive]="departmentsContentArea">Departments</li>
                 <li (click)="changeRoute('locations')" [class.navActive]="locationsContentArea">Locations</li>
                 <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>
@@ -35,6 +35,5 @@
     </div>
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
-
+    <md-spinner></md-spinner>
 </div>

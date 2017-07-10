@@ -29,7 +29,7 @@
                     </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Select Country"  formControlName="facilitycountry">
+                    <md-select placeholder="Select Country" formControlName="facilitycountry">
                         <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -43,7 +43,7 @@
         <form [formGroup]="facilityForm1_1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+                    <md-select *ngIf="stateAvailable" placeholder="Facility State" formControlName="facilitystate" (change)="onStateChange($event.value)">
                         <md-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</md-option>
                     </md-select>
                     <input [hidden]="stateAvailable" mdInput md-error placeholder="Facility State" formControlName="facilitystate">
@@ -107,7 +107,10 @@
     </div>
 
     <div *ngIf="sg2_show" class="f_sg2 animated zoomIn">
-        <form [formGroup]="frm_numberVerifier" novalidate>
+        <ngb-alert [dismissible]="false" *ngIf="isSuccessful" type="success">
+           {{closeMsg}}
+        </ngb-alert>
+        <form *ngIf="!isSuccessful" [formGroup]="frm_numberVerifier" novalidate>
             <div class="frm-singleItem-wrap">
                 <md-input-container>
                     <input mdInput md-error [(ngModel)]="InputedToken" placeholder="Supply Token" formControlName="txt_numberVerifier">

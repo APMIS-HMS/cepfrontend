@@ -23,7 +23,7 @@ export class NewStoreComponent implements OnInit {
   errMsg = 'you have unresolved errors';
 
   public frm_newStore: FormGroup;
-  createText = 'Create';
+  createText = 'Create Store';
   loadIndicatorVisible = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
