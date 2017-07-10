@@ -61,8 +61,21 @@ export class AddFacilityModuleComponent implements OnInit {
 
 	getModules() {
 		this.facilityModuleService.findAll().then((payload) => {
-			this.modules = payload.data;
-			console.log(this.modules);
+			if (this.inputFacility.facilitymoduleId.length > 0) { 
+				console.log("A here");
+				payload.data.forEach(moduleItem => {
+					this.inputFacility.facilitymoduleId.forEach(selectedModuleId => {
+						if (selectedModuleId == moduleItem._id) {
+							moduleItem.checked = true;
+							this.modules.push(moduleItem);
+						}
+					});
+				});
+			}
+			else{
+				this.modules = payload.data;
+			}
+			
 			let count: number = this.modules.length;
 			let partOne: number = Math.floor(count / 2);
 			let partTwo = count - partOne;
@@ -73,7 +86,7 @@ export class AddFacilityModuleComponent implements OnInit {
 				this.partOneModules.push({
 					_id: item._id,
 					name: item.name,
-					checked: false
+					checked: item.checked
 				});
 			});
 
@@ -81,45 +94,53 @@ export class AddFacilityModuleComponent implements OnInit {
 				this.partTwoModules.push({
 					_id: item._id,
 					name: item.name,
-					checked: false
+					checked: item.checked
 				})
 			})
 		})
 	}
 
-	selectModules_next() {
-		this.f_module = false;
-		this.sg4_show = true;
-		this.partOneModules.forEach((item, i) => {
-			if (item.checked) {
-				this.inputFacility.facilitymoduleId.push(item._id)
-			}
-		})
-		this.partTwoModules.forEach((item, i) => {
-			if (item.checked) {
-				this.inputFacility.facilitymoduleId.push(item._id)
-			}
-		});
-		console.log(this.inputFacility);
-		this._facilityService.update(this.inputFacility).then(payload => {
-			this.inputFacility = payload;
-		},error=>{
-			console.log(error);
-		});
-	}
 
-	back_facilityForm4() {
-    this.f_module = false;
+selectModules_next() {
+	this.f_module = false;
+	this.sg4_show = true;
+	this.partOneModules.forEach((item, i) => {
+		if (item.checked) {
+			this.inputFacility.facilitymoduleId.push(item._id)
+		}
+	})
+	this.partTwoModules.forEach((item, i) => {
+		if (item.checked) {
+			this.inputFacility.facilitymoduleId.push(item._id)
+		}
+	});
+	console.log(this.inputFacility);
+	this._facilityService.update(this.inputFacility).then(payload => {
+		this.inputFacility = payload;
+	}, error => {
+		console.log(error);
+	});
+}
+
+back_facilityForm4() {
+	this.f_module = true;
+	this.sg4_show = false;
+	this.back_f_module = false;
+}
+
+back_selectModules() {
+	this.f_module = false;
 	this.sg4_show = false;
 	this.back_f_module = true;
-  }
+}
 
-	facilitySetup_finish() {
-		this.closeModal.emit(true);
-  }
+facilitySetup_finish() {
+	this.closeModal.emit(true);
+}
 
-	close_onClick() {
-		this.closeModal.emit(true);
-	}
+
+close_onClick() {
+	this.closeModal.emit(true);
+}
 
 }
