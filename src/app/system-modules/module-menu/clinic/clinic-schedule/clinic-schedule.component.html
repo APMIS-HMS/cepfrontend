@@ -12,7 +12,7 @@
                         </dx-lookup>
                     </div>-->
                     <md-select placeholder="Clinic" [formControl]="locationTypeControl">
-                        <md-option *ngFor="let clinic of clinics" [value] = "clinic" >{{ clinic.clinicName }}</md-option>
+                        <md-option *ngFor="let clinic of clinics" [value]="clinic">{{ clinic.clinicName }}</md-option>
                     </md-select>
                 </div>
                 <form *ngIf="locationTypeControl.value != null" [formGroup]="clinicScheduleForm" class="form-horizontal" (ngSubmit)="onSubmit()">
@@ -26,35 +26,40 @@
                                         <!--<div class="dx-field">
                                             <dx-select-box [items]="days" formControlName="day"></dx-select-box>
                                         </div>-->
-                                    <md-select placeholder="Days" formControlName="day">
-                                        <md-option *ngFor="let day of days" [value] = "day" >{{day}}</md-option>
-                                    </md-select>
+                                        <md-select placeholder="Days" formControlName="day">
+                                            <md-option *ngFor="let day of days" [value]="day">{{day}}</md-option>
+                                        </md-select>
                                     </div>
 
                                     <div class="frmitemwrap">
-                                       <!-- <div class="dx-field">
+                                        <div class="dx-field">
                                             <div class="frm-label">Start Time</div>
                                             <div class="dx-field-value">
-                                                <dx-date-box formControlName="startTime" type="time">
-                                                </dx-date-box>
+                                                <div class="survery">
+                                                    <ngb-timepicker formControlName="startTime" [meridian]="true"></ngb-timepicker>
+                                                </div>
                                             </div>
-                                        </div>-->
-                                        <md-input-container class="example-full-width">
+                                        </div>
+                                        <!--<md-input-container class="example-full-width">
                                             <input type="time" mdInput placeholder="Start Time">
-                                        </md-input-container>
+                                        </md-input-container>-->
                                     </div>
 
                                     <div class="frmitemwrap">
-                                        <!--<div class="dx-field">
+                                        <div class="dx-field">
                                             <div class="frm-label">End Time</div>
                                             <div class="dx-field-value">
-                                                <dx-date-box formControlName="endTime" type="time">
-                                                </dx-date-box>
+                                                <!--<dx-date-box formControlName="endTime" type="time">
+                                                </dx-date-box>-->
+                                                <!--<input class="picker-input" formControlName="endTime" [(dateTimePicker)]="endTime" readonly>-->
+                                                 <div class="survery">
+                                                    <ngb-timepicker formControlName="endTime" [meridian]="true"></ngb-timepicker>
+                                                </div>
                                             </div>
-                                        </div>-->
-                                         <md-input-container class="example-full-width">
+                                        </div>
+                                        <!-- <md-input-container class="example-full-width">
                                             <input type="time" mdInput placeholder="End Time">
-                                        </md-input-container>
+                                        </md-input-container>-->
                                     </div>
 
                                     <div class="frmitemwrap">
@@ -64,7 +69,7 @@
                                             </dx-lookup>
                                         </div>-->
                                         <md-select placeholder="Location" formControlName="location">
-                                             <md-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</md-option>
+                                            <md-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</md-option>
                                         </md-select>
                                     </div>
                                 </div>
@@ -76,14 +81,11 @@
 
                 </form>
 
-                <div *ngIf="clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewClinicSchedule(schedule)"
-                    class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Add Schedule</span></div>
+                <div *ngIf="clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewClinicSchedule(schedule)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Add Schedule</span></div>
                 <!--<button *ngIf="locationTypeControl.value != null" [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false || clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0"
                     (click)="onCreateSchedule()" class="cta-1 btn-green">CREATE</button>-->
-                <button *ngIf="locationTypeControl.value != null"
-                 [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false || 
-                clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0"
-                class="apmis-blue" (click)="onCreateSchedule()" md-raised-button>Create</button>
+                <button *ngIf="locationTypeControl.value != null" [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false || 
+                clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0" class="apmis-blue" (click)="onCreateSchedule()" md-raised-button>Create</button>
             </form>
 
         </div>

@@ -22,6 +22,7 @@ import { BillPrescriptionComponent } from '../system-modules/module-menu/patient
 import { PatientPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
+import { MomentModule } from 'angular2-moment';
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
         LogoUpdateComponent,
@@ -63,7 +64,8 @@ import { StoreCheckInComponent } from '../shared-module/store-check-in/store-che
         PatientPrescriptionComponent,
         CurrencyMaskModule,
         GlobalPatientLookupComponent,
-        StoreCheckInComponent
+        StoreCheckInComponent,
+        MomentModule
     ],
     imports: [
         MdNativeDateModule,
@@ -80,6 +82,7 @@ import { StoreCheckInComponent } from '../shared-module/store-check-in/store-che
         MdRadioModule,
         MdTabsModule,
         NgbModule.forRoot(),
+        MomentModule,
 
 
         CommonModule,
