@@ -10,6 +10,7 @@ import {
     ProductTypeService, StoreService, ProductService, ManufacturerService, GenericService,
     RouteService, SupplierService
 } from '../../../services/facility-manager/setup/index';
+//import { } from '../../material';
 
 import { StoreEmitterService } from '../../../services/facility-manager/store-emitter.service';
 
@@ -30,10 +31,10 @@ import {
     exports: [
     ],
     imports: [
-        SharedModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
+        //SharedModule,
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
         storeRoutes,
         // DxSchedulerModule, DxButtonModule, DxTemplateModule,
         // DxAutocompleteModule, DxLookupModule, DxTextAreaModule, DxDateBoxModule
