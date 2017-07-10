@@ -17,11 +17,24 @@ i.fa.fa-search {
 .searchInputWrap {
     text-align: none !important;
 }
-.btn-1{
+
+.btn-1 {
     display: inline-table;
 }
+
 .tblBg {
     background: #fff;
+}
+
+.mat-input-wrapper {
+    padding-bottom: 0;
+    margin-left: 10px;
+}
+
+.mat-lg-btn {
+    background-color: #0288D1 !important;
+    color: #fff !important;
+    padding: 0 10px !important;
 }
 
 .tblBg td {
@@ -30,4 +43,10 @@ i.fa.fa-search {
 
 .pgWrapper {
     justify-content: space-between;
+    padding: 20px 0;
+}
+
+.tblTop {
+    margin-left: 10px;
+    margin-right: -10px;
 }

@@ -12,7 +12,6 @@
 
     <div class="inner-page-wrap">
         <div>
-
             <div class="modal-head-wrap">
                 <div>
                     <legend class="modal_title">Group Roles</legend>
@@ -22,7 +21,7 @@
             <div style="border: 1px solid #bdbdbd; margin-top: 20px; padding: 10px;">
                 <div class="accessLhsWrap lhs">
                     <!--<input class="top-tab-search" type="search" placeholder="Search for aceess" [formControl]="searchAccess">-->
-                      <md-input-container class="top-tab-search">
+                    <md-input-container class="top-tab-search">
                         <input type="search" mdInput md-error placeholder="Search for aceess" [formControl]="searchAccess">
                     </md-input-container>
                     <legend class="title-label">Access Definitions</legend>
@@ -31,7 +30,6 @@
                     </ul>
                 </div>
                 <div class="accessDetailWrap rhs">
-
                     <div style="width: 100%;">
                         <div class="tbl-bodyTab tbl-row color1" *ngFor="let item of selectedAccessControl.featureList">
                             <div style="width: 550px;">
@@ -42,14 +40,9 @@
                                 <i class="fa fa-times" aria-hidden="true"></i> Remove Feature
                             </div>
                         </div>
-
-
                     </div>
-
                     <div [routerLink]="['/dashboard/access-manager/new-access', selectedAccessControl._id]" class="btn-1 btn-blue"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
-
                 </div>
-
                 <div class="clear"></div>
             </div>
         </div>

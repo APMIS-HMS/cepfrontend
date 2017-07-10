@@ -1,52 +1,54 @@
 <div class="pgWrapper drop-shadow raised">
-  <div class="tblWrap">
-    <div class="tblTitle">Price List</div>
-    <div class="tblTop">
-      <div (click)="newPricePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Price</div>
+    <div class="tblWrap">
+        <div class="tblTitle">Price List</div>
+        <div class="tblTop">
+            <button md-raised-button class="mat-lg-btn" (click)="newPricePopup_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Price </button>
+            <!--<div (click)="newPricePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Price</div>-->
+        </div>
+        <table class="tblBg">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Category</th>
+                    <th>Price(Naira)</th>
+                    <th>Actions</th>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <div class="searchInputWrap">
+                            <input type="search" class="searchInput" placeholder="search for a tag">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let price of prices">
+                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.service.name}}</td>
+                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.category}}</td>
+                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.price}}</td>
+                    <td>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        <button md-raised-button class="mat-lg-btn" (click)="newModefierPopup_show(price)"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Modefier</button>
+                        <!--<div (click)="newModefierPopup_show(price)" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Modefier</div>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <table class="tblBg">
-      <thead>
-        <tr>
-          <th>Service</th>
-          <th>Category</th>
-          <th>Price(Naira)</th>
-          <th>Actions</th>
-        </tr>
 
-        <tr>
-          <td colspan="4">
-            <div class="searchInputWrap">
-              <input type="search" class="searchInput" placeholder="search for a tag">
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </div>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let price of prices">
-          <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.service.name}}</td>
-          <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.category}}</td>
-          <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.price}}</td>
-          <td>
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-            <i class="fa fa-trash" aria-hidden="true"></i>
-            <div (click)="newModefierPopup_show(price)" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Modefier</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div *ngIf="serviceDetail" class="modal-overlay">
+        <app-service-detail [selectedFacilityServicePrice]="selectedFacilityServicePrice" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-service-detail>
+    </div>
 
-  <div *ngIf="serviceDetail" class="modal-overlay">
-    <app-service-detail [selectedFacilityServicePrice]="selectedFacilityServicePrice" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-service-detail>
-  </div>
+    <div *ngIf="newPricePopup" class="modal-overlay">
+        <app-new-price (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-price>
+    </div>
 
-  <div *ngIf="newPricePopup" class="modal-overlay">
-    <app-new-price  (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-price>
-  </div>
-
-  <div *ngIf="newModefierPopup" class="modal-overlay">
-    <app-new-modefier [selectedFacilityServicePrice]="selectedFacilityServicePrice"  (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-modefier>
-  </div>
+    <div *ngIf="newModefierPopup" class="modal-overlay">
+        <app-new-modefier [selectedFacilityServicePrice]="selectedFacilityServicePrice" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-modefier>
+    </div>
 
 </div>
