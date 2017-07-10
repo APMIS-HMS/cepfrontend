@@ -16,8 +16,11 @@ export class AppointmentComponent implements OnInit {
     providerCtrl: FormControl;
     typeCtrl: FormControl;
     statusCtrl: FormControl;
+    todayCtrl: FormControl;
     searchControl: FormControl = new FormControl();
     filteredStates: any;
+
+    dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
     states = [
         'Alabama',
@@ -89,6 +92,11 @@ export class AppointmentComponent implements OnInit {
             .map(name => this.filterStates(name));
 
         this.statusCtrl = new FormControl();
+        this.filteredStates = this.statusCtrl.valueChanges
+            .startWith(null)
+            .map(name => this.filterStates(name));
+
+        this.todayCtrl = new FormControl();
         this.filteredStates = this.statusCtrl.valueChanges
             .startWith(null)
             .map(name => this.filterStates(name));

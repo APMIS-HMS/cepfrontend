@@ -9,7 +9,14 @@
     justify-content: space-between;
 }
 .sect-wrap{
+    position: relative;
     width: 33%;
+}
+.sect-wrap .tr-act-btn {
+    width: 133px;
+    font-size: 12px;
+    position: absolute;
+    top: 90px;
 }
 .cta-1{
     height: 35px;
