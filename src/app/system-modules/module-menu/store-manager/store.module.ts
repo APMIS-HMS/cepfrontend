@@ -10,6 +10,8 @@ import {
     ProductTypeService, StoreService, ProductService, ManufacturerService, GenericService,
     RouteService, SupplierService
 } from '../../../services/facility-manager/setup/index';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
+//import { } from '../../material';
 
 import { StoreEmitterService } from '../../../services/facility-manager/store-emitter.service';
 
@@ -30,7 +32,8 @@ import {
     exports: [
     ],
     imports: [
-        SharedModule,
+        //SharedModule,
+        MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,

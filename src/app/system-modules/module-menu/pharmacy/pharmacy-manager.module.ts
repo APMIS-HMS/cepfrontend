@@ -32,9 +32,9 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     ],
     imports: [
         // SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
         pharmacyManagerRoutes,
         MaterialModule
     ],

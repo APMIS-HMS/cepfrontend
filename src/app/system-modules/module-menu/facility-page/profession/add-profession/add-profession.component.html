@@ -27,7 +27,8 @@
                                     <span class="trash"><i (click)="onRemoveBill(cadre,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                                 </div>
                                 <div class="frm-item-wrap frm-item-inner-wrap">
-                                    <div *ngIf="!cadre.value.readonly" class="btn-1 btn-blue btn-2" (click)="onAddHobby(cadre, cadreForm.valid)"> Add Cadre</div>
+                                    <!--<div *ngIf="!cadre.value.readonly" class="btn-1 btn-blue btn-2" (click)="onAddHobby(cadre, cadreForm.valid)"> Add Cadre</div>-->
+                                    <button *ngIf="!cadre.value.readonly" (click)="onAddHobby(cadre, cadreForm.valid)" md-mini-fab><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                         </div>
