@@ -3,3 +3,49 @@
     text-align: left;
     margin-top: 40px;
 }
+.empWrap{
+    cursor: pointer;
+}
+.empWrap:hover{
+    .emp-label{
+        color: #03A9F4;
+        text-decoration: underline;
+    }
+}
+.clinic-running-days-wrap {
+    background: #4bb8ef;
+    padding: 30px;
+    box-sizing: border-box;
+    position: relative;
+    margin-bottom: 20px;
+}
+.clinic-running-days-wrap i{
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    font-size: 25px;
+    color: #fff;
+}
+.sect-title {
+    position: absolute;
+    top: -19px;
+    left: 0;
+    color: #4bb8ef;
+}
+.sect-title2{
+    color: #4bb8ef;
+    font-size: 16px;
+    margin-top: 30px;
+}
+.runningDays{
+    display: flex;
+    justify-content: space-between;
+}
+.runningDay-wrap {
+    border: 1px solid #fff;
+    padding: 10px;
+}
+.running-time {
+    color: #fff;
+    font-size: 22px;
+}

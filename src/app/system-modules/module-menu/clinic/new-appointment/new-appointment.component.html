@@ -7,6 +7,25 @@
     </li>
 </ul>
 
+<div class="clinic-running-days-wrap">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+    <div class="sect-title">Clinic Running Days</div>
+    <div class="runningDays">
+        <div class="runningDay-wrap">
+            <div class="running-day">Monday</div>
+            <div class="running-time">09:00am to 4:00pm</div>
+        </div>
+        <div class="runningDay-wrap">
+            <div class="running-day">Wednesday</div>
+            <div class="running-time">09:00am to 4:00pm</div>
+        </div>
+        <div class="runningDay-wrap">
+            <div class="running-day">Friday</div>
+            <div class="running-time">10:00am to 4:00pm</div>
+        </div>
+    </div>
+</div>
+
 <app-schedule-frm></app-schedule-frm>
 <table cellpadding="0" cellspacing="0" border="0.5"> 
     <thead>
@@ -95,6 +114,17 @@
 							</md-option>
 						</md-autocomplete>
 					</div>
+                    <div>
+						<md-input-container>
+							<input mdInput placeholder="Day Count" [mdAutocomplete]="auto" [formControl]="todayCtrl">
+						</md-input-container>
+
+						<md-autocomplete #auto="mdAutocomplete">
+							<md-option *ngFor="let state of filteredStates | async" [value]="state">
+								{{ state }}
+							</md-option>
+						</md-autocomplete>
+					</div>
                     <div class="tbl-search frm-item-wrap">
                         <div class="searchInputWrap">
                             <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
@@ -107,21 +137,21 @@
 
         <tr>
             <td>
-                <div class="empWrap">
+                <div [routerLink]="['/dashboard/patient-manager']" class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div>Johanna James</div>
+                    <div class="emp-label">Johanna James</div>
                 </div>
             </td>
             <td>10th July, 2017. 10:00am</td>
 			<td>Eye Clinic</td>
 			<td>
-                <div class="empWrap">
+                <div [routerLink]="['/dashboard/employee-manager']" class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div>Lara Jonah</div>
+                    <div class="emp-label">Lara Jonah</div>
                 </div>
             </td>
             <td>Checked In</td>
@@ -132,32 +162,32 @@
 
 		<tr>
             <td>
-                <div class="empWrap">
+                <div [routerLink]="['/dashboard/patient-manager']" class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div>Johanna James</div>
+                    <div class="emp-label">Johanna James</div>
                 </div>
             </td>
             <td>10th July, 2017. 10:00am</td>
 			<td>Eye Clinic</td>
 			<td>
-                <div class="empWrap">
+                <div [routerLink]="['/dashboard/employee-manager']" class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div>Lara Jonah</div>
+                    <div class="emp-label">Lara Jonah</div>
                 </div>
             </td>
-            <td>Scheduled</td>
+            <td>Checked In</td>
             <td>
-                <div class="tr-act-btn"><i class="fa fa-sign-in" aria-hidden="true"></i> Check In</div>
+                <div class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
             </td>
         </tr>
     </tbody>
 </table>
 
-<div class="facility-title">Patient Appointment History</div>
+<div class="sect-title2">Patient Appointment History</div>
 
 <table cellpadding="0" cellspacing="0" border="0.5"> 
     <thead>
