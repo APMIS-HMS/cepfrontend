@@ -47,7 +47,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   sublocNameEdit = new FormControl();
   sublocshortNameEdit = new FormControl();
   sublocDescEdit = new FormControl();
-
+  isWardSelected: Boolean = false;
   facility: Facility = <Facility>{};
 
   constructor(private locationService: LocationService, private locker: CoolLocalStorage,
@@ -103,7 +103,12 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationHomeContentArea = false;
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
+    console.log(model);
+    if(model.name !== undefined && model.name.toLowerCase() === 'ward') {
+      this.isWardSelected = true;
+    }
     this.locationObj = model;
+    
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
   }
 

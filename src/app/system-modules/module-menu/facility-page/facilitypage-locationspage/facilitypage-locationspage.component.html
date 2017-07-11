@@ -28,7 +28,7 @@
 
             <div class="module-menu rhs">
                 <div class="btn-1 btn-blue" (click)="newSubLocationModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Minor Location</div>
-                <div routerLink="/dashboard/ward-manager/setup" class="short-cut-link">
+                <div *ngIf="isWardSelected" routerLink="/dashboard/ward-manager/setup" class="short-cut-link">
                     <i class="fa fa-arrow-circle-o-right"></i> Go to Ward Manager
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         <div [hidden]="locationEditNameIcoShow" class="lhs"> {{locationObj.name}} </div>
                         <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
                         <md-input-container *ngIf="locationEditNameIcoShow" class="example-full-width">
-                        <input mdInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
+                            <input mdInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
                         </md-input-container>
                         <i [hidden]="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i *ngIf="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>

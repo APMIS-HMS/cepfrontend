@@ -6,6 +6,7 @@ import { Facility, Prescription, PrescriptionItem } from '../../../../../models/
 import {
     FacilitiesService, ProductService
 } from '../../../../../services/facility-manager/setup/index';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-add-prescription',
@@ -15,12 +16,15 @@ import {
 export class AddPrescriptionComponent implements OnInit {
 	@Input() prescriptionItems: Prescription = <Prescription>{};
 	@Output() prescriptionData: Prescription = <Prescription>{};
+	@Input() isDispensed: Subject<any>;
 	facility: Facility = <Facility>{};
 
 	billShow: boolean = false;
 	billShowId: number = 0;
 	isExternal: boolean = false;
 	loading: boolean = false;
+	totalCost: number = 0;
+	totalQuantity: number = 0;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -36,6 +40,14 @@ export class AddPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.prescriptionItems.prescriptionItems = [];
+		this.isDispensed.subscribe(event => {
+			if(event) {
+				this.totalCost = 0;
+				this.totalQuantity = 0;
+				this.prescriptionData = <Prescription>{};
+				this.prescriptionItems.prescriptionItems = [];
+			}
+		});
 	}
 
 	onClickDeleteItem(value: any) {
@@ -44,12 +56,10 @@ export class AddPrescriptionComponent implements OnInit {
 
 	// On click is external checkbox
 	onClickIsExternal(index, value, prescription) {
-		console.log(value);
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
 		this.prescriptionItems.prescriptionItems[index].isExternal = value;
-		console.log(this.prescriptionItems);
 	}
 
 	toggleBill(index, item) {
@@ -57,11 +67,15 @@ export class AddPrescriptionComponent implements OnInit {
 			this.billShow = true;
 			this.billShowId = index;
 			this.prescriptionItems.index = index;
+			this.prescriptionItems.totalCost = this.totalCost;
+			this.prescriptionItems.totalQuantity = this.totalQuantity;
 			this.prescriptionData = this.prescriptionItems;
 		}
 	}
 
 	close_onClick(e) {
 		this.billShow = false;
+		this.totalCost = this.prescriptionData.totalCost;
+		this.totalQuantity = this.prescriptionData.totalQuantity;
 	}
 }

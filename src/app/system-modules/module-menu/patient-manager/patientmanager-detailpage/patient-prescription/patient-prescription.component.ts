@@ -8,7 +8,8 @@ import {
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
-import { DurationUnits } from '../../../../../shared-module/helpers/global-config';;
+import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'app-patient-prescription',
@@ -20,6 +21,7 @@ export class PatientPrescriptionComponent implements OnInit {
 	@Input() patientDetails: any;
     @Input() selectedAppointment: Appointment = <Appointment>{};
     @Output() prescriptionItems: Prescription = <Prescription>{};
+    isDispensed: Subject<any> = new Subject();
     facility: Facility = <Facility>{};
 
     showCuDropdown: boolean = false;
@@ -48,6 +50,7 @@ export class PatientPrescriptionComponent implements OnInit {
     currentDate: Date = new Date();
     minDate: Date = new Date();
     priorityValue: String = '';
+    //isDispensed: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -129,7 +132,9 @@ export class PatientPrescriptionComponent implements OnInit {
                     priorityId: "",
                     patientId: this.patientDetails._id,
                     prescriptionItems: this.prescriptionArray,
-                    isAuthorised: true
+                    isAuthorised: true,
+                    totalCost: 0,
+                    totalQuantity: 0
                 };
 
                 console.log(prescription);
@@ -152,16 +157,20 @@ export class PatientPrescriptionComponent implements OnInit {
                     text: "Clinic has not been set!"
                 });
             } else {
+                console.log(value);
                 this.prescriptions.priorityId = value.priority;
-                console.log(this.prescriptions);
+                this.prescriptions.totalCost = value.totalCost;
+                this.prescriptions.totalQuantity = value.totalQuantity;
                 this._prescriptionService.create(this.prescriptions)
                     .then(res => {
                         this._facilityService.announceNotification({
                             type: "Success",
                             text: "Prescription has been sent!"
                         });
+                        this.isDispensed.next(true);
                         this.prescriptionItems = <Prescription>{};
                         this.prescriptionItems.prescriptionItems = [];
+                        this.prescriptionArray = [];
                         this.addPrescriptionForm.reset();
                         this.addPrescriptionForm.controls['refillCount'].reset(0);
                         this.addPrescriptionForm.controls['duration'].reset(0);
@@ -217,18 +226,6 @@ export class PatientPrescriptionComponent implements OnInit {
                 console.log(err);
             });
     }
-
-    // Get all drugs from generic
-    // getAllDrugs() {
-    // 	this._dictionaryService.findAll()
-    // 		.then(res => {
-    // 			console.log(res);
-    // 			this.drugs = res.data;
-    // 		})
-    // 		.catch(err => {
-    // 			console.log(err);
-    // 		});
-    // }
 
     keyupSearch() {
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
