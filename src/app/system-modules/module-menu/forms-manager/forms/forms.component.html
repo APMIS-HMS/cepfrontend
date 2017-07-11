@@ -1,13 +1,14 @@
 <div class="pg-wrap">
     <div class="survery">
         <div class="pg-title">Form Generator</div>
-        <div class="container">
-            <md-select placeholder="Forms" [formControl]="txtForm">
+       <div class="container">
+            <div id="cover-select">
+            <md-select class="select-width" placeholder="Forms" [formControl]="txtForm">
                 <md-option *ngFor="let item of forms" [value]="item._id">{{item.title}}</md-option>
             </md-select>
-            <button class="on-create-btn" (click)="onCreate()"><i class="fa fa-plus"></i></button>
-            
+            <span class="on-create-btn" (click)="onCreate()"><i class="fa fa-plus"></i></span>
         </div>
+       </div>
         <div class="formWrap">
             <form [formGroup]="frm_document" novalidate>
                 <div class="form-innerSect">
@@ -46,7 +47,8 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div><br><br>
         <survey-editor [defaultStrings]="defaultStrings" [editorOptions]="editorOptions"></survey-editor>
     </div>
+
 </div>

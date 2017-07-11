@@ -17,7 +17,7 @@
             <div>
                 <form [formGroup]="cadreForm" class="form-horizontal">
                     <div formArrayName="cadreArray">
-                        <div class="frmArrayclinicWrap" *ngFor="let cadre of cadreForm.controls['cadreArray'].value; let i = index;">
+                        <div class="frmArrayclinicWrap" *ngFor="let cadre of cadreForm.controls['cadreArray'].controls; let i = index;">
                             <div formGroupName="{{i}}">
                                 <div class="mainErr animated shake" [hidden]="mainErrCadre || (cadreForm.controls['cadreArray'].value.length !== (i+1))">{{errMsgCadre}}</div>
                                 <div class="valSpan">
