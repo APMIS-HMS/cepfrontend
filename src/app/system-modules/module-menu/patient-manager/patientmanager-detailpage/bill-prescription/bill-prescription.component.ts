@@ -22,8 +22,9 @@ export class BillPrescriptionComponent implements OnInit {
 	selectedDrug: string = '';
 	itemCost: number = 0;
 	title: string = '';
-	price: number = 0;
-	totalPrice: number = 0;
+	price: number = 0; // Unit price for each drug.
+	totalPrice: number = 0; // Total price for each drug selected.
+	totalCost: number = 0; // The overall price for all drugs selected.
 	batchNumber: string = '';
 	qtyInStores: number = 0;
 	storeId: string = '';
@@ -74,22 +75,25 @@ export class BillPrescriptionComponent implements OnInit {
 	// 
 	onClickSaveCost(value, valid) {
 		if(valid) {
-			//if(this.price > 0 || value.qty > 0) {
+			if(this.price > 0 || value.qty > 0) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
-				this.prescriptionData.prescriptionItems[index].cost = this.price;
+				this.prescriptionData.prescriptionItems[index].unitPrice = this.price;
+				this.prescriptionData.prescriptionItems[index].totalPrice = this.totalPrice;
+				this.prescriptionData.totalCost += this.totalPrice;
+				this.prescriptionData.totalQuantity += this.totalPrice ;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				console.log(this.prescriptionData);
 
 				this.closeModal.emit(true);
-			// } else {
-			// 	this._facilityService.announceNotification({
-			// 		type: "Error",
-			// 		text: "Unit price or Quantity is less than 0!"
-			// 	});
-			// }
+			} else {
+				this._facilityService.announceNotification({
+					type: "Error",
+					text: "Unit price or Quantity is less than 0!"
+				});
+			}
 		} else {
 			this.mainErr = false;
 		}
@@ -169,23 +173,6 @@ export class BillPrescriptionComponent implements OnInit {
 		// 		console.log(err);
 		// 	})
 	}
-
-	// Get the price for product selected
-	// getProductService() {
-	// 	// Get the service for the product
-	// 	this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-	// 		.then(res => {
-	// 			console.log(res);
-	// 			if(res.data.length > 0) {
-	// 				if(res.data[0].price !== undefined) {
-	// 					this.price = res.data[0].price;
-	// 				}
-	// 			}
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 		})
-	// }
 
 	onClickClose(e) {
 		 this.closeModal.emit(true);
