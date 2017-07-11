@@ -9,7 +9,7 @@
             <li (click)="deptHomeContentArea_show()">View Departments</li>
         </ul>
     </div> 
-
+    
     <ul *ngIf="deptHomeContentArea">
         <li *ngFor="let depts of deptsObj; let i = even; let k = odd"> 
             <div class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
@@ -25,18 +25,19 @@
 
     <div *ngIf="deptDetailContentArea">
 
+        <ul class="goback-btn">
+            <li [class.navActive]="homeContentArea" (click)="deptHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
+        </ul>
+
         <div class="block1">
             <div class="headers headers1">
                 <div class="block-title">{{deptObj.name}}</div>
-                <ul class="moduleNav">
-                    <li [class.navActive]="homeContentArea" (click)="deptHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
-                </ul>
-            </div>
 
-            <div class="module-menu rhs">
-                <div class="btn-1 btn-blue" (click)="newUnitModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Unit</div>
+                <div class="module-menu">
+                    <div class="btn-1 btn-blue" (click)="newUnitModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Unit</div>
+                </div>
+                
             </div>
-            <div class="clear"></div>
 
             <div class="dataMix-wrap color1">
                 <div class="flex-display">
