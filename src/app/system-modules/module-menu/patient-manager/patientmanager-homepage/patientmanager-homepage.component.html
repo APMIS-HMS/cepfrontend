@@ -27,12 +27,11 @@
                 </li>
                 <li (click)="navEpDetail(patient)" class="patient-phone">{{patient.personDetails.phoneNumber}}</li>
                 <li (click)="navEpDetail(patient)" class="patient-email">{{patient.personDetails.email}}</li>
-                <li (click)="navEpDetail(patient)" class="patient-address">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}}
-                    {{patient.personDetails.addressObj.country}}
+                <li (click)="navEpDetail(patient)" class="patient-address">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}
                 </li>
                 <li (click)="navEpDetail(patient)" class="patient-born">{{patient.personDetails.dateOfBirth | date}}.</li>
                 <li class="patient-apmis">{{patient.personDetails.apmisId}}</li>
-                <li (click)="slideEdit()"><i class="fa fa-edit"></i></li>
+                <li (click)="slideEdit(patient)"><i class="fa fa-edit"></i></li>
             </ul>
         </div>
     </div>
@@ -47,65 +46,89 @@
             <form class="form-signin">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-4 col-md-offset-4">
+                        <div class="col-md-6 col-md-offset-3">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
-                                    <legend  class="modal_title">Edit Patient</legend>
+                                    <legend class="modal_title">Edit Patient</legend>
                                     <form class="form form-signup" role="form">
                                         <md-tab-group>
                                             <md-tab label="Patient">
-                                                  <!--<input type="text" class="form-control" placeholder="Full Name" />-->
+                                                <!--<input type="text" class="form-control" placeholder="Full Name" />-->
                                                 <md-input-container class="example-full-width">
-                                                    <input mdInput type="text" placeholder="Full Name">
+                                                    <input mdInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="selectedPatient.firstName">
                                                 </md-input-container>
                                                 <md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Last Name">
-                                                </md-input-container>    
-                                                  <md-select placeholder="Gender" [(ngModel)]="selectedValue" name="food">
-                                                        <md-option *ngFor="let food of foods" [value]="food.value">
-                                                        {{food.viewValue}}
-                                                        </md-option>
-                                                   </md-select>
-                                                <md-input-container class="example-full-width">
+                                                    <input mdInput placeholder="Last Name" name="lastName" [(ngModel)]="selectedPatient.lastName">
+                                                </md-input-container>
+                                                <md-select placeholder="Gender" [(ngModel)]="selectedPatient.genderId" name="gender">
+                                                    <md-option *ngFor="let gender of genders" [value]="gender._id">
+                                                        {{gender.name}}
+                                                    </md-option>
+                                                </md-select>
+                                                <!--<md-input-container class="example-full-width">
                                                     <input mdInput placeholder="Age">
+                                                </md-input-container>-->
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput placeholder="Address" name="fullAddress" [(ngModel)]="selectedPatient.fullAddress">
                                                 </md-input-container>
                                                 <md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Address">
+                                                    <input mdInput type="number" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
                                                 </md-input-container>
                                                 <md-input-container class="example-full-width">
-                                                    <input mdInput type="number" placeholder="Mobile Number">
-                                                </md-input-container>                        
-                                                    <md-input-container class="example-full-width">
-                                                        <input mdInput type="email" placeholder="Email">
+                                                    <input mdInput type="email" placeholder="Email" name="email" [(ngModel)]="selectedPatient.email">
                                                 </md-input-container>
 
                                             </md-tab>
                                             <md-tab label="Next Of Kin">
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="text" placeholder="Full Name">
-                                                </md-input-container>   
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Address">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="number" placeholder="Mobile Number">
-                                                </md-input-container>                        
-                                                <md-input-container class="example-full-width">
-                                                        <input mdInput type="email" placeholder="Email">
-                                                </md-input-container>
-                                                <md-select placeholder="Relationship" [(ngModel)]="selectedValue" name="food">
-                                                    <md-option *ngFor="let food of foods" [value]="food.value">
-                                                    {{food.viewValue}}
-                                                    </md-option>
-                                                </md-select>
+                                                <div *ngFor="let next of selectedPatient.nextOfKin">
+                                                    <md-input-container class="example-full-width">
+                                                        <input mdInput type="text" [(ngModel)]="next.fullName"  name="fullName" placeholder="Full Name">
+                                                    </md-input-container>
+                                                    <md-input-container class="example-full-width">
+                                                        <input mdInput placeholder="Address" [(ngModel)]="next.address" name="address">
+                                                    </md-input-container>
+                                                    <md-input-container class="example-full-width">
+                                                        <input mdInput type="number" placeholder="Mobile Number" [(ngModel)]="next.phoneNumber" name="phoneNumber">
+                                                    </md-input-container>
+                                                    <md-input-container class="example-full-width">
+                                                        <input mdInput type="email" placeholder="Email" [(ngModel)]="next.email" name="email">
+                                                    </md-input-container>
+                                                    <md-select placeholder="Relationship" [(ngModel)]="next.relationship" name="relationship">
+                                                        <md-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                                            {{relationship.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </div>
+                                                <div *ngIf="selectedPatient.nextOfKin.length == 0">
+                                                    <form [formGroup]="nextOfKinForm">
+                                                        <md-input-container class="example-full-width">
+                                                            <input mdInput type="text" formControlName="fullName"  placeholder="Full Name">
+                                                        </md-input-container>
+                                                        <md-input-container class="example-full-width">
+                                                            <input mdInput placeholder="Address" formControlName="address">
+                                                        </md-input-container>
+                                                        <md-input-container class="example-full-width">
+                                                            <input mdInput type="number" placeholder="Mobile Number" formControlName="phoneNumber">
+                                                        </md-input-container>
+                                                        <md-input-container class="example-full-width">
+                                                            <input mdInput type="email" placeholder="Email" formControlName="email">
+                                                        </md-input-container>
+                                                        <md-select placeholder="Relationship" formControlName="relationship" name="relationship">
+                                                            <md-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                                                {{relationship.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </form>
+
+                                                </div>
                                             </md-tab>
                                         </md-tab-group>
-                                              
-                                        </form>
-                                    </div>
+
+                                    </form>
+                                </div>
                                 <div class="example-full-width" id="example-full-width">
-                                        <button class="apmis-blue" md-raised-button> Save </button>
+                                    <button (click)="updatePatient()" class="apmis-blue" md-raised-button> Save </button>
                                 </div>
                             </div>
                         </div>

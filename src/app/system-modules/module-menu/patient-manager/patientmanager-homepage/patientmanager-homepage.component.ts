@@ -1,8 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { PatientService, PersonService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { Facility, Patient } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { FormControl } from '@angular/forms';
+// tslint:disable-next-line:max-line-length
+import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService } from '../../../../services/facility-manager/setup/index';
+import { Facility, Patient, Gender, Relationship } from '../../../../models/index';
+import { CoolSessionStorage } from 'angular2-cool-storage';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
@@ -13,11 +14,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class PatientmanagerHomepageComponent implements OnInit {
   selectedValue: string;
-
-  foods = [
-    { value: 'steak-0', viewValue: 'male' },
-    { value: 'pizza1', viewValue: 'female' },
-  ];
+  nextOfKinForm: FormGroup;
 
   editPatient = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
@@ -25,14 +22,18 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
   facility: Facility = <Facility>{};
   patients: Patient[] = [];
+  genders: Gender[] = [];
+  relationships: Relationship[] = [];
+  selectedPatient: Patient = <Patient>{};
   searchControl = new FormControl();
 
-  pageSize: number = 1;
-  limit: number = 10;
+  pageSize = 1;
+  limit = 10;
 
   constructor(private patientService: PatientService, private personService: PersonService,
-    private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
-    private route: ActivatedRoute, private toast: ToastsManager) {
+    private facilityService: FacilitiesService, private locker: CoolSessionStorage, private router: Router,
+    private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
+    private relationshipService: RelationshipService, private formBuilder: FormBuilder) {
     this.patientService.listner.subscribe(payload => {
       this.getPatients(this.limit);
     });
@@ -42,7 +43,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
       this.toast.success(payload.personDetails.personFullName + ' created successfully!', 'Success!');
     });
 
-    let away = this.searchControl.valueChanges
+    const away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .switchMap((term: Patient[]) => this.patientService.searchPatient(this.facility._id, this.searchControl.value));
@@ -54,8 +55,20 @@ export class PatientmanagerHomepageComponent implements OnInit {
   searchPatients(searchText: string) {
     this.searchControl.setValue(searchText);
   }
+  getGender() {
+    this.genderService.findAll().subscribe(payload => {
+      this.genders = payload.data;
+    })
+  }
+  getRelationships() {
+    this.relationshipService.findAll().subscribe(payload => {
+      this.relationships = payload.data;
+    })
+  }
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
+    this.getGender();
+    this.getRelationships();
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatients(this.limit);
     // this.route.params.subscribe((params: any) => {
@@ -67,11 +80,20 @@ export class PatientmanagerHomepageComponent implements OnInit {
     //   })
     // })
   }
+  addNewNextOfKin() {
+    this.nextOfKinForm = this.formBuilder.group({
+      address: ['', [<any>Validators.required]],
+      email: ['', [<any>Validators.required]],
+      fullName: ['', [<any>Validators.required]],
+      phoneNumber: ['', [<any>Validators.required]],
+      relationship: ['', [<any>Validators.required]]
+    });
+  }
   sortPatientsByName() {
-    let sortedPatient = this.patients;
+    const sortedPatient = this.patients;
     sortedPatient.sort(function (x, y) {
-      let xLastName = x.personDetails.lastName.toLowerCase();
-      let yLastName = y.personDetails.lastName.toLowerCase();
+      const xLastName = x.personDetails.lastName.toLowerCase();
+      const yLastName = y.personDetails.lastName.toLowerCase();
       if (xLastName < yLastName) {
         return -1;
       }
@@ -87,10 +109,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
   }
   sortPatientsByGender() {
-    let sortedPatient = this.patients;
+    const sortedPatient = this.patients;
     sortedPatient.sort(function (x, y) {
-      let xGender = x.personDetails.gender.name.toLowerCase();
-      let yGender = y.personDetails.gender.name.toLowerCase();
+      const xGender = x.personDetails.gender.name.toLowerCase();
+      const yGender = y.personDetails.gender.name.toLowerCase();
       if (xGender < yGender) {
         return -1;
       }
@@ -113,7 +135,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
     this.getPatients(limit);
   }
   onScrollUp() {
@@ -121,11 +143,32 @@ export class PatientmanagerHomepageComponent implements OnInit {
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
     this.getPatients(limit);
   }
-  slideEdit() {
+  slideEdit(patient) {
+    this.selectedPatient = patient.personDetails;
+    console.log(this.selectedPatient);
     this.editPatient = true;
+    if (this.selectedPatient.nextOfKin.length === 0) {
+      this.addNewNextOfKin();
+    }
+  }
+  updatePatient() {
+    if (this.selectedPatient.nextOfKin.length === 0) {
+      console.log(this.nextOfKinForm.value);
+      this.selectedPatient.nextOfKin.push(this.nextOfKinForm.value);
+      this.personService.update(this.selectedPatient).subscribe(payload => {
+        console.log(payload);
+        this.close_onClick();
+      });
+    } else {
+      console.log(this.selectedPatient);
+      this.personService.update(this.selectedPatient).subscribe(payload => {
+        console.log(payload);
+         this.close_onClick();
+      });
+    }
   }
   close_onClick() {
     this.editPatient = false;

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Employee, Facility, MinorLocation, ScheduleRecordModel, WorkSpace } from '../../models/index';
 import { EmployeeService, SchedulerService, WorkSpaceService } from '../../services/facility-manager/setup/index';
 import { LocationService } from '../../services/module-manager/setup/location.service';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class LoginEmployeeResolverService implements Resolve<Employee> {
@@ -15,12 +15,12 @@ export class LoginEmployeeResolverService implements Resolve<Employee> {
   workSpaces: WorkSpace[] = [];
   clinic: any = <any>{};
   constructor(private employeeService: EmployeeService,
-    private locker: CoolLocalStorage, private scheduleService: SchedulerService,
+    private locker: CoolSessionStorage, private scheduleService: SchedulerService,
     private locationService: LocationService, private workSpaceService: WorkSpaceService,
     private router: Router) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    const auth:any = this.locker.getObject('auth');
+    const auth: any = this.locker.getObject('auth');
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     return this.employeeService.find({
       query:

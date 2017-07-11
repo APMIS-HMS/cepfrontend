@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService, InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-add-item',
@@ -24,7 +24,7 @@ export class AddItemComponent implements OnInit {
   success = false;
   items: any[] = [];
   constructor(private formBuilder: FormBuilder, private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-    private _locker: CoolLocalStorage, private servicePriceService: ServicePriceService,
+    private _locker: CoolSessionStorage, private servicePriceService: ServicePriceService,
     private invoiceService: InvoiceService) {
   }
 

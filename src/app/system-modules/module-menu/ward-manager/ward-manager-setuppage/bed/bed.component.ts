@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, WardAdmissionService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WardEmitterService } from '../../../../../services/facility-manager/ward-emitter.service';
 
@@ -25,7 +25,7 @@ export class BedComponent implements OnInit {
 	constructor(private _route: ActivatedRoute,
 		private router: Router,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _wardAdmissionService: WardAdmissionService,
 		private _wardEventEmitter: WardEmitterService) {
 		this._wardAdmissionService.listenerCreate.subscribe(payload => {

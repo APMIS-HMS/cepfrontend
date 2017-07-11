@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 
 import { FacilitiesService, CompanyHealthCoverService, CorporateFacilityService } from '../../services/facility-manager/setup/index';
@@ -34,7 +34,7 @@ export class CorporateAccountComponent implements OnInit {
 	constructor(public facilityService: FacilitiesService,
 		private companyHealthCoverService: CompanyHealthCoverService,
 		private corporateFacilityService: CorporateFacilityService,
-		private locker: CoolLocalStorage,
+		private locker: CoolSessionStorage,
 		private _router: Router,
 		private _corporateEventEmitter: CorporateEmitterService) {
 		this.corporateFacilityService.listenerUpdate.subscribe(payload => {

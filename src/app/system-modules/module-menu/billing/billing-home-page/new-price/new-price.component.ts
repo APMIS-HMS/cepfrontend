@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-price',
@@ -22,7 +22,7 @@ export class NewPriceComponent implements OnInit {
   public frmNewprice: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-    private _locker: CoolLocalStorage, private servicePriceService: ServicePriceService) {
+    private _locker: CoolSessionStorage, private servicePriceService: ServicePriceService) {
   }
 
   ngOnInit() {

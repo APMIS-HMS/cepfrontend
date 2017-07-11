@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, FacilityService, ServiceCategory, ServiceItem } from '../../../../../models/index';
 import { FacilitiesServiceCategoryService, ServiceDictionaryService } from '../../../../../services/facility-manager/setup/index';
 
@@ -23,7 +23,7 @@ export class NewServiceComponent implements OnInit {
 
   public frmNewservice: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private _locker: CoolLocalStorage,
+  constructor(private formBuilder: FormBuilder, private _locker: CoolSessionStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
     private serviceDictionaryService: ServiceDictionaryService) {
 

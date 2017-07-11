@@ -3,7 +3,7 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { WorkSpace, Facility } from '../../models/index';
 import { WorkSpaceService } from '../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class WorkspaceResolverService implements Resolve<WorkSpace> {
@@ -11,16 +11,18 @@ export class WorkspaceResolverService implements Resolve<WorkSpace> {
   selectedFacility: Facility = <Facility>{};
 
   constructor(private workSpaceService: WorkSpaceService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private workspaceService: WorkSpaceService,
     private router: Router) {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
   }
 
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<WorkSpace> {
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    console.log(this.selectedFacility._id);
     return this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 100 } })
       .then(payload => {
+        console.log(payload);
         const result = payload.data.filter(x => x.isActive === true || x.isActive === undefined);
         result.forEach((itemi, i) => {
           itemi.locations = itemi.locations.filter(x => x.isActive === true);

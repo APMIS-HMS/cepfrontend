@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PersonService, FacilitiesService, FamilyHealthCoverService } from '../../../../services/facility-manager/setup/index';
 import { Facility, PersonPrincipal, FamilyHealthCover, Person } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-add-principal',
@@ -22,7 +22,7 @@ export class AddPrincipalComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private familyHealthCoverService: FamilyHealthCoverService,
     private personService: PersonService) { }
 

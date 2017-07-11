@@ -2,7 +2,7 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class RoomGroupService {
     return this._socket.get(id, query);
   }
 
-  create(wardGroup:any) {
+  create(wardGroup: any) {
     return this._socket.create(wardGroup);
   }
   update(wardGroup: any) {

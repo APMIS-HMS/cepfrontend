@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FacilitiesService, FacilityModuleService } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
 import { FacilityModule, Facility, Location, MinorLocation } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-sub-location',
@@ -47,7 +47,7 @@ export class SubLocationComponent implements OnInit {
 
   constructor(private locationService: LocationService,
     public facilityService: FacilitiesService,
-    private locker: CoolLocalStorage) { }
+    private locker: CoolSessionStorage) { }
 
   ngOnInit() {
     this.pageInView.emit('Locations');

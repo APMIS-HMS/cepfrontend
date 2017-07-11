@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { FacilitiesService, CompanyHealthCoverService, CountriesService, CompanyCoverCategoryService } from '../../../../services/facility-manager/setup/index';
 import { Facility, PersonPrincipal, CompanyHealthCover, Country } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -47,7 +47,7 @@ export class CompanyCoverComponent implements OnInit {
     public facilityService: FacilitiesService,
     private countryService: CountriesService,
     private companyCoverCategoryService: CompanyCoverCategoryService,
-    private locker: CoolLocalStorage) {
+    private locker: CoolSessionStorage) {
     this.companyHealthCoverService.updatelistner.subscribe(p => {
       this.selectedActiveCompanyHealthCover = p;
       // this.getActiveCompanyHealthCover();

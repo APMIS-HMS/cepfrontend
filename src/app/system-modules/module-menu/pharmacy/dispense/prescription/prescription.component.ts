@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility, Prescription, PrescriptionItem, Dispense, 
+import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Facility, Prescription, PrescriptionItem, Dispense,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
@@ -16,18 +16,18 @@ export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
-	billshow: boolean = false;
-	prescriptionId: string = '';
+	billshow = false;
+	prescriptionId = '';
 	prescriptions: any[] = [];
-	storeId: string = '';
-	totalQuantity: number = 0;
-	totalCost: number = 0;
-	loading: boolean = true;
+	storeId = '';
+	totalQuantity = 0;
+	totalCost = 0;
+	loading = true;
 
 	constructor(
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,
@@ -58,9 +58,9 @@ export class PrescriptionComponent implements OnInit {
 	// Dispense prescription
 	onClickDispense() {
 		console.log(this.prescriptionItems);
-		let dispenseArray = [];
+		const dispenseArray = [];
 		this.prescriptionItems.prescriptionItems.forEach(element => {
-			let dispenseItem = <DispenseItem> {
+			const dispenseItem = <DispenseItem> {
 				productId: (element.isExternal === false) ? element.productId : '',
 				cost: element.cost,
 				quantity: (element.quantity === undefined) ? 0 : element.quantity,
@@ -69,7 +69,7 @@ export class PrescriptionComponent implements OnInit {
 				instruction: element.patientInstruction
 			};
 
-			if(!element.isExternal) {
+			if (!element.isExternal) {
 				this.totalQuantity += element.quantity;
 				this.totalCost += element.totalCost;
 			}
@@ -77,7 +77,7 @@ export class PrescriptionComponent implements OnInit {
 			dispenseArray.push(dispenseItem);
 		});
 
-		let prescription = <DispenseByPrescription> {
+		const prescription = <DispenseByPrescription> {
 			prescriptionId: this.prescriptionItems._id,
 			employeeId: this.prescriptionItems.employeeId,
 			patientId: this.prescriptionItems.patientId,
@@ -85,7 +85,7 @@ export class PrescriptionComponent implements OnInit {
 			totalQuantity: this.totalQuantity,
 			totalCost: this.totalCost
 		};
-		let dispense = <Dispense> {
+		const dispense = <Dispense> {
 			facilityId: this.facility._id,
 			prescription: prescription,
 			storeId: this.storeId,
@@ -128,7 +128,7 @@ export class PrescriptionComponent implements OnInit {
 				this.loading = false;
 				this.prescriptionItems = res;
 				res.prescriptionItems.forEach(element => {
-					if(element.isBilled) {
+					if (element.isBilled) {
 						this.prescriptions.push(element);
 					}
 				});
