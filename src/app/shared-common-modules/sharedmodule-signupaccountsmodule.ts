@@ -13,9 +13,9 @@ import { SingUpAccountsSharedModule} from './signup-accounts-shared-module';
     exports: [
     ],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule
     ],
     providers: []
 })

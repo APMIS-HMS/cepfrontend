@@ -1,5 +1,8 @@
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">Employee Manager</div>
+    <div class="">
+        <a class="back-btn" md-raised-button routerLink="/dashboard/employee-manager"><i class="fa fa-arrow-circle-o-left"></i> Go Back</a>
+    </div>
     <div class="side-sec lhs">
         <app-employee-lookup (selectedEmployee)="navEpDetail($event)"></app-employee-lookup>
     </div>

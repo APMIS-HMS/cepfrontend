@@ -498,7 +498,7 @@ export class FacilitySetupComponent implements OnInit {
   }
 
   facilitySetup_finish(valid) {
-    this.close_onClick();
+    this.close_onClick(valid);
   }
 
   // go back buttons
@@ -543,7 +543,7 @@ export class FacilitySetupComponent implements OnInit {
     this.sg4_show = false;
   }
 
-  close_onClick() {
+  close_onClick(e) {
     this.closeModal.emit(true);
   }
 

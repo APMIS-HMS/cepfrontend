@@ -10,7 +10,11 @@
       <div class="txt1">APMIS</div>
       <div class="txt2">All Purpose Medical Information Systems</div>
       <div class="CTAs-wrap">
-        <div class="cta-1" (click)="login_show()">Log In</div>
+        <!--<div class="cta-1" (click)="login_show()">Log In</div>-->
+        <div id="button-cover">
+          <button (click)="login_show()" class="big-btn" md-raised-button>Login</button>
+        </div>
+
         <div class="wrapLabel">Don't have an account? <span [routerLink]="['/signup']" class="txtLink">Sign Up</span></div>
       </div>
     </div>

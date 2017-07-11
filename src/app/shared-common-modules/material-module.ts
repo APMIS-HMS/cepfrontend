@@ -23,6 +23,8 @@ import { PatientPrescriptionComponent } from '../system-modules/module-menu/pati
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { MomentModule } from 'angular2-moment';
+import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { CoolStorageModule } from 'angular2-cool-storage';
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
         LogoUpdateComponent,
@@ -65,7 +67,9 @@ import { MomentModule } from 'angular2-moment';
         CurrencyMaskModule,
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
-        MomentModule
+        MomentModule,
+        ToastModule,
+        CoolStorageModule
     ],
     imports: [
         MdNativeDateModule,
@@ -82,6 +86,8 @@ import { MomentModule } from 'angular2-moment';
         MdRadioModule,
         MdTabsModule,
         NgbModule.forRoot(),
+        ToastModule.forRoot(),
+        CoolStorageModule,
         MomentModule,
 
 
