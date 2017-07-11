@@ -32,9 +32,13 @@
         <a (click)="toggleShow($event)" class="absolute"><i class="fa fa-eye"></i></a>
       </div>-->
       <div (click)="reset()" class="forgetPword">forgot password?</div>
-      <div (click)="login(frm_login.valid)" class="cta-1">
+      <!--<div (click)="login(frm_login.valid)" class="cta-1">
         Log In
-      </div>
+      </div>-->
+      <div class="example-full-width" id="example-full-width">
+          <button (click)="login(frm_login.valid)"  md-raised-button>Login</button>
+     </div>
+
 
     </form>
   </div>
