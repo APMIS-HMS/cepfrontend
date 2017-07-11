@@ -34,15 +34,17 @@ h6,
 }
 
 .formWrap {
-    display: flex;
+    /*display: flex;*/
     justify-content: space-around;
+    display: flex;
+    display: -webkit-box;
 }
 
 .form-innerSect {
     border: 1px solid #eee;
     padding: 5px;
     width: 100%;
-    max-width: 500px;
+    max-width: 529px;
     height: 190px;
     margin-bottom: 2px;
     box-sizing: border-box;
@@ -107,20 +109,27 @@ h6,
     top: 237px;
 }
 #cover-select {
+     max-width: 100%;
+}
+/*
+#cover-select {
     width: 96.9%;
     display: table;
 }
 .survery .container {
     padding:0;
 }
-
-@media only screen and (max-width:1001px) {
-   .survery .container {
+*/
+@media only screen and (max-width:768px) {
+   /*.survery .container {
        padding-left: 0;
        width: 1179px;
    }
    #cover-select {
     width: 40%;
     display: block;
+   }*/
+   #cover-select {
+        max-width: 50%;
    }
 }

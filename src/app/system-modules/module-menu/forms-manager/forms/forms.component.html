@@ -8,7 +8,7 @@
             </md-select>
             <span class="on-create-btn" (click)="onCreate()"><i class="fa fa-plus"></i></span>
         </div>
-       </div>
+      
         <div class="formWrap">
             <form [formGroup]="frm_document" novalidate>
                 <div class="form-innerSect">
@@ -47,7 +47,9 @@
                     </div>
                 </div>
             </form>
-        </div><br><br>
+        </div>
+         </div>
+        <br><br>
         <survey-editor [defaultStrings]="defaultStrings" [editorOptions]="editorOptions"></survey-editor>
     </div>
 
