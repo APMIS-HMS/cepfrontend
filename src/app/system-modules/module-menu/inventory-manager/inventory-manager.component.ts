@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryEmitterService } from '../../../services/facility-manager/inventory-emitter.service';
 import { Employee, Facility } from '../../../models/index';
-import { EmployeeService } from '../../../services/facility-manager/setup/index';
+import { EmployeeService, WorkSpaceService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
@@ -25,10 +25,12 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   modal_on = false;
 
   loginEmployee: Employee = <Employee>{};
+  workSpace: any;
   selectedFacility: Facility = <Facility>{};
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
-    private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService, private locker: CoolLocalStorage) { }
+    private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService,
+    private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) { }
 
   ngOnInit() {
     // this.route.data.subscribe(data => {
@@ -43,9 +45,14 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
         facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
       }
     }));
-    emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    emp$.mergeMap((emp: any) => Observable.forkJoin([
+      Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+      Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } }))
     ]))
       .subscribe((results: any) => {
+        if (results[1].data.length > 0) {
+          this.workSpace = results[1].data[0];
+        }
         this.loginEmployee = results[0];
         if ((this.loginEmployee.storeCheckIn === undefined
           || this.loginEmployee.storeCheckIn.length === 0)) {
