@@ -1,6 +1,7 @@
 @import "../../../../globals/variables.scss";
 .inner-page-wrap {
     position: relative;
+    margin-top: 0;
 }
 
 .btn-1 {
@@ -50,9 +51,9 @@
 }
 
 ul.topmenuwrap {
-    position: absolute;
-    top: -26px;
-    right: 0;
+    position: relative;
+    top: auto;
+    right: auto;
     font-size: 12px;
     color: #0288D1;
 }
@@ -70,12 +71,9 @@ ul.topmenuwrap li:hover {
     color: #000;
 }
 
-@media screen and (max-width: $break-small) {
-    ul.topmenuwrap {
-        top: -17px;
-    }
-}
-
 .fullwidth-topActions {
     align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-bottom: -17px;
 }

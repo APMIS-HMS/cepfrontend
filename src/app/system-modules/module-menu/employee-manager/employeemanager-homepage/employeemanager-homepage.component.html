@@ -1,4 +1,4 @@
-<div class="checkedinPatients search-results">
+<!--<div class="checkedinPatients search-results">
     <div class="inPatients">
         <ul class="inHeader">
             <li class="emp-img"></li>
@@ -30,25 +30,29 @@
             </div>
         </div>
     </div>
-</div> 
+</div> -->
 
-<!--<table cellpadding="0" cellspacing="0" border="0.5"> 
+<table cellpadding="0" cellspacing="0" border="0.5"> 
     <thead>
         <tr>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Employee</span>
             </th>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Apmis ID</span>
             </th>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Department</span>
             </th>
-            <th>
+			<th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Status</span>
             </th>
             <th>Actions</th>
@@ -56,11 +60,65 @@
     </thead>
 
     <tbody>
-        <tr>
-            <td colspan="6">
+        <!--<tr>
+            <td colspan="7">
                 <div class="tbl-actionRow">
-                    <div class="tbl-title">Employee Workspace</div>
-                    <div class="tbl-search">
+					<div>
+						<md-input-container>
+							<input mdInput placeholder="Clinic" [mdAutocomplete]="auto" [formControl]="clinicCtrl">
+						</md-input-container>
+
+						<md-autocomplete #auto="mdAutocomplete">
+							<md-option *ngFor="let state of filteredStates | async" [value]="state">
+								{{ state }}
+							</md-option>
+						</md-autocomplete>
+					</div>
+					<div>
+						<md-input-container>
+							<input mdInput placeholder="Provider" [mdAutocomplete]="auto" [formControl]="providerCtrl">
+						</md-input-container>
+
+						<md-autocomplete #auto="mdAutocomplete">
+							<md-option *ngFor="let state of filteredStates | async" [value]="state">
+								{{ state }}
+							</md-option>
+						</md-autocomplete>
+					</div>
+					<div>
+						<md-input-container>
+							<input mdInput placeholder="Type" [mdAutocomplete]="auto" [formControl]="typeCtrl">
+						</md-input-container>
+
+						<md-autocomplete #auto="mdAutocomplete">
+							<md-option *ngFor="let state of filteredStates | async" [value]="state">
+								{{ state }}
+							</md-option>
+						</md-autocomplete>
+					</div>
+					<div>
+						<md-input-container>
+							<input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusCtrl">
+						</md-input-container>
+
+						<md-autocomplete #auto="mdAutocomplete">
+							<md-option *ngFor="let state of filteredStates | async" [value]="state">
+								{{ state }}
+							</md-option>
+						</md-autocomplete>
+					</div>
+                    <div>
+						<md-input-container>
+							<input mdInput placeholder="Day Count" [mdAutocomplete]="auto" [formControl]="todayCtrl">
+						</md-input-container>
+
+						<md-autocomplete #auto="mdAutocomplete">
+							<md-option *ngFor="let state of filteredStates | async" [value]="state">
+								{{ state }}
+							</md-option>
+						</md-autocomplete>
+					</div>
+                    <div class="tbl-search frm-item-wrap">
                         <div class="searchInputWrap">
                             <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
                             <i class="fa fa-search" aria-hidden="true"></i>
@@ -68,37 +126,31 @@
                     </div>
                 </div>
             </td>
-        </tr>
+        </tr>-->
 
-        <tr *ngFor="let workSpace of workSpaces">
-            <td>
+        <tr  *ngFor="let item of employees">
+            <td (click)="navEpDetail(item)">                
                 <div class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="workSpace.employeeObject.employeeDetails.profileImageObject == undefined" src="assets/images/users/default.png">
-                        <img *ngIf="workSpace.employeeObject.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(workSpace.employeeObject.employeeDetails.profileImageObject.thumbnail)">
+                        <div *ngIf="item?.employeeDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                        <div *ngIf="item?.employeeDetails?.profileImageObject != undefined"><img [src]="facilityService.transform(item?.employeeDetails?.profileImageObject?.thumbnail)"></div>
                     </div>
-                    <div>{{workSpace.employeeObject.employeeDetails.lastName}} {{workSpace.employeeObject.employeeDetails.firstName}}</div>
+                    <div>{{item.employeeDetails?.lastName}} {{item.employeeDetails?.firstName}}</div>
                 </div>
             </td>
-            <td>{{workSpace.employeeObject.department?.name}}</td>
-            <td class="td-worspace">
-                <div class="workspace-count">{{getActiveWorkSpaceCount(workSpace)}} workspaces</div>
-                <ul *ngIf="workSpace.locations !== undefined && workSpace.locations.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
-                    <li [hidden]="location.isActive===false" *ngFor="let location of workSpace.locations; let i = index" class="workspace-listItem">
-                        <ng-container *ngIf="location!== undefined">
-                            <span>{{location.minorLoactionDetails?.name}}</span>
-                            <i (click)="removeLocation(location, workSpace, i)" class="fa fa-trash" aria-hidden="true"></i>
-                        </ng-container>
-                    </li>
-                    <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                </ul>
+            <td>{{item.employeeDetails?.apmisId}}</td>
+			<td>{{item.department?.name}}</td>
+			<td>
+                <span *ngIf="!item.isActive" style="color:#E53935;">Inactive</span>
+                <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>
             </td>
             <td>
-                <div class="td-ctaWrap">
-                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"></i>
-                </div>
+                <div *ngIf="!item.isActive" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i>Activate</div>
             </td>
         </tr>
+
+        <div *ngIf="loadIndicatorVisible" class="div_loading">
+            <md-spinner></md-spinner>
+        </div>
     </tbody>
-</table>-->
+</table>
