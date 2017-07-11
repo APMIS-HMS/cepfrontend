@@ -1,7 +1,6 @@
 import { NgModule, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DxCheckBoxModule } from 'devextreme-angular';
 import { facilityPageRoutes } from './facility-page.routes';
 import { FacilityPageHomeComponent } from './facility-page-home.component';
 
@@ -51,15 +50,9 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     exports: [
     ],
     imports: [
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
         facilityPageRoutes,
-
-        // DxCheckBoxModule,
         facilityPageRoutes,
         MaterialModule
-        // SharedModule
     ],
     providers: [
         WorkspaceResolverService, LocationsResolverService,

@@ -6,8 +6,7 @@ import { AddLogoComponent } from '../facility-setup/add-logo/add-logo.component'
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { ContactInfoComponent } from '../facility-setup/contact-info/contact-info.component';
 import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
-import { SharedModuleSignUpAccountModule } from './sharedmodule-signupaccountsmodule'
-import { DxDateBoxModule } from 'devextreme-angular';
+import { SharedModuleSignUpAccountModule } from './sharedmodule-signupaccountsmodule';
 import { LoginComponent } from '../login/login.component';
 import { MaterialModule } from './material-module';
 @NgModule({
@@ -25,7 +24,6 @@ import { MaterialModule } from './material-module';
         ContactInfoComponent,
         FacilityInfoComponent,
         AddFacilityModuleComponent,
-        DxDateBoxModule,
         CommonModule,
         SharedModuleSignUpAccountModule,
         LoginComponent,
@@ -35,7 +33,6 @@ import { MaterialModule } from './material-module';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
-        DxDateBoxModule,
         SharedModuleSignUpAccountModule,
         MaterialModule
     ],

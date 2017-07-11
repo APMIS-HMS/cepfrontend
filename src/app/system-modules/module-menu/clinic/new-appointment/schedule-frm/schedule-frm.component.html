@@ -1,108 +1,101 @@
 <div class="schedule-wrap">
-  <div class="frm-appointment">
-    <div class="sect-wrap">
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Patient" [mdAutocomplete]="auto" [formControl]="patient">
-        </md-input-container>
+    <div class="frm-appointment">
+        <div class="sect-wrap">
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Patient" [mdAutocomplete]="auto" [formControl]="patient">
+                </md-input-container>
 
-        <md-autocomplete #auto="mdAutocomplete">
-          <md-option *ngFor="let state of filteredStates | async" [value]="state">
-            {{ state }}
-          </md-option>
-        </md-autocomplete>
-      </div>
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                        {{ state }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
 
-      <div>
-        <!--<md-input-container>
+            <div>
+                <!--<md-input-container>
           <input mdInput [mdDatepicker]="picker" placeholder="Date" [formControl]="date">
           <button mdSuffix [mdDatepickerToggle]="picker"></button>
         </md-input-container>
         <md-datepicker #picker></md-datepicker>-->
-        <div class="survery">
-          <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
-          
-          <form class="form-inline">
-            <div class="form-group">
-              <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="date"
-                      name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-addon" (click)="d.toggle()" >
-                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;" aria-hidden="true"></i>
+                <div class="survery">
+                    <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
+                    <md-input-container>
+                    <input mdInput placeholder="Date" [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly>
+                </md-input-container>
+
+                    <!--<input [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly />-->
                 </div>
-              </div>
             </div>
-          </form>
+
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Appointment Type" [mdAutocomplete]="auto" [formControl]="type">
+                </md-input-container>
+
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                        {{ state }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
         </div>
-      </div>
 
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Appointment Type" [mdAutocomplete]="auto" [formControl]="type">
-        </md-input-container>
+        <div class="sect-wrap">
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Clinic" [mdAutocomplete]="auto" [formControl]="clinic">
+                </md-input-container>
 
-        <md-autocomplete #auto="mdAutocomplete">
-          <md-option *ngFor="let state of filteredStates | async" [value]="state">
-            {{ state }}
-          </md-option>
-        </md-autocomplete>
-      </div>
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                        {{ state }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div class="tr-act-btn">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <span>Next Available Date</span>
+            </div>
+
+        </div>
+
+        <div class="sect-wrap">
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Provider" [mdAutocomplete]="auto" [formControl]="provider">
+                </md-input-container>
+
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let stat of filteredStates | async" [value]="stat">
+                        {{ state }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Appointment Category" [mdAutocomplete]="auto" [formControl]="category">
+                </md-input-container>
+
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                        {{ state }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div>
+                <md-input-container class="example-full-width">
+                    <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
+                </md-input-container>
+            </div>
+
+        </div>
     </div>
 
-    <div class="sect-wrap">
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Clinic" [mdAutocomplete]="auto" [formControl]="clinic">
-        </md-input-container>
-
-        <md-autocomplete #auto="mdAutocomplete">
-          <md-option *ngFor="let state of filteredStates | async" [value]="state">
-            {{ state }}
-          </md-option>
-        </md-autocomplete>
-      </div>
-
-      <div class="tr-act-btn">
-        <i class="fa fa-calendar" aria-hidden="true"></i>
-        <span>Next Available Date</span>
-      </div>
-
-    </div>
-
-    <div class="sect-wrap">
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Provider" [mdAutocomplete]="auto" [formControl]="provider">
-        </md-input-container>
-
-        <md-autocomplete #auto="mdAutocomplete">
-          <md-option *ngFor="let stat of filteredStates | async" [value]="stat">
-            {{ state }}
-          </md-option>
-        </md-autocomplete>
-      </div>
-
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Appointment Category" [mdAutocomplete]="auto" [formControl]="category">
-        </md-input-container>
-
-        <md-autocomplete #auto="mdAutocomplete">
-          <md-option *ngFor="let state of filteredStates | async" [value]="state">
-            {{ state }}
-          </md-option>
-        </md-autocomplete>
-      </div>
-
-      <div>
-        <md-input-container class="example-full-width">
-          <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
-        </md-input-container>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="cta-1">Schedule Appointment</div>
+    <div class="cta-1">Schedule Appointment</div>
 
 </div>

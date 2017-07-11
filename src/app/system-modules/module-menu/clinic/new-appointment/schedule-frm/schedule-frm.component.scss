@@ -1,5 +1,4 @@
 .schedule-wrap {
-    background: rgba(3, 169, 244,0.03);
     padding: 5px 20px;
     box-sizing: border-box;
     margin-bottom: 10px;
@@ -24,4 +23,7 @@
 }
 .sect-wrap .frm-item-wrap{
     width: 100%;
+}
+.mat-input-infix {
+    border-top: 0em solid transparent !important;
 }
