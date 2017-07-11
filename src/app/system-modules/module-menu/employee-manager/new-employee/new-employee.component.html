@@ -2,7 +2,7 @@
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">New Employee</legend>
-    <div class="modal_mini_title">Customising apmis to fit perfectly for your purpose</div>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <div *ngIf="apmisId_show" class="newEmp-idWrap">
@@ -124,7 +124,7 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <md-select placeholder="Select Country" formControlName="empCountry">
+                    <md-select placeholder="Country (Residence)" formControlName="empCountry">
                         <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
@@ -187,7 +187,9 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <input type="text" formControlName="nok_apmisID" placeholder="Next Of Kin's' Apmis ID" autocomplete="off">
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
+                    </md-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
@@ -226,8 +228,6 @@
                     <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
                         <md-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
-
-
                 </div>
 
             </div>
