@@ -56,33 +56,8 @@ export class AddPrescriptionComponent implements OnInit {
 		if(!item.isBilled) {
 			this.billShow = true;
 			this.billShowId = index;
-			console.log(item);
 			this.prescriptionItems.index = index;
 			this.prescriptionData = this.prescriptionItems;
-			// let genericName = item.genericName.split(' ');
-			// // Get the list of products from a facility, and then search if the generic
-			// // that was entered by the doctor in contained in the list of products
-			// this._productService.find({ query: { facilityId : this.facility._id }})
-			// 	.then(res => {
-			// 		console.log(res);
-			// 		let tempArray = [];
-			// 		// Get all products in the facility, then search for the item you are looking for.
-			// 		res.data.forEach(element => {
-			// 			if(element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
-			// 				tempArray.push(element);
-			// 			}
-			// 		});
-			// 		console.log(tempArray);
-			// 		if(tempArray.length !== 0) {
-			// 			this.prescriptionData = this.prescriptionItems;
-			// 			this.drugs = tempArray;
-			// 		} else {
-			// 			this.drugs = [];
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		console.log(err);
-			// 	});
 		}
 	}
 

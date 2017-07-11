@@ -112,8 +112,8 @@ export class PatientPrescriptionComponent implements OnInit {
                     strength: value.strength,
                     patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
                     refillCount: value.refillCount,
-                    unitPrice: 0,
-                    totalPrice: 0,
+                    cost: 0,
+                    totalCost: 0,
                     isExternal: false,
                     initiateBill: false,
                     isBilled: false
@@ -129,9 +129,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     priorityId: "",
                     patientId: this.patientDetails._id,
                     prescriptionItems: this.prescriptionArray,
-                    isAuthorised: true,
-                    totalCost: 0,
-                    totalQuantity: 0
+                    isAuthorised: true
                 };
 
                 console.log(prescription);
