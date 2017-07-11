@@ -5,4 +5,5 @@ export interface Patient {
     isActive: boolean;
     facilityDetails: any;
     personDetails: any;
+    nextOfKin?: any;
 }
