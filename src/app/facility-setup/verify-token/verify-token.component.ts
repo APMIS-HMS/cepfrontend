@@ -13,7 +13,7 @@ export class VerifyTokenComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() inputFacility: Facility = <Facility>{};
   @Input() backBtnVisible: boolean;
-
+@Input() tokenValue = "";
   frm_numberVerifier: FormGroup;
   facility: Facility = <Facility>{};
   InputedToken: string;
@@ -33,6 +33,7 @@ export class VerifyTokenComponent implements OnInit {
     this.frm_numberVerifier = this.formBuilder.group({
       txt_numberVerifier: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
     });
+    this.InputedToken = this.tokenValue;
   }
 
   numberVerifier(valid) {
@@ -44,7 +45,6 @@ export class VerifyTokenComponent implements OnInit {
         this.errMsg = 'Kindly key in the code sent to your mobile phone';
       } else if (true) {
         console.log('3');
-        console.log(this.InputedToken);
         this._facilityService.find({ query: { 'verificationToken': this.InputedToken } }).then((payload) => {
           console.log('4');
           if (payload.data.length > 0) {

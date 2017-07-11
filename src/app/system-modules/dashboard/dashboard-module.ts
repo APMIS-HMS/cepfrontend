@@ -10,6 +10,7 @@ import {SingUpAccountsSharedModule } from '../../shared-common-modules/signup-ac
 import {SharedModule } from '../../shared-module/shared.module';
 import { ChangePasswordComponent } from '../../system-modules/module-menu/change-password/change-password.component';
 import { SystemModuleComponent } from '../system-module.component';
+import { MaterialModule } from '../../shared-common-modules/material-module';
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -21,7 +22,8 @@ import { SystemModuleComponent } from '../system-module.component';
     ],
     imports: [
         LogOutConfirmModule,
-        SharedModule,
+        MaterialModule,
+        // SharedModule,
         Routing
     ],
     providers: [

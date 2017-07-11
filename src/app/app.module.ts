@@ -38,7 +38,7 @@ import { FacilityInfoComponent } from './facility-setup/facility-info/facility-i
 import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
-
+import { MaterialModule } from './shared-common-modules/material-module';
 
 @NgModule({
   declarations: [
@@ -48,15 +48,18 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent
   ],
+  exports: [
+    MaterialModule
+  ],
   imports: [
-    // SharedModule,
     BrowserModule,
     FormsModule,
     Routing,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastModule.forRoot(),
-    CoolStorageModule,
+    // ToastModule.forRoot(),
+    // CoolStorageModule,
+    MaterialModule,
     SingUpAccountsSharedModule
   ],
   providers: [
@@ -77,7 +80,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
-    SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService, 
+    SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService,
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService
 
   ],

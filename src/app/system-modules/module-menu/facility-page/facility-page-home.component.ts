@@ -18,6 +18,7 @@ export class FacilityPageHomeComponent implements OnInit {
   locationsContentArea = false;
   workspaceContentArea = false;
   professionContentArea = false;
+  dashboardContentArea = false;
   constructor(private router: Router) {
     router.events.subscribe((routerEvent: Event) => {
       this.checkRouterEvent(routerEvent);

@@ -59,7 +59,7 @@ export class PrescriptionComponent implements OnInit {
 		this.prescriptionItems.prescriptionItems.forEach(element => {
 			let dispenseItem = <DispenseItem> {
 				productId: (element.isExternal === false) ? element.productId : '',
-				cost: element.cost,
+				cost: element.unitPrice,
 				quantity: (element.quantity === undefined) ? 0 : element.quantity,
 				refillCount: (element.refillCount === undefined) ? 0 : element.refillCount,
 				isExternal: element.isExternal,
@@ -68,7 +68,7 @@ export class PrescriptionComponent implements OnInit {
 
 			if(!element.isExternal) {
 				this.totalQuantity += element.quantity;
-				this.totalCost += element.cost;
+				this.totalCost += element.unitPrice;
 			}
 			// Push all dispenseItem into dispenseArray
 			dispenseArray.push(dispenseItem);

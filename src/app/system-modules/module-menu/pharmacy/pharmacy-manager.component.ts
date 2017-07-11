@@ -17,7 +17,7 @@ export class PharmacyManagerComponent implements OnInit {
 	modal_on: boolean = false;
 	// pharmacyNavMenu = false;
 	// categoryNavMenu = false;
-	// supplierNavMenu = false;
+	supplierNavMenu = false;
 	// manufacturerNavMenu = false;
 	// routeNavMenu = false;
 	// genericNavMenu = false;
@@ -34,7 +34,7 @@ export class PharmacyManagerComponent implements OnInit {
 	// presentation = false;
 	// strength = false;
 	// productCat = false;
-	// productNavMenu = false;
+	productNavMenu = false;
 	// productRoute = false;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
@@ -262,9 +262,9 @@ export class PharmacyManagerComponent implements OnInit {
 	// 	});
 	// }
 
-	// pageInViewLoader(title) {
-	// 	this.pageInView = title;
-	// }
+	pageInViewLoader(title) {
+		this.pageInView = title;
+	}
 
 	// private checkPageUrl(param: string) {
 	// 	if (param.includes('pharmacys')) {
