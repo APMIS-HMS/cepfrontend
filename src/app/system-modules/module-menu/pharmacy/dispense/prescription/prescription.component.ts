@@ -2,10 +2,10 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Prescription, PrescriptionItem, Dispense, 
-	DispenseByPrescription, DispenseByNoprescription, DispenseItem } from '../../../../../models/index';
+	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService, DispenseService} from '../../../../../services/facility-manager/setup/index';
+import { FacilitiesService, PrescriptionService, DispenseService, MedicationListService} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
 	selector: 'app-prescription',
@@ -25,10 +25,12 @@ export class PrescriptionComponent implements OnInit {
 
 	constructor(
 		private _route: ActivatedRoute,
+		private _router: Router,
 		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
-		private _dispenseService: DispenseService
+		private _dispenseService: DispenseService,
+		private _medicationListService: MedicationListService
 	) {
 
 	}
@@ -59,7 +61,7 @@ export class PrescriptionComponent implements OnInit {
 		this.prescriptionItems.prescriptionItems.forEach(element => {
 			let dispenseItem = <DispenseItem> {
 				productId: (element.isExternal === false) ? element.productId : '',
-				cost: element.unitPrice,
+				cost: element.cost,
 				quantity: (element.quantity === undefined) ? 0 : element.quantity,
 				refillCount: (element.refillCount === undefined) ? 0 : element.refillCount,
 				isExternal: element.isExternal,
@@ -68,7 +70,7 @@ export class PrescriptionComponent implements OnInit {
 
 			if(!element.isExternal) {
 				this.totalQuantity += element.quantity;
-				this.totalCost += element.unitPrice;
+				this.totalCost += element.totalCost;
 			}
 			// Push all dispenseItem into dispenseArray
 			dispenseArray.push(dispenseItem);
@@ -91,7 +93,16 @@ export class PrescriptionComponent implements OnInit {
 		// this._dispenseService.create(this.prescriptionItems)
 		// 	.then(res => {
 		// 		console.log(res);
-		//      this.route.navigate('/dashboard/pharmacy/prescriptions');
+		// 		if(res.data) {
+		// 			this._dispenseService.create(this.prescriptionItems)
+		// 				.then(res => {
+		// 					console.log(res);
+		// 					this._router.navigate(['/dashboard/pharmacy/prescriptions']);
+		// 				})
+		// 				.catch(err => {
+		// 					console.log(err);
+		// 				});
+		// 		}
 		// 	})
 		// 	.catch(err => {
 		// 		console.log(err);

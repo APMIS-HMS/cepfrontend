@@ -68,3 +68,4 @@ export * from './drug-details.service';
 export * from './dispense.service';
 export * from './facility-price.service';
 export * from './assessment-dispense.service';
+export * from './medication-list.service';

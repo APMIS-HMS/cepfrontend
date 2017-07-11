@@ -83,15 +83,15 @@ const appRoutes: Routes = [
                 path: 'inventory-manager',
                 loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule'
             },
-            // {
-            //     path: 'pharmacy',
-            //     loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
-            // },
-            // {
-            //     path: 'corporate',
-            //     loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
-            //     data: { preload: false },
-            // },
+            {
+                path: 'pharmacy',
+                loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
+            },
+            {
+                path: 'corporate',
+                loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
+                data: { preload: false },
+            },
         ]
     }
 ];

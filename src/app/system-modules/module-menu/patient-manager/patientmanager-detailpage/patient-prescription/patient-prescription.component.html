@@ -176,14 +176,14 @@
                 </div>
             </form>
 
-            <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+            <app-add-prescription [isDispensed]="isDispensed" [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
             <form [formGroup]="allPrescriptionsForm">
                 <div class="row">
                     <div class="col-xs-12 no-padding">
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" style="margin-top: 10px;">
                                 <md-select placeholder="Priority" formControlName="priority" class="md-select">
                                     <md-option *ngFor="let priority of priorities" [value]="priority._id">{{ priority.name }}</md-option>
                                 </md-select>

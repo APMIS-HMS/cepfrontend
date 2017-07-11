@@ -22,9 +22,9 @@ export class BillPrescriptionComponent implements OnInit {
 	selectedDrug: string = '';
 	itemCost: number = 0;
 	title: string = '';
-	price: number = 0; // Unit price for each drug.
-	totalPrice: number = 0; // Total price for each drug selected.
-	totalCost: number = 0; // The overall price for all drugs selected.
+	cost: number = 0; // Unit price for each drug.
+	totalCost: number = 0; // Total price for each drug selected.
+	totalQuantity: number = 0;
 	batchNumber: string = '';
 	qtyInStores: number = 0;
 	storeId: string = '';
@@ -45,6 +45,7 @@ export class BillPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionData);
+		console.log(this.totalCost);
 
 		// if(this.employeeDetails.storeCheckIn !== undefined) {
 		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
@@ -62,7 +63,8 @@ export class BillPrescriptionComponent implements OnInit {
 
 		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
 			if(val > 0) {
-				this.totalPrice = this.price*val;
+				this.totalQuantity = val;
+				this.totalCost = this.cost*val;
 			} else {
 				this._facilityService.announceNotification({
 					type: "Error",
@@ -75,16 +77,16 @@ export class BillPrescriptionComponent implements OnInit {
 	// 
 	onClickSaveCost(value, valid) {
 		if(valid) {
-			if(this.price > 0 || value.qty > 0) {
+			if(this.cost > 0 || value.qty > 0) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
-				this.prescriptionData.prescriptionItems[index].unitPrice = this.price;
-				this.prescriptionData.prescriptionItems[index].totalPrice = this.totalPrice;
-				this.prescriptionData.totalCost += this.totalPrice;
-				this.prescriptionData.totalQuantity += this.totalPrice ;
+				this.prescriptionData.prescriptionItems[index].cost = this.cost;
+				this.prescriptionData.prescriptionItems[index].totalCost = this.totalCost;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
+				this.prescriptionData.totalCost += this.totalCost;
+				this.prescriptionData.totalQuantity += this.totalQuantity;
 				console.log(this.prescriptionData);
 
 				this.closeModal.emit(true);
@@ -105,10 +107,8 @@ export class BillPrescriptionComponent implements OnInit {
 		let genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
 			//Get the list of products from a facility, and then search if the generic
 			//that was entered by the doctor in contained in the list of products
-			console.log(this.facility);
 			this._productService.find({ query: { facilityId : this.facility._id }})
 				.then(res => {
-					console.log(res);
 					this.drugs = res.data;
 					let tempArray = [];
 					// Get all products in the facility, then search for the item you are looking for.
@@ -118,7 +118,6 @@ export class BillPrescriptionComponent implements OnInit {
 							tempArray.push(element);
 						}
 					});
-					console.log(tempArray);
 					if(tempArray.length !== 0) {
 						this.drugs = tempArray;
 					} else {
@@ -137,14 +136,13 @@ export class BillPrescriptionComponent implements OnInit {
 		let sId = drugId._element.nativeElement.getAttribute('data-p-id');
 		let fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
 		let cId = drugId._element.nativeElement.getAttribute('data-p-cid');
-		console.log(pId);
 		// Get the service for the product
 		//if(this.storeId !== '') {
 			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
 				.then(res => {
 					if(res.length > 0) {
 						console.log(res);
-						this.price = res[0].price;
+						this.cost = res[0].price;
 						this.batchNumber = res[0].batchNo;
 						this.qtyInStores = res[0].availableQty;
 					}

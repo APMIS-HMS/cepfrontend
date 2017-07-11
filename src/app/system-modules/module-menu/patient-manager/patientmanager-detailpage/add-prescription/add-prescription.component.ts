@@ -6,6 +6,7 @@ import { Facility, Prescription, PrescriptionItem } from '../../../../../models/
 import {
     FacilitiesService, ProductService
 } from '../../../../../services/facility-manager/setup/index';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-add-prescription',
@@ -15,12 +16,15 @@ import {
 export class AddPrescriptionComponent implements OnInit {
 	@Input() prescriptionItems: Prescription = <Prescription>{};
 	@Output() prescriptionData: Prescription = <Prescription>{};
+	@Input() isDispensed: Subject<any>;
 	facility: Facility = <Facility>{};
 
 	billShow: boolean = false;
 	billShowId: number = 0;
 	isExternal: boolean = false;
 	loading: boolean = false;
+	totalCost: number = 0;
+	totalQuantity: number = 0;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -36,6 +40,14 @@ export class AddPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.prescriptionItems.prescriptionItems = [];
+		this.isDispensed.subscribe(event => {
+			if(event) {
+				this.totalCost = 0;
+				this.totalQuantity = 0;
+				this.prescriptionData = <Prescription>{};
+				this.prescriptionItems.prescriptionItems = [];
+			}
+		});
 	}
 
 	onClickDeleteItem(value: any) {
@@ -44,49 +56,26 @@ export class AddPrescriptionComponent implements OnInit {
 
 	// On click is external checkbox
 	onClickIsExternal(index, value, prescription) {
-		console.log(value);
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
 		this.prescriptionItems.prescriptionItems[index].isExternal = value;
-		console.log(this.prescriptionItems);
 	}
 
 	toggleBill(index, item) {
 		if(!item.isBilled) {
 			this.billShow = true;
 			this.billShowId = index;
-			console.log(item);
 			this.prescriptionItems.index = index;
+			this.prescriptionItems.totalCost = this.totalCost;
+			this.prescriptionItems.totalQuantity = this.totalQuantity;
 			this.prescriptionData = this.prescriptionItems;
-			// let genericName = item.genericName.split(' ');
-			// // Get the list of products from a facility, and then search if the generic
-			// // that was entered by the doctor in contained in the list of products
-			// this._productService.find({ query: { facilityId : this.facility._id }})
-			// 	.then(res => {
-			// 		console.log(res);
-			// 		let tempArray = [];
-			// 		// Get all products in the facility, then search for the item you are looking for.
-			// 		res.data.forEach(element => {
-			// 			if(element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
-			// 				tempArray.push(element);
-			// 			}
-			// 		});
-			// 		console.log(tempArray);
-			// 		if(tempArray.length !== 0) {
-			// 			this.prescriptionData = this.prescriptionItems;
-			// 			this.drugs = tempArray;
-			// 		} else {
-			// 			this.drugs = [];
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		console.log(err);
-			// 	});
 		}
 	}
 
 	close_onClick(e) {
 		this.billShow = false;
+		this.totalCost = this.prescriptionData.totalCost;
+		this.totalQuantity = this.prescriptionData.totalQuantity;
 	}
 }
