@@ -28,7 +28,7 @@
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
                     </div>
                      <div class="emp-dept">{{employee?.department?.name}}
-                        <span (click)="toggleDepartmentShow()"  class="editButton">
+                        <span *ngIf = "!editDepartment" (click)="toggleDepartmentShow()"  class="editButton">
                         <i class="fa fa-edit"></i></span>
                     </div>
                     <div *ngIf= "editDepartment" class="emp-dept">
@@ -37,7 +37,7 @@
                             {{department.name}}
                             </md-option>
                         </md-select>
-                        <a (click)="updateEmployee()"><i class="fa fa-check"></i></a>
+                        <a *ngIf = "editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
