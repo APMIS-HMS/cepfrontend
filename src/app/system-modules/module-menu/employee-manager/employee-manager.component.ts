@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmployeeService, FacilitiesService } from '../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { EmployeemanagerHomepageComponent } from './employeemanager-homepage/employeemanager-homepage.component'
 import { Facility } from '../../../models/index';
 @Component({
@@ -30,7 +30,7 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   units: any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private employeeService: EmployeeService,
-    private locker: CoolLocalStorage) { }
+    private locker: CoolSessionStorage) { }
   ngAfterViewInit() {
     this.searchControl.valueChanges.subscribe(searchText => {
       this.employeeManagerComponent.searchEmployees(searchText);

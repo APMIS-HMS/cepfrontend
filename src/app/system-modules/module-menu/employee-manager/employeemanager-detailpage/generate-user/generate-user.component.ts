@@ -6,7 +6,7 @@ import {
 import { UserService, PersonService, FacilitiesService, EmployeeService } from '../../../../../services/facility-manager/setup/index';
 import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
 import { AccessControlService } from '../../../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -28,7 +28,7 @@ export class GenerateUserComponent implements OnInit {
   simpleProducts: any[] = [];
 
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private employeeService: EmployeeService,
     private personService: PersonService,
     private route: ActivatedRoute,

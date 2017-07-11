@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, MinorLocation } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 // import { PharmacyTypeService, PharmacyService } from '../../../../services/facility-manager/setup/index';
@@ -30,7 +30,7 @@ export class PharmacyManagerLandingpageComponent implements OnInit {
   selPharmacyType = new FormControl();
   searchControl = new FormControl();
   selProductType = new FormControl();
-  constructor(private locker: CoolLocalStorage, private _productEventEmitter: PharmacyEmitterService) {
+  constructor(private locker: CoolSessionStorage, private _productEventEmitter: PharmacyEmitterService) {
     // this.productService.listenerUpdate.subscribe(payload => {
     //   this.getPharmacys();
     // });

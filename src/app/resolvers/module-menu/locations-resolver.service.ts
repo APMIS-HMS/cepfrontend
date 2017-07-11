@@ -3,13 +3,13 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { Location } from '../../models/index';
 import { LocationService } from '../../services/module-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class LocationsResolverService implements Resolve<Location> {
   previousUrl: string = '/';
   constructor(private locationService: LocationService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private router: Router) {
   }
 

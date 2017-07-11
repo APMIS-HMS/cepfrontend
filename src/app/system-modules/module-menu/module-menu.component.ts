@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FacilitiesService, UserService } from '../../services/facility-manager/setup/index';
 import { Facility } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
@@ -41,7 +41,7 @@ export class ModuleMenuComponent implements OnInit {
   moduleAnalyticsSubmenuActive = false;
 
   loadIndicatorVisible = true;
-  constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
+  constructor(private _elRef: ElementRef, private locker: CoolSessionStorage, private userService: UserService,
     private router: Router,
     public facilityService: FacilitiesService) {
     this.facilityService.listner.subscribe(payload => {

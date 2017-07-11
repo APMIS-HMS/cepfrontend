@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class CanActivateViaAuthGuardService implements CanActivate {
 
-  constructor(private locker: CoolLocalStorage) { }
+  constructor(private locker: CoolSessionStorage) { }
 
   canActivate() {
     let auth = this.locker.getObject('auth');

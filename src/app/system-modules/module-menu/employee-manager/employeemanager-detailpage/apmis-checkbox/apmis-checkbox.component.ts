@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FeatureModuleViewModel, AccessControl, Facility } from '../../../../../models/index';
 import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
 import { AccessControlService } from '../../../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 @Component({
   selector: 'app-apmis-checkbox',
   templateUrl: './apmis-checkbox.component.html',
@@ -18,7 +18,7 @@ export class ApmisCheckboxComponent implements OnInit {
   expandMain: boolean = false;
   @Input() cruds: any[] = [];
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private accessControlService: AccessControlService) { }
 
   ngOnInit() {

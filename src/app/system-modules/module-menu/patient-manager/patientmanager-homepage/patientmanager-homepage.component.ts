@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -31,7 +31,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   limit = 10;
 
   constructor(private patientService: PatientService, private personService: PersonService,
-    private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
+    private facilityService: FacilitiesService, private locker: CoolSessionStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder) {
     this.patientService.listner.subscribe(payload => {

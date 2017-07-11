@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
@@ -34,7 +34,7 @@ export class BillPrescriptionComponent implements OnInit {
 
 	constructor(
 		private _fb: FormBuilder,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _productService: ProductService,
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,

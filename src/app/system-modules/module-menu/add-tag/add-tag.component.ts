@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FacilitiesServiceCategoryService, TagService } from '../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, Tag } from '../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -16,7 +16,7 @@ export class AddTagComponent implements OnInit {
   newServicePopup = false;
   newCategoryPopup = false;
   newTagPopup = false;
-  constructor(private _locker: CoolLocalStorage, private _tagService: TagService) {
+  constructor(private _locker: CoolSessionStorage, private _tagService: TagService) {
     this._tagService.createListener.subscribe(payload => {
       this.getTags();
     });

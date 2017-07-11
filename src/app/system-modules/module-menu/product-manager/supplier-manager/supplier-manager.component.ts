@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { StoreEmitterService } from '../../../../services/facility-manager/store-emitter.service';
 import { SupplierService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ProductEmitterService } from '../../../../services/facility-manager/product-emitter.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class SupplierManagerComponent implements OnInit {
 
   suppliers: any[] = [];
   constructor(private router: Router, private _productEventEmitter: ProductEmitterService,
-    private supplierService: SupplierService, private locker: CoolLocalStorage) {
+    private supplierService: SupplierService, private locker: CoolSessionStorage) {
     this.supplierService.listenerCreate.subscribe(payload => {
       this.getSuppliers();
     });

@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { SupplierService } from '../../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../../models/index';
 
@@ -18,7 +18,7 @@ export class NewSupplierComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedSupplier: any = <any>{};
   selectedFacility: Facility = <Facility>{};
-  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
+  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage,
     private supplierService: SupplierService) {
   }
 
