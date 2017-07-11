@@ -55,6 +55,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     private route: ActivatedRoute,
     private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
+      console.log(payload);
       this.facilityObj = payload;
       this.getCurrentDepartment();
       this.deptsObj = payload.departments;

@@ -43,7 +43,7 @@ h6,
     padding: 5px;
     width: 100%;
     max-width: 500px;
-    height: 140px;
+    height: 190px;
     margin-bottom: 2px;
     box-sizing: border-box;
     overflow: hidden;
@@ -100,7 +100,28 @@ h6,
 .on-create-btn {
     background-color: transparent;
     border: none;
-    float: left;
     padding: 7px;
     margin-left: 10px;
+    float: right;
+    position: absolute;
+    top: 237px;
+}
+#cover-select {
+    width: 96.9%;
+    display: table;
+}
+.survery .container {
+    padding:0;
+}
+
+
+@media only screen and (max-width:1001px) {
+   .survery .container {
+       padding-left: 0;
+       width: 1179px;
+   }
+   #cover-select {
+    width: 40%;
+    display: block;
+   }
 }
