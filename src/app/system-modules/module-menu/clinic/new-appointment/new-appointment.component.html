@@ -69,11 +69,7 @@
             <td colspan="7">
                 <div class="tbl-actionRow">
 					<div>
-						<md-input-container>
-							<input mdInput  [mdDatepicker]="picker" placeholder="From (Date Range)">
-							<button mdSuffix [mdDatepickerToggle]="picker"></button>
-						</md-input-container>
-						<md-datepicker #picker></md-datepicker>
+						<app-date-range [(dateRange)]="dateRange"></app-date-range>
 					</div>
 					<div>
 						<md-input-container>
