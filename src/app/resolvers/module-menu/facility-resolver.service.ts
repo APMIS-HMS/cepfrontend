@@ -8,7 +8,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class FacilityResolverService implements Resolve<Facility> {
-  previousUrl: string = '/';
+  previousUrl = '/';
   selectedFacility: Facility = <Facility>{};
   constructor(public facilityService: FacilitiesService,
     private locker: CoolSessionStorage,
@@ -16,7 +16,7 @@ export class FacilityResolverService implements Resolve<Facility> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Facility> {
-    let tokenObj: any =  <Facility> this.locker.getObject('selectedFacility');
+    const tokenObj: any =  <Facility> this.locker.getObject('selectedFacility');
     return this.facilityService.get(tokenObj._id, {}).then(payload => {
       if (payload) {
         return Observable.of(payload);

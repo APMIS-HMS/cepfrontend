@@ -19,10 +19,10 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   employees: Employee[] = [];
   searchControl = new FormControl();
 
-  pageSize: number = 1;
-  limit: number = 100;
-  total: number = 0;
-  loadIndicatorVisible: boolean = false;
+  pageSize = 1;
+  limit = 100;
+  total = 0;
+  loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
     private personService: PersonService, private locker: CoolSessionStorage,
@@ -38,7 +38,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
 
-    let away = this.searchControl.valueChanges
+    const away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
 
@@ -115,7 +115,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     });
   }
   contactEmployees(employeeData: Employee[]) {
-    let newEmployees: Employee[] = [];
+    const newEmployees: Employee[] = [];
     this.employees.forEach((employee, i) => {
       let found = false;
       let newEmp: Employee = <Employee>{};
@@ -134,7 +134,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, false);
     }
@@ -144,7 +144,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
 
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, true);

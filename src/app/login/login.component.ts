@@ -102,5 +102,5 @@ export class LoginComponent implements OnInit {
     } else {
       this.input.nativeElement.type = 'password';
     }
-  } 
+  }
 }

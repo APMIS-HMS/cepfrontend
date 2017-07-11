@@ -7,7 +7,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class LocationsResolverService implements Resolve<Location> {
-  previousUrl: string = '/';
+  previousUrl = '/';
   constructor(private locationService: LocationService,
     private locker: CoolSessionStorage,
     private router: Router) {

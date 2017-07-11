@@ -20,7 +20,7 @@ export class LoginEmployeeResolverService implements Resolve<Employee> {
     private router: Router) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    const auth:any = this.locker.getObject('auth');
+    const auth: any = this.locker.getObject('auth');
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     return this.employeeService.find({
       query:

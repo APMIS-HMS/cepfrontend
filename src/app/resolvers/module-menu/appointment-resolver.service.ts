@@ -8,7 +8,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class AppointmentResolverService implements Resolve<Appointment> {
-  previousUrl: string = '/';
+  previousUrl = '/';
   selectedFacility: Facility = <Facility>{};
   constructor(private appointmentService: AppointmentService,
     private locker: CoolSessionStorage,
@@ -16,7 +16,7 @@ export class AppointmentResolverService implements Resolve<Appointment> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Appointment> {
-    let id = route.params['appId'];
+    const id = route.params['appId'];
     if (id === undefined) {
       return Observable.of(null);
     }

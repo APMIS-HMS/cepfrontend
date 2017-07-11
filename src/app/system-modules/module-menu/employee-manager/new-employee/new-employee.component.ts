@@ -126,6 +126,7 @@ export class NewEmployeeComponent implements OnInit {
             empNationality: ['', [<any>Validators.required]],
             empState: ['', [<any>Validators.required]],
             empLga: ['', [<any>Validators.required]],
+            // tslint:disable-next-line:quotemark
             empEmail: [, [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$")]],
             empPhonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 

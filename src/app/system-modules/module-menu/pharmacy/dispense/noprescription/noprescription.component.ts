@@ -5,6 +5,7 @@ import { Facility, Appointment } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
+	 // tslint:disable-next-line:max-line-length
 	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -24,24 +25,24 @@ export class NoprescriptionComponent implements OnInit {
 	selectedProducts: any[] = [];
 	departments: string[] = [];
 	clients: any[] = [];
-	selectedDept: string = '';
-	selectedClient: string = '';
-	corporateShow: boolean = false;
-	individualShow: boolean = false;
-	internalShow: boolean = false;
+	selectedDept = '';
+	selectedClient = '';
+	corporateShow = false;
+	individualShow = false;
+	internalShow = false;
 	prescriptions: any[] = [];
 	prescription = {};
-	storeId: string = '';
+	storeId = '';
 	// search variables
-	searchText: string = '';
-	cuDropdownLoading: boolean = false;
-	selectedProductId: string = "";
-	showCuDropdown: boolean = false;
-	price: number = 0;
-	itemPrice: number = 0;
-	itemQuantity: number = 0;
-	totalItemPrice: number = 0;
-	totalItemQuantity: number = 0;
+	searchText = '';
+	cuDropdownLoading = false;
+	selectedProductId = '';
+	showCuDropdown = false;
+	price = 0;
+	itemPrice = 0;
+	itemQuantity = 0;
+	totalItemPrice = 0;
+	totalItemQuantity = 0;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -64,7 +65,7 @@ export class NoprescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 
-		if(this.employeeDetails.storeCheckIn !== undefined) {
+		if (this.employeeDetails.storeCheckIn !== undefined) {
 			this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
 		}
 
@@ -97,15 +98,15 @@ export class NoprescriptionComponent implements OnInit {
 		});
 
 		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
-			if(val > 0) {
-				//this.itemPrice = this.price*val;
+			if (val > 0) {
+				// this.itemPrice = this.price*val;
 				this.itemQuantity = val;
-				this.itemPrice = this.price*val;
+				this.itemPrice = this.price * val;
 				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
 			} else {
 				this._facilityService.announceNotification({
-					type: "Error",
-					text: "Quantity should be greater than 0!"
+					type: 'Error',
+					text: 'Quantity should be greater than 0!'
 				});
 			}
 		});
@@ -113,13 +114,13 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Add items to the prescriptions array.
 	onClickSaveNoPrescription(value: any, valid: boolean) {
-		let prescription = {};
+		const prescription = {};
 
 		// if(this.storeId !== '') {
-			if(value.drug == '' || value.qty == '' || value.batchNumber == '') {
+			if (value.drug === '' || value.qty === '' || value.batchNumber === '') {
 				this._facilityService.announceNotification({
-					type: "Error",
-					text: "Some fields are empty!"
+					type: 'Error',
+					text: 'Some fields are empty!'
 				});
 			} else {
 				switch (value.client) {
@@ -150,9 +151,9 @@ export class NoprescriptionComponent implements OnInit {
 				prescription['totalQuantity'] = this.totalItemQuantity;
 				prescription['totalCost'] = this.totalItemPrice;
 				console.log(prescription);
-				
+
 				this.prescriptions.push(prescription);
-			}	
+			}
 		// } else {
 		// 	this._facilityService.announceNotification({
 		// 		type: "Error",
@@ -163,12 +164,12 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
-		if(this.storeId !== '') {
-			let prescription = {};
-			let drugs = [];
+		if (this.storeId !== '') {
+			const prescription = {};
+			const drugs = [];
 
 			this.prescriptions.forEach(element => {
-				let product = {};
+				const product = {};
 				console.log(element);
 				switch (element.client) {
 					case 'Individual':
@@ -200,7 +201,7 @@ export class NoprescriptionComponent implements OnInit {
 			});
 			prescription['drugs'] = drugs;
 
-			let payload = {
+			const payload = {
 				facilityId: this.facility._id,
 				nonPrescription: prescription,
 				storeId: this.storeId
@@ -224,8 +225,8 @@ export class NoprescriptionComponent implements OnInit {
 					this.noPrescriptionForm.controls['qty'].reset(0);
 					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
 					this._facilityService.announceNotification({
-						type: "Success",
-						text: "Prescription has been sent!"
+						type: 'Success',
+						text: 'Prescription has been sent!'
 					});
 				})
 				.catch(err => {
@@ -233,8 +234,8 @@ export class NoprescriptionComponent implements OnInit {
 				});
 		} else {
 			this._facilityService.announceNotification({
-				type: "Error",
-				text: "You need to check into store."
+				type: 'Error',
+				text: 'You need to check into store.'
 			});
 		}
 	}
@@ -248,16 +249,16 @@ export class NoprescriptionComponent implements OnInit {
 		if (this.searchText.length > 2) {
 			this.products = [];
 			this.cuDropdownLoading = true;
-			
-			if(this.storeId !== '') {
-				//this._productService.find({ query: { facilityId : this.facility._id }})
+
+			if (this.storeId !== '') {
+				// this._productService.find({ query: { facilityId : this.facility._id }})
 				this._inventoryService.find({ query: { facilityId : this.facility._id, storeId: this.storeId }})
 					.then(res => {
 						console.log(res);
-						let tempArray = [];
+						const tempArray = [];
 						// Get all products in the facility, then search for the item you are looing for.
 						res.data.forEach(element => {
-							if(
+							if (
 								(element.totalQuantity > 0) &&
 								element.productObject.name.toLowerCase().includes(this.searchText.toLowerCase())
 							) {
@@ -265,7 +266,7 @@ export class NoprescriptionComponent implements OnInit {
 							}
 						});
 						console.log(tempArray);
-						if(tempArray.length !== 0) {
+						if (tempArray.length !== 0) {
 							this.products = tempArray;
 							this.cuDropdownLoading = false;
 						} else {
@@ -279,8 +280,8 @@ export class NoprescriptionComponent implements OnInit {
 					});
 			} else {
 				this._facilityService.announceNotification({
-					type: "Error",
-					text: "You need to check into store."
+					type: 'Error',
+					text: 'You need to check into store.'
 				});
 			}
 		}
@@ -289,20 +290,20 @@ export class NoprescriptionComponent implements OnInit {
 	onClickCustomSearchItem(event, drugId) {
 		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
 		this.selectedProductId = drugId.getAttribute('data-p-id');
-		let fsId = drugId.getAttribute('data-p-fsid');
-		let sId = drugId.getAttribute('data-p-sid');
-		let cId = drugId.getAttribute('data-p-cid');
-		let batchNumber = drugId.getAttribute('data-p-batchNumber');
+		const fsId = drugId.getAttribute('data-p-fsid');
+		const sId = drugId.getAttribute('data-p-sid');
+		const cId = drugId.getAttribute('data-p-cid');
+		const batchNumber = drugId.getAttribute('data-p-batchNumber');
 		this.price = drugId.getAttribute('data-p-costPrice');
 		this.noPrescriptionForm.controls['batchNumber'].setValue(batchNumber);
 		// Get the selling price for the product
-		// this._facilityPriceService.find({ query : { 
+		// this._facilityPriceService.find({ query : {
 		// 		facilityId : this.facility._id,
 		// 		productId: this.selectedProductId,
 		// 		facilityServiceId: fsId,
 		// 		serviceId: sId, categoryId: cId
 		// 	}})
-		this._assessmentDispenseService.find({ query : { 
+		this._assessmentDispenseService.find({ query : {
 				facilityId : this.facility._id,
 				productId: this.selectedProductId,
 				facilityServiceId: fsId,
@@ -310,8 +311,8 @@ export class NoprescriptionComponent implements OnInit {
 			}})
 			.then(res => {
 				console.log(res);
-				if(res.data.length > 0) {
-					if(res.data[0].price !== undefined) {
+				if (res.data.length > 0) {
+					if (res.data[0].price !== undefined) {
 						this.price = res.data[0].price;
 					}
 				}
@@ -346,7 +347,7 @@ export class NoprescriptionComponent implements OnInit {
 				this.minorLocations = res.minorLocations;
 
 				for (let i = 0; i < res.departments.length; i++) {
-					let dept = res.departments[i];
+					const dept = res.departments[i];
 					if (dept._id === this.selectedDept) {
 						this.units = dept.units;
 						return;
