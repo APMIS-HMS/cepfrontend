@@ -27,6 +27,10 @@
                     <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
                     </div>
+                     <div class="emp-dept">{{employee?.department?.name}}
+                        <span (click)="toggleDepartmentShow()"  class="editButton">
+                        <i class="fa fa-edit"></i></span>
+                    </div>
                     <div *ngIf= "editDepartment" class="emp-dept">
                           <md-select placeholder="Departments" [(ngModel)]="selectedValue">
                             <md-option *ngFor="let department of departments" [value]="department._id">
@@ -34,10 +38,6 @@
                             </md-option>
                         </md-select>
                         <a (click)="updateEmployee()"><i class="fa fa-check"></i></a>
-                    </div>
-                    <div *ngIf= "!editDepartment" class="emp-dept">{{employee?.department?.name}}
-                        <span (click)="toggleDepartmentShow()"  class="editButton">
-                        <i class="fa fa-edit"></i></span>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
@@ -59,8 +59,9 @@
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Bio Data
                         <span (click)="bioDataShow()" class="editButton">
-                        <i class="fa fa-edit"></i></span>
+                        </span><i class="fa fa-edit"></i>
                     </div>
+                    <i class="fa fa-check"></i></span>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
@@ -68,7 +69,6 @@
                           <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -96,7 +96,6 @@
                             {{food.viewValue}}
                             </md-option>
                         </md-select>
-                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -110,7 +109,6 @@
                             <button mdSuffix [mdDatepickerToggle]="picker"></button>
                             </md-input-container>
                             <md-datepicker #picker></md-datepicker>
-                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -131,7 +129,6 @@
                             {{food.viewValue}}
                             </md-option>
                         </md-select>
-                        <a><i class="fa fa-check"></i></a>
                             </div><!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
@@ -146,7 +143,6 @@
                             {{food.viewValue}}
                             </md-option>
                         </md-select>
-                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -161,7 +157,6 @@
                             {{food.viewValue}}
                             </md-option>
                         </md-select>
-                        <a><i class="fa fa-check"></i></a>
                             </div><!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
@@ -174,7 +169,6 @@
                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -186,7 +180,6 @@
                              <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -198,7 +191,6 @@
                              <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -207,8 +199,7 @@
 
                 <div *ngFor="let item of employee?.employeeDetails?.nextOfKin" class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Next of Kin
-                        <span (click)="nextofkinShow()"  class="editButton">
-                        <i class="fa fa-edit"></i></span>
+                        <span (click)="nextofkinShow()"  class="editButton"><i class="fa fa-edit"></i></span>
                     </div>
 
                     <div class="dataMix-wrap color1">
@@ -218,7 +209,6 @@
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -230,7 +220,6 @@
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -242,7 +231,6 @@
                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -254,7 +242,6 @@
                           <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
-                            <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
