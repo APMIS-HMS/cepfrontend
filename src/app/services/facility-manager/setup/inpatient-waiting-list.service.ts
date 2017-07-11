@@ -16,7 +16,7 @@ export class InPatientListService {
   private inPatientItem;
 
   private missionAnnouncedSource = new Subject<any>();
-    missionAnnounced$ = this.missionAnnouncedSource.asObservable();
+  missionAnnounced$ = this.missionAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
@@ -57,14 +57,13 @@ export class InPatientListService {
     return this._socket.remove(id, query);
   }
 
- announceMission(mission: any) {
-       this.missionAnnouncedSource.next(mission);
-    }
+  announceMission(mission: any) {
+    this.missionAnnouncedSource.next(mission);
+  }
 
-    getAnnounceMission()
-    {
-      console.log(this.inPatientItem);
-      return this.inPatientItem;
-      
-    }
+  getAnnounceMission() {
+    console.log(this.inPatientItem);
+    return this.inPatientItem;
+
+  }
 }
