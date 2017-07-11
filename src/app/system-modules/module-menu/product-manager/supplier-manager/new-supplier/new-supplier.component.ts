@@ -55,17 +55,21 @@ export class NewSupplierComponent implements OnInit {
     console.log(form);
     if (form.valid) {
       this.mainErr = true;
-
-      this.supplierService.create(form.value).then(payload => {
-        console.log(payload);
-        this.frm_newSupplier.reset();
-      });
+      console.log('creating');
+      // this.supplierService.create(form.value).then(payload => {
+      //   console.log('created');
+      //   console.log(payload);
+      //   this.frm_newSupplier.reset();
+      // });
 
       if (this.selectedSupplier._id === undefined) {
+        console.log(1)
+        form.value.facilityId = this.selectedFacility._id;
         this.supplierService.create(form.value).then(payload => {
           this.frm_newSupplier.reset();
         });
       } else {
+        console.log(2)
         form.value._id = this.selectedSupplier._id;
         this.supplierService.update(form.value).then(payload => {
           this.frm_newSupplier.reset();

@@ -13,7 +13,8 @@ export class StoreCheckInComponent implements OnInit {
 
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
-	@Input() loginEmployee: Employee = <Employee>{};
+	@Input() loginEmployee: Employee;
+	@Input() workSpace: any;
 
 	public storeCheckin: FormGroup;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -29,6 +30,8 @@ export class StoreCheckInComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		console.log(this.loginEmployee);
+		console.log(this.workSpace);
 		this.storeCheckin = this.formBuilder.group({
 			location: ['', []],
 			room: ['', []],
