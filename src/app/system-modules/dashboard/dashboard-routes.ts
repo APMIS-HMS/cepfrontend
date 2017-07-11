@@ -79,10 +79,10 @@ const appRoutes: Routes = [
                 path: 'purchase-manager',
                 loadChildren: '../module-menu/purchase-manager/purchase-manager.module#PurchaseManagerModule'
             },
-            // {
-            //     path: 'inventory-manager',
-            //     loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule'
-            // },
+            {
+                path: 'inventory-manager',
+                loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule'
+            },
             // {
             //     path: 'pharmacy',
             //     loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
