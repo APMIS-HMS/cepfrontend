@@ -35,6 +35,7 @@ export class AddFacilityModuleComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		console.log(this.inputFacility);
 		this.getModules();
 		this.frm_selectModules = this.formBuilder.group({
 			chk_pharmacy: [''],
@@ -61,21 +62,24 @@ export class AddFacilityModuleComponent implements OnInit {
 
 	getModules() {
 		this.facilityModuleService.findAll().then((payload) => {
-			if (this.inputFacility.facilitymoduleId.length > 0) { 
-				console.log("A here");
+			if (this.inputFacility.facilitymoduleId.length > 0) {
 				payload.data.forEach(moduleItem => {
-					this.inputFacility.facilitymoduleId.forEach(selectedModuleId => {
-						if (selectedModuleId == moduleItem._id) {
-							moduleItem.checked = true;
+					if(this.inputFacility.facilitymoduleId.includes(moduleItem._id)){
+						moduleItem.checked = true;
+						this.modules.push(moduleItem);
+					}else{
+						moduleItem.checked = false;
 							this.modules.push(moduleItem);
-						}
-					});
+					}
 				});
 			}
-			else{
-				this.modules = payload.data;
+			else {
+				payload.data.forEach(element => {
+					element.checked = false;
+					this.modules.push(element);
+				});
 			}
-			
+
 			let count: number = this.modules.length;
 			let partOne: number = Math.floor(count / 2);
 			let partTwo = count - partOne;
@@ -101,46 +105,50 @@ export class AddFacilityModuleComponent implements OnInit {
 	}
 
 
-selectModules_next() {
-	this.f_module = false;
-	this.sg4_show = true;
-	this.partOneModules.forEach((item, i) => {
-		if (item.checked) {
-			this.inputFacility.facilitymoduleId.push(item._id)
+
+	selectModules_next() {
+		console.log(this.frm_selectModules.controls['chk_pharmacy'].value);
+		console.log("am calling save module");
+		this.f_module = false;
+		this.sg4_show = true;
+		console.log(this.inputFacility);
+		this._facilityService.update(this.inputFacility).then(payload => {
+			this.inputFacility = payload;
+			console.log(this.inputFacility);
+		}, error => {
+			console.log(error);
+		});
+	}
+
+	addModuleItem(value) {
+		if (!this.inputFacility.facilitymoduleId.includes(value._id)) {
+			this.inputFacility.facilitymoduleId.push(value._id);
 		}
-	})
-	this.partTwoModules.forEach((item, i) => {
-		if (item.checked) {
-			this.inputFacility.facilitymoduleId.push(item._id)
-		}
-	});
-	console.log(this.inputFacility);
-	this._facilityService.update(this.inputFacility).then(payload => {
-		this.inputFacility = payload;
-	}, error => {
-		console.log(error);
-	});
-}
+	}
 
-back_facilityForm4() {
-	this.f_module = true;
-	this.sg4_show = false;
-	this.back_f_module = false;
-}
+	back_facilityForm4() {
+		this.modules = [];
+		this.partOneModules = [];
+		this.partTwoModules = [];
+		this.getModules();
+		this.f_module = true;
+		this.sg4_show = false;
+		this.back_f_module = false;
+	}
 
-back_selectModules() {
-	this.f_module = false;
-	this.sg4_show = false;
-	this.back_f_module = true;
-}
+	back_selectModules() {
+		this.f_module = false;
+		this.sg4_show = false;
+		this.back_f_module = true;
+	}
 
-facilitySetup_finish() {
-	this.closeModal.emit(true);
-}
+	facilitySetup_finish() {
+		this.closeModal.emit(true);
+	}
 
 
-close_onClick() {
-	this.closeModal.emit(true);
-}
+	close_onClick() {
+		this.closeModal.emit(true);
+	}
 
 }

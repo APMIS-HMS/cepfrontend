@@ -3,14 +3,14 @@
   <div class="modal_mini_title2">Select required modules for your facility</div>
   <div class="control-group">
     <label *ngFor="let module of partOneModules" class="control control--checkbox">{{module.name}}
-          <input type="checkbox" formControlName="chk_pharmacy" [checked]="module.checked"/>
+          <input type="checkbox" formControlName="chk_pharmacy" (click)="addModuleItem(module)" [checked]="module.checked"/>
           <div class="control__indicator"></div>
         </label>
   </div>
 
   <div class="control-group">
     <label *ngFor="let module of partTwoModules" class="control control--checkbox">{{module.name}}
-          <input type="checkbox" formControlName="chk_pharmacy" [checked]="module.checked"/>
+          <input type="checkbox" formControlName="chk_pharmacy" (click)="addModuleItem(module)" [checked]="module.checked"/>
           <div class="control__indicator"></div>
         </label>
   </div>

@@ -72,3 +72,11 @@ th i{
     margin-right: 10px;
     cursor: pointer;
 }
+td .empWrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+td .empWrap .list-img{
+    margin: 5px;
+}
