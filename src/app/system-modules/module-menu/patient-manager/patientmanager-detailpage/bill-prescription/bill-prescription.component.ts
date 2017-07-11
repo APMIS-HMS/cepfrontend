@@ -23,6 +23,8 @@ export class BillPrescriptionComponent implements OnInit {
 	itemCost: number = 0;
 	title: string = '';
 	price: number = 0;
+	totalPrice: number = 0;
+	batchNumber: string = '';
 	qtyInStores: number = 0;
 	storeId: string = '';
 
@@ -57,25 +59,16 @@ export class BillPrescriptionComponent implements OnInit {
 			qty: [0, [<any>Validators.required]]
 		});
 
-		// this.addBillForm.controls['drug'].valueChanges.subscribe(val => {
-		// 	console.log(val);
-		// 	let fsId: string = '';
-		// 	let sId: string = '';
-		// 	let cId: string = '';
-		// 	// Get the service for the product
-		// 	this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-		// 		.then(res => {
-		// 			console.log(res);
-		// 			if(res.data.length > 0) {
-		// 				if(res.data[0].price !== undefined) {
-		// 					this.price = res.data[0].price;
-		// 				}
-		// 			}
-		// 		})
-		// 		.catch(err => {
-		// 			console.log(err);
-		// 		})
-		// })
+		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
+			if(val > 0) {
+				this.totalPrice = this.price*val;
+			} else {
+				this._facilityService.announceNotification({
+					type: "Error",
+					text: "Quantity should be greater than 0!"
+				});
+			}
+		})
 	}
 
 	// 
@@ -108,13 +101,16 @@ export class BillPrescriptionComponent implements OnInit {
 		let genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
 			//Get the list of products from a facility, and then search if the generic
 			//that was entered by the doctor in contained in the list of products
+			console.log(this.facility);
 			this._productService.find({ query: { facilityId : this.facility._id }})
 				.then(res => {
 					console.log(res);
+					this.drugs = res.data;
 					let tempArray = [];
 					// Get all products in the facility, then search for the item you are looking for.
 					res.data.forEach(element => {
 						if(element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
+							console.log(element);
 							tempArray.push(element);
 						}
 					});
@@ -132,30 +128,32 @@ export class BillPrescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.selectedDrug = drugId.viewValue;
-		let pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		//let pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		let pId = '592417935fbce732205cf0aa';
 		let sId = drugId._element.nativeElement.getAttribute('data-p-id');
 		let fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
 		let cId = drugId._element.nativeElement.getAttribute('data-p-cid');
+		console.log(pId);
 		// Get the service for the product
-		if(this.storeId !== '') {
+		//if(this.storeId !== '') {
 			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
 				.then(res => {
-					console.log(res);
-					// if(res.data.length > 0) {
-					// 	if(res.data[0].price !== undefined) {
-					// 		this.price = res.data[0].price;
-					// 	}
-					// }
+					if(res.length > 0) {
+						console.log(res);
+						this.price = res[0].price;
+						this.batchNumber = res[0].batchNo;
+						this.qtyInStores = res[0].availableQty;
+					}
 				})
 				.catch(err => {
 					console.log(err);
 				});
-		} else {
-			this._facilityService.announceNotification({
-				type: "Error",
-				text: "You need to check into store."
-			});
-		}
+		// } else {
+		// 	this._facilityService.announceNotification({
+		// 		type: "Error",
+		// 		text: "You need to check into store."
+		// 	});
+		// }
 
 
 		// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
