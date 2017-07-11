@@ -1,12 +1,17 @@
 <div class="page-title">Appointments</div>
 
-<ul class="topmenuwrap">
-    <li [routerLink]="['/dashboard/clinic/schedule-appointment']">
-        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        <span>Schedule Appointment</span>
-    </li>
-</ul>
-
+<div class="preTbl-topItems-wrap">
+    <div class="dr-wrap">
+        <app-date-range [(dateRange)]="dateRange"></app-date-range>
+    </div>
+    
+    <ul class="topmenuwrap">
+        <li [routerLink]="['/dashboard/clinic/schedule-appointment']">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Schedule Appointment</span>
+        </li>
+    </ul>
+</div>
 <table cellpadding="0" cellspacing="0" border="0.5"> 
     <thead>
         <tr>
@@ -48,13 +53,6 @@
         <tr>
             <td colspan="7">
                 <div class="tbl-actionRow">
-					<div>
-						<md-input-container>
-							<input mdInput  [mdDatepicker]="picker" placeholder="From (Date Range)">
-							<button mdSuffix [mdDatepickerToggle]="picker"></button>
-						</md-input-container>
-						<md-datepicker #picker></md-datepicker>
-					</div>
 					<div>
 						<md-input-container>
 							<input mdInput placeholder="Clinic" [mdAutocomplete]="auto" [formControl]="clinicCtrl">
