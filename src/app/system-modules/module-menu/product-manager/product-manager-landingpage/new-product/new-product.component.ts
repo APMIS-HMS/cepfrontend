@@ -6,7 +6,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, FacilityService } from '../../../../../models/index';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-product',
@@ -53,7 +53,7 @@ export class NewProductComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
     private presentationService: PresentationService, private productTypeService: ProductTypeService,
-    private productService: ProductService, private dictionariesService: DictionariesService, private locker: CoolLocalStorage,
+    private productService: ProductService, private dictionariesService: DictionariesService, private locker: CoolSessionStorage,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private strengthService: StrengthService,
     private drugListApiService: DrugListApiService, private drugDetailsService: DrugDetailsService) { }
 

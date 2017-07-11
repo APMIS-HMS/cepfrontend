@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, Prescription, PrescriptionItem, Dispense,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
@@ -26,7 +26,7 @@ export class PrescriptionComponent implements OnInit {
 	constructor(
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,

@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@ang
 // tslint:disable-next-line:max-line-length
 import { StoreService, ProductService, StrengthService, ProductRequisitionService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Requisition, RequisitionProduct, Employee } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -51,7 +51,7 @@ export class RequisitionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _inventoryEventEmitter: InventoryEmitterService,
     private storeService: StoreService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private productService: ProductService,
     private strengthService: StrengthService,
     private employeeService: EmployeeService,

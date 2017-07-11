@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FacilitiesService, PatientService, InvoiceService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice } from '../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
     selector: 'app-payment',
@@ -16,7 +16,7 @@ export class PaymentComponent implements OnInit {
     invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
 
     constructor(private formBuilder: FormBuilder,
-        private locker: CoolLocalStorage,
+        private locker: CoolSessionStorage,
         public facilityService: FacilitiesService,
         private invoiceService: InvoiceService,
         private patientService: PatientService) {

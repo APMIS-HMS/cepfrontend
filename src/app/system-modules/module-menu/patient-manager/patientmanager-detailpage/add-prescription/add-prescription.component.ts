@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
@@ -28,7 +28,7 @@ export class AddPrescriptionComponent implements OnInit {
 
 	constructor(
 		private _route: ActivatedRoute,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _productService: ProductService
 	) {
 		let url = window.location.href;

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Department } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-unit',
@@ -26,7 +26,7 @@ export class NewUnitComponent implements OnInit {
   public frmNewUnit: FormGroup;
   clinicForm: FormGroup;
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {

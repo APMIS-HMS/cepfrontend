@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FacilitiesService } from '../../services/facility-manager/setup/index';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +10,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private facilityService: FacilitiesService, private toast: ToastsManager, private locker: CoolLocalStorage) {
+  constructor(private facilityService: FacilitiesService, private toast: ToastsManager, private locker: CoolSessionStorage) {
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
       if (obj.users !== undefined && obj.users.length > 0) {
         const auth: any = this.locker.getObject('auth');

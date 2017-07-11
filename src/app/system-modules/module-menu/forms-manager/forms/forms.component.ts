@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsService } from '../../../../services/facility-manager/setup/index';
 import { ModuleViewModel, Facility } from '../../../../models/index';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-forms',
@@ -183,7 +183,7 @@ export class FormsComponent implements OnInit {
   selectedForm: any = <any>{};
 
   constructor(private route: ActivatedRoute, private formsService: FormsService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private formBuilder: FormBuilder) {
 
     this.txtForm.valueChanges.subscribe(value => {

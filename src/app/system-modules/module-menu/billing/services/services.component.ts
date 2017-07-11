@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FacilitiesServiceCategoryService, TagService } from '../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, Tag } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
 
@@ -28,7 +28,7 @@ export class ServicesComponent implements OnInit {
   selectedCategory: any = <any>{};
 
   constructor(private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-    private _locker: CoolLocalStorage, private _tagService: TagService) {
+    private _locker: CoolSessionStorage, private _tagService: TagService) {
     this._facilitiesServiceCategoryService.listner.subscribe(payload => {
       this.getCategories();
       this.getTags();

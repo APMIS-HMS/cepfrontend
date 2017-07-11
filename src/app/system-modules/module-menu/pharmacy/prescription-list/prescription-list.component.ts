@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Prescription, PrescriptionItem } from '../../../../models/index';
 import { PharmacyEmitterService } from '../../../../services/facility-manager/pharmacy-emitter.service';
@@ -16,7 +16,7 @@ export class PrescriptionListComponent implements OnInit {
 	loading: boolean = true;
 
 	constructor(
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
 	) {

@@ -3,14 +3,14 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { Facility } from '../../models/index';
 import { FormTypeService } from '../../services/module-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 
 @Injectable()
 export class FormTypeResolverService implements Resolve<any> {
   selectedFacility: Facility = <Facility>{};
   constructor(private formTypeService: FormTypeService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private router: Router) {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
   }

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PersonService, CompanyHealthCoverService, CorporateFacilityService,
    FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Person, PersonPrincipal, Department, CompanyHealthCover } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-add-employee',
@@ -23,7 +23,7 @@ export class AddEmployeeComponent implements OnInit {
   people: Person[] = [];
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private personService: PersonService,
     public facilityService: FacilitiesService,
     private companyHealthCoverService: CompanyHealthCoverService,

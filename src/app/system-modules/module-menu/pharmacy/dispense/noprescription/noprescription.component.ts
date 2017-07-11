@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, Appointment } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
@@ -46,7 +46,7 @@ export class NoprescriptionComponent implements OnInit {
 	constructor(
 		private _fb: FormBuilder,
 		private _el: ElementRef,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _facilityService: FacilitiesService,
 		private _dispenseService: DispenseService,

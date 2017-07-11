@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FacilitiesService, FamilyHealthCoverService, CountriesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, PersonPrincipal, FamilyHealthCover, Country } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -25,7 +25,7 @@ export class FamilyCoverComponent implements OnInit {
   constructor(private familyHealthCoverService: FamilyHealthCoverService,
     public facilityService: FacilitiesService,
     private countryService: CountriesService,
-    private locker: CoolLocalStorage) {
+    private locker: CoolSessionStorage) {
     this.familyHealthCoverService.listner.subscribe(payload => {
       this.getActiveFamilyHealthCover();
       this.getInActiveFamilyHealthCover();

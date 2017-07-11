@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-department',
@@ -23,7 +23,7 @@ export class NewDepartmentComponent implements OnInit {
   public frmNewDept: FormGroup;
 
   constructor(private formBuilder: FormBuilder, public facilityService: FacilitiesService,
-    private locker: CoolLocalStorage) {
+    private locker: CoolSessionStorage) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     })

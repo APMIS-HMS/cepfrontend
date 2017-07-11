@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { SupplierService, ProductService, PurchaseOrderService, StoreService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { PurchaseOrder } from '../../../../models/index';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -23,7 +23,7 @@ export class PurchaseOrderComponent implements OnInit {
   selectedOrder: any = <any>{};
   constructor(
     private supplierService: SupplierService, private router: Router,
-    private storeService: StoreService, private locker: CoolLocalStorage, private productService: ProductService,
+    private storeService: StoreService, private locker: CoolSessionStorage, private productService: ProductService,
     private purchaseOrderService: PurchaseOrderService,
     private _purchaseEventEmitter: PurchaseEmitterService) { }
 
