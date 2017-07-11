@@ -43,6 +43,7 @@
     "ng-pick-daterange": "^1.0.0",
     "ng-pick-datetime": "^4.2.2",
     "ng2-currency-mask": "~4.0.2",
+    "ng2-datepicker": "~1.8.3",
     "ng2-img-cropper": "~0.8.8",
     "ng2-pagination": "~2.0.1",
     "ng2-toastr": "^4.1.2",
