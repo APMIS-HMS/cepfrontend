@@ -60,7 +60,7 @@
                     <div class="empDataBlock-title">Bio Data
                         <div *ngIf="!biodatas" (click)="bioDataShow()" class="editButton">
                         <i class="fa fa-edit"></i></div>
-                        <div *ngIf="biodatas" class="editButton">
+                        <div *ngIf="biodatas" (click)="bioDataShow()" class="editButton">
                             <i class="fa fa-check"></i>
                         </div>
                     </div>
@@ -118,7 +118,8 @@
 
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Contact Information
-                        <span (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                        <span *ngIf= "!contacts" (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                        <span *ngIf= "contacts" (click)="contactShow()" class="editButton"><i class="fa fa-check"></i></span>
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
@@ -200,7 +201,8 @@
 
                 <div *ngFor="let item of employee?.employeeDetails?.nextOfKin" class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Next of Kin
-                        <span (click)="nextofkinShow()"  class="editButton"><i class="fa fa-edit"></i></span>
+                        <span *ngIf = "!nextofkin" (click)="nextofkinShow()"  class="editButton"><i class="fa fa-edit"></i></span>
+                        <span *ngIf = "nextofkin" (click)="nextofkinShow()"  class="editButton"><i class="fa fa-check"></i></span>
                     </div>
 
                     <div class="dataMix-wrap color1">
