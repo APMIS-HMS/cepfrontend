@@ -18,19 +18,22 @@
 
     <div *ngIf="locationDetailContentArea">
 
+        <ul class="goback-btn">
+            <li [class.navActive]="homeContentArea" (click)="locationHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
+        </ul>
+
         <div class="block1">
             <div class="headers headers1">
                 <div class="block-title">{{locationObj.name}}</div>
-                <ul class="moduleNav">
-                    <li [class.navActive]="homeContentArea" (click)="locationHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
-                </ul>
-            </div>
 
-            <div class="module-menu rhs">
-                <div class="btn-1 btn-blue" (click)="newSubLocationModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Minor Location</div>
-                <div routerLink="/dashboard/ward-manager/setup" class="short-cut-link">
-                    <i class="fa fa-arrow-circle-o-right"></i> Go to Ward Manager
-                </div>
+                <div class="module-menu">
+                    <div class="btn-1 btn-blue" (click)="newSubLocationModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Minor Location</div>
+               
+                    <div routerLink="/dashboard/ward-manager/setup" class="short-cut-link">
+                        <i class="fa fa-arrow-circle-o-right"></i> Go to Ward Manager
+                    </div>
+                </div>            
+                
             </div>
             <div class="clear"></div>
 
