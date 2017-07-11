@@ -58,10 +58,12 @@
             <div class="empData-body">
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Bio Data
-                        <span (click)="bioDataShow()" class="editButton">
-                        </span><i class="fa fa-edit"></i>
+                        <div *ngIf="!biodatas" (click)="bioDataShow()" class="editButton">
+                        <i class="fa fa-edit"></i></div>
+                        <div *ngIf="biodatas" class="editButton">
+                            <i class="fa fa-check"></i>
+                        </div>
                     </div>
-                    <i class="fa fa-check"></i></span>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
@@ -82,7 +84,6 @@
                             {{food.viewValue}}
                             </md-option>
                         </md-select>
-                        <a><i class="fa fa-check"></i></a>
                         </div>
                         <div class="clear"></div>
                     </div>
