@@ -78,6 +78,7 @@ export class BillPrescriptionComponent implements OnInit {
 	onClickSaveCost(value, valid) {
 		if(valid) {
 			if(this.cost > 0 || value.qty > 0) {
+				console.log(value);
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 

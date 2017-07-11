@@ -40,7 +40,12 @@
                                 </form>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12">
-                                        <button md-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid)" class="btn btn-default">Save</button>
+                                        <div class="col-xs-6 no-padding">
+                                            <button md-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid);" class="btn btn-default">Save</button>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <button md-raised-button (click)="onClickClose($event);" class="btn btn-default">Cancel</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

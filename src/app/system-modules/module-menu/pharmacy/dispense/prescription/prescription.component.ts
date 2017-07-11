@@ -14,6 +14,7 @@ import { FacilitiesService, PrescriptionService, DispenseService, MedicationList
 })
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
+	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	billshow: boolean = false;
 	prescriptionId: string = '';
@@ -39,7 +40,7 @@ export class PrescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 
-		this.storeId = '';
+		this.storeId = '590b2070db527124e0697b18';
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
@@ -90,23 +91,33 @@ export class PrescriptionComponent implements OnInit {
 			storeId: this.storeId,
 		}
 		console.log(dispense);
-		// this._dispenseService.create(this.prescriptionItems)
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		if(res.data) {
-		// 			this._dispenseService.create(this.prescriptionItems)
-		// 				.then(res => {
-		// 					console.log(res);
-		// 					this._router.navigate(['/dashboard/pharmacy/prescriptions']);
-		// 				})
-		// 				.catch(err => {
-		// 					console.log(err);
-		// 				});
-		// 		}
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 	});
+		this._dispenseService.create(dispense)
+			.then(res => {
+				console.log(res);
+				if(res.data) {
+					// let medication = <MedicationList>{
+					// 	facilityId: this.facility._id,
+					// 	dispenseById: this.employeeDetails._id,
+					// 	dispenseId: res.,
+					// 	storeId: this.storeId,
+					// 	prescriptionId: res.prescriptionId,
+					// 	statusId: res.statusId,
+					// 	patientId: res.patientId,
+					// 	medicationEndDate: 
+					// }
+					// this._medicationListService.create()
+					// 	.then(res => {
+					// 		console.log(res);
+					// 		this._router.navigate(['/dashboard/pharmacy/prescriptions']);
+					// 	})
+					// 	.catch(err => {
+					// 		console.log(err);
+					// 	});
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 
 	// Get all drugs from generic

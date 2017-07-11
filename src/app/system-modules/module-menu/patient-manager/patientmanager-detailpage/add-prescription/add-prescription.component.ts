@@ -25,6 +25,8 @@ export class AddPrescriptionComponent implements OnInit {
 	loading: boolean = false;
 	totalCost: number = 0;
 	totalQuantity: number = 0;
+	isDispensePage: boolean = false;
+	isPrescriptionPage: boolean = false;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -34,20 +36,26 @@ export class AddPrescriptionComponent implements OnInit {
 		let url = window.location.href;
 		if(!url.includes('patient-manager-detail')) {
 			this.loading = true;
+			this.isDispensePage = true;
+		} else {
+			this.isPrescriptionPage = true;
 		}
 	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.prescriptionItems.prescriptionItems = [];
-		this.isDispensed.subscribe(event => {
-			if(event) {
-				this.totalCost = 0;
-				this.totalQuantity = 0;
-				this.prescriptionData = <Prescription>{};
-				this.prescriptionItems.prescriptionItems = [];
-			}
-		});
+		
+		if(this.isDispensed !== undefined) {
+			this.isDispensed.subscribe(event => {
+				if(event) {
+					this.totalCost = 0;
+					this.totalQuantity = 0;
+					this.prescriptionData = <Prescription>{};
+					this.prescriptionItems.prescriptionItems = [];
+				}
+			});
+		}
 	}
 
 	onClickDeleteItem(value: any) {
@@ -63,14 +71,14 @@ export class AddPrescriptionComponent implements OnInit {
 	}
 
 	toggleBill(index, item) {
-		if(!item.isBilled) {
-			this.billShow = true;
+		//if(!item.isBilled) {
+			this.billShow = !this.billShow;
 			this.billShowId = index;
 			this.prescriptionItems.index = index;
 			this.prescriptionItems.totalCost = this.totalCost;
 			this.prescriptionItems.totalQuantity = this.totalQuantity;
 			this.prescriptionData = this.prescriptionItems;
-		}
+		//}
 	}
 
 	close_onClick(e) {

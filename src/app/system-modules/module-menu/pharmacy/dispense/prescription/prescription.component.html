@@ -41,6 +41,9 @@
                 <p class="table-padding">Batch</p>
             </div>
             <div class="table-head-inner-content cost">
+                <p class="table-padding">Unit Price</p>
+            </div>
+            <div class="table-head-inner-content">
                 <p class="table-padding">Cost</p>
             </div>
         </div>
@@ -60,7 +63,10 @@
                 <p class="table-padding">{{ prescription.batch }}</p>
             </div>
             <div class="table-data cost">
-                <p class="table-padding">&#x20A6;{{ prescription.cost }}</p>
+                <p class="table-padding" style="text-align: right;width: 100%;">&#x20A6;{{ prescription.cost }}</p>
+            </div>
+            <div class="table-data">
+                <p class="table-padding" style="text-align: right;width: 100%;">&#x20A6;{{ prescription.cost * prescription.quantity }}</p>
             </div>
         </div>
         <div class="table-inner text-center" *ngIf="prescriptions.length === 0 && !loading">

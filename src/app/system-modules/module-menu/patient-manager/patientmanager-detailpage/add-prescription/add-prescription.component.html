@@ -16,13 +16,21 @@
             </div>
             <div class="pres-data instruction-text">{{ prescription.patientInstruction }}</div>
             <div class="pres-data">{{ prescription.refillCount }}</div>
-            <div class="pres-data action-long">
+            <div *ngIf="isPrescriptionPage" class="pres-data action-long">
                 <a class="trash-box" (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
                 <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</md-checkbox>
                 <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
-                <span *ngIf="!prescription.isBilled">Bill</span>
-                <span *ngIf="prescription.isBilled" style="color: #fff;">Billed</span>
-            </button>
+                    <span *ngIf="!prescription.isBilled">Bill</span>
+                    <span *ngIf="prescription.isBilled" style="color: #fff;">Billed</span>
+                </button>
+            </div>
+            <div *ngIf="isDispensePage" class="pres-data action-long">
+                <a class="trash-box" (click)="toggleBill(i, prescription);"><i class="fa fa-edit"></i></a>
+                <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</md-checkbox>
+                <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
+                    <span *ngIf="!prescription.isBilled">Bill</span>
+                    <span *ngIf="prescription.isBilled" style="color: #fff;">Billed</span>
+                </button>
             </div>
         </div>
     </div>
