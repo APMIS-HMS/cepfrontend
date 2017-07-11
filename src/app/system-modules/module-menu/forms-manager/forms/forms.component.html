@@ -1,11 +1,12 @@
 <div class="pg-wrap">
     <div class="survery">
         <div class="pg-title">Form Generator</div>
-        <div class="dx-field dx-field-full">
+        <div class="container">
             <md-select placeholder="Forms" [formControl]="txtForm">
                 <md-option *ngFor="let item of forms" [value]="item._id">{{item.title}}</md-option>
             </md-select>
             <button class="on-create-btn" (click)="onCreate()"><i class="fa fa-plus"></i></button>
+            
         </div>
         <div class="formWrap">
             <form [formGroup]="frm_document" novalidate>
@@ -37,8 +38,8 @@
                     <div class="checkbox-wrap">
                         <div *ngFor="let control of frm_checkboxGroup.controls['myValues'].controls; let i=index" class="checkbox-itemWrap">
                             <div class="dx-field">
-                                <div class="checkbox-label">{{modules[i].name}}</div>
-                                 <md-checkbox (change)="onValueChanged($event,modules[i])" [value]="modules[i].checked"  [formControl]="control"></md-checkbox>
+                                <div class="checkbox-label"></div>
+                                 <md-checkbox (change)="onValueChanged($event,modules[i])" [value]="modules[i].checked"  [formControl]="control">{{modules[i].name}}</md-checkbox>
                                 <!--<dx-check-box [formControl]="control" (onValueChanged)="onValueChanged($event,modules[i])" value="{{modules[i].checked}}"></dx-check-box>-->
                             </div>
                         </div>
