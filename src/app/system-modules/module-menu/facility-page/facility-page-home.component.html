@@ -1,9 +1,10 @@
 <div class="survery text-center">
     <ul id="breadcrumb">
         <li><a><i class="fa fa-home"></i> Home</a></li>
-        <li><a><i class="fa fa-medkit"></i> Departments</a></li>
-        <li><a><i></i> Location</a></li>
-        <li><a><i></i> Workspace</a></li>
+        <li><a><i class="fa  fa-building"></i> Departments</a></li>
+        <li><a><i class="fa  fa-location-arrow"></i> Location</a></li>
+        <li><a><i class="fa  fa-user"></i> Employee</a></li>
+        <li><a><i class="fa  fa-building"></i> Workspace</a></li>
     </ul>
 </div>
 
@@ -30,10 +31,11 @@
                 <li (click)="changeRoute('modules')" [class.navActive]="dashboardContentArea">Modules</li>
                 <li (click)="changeRoute('departments')" [class.navActive]="departmentsContentArea">Departments</li>
                 <li (click)="changeRoute('locations')" [class.navActive]="locationsContentArea">Locations</li>
+                <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
                 <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>
                 <li (click)="changeRoute('options')" [class.navActive]="optionsContentArea">Options</li>
                 <li (click)="changeRoute('profession')" [class.navActive]="professionContentArea">Profession</li>
-                <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
+                
             </ul>
         </div>
         <div class="rhs inner-page-contentArea">
