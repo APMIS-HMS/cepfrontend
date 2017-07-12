@@ -96,41 +96,35 @@ export class PrescriptionComponent implements OnInit {
 				console.log(res);
 				if(res.data) {
 					//res.data[0]
-					let medication = <MedicationList>{
-						facilityId: this.facility._id,
-						dispenseById: res.prescription.employeeId,
-						dispenseId: res._id,
-						storeId: this.storeId,
-						prescriptionId: res.prescription.prescriptionId,
-						statusId: res.statusId,
-						patientId: res.prescription.patientId,
-						medicationEndDate: res.createdAt
-					};
+					// let medication = <MedicationList>{
+					// 	facilityId: this.facility._id,
+					// 	dispenseById: res.prescription.employeeId,
+					// 	dispenseId: res._id,
+					// 	storeId: this.storeId,
+					// 	prescriptionId: res.prescription.prescriptionId,
+					// 	statusId: res.statusId,
+					// 	patientId: res.prescription.patientId,
+					// 	medicationEndDate: res.createdAt
+					// };
 
-					this._medicationListService.create(medication)
-						.then(res => {
-							console.log(res);
-							console.log(this.prescriptionItems);
-							this.prescriptionItems.isDispensed = true;
-							this._prescriptionService.update(this.prescriptionItems)
-								.then(res => {
-									console.log(res);
-									this.loading = false;
-									this.prescriptionItems = res;
-									res.prescriptionItems.forEach(element => {
-										if (element.isBilled) {
-											this.prescriptions.push(element);
-										}
-									});
-								})
-								.catch(err => {
-									console.log(err);
-								});
-							this._router.navigate(['/dashboard/pharmacy/prescriptions']);
-						})
-						.catch(err => {
-							console.log(err);
-						});
+					// this._medicationListService.create(medication)
+					// 	.then(res => {
+					// 		console.log(res);
+					// 		console.log(this.prescriptionItems);
+					// 		this.prescriptionItems.isDispensed = true;
+					// 		this._prescriptionService.update(this.prescriptionItems)
+					// 			.then(res => {
+					// 				console.log(res);
+									
+					// 			})
+					// 			.catch(err => {
+					// 				console.log(err);
+					// 			});
+					// 		this._router.navigate(['/dashboard/pharmacy/prescriptions']);
+					// 	})
+					// 	.catch(err => {
+					// 		console.log(err);
+					// 	});
 				}
 			})
 			.catch(err => {
