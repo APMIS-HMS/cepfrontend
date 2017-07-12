@@ -110,13 +110,14 @@ export class BillPrescriptionComponent implements OnInit {
 			// that was entered by the doctor in contained in the list of products
 			this._productService.find({ query: { facilityId : this.facility._id }})
 				.then(res => {
-					this.drugs = res.data;
-					const tempArray = [];
+					console.log(res);
+					let tempArray = [];
 					// Get all products in the facility, then search for the item you are looking for.
 					res.data.forEach(element => {
-						if (element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
-							console.log(element);
-							tempArray.push(element);
+						if(element.genericName !== undefined) {
+							if (element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
+								tempArray.push(element);
+							} 
 						}
 					});
 					if (tempArray.length !== 0) {
@@ -132,13 +133,14 @@ export class BillPrescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.selectedDrug = drugId.viewValue;
-		// let pId = drugId._element.nativeElement.getAttribute('data-p-id');
-		const pId = '592417935fbce732205cf0aa';
+		let pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		//const pId = '592417935fbce732205cf0aa';
 		const sId = drugId._element.nativeElement.getAttribute('data-p-id');
 		const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
 		const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
 		// Get the service for the product
 		// if(this.storeId !== '') {
+			console.log(pId);
 			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
 				.then(res => {
 					if (res.length > 0) {
