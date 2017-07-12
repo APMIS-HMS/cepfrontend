@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FacilitiesService, EmployeeService, WorkSpaceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, WorkSpace } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { LocationService } from '../../../../services/module-manager/setup/location.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -34,7 +34,7 @@ export class FacilitypageWorkspaceComponent implements OnInit {
 
   selectedWorkSpace: any = <any>{};
   // loadIndicatorVisible = true;
-  constructor(private locker: CoolLocalStorage,
+  constructor(private locker: CoolSessionStorage,
     private locationService: LocationService,
     private employeeService: EmployeeService,
     private route: ActivatedRoute,

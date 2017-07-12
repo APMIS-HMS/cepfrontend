@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
@@ -22,19 +22,19 @@ export class BillPrescriptionComponent implements OnInit {
 	selectedDrug: string = '';
 	itemCost: number = 0;
 	title: string = '';
-	price: number = 0; // Unit price for each drug.
-	totalPrice: number = 0; // Total price for each drug selected.
-	totalCost: number = 0; // The overall price for all drugs selected.
+	cost: number = 0; // Unit price for each drug.
+	totalCost: number = 0; // Total price for each drug selected.
+	totalQuantity: number = 0;
 	batchNumber: string = '';
 	qtyInStores: number = 0;
 	storeId: string = '';
 
 	mainErr: boolean = true;
-	errMsg: string = 'You have unresolved errors';
+	errMsg = 'You have unresolved errors';
 
 	constructor(
 		private _fb: FormBuilder,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _productService: ProductService,
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
@@ -45,11 +45,12 @@ export class BillPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionData);
+		console.log(this.totalCost);
 
 		// if(this.employeeDetails.storeCheckIn !== undefined) {
 		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
 		// }
-		
+
 		// Remove this when you are done.
 		this.storeId = '591d71d971108943a0499665';
 
@@ -62,36 +63,38 @@ export class BillPrescriptionComponent implements OnInit {
 
 		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
 			if(val > 0) {
-				this.totalPrice = this.price*val;
+				this.totalQuantity = val;
+				this.totalCost = this.cost * val;
 			} else {
 				this._facilityService.announceNotification({
-					type: "Error",
-					text: "Quantity should be greater than 0!"
+					type: 'Error',
+					text: 'Quantity should be greater than 0!'
 				});
 			}
 		})
 	}
 
-	// 
+	//
 	onClickSaveCost(value, valid) {
 		if(valid) {
-			if(this.price > 0 || value.qty > 0) {
+			if(this.cost > 0 || value.qty > 0) {
+				console.log(value);
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
-				this.prescriptionData.prescriptionItems[index].unitPrice = this.price;
-				this.prescriptionData.prescriptionItems[index].totalPrice = this.totalPrice;
-				this.prescriptionData.totalCost += this.totalPrice;
-				this.prescriptionData.totalQuantity += this.totalPrice ;
+				this.prescriptionData.prescriptionItems[index].cost = this.cost;
+				this.prescriptionData.prescriptionItems[index].totalCost = this.totalCost;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
+				this.prescriptionData.totalCost += this.totalCost;
+				this.prescriptionData.totalQuantity += this.totalQuantity;
 				console.log(this.prescriptionData);
 
 				this.closeModal.emit(true);
 			} else {
 				this._facilityService.announceNotification({
-					type: "Error",
-					text: "Unit price or Quantity is less than 0!"
+					type: 'Error',
+					text: 'Unit price or Quantity is less than 0!'
 				});
 			}
 		} else {
@@ -100,26 +103,23 @@ export class BillPrescriptionComponent implements OnInit {
 	}
 
 	getProductsForGeneric() {
-		let index = this.prescriptionData.index;
+		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
-		let genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
-			//Get the list of products from a facility, and then search if the generic
-			//that was entered by the doctor in contained in the list of products
-			console.log(this.facility);
+		const genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
+			// Get the list of products from a facility, and then search if the generic
+			// that was entered by the doctor in contained in the list of products
 			this._productService.find({ query: { facilityId : this.facility._id }})
 				.then(res => {
-					console.log(res);
 					this.drugs = res.data;
-					let tempArray = [];
+					const tempArray = [];
 					// Get all products in the facility, then search for the item you are looking for.
 					res.data.forEach(element => {
-						if(element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
+						if (element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
 							console.log(element);
 							tempArray.push(element);
 						}
 					});
-					console.log(tempArray);
-					if(tempArray.length !== 0) {
+					if (tempArray.length !== 0) {
 						this.drugs = tempArray;
 					} else {
 						this.drugs = [];
@@ -132,19 +132,18 @@ export class BillPrescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.selectedDrug = drugId.viewValue;
-		//let pId = drugId._element.nativeElement.getAttribute('data-p-id');
-		let pId = '592417935fbce732205cf0aa';
-		let sId = drugId._element.nativeElement.getAttribute('data-p-id');
-		let fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
-		let cId = drugId._element.nativeElement.getAttribute('data-p-cid');
-		console.log(pId);
+		// let pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		const pId = '592417935fbce732205cf0aa';
+		const sId = drugId._element.nativeElement.getAttribute('data-p-id');
+		const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
+		const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
 		// Get the service for the product
-		//if(this.storeId !== '') {
+		// if(this.storeId !== '') {
 			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
 				.then(res => {
-					if(res.length > 0) {
+					if (res.length > 0) {
 						console.log(res);
-						this.price = res[0].price;
+						this.cost = res[0].price;
 						this.batchNumber = res[0].batchNo;
 						this.qtyInStores = res[0].availableQty;
 					}

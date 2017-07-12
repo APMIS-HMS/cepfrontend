@@ -2,7 +2,7 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 
@@ -23,7 +23,7 @@ export class FacilitiesService {
     private _socketService: SocketService,
     private _restService: RestService,
     private sanitizer: DomSanitizer,
-    private locker: CoolLocalStorage
+    private locker: CoolSessionStorage
   ) {
     this._rest = _restService.getService('facilities');
     this._socket = _socketService.getService('facilities');

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/cor
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, EmployeeService, PersonService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
@@ -19,13 +19,13 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   employees: Employee[] = [];
   searchControl = new FormControl();
 
-  pageSize: number = 1;
-  limit: number = 100;
-  total: number = 0;
-  loadIndicatorVisible: boolean = false;
+  pageSize = 1;
+  limit = 100;
+  total = 0;
+  loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
-    private personService: PersonService, private locker: CoolLocalStorage,
+    private personService: PersonService, private locker: CoolSessionStorage,
     private toast: ToastsManager,
     private router: Router, private route: ActivatedRoute) {
     this.employeeService.listner.subscribe(payload => {
@@ -38,7 +38,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
 
-    let away = this.searchControl.valueChanges
+    const away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
 
@@ -115,7 +115,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     });
   }
   contactEmployees(employeeData: Employee[]) {
-    let newEmployees: Employee[] = [];
+    const newEmployees: Employee[] = [];
     this.employees.forEach((employee, i) => {
       let found = false;
       let newEmp: Employee = <Employee>{};
@@ -134,7 +134,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, false);
     }
@@ -144,7 +144,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
 
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, true);

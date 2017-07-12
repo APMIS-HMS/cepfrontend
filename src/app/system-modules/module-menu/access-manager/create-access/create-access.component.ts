@@ -4,7 +4,7 @@ import { FeatureModuleService } from '../../../../services/module-manager/setup/
 import { AccessControlService } from '../../../../services/facility-manager/setup/index';
 // tslint:disable-next-line:max-line-length
 import { FeatureModule, AccessControl, FeatureModuleViewModel, FacilityModule, Facility, Address, Profession, Relationship, Employee, Person, MaritalStatus, Department, MinorLocation, Gender, Title, Country } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -29,7 +29,7 @@ export class CreateAccessComponent implements OnInit {
   innerMenuShow = false;
 
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private router: Router,
     private route: ActivatedRoute,
     private accessControlService: AccessControlService) { }
@@ -38,7 +38,7 @@ export class CreateAccessComponent implements OnInit {
     this.txtAccessName.valueChanges.subscribe(value => {
       // do something with value here
     });
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getModules();
     this.route.params.subscribe(params => {
       const id = params['id'];
@@ -57,7 +57,7 @@ export class CreateAccessComponent implements OnInit {
       this.superGroups.forEach((item, i) => {
         const group = <[FeatureModuleViewModel]>item;
         group.forEach((grp, j) => {
-          this.selectedAccessControl.featureList.forEach((iItem, j) => {
+          this.selectedAccessControl.featureList.forEach((iItem, jj) => {
             if (iItem._id === grp._id) {
               grp.checked = true;
             }
@@ -78,12 +78,12 @@ export class CreateAccessComponent implements OnInit {
             this.superGroups.push(group);
             group = [];
             group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
-          }else {
+          } else {
             group = [];
             group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
           }
 
-        }else {
+        } else {
           group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
           if ((count - 1) === i) {
             this.superGroups.push(group);
@@ -126,7 +126,7 @@ export class CreateAccessComponent implements OnInit {
         error => {
           console.log(error);
         });
-    }else {
+    } else {
       this.accessControlService.update(accessControl).then(payload => {
         this.router.navigate(['/dashboard/access-manager/access']);
       });

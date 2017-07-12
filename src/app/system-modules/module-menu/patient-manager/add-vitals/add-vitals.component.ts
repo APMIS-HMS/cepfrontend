@@ -5,7 +5,7 @@ import {
   EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 
 @Component({
@@ -41,7 +41,7 @@ export class AddVitalsComponent implements OnInit {
     private _vitaLocationService: VitaLocationService,
     private _vitalPositionService: VitalPositionService,
     private _vitalRythmService: VitalRythmService,
-    private _locker: CoolLocalStorage,
+    private _locker: CoolSessionStorage,
     private _employeeService: EmployeeService) { }
 
   ngOnInit() {

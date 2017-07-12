@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-bill-lookup',
@@ -46,7 +46,7 @@ export class BillLookupComponent implements OnInit {
   subTotal = 0;
   total = 0;
   discount = 0;
-  constructor(private locker: CoolLocalStorage,
+  constructor(private locker: CoolSessionStorage,
     private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
     private invoiceService: InvoiceService,

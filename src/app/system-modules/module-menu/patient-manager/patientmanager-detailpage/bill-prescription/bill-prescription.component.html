@@ -27,8 +27,8 @@
                                                 </md-input-container>
                                             </div>
                                             <div class="col-xs-6" style="margin-top: -5px;">
-                                                <p>Cost: <b>&#x20A6; {{ price }}</b></p>
-                                                <p>Total Cost: <b>&#x20A6; {{ totalPrice }}</b></p>
+                                                <p>Price: <b>&#x20A6; {{ cost }}</b></p>
+                                                <p>Total Price: <b>&#x20A6; {{ totalCost }}</b></p>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
@@ -40,7 +40,12 @@
                                 </form>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12">
-                                        <button md-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid)" class="btn btn-default">Save</button>
+                                        <div class="col-xs-6 no-padding">
+                                            <button md-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid);" class="btn btn-default">Save</button>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <button md-raised-button (click)="onClickClose($event);" class="btn btn-default">Cancel</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

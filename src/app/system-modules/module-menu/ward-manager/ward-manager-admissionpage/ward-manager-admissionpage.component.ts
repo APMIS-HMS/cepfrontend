@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { WardAdmissionService, InPatientListService, InPatientService } from '../../../../services/facility-manager/setup/index';
 import { Facility, InPatient, WardTransfer } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
@@ -29,7 +29,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
 	constructor(
 		private _inPatientListService: InPatientListService,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _wardEventEmitter: WardEmitterService,
 		private _inPatientService:InPatientService,
 		// private gvariable: globalConfig

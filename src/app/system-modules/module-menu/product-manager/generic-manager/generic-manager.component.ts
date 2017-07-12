@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GenericService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Generic } from '../../../../models/index';
@@ -21,7 +21,7 @@ export class GenericManagerComponent implements OnInit {
 	errMsg: String = 'You have unresolved errors';
 
 	constructor(
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _fb: FormBuilder,
 		private _genericservice: GenericService
 	) {

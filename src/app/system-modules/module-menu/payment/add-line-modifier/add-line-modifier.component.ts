@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServicePriceService, InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, BillModel } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-add-line-modifier',
@@ -24,7 +24,7 @@ export class AddLineModifierComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private servicePriceService: ServicePriceService,
     private invoiceService: InvoiceService,
-    private _locker: CoolLocalStorage) { }
+    private _locker: CoolSessionStorage) { }
 
   ngOnInit() {
     this.facility = <Facility> this._locker.getObject('selectedFacility');

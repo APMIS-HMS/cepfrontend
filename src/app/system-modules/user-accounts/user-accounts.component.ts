@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FacilitiesService, CorporateFacilityService, EmployeeService } from '../../services/facility-manager/setup/index';
 import { Facility, Person, Employee } from '../../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -23,7 +23,7 @@ export class UserAccountsComponent implements OnInit {
   logoutConfirm_on = false;
   loginEmployee: Employee = <Employee>{};
   authData: any;
-  constructor(private locker: CoolLocalStorage,
+  constructor(private locker: CoolSessionStorage,
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, PrescriptionItem } from '../../../../models/index';
 import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
 
@@ -16,7 +16,7 @@ export class DispenseComponent implements OnInit {
 	facility: Facility = <Facility>{};
 
 	constructor(
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _router: Router,
 		private _route: ActivatedRoute
 	) {

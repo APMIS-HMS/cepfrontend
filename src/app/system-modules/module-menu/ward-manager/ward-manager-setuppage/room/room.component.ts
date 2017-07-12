@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { FacilitiesService, WardAdmissionService, RoomGroupService, FacilitiesServiceCategoryService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { WardEmitterService } from '../../../../../services/facility-manager/ward-emitter.service';
@@ -31,7 +31,7 @@ export class RoomComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private router: Router,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
 		private _wardAdmissionService: WardAdmissionService,
 		private _wardEventEmitter: WardEmitterService,
