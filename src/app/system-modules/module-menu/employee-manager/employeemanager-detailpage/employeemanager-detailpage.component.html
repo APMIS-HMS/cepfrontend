@@ -27,17 +27,17 @@
                     <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
                     </div>
-                     <div class="emp-dept">{{employee?.department?.name}}
-                        <span *ngIf = "!editDepartment" (click)="toggleDepartmentShow()"  class="editButton">
+                    <div class="emp-dept">{{employee?.department?.name}}
+                        <span *ngIf="!editDepartment" (click)="toggleDepartmentShow()" class="editButton">
                         <i class="fa fa-edit"></i></span>
                     </div>
-                    <div *ngIf= "editDepartment" class="emp-dept">
-                          <md-select placeholder="Departments" [(ngModel)]="selectedValue">
+                    <div *ngIf="editDepartment" class="emp-dept">
+                        <md-select placeholder="Departments" [(ngModel)]="selectedValue">
                             <md-option *ngFor="let department of departments" [value]="department._id">
-                            {{department.name}}
+                                {{department.name}}
                             </md-option>
                         </md-select>
-                        <a *ngIf = "editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
+                        <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
@@ -59,7 +59,7 @@
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Bio Data
                         <div *ngIf="!biodatas" (click)="bioDataShow()" class="editButton">
-                        <i class="fa fa-edit"></i></div>
+                            <i class="fa fa-edit"></i></div>
                         <div *ngIf="biodatas" (click)="bioDataShow()" class="editButton">
                             <i class="fa fa-check"></i>
                         </div>
@@ -67,9 +67,15 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
-                        <div *ngIf = "biodatas" class="survery rhs">
-                          <md-input-container class="example-full-width">
-                                <input mdInput placeholder="edit input">
+                        <div *ngIf="biodatas" class="survery rhs">
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="Last Name" [(ngModel)]="employee.employeeDetails.lastName">
+                            </md-input-container>
+                             <md-input-container class="example-full-width">
+                                <input mdInput placeholder="Other Name" [(ngModel)]="employee.employeeDetails.otherNames">
+                            </md-input-container>
+                             <md-input-container class="example-full-width">
+                                <input mdInput placeholder="First Name" [(ngModel)]="employee.employeeDetails.firstName">
                             </md-input-container>
                         </div>
                         <div class="clear"></div>
@@ -77,37 +83,37 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Gender</div>
-                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
-                         <div *ngIf = "biodatas" class="survery rhs">
-                            <md-select placeholder="Gender" [(ngModel)]="selectedValue" name="food">
-                            <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                            </md-option>
-                        </md-select>
+                        <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
+                        <div *ngIf="biodatas" class="survery rhs">
+                            <md-select placeholder="Gender" [(ngModel)]="employee.employeeDetails.gender._id" name="food">
+                                <md-option *ngFor="let gender of genders" [value]="gender._id">
+                                    {{gender.name}}
+                                </md-option>
+                            </md-select>
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Marital Status</div>
-                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
-                         <div *ngIf = "biodatas" class="survery rhs">
+                        <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
+                        <div *ngIf="biodatas" class="survery rhs">
                             <md-select placeholder="Marital Status" [(ngModel)]="selectedValue" name="food">
-                            <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                            </md-option>
-                        </md-select>
+                                <md-option *ngFor="let food of foods" [value]="food.value">
+                                    {{food.viewValue}}
+                                </md-option>
+                            </md-select>
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Date of Birth</div>
-                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.dateOfBirth | date}} </div>
-                           <div *ngIf = "biodatas" class="survery rhs">
+                        <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.dateOfBirth | date}} </div>
+                        <div *ngIf="biodatas" class="survery rhs">
                             <md-input-container>
-                            <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-                            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
                             </md-input-container>
                             <md-datepicker #picker></md-datepicker>
                         </div>
@@ -118,57 +124,59 @@
 
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Contact Information
-                        <span *ngIf= "!contacts" (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
-                        <span *ngIf= "contacts" (click)="contactShow()" class="editButton"><i class="fa fa-check"></i></span>
+                        <span *ngIf="!contacts" (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                        <span *ngIf="contacts" (click)="contactShow()" class="editButton"><i class="fa fa-check"></i></span>
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                            <div *ngIf = "contacts">
-                              <md-select placeholder="Nationality" [(ngModel)]="selectedValue" name="food">
-                            <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                            </md-option>
-                        </md-select>
-                            </div><!-- /.col-lg-6 -->
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
+                        <div *ngIf="contacts" class="survery rhs">
+                            <div *ngIf="contacts">
+                                <md-select placeholder="Nationality" [(ngModel)]="selectedValue" name="food">
+                                    <md-option *ngFor="let food of foods" [value]="food.value">
+                                        {{food.viewValue}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">State of Origin</div>
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
-                         <div *ngIf = "contacts" class="survery rhs">
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
+                        <div *ngIf="contacts" class="survery rhs">
                             <md-select placeholder="State of Origin" [(ngModel)]="selectedValue" name="food">
-                            <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                            </md-option>
-                        </md-select>
+                                <md-option *ngFor="let food of foods" [value]="food.value">
+                                    {{food.viewValue}}
+                                </md-option>
+                            </md-select>
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">LGA</div>
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
-                         <div class="survery rhs">
-                            <div *ngIf = "contacts" class="">
-                               <md-select placeholder="LGA" [(ngModel)]="selectedValue" name="food">
-                            <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                            </md-option>
-                        </md-select>
-                            </div><!-- /.col-lg-6 -->
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
+                        <div class="survery rhs">
+                            <div *ngIf="contacts" class="">
+                                <md-select placeholder="LGA" [(ngModel)]="selectedValue" name="food">
+                                    <md-option *ngFor="let food of foods" [value]="food.value">
+                                        {{food.viewValue}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <!-- /.col-lg-6 -->
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Home Address</div>
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                           <md-input-container class="example-full-width">
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
+                        <div *ngIf="contacts" class="survery rhs">
+                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
                         </div>
@@ -177,9 +185,9 @@
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                             <md-input-container class="example-full-width">
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
+                        <div *ngIf="contacts" class="survery rhs">
+                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
                         </div>
@@ -188,9 +196,9 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email Address</div>
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                             <md-input-container class="example-full-width">
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
+                        <div *ngIf="contacts" class="survery rhs">
+                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
                         </div>
@@ -201,14 +209,14 @@
 
                 <div *ngFor="let item of employee?.employeeDetails?.nextOfKin" class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Next of Kin
-                        <span *ngIf = "!nextofkin" (click)="nextofkinShow()"  class="editButton"><i class="fa fa-edit"></i></span>
-                        <span *ngIf = "nextofkin" (click)="nextofkinShow()"  class="editButton"><i class="fa fa-check"></i></span>
+                        <span *ngIf="!nextofkin" (click)="nextofkinShow()" class="editButton"><i class="fa fa-edit"></i></span>
+                        <span *ngIf="nextofkin" (click)="nextofkinShow()" class="editButton"><i class="fa fa-check"></i></span>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.fullName}} </div>
-                         <div *ngIf="nextofkin" class="survery rhs">
+                        <div *ngIf="nextofkin" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
@@ -219,7 +227,7 @@
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Relationship</div>
                         <div *ngIf="!nextofkin" class="rhs"> Brother </div>
-                         <div *ngIf="nextofkin" class="survery rhs">
+                        <div *ngIf="nextofkin" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
@@ -230,8 +238,8 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.phoneNumber}} </div>
-                         <div *ngIf="nextofkin" class="survery rhs">
-                           <md-input-container class="example-full-width">
+                        <div *ngIf="nextofkin" class="survery rhs">
+                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
                         </div>
@@ -241,8 +249,8 @@
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.email}} </div>
-                         <div *ngIf="nextofkin" class="survery rhs">
-                          <md-input-container class="example-full-width">
+                        <div *ngIf="nextofkin" class="survery rhs">
+                            <md-input-container class="example-full-width">
                                 <input mdInput placeholder="edit input">
                             </md-input-container>
                         </div>
@@ -254,7 +262,7 @@
             </div>
         </div>
         <div *ngIf="loadIndicatorVisible" class="div_loading">
-          <md-spinner></md-spinner>
+            <md-spinner></md-spinner>
         </div>
     </div>
     <div class="clear"></div>

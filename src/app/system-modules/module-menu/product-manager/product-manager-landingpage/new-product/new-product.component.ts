@@ -17,7 +17,7 @@ export class NewProductComponent implements OnInit {
 
   isManufacturer: boolean = false;
   isPresentation: boolean = false;
-  isStrength: boolean = false;
+  isStrength = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedProduct: any = <any>{};
@@ -76,7 +76,7 @@ export class NewProductComponent implements OnInit {
     //   ingredients: this.formBuilder.array([
     //     this.initIngredientsForm(),
     //   ])
-    //})
+    // })
     this.initIngredientsForm();
 
     this.populateProduct();
@@ -128,12 +128,12 @@ export class NewProductComponent implements OnInit {
       this.productSugestion = false;
     });
 
-    //this.getManufacturers();
-    //this.getGenerics();
-    //this.getPresentations();
+    // this.getManufacturers();
+    // this.getGenerics();
+    // this.getPresentations();
     this.getProductTypes();
     this.getServiceCategories();
-    //this.getStrengths();
+    // this.getStrengths();
   }
 
   // initIngredientsForm() {
@@ -174,17 +174,17 @@ export class NewProductComponent implements OnInit {
     });
   }
   subscribeToControls() {
-    let name = this.frm_newProduct.controls['name'].value;
-    let genericName = this.frm_newProduct.controls['genericName'].value;
+    const name = this.frm_newProduct.controls['name'].value;
+    const genericName = this.frm_newProduct.controls['genericName'].value;
     if (name !== null && name !== undefined && name.length > 0) {
-      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
+      const dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
         .distinctUntilChanged()
         .switchMap((dictionaries: any[]) => this.drugListApiService.find({
           query: {
             searchtext: this.frm_newProduct.controls['name'].value,
-            "po": false,
-            "brandonly": true,
-            "genericonly": false
+            'po': false,
+            'brandonly': true,
+            'genericonly': false
           }
         }));
       dictionaryObs.subscribe((payload: any) => {
@@ -192,7 +192,7 @@ export class NewProductComponent implements OnInit {
         if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
           this.dictionaries = payload;
           payload.forEach(element => {
-            var arrElements = element.details.split('(');
+            const arrElements = element.details.split('(');
             element.activeIngredient = arrElements[1].replace(')', '');
             this.dictionaries.push(element);
           });
@@ -226,7 +226,7 @@ export class NewProductComponent implements OnInit {
     //       this.ingridentSugestion = false;
     //     }
     //   });
-    // } 
+    // }
     // else {
     //   this.activeIngredients = [];
     //   this.ingridentSugestion = false;
@@ -278,9 +278,9 @@ export class NewProductComponent implements OnInit {
   }
 
   stringifyGeneric(values: any[]) {
-    let generic = "";
+    let generic = '';
     values.forEach((item) => {
-      generic += item.name + " " + item.strength + " " + item.strengthUnit + "/ ";
+      generic += item.name + ' ' + item.strength + ' ' + item.strengthUnit + '/ ';
     });
     return generic;
   }
@@ -288,11 +288,11 @@ export class NewProductComponent implements OnInit {
   create(valid, value) {
     if (valid) {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
-        let service: any = <any>{};
+        const service: any = <any>{};
         service.name = value.name;
         this.productDetails.ingredients = [];
         this.productDetails.ingredients = this.ingredientForm.controls['ingredients'].value;
-        if (value.genericName == undefined) {
+        if (value.genericName === undefined) {
           value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
         }
         value.productDetail = this.productDetails;
@@ -338,7 +338,7 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand + "-" + suggestion.activeIngredient);
+      this.frm_newProduct.controls['name'].setValue(payload.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
@@ -393,7 +393,7 @@ export class NewProductComponent implements OnInit {
   }
 
   setIngredientItem(values: any[]) {
-    var control = <FormArray>this.ingredientForm.controls['ingredients'];
+    const control = <FormArray>this.ingredientForm.controls['ingredients'];
     values.forEach((item) => {
       control.push(
         this.formBuilder.group({
