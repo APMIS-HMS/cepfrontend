@@ -1,5 +1,8 @@
 @import "../../../../globals/variables.scss";
 
+.body-wrap{
+    margin-top: 0;
+}
 .btn-1{
     width: 140px;
 }
@@ -38,4 +41,11 @@
     padding-left: 30px;
     text-align: center;
     width: 100%;
+}
+.fullwidth-topActions {
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 0px;
+    margin-bottom: -40px;
+    margin-top: 0;
 }
