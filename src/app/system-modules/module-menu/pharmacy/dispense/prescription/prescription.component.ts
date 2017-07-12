@@ -48,6 +48,12 @@ export class PrescriptionComponent implements OnInit {
 		});
 
 		this.getPrescriptionDetails();
+		setTimeout( e=> {
+			this._facilityService.announceNotification({
+				type: 'Success',
+				text: 'Prescription has been Dispensed!'
+			});
+		}, 3000)
 	}
 
 	// Save prescription
