@@ -98,9 +98,9 @@
                         <div class="lhs">Marital Status</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <md-select placeholder="Marital Status" [(ngModel)]="selectedValue" name="food">
-                                <md-option *ngFor="let food of foods" [value]="food.value">
-                                    {{food.viewValue}}
+                            <md-select placeholder="Marital Status" [(ngModel)]="employee.employeeDetails.maritalStatus._id" name="food">
+                                <md-option *ngFor="let marital of maritalStatuses" [value]="marital._id">
+                                    {{marital.name}}
                                 </md-option>
                             </md-select>
                         </div>
@@ -112,7 +112,7 @@
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.dateOfBirth | date}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
                             <md-input-container>
-                                <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+                                <input mdInput [mdDatepicker]="picker" [(ngModel)]="employee.employeeDetails.dateOfBirth" placeholder="Choose a date">
                                 <button mdSuffix [mdDatepickerToggle]="picker"></button>
                             </md-input-container>
                             <md-datepicker #picker></md-datepicker>

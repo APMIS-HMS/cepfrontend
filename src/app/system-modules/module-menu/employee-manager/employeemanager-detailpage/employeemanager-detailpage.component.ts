@@ -2,9 +2,9 @@
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, FacilitiesService, UserService,
-  PersonService, EmployeeService, GenderService, RelationshipService
+  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, User, Employee, Person, Country, Gender, Relationship } from '../../../../models/index';
+import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -42,6 +42,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   employees: Employee[] = [];
   genders: Gender[] = [];
   relationships: Relationship[] = [];
+  maritalStatuses: MaritalStatus[] = [];
   homeAddress = '';
   selectedUser: User = <User>{};
   loadIndicatorVisible = false;
@@ -60,6 +61,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private toastr: ToastsManager,
     private genderService: GenderService,
     private relationshipService: RelationshipService,
+    private maritalStatusService:MaritalStatusService,
     private locker: CoolSessionStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -91,10 +93,12 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   prime() {
     const gender$ = Observable.fromPromise(this.genderService.findAll());
     const relationship$ = Observable.fromPromise(this.relationshipService.findAll());
+    const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
 
-    Observable.forkJoin([gender$, relationship$]).subscribe((results: any) => {
+    Observable.forkJoin([gender$, relationship$, maritalStatus$]).subscribe((results: any) => {
       this.genders = results[0].data;
       this.relationships = results[1].data;
+      this.maritalStatuses = results[2].data;
     })
   }
   getEmployee(employee) {
