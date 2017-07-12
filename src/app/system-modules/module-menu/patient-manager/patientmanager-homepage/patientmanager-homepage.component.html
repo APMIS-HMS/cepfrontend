@@ -1,41 +1,82 @@
-<div class="checkedinPatients">
-    <div class="inPatients">
-        <ul class="inHeader">
-            <li class="patient-img"></li>
-            <li (click)="sortPatientsByName()" class="patient-name" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Name</li>
-            <li (click)="sortPatientsByAge()" class="patient-age" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Age</li>
-            <li (click)="sortPatientsByGender()" class="patient-sex" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Sex</li>
-            <li class="patient-phone">Phone Number</li>
-            <li class="patient-email">Email</li>
-            <li class="patient-address">Address</li>
-            <li class="patient-born">Born</li>
-            <li class="patient-apmis" style="cursor: pointer;"><i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i>Apmis Number</li>
-            <li>Action</li>
-        </ul>
-        <div class="wrapper-content">
-            <ul *ngFor="let patient of patients; let i = even; let k = odd" [class.color1]="i" [class.color2]="k" class="inBody">
-                <li (click)="navEpDetail(patient)" class="patient-img">
-                    <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                    <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
-                </li>
-                <li (click)="navEpDetail(patient)" class="patient-name">{{patient.personDetails.lastName}} {{patient.personDetails.firstName}}</li>
-                <li (click)="navEpDetail(patient)" class="patient-age">{{patient.personDetails.age}}</li>
-                <li (click)="navEpDetail(patient)" class="patient-sex">
-                    <span *ngIf="patient.personDetails.gender.name==='Male'">M</span>
-                    <span *ngIf="patient.personDetails.gender.name==='Female'">F</span>
-                    <span *ngIf="patient.personDetails.gender.name!='Female' && patient.personDetails.gender.name!='Male'">N</span>
-                </li>
-                <li (click)="navEpDetail(patient)" class="patient-phone">{{patient.personDetails.phoneNumber}}</li>
-                <li (click)="navEpDetail(patient)" class="patient-email">{{patient.personDetails.email}}</li>
-                <li (click)="navEpDetail(patient)" class="patient-address">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}
-                </li>
-                <li (click)="navEpDetail(patient)" class="patient-born">{{patient.personDetails.dateOfBirth | date}}.</li>
-                <li class="patient-apmis">{{patient.personDetails.apmisId}}</li>
-                <li (click)="slideEdit(patient)"><i class="fa fa-edit"></i></li>
-            </ul>
-        </div>
-    </div>
-</div>
+<table cellpadding="0" cellspacing="0" border="0.5"> 
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Patient</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Age</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Sex</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Phone</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Email</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Address</span>
+            </th>
+			<th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Born</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Apmis ID</span>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr  *ngFor="let patient of patients">
+            <td (click)="navEpDetail(patient)">                
+                <div class="empWrap">
+                    <div class="list-img">
+                        <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                        <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
+                    </div>
+                    <div>{{patient.personDetails.lastName}} {{patient.personDetails.firstName}}</div>
+                </div>
+            </td>
+            <td>{{patient.personDetails.age}}</td>
+			<td>
+                <span *ngIf="patient.personDetails.gender.name==='Male'">M</span>
+                <span *ngIf="patient.personDetails.gender.name==='Female'">F</span>
+                <span *ngIf="patient.personDetails.gender.name!='Female' && patient.personDetails.gender.name!='Male'">N</span>
+            </td>
+			<td>{{patient.personDetails.phoneNumber}}</td>
+            <td>{{patient.personDetails.email}}</td>
+            <td>{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td>
+            <td>{{patient.personDetails.dateOfBirth | date}}</td>
+            <td>{{patient.personDetails.apmisId}}</td>
+            <td>
+                <div (click)="slideEdit(patient)" class="tr-act-btn"><i class="fa fa-edit"></i>Edit</div>
+            </td>
+        </tr>
+
+        <!--<div *ngIf="loadIndicatorVisible" class="div_loading">
+            <md-spinner></md-spinner>
+        </div>-->
+    </tbody>
+</table>
 
 <div *ngIf="editPatient">
     <!--<div class="slidePage">
