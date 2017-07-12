@@ -4,9 +4,10 @@
         <div class="patientPage-sideTab">
             <div class="sideTab-header">
                 <div class="patient-img">
-                    <div>
+                    <div class="patient-img-wrap">
                         <div *ngIf="patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
                         <img *ngIf="patient?.personDetails?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
+                        <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
                     </div>
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balance</span>
@@ -112,15 +113,6 @@
             <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
             <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
-
-            <!--<div *ngIf="menuForms" class="menuForms">
-    <div class="patientPage-contentArea">
-      <!--<app-patient-summary *ngIf="menuSummary"></app-patient-summary>-->
-            <!--<app-patient-prescription *ngIf="menuPrescription"></app-patient-prescription>-->
-            <!--<div *ngIf="menuForms" class="menuForms">
-        <legend>Create Form</legend>
-        <survey [json]="json"></survey>
-      </div>-->
         </div>
 
         <div *ngIf="addVitalsPop" class="modal-overlay">
@@ -132,6 +124,10 @@
         </div>
         <div style="z-index: 1501;" *ngIf="checkoutPatient" class="modal-overlay">
             <app-checkout-patient [employeeDetails]="employeeDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
+        </div>
+        <div *ngIf="changeUserImg" class="modal-overlay">
+            <!--<app-update-img [selectedPerson]="selectedPerson" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-update-img>-->
+            <app-update-img (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-update-img>
         </div>
     </div>
 </div>
