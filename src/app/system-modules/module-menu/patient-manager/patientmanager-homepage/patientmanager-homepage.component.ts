@@ -14,6 +14,13 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class PatientmanagerHomepageComponent implements OnInit {
   selectedValue: string;
+
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   nextOfKinForm: FormGroup;
 
   editPatient = false;

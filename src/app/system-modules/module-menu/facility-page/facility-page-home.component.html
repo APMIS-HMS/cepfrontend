@@ -1,3 +1,12 @@
+<div class="survery text-center">
+    <ul id="breadcrumb">
+        <li><a><i class="fa fa-home"></i> Home</a></li>
+        <li><a><i class="fa fa-medkit"></i> Departments</a></li>
+        <li><a><i></i> Location</a></li>
+        <li><a><i></i> Workspace</a></li>
+    </ul>
+</div>
+
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
@@ -8,9 +17,9 @@
             <li (click)="changeRoute('departments')"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
             <li (click)="changeRoute('locations')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
+            <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
             <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
             <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
-            <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
         </ul>
     </div>
     <div class="inner-page-wrap">

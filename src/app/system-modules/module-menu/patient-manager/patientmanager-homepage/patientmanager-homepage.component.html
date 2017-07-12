@@ -55,29 +55,75 @@
                                         <md-tab-group>
                                             <md-tab label="Patient">
                                                 <!--<input type="text" class="form-control" placeholder="Full Name" />-->
-                                                <md-input-container class="example-full-width">
+                                                <div class="col-sm-6 padding-0">
+                                                    <md-input-container class="example-full-width">
                                                     <input mdInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="selectedPatient.firstName">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
+                                                    </md-input-container>
+                                                </div>
+                                                <div class="col-sm-6 padding-0">
+                                                    <md-input-container class="example-full-width">
                                                     <input mdInput placeholder="Last Name" name="lastName" [(ngModel)]="selectedPatient.lastName">
                                                 </md-input-container>
-                                                <md-select placeholder="Gender" [(ngModel)]="selectedPatient.genderId" name="gender">
+                                                </div>
+                                                    <div class="col-sm-6 padding-0">
+                                                   <md-input-container class="example-full-width">
+                                                    <input mdInput type="email" placeholder="Email" name="email" [(ngModel)]="selectedPatient.email">
+                                                </md-input-container>
+                                               </div>
+                                                   <div class="col-sm-6 padding-0">
+                                                <md-input-container class="example-full-width">
+                                                    <input mdInput type="number" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
+                                                </md-input-container>
+                                               </div>
+                                                <div class="col-sm-6 padding-0">
+                                                    <md-select placeholder="Gender" [(ngModel)]="selectedPatient.genderId" name="gender">
                                                     <md-option *ngFor="let gender of genders" [value]="gender._id">
                                                         {{gender.name}}
                                                     </md-option>
                                                 </md-select>
+                                                </div>
+                                            
                                                 <!--<md-input-container class="example-full-width">
                                                     <input mdInput placeholder="Age">
                                                 </md-input-container>-->
-                                                <md-input-container class="example-full-width">
+                                                <!--<md-input-container class="example-full-width">
                                                     <input mdInput placeholder="Address" name="fullAddress" [(ngModel)]="selectedPatient.fullAddress">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="number" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="email" placeholder="Email" name="email" [(ngModel)]="selectedPatient.email">
-                                                </md-input-container>
+                                                </md-input-container>-->
+                                                <div class="col-sm-6 padding-0">
+                                                     <md-select placeholder="Country" [(ngModel)]="selectedValue" name="food">
+                                                        <md-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </div>
+                                                <div class="col-sm-6 padding-0">
+                                                    <md-select placeholder="State" [(ngModel)]="selectedValue" name="food">
+                                                        <md-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </div>
+                                                <div class="col-sm-6 padding-0">
+                                                    <md-select placeholder="City" [(ngModel)]="selectedValue" name="food">
+                                                        <md-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </div>
+                                                <div class="col-sm-12 padding-0">
+                                                    <md-select placeholder="LGA" [(ngModel)]="selectedValue" name="food">
+                                                        <md-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </div>
+                                                  <div class="col-sm-12 padding-0">
+                                                    <md-input-container class="example-full-width">
+                                                     <textarea mdInput placeholder="Street"></textarea>
+                                                    </md-input-container>
+                                                </div>
+                                            
+                                               
 
                                             </md-tab>
                                             <md-tab label="Next Of Kin">
