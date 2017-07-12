@@ -483,7 +483,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     savePerson() {
         {
             let person: Person = <Person>{ nextOfKin: [] };
-            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value.momentObj;
+            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
             person.genderId = this.frmNewEmp1.controls['empGender'].value;
@@ -571,7 +571,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.errMsg = 'you left out a required field';
                     } else {
                         this.mainErr = true;
-                        console.log('333');
                         this.savePerson();
                         // this.closeModal.emit(true);
                     }
@@ -584,15 +583,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     skip_nok() {
         console.log('sking nok method');
-        this.frmNewPerson1_show = false;
-        this.frmNewPerson2_show = false;
-        this.frmNewPerson3_show = false;
-        this.frmNewEmp4_show = true;
+        // this.frmNewPerson1_show = false;
+        // this.frmNewPerson2_show = false;
+        // this.frmNewPerson3_show = false;
+        // this.frmNewEmp4_show = true;
         this.apmisId_show = false;
         this.mainErr = true;
         this.skipNok = true;
         this.savePerson();
-        this.closeModal.emit(true);
     }
     back_newPerson3() {
         if (this.shouldMoveFirst === true) {
@@ -634,33 +632,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     newEmp4(valid, val) {
         this.saveEmployee();
-        // if (valid) {
-        //     if (val.empDept === '' || val.empLoc === '' || val.empWorkEmail === '' || val.empWorkEmail === ' ') {
-        //         this.mainErr = false;
-        //         this.errMsg = 'you left out a required field';
-        //     } else {
-        //         if (this.skipNok) {
-        //             this.savePerson();
-        //         } else {
-        //             this.saveEmployee();
-
-        //         }
-
-        //         this.frmNewPerson1_show = false;
-        //         this.frmNewPerson2_show = false;
-        //         this.frmNewPerson3_show = false;
-        //         this.frmNewEmp4_show = false;
-        //         this.apmisId_show = false;
-        //         this.mainErr = true;
-
-        //         this.closeModal.emit(true);
-
-        //     }
-        // } else {
-        //     this.mainErr = false;
-        // }
-
-    }
+        }
 
     onEmpTitleChange(val) { }
     onEmpGenderChange(val) { }

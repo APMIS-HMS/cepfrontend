@@ -14,6 +14,13 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class PatientmanagerHomepageComponent implements OnInit {
   selectedValue: string;
+
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   nextOfKinForm: FormGroup;
 
   editPatient = false;
@@ -71,14 +78,6 @@ export class PatientmanagerHomepageComponent implements OnInit {
     this.getRelationships();
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatients(this.limit);
-    // this.route.params.subscribe((params: any) => {
-    //   this.patientService.find({ query: { personId: params.id, facilityId: this.facility._id } }).then(payload => {
-    //     if (payload.data.length > 0) {
-    //       this.navEpDetail(payload.data[0]);
-    //     }
-
-    //   })
-    // })
   }
   addNewNextOfKin() {
     this.nextOfKinForm = this.formBuilder.group({

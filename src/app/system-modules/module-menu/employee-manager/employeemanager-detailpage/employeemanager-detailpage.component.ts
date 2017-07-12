@@ -2,9 +2,9 @@
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, FacilitiesService, UserService,
-  PersonService, EmployeeService
+  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, User, Employee, Person, Country } from '../../../../models/index';
+import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -18,11 +18,6 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedValue: string;
 
-  foods = [
-    { value: 'steak-0', viewValue: 'edit here' },
-    { value: 'pizza-1', viewValue: 'edit here' },
-    { value: 'tacos-2', viewValue: 'edit here' }
-  ];
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() employee: Employee;
@@ -45,6 +40,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedFacility: Facility = <Facility>{};
   searchControl = new FormControl();
   employees: Employee[] = [];
+  genders: Gender[] = [];
+  relationships: Relationship[] = [];
+  maritalStatuses: MaritalStatus[] = [];
   homeAddress = '';
   selectedUser: User = <User>{};
   loadIndicatorVisible = false;
@@ -61,6 +59,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private personService: PersonService,
     private router: Router, private route: ActivatedRoute,
     private toastr: ToastsManager,
+    private genderService: GenderService,
+    private relationshipService: RelationshipService,
+    private maritalStatusService:MaritalStatusService,
     private locker: CoolSessionStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -80,12 +81,25 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.prime();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     // this.getEmployees();
     this.searchControl.valueChanges.subscribe(value => {
     });
     this.loadRoute();
+
+  }
+  prime() {
+    const gender$ = Observable.fromPromise(this.genderService.findAll());
+    const relationship$ = Observable.fromPromise(this.relationshipService.findAll());
+    const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
+
+    Observable.forkJoin([gender$, relationship$, maritalStatus$]).subscribe((results: any) => {
+      this.genders = results[0].data;
+      this.relationships = results[1].data;
+      this.maritalStatuses = results[2].data;
+    })
   }
   getEmployee(employee) {
     this.loadIndicatorVisible = true;
@@ -272,6 +286,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   bioDataShow() {
     this.biodatas = !this.biodatas;
   }
+
   contactShow() {
     this.contacts = !this.contacts;
   }

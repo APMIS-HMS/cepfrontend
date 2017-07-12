@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FacilitiesService, UserService } from '../../services/facility-manager/setup/index';
 import { Facility } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
@@ -40,11 +41,7 @@ export class DashboardHomeComponent implements OnInit {
 
   loadIndicatorVisible = true;
   constructor(private _elRef: ElementRef, private locker: CoolSessionStorage, private userService: UserService,
-    private router: Router,
-    public facilityService: FacilitiesService) {
-    this.facilityService.listner.subscribe(payload => {
-      this.facilityObj = payload;
-    });
+    private router: Router, public facilityService: FacilitiesService) {
     router.events.subscribe((routerEvent: Event) => {
       this.checkRouterEvent(routerEvent);
     });
@@ -60,28 +57,11 @@ export class DashboardHomeComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.searchControl.valueChanges.subscribe(value => {
-      // do something with value here
-    });
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
-    } else {
-      // this.getFacility();
-      // this.facilityObj = this.facilityService.getSelectedFacilityId();
-      // this.facilityName = this.facilityObj.name;
     }
   }
-  // getFacility() {
-  //   let tokenObj: any = this.locker.getObject('auth');
-  //   this.facilityService.get(tokenObj.data.facilitiesRole[0].facilityId, {}).then((payload) => {
-  //     this.facilityObj = payload;
-  //     this.facilityName = this.facilityObj.name;
-  //   },
-  //     error => {
-  //       console.log(error);
-  //     })
-  // }
 
   onSwitchAccount() {
     this.router.navigate(['/accounts']);
