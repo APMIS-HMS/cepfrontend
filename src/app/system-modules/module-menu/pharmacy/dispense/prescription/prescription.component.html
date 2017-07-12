@@ -14,11 +14,28 @@
     </div>
 
     <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
-        <b>Prescription by {{ prescriptionItems?.employeeName }}</b>
+        <b>Prescribed by {{ prescriptionItems?.employeeName }}</b>
     </div>
 
     <div class="row">
         <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+    </div>
+
+    <div class="row">
+        <!--<div class="row">
+            <div class="col-sm-12 col-md-12" style="padding-top: 10px;">
+                <div class="col-sm-6 pull-right" style="padding-right: 20px;">
+                    <p class="pull-right"><strong>Total Quantity:</strong> <span> {{ totalQuantity }}</span></p>
+                </div>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="col-sm-6 pull-right" style="padding-right: 20px;">
+                    <p class="pull-right"><strong>Total Bill:</strong> <span> &#x20A6;{{ totalCost }}</span></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
@@ -78,7 +95,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:20px;">
-            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Bill:</strong> <span>&#x20A6;0</span></p>
+            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
         </div>
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">

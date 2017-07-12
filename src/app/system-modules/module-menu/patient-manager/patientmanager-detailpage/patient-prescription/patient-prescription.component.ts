@@ -5,7 +5,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 import {
     FacilitiesService, PrescriptionService,
     PrescriptionPriorityService, DictionariesService,
-    RouteService, FrequencyService, DrugListApiService, DrugDetailsService
+    RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
@@ -64,7 +64,8 @@ export class PatientPrescriptionComponent implements OnInit {
         private _frequencyService: FrequencyService,
         private _routeService: RouteService,
         private _drugListApi: DrugListApiService,
-        private _drugDetailsApi: DrugDetailsService
+        private _drugDetailsApi: DrugDetailsService,
+        private _medicationListService: MedicationListService
     ) {
 
     }
@@ -80,6 +81,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this.getAllPriorities();
         this.getAllRoutes();
         this.getAllFrequencies();
+        this.getMedicationList();
 
         this.allPrescriptionsForm = this.fb.group({
             priority: ['', [<any>Validators.required]],
@@ -272,6 +274,18 @@ export class PatientPrescriptionComponent implements OnInit {
                 console.log(err);
             });
     }
+
+    // Get all medications
+	getMedicationList() {
+		this._medicationListService.find({ query: { facilityId: this.facility._id, patientId: this.patientId }})
+			.then(res => {
+				console.log(res);
+				
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
 
     focusSearch() {
         this.showCuDropdown = !this.showCuDropdown;
