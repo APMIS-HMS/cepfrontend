@@ -144,7 +144,7 @@ export class ServicesComponent implements OnInit {
       query: {
         $or: [
           { facilityId: this.facility._id },
-          { facilityId: undefined }
+          // { facilityId: undefined }
         ]
       }
     })

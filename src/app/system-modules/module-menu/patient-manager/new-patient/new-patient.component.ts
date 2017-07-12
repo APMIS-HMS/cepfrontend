@@ -483,7 +483,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     savePerson() {
         {
             let person: Person = <Person>{ nextOfKin: [] };
-            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value.momentObj;
+            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
             person.genderId = this.frmNewEmp1.controls['empGender'].value;

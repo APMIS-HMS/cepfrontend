@@ -30,15 +30,6 @@ export class SystemModuleComponent implements OnInit {
     private employeeService: EmployeeService,
     private toast: ToastsManager,
     private router: Router, private locker: CoolSessionStorage) {
-    this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
-      if (obj.type === 'Success') {
-        this.success(obj.text);
-      } else if (obj.type === 'Error') {
-        this.error(obj.text);
-      } else if (obj.type === 'Info') {
-        this.info(obj.text);
-      }
-    });
     this.facilityService.listner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
       if (facility._id === payload._id) {
@@ -73,9 +64,6 @@ export class SystemModuleComponent implements OnInit {
   ngOnInit() {
     const auth: any = this.locker.getObject('auth');
     this.authData = auth.data;
-    // this.personService.get(authData.personId, {}).then(ppayload => {
-    //   this.selectedPerson = ppayload;
-    // });
   }
 
   success(text) {

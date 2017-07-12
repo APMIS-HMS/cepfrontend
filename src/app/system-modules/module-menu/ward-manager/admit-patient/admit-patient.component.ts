@@ -48,7 +48,7 @@ export class AdmitPatientComponent implements OnInit {
 
 	ngOnInit() {
 		this.admitFormGroup = this.fb.group({
-			//ward: ['', [<any>Validators.required]],
+			// ward: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
 			bed: ['', [<any>Validators.required]],
 			desc: ['', [<any>Validators.required]],
@@ -76,7 +76,7 @@ export class AdmitPatientComponent implements OnInit {
 	onRoomChange(param) {
 		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
 			.then(payload => {
-				if (payload.data != []) {
+				if (payload.data !== []) {
 					payload.data[0].locations.forEach(item => {
 						item.rooms.forEach(itm => {
 							if (itm._id.toString() === param.toString()) {
@@ -95,7 +95,7 @@ export class AdmitPatientComponent implements OnInit {
 	onAdmit(model: any, valid: boolean) {
 		if (valid) {
 			this.mainErr = true;
-			if(this.inpatientItem.typeChecker === myGlobals.onAdmission) {
+			if (this.inpatientItem.typeChecker === myGlobals.onAdmission) {
 				this._inPatientListService.find({ query: { facilityId: this.facility._id, employeeId: this.inpatientItem.employeeId, isAdmitted: false } })
 				.then(payload1 => {
 					payload1.data[0].isAdmitted = true;
@@ -119,7 +119,7 @@ export class AdmitPatientComponent implements OnInit {
 						});
 					});
 				});
-			} else if(this.inpatientItem.typeChecker === myGlobals.transfer) {
+			} else if (this.inpatientItem.typeChecker === myGlobals.transfer) {
 				this._inPatientService.get(this.inpatientItem._id, {})
 					.then(payload => {
 						payload.statusId = myGlobals.onAdmission;
@@ -148,13 +148,13 @@ export class AdmitPatientComponent implements OnInit {
 	}
 
 	getwardRoomLocationItems() {
-		if(this.inpatientItem.typeChecker === myGlobals.transfer) {
+		if (this.inpatientItem.typeChecker === myGlobals.transfer) {
 			this._inPatientService.get(this.inpatientItem._id, {})
 				.then(payload => {
-					let rooms = payload.transfers[payload.lastIndex].proposeWard.ward.wardDetails.rooms;
+					const rooms = payload.transfers[payload.lastIndex].proposeWard.ward.wardDetails.rooms;
 					this.wardRoomLocationItems = rooms;
 				});
-		} else if(this.inpatientItem.typeChecker === myGlobals.onAdmission) {
+		} else if (this.inpatientItem.typeChecker === myGlobals.onAdmission) {
 			this._inPatientListService.get(this.inpatientItem._id, {})
 				.then(payload => {
 					this.wardRoomLocationItems = payload.wardDetails.wardDetails.rooms;
@@ -165,7 +165,7 @@ export class AdmitPatientComponent implements OnInit {
 	updateWardAdissionService() {
 		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
 			.then(payload => {
-				if (payload.data != []) {
+				if (payload.data !== []) {
 					payload.data[0].locations.forEach(item => {
 						item.rooms.forEach(itm => {
 							if (itm._id.toString() === this.admitFormGroup.controls['room'].value.toString()) {
@@ -173,7 +173,7 @@ export class AdmitPatientComponent implements OnInit {
 									if (bed._id.toString() === this.admitFormGroup.controls['bed'].value.toString()) {
 										bed.isAvailable = false;
 										this._wardAdmissionService.update(payload.data[0]).then(completed => {
-											//console.log("completed");
+											// console.log("completed");
 										});
 									}
 								})
