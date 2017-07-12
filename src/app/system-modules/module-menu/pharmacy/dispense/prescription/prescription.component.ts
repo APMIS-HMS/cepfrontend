@@ -28,6 +28,7 @@ export class PrescriptionComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _locker: CoolSessionStorage,
+		private _facilityService: FacilitiesService,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,
@@ -57,7 +58,6 @@ export class PrescriptionComponent implements OnInit {
 
 	// Dispense prescription
 	onClickDispense() {
-		console.log(this.prescriptionItems);
 		const dispenseArray = [];
 		this.prescriptionItems.prescriptionItems.forEach(element => {
 			const dispenseItem = <DispenseItem> {
@@ -94,37 +94,44 @@ export class PrescriptionComponent implements OnInit {
 		this._dispenseService.create(dispense)
 			.then(res => {
 				console.log(res);
-				if(res.data) {
-					//res.data[0]
-					// let medication = <MedicationList>{
-					// 	facilityId: this.facility._id,
-					// 	dispenseById: res.prescription.employeeId,
-					// 	dispenseId: res._id,
-					// 	storeId: this.storeId,
-					// 	prescriptionId: res.prescription.prescriptionId,
-					// 	statusId: res.statusId,
-					// 	patientId: res.prescription.patientId,
-					// 	medicationEndDate: res.createdAt
-					// };
+				if(res) {
+					// res.prescription.drugs.array.forEach(element => {
+						
+					// });
+					let medication = <MedicationList>{
+						facilityId: this.facility._id,
+						dispenseById: res.prescription.employeeId,
+						dispenseId: res._id,
+						storeId: this.storeId,
+						prescriptionId: res.prescription.prescriptionId,
+						statusId: res.statusId,
+						patientId: res.prescription.patientId,
+						medicationEndDate: res.createdAt
+					};
 
-					// this._medicationListService.create(medication)
-					// 	.then(res => {
-					// 		console.log(res);
-					// 		console.log(this.prescriptionItems);
-					// 		this.prescriptionItems.isDispensed = true;
-					// 		this._prescriptionService.update(this.prescriptionItems)
-					// 			.then(res => {
-					// 				console.log(res);
-									
-					// 			})
-					// 			.catch(err => {
-					// 				console.log(err);
-					// 			});
-					// 		this._router.navigate(['/dashboard/pharmacy/prescriptions']);
-					// 	})
-					// 	.catch(err => {
-					// 		console.log(err);
-					// 	});
+					this._medicationListService.create(medication)
+						.then(res => {
+							console.log(res);
+							this.prescriptionItems.isDispensed = true;
+							this._prescriptionService.update(this.prescriptionItems)
+								.then(res => {
+									console.log(res);
+									this._facilityService.announceNotification({
+										type: 'Success',
+										text: 'Prescription has been Dispensed!'
+									});
+									setTimeout( e => {
+										console.log('Navigate');
+										//this._router.navigate(['/dashboard/pharmacy/prescriptions']);
+									}, 1000);
+								})
+								.catch(err => {
+									console.log(err);
+								});
+						})
+						.catch(err => {
+							console.log(err);
+						});
 				}
 			})
 			.catch(err => {
