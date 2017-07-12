@@ -70,6 +70,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
                 this.loginEmployee = payload;
                 checkingObject = { typeObject: itemr, type: 'store' };
                 this.employeeService.announceCheckIn(checkingObject);
+                console.log(1)
                 this.locker.setObject('checkingObject', checkingObject);
               });
             }
@@ -83,6 +84,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
                   this.loginEmployee = payload;
                   const checkingObject = { typeObject: itemr, type: 'store' };
                   this.employeeService.announceCheckIn(checkingObject);
+                  console.log(2)
+                  console.log(checkingObject);
                   this.locker.setObject('checkingObject', checkingObject);
                 });
               }
