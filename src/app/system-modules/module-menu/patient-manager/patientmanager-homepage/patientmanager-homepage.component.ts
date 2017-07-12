@@ -78,14 +78,6 @@ export class PatientmanagerHomepageComponent implements OnInit {
     this.getRelationships();
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatients(this.limit);
-    // this.route.params.subscribe((params: any) => {
-    //   this.patientService.find({ query: { personId: params.id, facilityId: this.facility._id } }).then(payload => {
-    //     if (payload.data.length > 0) {
-    //       this.navEpDetail(payload.data[0]);
-    //     }
-
-    //   })
-    // })
   }
   addNewNextOfKin() {
     this.nextOfKinForm = this.formBuilder.group({

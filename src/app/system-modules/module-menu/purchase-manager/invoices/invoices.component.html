@@ -1,12 +1,15 @@
 <div class="survery">
     <div class="">
-         <div class="row margin-bottom">
+        <div class="row margin-bottom">
             <div class="col-sm-4 col-md-4 col-xs-12">
-               <!--<dx-select-box [formControl]="frmSupplier" [items]="suppliers" placeholder="Filter By" [showClearButton]="true" displayExpr="name" valueExpr="_id">
-                </dx-select-box>-->
+                <md-select placeholder="Filter By" [formControl]="frmSupplier">
+                    <md-option *ngFor="let item of suppliers" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
             </div>
             <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-                <!--<dx-text-box value="Search"></dx-text-box>-->
+                <md-input-container class="example-full-width">
+                    <input type="text" mdInput md-error placeholder="Search">
+                </md-input-container>
             </div>
         </div>
         <table class="table table-striped text-center">
@@ -29,7 +32,7 @@
                     <td>
                         <a class="action-btn" (click)="slideInvoiceDetailsToggle(invoice, $event)"><i class="fa fa-eye"></i></a>
                         <a class="action-btn" (click)="onEditInvoice(invoice)"><i class="fa fa-pencil"></i></a>
-                         <a (click)="onNavigateToPayment(invoice)"><span><i class="fa fa-money"></i></span> </a>
+                        <a (click)="onNavigateToPayment(invoice)"><span><i class="fa fa-money"></i></span> </a>
                         <a class="action-btn"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>

@@ -64,6 +64,7 @@ export class AddPrescriptionComponent implements OnInit {
 
 	// On click is external checkbox
 	onClickIsExternal(index, value, prescription) {
+		console.log(value);
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
@@ -77,6 +78,9 @@ export class AddPrescriptionComponent implements OnInit {
 			this.prescriptionItems.index = index;
 			this.prescriptionItems.totalCost = this.totalCost;
 			this.prescriptionItems.totalQuantity = this.totalQuantity;
+			if(this.prescriptionItems.prescriptionItems[index].isExternal) {
+				this.prescriptionItems.prescriptionItems[index].isExternal = false;
+			}
 			this.prescriptionData = this.prescriptionItems;
 		//}
 	}
