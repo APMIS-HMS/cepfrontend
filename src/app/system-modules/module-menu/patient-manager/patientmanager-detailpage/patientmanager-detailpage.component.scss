@@ -42,7 +42,8 @@
     box-sizing: border-box;
 }
 
-.sideTab-header .patient-img div {
+.sideTab-header .patient-img .patient-img-wrap {
+    position: relative;
     width: 120px;
     height: 120px;
     overflow: hidden;
@@ -53,8 +54,58 @@
     margin-right: 10px;
 }
 
-.sideTab-header .patient-img div img {
+.sideTab-header .patient-img .patient-img-wrap img {
     width: 100%;
+}
+
+.patient-img-wrap:hover{
+    .pp-overlay{
+        display: flex;
+    }
+}
+
+.pp-overlay{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    font-size: 12px;
+}
+.emp-nameRow img{
+    width: 100%;
+    border-radius: 100%;
+    margin-right: 10px;
+    height: 100%;
+}
+.empData-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.empData-header .emp-data{
+    text-align: left;
+    margin-left: 16px;
+    margin-top: 52px;
+}
+.emp-data, .emp-img{
+    width: 50%;
+}
+.emp-img{
+    text-align: right;
+    padding-top: 20px;
+}
+.emp-img img{
+    width: 190px;
+    border-radius: 20px;
 }
 
 .headerDetail-wrap {

@@ -57,10 +57,18 @@
 .logo-wrap img{
     width: 70px;
 }
+.signin-upWrap {
+    border-top: 2px solid #fff;
+    width: 100%;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+}
 .CTAs-wrap{
     display: block;
     width: 500px;
     border: 0;
+    margin: 0 auto;
     margin-top: 20px;
     border-radius: 7px;
 }
@@ -76,13 +84,14 @@
     padding-left: 10px;
 }
 .txtLink:hover{
-    color: #ff2500;
+    text-decoration: underline;
 }
 .wrapLabel{
     color: #e8e8e8;
     font-size: 12px;
     font-style: italic;
     text-align: center;
+    margin-top: 20px;
 }
 .actionTxt{
     float: right;

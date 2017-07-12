@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, BillIGroup, Invoice } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -35,7 +35,7 @@ export class InvoiceComponent implements OnInit {
     invoiceGroups: Invoice[] = [];
     subscription: Subscription;
     constructor(private formBuilder: FormBuilder,
-        private locker: CoolLocalStorage,
+        private locker: CoolSessionStorage,
         public facilityService: FacilitiesService,
         private invoiceService: InvoiceService,
         private billingService: BillingService,

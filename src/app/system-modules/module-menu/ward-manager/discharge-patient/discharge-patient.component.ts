@@ -5,7 +5,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { WardDischargeTypesService, InPatientService, WardAdmissionService, BillingService } from '../../../../services/facility-manager/setup/index';
 import { ActivatedRoute } from '@angular/router';
 import { WardDischarge, Facility, BillModel, BillItem } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
 @Component({
@@ -29,7 +29,7 @@ export class DischargePatientComponent implements OnInit {
 		private _wardDischargeTypesService: WardDischargeTypesService,
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _locker: CoolLocalStorage,
+		private _locker: CoolSessionStorage,
 		private _inPatientService: InPatientService,
 		private _wardAdmissionService: WardAdmissionService,
 		private _billingService: BillingService) { }

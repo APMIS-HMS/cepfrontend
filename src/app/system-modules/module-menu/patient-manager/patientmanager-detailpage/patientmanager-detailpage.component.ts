@@ -11,7 +11,7 @@ import {
   Documentation
 } from '../../../../models/index';
 import { Observable } from 'rxjs/Observable';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -40,7 +40,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuBilling = false;
   menuTreatmentPlan = false;
   menuPrescription = false;
-  menuMedicationHistory: boolean = false;
+  menuMedicationHistory = false;
   menuImaging = false;
   menuLab = false;
   menuForms = false;
@@ -52,7 +52,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuPrescriptions = false;
 
   contentSecMenuShow = false;
-  modal_on: boolean = false;
+  modal_on = false;
   changeUserImg = false;
   logoutConfirm_on = false;
   empDetailPg = true;
@@ -64,11 +64,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
   patients: Patient[] = [];
   documentations: Documentation[] = [];
-  homeAddress: string = '';
+  homeAddress = '';
   selectedUser: User = <User>{};
   loginEmployee: Employee = <Employee>{};
   clinicInteraction: ClinicInteraction = <ClinicInteraction>{};
-  previousUrl: string = '/';
+  previousUrl = '/';
   minorLocationList: MinorLocation[] = [];
   selectedAppointment: Appointment = <Appointment>{};
   json: any = {};
@@ -277,7 +277,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private formsService: FormsService,
     private router: Router, private route: ActivatedRoute,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private _documentationService: DocumentationService) {
 
     this.router.events
@@ -324,9 +324,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
           this.route.params.subscribe(payloadk => {
             if (payloadk['checkInId'] !== undefined) {
-              let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
+              const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
               if (isOnList.length > 0) {
-                let isOnObj = isOnList[0];
+                const isOnObj = isOnList[0];
                 isOnObj.isOn = true;
                 this.employeeService.update(this.loginEmployee).then(payloadu => {
                   this.loginEmployee = payloadu;
@@ -334,10 +334,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
                     data['appointment'].subscribe(payloada => {
                       this.selectedAppointment = payloada;
                       if (this.selectedAppointment !== undefined) {
-                        let isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
+                        const isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
                         if (isOnList.length > 0) {
-                          let isOn = isOnList[0];
-                          let minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
+                          const isOn = isOnList[0];
+                          const minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
                           if (minorLocationList.length > 0) {
                             this.clinicInteraction.locationName = minorLocationList[0].name;
                             this.clinicInteraction.startAt = new Date();
@@ -365,31 +365,31 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   setGraph() {
     for (let i = 0; i < this.documentations.length; i++) {
       this.timeVal = this.documentations[i].createdAt;
-      let temp = {
+      const temp = {
         temperature: i,
         0: this.documentations[i].document.temperature
       };
       this.tempChart.push(temp);
-      let bp = {
+      const bp = {
         DiastolicSystolic: i,
         0: this.documentations[i].document.bloodPressure.diastolic,
         1: this.documentations[i].document.bloodPressure.systolic
       };
       this.bpChart.push(bp);
-      let wH = {
+      const wH = {
         WH: i,
         0: this.documentations[i].document.heightWeight.bmi,
         1: this.documentations[i].document.heightWeight.weight,
         2: this.documentations[i].document.heightWeight.height,
       };
       this.wHChart.push(wH);
-      let rR = {
+      const rR = {
         RespiratoryRate: i,
         0: this.documentations[i].document.respiratoryRate
       };
       this.rRChart.push(rR);
-      
-      let pR = {
+
+      const pR = {
         PulseRate: i,
         0: this.documentations[i].document.pulseRate.pulseRateValue
       };
@@ -739,7 +739,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
         this.selectedAppointment.clinicInteractions = [];
       }
       this.clinicInteraction.endAt = new Date();
-      this.clinicInteraction.title = "Doctor's Encounter";
+      this.clinicInteraction.title = 'Doctor\'s Encounter';
       this.selectedAppointment.clinicInteractions.push(this.clinicInteraction);
       this.appointmentService.update(this.selectedAppointment).then(payload => {
 

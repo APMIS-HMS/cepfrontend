@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FacilitiesService, CompanyHealthCoverService, CorporateFacilityService } from '../../../services/facility-manager/setup/index';
 import { Facility, CompanyHealthCover } from '../../../models/index';
 import { CorporateEmitterService } from '../../../services/facility-manager/corporate-emitter.service';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-departments',
@@ -18,7 +18,7 @@ export class DepartmentsComponent implements OnInit {
 	constructor(public facilityService: FacilitiesService,
 		private companyHealthCoverService: CompanyHealthCoverService,
 		private corporateFacilityService: CorporateFacilityService,
-		private locker: CoolLocalStorage,
+		private locker: CoolSessionStorage,
 		private _corporateEventEmitter: CorporateEmitterService
 	) { }
 

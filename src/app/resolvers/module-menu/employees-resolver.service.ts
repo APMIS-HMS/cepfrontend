@@ -3,7 +3,7 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { Employee, Facility } from '../../models/index';
 import { EmployeeService } from '../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, OnInit {
@@ -12,7 +12,7 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
   pageSize = 1;
   limit = 100;
   constructor(private employeeService: EmployeeService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private router: Router) {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.router.events

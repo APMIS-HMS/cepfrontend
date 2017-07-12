@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { UserService, EmployeeService } from '../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,7 +15,7 @@ export class UserAccountsInnerPopupComponent implements OnInit {
   @Input() selectedFacility: any;
   @Input() loginEmployee: any;
 
-  constructor(private router: Router, private locker: CoolLocalStorage,
+  constructor(private router: Router, private locker: CoolSessionStorage,
     private employeeService: EmployeeService,
     private userService: UserService) { }
 

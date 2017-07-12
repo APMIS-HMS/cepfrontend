@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import { FacilitiesService, FacilityModuleService } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
 import { FacilityModule, Facility, Location, MinorLocation } from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-sub-location',
@@ -23,7 +23,7 @@ export class NewSubLocationComponent implements OnInit {
   public frmNewSubLoc: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private locationService: LocationService,
     public facilityService: FacilitiesService) {
     this.facilityService.listner.subscribe(payload => {

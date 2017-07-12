@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, MinorLocation, StoreModel } from '../../../../models/index';
 import { ProductTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
 
@@ -28,7 +28,7 @@ export class NewStoreComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedStore: any = <any>{};
-  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
+  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage, private productTypeService: ProductTypeService,
     private storeService: StoreService) { }
 
   ngOnInit() {

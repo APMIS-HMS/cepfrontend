@@ -5,7 +5,7 @@ import {
   PersonService, EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -45,12 +45,12 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedFacility: Facility = <Facility>{};
   searchControl = new FormControl();
   employees: Employee[] = [];
-  homeAddress: string = '';
+  homeAddress = '';
   selectedUser: User = <User>{};
-  loadIndicatorVisible: boolean = false;
+  loadIndicatorVisible = false;
 
-  createWorkspace: boolean = false;
-  assignUnitPop: boolean = false;
+  createWorkspace = false;
+  assignUnitPop = false;
 
   employeeSubscription: Subscription;
   departments: any[] = [];
@@ -61,7 +61,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private personService: PersonService,
     private router: Router, private route: ActivatedRoute,
     private toastr: ToastsManager,
-    private locker: CoolLocalStorage) {
+    private locker: CoolSessionStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
     });
@@ -89,8 +89,8 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   getEmployee(employee) {
     this.loadIndicatorVisible = true;
-    let employee$ = this.employeeService.get(employee._id, {});
-    let user$ = this.userService.find({ query: { personId: employee.personId } });
+    const employee$ = this.employeeService.get(employee._id, {});
+    const user$ = this.userService.find({ query: { personId: employee.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};

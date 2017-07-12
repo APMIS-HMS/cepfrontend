@@ -79,3 +79,4 @@ export * from './facility-manager/setup/dispense';
 export * from './facility-manager/setup/dispense-item';
 export * from './facility-manager/setup/dispense-by-prescription';
 export * from './facility-manager/setup/dispense-by-noprescription';
+export * from './facility-manager/setup/medication-list';

@@ -6,7 +6,7 @@ import {
 import { UserService, EmployeeService, FacilitiesService, PersonService } from '../../../../../services/facility-manager/setup/index';
 import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
 import { AccessControlService } from '../../../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -29,7 +29,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   employeeSubscription: Subscription;
 
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private employeeService: EmployeeService,
     public facilityService: FacilitiesService,
     private personService: PersonService,

@@ -4,19 +4,19 @@ import { Observable } from 'rxjs/Observable';
 import { Appointment, Facility } from '../../models/index';
 import { AppointmentService }
   from '../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class AppointmentResolverService implements Resolve<Appointment> {
-  previousUrl: string = '/';
+  previousUrl = '/';
   selectedFacility: Facility = <Facility>{};
   constructor(private appointmentService: AppointmentService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private router: Router) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Appointment> {
-    let id = route.params['appId'];
+    const id = route.params['appId'];
     if (id === undefined) {
       return Observable.of(null);
     }

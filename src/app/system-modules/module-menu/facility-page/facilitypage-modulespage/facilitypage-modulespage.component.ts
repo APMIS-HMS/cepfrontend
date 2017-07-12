@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FacilitiesService, FacilityModuleService } from '../../../../services/facility-manager/setup/index';
 import { FacilityModule, Facility } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-facilitypage-modulespage',
@@ -19,7 +19,7 @@ export class FacilitypageModulespageComponent implements OnInit {
   systemModules: FacilityModule[] = [];
   facilityModules: FacilityModule[] = [];
   constructor(private facilityModuleService: FacilityModuleService,
-    private locker: CoolLocalStorage,
+    private locker: CoolSessionStorage,
     private route: ActivatedRoute,
     public facilityService: FacilitiesService) { }
 

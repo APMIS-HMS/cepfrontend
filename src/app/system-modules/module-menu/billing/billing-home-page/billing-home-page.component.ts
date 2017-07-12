@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-billing-home-page',
@@ -19,7 +19,7 @@ export class BillingHomePageComponent implements OnInit {
   prices: FacilityServicePrice[] = [];
   selectedFacilityServicePrice: FacilityServicePrice = <FacilityServicePrice>{};
   constructor(private servicePriceService: ServicePriceService,
-    private _locker: CoolLocalStorage) {
+    private _locker: CoolSessionStorage) {
     this.servicePriceService.listenerCreate.subscribe(payload => {
       this.getPrices();
     });
