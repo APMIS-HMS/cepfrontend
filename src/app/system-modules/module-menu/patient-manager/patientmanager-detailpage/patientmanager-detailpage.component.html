@@ -50,7 +50,6 @@
                                     <div class="val1">130/90</div>
                                 </div>
                             </div>-->
-
                             <table class="demo-table">
                                 <tr>
                                     <th></th>
@@ -126,8 +125,7 @@
             <app-checkout-patient [employeeDetails]="employeeDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
         </div>
         <div *ngIf="changeUserImg" class="modal-overlay">
-            <!--<app-update-img [selectedPerson]="selectedPerson" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-update-img>-->
-            <app-update-img (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-update-img>
+            <app-image-update [selectedPerson]="patient?.personDetails" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-image-update>
         </div>
     </div>
 </div>
