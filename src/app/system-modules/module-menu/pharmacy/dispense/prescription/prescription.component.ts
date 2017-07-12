@@ -95,9 +95,6 @@ export class PrescriptionComponent implements OnInit {
 			.then(res => {
 				console.log(res);
 				if(res) {
-					// res.prescription.drugs.array.forEach(element => {
-						
-					// });
 					let medication = <MedicationList>{
 						facilityId: this.facility._id,
 						dispenseById: res.prescription.employeeId,
@@ -121,8 +118,7 @@ export class PrescriptionComponent implements OnInit {
 										text: 'Prescription has been Dispensed!'
 									});
 									setTimeout( e => {
-										console.log('Navigate');
-										//this._router.navigate(['/dashboard/pharmacy/prescriptions']);
+										this._router.navigate(['/dashboard/pharmacy/prescriptions']);
 									}, 1000);
 								})
 								.catch(err => {
@@ -148,6 +144,8 @@ export class PrescriptionComponent implements OnInit {
 				this.prescriptionItems = res;
 				res.prescriptionItems.forEach(element => {
 					if (element.isBilled) {
+						this.totalCost += element.totalCost;
+						//this.totalQuantity += element.totalQuantity;
 						this.prescriptions.push(element);
 					}
 				});
