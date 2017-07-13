@@ -53,6 +53,23 @@
 
         <div class="dataMix-wrap color1">
             <div class="display-flex">
+                <div class="lhs">Short Name</div>
+                <div class="rhs">
+                    <div [hidden]="locationEditShortNameIcoShow" class="lhs"> {{locationObj.shortName}} </div>
+                    <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
+                    <md-input-container *ngIf="locationEditShortNameIcoShow" class="example-full-width">
+                        <input mdInput value="{{locationObj.shortName}}" [formControl]="locationshortNameEdit">
+                    </md-input-container>
+                    <i [hidden]="locationEditShortNameIcoShow" (click)="locationEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <i *ngIf="locationEditShortNameIcoShow" (click)="locationEditShortNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="dataMix-wrap color1">
+            <div class="display-flex">
                 <div class="lhs">Description</div>
                 <div class="rhs">
                     <div [hidden]="locationEditDescIcoShow" class="lhs"> {{locationObj.description}} </div>
