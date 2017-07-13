@@ -1207,3 +1207,9 @@ ul.topmenuwrap li:hover {
     -webkit-box-sizing: initial;
     box-sizing: initial; 
 }
+.tbl-actions-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
