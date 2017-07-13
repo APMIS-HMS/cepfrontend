@@ -18,6 +18,7 @@ import { PatientPrescriptionComponent } from './patientmanager-detailpage/patien
 import { MedicationHistoryComponent } from './patientmanager-detailpage/medication-history/medication-history.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { UpdateImgComponent } from './update-img/update-img.component';
+import { ExternalPrescriptionComponent } from './patientmanager-detailpage/external-prescription/external-prescription.component';
 //import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
 //import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
 
@@ -34,6 +35,7 @@ import { UpdateImgComponent } from './update-img/update-img.component';
         // PatientPrescriptionComponent,
         MedicationHistoryComponent,
         UpdateImgComponent,
+        ExternalPrescriptionComponent,
         //BillPrescriptionComponent,
         //AddPrescriptionComponent
     ],
