@@ -2,7 +2,7 @@
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, FacilitiesService, UserService,
-  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService
+  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService,
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -39,10 +39,21 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedPerson: Person;
   selectedFacility: Facility = <Facility>{};
   searchControl = new FormControl();
+  countryControl = new FormControl();
+  stateControl = new FormControl();
+  homeCountryControl = new FormControl();
+  homeStateControl = new FormControl();
   employees: Employee[] = [];
   genders: Gender[] = [];
   relationships: Relationship[] = [];
   maritalStatuses: MaritalStatus[] = [];
+  countries: Country[] = [];
+  states: any[] = [];
+  lgs: any[] = [];
+
+  homeCountries: Country[] = [];
+  homeStates: any[] = [];
+  homeCities: any[] = [];
   homeAddress = '';
   selectedUser: User = <User>{};
   loadIndicatorVisible = false;
@@ -61,7 +72,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private toastr: ToastsManager,
     private genderService: GenderService,
     private relationshipService: RelationshipService,
-    private maritalStatusService:MaritalStatusService,
+    private maritalStatusService: MaritalStatusService,
     private locker: CoolSessionStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -85,8 +96,35 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     // this.getEmployees();
-    this.searchControl.valueChanges.subscribe(value => {
+    this.countryControl.valueChanges.subscribe(value => {
+      console.log(value);
+      const countryFilter = this.countries.filter(x => x._id === value);
+      if (countryFilter.length > 0) {
+        this.states = countryFilter[0].states;
+      }
     });
+    this.stateControl.valueChanges.subscribe(value => {
+      const stateFilter = this.states.filter(x => x._id === value);
+      if (stateFilter.length > 0) {
+        this.lgs = stateFilter[0].lgs;
+      }
+    });
+
+
+    this.homeCountryControl.valueChanges.subscribe(value => {
+      console.log(value);
+      const countryFilter = this.homeCountries.filter(x => x._id === value);
+      if (countryFilter.length > 0) {
+        this.homeStates = countryFilter[0].states;
+      }
+    });
+    this.homeStateControl.valueChanges.subscribe(value => {
+      const stateFilter = this.homeStates.filter(x => x._id === value);
+      if (stateFilter.length > 0) {
+        this.homeCities = stateFilter[0].cities;
+      }
+    });
+
     this.loadRoute();
 
   }
@@ -94,11 +132,14 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     const gender$ = Observable.fromPromise(this.genderService.findAll());
     const relationship$ = Observable.fromPromise(this.relationshipService.findAll());
     const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
+    const country$ = Observable.fromPromise(this.countryService.findAll());
 
-    Observable.forkJoin([gender$, relationship$, maritalStatus$]).subscribe((results: any) => {
+    Observable.forkJoin([gender$, relationship$, maritalStatus$, country$]).subscribe((results: any) => {
       this.genders = results[0].data;
       this.relationships = results[1].data;
       this.maritalStatuses = results[2].data;
+      this.countries = results[3].data;
+      this.homeCountries = results[3].data;
     })
   }
   getEmployee(employee) {
@@ -197,6 +238,13 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.employees = payload.data;
     });
   }
+  getRelationship(id) {
+    const filterRel = this.relationships.filter(x => x._id === id);
+    if (filterRel.length > 0) {
+      return filterRel[0].name;
+    }
+    return '';
+  }
   getSelectedState() {
     this.selectedNationality.states.forEach((item, i) => {
       if (item._id === this.employee.employeeDetails.stateOfOriginId) {
@@ -278,6 +326,27 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.employee = value;
       console.log(value);
       this.editDepartment = !this.editDepartment;
+    });
+  }
+  UpdatePerson() {
+    const person = this.employee.employeeDetails;
+    this.biodatas = !this.biodatas;
+    this.personService.update(person).subscribe(payload => {
+      console.log(payload);
+    });
+  }
+  UpdatePersonContact() {
+    const person = this.employee.employeeDetails;
+    this.contacts = !this.contacts;
+    this.personService.update(person).subscribe(payload => {
+      console.log(payload);
+    });
+  }
+  UpdatePersonNextOfKin() {
+    const person = this.employee.employeeDetails;
+    this.nextofkin = !this.nextofkin;
+    this.personService.update(person).subscribe(payload => {
+      console.log(payload);
     });
   }
   toggleDepartmentShow() {
