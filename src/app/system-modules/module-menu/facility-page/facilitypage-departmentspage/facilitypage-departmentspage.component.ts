@@ -210,6 +210,11 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.newUnitModal_on = false;
     this.newDeptModal_on = false;
   }
+  editUnit(){
+    this.modal_on = false;
+    this.newUnitModal_on = true;
+    this.newDeptModal_on = false;
+  }
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
   }

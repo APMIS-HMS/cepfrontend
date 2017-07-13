@@ -14,11 +14,6 @@
             </div>
 
             <div>
-                <!--<md-input-container>
-          <input mdInput [mdDatepicker]="picker" placeholder="Date" [formControl]="date">
-          <button mdSuffix [mdDatepickerToggle]="picker"></button>
-        </md-input-container>
-        <md-datepicker #picker></md-datepicker>-->
                 <div class="survery">
                     <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
                     <md-input-container>
@@ -55,9 +50,13 @@
                 </md-autocomplete>
             </div>
 
-            <div class="tr-act-btn">
+            <div class="tr-act-btn tr-act-btn1">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
                 <span>Next Available Date</span>
+            </div>
+
+            <div class="tr-act-btn2">
+                <md-checkbox>Check In</md-checkbox>
             </div>
 
         </div>
