@@ -1,84 +1,119 @@
 <div class="page-title">Locations</div>
-<div (click)="innerMenuHide($event)">
 
-    <ul *ngIf="locationHomeContentArea">
-        <li *ngFor="let locs of locationsObj; let i = even; let k = odd">
-            <div class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
-                <div class="lhs">{{locs.name}}</div>
-                <div class="tbl-icoOptions-wrap rhs" style="width: auto;">
-                    <span (click)="locationDetailContentArea_show(locs)" style="color: #388E3C; text-align: right;"><i class="fa fa-eye" aria-hidden="true"></i> View</span>
-                    <span (click)="locationDetailContentArea_remove(locs)" style="color: #ff2500; text-align: right;"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
-                </div>
-                <div class="clear">
-
-                </div>
+<ul *ngIf="locationHomeContentArea">
+    <li *ngFor="let locs of locationsObj; let i = even; let k = odd">
+        <div class="dataMix-wrap" [class.color1]="i" [class.color2]="k">
+            <div class="lhs">{{locs.name}}</div>
+            <div class="tbl-icoOptions-wrap rhs" style="width: auto;">
+                <span (click)="locationDetailContentArea_show(locs)" style="color: #388E3C; text-align: right;"><i class="fa fa-eye" aria-hidden="true"></i> View</span>
+                <span (click)="locationDetailContentArea_remove(locs)" style="color: #ff2500; text-align: right;"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
             </div>
-        </li>
+            <div class="clear">
+
+            </div>
+        </div>
+    </li>
+</ul>
+
+<div *ngIf="locationDetailContentArea">
+
+    <ul class="goback-btn">
+        <li [class.navActive]="homeContentArea" (click)="locationHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
     </ul>
 
-    <div *ngIf="locationDetailContentArea">
+    <div class="block1">
+        <div class="headers headers1">
+            <div class="block-title">{{locationObj.name}}</div>
 
-        <ul class="goback-btn">
-            <li [class.navActive]="homeContentArea" (click)="locationHomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
-        </ul>
+            <div class="module-menu rhs">
+                <div class="btn-1 btn-blue" (click)="newSubLocationModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Minor Location</div>
+                <div *ngIf="isWardSelected" routerLink="/dashboard/ward-manager/setup" class="short-cut-link">
+                    <i class="fa fa-arrow-circle-o-right"></i> Go to Ward Manager
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
 
-        <div class="block1">
-            <div class="headers headers1">
-                <div class="block-title">{{locationObj.name}}</div>
-
-                <div class="module-menu rhs">
-                    <div class="btn-1 btn-blue" (click)="newSubLocationModal_show()"><i class="fa fa-plus-square" aria-hidden="true"></i> New Minor Location</div>
-                    <div *ngIf="isWardSelected" routerLink="/dashboard/ward-manager/setup" class="short-cut-link">
-                        <i class="fa fa-arrow-circle-o-right"></i> Go to Ward Manager
-                    </div>
+        <div class="dataMix-wrap color1">
+            <div class="display-flex">
+                <div class="lhs">Location Name</div>
+                <div class="rhs">
+                    <div [hidden]="locationEditNameIcoShow" class="lhs"> {{locationObj.name}} </div>
+                    <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
+                    <md-input-container *ngIf="locationEditNameIcoShow" class="example-full-width">
+                        <input mdInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
+                    </md-input-container>
+                    <i [hidden]="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <i *ngIf="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+                    <div class="clear"></div>
                 </div>
                 <div class="clear"></div>
-
-                <div class="dataMix-wrap color1">
-                    <div class="display-flex">
-                        <div class="lhs">Location Name</div>
-                        <div class="rhs">
-                            <div [hidden]="locationEditNameIcoShow" class="lhs"> {{locationObj.name}} </div>
-                            <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
-                            <md-input-container *ngIf="locationEditNameIcoShow" class="example-full-width">
-                                <input mdInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
-                            </md-input-container>
-                            <i [hidden]="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i *ngIf="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                </div>
-
-                <div class="dataMix-wrap color1">
-                    <div class="display-flex">
-                        <div class="lhs">Description</div>
-                        <div class="rhs">
-                            <div [hidden]="locationEditDescIcoShow" class="lhs"> {{locationObj.description}} </div>
-                            <!--<textarea *ngIf="locationEditDescIcoShow" class="edit-control lhs" value="{{locationObj.desc}}" [formControl]="locationDescEdit" style="width:90%; height:120px;"></textarea>-->
-                            <md-input-container *ngIf="locationEditDescIcoShow" class="example-full-width">
-                                <textarea mdInput value="{{locationObj.desc}}" [formControl]="locationDescEdit"></textarea>
-                            </md-input-container>
-                            <i [hidden]="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i *ngIf="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                </div>
             </div>
-
-            <div class="block2">
-                <div class="block-title-bar">Minor Locations</div>
-                <div *ngFor="let subLoc of filteredMinorLocations; let count = index; let i = even; let k = odd">
-                    <app-sub-location [minorLocation]="subLoc" [location]="locationObj" [facility]="facility"></app-sub-location>
-                </div>
-            </div>
-
         </div>
-    </div>
 
-    <div *ngIf="newSubLocModal_on" class="modal-overlay">
-        <app-new-sub-location [locations]="locationsObj" [location]="locationObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-sub-location>
+        <div class="dataMix-wrap color1">
+            <div class="display-flex">
+                <div class="lhs">Description</div>
+                <div class="rhs">
+                    <div [hidden]="locationEditDescIcoShow" class="lhs"> {{locationObj.description}} </div>
+                    <!--<textarea *ngIf="locationEditDescIcoShow" class="edit-control lhs" value="{{locationObj.desc}}" [formControl]="locationDescEdit" style="width:90%; height:120px;"></textarea>-->
+                    <md-input-container *ngIf="locationEditDescIcoShow" class="example-full-width">
+                        <textarea mdInput value="{{locationObj.desc}}" [formControl]="locationDescEdit"></textarea>
+                    </md-input-container>
+                    <i [hidden]="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <i *ngIf="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="block2">
+            <div class="page-title">Minor Locations</div>
+            <!--<div *ngFor="let subLoc of filteredMinorLocations; let count = index; let i = even; let k = odd">
+                <app-sub-location [minorLocation]="subLoc" [location]="locationObj" [facility]="facility"></app-sub-location>
+            </div>-->
+
+            <table cellpadding="0" cellspacing="0" border="0.5"> 
+                <thead>
+                    <tr>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Minor Location</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Short Name</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Describtion</span>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let subLoc of filteredMinorLocations">
+                        <td>{{subLoc.name}}</td>
+                        <td>{{subLoc.shortName}}</td>
+                        <td>{{subLoc.description}}</td>
+                        <td>
+                            <i (click)="editMinorLoc()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                            <i class="del-ico fa fa-trash" aria-hidden="true"></i>
+                        </td>
+                    </tr> 
+                </tbody>
+            </table>
+        </div>
+
     </div>
+</div>
+
+<div *ngIf="newSubLocModal_on" class="modal-overlay">
+    <app-new-sub-location [locations]="locationsObj" [location]="locationObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-sub-location>
+</div>

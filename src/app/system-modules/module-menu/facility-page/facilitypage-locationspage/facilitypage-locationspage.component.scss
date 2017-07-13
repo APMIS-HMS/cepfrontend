@@ -19,3 +19,10 @@
     display: flex;
     align-items: center;
 }
+.edit-ico, .done-ico, .del-ico {
+    position: relative;
+    right: auto;
+    text-align: left;
+    cursor: pointer;
+    font-size: 18px;
+}
