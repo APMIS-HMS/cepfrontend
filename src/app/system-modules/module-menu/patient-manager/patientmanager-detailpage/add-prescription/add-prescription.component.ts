@@ -64,7 +64,6 @@ export class AddPrescriptionComponent implements OnInit {
 
 	// On click is external checkbox
 	onClickIsExternal(index, value, prescription) {
-		console.log(value);
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
