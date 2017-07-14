@@ -48,11 +48,8 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log(1)
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    console.log(this.selectedFacility._id);
-    console.log(auth);
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
         facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
@@ -68,18 +65,13 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		})
 			.subscribe((results: any) => {
 				this.loginEmployee = results[0];
-				console.log(this.loginEmployee);
 				this.clinicHelperService.getClinicMajorLocation();
-
-				console.log(this.loginEmployee);
 				if (this.loginEmployee.professionObject !== undefined) {
 					if (this.loginEmployee.professionObject.name === 'Doctor'
 						&& (this.loginEmployee.consultingRoomCheckIn === undefined
 							|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
-						console.log(2)
 						this.modal_on = true;
 					} else if (this.loginEmployee.professionObject.name === 'Doctor') {
-						console.log(3)
 						let isOn = false;
 						this.isDoctor = true;
 						this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
@@ -96,7 +88,6 @@ export class ClinicComponent implements OnInit, OnDestroy {
 							}
 						});
 						if (isOn === false) {
-							console.log(4)
 							this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
 								if (r === 0) {
 									itemr.isOn = true;
