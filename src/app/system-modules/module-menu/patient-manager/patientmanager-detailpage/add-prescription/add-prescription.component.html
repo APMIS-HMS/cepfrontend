@@ -8,7 +8,7 @@
     <div *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;">
         <div class="wrap-tr">
             <div class="pres-data long-text">
-                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}, {{ prescription.routeName }} ({{ prescription.refillCount }}) <br>
+                {{ prescription.genericName }} {{ prescription.strength }} - {{ prescription.frequency }} for {{ prescription.duration }}, {{ prescription.routeName }} ({{ prescription.refillCount }}) <br>
                 <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
                     Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.totalCost }}
                 </span>
