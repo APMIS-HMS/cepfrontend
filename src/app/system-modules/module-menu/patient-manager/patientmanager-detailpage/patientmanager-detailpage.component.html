@@ -86,6 +86,7 @@
                     <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                     <div (click)="menuLists_click()" [class.active-menuItem]="menuLists" class="menu-item">Documentation</div>
                     <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription</div>
+                    <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">External Prescriptions</div>
                     <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
                 </div>
                 <div class="menu-sect">
@@ -112,6 +113,7 @@
             <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
             <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
+            <app-external-prescription *ngIf="menuExternalPrescription"></app-external-prescription>
         </div>
 
         <div *ngIf="addVitalsPop" class="modal-overlay">

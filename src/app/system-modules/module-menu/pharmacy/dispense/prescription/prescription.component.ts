@@ -1,11 +1,13 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
+import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, Prescription, PrescriptionItem, Dispense,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService, DispenseService, MedicationListService} from '../../../../../services/facility-manager/setup/index';
+import { FacilitiesService, PrescriptionService,
+	DispenseService, MedicationListService, InventoryService} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
 	selector: 'app-prescription',
@@ -15,6 +17,7 @@ import { FacilitiesService, PrescriptionService, DispenseService, MedicationList
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
 	@Input() employeeDetails: any;
+	//dispenseForm: FormGroup;
 	facility: Facility = <Facility>{};
 	billshow = false;
 	prescriptionId = '';
@@ -25,6 +28,7 @@ export class PrescriptionComponent implements OnInit {
 	loading = true;
 
 	constructor(
+		//private _fb: FormBuilder,
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _locker: CoolSessionStorage,
@@ -32,6 +36,7 @@ export class PrescriptionComponent implements OnInit {
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,
+		private _inventoryService: InventoryService,
 		private _medicationListService: MedicationListService
 	) {
 
@@ -53,6 +58,10 @@ export class PrescriptionComponent implements OnInit {
 	// Save prescription
 	onClickSavePrescription() {
 		console.log(this.prescriptionItems);
+		// Populate each on of the billed product with the batches
+		// available in the store seleted.
+		//this._loadRespectiveBatches(this.prescriptionItems);
+
 		this.prescriptions = this.prescriptionItems.prescriptionItems;
 	}
 
@@ -142,17 +151,23 @@ export class PrescriptionComponent implements OnInit {
 				console.log(res);
 				this.loading = false;
 				this.prescriptionItems = res;
-				res.prescriptionItems.forEach(element => {
-					if (element.isBilled) {
-						this.totalCost += element.totalCost;
-						//this.totalQuantity += element.totalQuantity;
-						this.prescriptions.push(element);
-					}
-				});
 			})
 			.catch(err => {
 				console.log(err);
 			});
+	}
+
+	//Load all the dispenses with their respective batches
+	private _loadRespectiveBatches(data) {
+		data.prescriptionItems.forEach(element => {
+			if (element.isBilled) {
+				// Get the batches available in the store.
+				this._inventoryService;
+				this.totalCost += element.totalCost;
+				//this.totalQuantity += element.totalQuantity;
+				this.prescriptions.push(element);
+			}
+		});
 	}
 
 	billToggle() {
