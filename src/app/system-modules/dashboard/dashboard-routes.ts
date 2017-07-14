@@ -87,6 +87,10 @@ const appRoutes: Routes = [
                 path: 'pharmacy',
                 loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
             },
+              {
+                path: 'laboratory',
+                loadChildren: '../module-menu/laboratory/laboratory.module#LaboratoryModule'
+            },
             {
                 path: 'corporate',
                 loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
