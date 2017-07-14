@@ -3,19 +3,17 @@
     <div class="wrap-th">
         <div class="pres-col long-text">Prescription</div>
         <div class="pres-col">Instruction</div>
-        <div class="pres-col">Refill Count</div>
         <div class="pres-col action-long">Action</div>
     </div>
     <div *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;">
         <div class="wrap-tr">
             <div class="pres-data long-text">
-                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }} <br>
+                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}, {{ prescription.routeName }} ({{ prescription.refillCount }}) <br>
                 <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
                     Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.totalCost }}
                 </span>
             </div>
             <div class="pres-data instruction-text">{{ prescription.patientInstruction }}</div>
-            <div class="pres-data">{{ prescription.refillCount }}</div>
             <div *ngIf="isPrescriptionPage" class="pres-data action-long">
                 <a class="trash-box" (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
                 <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</md-checkbox>

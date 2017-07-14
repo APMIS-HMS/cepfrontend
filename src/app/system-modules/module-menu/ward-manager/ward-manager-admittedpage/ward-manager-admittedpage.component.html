@@ -1,0 +1,145 @@
+<div class="c-page-body">
+    <div class="inPatients">
+        <div class="topFilters">
+            <div class="filter-title">FILTER BY</div>
+            <div class="filter-wrap">
+                <select class="filter-select" name="" id="" [formControl]="wardVal" (change)="onWardChange($event.target.value)">
+                    <option  value="" disabled selected>Select Ward</option>
+					<option *ngFor="let ward of wardLocationItems" value="{{ward._id}}">{{ward.name}}</option>
+                </select>
+            </div>
+            <div class="filter-wrap">
+                <select class="filter-select" name="" id="" [formControl]="roomVal" (change)="onRoomChange($event.target.value)">
+                    <option value="" disabled selected>Select room</option>
+                    <option *ngFor="let room of wardRoomLocationItems" value="{{room._id}}">{{room.name}}</option>
+                </select>
+            </div>
+            <div class="filter-wrap">
+                <input type="search" class="filter-select" [formControl]="searchControl" name="" value="" placeholder="Search">
+            </div>
+        </div>
+        <div class="">
+            <!--<div class="table-responsive">
+                <table id="admission-list-table" class="table table-striped no-margin" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="table-bordered">
+                            <th style="width: 5%">No</th>
+                            <th style="width: 10%">Image</th>
+                            <th style="width: 30%">Name</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Ward</th>
+                            <th>Room</th>
+                            <th>Bed</th>
+                            <th>Admitted Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-tbody">
+                        <tr *ngIf="admittedPatient.length == 0">
+                            <td colspan="11"> No data available in table</td>
+                        </tr>
+                        <tr class="details-link" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" *ngFor="let admittedPatientItem of admittedPatient;let i = index">
+                            <td class="">{{i+1}}</td>
+                            <td class="patient-img text-center">
+                                <div><img [src]="_inPatientService.transform(admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                            </td>
+                            <td class="">{{admittedPatientItem?.patientDetails?.personDetails?.personFullName}}</td>
+                            <td class="">{{admittedPatientItem?.patientDetails?.personDetails?.age}}</td>
+                            <td class="">{{admittedPatientItem?.patientDetails?.personDetails?.gender?.name}}</td>
+                            <td class="">{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.name}}</td>
+                            <td class="">{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.room}}</td>
+                            <td class="">{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.bed}}</td>
+                            <td class="">{{admittedPatientItem?.admissionDate | date}}</td>
+                            <td class="">
+                                <div class="td-ctaWrap">
+                                    <div class="actionWrap"> Vitals </div>
+                                    <div class="actionWrap">
+                                        <span>Prescribe&nbsp;Drugs</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>-->
+
+            <table cellpadding="0" cellspacing="0" border="0.5">  
+                <thead>
+                    <tr>
+                        <th> 
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Age</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Sex</span>
+                        </th>                            
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Ward</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Room</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            <span style="padding-left: 3px;">Bed</span>
+                        </th>
+                        <th>Admitted Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="admittedPatient.length == 0">
+                        <td colspan="9"> No data available in table</td>
+                    </tr>
+
+                    <tr routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" *ngFor="let admittedPatientItem of admittedPatient">
+                        <td (click)="navEpDetail(item)">                
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientService.transform(admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                </div>
+                                <div>{{admittedPatientItem?.patientDetails?.personDetails?.personFullName}}</div>
+                            </div>
+                        </td>
+                        <td>{{admittedPatientItem?.patientDetails?.personDetails?.age}}</td>
+                        <td>{{admittedPatientItem?.patientDetails?.personDetails?.gender?.name}}</td>
+                        <td>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.name}}</td>
+                        <td>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.room}}</td>
+                        <td>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.bed}}</td>
+                        <td>{{admittedPatientItem?.admissionDate | date}}</td>
+                        <td>
+                            <div class="tbl-actions-wrap">
+                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Vitals</div>
+                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Prescribe&nbsp;Drugs</div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <div *ngIf="loadIndicatorVisible" class="div_loading">
+                        <md-spinner></md-spinner>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="dischargePatient" class="modal-overlay">
+            <app-discharge-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-discharge-patient>
+        </div>
+    </div>
+</div>
