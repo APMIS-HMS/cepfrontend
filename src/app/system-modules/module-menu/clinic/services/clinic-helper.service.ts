@@ -84,6 +84,7 @@ export class ClinicHelperService {
       });
     });
   }
+  
   getProfessions() {
     this.professionService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
