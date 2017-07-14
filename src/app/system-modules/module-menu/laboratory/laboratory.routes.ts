@@ -8,7 +8,7 @@ const LABORATORYMODULES_ROUTES: Routes = [
     {
         path: '', component: LaboratoryHomePageComponent, children: [
             { path: '', redirectTo: 'Laboratory-lists' },
-            { path: 'laboratory-lists', component: LaboratoryListsComponent },         
+            { path: 'laboratory-lists', component: LaboratoryListsComponent },
         ]
     }
 ];

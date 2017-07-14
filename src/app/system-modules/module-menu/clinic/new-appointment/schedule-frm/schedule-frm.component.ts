@@ -6,7 +6,10 @@ import {
     FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService,
     WorkSpaceService, PatientService
 } from '../../../../../services/facility-manager/setup/index';
-import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, Patient } from '../../../../../models/index';
+import { LocationService } from '../../../../../services/module-manager/setup/index';
+import {
+    Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, Patient, ScheduleRecordModel, MinorLocation
+} from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -26,7 +29,8 @@ export class ScheduleFrmComponent implements OnInit {
     selectedProfession: Profession = <Profession>{};
     clinics: any[] = [];
     patients: Patient[] = [];
-    schedules: any[] = [];
+    clinicLocations: MinorLocation[] = [];
+    // schedules: any[] = [];
 
     filteredClinics: Observable<any[]>
     filteredProviders: Observable<Employee[]>
@@ -35,12 +39,13 @@ export class ScheduleFrmComponent implements OnInit {
 
     appointmentTypes: AppointmentType[] = [];
     providers: Employee[] = [];
+    schedules: ScheduleRecordModel[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
     auth: any;
     currentDate: Date = new Date();
-
+    clinicMajorLocation: any;
     filteredStates: any;
     patient: FormControl;
     clinic: FormControl;
@@ -106,7 +111,7 @@ export class ScheduleFrmComponent implements OnInit {
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private patientService: PatientService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
-        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService) {
+        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private locationService: LocationService) {
         this.patient = new FormControl();
         this.filteredPatients = this.patient.valueChanges
             .startWith(null)
@@ -141,7 +146,8 @@ export class ScheduleFrmComponent implements OnInit {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
         // this.getSchedules();
-        this.getLoginEmployee();
+        // this.getLoginEmployee();
+        this.getClinicMajorLocation();
         this.getEmployees();
         this.getAppointmentTypes();
         this.getPatients();
@@ -154,7 +160,16 @@ export class ScheduleFrmComponent implements OnInit {
                 console.log(this.schedules);
             })
     }
-
+    getClinicMajorLocation() {
+        this.locationService.findAll().then(payload => {
+            payload.data.forEach((itemi, i) => {
+                if (itemi.name === 'Clinic') {
+                    this.clinicMajorLocation = itemi;
+                    this.getLoginEmployee();
+                }
+            });
+        });
+    }
     getClinics() {
         this.clinics = [];
         this.selectedFacility.departments.forEach((itemi, i) => {
@@ -191,6 +206,43 @@ export class ScheduleFrmComponent implements OnInit {
             });
         });
         this.loadIndicatorVisible = false;
+    }
+    getClinicLocation() {
+        this.clinicLocations = [];
+        const inClinicLocations: MinorLocation[] = [];
+        const minors = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinicMajorLocation._id);
+        minors.forEach((itemi, i) => {
+            const minorLocation: MinorLocation = <MinorLocation>{};
+            minorLocation._id = itemi._id;
+            minorLocation.description = itemi.description;
+            minorLocation.locationId = itemi.locationId;
+            minorLocation.name = itemi.name;
+            minorLocation.shortName = itemi.shortName;
+            minorLocation.text = itemi.name;
+            inClinicLocations.push(minorLocation);
+        });
+        if (this.loginEmployee.professionObject !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
+            this.schedules.forEach((items, s) => {
+                this.loginEmployee.units.forEach((itemu, u) => {
+                    if (itemu === items.locationType.unit._id) {
+                        const res = inClinicLocations.filter(x => x._id === items.locationType.clinic.clinicLocation);
+                        if (res.length > 0) {
+                            this.clinicLocations.push(res[0]);
+                        }
+                    }
+                });
+            });
+        } else {
+            this.loginEmployee.workSpaces.forEach((itemw, w) => {
+                itemw.locations.forEach((iteml, l) => {
+                    const res = inClinicLocations.filter(x => x._id === iteml.minorLocationId);
+                    if (res.length > 0) {
+                        this.clinicLocations.push(res[0]);
+                    }
+                });
+            });
+        }
+
     }
     getSchedules() {
         this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } })
