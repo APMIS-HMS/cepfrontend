@@ -59,6 +59,7 @@ export class NewUnitComponent implements OnInit {
       unitAlias: ['', [<any>Validators.minLength(2)]],
       unitParent: ['', [<any>Validators.required]],
       isClinic: [false, []],
+      clinicCapacity: ['', []],
       unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
     });
 
