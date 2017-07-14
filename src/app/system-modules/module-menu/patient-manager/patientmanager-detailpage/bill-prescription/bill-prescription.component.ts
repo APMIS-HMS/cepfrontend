@@ -45,7 +45,6 @@ export class BillPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionData);
-		console.log(this.totalCost);
 
 		// if(this.employeeDetails.storeCheckIn !== undefined) {
 		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
@@ -108,23 +107,11 @@ export class BillPrescriptionComponent implements OnInit {
 		const genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
 			// Get the list of products from a facility, and then search if the generic
 			// that was entered by the doctor in contained in the list of products
-			this._productService.find({ query: { facilityId : this.facility._id }})
+			// this._productService.find({ query: { facilityId : this.facility._id }})
+			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, generic: genericName[0] }})
 				.then(res => {
 					console.log(res);
-					let tempArray = [];
-					// Get all products in the facility, then search for the item you are looking for.
-					res.data.forEach(element => {
-						if(element.genericName !== undefined) {
-							if (element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
-								tempArray.push(element);
-							} 
-						}
-					});
-					if (tempArray.length !== 0) {
-						this.drugs = tempArray;
-					} else {
-						this.drugs = [];
-					}
+					this.drugs = res;
 				})
 				.catch(err => {
 					console.log(err);
@@ -133,26 +120,30 @@ export class BillPrescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.selectedDrug = drugId.viewValue;
-		let pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		const pPrice = drugId._element.nativeElement.getAttribute('data-p-price');
+		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
+		this.cost = pPrice;
+		this.qtyInStores = pAqty;
+
 		//const pId = '592417935fbce732205cf0aa';
-		const sId = drugId._element.nativeElement.getAttribute('data-p-id');
-		const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
-		const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
+		// const sId = drugId._element.nativeElement.getAttribute('data-p-id');
+		// const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
+		// const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
 		// Get the service for the product
 		// if(this.storeId !== '') {
-			console.log(pId);
-			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
-				.then(res => {
-					if (res.length > 0) {
-						console.log(res);
-						this.cost = res[0].price;
-						this.batchNumber = res[0].batchNo;
-						this.qtyInStores = res[0].availableQty;
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
+			// this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
+			// 	.then(res => {
+			// 		if (res.length > 0) {
+			// 			console.log(res);
+			// 			this.cost = res[0].price;
+			// 			this.batchNumber = res[0].batchNo;
+			// 			this.qtyInStores = res[0].availableQty;
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		console.log(err);
+			// 	});
 		// } else {
 		// 	this._facilityService.announceNotification({
 		// 		type: "Error",

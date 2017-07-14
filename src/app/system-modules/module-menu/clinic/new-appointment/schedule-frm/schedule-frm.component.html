@@ -3,12 +3,12 @@
         <div class="sect-wrap">
             <div>
                 <md-input-container>
-                    <input mdInput placeholder="Patient" [mdAutocomplete]="auto" [formControl]="patient">
+                    <input mdInput placeholder="Patient" [mdAutocomplete]="autoPatient" [formControl]="patient">
                 </md-input-container>
 
-                <md-autocomplete #auto="mdAutocomplete">
-                    <md-option *ngFor="let state of filteredStates | async" [value]="state">
-                        {{ state }}
+                <md-autocomplete #autoPatient="mdAutocomplete" [displayWith]="patientDisplayFn">
+                    <md-option *ngFor="let patient of filteredPatients | async" [value]="patient">
+                        {{ patient.personDetails.lastName }} {{ patient.personDetails.firstName }}
                     </md-option>
                 </md-autocomplete>
             </div>
@@ -17,7 +17,7 @@
                 <div class="survery">
                     <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
                     <md-input-container>
-                      <input mdInput placeholder="Date" [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly>
+                        <input mdInput placeholder="Date" [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly>
                     </md-input-container>
 
                     <!--<input [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly />-->
@@ -36,16 +36,15 @@
                 </md-autocomplete>
             </div>
         </div>
-
         <div class="sect-wrap">
             <div>
                 <md-input-container>
-                    <input mdInput placeholder="Clinic" [mdAutocomplete]="auto" [formControl]="clinic">
+                    <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinic">
                 </md-input-container>
 
-                <md-autocomplete #auto="mdAutocomplete">
-                    <md-option *ngFor="let state of filteredStates | async" [value]="state">
-                        {{ state }}
+                <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
+                    <md-option *ngFor="let clinic of filteredClinics | async " [value]="clinic">
+                        {{ clinic.clinicName }}
                     </md-option>
                 </md-autocomplete>
             </div>

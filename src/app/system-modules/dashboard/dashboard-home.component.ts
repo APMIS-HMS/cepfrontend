@@ -62,6 +62,10 @@ export class DashboardHomeComponent implements OnInit {
       this.facilityName = this.facilityObj.name;
     }
   }
+  laboratorySubmenuShow() {
+    this.innerMenuShow = false;
+    this.router.navigate(['/dashboard/laboratory'])
+  }
 
   onSwitchAccount() {
     this.router.navigate(['/accounts']);

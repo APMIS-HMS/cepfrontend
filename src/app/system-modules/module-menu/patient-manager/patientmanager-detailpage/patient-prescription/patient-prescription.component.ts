@@ -112,7 +112,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     genericName: value.drug,
                     routeName: value.route,
                     frequency: value.frequency,
-                    duration: value.duration + value.durationUnit,
+                    duration: value.duration + ' ' + value.durationUnit,
                     startDate: value.startDate,
                     strength: value.strength,
                     patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
