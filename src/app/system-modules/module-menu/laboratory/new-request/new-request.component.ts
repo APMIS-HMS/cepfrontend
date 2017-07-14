@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-request.component.scss']
 })
 export class NewRequestComponent implements OnInit {
+    foods = [
+    {value: 'male', viewValue: 'Fale'},
+    {value: 'female', viewValue: 'Female'},
+  ];
 
   constructor() { }
 
   ngOnInit() {
   }
+
 
 }

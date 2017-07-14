@@ -4,18 +4,59 @@
   <div class="survery">
     <div class="container">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8">
           <md-tab-group>
-            <md-tab label="Add a Person">Content 1</md-tab>
+            <md-tab label="Add a Person">
+              <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                      <input mdInput placeholder="Enter Name">
+                </md-input-container>
+              </div>
+              <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Surename">
+              </md-input-container>
+              </div>
+              <div class="col-sm-6">
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker" placeholder="Choose date of birth">
+                  <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                </md-input-container>
+                <md-datepicker #picker></md-datepicker>
+              </div>
+              <div class="col-sm-6">
+                <md-select placeholder="Sex">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{ food.viewValue }}
+                  </md-option>
+                </md-select>
+              </div>
+              <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                      <input mdInput placeholder="Age">
+                </md-input-container>
+              </div>
+              <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                      <input mdInput placeholder="Enter lab number">
+                </md-input-container>
+              </div>
+              <div class="col-sm-7">
+                <md-input-container class="example-full-width">
+                      <textarea mdInput placeholder="Enter Address"></textarea>
+                </md-input-container>
+              </div>
+              <div class="col-sm-5" style="margin-top:27px;">
+                <a md-raised-button>Add User</a>
+              </div>
+            </md-tab>
             <md-tab label="Select Investigation">Content 2</md-tab>
           </md-tab-group>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 text-center">
-           <div class="example-full-width" id="example-full-width">
-             <button  md-raised-button>Generate Bill</button>
-            </div>
+            <!--<div class="row">
+                <div class="col-sm-12 text-center margin">
+                  <a md-raised-button>Generate Bill</a>
+              </div>
+             </div>-->
         </div>
       </div>
     </div>
