@@ -40,6 +40,8 @@ export class ScheduleFrmComponent implements OnInit {
     appointmentTypes: AppointmentType[] = [];
     providers: Employee[] = [];
     schedules: ScheduleRecordModel[] = [];
+    scheduleManagers: ScheduleRecordModel[] = [];
+    professions: Profession[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
@@ -146,19 +148,61 @@ export class ScheduleFrmComponent implements OnInit {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
         // this.getSchedules();
-        // this.getLoginEmployee();
-        this.getClinicMajorLocation();
-        this.getEmployees();
-        this.getAppointmentTypes();
-        this.getPatients();
+        // // this.getLoginEmployee();
+        // this.getClinicMajorLocation();
+        // this.getEmployees();
+        // this.getAppointmentTypes();
+        // this.getPatients();
+        this.primeComponent();
+    }
+    primeComponent() {
+
+        const emp$ = Observable.fromPromise(this.employeeService.find({
+            query: {
+                facilityId: this.selectedFacility._id, personId: this.auth.data.personId, showbasicinfo: true
+            }
+        }));
+        const empMergeMap$ = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable
+            .fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+        ]))
+        const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
+        const appointmentTypes$ = Observable.fromPromise(this.appointmentTypeService.findAll());
+        const patient$ = Observable.fromPromise(this.patientService.find({ query: { facilityId: this.selectedFacility._id } }));
+        const schedule$ = Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }));
+        const loginEmployee$ = empMergeMap$;
+        const professions$ = Observable.fromPromise(this.locationService.findAll());
+
+        Observable.forkJoin([majorLocation$, appointmentTypes$, patient$, schedule$, loginEmployee$, professions$])
+            .subscribe((results: any) => {
+                console.log(results);
+                results[0].data.forEach((itemi, i) => {
+                    if (itemi.name === 'Clinic') {
+                        this.clinicMajorLocation = itemi;
+                    }
+                });
+                this.appointmentTypes = results[1].data;
+                this.patients = results[2].data;
+                const schedules = results[3].data;
+                this.professions = results[5].data;
+                if (results[4].length > 0) {
+                    this.loginEmployee = results[4][0];
+                    if (this.loginEmployee.professionObject.name === 'Doctor') {
+                        this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
+                        this.isDoctor = true;
+                    } else {
+                        this.isDoctor = false;
+                    }
+                    console.log(this.loginEmployee);
+                }
+                this.scheduleManagers = schedules;
+                this.getClinics()
+            })
     }
     getOthers(clinic: any) {
-        console.log(clinic);
-        this.scheduleService.find({ query: { clinicId: clinic._id } })
-            .subscribe(payload => {
-                this.schedules = payload.data;
-                console.log(this.schedules);
-            })
+        clinic.schedules.forEach((itemi, i) => {
+            this.schedules.push(itemi);
+        });
+        console.log(this.schedules);
     }
     getClinicMajorLocation() {
         this.locationService.findAll().then(payload => {
@@ -204,6 +248,16 @@ export class ScheduleFrmComponent implements OnInit {
                     }
                 });
             });
+        });
+
+        this.clinics.forEach((itemc, c) => {
+            const filteredManangers = this.scheduleManagers.filter(x => x.locationType.clinic._id === itemc._id);
+            if (filteredManangers.length > 0) {
+                itemc.schedules = filteredManangers[0].schedules;
+                // itemc.schedules.forEach((itemi, i) => {
+                //     // this.schedules.push(itemi);
+                // });
+            }
         });
         this.loadIndicatorVisible = false;
     }
