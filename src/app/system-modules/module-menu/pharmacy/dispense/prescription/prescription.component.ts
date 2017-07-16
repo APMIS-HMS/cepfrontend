@@ -19,6 +19,7 @@ export class PrescriptionComponent implements OnInit {
 	@Input() employeeDetails: any;
 	//dispenseForm: FormGroup;
 	facility: Facility = <Facility>{};
+	selectedPrescription: PrescriptionItem = <PrescriptionItem>{};
 	billshow = false;
 	prescriptionId = '';
 	prescriptions: any[] = [];
@@ -26,6 +27,7 @@ export class PrescriptionComponent implements OnInit {
 	totalQuantity = 0;
 	totalCost = 0;
 	loading = true;
+	batchLoading = true;
 
 	constructor(
 		//private _fb: FormBuilder,
@@ -46,7 +48,7 @@ export class PrescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 
-		this.storeId = '590b2070db527124e0697b18';
+		//this.storeId = '590b2070db527124e0697b18';
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
@@ -151,10 +153,59 @@ export class PrescriptionComponent implements OnInit {
 				console.log(res);
 				this.loading = false;
 				this.prescriptionItems = res;
+
+				// Reset all the prescriptionItem.transactions to an empty array.
+				this.prescriptionItems.prescriptionItems.forEach(element => {
+					element.transactions = [];
+				});
 			})
 			.catch(err => {
 				console.log(err);
 			});
+	}
+
+	onClickEachPrescription(index, prescription) {
+		console.log(index);
+		console.log(prescription);
+		if(prescription.isBilled) {
+			this.selectedPrescription = prescription;
+			this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
+			//const productId = prescription.productId;
+			const productId = '592419145fbce732205cf0ba';
+			this._inventoryService.find({ query: { facilityId: this.facility._id, productId: productId }})
+				.then(res => {
+					console.log(res);
+					const tempArray = [];
+					if(res.data[0].transactions.length !== 0) {
+						res.data[0].transactions.forEach(element => {
+							if(element.quantity > 0) {
+								tempArray.push(element);
+							}
+						});
+					}
+					if(tempArray.length !== 0) {
+						this.prescriptionItems.prescriptionItems[index].transactions = res.data[0].transactions;
+					} else {
+						this.prescriptionItems.prescriptionItems[index].transactions = [];
+					}
+					console.log(this.prescriptionItems);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		} else {
+			this._facilityService.announceNotification({
+				type: 'Info',
+				text: 'This item is marked external, you can not bill the patient!'
+			});
+		}
+	}
+
+	onClickBillProduct(parentIndex, index, batch, inputBatch) {
+		console.log(parentIndex);
+		console.log(index);
+		console.log(batch);
+		console.log(inputBatch);
 	}
 
 	//Load all the dispenses with their respective batches

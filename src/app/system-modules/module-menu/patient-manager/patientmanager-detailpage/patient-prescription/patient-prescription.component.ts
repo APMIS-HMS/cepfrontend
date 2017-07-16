@@ -49,6 +49,8 @@ export class PatientPrescriptionComponent implements OnInit {
     currentDate: Date = new Date();
     minDate: Date = new Date();
     priorityValue: String = '';
+    selectedForm: string = '';
+    selectedIngredients: any = [];
     // isDispensed: boolean = false;
 
     constructor(
@@ -80,7 +82,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this.getAllPriorities();
         this.getAllRoutes();
         this.getAllFrequencies();
-        this.getMedicationList();
+        //this.getMedicationList();
 
         this.allPrescriptionsForm = this.fb.group({
             priority: ['', [<any>Validators.required]],
@@ -116,6 +118,8 @@ export class PatientPrescriptionComponent implements OnInit {
                     strength: value.strength,
                     patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
                     refillCount: value.refillCount,
+                    ingredients: this.selectedIngredients,
+                    form: this.selectedForm,
                     cost: 0,
                     totalCost: 0,
                     isExternal: false,
@@ -258,6 +262,8 @@ export class PatientPrescriptionComponent implements OnInit {
             .then(res => {
                 console.log(res);
                 if(res.ingredients.length > 0) {
+                    this.selectedForm = res.form;
+                    this.selectedIngredients = res.ingredients;
                     let drugName: string = '';
                     let strength: string = '';
                     let ingredientLength: number = res.ingredients.length;
@@ -303,16 +309,16 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     //Get all medications
-	getMedicationList() {
-		this._medicationListService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id }})
-			.then(res => {
-				console.log(res);
+	// getMedicationList() {
+	// 	this._medicationListService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id }})
+	// 		.then(res => {
+	// 			console.log(res);
 				
-			})
-			.catch(err => {
-				console.log(err);
-			});
-	}
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		});
+	// }
 
     focusSearch() {
         this.showCuDropdown = !this.showCuDropdown;

@@ -1,11 +1,68 @@
 <section id="presc-list">
     <div class="survery">
         <div class="col-xs-12" style="margin-left: -30px;">
+            <!-- <div class="col-sm-5">
+                <input type="search" placeholder="Search">
+            </div> -->
             <md-input-container class="col-sm-5">
                 <input mdInput placeholder="Search">
             </md-input-container>
         </div>
-        <div class="col-xs-12 table-wrapper no-padding">
+        <div class="col-xs-12" style="padding: 0;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Date</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Location</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Priority</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Prescriber</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Status</span>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="prescriptionLists.length === 0 && !loading">
+                        <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
+                    </tr>
+                    <tr *ngIf="prescriptionLists.length === 0 && loading">
+                        <td class="table-content" colspan="6" style="text-align: center"><i class="fa fa-spinner fa-spin fa-2x"></i></td>
+                    </tr>
+                    <tr *ngFor="let prescription of prescriptionLists" routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
+                        <td class="table-content">{{prescription?.updatedAt | date:'shortDate'}}</td>
+                        <td class="table-content">{{prescription?.patientName}}</td>
+                        <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
+                        <td class="table-content">{{prescription?.priorityObject?.name}}</td>
+                        <td class="table-content">{{prescription?.employeeName}}</td>
+                        <td class="table-content">Assessed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+        <!-- <div class="col-xs-12 table-wrapper no-padding">
             <div class="row">
                 <div class="table-head">
                     <div class="table-head-inner-content">
@@ -31,24 +88,23 @@
             <div class="row" *ngFor="let prescription of prescriptionLists">
                 <div>
                     <a routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
-                        <div class="table-data">
-                            <div class="table-data-inner">
+                        <div class="table-content">
+                            <div class="table-content-inner">
                                 {{prescription.updatedAt}}
                             </div>
-                            <div class="table-data-inner">
+                            <div class="table-content-inner">
                                 <span class="absolute">{{prescription?.patientName}}</span>
                             </div>
-                            <div class="table-data-inner">
+                            <div class="table-content-inner">
                                 {{prescription.clinicDetails.clinicName}}
                             </div>
-                            <div class="table-data-inner">
+                            <div class="table-content-inner">
                                 {{prescription?.priorityObject?.name}}
                             </div>
-                            <div class="table-data-inner">
-                                <!--<img class="img-circle img-responsive" src="http://placeholder.pics/svg/30" />-->
+                            <div class="table-content-inner">
                                 <span class="absolute">{{prescription?.employeeName}}</span>
                             </div>
-                            <div class="table-data-inner">
+                            <div class="table-content-inner">
                                 Assessed
                             </div>
                         </div>
@@ -57,7 +113,7 @@
             </div>
             <div class="row" *ngIf="prescriptionLists.length === 0 && !loading">
                 <div class="text-center" style="padding: 10px; font-size: 13px;">
-                    <p>No data to display in table</p>
+                    <p>No content to display in table</p>
                 </div>
             </div>
             <div class="row" *ngIf="prescriptionLists.length === 0 && loading">
@@ -65,6 +121,6 @@
                     <i class="fa fa-spinner fa-spin fa-2x"></i>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
