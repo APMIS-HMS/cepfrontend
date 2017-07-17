@@ -90,3 +90,15 @@ md-input-container {
 .center {
     margin-top: 31px;
 }
+
+.table-header {
+    background-color: #4bb8ef;
+    .table-header-data {
+        padding: 10px;
+    }
+}
+
+.table-content {
+    padding: 0 10px;
+    text-align: left;
+}

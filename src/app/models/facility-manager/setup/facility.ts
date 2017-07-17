@@ -25,4 +25,5 @@ export interface Facility {
     description: string;
     facilityClassItem: any;
     facilityOwnershipId: any;
+    facilityModules: any;
 }

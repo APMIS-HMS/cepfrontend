@@ -1,0 +1,17 @@
+<div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+
+    <div class="inner-page-wrap">
+        <div class="inner-menu1-wrap">
+            <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
+                aria-hidden="true"></i>
+            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/appointment']">Setup</li>
+            </ul>
+        </div>
+
+        <div class="inner-page-contentArea">
+            <router-outlet class="menuContent"></router-outlet>
+        </div>
+    </div>
+</div>
