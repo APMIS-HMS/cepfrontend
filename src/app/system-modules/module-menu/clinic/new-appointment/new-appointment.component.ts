@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import {
     FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService, WorkSpaceService
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession } from '../../../../models/index';
+import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, ScheduleRecordModel } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,6 +21,7 @@ export class NewAppointmentComponent implements OnInit {
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};
     clinics: any[] = [];
+    schedules: ScheduleRecordModel[] = [];
 
     filteredClinics: Observable<any[]>
     filteredProviders: Observable<Employee[]>
@@ -101,6 +102,11 @@ export class NewAppointmentComponent implements OnInit {
         private appointmentService: AppointmentService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService) {
+
+        this.appointmentService.schedulesAnnounced$.subscribe((payload: ScheduleRecordModel[]) => {
+            this.schedules = payload;
+        })
+
         this.clinicCtrl = new FormControl();
         this.filteredClinics = this.clinicCtrl.valueChanges
             .startWith(null)
@@ -178,7 +184,6 @@ export class NewAppointmentComponent implements OnInit {
     getSchedules() {
         this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } })
             .subscribe(payload => {
-                console.log(payload);
             })
     }
 
@@ -193,7 +198,6 @@ export class NewAppointmentComponent implements OnInit {
         this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
         ]))
             .subscribe((results: any) => {
-                console.log(results)
                 this.loginEmployee = results[0];
                 if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
                     this.selectedProfession = this.loginEmployee.professionObject;
@@ -216,7 +220,6 @@ export class NewAppointmentComponent implements OnInit {
                 .then(payload => {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
-                        console.log(this.providers);
                         if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
                         }
                     });
@@ -237,7 +240,6 @@ export class NewAppointmentComponent implements OnInit {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
                     });
-                    console.log(this.providers);
                     if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
                         this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
                         });

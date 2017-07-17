@@ -4,7 +4,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {
     FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService,
-    WorkSpaceService, PatientService
+    WorkSpaceService, PatientService, FacilitiesServiceCategoryService
 } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
 import {
@@ -36,12 +36,14 @@ export class ScheduleFrmComponent implements OnInit {
     filteredProviders: Observable<Employee[]>
     filteredAppointmentTypes: Observable<AppointmentType[]>
     filteredPatients: Observable<Patient[]>
+    filteredCategoryServices: Observable<any[]>
 
     appointmentTypes: AppointmentType[] = [];
     providers: Employee[] = [];
     schedules: ScheduleRecordModel[] = [];
     scheduleManagers: ScheduleRecordModel[] = [];
     professions: Profession[] = [];
+    categoryServices: any[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
@@ -54,6 +56,7 @@ export class ScheduleFrmComponent implements OnInit {
     provider: FormControl;
     type: FormControl;
     category: FormControl;
+    checkIn: FormControl;
     date = new Date(); // FormControl = new FormControl();
     reason: FormControl = new FormControl();
 
@@ -113,7 +116,11 @@ export class ScheduleFrmComponent implements OnInit {
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private patientService: PatientService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
-        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private locationService: LocationService) {
+        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
+        private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
+
+        this.checkIn = new FormControl(false);
+
         this.patient = new FormControl();
         this.filteredPatients = this.patient.valueChanges
             .startWith(null)
@@ -139,9 +146,10 @@ export class ScheduleFrmComponent implements OnInit {
             .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
         this.category = new FormControl();
-        this.filteredStates = this.category.valueChanges
+        this.filteredCategoryServices = this.category.valueChanges
             .startWith(null)
-            .map(name => this.filterStates(name));
+            .map((type: any) => type && typeof type === 'object' ? type.name : type)
+            .map(val => val ? this.filterCategoryServices(val) : this.categoryServices.slice());
     }
 
     ngOnInit() {
@@ -170,11 +178,12 @@ export class ScheduleFrmComponent implements OnInit {
         const patient$ = Observable.fromPromise(this.patientService.find({ query: { facilityId: this.selectedFacility._id } }));
         const schedule$ = Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }));
         const loginEmployee$ = empMergeMap$;
-        const professions$ = Observable.fromPromise(this.locationService.findAll());
+        const professions$ = Observable.fromPromise(this.professionService.findAll());
+        const facilityServiceCategory$ = Observable.fromPromise(this.facilityServiceCategoryService
+            .find({ query: { facilityId: this.selectedFacility._id } }));
 
-        Observable.forkJoin([majorLocation$, appointmentTypes$, patient$, schedule$, loginEmployee$, professions$])
-            .subscribe((results: any) => {
-                console.log(results);
+        Observable.forkJoin([majorLocation$, appointmentTypes$, patient$, schedule$, loginEmployee$, professions$,
+            facilityServiceCategory$]).subscribe((results: any) => {
                 results[0].data.forEach((itemi, i) => {
                     if (itemi.name === 'Clinic') {
                         this.clinicMajorLocation = itemi;
@@ -184,25 +193,36 @@ export class ScheduleFrmComponent implements OnInit {
                 this.patients = results[2].data;
                 const schedules = results[3].data;
                 this.professions = results[5].data;
+                if (results[6].data.length > 0) {
+                    const categories = results[6].data[0].categories;
+                    const filterCategories = categories.filter(x => x.name === 'Appointment');
+                    if (filterCategories.length > 0) {
+                        this.categoryServices = filterCategories[0].services;
+                    }
+
+                }
+
                 if (results[4].length > 0) {
                     this.loginEmployee = results[4][0];
+                    console.log(this.categoryServices);
                     if (this.loginEmployee.professionObject.name === 'Doctor') {
                         this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
                         this.isDoctor = true;
                     } else {
                         this.isDoctor = false;
                     }
-                    console.log(this.loginEmployee);
                 }
                 this.scheduleManagers = schedules;
+                this.getEmployees();
                 this.getClinics()
             })
     }
     getOthers(clinic: any) {
+        this.schedules = [];
         clinic.schedules.forEach((itemi, i) => {
             this.schedules.push(itemi);
         });
-        console.log(this.schedules);
+        this.appointmentService.schedulesAnnounced(this.schedules);
     }
     getClinicMajorLocation() {
         this.locationService.findAll().then(payload => {
@@ -301,7 +321,6 @@ export class ScheduleFrmComponent implements OnInit {
     getSchedules() {
         this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } })
             .subscribe(payload => {
-                console.log(payload);
             })
     }
 
@@ -323,7 +342,6 @@ export class ScheduleFrmComponent implements OnInit {
         this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
         ]))
             .subscribe((results: any) => {
-                console.log(results)
                 this.loginEmployee = results[0];
                 if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
                     this.selectedProfession = this.loginEmployee.professionObject;
@@ -346,7 +364,6 @@ export class ScheduleFrmComponent implements OnInit {
                 .then(payload => {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
-                        console.log(this.providers);
                         if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
                         }
                     });
@@ -367,7 +384,6 @@ export class ScheduleFrmComponent implements OnInit {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
                     });
-                    console.log(this.providers);
                     if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
                         this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
                         });
@@ -400,6 +416,10 @@ export class ScheduleFrmComponent implements OnInit {
         return val ? this.appointmentTypes.filter(s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.appointmentTypes;
     }
+    filterCategoryServices(val: any) {
+        return val ? this.categoryServices.filter(s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0)
+            : this.categoryServices;
+    }
     displayFn(clinic: any): string {
         return clinic ? clinic.clinicName : clinic;
     }
@@ -412,6 +432,61 @@ export class ScheduleFrmComponent implements OnInit {
     }
     patientDisplayFn(patient: any) {
         return patient ? patient.personDetails.lastName + ' ' + patient.personDetails.firstName : patient;
+    }
+
+    categoryServiceDisplayFn(category: any) {
+        return category ? category.name : category;
+    }
+
+    scheduleAppointment() {
+        //        patient: FormControl;
+        // clinic: FormControl;
+        // provider: FormControl;
+        // type: FormControl;
+        // category: FormControl;
+        // checkIn: FormControl;
+        // date = new Date(); // FormControl = new FormControl();
+        // reason: FormControl = new FormControl();
+        const patient = this.patient.value;
+        const clinic = this.clinic.value;
+        const provider = this.provider.value;
+        const type = this.type.value;
+        const category = this.category.value;
+        const checkIn = this.checkIn.value;
+        const date = this.date;
+        const reason = this.reason.value;
+        const facility = this.selectedFacility;
+        // console.log(patient, clinic, provider, type, category, checkIn, date, reason);
+        // console.log(clinic);
+        delete facility.address;
+        delete facility.countryItem;
+        delete facility.departments;
+        delete facility.facilityClassItem;
+        delete facility.facilityItem;
+        delete facility.facilityModules;
+        delete facility.facilitymoduleId;
+        delete facility.logoObject;
+        delete facility.minorLocations;
+
+        delete patient.appointments;
+        delete patient.encounterRecords;
+        delete patient.orders;
+        delete patient.tags;
+
+        delete provider.department;
+        delete provider.employeeFacilityDetails;
+        delete provider.role;
+        delete provider.units;
+
+        const appointment: Appointment = <Appointment>{};
+        appointment.appointmentReason = reason;
+        appointment.appointmentTypeId = type;
+        appointment.clinicId = clinic.clinic;
+        appointment.doctorId = provider;
+        appointment.facilityId = <any>facility;
+        appointment.patientId = patient;
+        console.log(appointment);
+
     }
 
     filterStates(val: string) {
