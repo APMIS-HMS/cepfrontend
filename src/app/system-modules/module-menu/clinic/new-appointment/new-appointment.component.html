@@ -9,19 +9,11 @@
 
 <div class="clinic-running-days-wrap">
     <i class="fa fa-info-circle" aria-hidden="true"></i>
-    <div class="sect-title">Clinic Running Days</div>
+    <div class="sect-title">Clinic Running Days <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span></div>
     <div class="runningDays">
-        <div class="runningDay-wrap">
-            <div class="running-day">Monday</div>
-            <div class="running-time">09:00am to 4:00pm</div>
-        </div>
-        <div class="runningDay-wrap">
-            <div class="running-day">Wednesday</div>
-            <div class="running-time">09:00am to 4:00pm</div>
-        </div>
-        <div class="runningDay-wrap">
-            <div class="running-day">Friday</div>
-            <div class="running-time">10:00am to 4:00pm</div>
+        <div class="runningDay-wrap" *ngFor="let schedule of schedules">
+            <div class="running-day">{{schedule.day}} | {{schedule.location.name}}</div>
+            <div class="running-time">{{schedule.startTime | date:'shortTime'}} to {{schedule.endTime | date:'shortTime'}}</div>
         </div>
     </div>
 </div>
@@ -30,7 +22,7 @@
 <div class="dr-wrap">
     <app-date-range [(dateRange)]="dateRange"></app-date-range>
 </div>
-<table cellpadding="0" cellspacing="0" border="0.5"> 
+<table cellpadding="0" cellspacing="0" border="0.5">
     <thead>
         <tr>
             <th>
@@ -53,12 +45,12 @@
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Clinic</span>
             </th>
-			<th>
+            <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Provider</span>
             </th>
-			<th>
+            <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Status</span>
@@ -71,61 +63,61 @@
         <tr>
             <td colspan="7">
                 <div class="tbl-actionRow">
-					<div>
-						<md-input-container>
-							<input mdInput placeholder="Clinic" [mdAutocomplete]="auto" [formControl]="clinicCtrl">
-						</md-input-container>
+                    <div class="filter-xxx">
+                        <md-input-container>
+                            <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinicCtrl">
+                        </md-input-container>
 
-						<md-autocomplete #auto="mdAutocomplete">
-							<md-option *ngFor="let state of filteredStates | async" [value]="state">
-								{{ state }}
-							</md-option>
-						</md-autocomplete>
-					</div>
-					<div>
-						<md-input-container>
-							<input mdInput placeholder="Provider" [mdAutocomplete]="auto" [formControl]="providerCtrl">
-						</md-input-container>
+                        <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
+                            <md-option *ngFor="let clinic of filteredClinics | async " [value]="clinic">
+                                {{ clinic.clinicName }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div class="filter-xxx">
+                        <md-input-container>
+                            <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="providerCtrl">
+                        </md-input-container>
 
-						<md-autocomplete #auto="mdAutocomplete">
-							<md-option *ngFor="let state of filteredStates | async" [value]="state">
-								{{ state }}
-							</md-option>
-						</md-autocomplete>
-					</div>
-					<div>
-						<md-input-container>
-							<input mdInput placeholder="Type" [mdAutocomplete]="auto" [formControl]="typeCtrl">
-						</md-input-container>
-
-						<md-autocomplete #auto="mdAutocomplete">
-							<md-option *ngFor="let state of filteredStates | async" [value]="state">
-								{{ state }}
-							</md-option>
-						</md-autocomplete>
-					</div>
-					<div>
-						<md-input-container>
-							<input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusCtrl">
-						</md-input-container>
-
-						<md-autocomplete #auto="mdAutocomplete">
-							<md-option *ngFor="let state of filteredStates | async" [value]="state">
-								{{ state }}
-							</md-option>
-						</md-autocomplete>
-					</div>
+                        <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
+                            <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+                                {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
                     <div>
-						<md-input-container>
-							<input mdInput placeholder="Day Count" [mdAutocomplete]="auto" [formControl]="todayCtrl">
-						</md-input-container>
+                        <md-input-container>
+                            <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="typeCtrl">
+                        </md-input-container>
 
-						<md-autocomplete #auto="mdAutocomplete">
-							<md-option *ngFor="let state of filteredStates | async" [value]="state">
-								{{ state }}
-							</md-option>
-						</md-autocomplete>
-					</div>
+                        <md-autocomplete #autoType="mdAutocomplete" [displayWith]="appointmentTypeDisplayFn">
+                            <md-option *ngFor="let type of filteredAppointmentTypes | async" [value]="type">
+                                {{ type.name }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div>
+                        <md-input-container>
+                            <input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusCtrl">
+                        </md-input-container>
+
+                        <md-autocomplete #auto="mdAutocomplete">
+                            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                                {{ state }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div>
+                        <md-input-container>
+                            <input mdInput placeholder="Day Count" [mdAutocomplete]="auto" [formControl]="todayCtrl">
+                        </md-input-container>
+
+                        <md-autocomplete #auto="mdAutocomplete">
+                            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                                {{ state }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
                     <div class="tbl-search frm-item-wrap">
                         <div class="searchInputWrap">
                             <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
@@ -147,8 +139,8 @@
             </td>
             <td>10th July, 2017.</td>
             <td> 10:00am</td>
-			<td>Eye Clinic</td>
-			<td>
+            <td>Eye Clinic</td>
+            <td>
                 <div class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
@@ -158,7 +150,11 @@
             </td>
             <td>Checked In</td>
             <td>
-                <div class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
+                <div class="tbl-actions-wrap">
+                    <div class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
+                    <div class="tr-act-btn"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
+                    <div class="tr-act-btn"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
+                </div>
             </td>
         </tr>
     </tbody>
@@ -166,7 +162,7 @@
 
 <div class="sect-title2">Patient Appointment History</div>
 
-<table cellpadding="0" cellspacing="0" border="0.5"> 
+<table cellpadding="0" cellspacing="0" border="0.5">
     <thead>
         <tr>
             <th>
@@ -179,12 +175,12 @@
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Clinic</span>
             </th>
-			      <th>
+            <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Provider</span>
             </th>
-			      <th>
+            <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Status</span>
@@ -193,33 +189,33 @@
     </thead>
 
     <tbody>
-      <tr>
-            
-        <td>10th July, 2017. 10:00am</td>
-			  <td>Eye Clinic</td>
-			  <td>
-            <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div>Lara Jonah</div>
-            </div>
-        </td>
-        <td>Checked In</td>
-      </tr>
+        <tr>
 
-		<tr>
-      <td>10th July, 2017. 10:00am</td>
-			<td>Eye Clinic</td>
-			<td>
-        <div class="empWrap">
-            <div class="list-img">
-                <img src="assets/images/users/default.png">
-            </div>
-            <div>Lara Jonah</div>
-        </div>
-        </td>
-        <td>Scheduled</td>
-    </tr>
+            <td>10th July, 2017. 10:00am</td>
+            <td>Eye Clinic</td>
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Lara Jonah</div>
+                </div>
+            </td>
+            <td>Checked In</td>
+        </tr>
+
+        <tr>
+            <td>10th July, 2017. 10:00am</td>
+            <td>Eye Clinic</td>
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Lara Jonah</div>
+                </div>
+            </td>
+            <td>Scheduled</td>
+        </tr>
     </tbody>
 </table>

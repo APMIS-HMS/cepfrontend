@@ -14,11 +14,28 @@
     </div>
 
     <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
-        <b>Prescription by {{ prescriptionItems?.employeeName }}</b>
+        <b>Prescribed by {{ prescriptionItems?.employeeName }}</b>
     </div>
 
     <div class="row">
         <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+    </div>
+
+    <div class="row">
+        <!--<div class="row">
+            <div class="col-sm-12 col-md-12" style="padding-top: 10px;">
+                <div class="col-sm-6 pull-right" style="padding-right: 20px;">
+                    <p class="pull-right"><strong>Total Quantity:</strong> <span> {{ totalQuantity }}</span></p>
+                </div>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="col-sm-6 pull-right" style="padding-right: 20px;">
+                    <p class="pull-right"><strong>Total Bill:</strong> <span> &#x20A6;{{ totalCost }}</span></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
@@ -30,55 +47,85 @@
         <b>Added prescription items to dispense</b>
     </div>
     <div class="sec-border">
-        <div class="table-head">
-            <div class="table-head-inner-content drug">
-                <p class="table-padding">Drugs</p>
+        <div class="prod-row prodParent-header">
+            <div class="prod-rowItem item1">
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Drugs</span>
             </div>
-            <div class="table-head-inner-content qty">
-                <p class="table-padding">Qty</p>
+            <div class="prod-rowItem item2">
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Qty</span>
             </div>
-            <div class="table-head-inner-content batch">
-                <p class="table-padding">Batch</p>
+            <div class="prod-rowItem item4">
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Unit Price</span>
             </div>
-            <div class="table-head-inner-content cost">
-                <p class="table-padding">Unit Price</p>
-            </div>
-            <div class="table-head-inner-content">
-                <p class="table-padding">Cost</p>
-            </div>
-        </div>
-        <div class="table-inner" *ngFor="let prescription of prescriptions">
-            <div class="table-data drug">
-                <span class="table-padding">
-                {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
-                <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
-                    Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.cost }}
-                </span>
-                </span>
-            </div>
-            <div class="table-data qty">
-                <p class="table-padding">{{ prescription.quantity }}</p>
-            </div>
-            <div class="table-data batch">
-                <p class="table-padding">{{ prescription.batch }}</p>
-            </div>
-            <div class="table-data cost">
-                <p class="table-padding" style="text-align: right;width: 100%;">&#x20A6;{{ prescription.cost }}</p>
-            </div>
-            <div class="table-data">
-                <p class="table-padding" style="text-align: right;width: 100%;">&#x20A6;{{ prescription.cost * prescription.quantity }}</p>
+            <div class="prod-rowItem item5">
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Payment</span>
             </div>
         </div>
-        <div class="table-inner text-center" *ngIf="prescriptions.length === 0 && !loading">
-            <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
-        </div>
-        <div class="table-inner text-center" *ngIf="prescriptions.length === 0 && loading">
-            <div style="width: 100%; padding: 10px; font-size: 13px;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+        <div class="prodParent-content">
+            <div class="prodWrap" *ngFor="let prescription of prescriptions; let i = index;">
+                <div class="prod-row" (click)="onClickEachPrescription(i, prescription);">
+                    <div class="prod-rowItem item1">
+                        <span class="table-padding">
+                            {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
+                            <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
+                                Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.cost }}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="prod-rowItem item2">{{ prescription.quantity }}</div>
+                    <div class="prod-rowItem item3">{{ prescription.batch }}</div>
+                    <div class="prod-rowItem item4">&#x20A6;{{ prescription.cost }}</div>
+                    <div class="prod-rowItem item5">
+                        <p *ngIf="true" class="table-padding" style="width: 100%; color:#2e7d32">Paid</p>
+                        <p *ngIf="false" class="table-padding" style="width: 100%; color:red">Not paid</p>
+                    </div>
+                </div>
+                <div *ngIf="prescription.isOpen===true && (selectedPrescription._id === prescription._id)" class="prodBatch-wrap animated flipInX">
+                    <div class="prodBatch-row batchHeader">
+                        <div class="prodBatch-item batchItem1">Batch No</div>
+                        <div class="prodBatch-item batchItem2">Expiry Date</div>
+                        <div class="prodBatch-item batchItem3">Qty<br> To Dispense</div>
+                        <div class="prodBatch-item batchItem3">Qty</div>
+                        <div class="prodBatch-item batchItem4">Actions</div>
+                    </div>
+                    <form #form="ngForm">
+                        <div class="prodBatch-row batchContent" *ngFor="let transaction of prescription.transactions; let j = index;">
+                            <div class="prodBatch-item batchItem1">{{transaction?.batchNumber}}</div>
+                            <div class="prodBatch-item batchItem2">{{transaction?.expiryDate | date:'shortDate'}}</div>
+                            <div class="prodBatch-item batchItem3">{{transaction?.quantity}}</div>
+                            <div class="prodBatch-item batchItem3">
+                                <md-input-container class="example-full-width">
+                                    <input mdInput type="number" placeholder="Quantity" name="batch-{{j}}" ngModel>
+                                </md-input-container>
+                            </div>
+                            <div class="prodBatch-item batchItem4">
+                                <div (click)="onClickBillProduct(i, j, transaction, form.value)" class="btn-liner">Bill</div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="prodBatch-row batchContent" *ngIf="prescription?.transactions.length === 0 && !batchLoading">
+                        <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">No data to display in table</div>
+                    </div>
+                    <div class="prodBatch-row batchContent" *ngIf="prescription?.transactions.length === 0 && batchLoading">
+                        <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && !loading">
+                <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
+            </div>
+            <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
+                <div style="width: 100%; padding: 10px; font-size: 13px;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:20px;">
-            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Bill:</strong> <span>&#x20A6;0</span></p>
+            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
         </div>
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">

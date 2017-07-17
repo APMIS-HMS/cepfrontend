@@ -14,7 +14,7 @@ import {
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	//@Input() employeeDetails: any;
+	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 
 	addBillForm: FormGroup;
@@ -28,6 +28,7 @@ export class BillPrescriptionComponent implements OnInit {
 	batchNumber: string = '';
 	qtyInStores: number = 0;
 	storeId: string = '';
+	stores: any = [];
 
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
@@ -45,7 +46,7 @@ export class BillPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		console.log(this.prescriptionData);
-		console.log(this.totalCost);
+		console.log(this.employeeDetails);
 
 		// if(this.employeeDetails.storeCheckIn !== undefined) {
 		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
@@ -78,7 +79,6 @@ export class BillPrescriptionComponent implements OnInit {
 	onClickSaveCost(value, valid) {
 		if(valid) {
 			if(this.cost > 0 || value.qty > 0) {
-				console.log(value);
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
@@ -105,25 +105,15 @@ export class BillPrescriptionComponent implements OnInit {
 	getProductsForGeneric() {
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
-		const genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
+		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
+		// const genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
 			// Get the list of products from a facility, and then search if the generic
 			// that was entered by the doctor in contained in the list of products
-			this._productService.find({ query: { facilityId : this.facility._id }})
+			this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }})
 				.then(res => {
-					this.drugs = res.data;
-					const tempArray = [];
-					// Get all products in the facility, then search for the item you are looking for.
-					res.data.forEach(element => {
-						if (element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
-							console.log(element);
-							tempArray.push(element);
-						}
-					});
-					if (tempArray.length !== 0) {
-						this.drugs = tempArray;
-					} else {
-						this.drugs = [];
-					}
+					console.log(res);
+					this.stores = res.availabilty;
+					this.drugs.push(res);
 				})
 				.catch(err => {
 					console.log(err);
@@ -132,25 +122,31 @@ export class BillPrescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.selectedDrug = drugId.viewValue;
-		// let pId = drugId._element.nativeElement.getAttribute('data-p-id');
-		const pId = '592417935fbce732205cf0aa';
-		const sId = drugId._element.nativeElement.getAttribute('data-p-id');
-		const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
-		const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
+		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		const pPrice = drugId._element.nativeElement.getAttribute('data-p-price');
+		const tqty = drugId._element.nativeElement.getAttribute('data-p-tqty');
+		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
+		this.cost = pPrice;
+		this.qtyInStores = tqty;
+
+		//const pId = '592417935fbce732205cf0aa';
+		// const sId = drugId._element.nativeElement.getAttribute('data-p-id');
+		// const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
+		// const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
 		// Get the service for the product
 		// if(this.storeId !== '') {
-			this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
-				.then(res => {
-					if (res.length > 0) {
-						console.log(res);
-						this.cost = res[0].price;
-						this.batchNumber = res[0].batchNo;
-						this.qtyInStores = res[0].availableQty;
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
+			// this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
+			// 	.then(res => {
+			// 		if (res.length > 0) {
+			// 			console.log(res);
+			// 			this.cost = res[0].price;
+			// 			this.batchNumber = res[0].batchNo;
+			// 			this.qtyInStores = res[0].availableQty;
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		console.log(err);
+			// 	});
 		// } else {
 		// 	this._facilityService.announceNotification({
 		// 		type: "Error",

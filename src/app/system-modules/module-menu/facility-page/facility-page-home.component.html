@@ -1,3 +1,4 @@
+
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
@@ -10,7 +11,6 @@
             <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
             <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
-            <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
         </ul>
     </div>
     <div class="inner-page-wrap">
@@ -24,7 +24,6 @@
                 <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>
                 <li (click)="changeRoute('options')" [class.navActive]="optionsContentArea">Options</li>
                 <li (click)="changeRoute('profession')" [class.navActive]="professionContentArea">Profession</li>
-                <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
             </ul>
         </div>
         <div class="rhs inner-page-contentArea">

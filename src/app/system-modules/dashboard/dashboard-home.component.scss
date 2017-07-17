@@ -91,6 +91,7 @@
     align-items: center;
     margin: 20px 0;
     cursor: pointer;
+    outline: none;
 }
 .menuGroup li:hover{
     span{
@@ -219,5 +220,17 @@
     .person-pop{
         display: block;
     }
+}
+.dashboard-link {
+    position: absolute;
+    right: 80px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+    outline: none;
+}
+.dashboard-link:hover{
+    text-decoration: underline;
 }
 

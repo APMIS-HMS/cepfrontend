@@ -1,34 +1,39 @@
+<div class="top-opt-wrap">
+  <div class="topOptWrap-inner">
+    <div class="page-title">Professions</div>
+    <ul class="topmenuwrap">
+        <li (click)="professionShow()">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Add Profession</span>
+        </li>
+    </ul>
+  </div>
+</div>
 
-<ul class="topmenuwrap">
-    <li (click)="professionShow()">
-        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        <span>Add Profession</span>
-    </li>
-</ul>
-<div class="survery">
+<table cellpadding="0" cellspacing="0" border="0.5"> 
+  <thead>
+      <tr>
+          <th>
+              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+              <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+              <span style="padding-left: 3px;">Profession</span>
+          </th>
+          <th>
+              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+              <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+              <span style="padding-left: 3px;">Cadre</span>
+          </th>
+      </tr>
+  </thead>
 
-<div class="box">
-            <div class="box-header">
-              <h6 class="box-title">Professions</h6>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <table class="table table-striped">
-                <tbody><tr>
-                  <th>Profession</th>
-                  <th>Cadre</th>
-                </tr>
-                <tr *ngFor="let profession of professions">
-                  <td>{{profession.name}}</td>
-                  <td>
-                    {{profession.caders?.length}} <span *ngIf="profession.caders?.length > 0">Records</span>
-                  </td>
-         
-              </tbody></table>
-            </div>
-            <!-- /.box-body -->
-          </div>
+  <tbody>
+      <tr *ngFor="let profession of professions">
+          <td>{{profession.name}}</td>
+          <td>{{profession.caders?.length}} <span *ngIf="profession.caders?.length > 0">Records</span></td>
+      </tr> 
+  </tbody>
+</table>
 
-    <div *ngIf="newProfession" class="modal-overlay">
-      <app-add-profession (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-profession>
-    </div>
+<div *ngIf="newProfession" class="modal-overlay">
+  <app-add-profession (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-profession>
+</div>

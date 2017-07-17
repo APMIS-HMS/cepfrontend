@@ -316,9 +316,10 @@ select {
 
 .body-wrap {
     background: #fff;
-    margin-top: 30px;
+    margin-top: 5px;
     overflow: hidden;
     min-height: 400px;
+    margin-bottom: 60px;
 }
 
 .center-center {
@@ -733,8 +734,7 @@ select {
     background: #EEEEEE;
 }
 
-.edit-ico,
-.done-ico {
+.edit-ico, .done-ico, .del-ico {
     position: absolute;
     right: 10px;
     text-align: right;
@@ -748,6 +748,10 @@ select {
 
 .done-ico {
     color: #4CAF50;
+}
+
+.del-ico {
+    color: #ff2500;
 }
 
 .edit-control {
@@ -1202,4 +1206,22 @@ ul.topmenuwrap li:hover {
 *, ::after, ::before {
     -webkit-box-sizing: initial;
     box-sizing: initial; 
+}
+.tbl-actions-wrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+.pointer{
+    cursor: pointer;
+}
+.td-iconCta-wrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.td-iconCta-wrap i{
+    font-size: 14px;
+    margin: 0 5px;
 }

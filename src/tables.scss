@@ -46,17 +46,18 @@ tr:nth-child(even) {background-color: $tr-stripe}
     height: 38px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
-.tbl-actionRow .tbl-title{
-    position: absolute; 
-    left: 10px;
-    font-size: 14px;
-    color: #0288D1;
-}
-.tbl-actionRow .tbl-search{
-    position: absolute; 
-    right: 10px;
-}
+// .tbl-actionRow .tbl-title{
+//     position: absolute; 
+//     left: 10px;
+//     font-size: 14px;
+//     color: #0288D1;
+// }
+// .tbl-actionRow .tbl-search{
+//     position: absolute; 
+//     right: 10px;
+// }
 .td-ctaWrap{
     display: flex;
     justify-content: space-around;

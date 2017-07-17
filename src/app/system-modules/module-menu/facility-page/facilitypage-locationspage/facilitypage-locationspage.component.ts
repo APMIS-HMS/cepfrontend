@@ -160,6 +160,11 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.newSubLocModal_on = false;
     this.newLocationModal_on = false;
   }
+  editMinorLoc(){
+    this.modal_on = false;
+    this.newSubLocModal_on = true;
+    this.newLocationModal_on = false;
+  }
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
   }

@@ -34,17 +34,7 @@ export class FacilityPageComponent implements OnInit {
 
   ngOnInit() {
     this.facilityObj = this.facilityService.getSelectedFacilityId();
-    // this.getFacility();
   }
-  // getFacility() {
-  //   let tokenObj: any = this.locker.getObject('auth');
-  //   this.facilityService.get(tokenObj.data.facilitiesRole[0].facilityId, {}).then((payload) => {
-  //     this.facilityObj = payload;
-  //   },
-  //     error => {
-  //       console.log(error);
-  //     });
-  // }
   navFpHome() {
     this.homeContentArea = true;
     this.modulesContentArea = false;

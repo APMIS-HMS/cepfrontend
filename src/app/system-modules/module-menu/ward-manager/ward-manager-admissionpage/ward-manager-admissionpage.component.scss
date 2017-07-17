@@ -43,11 +43,6 @@
                     cursor: pointer;
                 }
             }
-            tr {
-                td {
-                    // line-height: 3;
-                }
-            }
         }
     }
     .modal-overlay {
@@ -55,4 +50,8 @@
         top: 0;
         left: 0;
     }
+}
+.tr-act-btn {
+    width: auto;
+    margin: 0;
 }
