@@ -47,7 +47,7 @@
 
     <tbody>
         <tr  *ngFor="let patient of patients">
-            <td (click)="navEpDetail(patient)">                
+            <td class="pointer" (click)="navEpDetail(patient)">                
                 <div class="empWrap">
                     <div class="list-img">
                         <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
@@ -56,17 +56,17 @@
                     <div>{{patient.personDetails.lastName}} {{patient.personDetails.firstName}}</div>
                 </div>
             </td>
-            <td>{{patient.personDetails.age}}</td>
-			<td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.age}}</td>
+			<td class="pointer" (click)="navEpDetail(patient)">
                 <span *ngIf="patient.personDetails.gender.name==='Male'">M</span>
                 <span *ngIf="patient.personDetails.gender.name==='Female'">F</span>
                 <span *ngIf="patient.personDetails.gender.name!='Female' && patient.personDetails.gender.name!='Male'">N</span>
             </td>
-			<td>{{patient.personDetails.phoneNumber}}</td>
-            <td>{{patient.personDetails.email}}</td>
-            <td>{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td>
-            <td>{{patient.personDetails.dateOfBirth | date}}</td>
-            <td>{{patient.personDetails.apmisId}}</td>
+			<td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.phoneNumber}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.email}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.dateOfBirth | date}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.apmisId}}</td>
             <td>
                 <div (click)="slideEdit(patient)" class="tr-act-btn"><i class="fa fa-edit"></i>Edit</div>
             </td>

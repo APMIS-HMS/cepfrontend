@@ -16,6 +16,9 @@ export class AppointmentService {
   private timelineAnnouncedSource = new Subject<Object>();
   timelineAnnounced$ = this.timelineAnnouncedSource.asObservable();
 
+  private schedulesAnnouncedSource = new Subject<Object>();
+  schedulesAnnounced$ = this.schedulesAnnouncedSource.asObservable();
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -29,11 +32,18 @@ export class AppointmentService {
     this._socket.on('created', function (gender) {
     });
   }
-  hideTimelineAnnounced(show: true) {
+  hideTimelineAnnounced(show: boolean) {
     this.timelineAnnouncedSource.next(show);
   }
   hideTimelineReceived(): Observable<Object> {
     return this.timelineAnnouncedSource.asObservable();
+  }
+
+  schedulesAnnounced(shedules: any) {
+    this.schedulesAnnouncedSource.next(shedules);
+  }
+  schedulesReceived(): Observable<Object> {
+    return this.schedulesAnnouncedSource.asObservable();
   }
   find(query: any) {
     return this._socket.find(query);

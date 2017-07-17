@@ -17,7 +17,7 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px">
                                             <md-select placeholder="Drug" formControlName="drug" class="example-full-width">
-                                                <md-option *ngFor="let drug of drugs" [(value)]="drug._id" #productId [attr.data-p-id]="drug.productId" [attr.data-p-price]="drug.price" [attr.data-p-aqty]="drug.availableQty" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</md-option>
+                                                <md-option *ngFor="let drug of drugs" [(value)]="drug.productId" #productId [attr.data-p-id]="drug.productId" [attr.data-p-price]="drug.price" [attr.data-p-aqty]="drug.availabilty" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</md-option>
                                             </md-select>
                                             <!-- <md-select placeholder="Drug" formControlName="drug" class="example-full-width">
                                                 <md-option *ngFor="let drug of drugs" [(value)]="drug._id" #productId [attr.data-p-id]="drug._id" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" (click)="onClickCustomSearchItem($event, productId)">{{ drug.name }}</md-option>
@@ -35,8 +35,17 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
-                                            <div class="col-xs-12">
-                                                <p>Qty Available in Stores: <span class="badge">{{ qtyInStores }}</span></p>
+                                            <div style="position:relative;" class="col-xs-12 td-worspace">
+                                                <div class="workspace-count"> Qty Available in Stores <span class="badge">{{ qtyInStores }}</span></div>
+                                                <!-- <div>Qty Available in Stores: <span class="badge">{{ qtyInStores }}</span></div> -->
+                                                <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                                    <li *ngFor="let store of stores" class="workspace-listItem">
+                                                        <ng-container>
+                                                            <span>{{store?.name}}</span>
+                                                        </ng-container>
+                                                    </li> 
+                                                    <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>

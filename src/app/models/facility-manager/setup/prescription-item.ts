@@ -3,6 +3,8 @@ export interface PrescriptionItem {
     productName?: string,
     productId?: string,
     genericName: string,
+    ingredients?: any[],
+    form?: string,
     frequency: string,
     duration: string,
     cost?: number,
@@ -14,5 +16,7 @@ export interface PrescriptionItem {
     isExternal: Boolean,
     refillCount: number,
     initiateBill: boolean,
-    isBilled: boolean
+    isBilled: boolean,
+    isOpen?: boolean,
+    transactions?: any[]
 }

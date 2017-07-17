@@ -27,7 +27,7 @@
 
     <tbody>
         <tr  *ngFor="let item of employees">
-            <td (click)="navEpDetail(item)">                
+            <td class="pointer" (click)="navEpDetail(item)">                
                 <div class="empWrap">
                     <div class="list-img">
                         <div *ngIf="item?.employeeDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
@@ -36,9 +36,9 @@
                     <div>{{item.employeeDetails?.lastName}} {{item.employeeDetails?.firstName}}</div>
                 </div>
             </td>
-            <td>{{item.employeeDetails?.apmisId}}</td>
-			<td>{{item.department?.name}}</td>
-			<td>
+            <td class="pointer" (click)="navEpDetail(item)">{{item.employeeDetails?.apmisId}}</td>
+			<td class="pointer" (click)="navEpDetail(item)">{{item.department?.name}}</td>
+			<td class="pointer" (click)="navEpDetail(item)">
                 <span *ngIf="!item.isActive" style="color:#E53935;">Inactive</span>
                 <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>
             </td>

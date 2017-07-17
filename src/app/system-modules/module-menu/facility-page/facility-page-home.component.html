@@ -1,12 +1,3 @@
-<div class="survery text-center" style="display: none;">
-    <ul id="breadcrumb">
-        <li><a><i class="fa fa-home"></i> Home</a></li>
-        <li><a><i class="fa fa-building"></i> Departments</a></li>
-        <li><a><i class="fa fa-location-arrow"></i> Location</a></li>
-        <li><a><i class="fa fa-user"></i> Employee</a></li>
-        <li><a><i class="fa fa-building"></i> Workspace</a></li>
-    </ul>
-</div>
 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
@@ -18,7 +9,6 @@
             <li (click)="changeRoute('departments')"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
             <li (click)="changeRoute('locations')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
-            <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
             <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
             <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
         </ul>
@@ -31,11 +21,9 @@
                 <li (click)="changeRoute('modules')" [class.navActive]="dashboardContentArea">Modules</li>
                 <li (click)="changeRoute('departments')" [class.navActive]="departmentsContentArea">Departments</li>
                 <li (click)="changeRoute('locations')" [class.navActive]="locationsContentArea">Locations</li>
-                <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
                 <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>
                 <li (click)="changeRoute('options')" [class.navActive]="optionsContentArea">Options</li>
                 <li (click)="changeRoute('profession')" [class.navActive]="professionContentArea">Profession</li>
-                
             </ul>
         </div>
         <div class="rhs inner-page-contentArea">
