@@ -18,5 +18,7 @@ export interface PrescriptionItem {
     initiateBill: boolean,
     isBilled: boolean,
     isOpen?: boolean,
-    transactions?: any[]
+    transactions?: any[],
+    serviceId?: string,
+    facilityServiceId?: string
 }

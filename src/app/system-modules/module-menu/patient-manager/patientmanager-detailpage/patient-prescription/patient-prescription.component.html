@@ -94,7 +94,7 @@
                     <div class="col-sm-6 col-md-6">
                         <div class="cu-search-box">
                             <md-input-container>
-                                <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
+                                <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
                             </md-input-container>
                             <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                                 <div class="cu-popover-arrow"></div>

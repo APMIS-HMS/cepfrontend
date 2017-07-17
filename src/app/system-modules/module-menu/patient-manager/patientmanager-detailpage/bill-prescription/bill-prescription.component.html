@@ -11,7 +11,7 @@
                         <div class="col-sm-12 col-md-12 col-xs-12">
                             <h5>Generate Bill for</h5>
                             <h6>{{ title }}</h6>
-                            <div class="border-box">
+                            <div class="border-box" *ngIf="drugs.length > 0 && !loading">
                                 <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                 <form [formGroup]="addBillForm" novalidate>
                                     <div class="row">
@@ -36,14 +36,14 @@
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
                                             <div style="position:relative;" class="col-xs-12 td-worspace">
-                                                <div class="workspace-count"> Qty Available in Stores <span class="badge">{{ qtyInStores }}</span></div>
+                                                <div class="workspace-count"> Qty Available in {{ stores.length }} Store(s) <span class="badge">{{ qtyInStores }}</span></div>
                                                 <!-- <div>Qty Available in Stores: <span class="badge">{{ qtyInStores }}</span></div> -->
                                                 <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                                     <li *ngFor="let store of stores" class="workspace-listItem">
                                                         <ng-container>
-                                                            <span>{{store?.name}}</span>
+                                                            <span>{{store?.store}}, Qty: {{store?.quantity}}</span>
                                                         </ng-container>
-                                                    </li> 
+                                                    </li>
                                                     <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
                                                 </ul>
                                             </div>
@@ -60,6 +60,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="border-box" *ngIf="drugs.length === 0 && !loading">
+                                <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">No product to bill from,<br> Please add product to your inventory.</div>
+                            </div>
+                            <div class="border-box" *ngIf="drugs.length === 0 && loading">
+                                <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
                             </div>
                         </div>
                     </div><br><br>

@@ -17,4 +17,6 @@ export interface BillItem {
     qty: number;
     amount: number;
     itemDesc: any;
+    unitDiscountedAmount?: number,
+  	totalDiscoutedAmount?: number,
 }

@@ -29,6 +29,7 @@ export class BillPrescriptionComponent implements OnInit {
 	qtyInStores: number = 0;
 	storeId: string = '';
 	stores: any = [];
+	loading: boolean = true;
 
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
@@ -78,7 +79,7 @@ export class BillPrescriptionComponent implements OnInit {
 	//
 	onClickSaveCost(value, valid) {
 		if(valid) {
-			if(this.cost > 0 || value.qty > 0) {
+			if(this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
@@ -112,8 +113,13 @@ export class BillPrescriptionComponent implements OnInit {
 			this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }})
 				.then(res => {
 					console.log(res);
-					this.stores = res.availabilty;
-					this.drugs.push(res);
+					this.loading = false;
+					if(res.length > 0) {
+						this.stores = res[0].availability;
+						this.drugs = res;
+					} else {
+						this.drugs = [];
+					}
 				})
 				.catch(err => {
 					console.log(err);

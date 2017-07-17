@@ -83,7 +83,6 @@
 .prodBatch-row {
     padding: 5px;
     border: 1px solid #eee;
-    cursor: pointer;
 }
 
 .prodBatch-row:hover {
@@ -107,20 +106,25 @@
 }
 
 .prod-rowItem.item1 {
-    width: 50%;
+    width: 60%;
     cursor: pointer;
 }
 
 .prod-rowItem.item2 {
-    width: 15%;
+    width: 10%;
     cursor: pointer;
 }
 
 .prod-rowItem.item3 {
-    width: 15%;
+    width: 10%;
 }
 
 .prod-rowItem.item4 {
+    width: 10%;
+    cursor: pointer;
+}
+
+.prod-rowItem.item5 {
     width: 10%;
     cursor: pointer;
 }
@@ -132,4 +136,8 @@
 
 .prodBatch-item {
     text-align: left;
+}
+
+.mat-input-container {
+    width: 60%;
 }

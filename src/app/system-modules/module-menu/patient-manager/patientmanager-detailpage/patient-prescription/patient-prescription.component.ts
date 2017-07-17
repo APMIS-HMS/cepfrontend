@@ -279,7 +279,7 @@ export class PatientPrescriptionComponent implements OnInit {
                         }
 
                         if(index === ingredientLength) {
-                            drugName += ' ' + res.route;
+                            drugName += ' ' + res.form;
                         }
 
                     });

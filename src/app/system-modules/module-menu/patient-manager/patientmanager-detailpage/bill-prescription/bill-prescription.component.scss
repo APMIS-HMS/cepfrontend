@@ -17,8 +17,19 @@
     padding: 0 !important;
 }
 
-.workspace-count:hover {
-    .workspace-listWrap {
-        display: block;
+.workspace-count {
+    padding: 0 0 20px 0;
+    cursor: pointer;
+    &:hover {
+        .workspace-listWrap {
+            display: block;
+        }
+    }
+}
+
+.workspace-listWrap {
+    right: 20px;
+    .pointer-wrap {
+        margin-left: -90px;
     }
 }
