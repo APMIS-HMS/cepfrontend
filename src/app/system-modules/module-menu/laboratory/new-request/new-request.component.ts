@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-request.component.scss']
 })
 export class NewRequestComponent implements OnInit {
+    isPanel = false;
     foods = [
     {value: 'male', viewValue: 'Fale'},
     {value: 'female', viewValue: 'Female'},
@@ -14,6 +15,9 @@ export class NewRequestComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+  panelShow() {
+    this.isPanel = !this.isPanel;
   }
 
 

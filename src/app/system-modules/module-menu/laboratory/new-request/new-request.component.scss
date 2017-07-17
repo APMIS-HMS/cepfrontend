@@ -8,8 +8,44 @@ md-tab-header {
     border: 2px solid #f5f5f5;
 }
 .inv-container {
-    max-height: 290px;;
-    border:1px solid #f5f5f5;
-    overflow-y: auto;
+    max-height: 400px;
+    border: 1px solid #f5f5f5;
     margin: 10px 0;
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 0 10px;
+}
+.list-container {
+    overflow-y: auto;
+    max-height: 300px;
+}
+.custom-panel {
+    margin: 10px;
+}
+.survery .glyphicon {
+    top: -16px;
+}
+.inv-header {
+    width: 100%;
+    background: #f5f5f5;
+    padding: 4px;
+}
+.panel-body p {
+    font-size: 12px;
+}
+.inv-selected span {
+    font-size: 12px;
+}
+.inv-selected {
+    padding: 10px;
+}
+ .apmis-blue {
+    max-width: 200px;
+    text-align: center;
+    background: #0288D1;
+    color: #fff;
+    padding:10px;
+  } 
+a:hover, a.active {
+    text-decoration: none;
 }
