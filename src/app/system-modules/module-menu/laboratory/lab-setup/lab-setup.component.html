@@ -1,0 +1,107 @@
+<div class="page-title">Laboratory Setup</div>
+<section id="container">
+  <div class="survery">
+    <div class="container">
+      <!--<div class="col-sm-12">
+        <div class="pad margin no-print">
+          <div class="callout callout-info" style="margin-bottom: 0!important;">
+            <h4><i class="fa fa-info"></i> Note:</h4>
+            You can setup workbench, create and setup investigation service
+          </div>
+        </div>
+      </div>-->
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="x_panel">
+              <div class="x_title">
+                <h2>Setup workbench</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content"> 
+                <md-select placeholder="Select minor location" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                <md-input-container class="example-full-width">
+                  <input mdInput placeholder="Workbench name">
+                </md-input-container>
+
+               <div class="">
+                 <a md-raised-button>Add</a>
+               </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="x_panel">
+              <div class="x_title">
+                <h2>Investigation Service Setup</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content"> 
+                <div class="col-sm-6">
+                  <md-select placeholder="Select Report" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}
+                    </md-option>
+                  </md-select>
+                </div>
+                <div class="col-sm-6">
+                   <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                </div>
+                <div class="col-sm-6">
+                  <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="reference number from">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-6">
+                  <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="reference number to">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-12">
+                   <md-input-container class="example-full-width">
+                    <textarea mdInput placeholder="Enter investigation"></textarea>
+                  </md-input-container>
+                </div>
+                <div class="">
+                 <a md-raised-button> Create Service </a>
+               </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="x_panel">
+              <div class="x_title">
+                <h2>Investigation Setup</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content"> 
+                <md-select placeholder="Select bench" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                <md-select placeholder="Select investigation" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                 <md-input-container class="example-full-width">
+                  <input type="number" mdInput placeholder="Set Price">
+                </md-input-container>
+                <div class="">
+                 <a md-raised-button>Add</a>
+               </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
