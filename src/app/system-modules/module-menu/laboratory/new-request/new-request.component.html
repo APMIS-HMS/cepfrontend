@@ -47,7 +47,7 @@
                 </md-input-container>
               </div>
               <div class="col-sm-5" style="margin-top:27px;">
-                <a md-raised-button>Add User</a>
+                <button md-raised-button class="apmis-blue">Add User</button>
               </div>
             </md-tab>
             <md-tab label="Select Investigation">
@@ -57,7 +57,7 @@
                         <input mdInput placeholder="Search investigation">
                   </md-input-container>
                   <i style="margin-left: -19px;" class="fa fa-search"></i>
-                  <ul>
+                  <ul class="list-container">
                     <li>
                       <md-checkbox>List1</md-checkbox>
                     </li>
@@ -70,12 +70,33 @@
                     <li>
                       <md-checkbox>List4</md-checkbox>
                     </li>
-                 
                   </ul>
                 </div>
              </div>
              <div class="col-sm-6">
-               2
+              	<div class="panel panel-success custom-panel">
+                    <div class="panel-heading" (click)="panelShow()">
+                      <h3 class="panel-title">Panel name</h3>
+                      <span *ngIf="isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                      <span *ngIf="!isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div *ngIf= "isPanel" class="panel-body">
+                      <ul class="list-container">
+                        <li>
+                          <md-checkbox>List1</md-checkbox>
+                        </li>
+                        <li>
+                          <md-checkbox>List2</md-checkbox>
+                        </li>
+                        <li>
+                          <md-checkbox>List3</md-checkbox>
+                        </li>
+                        <li>
+                          <md-checkbox>List4</md-checkbox>
+                        </li>
+                     </ul>
+                    </div>
+                </div>
              </div>
             </md-tab>
           </md-tab-group>
@@ -91,7 +112,38 @@
               <h3 class="panel-title">Billing</h3>
             </div>
             <div class="panel-body">
-              Billing Content
+              <div class="">
+                <p><strong>Names:</strong> Samuel el Jackson</p>
+              </div>
+               <div class="">
+                <p><strong>Age:</strong> 26 years</p>
+              </div>
+                <div class="">
+                <p><strong>Sex:</strong> Mlae</p>
+              </div>
+              <div class="">
+                <p><strong>Lab N0:</strong> 231098</p>
+              </div>
+               <div class="">
+                <p><strong>Address:</strong>N0 26a fela job way, alausa</p>
+              </div>
+              <div class="row">
+                <div class="inv-header text-center">
+                 <h5>Selected Investigation</h5>
+                </div>
+                <div class="inv-selected">
+                  <span><i class="fa fa-check-square"></i>investigation1</span>
+                  <span><i class="fa fa-check-square"></i>investigation2</span>
+                  <span><i class="fa fa-check-square"></i>investigation3</span>
+                  <span><i class="fa fa-check-square"></i>investigation4</span>
+                  <span><i class="fa fa-check-square"></i>investigation5</span>
+                </div>
+              </div>
+              <div class="row">
+                 <div class="col-sm-12 text-center">
+                   <button md-raised-button class="apmis-blue">Generate Bill</button>
+                 </div>
+              </div>
             </div>
           </div>
         </div>
