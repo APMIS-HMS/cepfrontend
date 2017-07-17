@@ -1216,3 +1216,12 @@ ul.topmenuwrap li:hover {
 .pointer{
     cursor: pointer;
 }
+.td-iconCta-wrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.td-iconCta-wrap i{
+    font-size: 14px;
+    margin: 0 5px;
+}
