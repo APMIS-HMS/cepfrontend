@@ -1,8 +1,6 @@
 @import '../../store-manager/landing-page/landing-page.component.scss';
 @import '../../clinic/check-in-patient/check-in-patient.component.scss';
-.modal-overlay {
-    // z-index: 1501;
-}
+
 .searchInput {
     margin-top: 0;
     width: auto;
@@ -159,5 +157,7 @@
     align-items: center;
 }
 td{
-  padding: 5px;
+    padding: 5px;
+    font-size: 10px;
+    line-height: 2;
 }
