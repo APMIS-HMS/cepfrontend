@@ -23,10 +23,11 @@ const CLINICMODULES_ROUTES: Routes = [
             { path: 'clinic-schedule', component: ClinicScheduleComponent },
             { path: 'consulting-room', component: ConsultingRoomComponent },
             {
-                path: 'check-in', component: CheckInPatientComponent, resolve: {
-                    checkInPatients: AppointmentsResolverService,
-                    // loginEmployee: LoginEmployeeResolverService
-                }
+                path: 'check-in', component: CheckInPatientComponent
+                // resolve: {
+                //     // checkInPatients: AppointmentsResolverService,
+                //     // loginEmployee: LoginEmployeeResolverService
+                // }
             },
         ]
     }

@@ -43,6 +43,7 @@ export class AppointmentComponent implements OnInit {
     todayCtrl: FormControl;
     searchControl: FormControl = new FormControl();
     filteredStates: any;
+    dateRange: any;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
@@ -243,6 +244,19 @@ export class AppointmentComponent implements OnInit {
                 });
         }
 
+    }
+    setReturnValue(dateRange: any): any {
+        this.dateRange = dateRange;
+        console.log(this.dateRange);
+        this.appointmentService.find({
+            query: {
+                isWithinRange: true, from: this.dateRange.from, to: this.dateRange.to,
+                'facilityId._id': this.selectedFacility._id
+            }
+        }).subscribe(payload => {
+            console.log(payload);
+            this.filteredAppointments = this.appointments = payload.data;
+        })
     }
     getAppointmentTypes() {
         this.appointmentTypeService.findAll().subscribe(payload => {
