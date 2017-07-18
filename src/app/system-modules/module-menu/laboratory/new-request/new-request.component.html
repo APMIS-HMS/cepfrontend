@@ -57,26 +57,33 @@
                         <input mdInput placeholder="Search investigation">
                   </md-input-container>
                   <i style="margin-left: -19px;" class="fa fa-search"></i>
-                  <ul class="list-container">
-                    <li>
-                      <md-checkbox>List1</md-checkbox>
-                    </li>
-                    <li>
-                      <md-checkbox>List2</md-checkbox>
-                    </li>
-                    <li>
-                      <md-checkbox>List3</md-checkbox>
-                    </li>
-                    <li>
-                      <md-checkbox>List4</md-checkbox>
-                    </li>
-                  </ul>
+                  <div class="list-container">                  
+                    <ul class="tree">
+                      <li class="stand-alone">
+                        <md-checkbox>List1</md-checkbox>
+                      </li> 
+                      <li class="tree-item">
+                        <a class="trigger"><i class="fa fa-folder"></i>Panel</a>
+                        <ul class="tree-parent open"> 
+                          <li class="tree-item view">
+                            <md-checkbox>List4</md-checkbox>
+                          </li>
+                          <li class="tree-item view">
+                            <md-checkbox>List4</md-checkbox>
+                          </li>
+                          <li class="tree-item view">
+                            <md-checkbox>List4</md-checkbox>
+                          </li>
+                        </ul>   
+                      </li> 
+                    </ul>
+                  </div>
                 </div>
              </div>
              <div class="col-sm-6">
               	<div class="panel panel-success custom-panel">
                     <div class="panel-heading" (click)="panelShow()">
-                      <h3 class="panel-title">Panel name</h3>
+                      <h3 class="panel-title">Panel selected</h3>
                       <span *ngIf="isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                       <span *ngIf="!isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
                     </div>
@@ -132,7 +139,7 @@
                  <h5>Selected Investigation</h5>
                 </div>
                 <div class="inv-selected">
-                  <span><i class="fa fa-check-square"></i>investigation1</span>
+                  <span><i class="fa fa-check-square"></i>investigation1 (N220)</span>
                   <span><i class="fa fa-check-square"></i>investigation2</span>
                   <span><i class="fa fa-check-square"></i>investigation3</span>
                   <span><i class="fa fa-check-square"></i>investigation4</span>

@@ -128,6 +128,10 @@
             </td>
         </tr>
 
+        <tr *ngIf="appointments.length == 0">
+            <td colspan="9"> No data available in table</td>
+        </tr>
+
         <tr *ngFor="let appointment of appointments">
             <td>
                 <div class="empWrap">
@@ -164,7 +168,7 @@
 
 <div class="sect-title2">Patient Appointment History</div>
 
-<table cellpadding="0" cellspacing="0" border="0.5">
+<table style="margin-bottom:240px;" cellpadding="0" cellspacing="0" border="0.5">
     <thead>
         <tr>
             <th>
@@ -191,6 +195,10 @@
     </thead>
 
     <tbody>
+        <tr *ngIf="pastAppointments.length == 0">
+            <td colspan="9"> No data available in table</td>
+        </tr>
+
         <tr *ngFor="let appointment of pastAppointments">
 
             <td>{{appointment.startDate | date}}</td>
