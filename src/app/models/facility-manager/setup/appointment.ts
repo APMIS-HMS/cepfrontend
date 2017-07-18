@@ -16,6 +16,7 @@ export interface Appointment {
     appointmentReason: string;
     isActive: boolean;
     personDetails: any;
-    checkin: boolean;
+    checkIn: boolean;
     clinicInteractions: ClinicInteraction[];
+    category: any;
 }

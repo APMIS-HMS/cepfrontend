@@ -28,6 +28,8 @@ export class AppointmentComponent implements OnInit {
 
     appointmentTypes: AppointmentType[] = [];
     providers: Employee[] = [];
+    appointments: any[] = [];
+    filteredAppointments: any[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
@@ -99,7 +101,7 @@ export class AppointmentComponent implements OnInit {
 
     constructor(private locker: CoolSessionStorage, private appointmentService: AppointmentService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
-        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService) {
+        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private facilityService: FacilitiesService) {
         this.clinicCtrl = new FormControl();
         this.filteredClinics = this.clinicCtrl.valueChanges
             .startWith(null)
@@ -133,9 +135,16 @@ export class AppointmentComponent implements OnInit {
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
+        this.getAppointments();
         this.getLoginEmployee();
         this.getEmployees();
         this.getAppointmentTypes();
+    }
+    getAppointments() {
+        this.appointmentService.find({ query: { isFuture: true, 'facilityId._id': this.selectedFacility._id } }).subscribe(payload => {
+            console.log(payload);
+            this.filteredAppointments = this.appointments = payload.data;
+        })
     }
     getClinics() {
         this.clinics = [];
@@ -185,7 +194,6 @@ export class AppointmentComponent implements OnInit {
         this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
         ]))
             .subscribe((results: any) => {
-                console.log(results)
                 this.loginEmployee = results[0];
                 if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
                     this.selectedProfession = this.loginEmployee.professionObject;
@@ -208,7 +216,6 @@ export class AppointmentComponent implements OnInit {
                 .then(payload => {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
-                        console.log(this.providers);
                         if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
                         }
                     });
@@ -229,7 +236,6 @@ export class AppointmentComponent implements OnInit {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
                     });
-                    console.log(this.providers);
                     if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
                         this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
                         });
@@ -244,11 +250,16 @@ export class AppointmentComponent implements OnInit {
         })
     }
     filterClinics(val: any) {
+        // tslint:disable-next-line:max-line-length
+        this.filteredAppointments = val ? this.appointments.filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
         return val ? this.clinics.filter(s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.clinics;
 
     }
     filterProviders(val: any) {
+        // tslint:disable-next-line:max-line-length
+        this.filteredAppointments = val ? this.appointments.filter(s => s.doctorId.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
+            || s.doctorId.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
         return val ? this.providers.filter(s => s.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.providers;

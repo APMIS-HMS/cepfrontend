@@ -26,4 +26,5 @@ export interface Facility {
     facilityClassItem: any;
     facilityOwnershipId: any;
     facilityModules: any;
+    invitees: any;
 }
