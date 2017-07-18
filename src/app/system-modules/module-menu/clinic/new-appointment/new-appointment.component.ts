@@ -45,6 +45,7 @@ export class NewAppointmentComponent implements OnInit {
     searchControl: FormControl = new FormControl();
     filteredStates: any;
     selectedPatient: any = <any>{};
+    dateRange:any;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
@@ -159,7 +160,20 @@ export class NewAppointmentComponent implements OnInit {
             console.log(this.appointments)
         })
     }
-
+    setReturnValue(dateRange: any): any {
+        this.dateRange = dateRange;
+        console.log(this.dateRange);
+        this.appointmentService.find({
+            query: {
+                isWithinRange: true, from: this.dateRange.from, to: this.dateRange.to,
+                'facilityId._id': this.selectedFacility._id,
+                'patientId._id': this.selectedPatient._id
+            }
+        }).subscribe(payload => {
+            console.log(payload);
+             this.appointments = payload.data;
+        })
+    }
     getPreviousAppointments(value) {
         this.appointmentService.find({ query: { 'patientId._id': value._id, isPast: true } }).subscribe(payload => {
             this.pastAppointments = payload.data;
