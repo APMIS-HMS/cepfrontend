@@ -6,7 +6,9 @@
             <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
                 aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/laboratory-setup']">Lab Setup</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/workbench-setup']">Setup Workbench</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/investigation-service-setup']">Setup Investigation Service</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/investigation-setup']"> Setup Investigation</li>
             </ul>
         </div>
 

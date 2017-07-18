@@ -23,4 +23,5 @@ export class NewRequestComponent implements OnInit {
   clickParent() {
     this.isParent = !this.isParent;
   }
+ 
 }
