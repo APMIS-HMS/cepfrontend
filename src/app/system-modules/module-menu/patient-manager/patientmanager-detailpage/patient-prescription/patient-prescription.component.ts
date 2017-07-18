@@ -4,10 +4,10 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import {
     FacilitiesService, PrescriptionService,
-    PrescriptionPriorityService, DictionariesService,
+    PrescriptionPriorityService, DictionariesService, BillingService,
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
+import { Appointment, Facility, Prescription, PrescriptionItem, BillItem, BillIGroup } from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 
@@ -66,6 +66,7 @@ export class PatientPrescriptionComponent implements OnInit {
         private _routeService: RouteService,
         private _drugListApi: DrugListApiService,
         private _drugDetailsApi: DrugDetailsService,
+        private _billingService: BillingService,
         private _medicationListService: MedicationListService
     ) {
 
@@ -155,7 +156,7 @@ export class PatientPrescriptionComponent implements OnInit {
         }
     }
 
-    onClickSavePrescription(value: any, valid: boolean) {
+    onClickAuthorizePrescription(value: any, valid: boolean) {
         if (valid && (this.prescriptionArray.length > 0)) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._facilityService.announceNotification({
@@ -163,31 +164,71 @@ export class PatientPrescriptionComponent implements OnInit {
                     text: 'Clinic has not been set!'
                 });
             } else {
-                console.log(value);
                 this.prescriptions.priorityId = value.priority;
                 this.prescriptions.totalCost = value.totalCost;
                 this.prescriptions.totalQuantity = value.totalQuantity;
-                this._prescriptionService.create(this.prescriptions)
+
+                // bill model
+                const billItemArray = [];
+                let totalCost = 0;
+                this.prescriptions.prescriptionItems.forEach(element => {
+                    if(element.isBilled) {
+                        const billItem = <BillItem> {
+                            facilityServiceId: element.facilityServiceId,
+                            serviceId: element.serviceId,
+                            facilityId: this.facility._id,
+                            patientId: this.prescriptions.patientId,
+                            quantity: element.quantity,
+                            totalPrice: element.totalCost,
+                            unitPrice: element.cost,
+                            unitDiscountedAmount: 0,
+                            totalDiscoutedAmount: 0,
+                        };
+
+                        totalCost += element.totalCost;
+                        billItemArray.push(billItem);
+                    }
+                });
+
+                const bill = <BillIGroup> {
+                    facilityId: this.facility._id,
+                    patientId: this.prescriptions.patientId,
+                    billItems: billItemArray,
+                    discount: 0,
+                    subTotal: totalCost,
+                    grandTotal: totalCost,
+                }
+                console.log(bill);
+                // send the billed items to the billing service
+                this._billingService.create(bill)
                     .then(res => {
-                        this._facilityService.announceNotification({
-                            type: 'Success',
-                            text: 'Prescription has been sent!'
-                        });
-                        this.isDispensed.next(true);
-                        this.prescriptionItems = <Prescription>{};
-                        this.prescriptionItems.prescriptionItems = [];
-                        this.prescriptionArray = [];
-                        this.addPrescriptionForm.reset();
-                        this.addPrescriptionForm.controls['refillCount'].reset(0);
-                        this.addPrescriptionForm.controls['duration'].reset(0);
-                        this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                        this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                        console.log(res);
+                        // if this is true, send the prescribed drugs to the prescription service
+                        this._prescriptionService.create(this.prescriptions)
+                            .then(res => {
+                                this._facilityService.announceNotification({
+                                    type: 'Success',
+                                    text: 'Prescription has been sent!'
+                                });
+                                this.isDispensed.next(true);
+                                this.prescriptionItems = <Prescription>{};
+                                this.prescriptionItems.prescriptionItems = [];
+                                this.prescriptionArray = [];
+                                this.addPrescriptionForm.reset();
+                                this.addPrescriptionForm.controls['refillCount'].reset(0);
+                                this.addPrescriptionForm.controls['duration'].reset(0);
+                                this.addPrescriptionForm.controls['startDate'].reset(new Date());
+                                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                            })
+                            .catch(err => {
+                                this._facilityService.announceNotification({
+                                    type: 'Error',
+                                    text: 'There was an error creating prescription. Please try again later.'
+                                });
+                                console.log(err);
+                            });
                     })
                     .catch(err => {
-                        this._facilityService.announceNotification({
-                            type: 'Error',
-                            text: 'There was an error creating prescription. Please try again later.'
-                        });
                         console.log(err);
                     });
             }
@@ -199,46 +240,12 @@ export class PatientPrescriptionComponent implements OnInit {
         }
     }
 
-    onClickReset() {
-        this.addPrescriptionForm.reset();
-    }
-
-    getAllPriorities() {
-        this._priorityService.findAll()
-            .then(res => {
-                this.priorities = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    getAllRoutes() {
-        this._routeService.findAll()
-            .then(res => {
-                this.routes = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    getAllFrequencies() {
-        this._frequencyService.findAll()
-            .then(res => {
-                this.frequencies = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
     keyupSearch() {
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
             this.searchText = val;
         });
 
-        if (this.searchText.length > 4) {
+        if (this.searchText.length > 3) {
             this.drugs = [];
             this.cuDropdownLoading = true;
             this._drugListApi.find({ query: { 'searchtext': this.searchText, 'po': false, 'brandonly': false, 'genericonly': true } })
@@ -287,21 +294,6 @@ export class PatientPrescriptionComponent implements OnInit {
                     this.addPrescriptionForm.controls['strength'].setValue(strength);
                     this.addPrescriptionForm.controls['route'].setValue(res.route);
                 }
-
-                // if (res.ingredients.length === 1) {
-                //     if (res.ingredients[0].strength !== undefined || res.ingredients[0].strengthUnit !== undefined) {
-                //         this.selectedDrugId = res.ingredients[0].strength + res.ingredients[0].strengthUnit;
-                //         this.addPrescriptionForm.controls['strength'].setValue(this.selectedDrugId);
-                //     } else {
-                //         this.addPrescriptionForm.controls['strength'].setValue('');
-                //     }
-
-                //     if (res.route !== '' || res.route !== undefined) {
-                //         this.addPrescriptionForm.controls['route'].setValue(res.route);
-                //     } else {
-                //         this.addPrescriptionForm.controls['route'].setValue('');
-                //     }
-                // }
             })
             .catch(err => {
                 console.log(err);
@@ -318,7 +310,41 @@ export class PatientPrescriptionComponent implements OnInit {
 	// 		.catch(err => {
 	// 			console.log(err);
 	// 		});
-	// }
+    // }
+    
+    onClickReset() {
+        this.addPrescriptionForm.reset();
+    }
+
+    getAllPriorities() {
+        this._priorityService.findAll()
+            .then(res => {
+                this.priorities = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    getAllRoutes() {
+        this._routeService.findAll()
+            .then(res => {
+                this.routes = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    getAllFrequencies() {
+        this._frequencyService.findAll()
+            .then(res => {
+                this.frequencies = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
 
     focusSearch() {
         this.showCuDropdown = !this.showCuDropdown;

@@ -17,8 +17,10 @@ export interface PrescriptionItem {
     refillCount: number,
     initiateBill: boolean,
     isBilled: boolean,
+    isDispensed?: boolean,
     isOpen?: boolean,
     transactions?: any[],
     serviceId?: string,
-    facilityServiceId?: string
+    facilityServiceId?: string,
+    categoryId?: string
 }
