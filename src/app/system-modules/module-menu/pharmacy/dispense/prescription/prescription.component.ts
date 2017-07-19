@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { Facility, Prescription, PrescriptionItem, Dispense,
+import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
@@ -23,6 +23,8 @@ export class PrescriptionComponent implements OnInit {
 	billshow = false;
 	prescriptionId = '';
 	prescriptions: any[] = [];
+	transactions: Inventory = <Inventory>{};
+	viewTransactions: InventoryTransaction[] = [];
 	storeId: any = {};
 	//totalCostOnPre = 0;
 	totalQuantity = 0;
@@ -117,6 +119,7 @@ export class PrescriptionComponent implements OnInit {
 		const dispense = <Dispense> {
 			facilityId: this.facility._id,
 			prescription: prescription,
+			isPrescription: true,
 			storeId: this.storeId,
 		}
 		console.log(dispense);
@@ -201,6 +204,7 @@ export class PrescriptionComponent implements OnInit {
 			//const productId = prescription.productId;
 			const productId = '592419145fbce732205cf0ba';
 			if(this.storeId.typeObject.storeId !== undefined) {
+				// Get the batches for the selected product
 				this._inventoryService.find({ 
 					query: { 
 						facilityId: this.facility._id, 
@@ -210,7 +214,9 @@ export class PrescriptionComponent implements OnInit {
 					.then(res => {
 						console.log(res);
 						if(res.data.length > 0) {
+							this.transactions = res.data[0];
 							const tempArray = [];
+							// Display only batches that have qty greater than 0.
 							if(res.data[0].transactions.length !== 0) {
 								res.data[0].transactions.forEach(element => {
 									if(element.quantity > 0) {
@@ -219,13 +225,10 @@ export class PrescriptionComponent implements OnInit {
 								});
 							}
 							if(tempArray.length !== 0) {
-								this.prescriptionItems.prescriptionItems[index].transactions = res.data[0].transactions;
-								this.prescriptionItems.prescriptionItems[index].facilityServiceId = res.data[0].facilityServiceId;
-								this.prescriptionItems.prescriptionItems[index].serviceId = res.data[0].serviceId;
+								this.viewTransactions = tempArray;
 							} else {
-								this.prescriptionItems.prescriptionItems[index].transactions = [];
+								this.viewTransactions = [];
 							}
-							console.log(this.prescriptionItems);
 						}
 					})
 					.catch(err => {
@@ -246,10 +249,40 @@ export class PrescriptionComponent implements OnInit {
 	}
 
 	onClickBillProduct(parentIndex, index, batch, inputBatch) {
-		console.log(parentIndex);
-		console.log(index);
-		console.log(batch);
-		console.log(inputBatch);
+		// Check if the qty entered is less than or equal to the qty needed.
+		if(inputBatch[index] <= this.prescriptionItems.prescriptionItems[parentIndex].quantity) {
+			this.transactions.transactions.forEach(element => {	
+				if(element._id === batch._id) {
+					element.quantity = element.quantity - inputBatch[index];
+				}
+			});
+			this.transactions.totalQuantity = this.transactions.totalQuantity - inputBatch[index];
+			console.log(this.transactions);
+			//const productId = this.prescriptionItems.prescriptionItems[parentIndex].productId;
+			//const productId = '592419145fbce732205cf0ba';
+			// Make a call to the inventory service so that you can deduct the quantity from the inventory
+			if(this.storeId.typeObject.storeId !== undefined) {
+				this._inventoryService.patch(this.transactions._id, this.transactions, {})
+					.then(res => {
+						console.log(res);
+						
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			} else {
+				this._facilityService.announceNotification({
+					type: 'Info',
+					text: 'Please check into store!'
+				});
+			}
+		} else {
+			this._facilityService.announceNotification({
+				type: 'Info',
+				text: 'The quantity entered is greater than the quantity requested!'
+			});
+		}
+		
 	}
 
 	// Send bill to billing service to bill the patient

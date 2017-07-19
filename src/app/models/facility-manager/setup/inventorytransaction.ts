@@ -1,4 +1,5 @@
 export interface InventoryTransaction {
+    _id?: string,
     batchNumber: string;
     productionDate: Date;
     expiryDate: Date;
