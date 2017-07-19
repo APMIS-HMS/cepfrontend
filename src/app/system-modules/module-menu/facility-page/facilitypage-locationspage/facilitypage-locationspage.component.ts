@@ -104,9 +104,12 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
     console.log(model);
-    if(model.name !== undefined && model.name.toLowerCase() === 'ward') {
+    if(model.name !== undefined && model.name.toLowerCase() == 'ward') {
       this.isWardSelected = true;
+    } else {
+      this.isWardSelected = false;
     }
+    
     this.locationObj = model;
     
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);

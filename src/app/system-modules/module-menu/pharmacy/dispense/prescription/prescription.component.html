@@ -21,30 +21,13 @@
         <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
     </div>
 
-    <div class="row">
-        <!-- <div class="row">
-            <div class="col-sm-12 col-md-12" style="padding-top: 10px;">
-                <div class="col-sm-6 pull-right" style="padding-right: 20px;">
-                    <p class="pull-right"><strong>Total Quantity:</strong> <span> {{ totalQtyOnPre }}</span></p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <div class="col-sm-6 pull-right" style="padding-right: 20px;">
-                    <p class="pull-right"><strong>Total Bill:</strong> <span> &#x20A6;{{ totalCostOnPre }}</span></p>
-                </div>
-            </div>
-        </div> -->
-    </div>
-
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
         <div class="col-sm-12 col-md-12 text-center">
             <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();"> Save </button>
         </div>
     </div>
     <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
-        <b>Added prescription items to dispense</b>
+        <b>Prescribed items to dispense</b>
     </div>
     <div class="sec-border">
         <div class="prod-row prodParent-header">
@@ -54,17 +37,25 @@
             </div>
             <div class="prod-rowItem item2">
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Qty</span>
+                <span style="padding-left: 3px;">Qty<br>Billed</span>
             </div>
             <div class="prod-rowItem item3">
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Unit Price</span>
+                <span style="padding-left: 3px;">Qty<br>Dispensed</span>
             </div>
             <div class="prod-rowItem item4">
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Payment</span>
+                <span style="padding-left: 3px;">Balance</span>
             </div>
             <div class="prod-rowItem item5">
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Unit Price</span>
+            </div>
+            <div class="prod-rowItem item6">
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <span style="padding-left: 3px;">Payment</span>
+            </div>
+            <div class="prod-rowItem item7">
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <span style="padding-left: 3px;">Status</span>
             </div>
@@ -81,14 +72,16 @@
                         </span>
                     </div>
                     <div class="prod-rowItem item2" style="text-align: right"><span>{{ prescription.quantity }}</span></div>
-                    <div class="prod-rowItem item3" style="text-align: right"><span>&#x20A6;{{ prescription.cost }}</span></div>
-                    <div class="prod-rowItem item4">
-                        <span *ngIf="false" class="table-padding" style="width: 100%; color:#2e7d32">Paid</span>
-                        <span *ngIf="true" class="table-padding" style="width: 100%; color:red">Not paid</span>
+                    <div class="prod-rowItem item3" style="text-align: right"><span>{{ prescription.quantity }}</span></div>
+                    <div class="prod-rowItem item4" style="text-align: right"><span>{{ prescription.quantity }}</span></div>
+                    <div class="prod-rowItem item5" style="text-align: right"><span>&#x20A6;{{ prescription.cost }}</span></div>
+                    <div class="prod-rowItem item6">
+                        <span *ngIf="false" style="width: 100%; color:#2e7d32">Paid</span>
+                        <span *ngIf="true" style="width: 100%; color:red">Not paid</span>
                     </div>
-                    <div class="prod-rowItem item5">
-                        <span *ngIf="false" class="table-padding" style="width: 100%; color:#2e7d32">Dispensed</span>
-                        <span *ngIf="true" class="table-padding" style="width: 100%; color:red">Not Dispensed</span>
+                    <div class="prod-rowItem item7">
+                        <span *ngIf="false" style="width: 100%; color:#2e7d32">Dispensed</span>
+                        <span *ngIf="true" style="width: 100%; color:red">Not Dispensed</span>
                     </div>
                 </div>
                 <div *ngIf="prescription.isOpen===true && (selectedPrescription._id === prescription._id)" class="prodBatch-wrap animated flipInX">
@@ -142,42 +135,15 @@
                             </tbody>
                         </table>
                     </form>
-                    <!-- <div class="prodBatch-row batchHeader">
-                        <div class="prodBatch-item batchItem1">Batch No</div>
-                        <div class="prodBatch-item batchItem2">Expiry Date</div>
-                        <div class="prodBatch-item batchItem3">&nbsp;&nbsp;Qty<br> To Dispense</div>
-                        <div class="prodBatch-item batchItem4">Qty</div>
-                        <div class="prodBatch-item batchItem5">Actions</div>
-                    </div> -->
-                    <!-- <form #form="ngForm">
-                        <div class="prodBatch-row batchContent" *ngFor="let transaction of prescription.transactions; let j = index;">
-                            <div class="prodBatch-item batchItem1">{{transaction?.batchNumber}}</div>
-                            <div class="prodBatch-item batchItem2">{{transaction?.expiryDate | date:'shortDate'}}</div>
-                            <div class="prodBatch-item batchItem3">{{transaction?.quantity}}</div>
-                            <div class="prodBatch-item batchItem4">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput type="number" placeholder="Quantity" name="batch-{{j}}" ngModel>
-                                </md-input-container>
-                            </div>
-                            <div class="prodBatch-item batchItem5">
-                                <button md-raised-button style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)"> Save </button>
-                                <div (click)="onClickBillProduct(i, j, transaction, form.value)" class="btn-liner">Save</div>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="prodBatch-row batchContent" *ngIf="prescription?.transactions.length === 0 && !batchLoading">
-                        <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">No data to display in table</div>
-                    </div>
-                    <div class="prodBatch-row batchContent" *ngIf="prescription?.transactions.length === 0 && batchLoading">
-                        <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
-                    </div> -->
                 </div>
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && !loading">
                 <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
-                <div style="width: 100%; padding: 10px; font-size: 13px;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                <div style="width: 100%; padding: 10px; font-size: 13px;">
+                    <md-spinner class="small-spinner"></md-spinner>
+                </div>
             </div>
         </div>
     </div>

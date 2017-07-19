@@ -106,25 +106,16 @@
 }
 
 .prod-rowItem.item1 {
-    width: 60%;
+    width: 40%;
     cursor: pointer;
 }
 
-.prod-rowItem.item2 {
-    width: 10%;
-    cursor: pointer;
-}
-
-.prod-rowItem.item3 {
-    width: 10%;
-}
-
-.prod-rowItem.item4 {
-    width: 10%;
-    cursor: pointer;
-}
-
-.prod-rowItem.item5 {
+.prod-rowItem.item2,
+.prod-rowItem.item3,
+.prod-rowItem.item4,
+.prod-rowItem.item5,
+.prod-rowItem.item6,
+.prod-rowItem.item7 {
     width: 10%;
     cursor: pointer;
 }

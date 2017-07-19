@@ -14,10 +14,12 @@ import { Observable } from 'rxjs/Observable';
 
 export class PharmacyManagerComponent implements OnInit {
 	pageInView: String = '';
+	storeTitle: String = '';
 	modal_on: boolean = false;
+	isStoreAvailable: boolean = false;
 	// pharmacyNavMenu = false;
 	// categoryNavMenu = false;
-	supplierNavMenu = false;
+	supplierNavMenu: boolean = false;
 	// manufacturerNavMenu = false;
 	// routeNavMenu = false;
 	// genericNavMenu = false;
@@ -86,7 +88,9 @@ export class PharmacyManagerComponent implements OnInit {
 							isOn = true;
 							let checkingObject = { typeObject: itemr, type: 'store' };
 							this._employeeService.announceCheckIn(checkingObject);
-							console.log('sent');
+							// Set page title
+							this.isStoreAvailable = true;
+							this.storeTitle = itemr.storeObject.name;
 							this._employeeService.update(this.loginEmployee).then(payload => {
 								this.loginEmployee = payload;
 								checkingObject = { typeObject: itemr, type: 'store' };
@@ -100,6 +104,9 @@ export class PharmacyManagerComponent implements OnInit {
 							if (r === 0) {
 								itemr.isOn = true;
 								itemr.lastLogin = new Date();
+								// Set page title
+								this.isStoreAvailable = true;
+								this.storeTitle = itemr.storeObject.name;
 								this._employeeService.update(this.loginEmployee).then(payload => {
 									this.loginEmployee = payload;
 									const checkingObject = { typeObject: itemr, type: 'store' };

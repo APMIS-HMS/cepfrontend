@@ -15,6 +15,7 @@ export class PrescriptionListComponent implements OnInit {
 	searchFormGroup: FormGroup;
 	status: string[];
 	prescriptionLists: any[] = [];
+	tempPrescriptionLists: any[] = [];
 	loading: boolean = true;
 
 	constructor(
@@ -40,10 +41,10 @@ export class PrescriptionListComponent implements OnInit {
 			let searchText = val;
 			const tempArray = [];
 
-			this.loading = true;
 			if(val.length > 2) {
+				this.loading = true;
 				this.prescriptionLists.forEach(element => {
-					if(element.patientName.includes(searchText)) {
+					if(element.patientName.toLowerCase().includes(searchText.toLowerCase())) {
 						tempArray.push(element);
 					}
 				});
@@ -54,6 +55,8 @@ export class PrescriptionListComponent implements OnInit {
 				} else {
 					this.prescriptionLists = [];
 				}
+			} else {
+				this.prescriptionLists = this.tempPrescriptionLists;
 			}
 		});
 	}
@@ -66,6 +69,7 @@ export class PrescriptionListComponent implements OnInit {
 				this.loading = false;
 				res.data.forEach(element => {
 					if(!element.isDispensed) {
+						this.tempPrescriptionLists.push(element);// temporary variable to search from.
 						this.prescriptionLists.push(element);
 					}
 				});
