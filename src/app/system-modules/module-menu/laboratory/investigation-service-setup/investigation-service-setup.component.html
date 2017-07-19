@@ -1,4 +1,12 @@
 <div class="page-title">investigation service Setup</div>
+<div class="preTbl-topItems-wrap">
+    <ul class="topmenuwrap">
+        <li>
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Creat Panel</span>
+        </li>
+    </ul>
+</div>
 <section id="container">
   <div class="survery">
     <div class="container">
@@ -102,5 +110,53 @@
         </div>
       </div>
     </div>
-  </div>
+    <!--begin flyout-->
+    <div class="flyout">
+      <div class="arrow">
+        <i class="fa fa-arrow-circle-right"></i>
+      </div>
+      <div class="col-sm-12">
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Panel name">
+        </md-input-container>
+        <button class="apmis-blue" md-raised-button>Create Panel</button>
+      </div>
+      <br>
+      <div class="col-sm-12">
+        <div class="inv-container">
+            <md-input-container class="example-full-width">
+                  <input mdInput placeholder="Search investigation">
+            </md-input-container>
+            <i style="margin-left: -19px;" class="fa fa-search"></i>
+           <ul class="unstyled scroll-y">
+            <li><md-checkbox class="example-margin">Panel name</md-checkbox></li>
+            <li><md-checkbox class="example-margin">Panel name</md-checkbox></li>
+            <li><md-checkbox class="example-margin">Panel name</md-checkbox></li>
+            <li><md-checkbox class="example-margin">Panel name</md-checkbox></li>
+            <li><md-checkbox class="example-margin">Panel name</md-checkbox></li>
+            <li><md-checkbox class="example-margin">Panel name</md-checkbox></li>
+          </ul>
+          </div>
+      </div>
+      <div class="panel-seperate">
+        <h5>Created Panel</h5>
+      </div>
+      <div class="col-sm-12 text-center">
+          <div class="list-container">                  
+            <ul class="tree">
+              <li class="tree-item">
+                <a (click)="clickParent()"><i class="fa fa-folder"></i>Panel name</a>
+                <ul *ngIf="isParent" class="tree-parent open"> 
+                  <li class="tree-item view">
+                    <md-checkbox>panel children</md-checkbox>
+                  </li>
+                </ul>   
+              </li> 
+            </ul>
+          </div>
+          <button class="apmis-blue" md-raised-button>Save Panel</button>
+      </div>
+    </div>
+    <!-- end fly out -->
+  </div><!-- end survery -->
 </section>
