@@ -32,9 +32,11 @@ export class SwitchUserResolverService implements Resolve<Facility> {
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);
         });
+        console.log(facilityList)
         return this.facilityService.find({ query: { _id: { $in: facilityList } } })
           .then(payload => {
             this.listOfFacilities = payload.data;
+            console.log(this.listOfFacilities);
             if (this.listOfFacilities.length === 1) {
 
 

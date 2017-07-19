@@ -45,6 +45,7 @@ export class ScheduleFrmComponent implements OnInit {
     professions: Profession[] = [];
     categoryServices: any[] = [];
     appointments: any[] = [];
+    selectedClinic: any = <any>{};
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
@@ -243,10 +244,12 @@ export class ScheduleFrmComponent implements OnInit {
     }
     getOthers(clinic: any) {
         this.schedules = [];
+        this.selectedClinic = clinic;
         clinic.schedules.forEach((itemi, i) => {
             this.schedules.push(itemi);
         });
         this.appointmentService.schedulesAnnounced(this.schedules);
+        this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
     }
     getClinicMajorLocation() {
         this.locationService.findAll().then(payload => {
@@ -519,14 +522,42 @@ export class ScheduleFrmComponent implements OnInit {
         this.appointment.patientId = patient;
         this.appointment.startDate = this.date;
         if (checkIn === true) {
+            //      delete provider.department;
+            // delete provider.employeeFacilityDetails;
+            // delete provider.role;
+            // delete provider.units;
+            // delete provider.employeeDetails.countryItem;
+            // delete provider.employeeDetails.homeAddress;
+            // delete provider.employeeDetails.gender;
+            // delete provider.employeeDetails.maritalStatus;
+            // delete provider.employeeDetails.nationality;
+            // delete provider.employeeDetails.nationalityObject;
+            // delete provider.employeeDetails.nextOfKin;
+            const logEmp: any = this.loginEmployee;
+            delete logEmp.department;
+            delete logEmp.employeeFacilityDetails;
+            delete logEmp.role;
+            delete logEmp.units;
+            delete logEmp.consultingRoomCheckIn;
+            delete logEmp.storeCheckIn;
+            delete logEmp.unitDetails;
+            delete logEmp.professionObject;
+            delete logEmp.employeeDetails.countryItem;
+            delete logEmp.employeeDetails.homeAddress;
+            delete logEmp.employeeDetails.gender;
+            delete logEmp.employeeDetails.maritalStatus;
+            delete logEmp.employeeDetails.nationality;
+            delete logEmp.employeeDetails.nationalityObject;
+            delete logEmp.employeeDetails.nextOfKin;
             this.appointment.attendance = {
-                employeeId: this.loginEmployee._id,
+                employeeId: logEmp,
                 dateCheckIn: new Date()
             };
         }
         this.appointment.category = category;
         console.log(this.appointment);
         if (this.appointment._id !== undefined) {
+            console.log(this.appointment);
             this.appointmentService.update(this.appointment).subscribe(payload => {
                 console.log(payload);
                 this.appointmentService.patientAnnounced(this.patient);
@@ -540,12 +571,16 @@ export class ScheduleFrmComponent implements OnInit {
                 console.log(payload);
                 this.appointmentService.patientAnnounced(this.patient);
                 this.loadIndicatorVisible = false;
-                 this.newSchedule();
+                this.newSchedule();
             }, error => {
                 this.loadIndicatorVisible = false;
             })
         }
 
+    }
+    dateChange(event) {
+        console.log(event);
+        this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
     }
     newSchedule() {
         this.patient.reset();
