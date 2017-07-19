@@ -52,6 +52,7 @@ select {
     position: relative;
     width: 1200px;
     margin: 0px auto;
+    min-height: 100vh;
 }
 
 // Added by Chisimdi
@@ -318,8 +319,8 @@ select {
     background: #fff;
     margin-top: 5px;
     overflow: hidden;
-    min-height: 400px;
-    margin-bottom: 60px;
+    min-height: 100vh;
+    margin-bottom: 200px;
 }
 
 .center-center {

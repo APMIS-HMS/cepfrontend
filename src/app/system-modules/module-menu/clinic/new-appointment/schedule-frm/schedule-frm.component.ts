@@ -44,6 +44,7 @@ export class ScheduleFrmComponent implements OnInit {
     scheduleManagers: ScheduleRecordModel[] = [];
     professions: Profession[] = [];
     categoryServices: any[] = [];
+    appointments: any[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
@@ -59,7 +60,7 @@ export class ScheduleFrmComponent implements OnInit {
     checkIn: FormControl;
     date = new Date(); // FormControl = new FormControl();
     reason: FormControl = new FormControl();
-
+    appointment: Appointment = <Appointment>{};
     states = [
         'Alabama',
         'Alaska',
@@ -119,12 +120,31 @@ export class ScheduleFrmComponent implements OnInit {
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
 
+        appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
+            this.appointment = payload;
+            console.log(this.appointment);
+            const filterClinic = this.clinics.filter(x => x._id === payload.clinicId._id);
+            if (filterClinic.length > 0) {
+                this.clinic.setValue(filterClinic[0]);
+            }
+
+            this.provider.setValue(payload.doctorId);
+            this.date = payload.startDate;
+            this.reason.setValue(payload.appointmentReason);
+            this.type.setValue(payload.appointmentTypeId);
+            this.category.setValue(payload.category);
+            if (payload.attendance !== undefined) {
+                this.checkIn.setValue(true);
+            } else {
+                this.checkIn.setValue(false);
+            }
+        })
         this.checkIn = new FormControl(false);
 
         this.patient = new FormControl();
         this.filteredPatients = this.patient.valueChanges
             .startWith(null)
-            .map((patient: Patient) => patient && typeof patient === 'object' ? patient.personDetails.lastName : patient)
+            .map((patient: Patient) => patient && typeof patient === 'object' ? this.announcePatient(patient) : patient)
             .map(val => val ? this.filterPatients(val) : this.patients.slice());
 
         this.clinic = new FormControl();
@@ -216,6 +236,10 @@ export class ScheduleFrmComponent implements OnInit {
                 this.getEmployees();
                 this.getClinics()
             })
+    }
+    announcePatient(value) {
+        this.appointmentService.patientAnnounced(value);
+        return value.personDetails.lastName;
     }
     getOthers(clinic: any) {
         this.schedules = [];
@@ -439,14 +463,7 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     scheduleAppointment() {
-        //        patient: FormControl;
-        // clinic: FormControl;
-        // provider: FormControl;
-        // type: FormControl;
-        // category: FormControl;
-        // checkIn: FormControl;
-        // date = new Date(); // FormControl = new FormControl();
-        // reason: FormControl = new FormControl();
+        this.loadIndicatorVisible = true;
         const patient = this.patient.value;
         const clinic = this.clinic.value;
         const provider = this.provider.value;
@@ -456,8 +473,7 @@ export class ScheduleFrmComponent implements OnInit {
         const date = this.date;
         const reason = this.reason.value;
         const facility = this.selectedFacility;
-        // console.log(patient, clinic, provider, type, category, checkIn, date, reason);
-        // console.log(clinic);
+
         delete facility.address;
         delete facility.countryItem;
         delete facility.departments;
@@ -467,28 +483,80 @@ export class ScheduleFrmComponent implements OnInit {
         delete facility.facilitymoduleId;
         delete facility.logoObject;
         delete facility.minorLocations;
+        delete facility.invitees;
 
         delete patient.appointments;
         delete patient.encounterRecords;
         delete patient.orders;
         delete patient.tags;
+        delete patient.personDetails.addressObj;
+        delete patient.personDetails.countryItem;
+        delete patient.personDetails.homeAddress;
+        delete patient.personDetails.maritalStatus;
+        delete patient.personDetails.nationality;
+        delete patient.personDetails.nationalityObject;
+        delete patient.personDetails.nextOfKin;
+
 
         delete provider.department;
         delete provider.employeeFacilityDetails;
         delete provider.role;
         delete provider.units;
+        delete provider.employeeDetails.countryItem;
+        delete provider.employeeDetails.homeAddress;
+        delete provider.employeeDetails.gender;
+        delete provider.employeeDetails.maritalStatus;
+        delete provider.employeeDetails.nationality;
+        delete provider.employeeDetails.nationalityObject;
+        delete provider.employeeDetails.nextOfKin;
 
-        const appointment: Appointment = <Appointment>{};
-        appointment.appointmentReason = reason;
-        appointment.appointmentTypeId = type;
-        appointment.clinicId = clinic.clinic;
-        appointment.doctorId = provider;
-        appointment.facilityId = <any>facility;
-        appointment.patientId = patient;
-        console.log(appointment);
+        // const appointment: Appointment = <Appointment>{};
+        this.appointment.appointmentReason = reason;
+        this.appointment.appointmentTypeId = type;
+        this.appointment.clinicId = clinic.clinic;
+        this.appointment.doctorId = provider;
+        this.appointment.facilityId = <any>facility;
+        this.appointment.patientId = patient;
+        this.appointment.startDate = this.date;
+        if (checkIn === true) {
+            this.appointment.attendance = {
+                employeeId: this.loginEmployee._id,
+                dateCheckIn: new Date()
+            };
+        }
+        this.appointment.category = category;
+        console.log(this.appointment);
+        if (this.appointment._id !== undefined) {
+            this.appointmentService.update(this.appointment).subscribe(payload => {
+                console.log(payload);
+                this.appointmentService.patientAnnounced(this.patient);
+                this.loadIndicatorVisible = false;
+                this.newSchedule();
+            }, error => {
+                this.loadIndicatorVisible = false;
+            })
+        } else {
+            this.appointmentService.create(this.appointment).subscribe(payload => {
+                console.log(payload);
+                this.appointmentService.patientAnnounced(this.patient);
+                this.loadIndicatorVisible = false;
+                 this.newSchedule();
+            }, error => {
+                this.loadIndicatorVisible = false;
+            })
+        }
 
     }
-
+    newSchedule() {
+        this.patient.reset();
+        this.clinic.reset();
+        this.provider.reset();
+        this.type.reset();
+        this.category.reset();
+        this.checkIn.reset();
+        this.date = new Date();
+        this.reason.reset();
+    }
     filterStates(val: string) {
         return val ? this.states.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.states;

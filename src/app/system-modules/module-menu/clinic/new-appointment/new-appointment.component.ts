@@ -29,6 +29,8 @@ export class NewAppointmentComponent implements OnInit {
 
     appointmentTypes: AppointmentType[] = [];
     providers: Employee[] = [];
+    appointments: any[] = [];
+    pastAppointments: any[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
     subscription: Subscription;
@@ -42,6 +44,8 @@ export class NewAppointmentComponent implements OnInit {
     todayCtrl: FormControl;
     searchControl: FormControl = new FormControl();
     filteredStates: any;
+    selectedPatient: any = <any>{};
+    dateRange:any;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
@@ -99,13 +103,19 @@ export class NewAppointmentComponent implements OnInit {
     ];
 
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
-        private appointmentService: AppointmentService,
+        private appointmentService: AppointmentService, private facilityService: FacilitiesService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService) {
 
         this.appointmentService.schedulesAnnounced$.subscribe((payload: ScheduleRecordModel[]) => {
             this.schedules = payload;
-        })
+        });
+
+        this.appointmentService.patientAnnounced$.subscribe((payload: any) => {
+            this.selectedPatient = payload;
+            this.getAppointments(payload);
+            this.getPreviousAppointments(payload);
+        });
 
         this.clinicCtrl = new FormControl();
         this.filteredClinics = this.clinicCtrl.valueChanges
@@ -144,6 +154,33 @@ export class NewAppointmentComponent implements OnInit {
         this.getEmployees();
         this.getAppointmentTypes();
     }
+    getAppointments(value) {
+        this.appointmentService.find({ query: { 'patientId._id': value._id } }).subscribe(payload => {
+            this.appointments = payload.data;
+            console.log(this.appointments)
+        })
+    }
+    setReturnValue(dateRange: any): any {
+        this.dateRange = dateRange;
+        console.log(this.dateRange);
+        this.appointmentService.find({
+            query: {
+                isWithinRange: true, from: this.dateRange.from, to: this.dateRange.to,
+                'facilityId._id': this.selectedFacility._id,
+                'patientId._id': this.selectedPatient._id
+            }
+        }).subscribe(payload => {
+            console.log(payload);
+             this.appointments = payload.data;
+        })
+    }
+    getPreviousAppointments(value) {
+        this.appointmentService.find({ query: { 'patientId._id': value._id, isPast: true } }).subscribe(payload => {
+            this.pastAppointments = payload.data;
+            console.log(this.pastAppointments)
+        })
+    }
+
     getClinics() {
         this.clinics = [];
         this.selectedFacility.departments.forEach((itemi, i) => {
@@ -247,6 +284,15 @@ export class NewAppointmentComponent implements OnInit {
                 });
         }
 
+    }
+    editAppointment(appointment) {
+        this.appointmentService.appointmentAnnounced(appointment);
+    }
+    cancelAppointment(appointment) {
+        appointment.isActive = false;
+        this.appointmentService.update(appointment).subscribe(payload => {
+            this.appointmentService.patientAnnounced(this.selectedPatient);
+        })
     }
     getAppointmentTypes() {
         this.appointmentTypeService.findAll().subscribe(payload => {

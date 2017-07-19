@@ -14,7 +14,7 @@ export class LaboratoryListsComponent implements OnInit {
       "date":"9-9-2009",
       "location":"subair adams ohikere",
       "diagnosis":"very diagnised",
-      "samples":"sample data",
+      "samples":"sample taken",
       "isexternal":"yes",
       "payment":"paid",
     }]

@@ -1,0 +1,42 @@
+<div class="page-title">Workbench Setup</div>
+<section id="container">
+  <div class="survery">
+    <div class="container">
+      <!--<div class="col-sm-12">
+        <div class="pad margin no-print">
+          <div class="callout callout-info" style="margin-bottom: 0!important;">
+            <h4><i class="fa fa-info"></i> Note:</h4>
+            You can setup workbench, create and setup investigation service
+          </div>
+        </div>
+      </div>-->
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="x_panel">
+              <div class="x_title">
+                <h2>Setup workbench</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content"> 
+                <md-select placeholder="Select minor location" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                <md-input-container class="example-full-width">
+                  <input mdInput placeholder="Workbench name">
+                </md-input-container>
+
+               <div class="text-center">
+                 <button class="apmis-blue" md-raised-button>Add</button>
+               </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          workbench history
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

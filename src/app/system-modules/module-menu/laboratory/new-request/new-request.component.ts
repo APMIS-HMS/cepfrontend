@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-request.component.scss']
 })
 export class NewRequestComponent implements OnInit {
+    isParent = false;
     isPanel = false;
     foods = [
     {value: 'male', viewValue: 'Fale'},
@@ -19,6 +20,8 @@ export class NewRequestComponent implements OnInit {
   panelShow() {
     this.isPanel = !this.isPanel;
   }
-
-
+  clickParent() {
+    this.isParent = !this.isParent;
+  }
+ 
 }
