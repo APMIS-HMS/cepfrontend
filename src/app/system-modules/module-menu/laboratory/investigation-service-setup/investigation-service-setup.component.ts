@@ -27,4 +27,7 @@ panelShow() {
     close_onClick() {
     this.flyout = true;
   }
+  flayoutClose() {
+    this.flyout = false;
+  }
 }

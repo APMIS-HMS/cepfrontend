@@ -113,7 +113,7 @@
     <!--begin flyout-->
     <div *ngIf = "flyout" class="flyout">
       <div class="arrow">
-        <a><i class="fa fa-arrow-circle-right"></i></a>
+        <a (click)="flayoutClose()"><i class="fa fa-arrow-circle-right"></i></a>
       </div>
       <div class="col-sm-12">
         <md-input-container class="example-full-width">
