@@ -24,7 +24,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   now: Date = new Date();
   min: Date = new Date(1900, 0, 1);
   dateClear = new Date(2015, 11, 1, 6);
-  loadIndicatorVisible = true;
+  loadIndicatorVisible = false;
 
   checkedInAppointments: Appointment[] = [];
   selectedCheckedInAppointment: Appointment = <Appointment>{};
@@ -70,6 +70,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.getEmployees();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
+    this.getAppointments();
     // this.route.data.subscribe(data => {
     //   this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
     //     const emp$ = Observable.fromPromise(this.employeeService.find({
@@ -112,6 +113,13 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
 
 
 
+  }
+  getAppointments() {
+    this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true } })
+      .subscribe(payload => {
+        this.checkedInAppointments = payload.data;
+        console.log(this.checkedInAppointments)
+      })
   }
   getClinics() {
     this.clinics = [];
@@ -259,19 +267,19 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
   getConsultingRoom(appointment) {
     let retVal = '';
-    if (appointment.employeeDetails.consultingRoomCheckIn !== undefined) {
-      appointment.employeeDetails.consultingRoomCheckIn.forEach((itemr, r) => {
-        if (itemr.isOn === true) {
-          this.clinicHelperService.consultingRooms.forEach((itemk, k) => {
-            itemk.rooms.forEach((itemp, p) => {
-              if (itemp._id === itemr.roomId) {
-                retVal = 'Consulting Room(' + itemp.name + ')';
-              }
-            });
-          });
-        }
-      });
-    }
+    // if (appointment.employeeDetails.consultingRoomCheckIn !== undefined) {
+    //   appointment.employeeDetails.consultingRoomCheckIn.forEach((itemr, r) => {
+    //     if (itemr.isOn === true) {
+    //       this.clinicHelperService.consultingRooms.forEach((itemk, k) => {
+    //         itemk.rooms.forEach((itemp, p) => {
+    //           if (itemp._id === itemr.roomId) {
+    //             retVal = 'Consulting Room(' + itemp.name + ')';
+    //           }
+    //         });
+    //       });
+    //     }
+    //   });
+    // }
 
     return retVal;
   }
