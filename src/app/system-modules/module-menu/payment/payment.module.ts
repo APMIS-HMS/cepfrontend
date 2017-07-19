@@ -13,6 +13,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import { BillLookupComponent } from './bill-lookup/bill-lookup.component';
 import { BillGroupComponent } from './bill-lookup/bill-group/bill-group.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { MakePaymentComponent } from './make-payment/make-payment.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
         InvoiceComponent,
         BillLookupComponent,
         BillGroupComponent,
+        MakePaymentComponent,
     ],
 
     exports: [

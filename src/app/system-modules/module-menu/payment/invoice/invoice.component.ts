@@ -20,6 +20,7 @@ export class InvoiceComponent implements OnInit {
     addModefierPopup = false;
     addLineModefierPopup = false;
     priceItemDetailPopup = false;
+    makePaymentPopup = false;
     addItem = false;
     itemEditShow = false;
     itemEditShow2 = false;
@@ -91,11 +92,15 @@ export class InvoiceComponent implements OnInit {
     addItem_show() {
         this.addItem = true;
     }
+    makePayment_show() {
+        this.makePaymentPopup = true;
+    }
     close_onClick(e) {
         this.addModefierPopup = false;
         this.addLineModefierPopup = false;
         this.addItem = false;
         this.priceItemDetailPopup = false;
+        this.makePaymentPopup = false;
     }
     itemEditToggle() {
         this.itemEditShow = !this.itemEditShow;

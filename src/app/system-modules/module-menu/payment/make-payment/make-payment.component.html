@@ -1,0 +1,25 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div class="facility-title">Make Payment</div>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+  <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
+    <i class="fa fa-check" aria-hidden="true"></i>
+    <span>{{successMsg}}</span>
+  </div>
+ 
+  <form [formGroup]="frmMakePayment" novalidate>
+
+    <div class="frm-item-wrap">
+      <md-input-container>
+          <input mdInput md-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="amountInput" placeholder="Enter Amount">
+      </md-input-container>
+    </div>
+
+    <button class="cta-1">
+      Make Payment
+    </button>
+
+  </form>
+
+</div>
