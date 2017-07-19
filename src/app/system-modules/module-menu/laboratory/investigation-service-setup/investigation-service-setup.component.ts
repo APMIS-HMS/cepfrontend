@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-investigation-service-setup',
@@ -7,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InvestigationServiceSetupComponent implements OnInit {
 
-  isParent = false;
+    isParent = false;
     isPanel = false;
+    flyout = false;
    foods = [
     {value: 'male', viewValue: 'name select'},
     {value: 'female', viewValue: 'name select'},
@@ -22,5 +23,8 @@ panelShow() {
   }
   clickParent() {
     this.isParent = !this.isParent;
+  }
+    close_onClick() {
+    this.flyout = true;
   }
 }

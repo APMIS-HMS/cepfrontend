@@ -38,3 +38,15 @@ ul.topmenuwrap {
     width: 100%;
     text-align: center;
 }
+
+.arrow {
+    font-size: 20px;
+    margin-left: 10px;
+    color: #ff2500 !important;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+}
+.arrow a {
+    color: #ff2500;
+}
