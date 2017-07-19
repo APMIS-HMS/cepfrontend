@@ -70,6 +70,7 @@ export class AddPrescriptionComponent implements OnInit {
 		this.prescriptionItems.prescriptionItems[index].isExternal = value;
 	}
 
+	// Bill toggel button
 	toggleBill(index, item) {
 		//if(!item.isBilled) {
 			this.billShow = !this.billShow;

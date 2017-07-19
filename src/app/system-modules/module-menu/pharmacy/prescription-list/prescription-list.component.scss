@@ -1,5 +1,15 @@
+.c-page-wrapper {
+    margin-top: -5px !important;
+    padding-left: 0 !important;
+}
+
 #presc-list {
     margin: 5px;
+}
+
+.search {
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .no-padding {
@@ -7,8 +17,21 @@
     padding-left: -15px !important;
 }
 
+.filter-wrapper {
+    position: absolute;
+    top: -31px;
+    right: -10px;
+}
+
 .table-wrapper {
     border: 1px solid #cacaca;
+}
+
+.table-header {
+    color: #000;
+    th {
+        padding-left: 5px;
+    }
 }
 
 .table-content {
