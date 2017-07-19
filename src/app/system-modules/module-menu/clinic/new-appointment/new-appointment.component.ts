@@ -45,7 +45,8 @@ export class NewAppointmentComponent implements OnInit {
     searchControl: FormControl = new FormControl();
     filteredStates: any;
     selectedPatient: any = <any>{};
-    dateRange:any;
+    selectedClinic: any = <any>{};
+    dateRange: any;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
@@ -113,9 +114,12 @@ export class NewAppointmentComponent implements OnInit {
 
         this.appointmentService.patientAnnounced$.subscribe((payload: any) => {
             this.selectedPatient = payload;
-            this.getAppointments(payload);
             this.getPreviousAppointments(payload);
         });
+
+        this.appointmentService.clinicAnnounced$.subscribe((payload: any) => {
+            this.getClinicAppointments(payload);
+        })
 
         this.clinicCtrl = new FormControl();
         this.filteredClinics = this.clinicCtrl.valueChanges
@@ -152,13 +156,16 @@ export class NewAppointmentComponent implements OnInit {
         this.getSchedules();
         this.getLoginEmployee();
         this.getEmployees();
-        this.getAppointmentTypes();
+        // this.getAppointmentTypes();
     }
-    getAppointments(value) {
-        this.appointmentService.find({ query: { 'patientId._id': value._id } }).subscribe(payload => {
-            this.appointments = payload.data;
-            console.log(this.appointments)
-        })
+    getClinicAppointments(value) {
+        console.log(value);
+        this.selectedClinic = value.clinicId;
+        this.appointmentService.find({ query: { 'clinicId._id': value.clinicId._id, hasDate: true, startDate: value.startDate } })
+            .subscribe(payload => {
+                this.appointments = payload.data;
+                console.log(this.appointments)
+            })
     }
     setReturnValue(dateRange: any): any {
         this.dateRange = dateRange;
@@ -171,18 +178,22 @@ export class NewAppointmentComponent implements OnInit {
             }
         }).subscribe(payload => {
             console.log(payload);
-             this.appointments = payload.data;
+            this.appointments = payload.data;
         })
     }
     getPreviousAppointments(value) {
-        this.appointmentService.find({ query: { 'patientId._id': value._id, isPast: true } }).subscribe(payload => {
-            this.pastAppointments = payload.data;
-            console.log(this.pastAppointments)
-        })
+        this.pastAppointments = [];
+        if (value._id !== undefined) {
+            this.appointmentService.find({ query: { 'patientId._id': value._id } }).subscribe(payload => {
+                this.pastAppointments = payload.data;
+                console.log(this.pastAppointments)
+            });
+        }
     }
 
     getClinics() {
         this.clinics = [];
+        const clinicIds = [];
         this.selectedFacility.departments.forEach((itemi, i) => {
             itemi.units.forEach((itemj, j) => {
                 itemj.clinics.forEach((itemk, k) => {
@@ -196,6 +207,7 @@ export class NewAppointmentComponent implements OnInit {
                                 clinicModel._id = itemk._id;
                                 clinicModel.clinicName = itemk.clinicName;
                                 this.clinics.push(clinicModel);
+                                clinicIds.push(clinicModel._id);
                             }
                         });
                     } else if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name !== 'Doctor') {
@@ -209,6 +221,7 @@ export class NewAppointmentComponent implements OnInit {
                                     clinicModel._id = itemk._id;
                                     clinicModel.clinicName = itemk.clinicName;
                                     this.clinics.push(clinicModel);
+                                    clinicIds.push(clinicModel._id);
                                 }
                             });
                         });
@@ -232,10 +245,16 @@ export class NewAppointmentComponent implements OnInit {
             }
         }));
         // tslint:disable-next-line:max-line-length
-        this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-        ]))
+        this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin(
+            [
+                Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+                Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } })),
+                Observable.fromPromise(this.appointmentTypeService.findAll())
+            ]))
             .subscribe((results: any) => {
                 this.loginEmployee = results[0];
+                this.loginEmployee.workSpaces = results[1].data;
+                this.appointmentTypes = results[2].data;
                 if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
                     this.selectedProfession = this.loginEmployee.professionObject;
                     if (this.loginEmployee.professionObject.name === 'Doctor') {

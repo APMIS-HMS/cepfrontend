@@ -68,18 +68,19 @@
             <tr *ngFor="let appointment of checkedInAppointments">
                 <td>
                     <div class="empWrap" (click)="goToPatientPage(appointment,false)">
-                        <div class="list-img" *ngIf="appointment.patientDetails?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                        <div class="list-img" *ngIf="appointment.patientDetails?.personDetails?.profileImageObject !== undefined"> <img [src]="facilityService.transform(appointment.patientDetails?.personDetails?.profileImageObject?.thumbnail)"></div>
-                        <div>{{appointment.patientDetails?.personDetails?.lastName}} {{appointment.patientDetails?.personDetails?.firstName}}</div>
+                        <div class="list-img" *ngIf="appointment.patientId.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                        <div class="list-img" *ngIf="appointment.patientId.personDetails?.profileImageObject !== undefined"> <img [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)"></div>
+                        <div>{{appointment.patientId.personDetails?.lastName}} {{appointment.patientId.personDetails?.firstName}}</div>
                     </div>
                 </td>
-                <td>{{appointment.clinicDetails?.clinicName}}</td>
+                <td>{{appointment.clinicId?.clinicName}}</td>
                 <td>
-                    <div>{{appointment.employeeDetails?.employeeDetails.lastName}} {{appointment.employeeDetails?.employeeDetails.firstName}}</div>
+                    <div>{{appointment.doctorId.employeeDetails?.lastName}} {{appointment.doctorId.employeeDetails?.firstName}}</div>
                     <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
                 </td>
                 <td>
-                    <span>{{appointment.clinicLocationDetails.name}}</span>
+                    <!-- <span>{{appointment.clinicLocationDetails.name}}</span> -->
+                    Get Location
                     <div class="loc-timeSpent">12<span class="timeLabel">mins,</span>25<span class="timeLabel">secs.</span></div>
                 </td>
                 <td>{{appointment?.attendance.dateCheckIn | date:'shortTime'}}</td>

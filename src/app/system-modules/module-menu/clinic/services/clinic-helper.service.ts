@@ -118,14 +118,14 @@ export class ClinicHelperService {
 				});
 			});
 		} else {
-			this.loginEmployee.workSpaces.forEach((itemw, w) => {
-				itemw.locations.forEach((iteml, l) => {
-					const res = inClinicLocations.filter(x => x._id === iteml.minorLocationId);
-					if (res.length > 0) {
-						this.clinicLocations.push(res[0]);
-					}
-				});
-			});
+			// this.loginEmployee.workSpaces.forEach((itemw, w) => {
+			// 	itemw.locations.forEach((iteml, l) => {
+			// 		const res = inClinicLocations.filter(x => x._id === iteml.minorLocationId);
+			// 		if (res.length > 0) {
+			// 			this.clinicLocations.push(res[0]);
+			// 		}
+			// 	});
+			// });
 		}
 
 	}

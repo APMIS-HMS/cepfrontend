@@ -25,6 +25,9 @@ export class AppointmentService {
   private appointmentAnnouncedSource = new Subject<Object>();
   appointmentAnnounced$ = this.appointmentAnnouncedSource.asObservable();
 
+  private clinicAnnouncedSource = new Subject<Object>();
+  clinicAnnounced$ = this.clinicAnnouncedSource.asObservable();
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -56,6 +59,9 @@ export class AppointmentService {
   }
   appointmentAnnounced(appointment: any) {
     this.appointmentAnnouncedSource.next(appointment);
+  }
+  clinicAnnounced(clinic: any) {
+    this.clinicAnnouncedSource.next(clinic);
   }
   find(query: any) {
     return this._socket.find(query);
