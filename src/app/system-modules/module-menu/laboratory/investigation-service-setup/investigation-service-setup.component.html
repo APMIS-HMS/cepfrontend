@@ -11,22 +11,27 @@
         </div>
       </div>-->
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="x_panel">
               <div class="x_title">
                 <h2>Investigation Service Setup</h2>
                 <div class="clearfix"></div>
               </div>
               <div class="x_content"> 
-                <div class="col-sm-6">
-                  <md-select placeholder="Select Report" [(ngModel)]="selectedValue" name="food">
+                <div class="col-sm-12">
+                   <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Enter Investigation">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
                     <md-option *ngFor="let food of foods" [value]="food.value">
                       {{food.viewValue}}
                     </md-option>
                   </md-select>
                 </div>
-                <div class="col-sm-6">
-                   <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
                   <md-option *ngFor="let food of foods" [value]="food.value">
                     {{food.viewValue}}
                   </md-option>
@@ -34,17 +39,12 @@
                 </div>
                 <div class="col-sm-6">
                   <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="reference number from">
+                    <input type="number" mdInput placeholder="Ref N0 from">
                   </md-input-container>
                 </div>
                 <div class="col-sm-6">
                   <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="reference number to">
-                  </md-input-container>
-                </div>
-                <div class="col-sm-12">
-                   <md-input-container class="example-full-width">
-                    <textarea mdInput placeholder="Enter investigation"></textarea>
+                    <input type="number" mdInput placeholder="Ref N0 to">
                   </md-input-container>
                 </div>
                 <div class="text-center">
@@ -53,8 +53,52 @@
               </div>
           </div>
         </div>
-        <div class="col-sm-6">
-         investigation service setup
+        <div class="col-sm-8">
+              <table class="points_table">
+              <thead>
+                <tr>
+                  <th class="col-xs-3">Investigations</th>
+                  <th class="col-xs-3">Report Type</th>
+                  <th class="col-xs-3">Specimen</th>
+                  <th class="col-xs-2">Ref N0</th>
+                  <th class="col-xs-1">Action</th>
+                </tr>
+              </thead>
+              <tbody class="points_table_scrollbar">
+                <tr>
+                  <td class="col-xs-3">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-3">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-3">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-2">
+                    <div>5 - 40</div>
+                  </td>
+                  <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
+                  </td>
+                </tr> 
+                 <tr>
+                  <td class="col-xs-3">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-3">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-3">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-2">
+                    <div>20 - 100</div>
+                  </td>
+                  <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
+                  </td>
+                </tr>              
+              </tbody>
+		    </table>
         </div>
       </div>
     </div>

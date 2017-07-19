@@ -34,7 +34,42 @@
           </div>
         </div>
         <div class="col-sm-8">
-          workbench history
+            <table class="points_table">
+              <thead>
+                <tr>
+                  <th class="col-xs-4">Minor Location</th>
+                  <th class="col-xs-4">Worknbench</th>
+                  <th class="col-xs-4">Action</th>
+                </tr>
+              </thead>
+              <tbody class="points_table_scrollbar">
+                <tr>
+                  <td class="col-xs-4">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-4">
+                    <div *ngIf="!editworksetup">Workbench name</div>
+                    <div *ngIf="isMinorlocationedit">
+                      <md-input-container class="example-full-width">
+                      <input mdInput placeholder="Edit workbench">
+                      </md-input-container>
+                    </div>
+                  </td>
+                  <td class="col-xs-4"><a><i class="fa fa-edit"></i></a>
+                  </td>
+                </tr>     
+                    <tr>
+                  <td class="col-xs-4">
+                    <div>Minor location name</div>
+                  </td>
+                  <td class="col-xs-4">
+                    <div>Workbench name</div>
+                  </td>
+                  <td class="col-xs-4"><a><i class="fa fa-edit"></i></a>
+                  </td>
+                </tr>           
+              </tbody>
+		    </table>
         </div>
       </div>
     </div>
