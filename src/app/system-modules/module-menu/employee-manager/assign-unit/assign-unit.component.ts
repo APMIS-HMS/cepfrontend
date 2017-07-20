@@ -45,7 +45,9 @@ export class AssignUnitComponent implements OnInit {
     this.departments = this.selectedFacility.departments;
     if (this.selectedEmployee !== undefined) {
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.department._id);
+      console.log(this.departments);
+      console.log(this.selectedEmployee.departmentId);
+      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.departmentId);
       if (deptList.length > 0) {
         this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
       }
@@ -81,7 +83,7 @@ export class AssignUnitComponent implements OnInit {
       if (emp.units !== undefined) {
         emp.units.forEach((itemu, u) => {
           console.log(itemu);
-          if (itemu === unit._id) {
+          if (unit !== null && itemu === unit._id) {
             hasUnit = true;
           }
         });

@@ -24,7 +24,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   now: Date = new Date();
   min: Date = new Date(1900, 0, 1);
   dateClear = new Date(2015, 11, 1, 6);
-  loadIndicatorVisible = true;
+  loadIndicatorVisible = false;
 
   checkedInAppointments: Appointment[] = [];
   selectedCheckedInAppointment: Appointment = <Appointment>{};
@@ -67,77 +67,60 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.getProfessions();
     this.getEmployees();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    // this.getCheckedInPatients();
-    // this.getLoginEmployee();
-    // this.getClinicMajorLocation();
-    this.route.data.subscribe(data => {
-      //  data.loginEmployee.subscribe(me=>{
-      //    console.log(me);
-      //  })
-      this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
-        // data['loginEmployee'].subscribe(payloadl => {
-        //   console.log(payloadl);
-        //   this.loginEmployee = payloadl.loginEmployee;
+    this.getAppointments();
+    // this.route.data.subscribe(data => {
+    //   this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
+    //     const emp$ = Observable.fromPromise(this.employeeService.find({
+    //       query: {
+    //         facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+    //       }
+    //     }));
+    //     this.subscription = emp$.mergeMap((emp: any) => Observable
+    //     .forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    //     ]))
+    //       .subscribe((results: any) => {
+    //         this.loginEmployee = results[0];
+    //         if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
+    //           payload.forEach((itemch, ch) => {
+    //             this.loginEmployee.unitDetails.forEach((itemu, u) => {
+    //               itemu.clinics.forEach((itemc, c) => {
+    //                 if (itemc._id === itemch.clinicId) {
+    //                   this.checkedInAppointments.push(itemch);
+    //                 }
+    //               });
+    //             });
+    //           });
+    //         } else if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name !== 'Doctor') {
+    //           payload.forEach((itemch, ch) => {
+    //             this.loginEmployee.workSpaces.forEach((itemu, u) => {
+    //               itemu.locations.forEach((itemc, c) => {
+    //                 if (itemc.minorLocationId === itemch.locationId) {
+    //                   this.checkedInAppointments.push(itemch);
+    //                 }
+    //               });
+    //             });
+    //           });
+    //         }
+    //         this.loadIndicatorVisible = false;
+    //         this.getClinics();
+    //       });
+    //   });
 
-        //   //code here
-
-        //   this.loadIndicatorVisible = false;
-        // });
-        const emp$ = Observable.fromPromise(this.employeeService.find({
-          query: {
-            facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-          }
-        }));
-        // tslint:disable-next-line:max-line-length
-        this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-        ]))
-          .subscribe((results: any) => {
-            this.loginEmployee = results[0];
-            if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
-              payload.forEach((itemch, ch) => {
-                this.loginEmployee.unitDetails.forEach((itemu, u) => {
-                  itemu.clinics.forEach((itemc, c) => {
-                    if (itemc._id === itemch.clinicId) {
-                      this.checkedInAppointments.push(itemch);
-                    }
-                  });
-                });
-              });
-            } else if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name !== 'Doctor') {
-              payload.forEach((itemch, ch) => {
-                this.loginEmployee.workSpaces.forEach((itemu, u) => {
-                  itemu.locations.forEach((itemc, c) => {
-                    if (itemc.minorLocationId === itemch.locationId) {
-                      this.checkedInAppointments.push(itemch);
-                    }
-                  });
-                });
-              });
-            }
-            this.loadIndicatorVisible = false;
-            this.getClinics();
-          });
-      });
-
-    });
+    // });
 
 
 
   }
-  // getClinicMajorLocation() {
-  //   this.locationService.findAll().then(payload => {
-  //     payload.data.forEach((itemi, i) => {
-  //       if (itemi.name === 'Clinic') {
-  //         this.clinic = itemi;
-  //         this.getClinicLocation();
-  //       }
-  //     });
-  //   });
-  // }
+  getAppointments() {
+    this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true } })
+      .subscribe(payload => {
+        this.checkedInAppointments = payload.data;
+        console.log(this.checkedInAppointments)
+      })
+  }
   getClinics() {
     this.clinics = [];
     this.selectedFacility.departments.forEach((itemi, i) => {
@@ -176,56 +159,6 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       });
     });
   }
-  // getClinicLocation() {
-  //   this.clinicLocations = [];
-  //   let minors = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);
-  //   minors.forEach((itemi, i) => {
-  //     let minorLocation: MinorLocation = <MinorLocation>{};
-  //     minorLocation._id = itemi._id;
-  //     minorLocation.description = itemi.description;
-  //     minorLocation.locationId = itemi.locationId;
-  //     minorLocation.name = itemi.name;
-  //     minorLocation.shortName = itemi.shortName;
-  //     minorLocation.text = itemi.name;
-  //     this.clinicLocations.push(minorLocation);
-
-  //   });
-
-  //   let workspace = this.locker.getObject('auth').data.workSpace;
-  //   if (workspace !== undefined && this.selectedProfession._id !== undefined) {
-  //     let locationList: string[] = [];
-  //     workspace.locations.forEach((loc, i) => {
-  //       locationList.push(loc.minorLocationId);
-  //     });
-  //   } else {
-  //     let locationList: string[] = [];
-  //     if (workspace !== undefined) {
-  //       workspace.locations.forEach((loc, i) => {
-  //         locationList.push(loc.minorLocationId);
-  //       });
-  //     } else {
-  //     }
-  //   }
-  // }
-  // getLoginEmployee() {
-  //   let auth = this.locker.getObject('auth');
-  //   this.employeeService.find({
-  //     query:
-  //     {
-  //       facilityId: this.selectedFacility._id, personId: auth.data.personId
-  //     }
-  //   }).then(payload => {
-  //     if (payload.data.length > 0) {
-  //       this.loginEmployee = payload.data[0];
-  //       if (this.loginEmployee.professionObject.name === 'Doctor') {
-  //         this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
-  //         this.isDoctor = true;
-  //       } else { this.isDoctor = false; }
-  //       this.getEmployees();
-  //     }
-  //   });
-  // }
-
   close_onClick(e) {
     this.addVital = false;
   }
@@ -334,19 +267,19 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
   getConsultingRoom(appointment) {
     let retVal = '';
-    if (appointment.employeeDetails.consultingRoomCheckIn !== undefined) {
-      appointment.employeeDetails.consultingRoomCheckIn.forEach((itemr, r) => {
-        if (itemr.isOn === true) {
-          this.clinicHelperService.consultingRooms.forEach((itemk, k) => {
-            itemk.rooms.forEach((itemp, p) => {
-              if (itemp._id === itemr.roomId) {
-                retVal = 'Consulting Room(' + itemp.name + ')';
-              }
-            });
-          });
-        }
-      });
-    }
+    // if (appointment.employeeDetails.consultingRoomCheckIn !== undefined) {
+    //   appointment.employeeDetails.consultingRoomCheckIn.forEach((itemr, r) => {
+    //     if (itemr.isOn === true) {
+    //       this.clinicHelperService.consultingRooms.forEach((itemk, k) => {
+    //         itemk.rooms.forEach((itemp, p) => {
+    //           if (itemp._id === itemr.roomId) {
+    //             retVal = 'Consulting Room(' + itemp.name + ')';
+    //           }
+    //         });
+    //       });
+    //     }
+    //   });
+    // }
 
     return retVal;
   }

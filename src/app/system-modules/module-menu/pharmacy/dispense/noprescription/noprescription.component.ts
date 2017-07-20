@@ -204,6 +204,7 @@ export class NoprescriptionComponent implements OnInit {
 			const payload = {
 				facilityId: this.facility._id,
 				nonPrescription: prescription,
+				isPrescription: false,
 				storeId: this.storeId
 			}
 

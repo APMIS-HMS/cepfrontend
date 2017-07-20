@@ -30,6 +30,9 @@ export class BillPrescriptionComponent implements OnInit {
 	storeId: string = '';
 	stores: any = [];
 	loading: boolean = true;
+	serviceId: string = '';
+	facilityServiceId: string = '';
+	categoryId: string = '';
 
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
@@ -79,13 +82,18 @@ export class BillPrescriptionComponent implements OnInit {
 	//
 	onClickSaveCost(value, valid) {
 		if(valid) {
+			console.log(value);
+			console.log(this.cost);
 			if(this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
+				this.prescriptionData.prescriptionItems[index].serviceId = this.serviceId; 
+				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.facilityServiceId; 
+				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
-				this.prescriptionData.prescriptionItems[index].totalCost = this.totalCost;
+				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				this.prescriptionData.totalCost += this.totalCost;
 				this.prescriptionData.totalQuantity += this.totalQuantity;
@@ -129,11 +137,12 @@ export class BillPrescriptionComponent implements OnInit {
 	onClickCustomSearchItem(event, drugId) {
 		this.selectedDrug = drugId.viewValue;
 		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
-		const pPrice = drugId._element.nativeElement.getAttribute('data-p-price');
-		const tqty = drugId._element.nativeElement.getAttribute('data-p-tqty');
+		this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
+		this.facilityServiceId = drugId._element.nativeElement.getAttribute('data-p-fsid');
+		this.categoryId = drugId._element.nativeElement.getAttribute('data-p-cid');
+		this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
+		this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
 		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
-		this.cost = pPrice;
-		this.qtyInStores = tqty;
 
 		//const pId = '592417935fbce732205cf0aa';
 		// const sId = drugId._element.nativeElement.getAttribute('data-p-id');

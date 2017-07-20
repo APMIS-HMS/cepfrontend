@@ -15,12 +15,12 @@
 
             <div>
                 <div class="survery">
-                    <!--<ngb-datepicker #dp [(ngModel)]="model" (navigate)="dateVal = $event.next"></ngb-datepicker>-->
                     <md-input-container>
-                        <input mdInput placeholder="Date" [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly>
+                        <input mdInput [value]="date | date: 'shortDate'" [mdDatepicker]="picker" placeholder="Choose a date" readonly>
+                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
                     </md-input-container>
+                    <md-datepicker (selectedChanged)="dateChange($event)" #picker></md-datepicker>
 
-                    <!--<input [ngModel]="date | date: 'short'" [(dateTimePicker)]="date" readonly />-->
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
             </div>
 
             <div class="tr-act-btn2">
-                <md-checkbox  [formControl]="checkIn">Check In</md-checkbox>
+                <md-checkbox [formControl]="checkIn">Check In</md-checkbox>
             </div>
 
         </div>

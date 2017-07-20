@@ -1,0 +1,146 @@
+.callout.callout-info {
+    background-color: #00c0ef !important;
+}
+.callout h4 {
+    margin-top: 0;
+    font-weight: 600;
+}
+.margin {
+    margin: 10px;
+}
+.pad {
+    padding: 10px;
+}
+.callout {
+    border-radius: 3px;
+    margin: 0 0 20px 0;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid #eee;
+    color: #fff;
+}
+.callout.callout-info {
+    border-color: #0097bc;
+}
+.x_title h2 {
+    margin: 5px 0 6px;
+    float: left;
+    display: block;
+}
+ .x_title h2, table.tile_info td p {
+    overflow: hidden;
+}
+h2 {
+    font-size: 18px;
+    font-weight: 400;
+    color: #73879C;
+}
+
+.x_panel {
+    width: 100%;
+    padding: 10px 17px;
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #E6E9ED;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    transition: all .2s ease;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
+    min-height: 350px;
+}
+.x_panel, .x_title {
+    margin-bottom: 10px;
+}
+.x_panel {
+    position: relative;
+}
+.x_title {
+    border-bottom: 2px solid #E6E9ED;
+    padding: 1px 5px 6px;
+}
+.x_panel, .x_title {
+    margin-bottom: 10px;
+}
+#container label {
+    font-size: inherit !important;
+    color: rgba(0,0,0,.38) !important;
+    font-weight: normal !important;
+}
+  .apmis-blue {
+       max-width: 200px;
+    text-align: center;
+    background: #0288D1;
+    color: #fff;
+     padding:10px;
+  } 
+a:hover {
+    text-decoration: none;
+}
+
+
+/* table */
+.points_table thead {
+	width: 100%;
+}
+
+.points_table tbody {
+	height: 298px;
+	overflow-y: auto;
+	width: 100%;
+}
+
+.points_table thead tr{
+	width: 100%;
+}
+
+ .points_table tr{
+ 	width: 100%;
+ }
+
+.points_table thead, .points_table tbody, .points_table tr, .points_table td, .points_table th{
+	display: inline-block;
+}
+
+.points_table thead{
+	background:#03a9f4;
+	color: #000;
+}
+
+.points_table tbody td, .points_table thead > tr> th{
+	float: left;
+	border-bottom-width: 0;
+}
+
+.points_table>tbody>tr>td, .points_table>tbody>tr>th, .points_table>tfoot>tr>td, .points_table>tfoot>tr>th, .points_table>thead>tr>td, .points_table>thead>tr>th{
+	padding: 8px;
+	height: auto;
+	text-align: center;
+	line-height: 32px;
+}
+
+.points_table_scrollbar{
+	height: 298px;
+	overflow-y: scroll;
+}
+
+.points_table_scrollbar::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+	border-radius: 10px;
+	background-color: #444444;
+}
+
+.points_table_scrollbar::-webkit-scrollbar{
+	width: 1%;
+	min-width: 5px;
+	background-color: #F5F5F5;
+}
+
+.points_table_scrollbar::-webkit-scrollbar-thumb{
+	border-radius: 10px;
+	background-color: #03a9f4;
+	background-image: none;
+}
+table {
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.19), 0 2px 0px rgba(0, 0, 0, 0.23);
+}

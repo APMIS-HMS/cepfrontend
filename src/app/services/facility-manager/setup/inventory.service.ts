@@ -61,6 +61,10 @@ export class InventoryService {
     return this._socket.remove(id, query);
   }
 
+  patch(_id: any, data: any, param: any) {
+      return this._socket.patch(_id, data, param);
+  }
+
   update(inventory: any) {
     return this._socket.update(inventory._id, inventory);
   }

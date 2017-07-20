@@ -76,7 +76,7 @@
                         <span>
                             {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
                             <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
-                                Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.cost }}
+                                Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.totalCost }}
                             </span>
                         </span>
                     </div>
@@ -120,23 +120,23 @@
                             </thead>
 
                             <tbody>
-                                <tr *ngFor="let transaction of prescription.transactions; let j = index;">
+                                <tr *ngFor="let transaction of viewTransactions; let j = index;">
                                     <td class="table-content">{{transaction?.batchNumber}}</td>
                                     <td class="table-content">{{transaction?.expiryDate | date:'shortDate'}}</td>
                                     <td class="table-content">{{transaction?.quantity}}</td>
                                     <td class="table-content">
                                         <md-input-container class="example-full-width">
-                                            <input mdInput type="number" placeholder="Quantity" name="batch-{{j}}" ngModel>
+                                            <input mdInput type="number" placeholder="Quantity" name="{{j}}" ngModel>
                                         </md-input-container>
                                     </td>
                                     <td class="table-content">
                                         <button md-raised-button style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)"> Dispense </button>
                                     </td>
                                 </tr>
-                                <tr *ngIf="prescription.transactions.length === 0 && !loading">
-                                    <td class="table-content" colspan="5" style="text-align: center"> No batch available, please bring items into the store</td>
+                                <tr *ngIf="viewTransactions.length === 0 && !batchLoading">
+                                    <td class="table-content" colspan="5" style="text-align: center"> No batch available, please bring items into store</td>
                                 </tr>
-                                <tr *ngIf="prescription.transactions.length === 0 && loading">
+                                <tr *ngIf="viewTransactions.length === 0 && batchLoading">
                                     <td class="table-content" colspan="5" style="text-align: center"><i class="fa fa-spinner fa-spin fa-2x"></i></td>
                                 </tr>
                             </tbody>
@@ -182,15 +182,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:5px;height: 170px;">
+        <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:5px;height: 70px;">
             <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Quantity:</strong> <span> {{totalQuantity }}</span></p>
             <p class="pull-right" style="width: 100%; text-align: right;margin-top: -10px;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
-            <div class="pull-right" style="width: 100%; text-align: right;">
-                <button md-raised-button class="mat-lg-btn" (click)="onClickBillPatient();"> Bill Patient </button>
-            </div>
         </div>
     </div>
-    <div class="row margin-top-15" style="margin-bottom: 40px; margin-top:30px;">
+    <div class="row margin-top-15" style="margin-bottom: 40px;">
         <div class="col-sm-12 col-md-12 text-center">
             <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" style="padding: 20px 50px !important;"> Save </button>
         </div>
