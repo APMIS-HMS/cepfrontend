@@ -2,6 +2,10 @@
 
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <div class="facility-title">Make Payment</div>
+  <div class="infoAlert">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+    <span>Invoice Total = {{InvoiceTotal}}</span>
+  </div>
   <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
   <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
     <i class="fa fa-check" aria-hidden="true"></i>

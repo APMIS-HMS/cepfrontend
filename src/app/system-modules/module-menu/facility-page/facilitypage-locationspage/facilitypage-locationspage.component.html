@@ -91,7 +91,7 @@
                 <app-sub-location [minorLocation]="subLoc" [location]="locationObj" [facility]="facility"></app-sub-location>
             </div>-->
 
-            <table cellpadding="0" cellspacing="0" border="0.5"> 
+            <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
                         <th>
@@ -119,11 +119,11 @@
                         <td>{{subLoc.shortName}}</td>
                         <td>{{subLoc.description}}</td>
                         <td>
-                            <i (click)="editMinorLoc()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i (click)="editMinorLoc(subLoc)" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                             <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
                             <i class="del-ico fa fa-trash" aria-hidden="true"></i>
                         </td>
-                    </tr> 
+                    </tr>
                 </tbody>
             </table>
         </div>

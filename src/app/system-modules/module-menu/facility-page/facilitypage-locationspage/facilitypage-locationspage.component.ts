@@ -25,6 +25,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   locationsObj: Location[] = [];
 
   locationObj: Location = <Location>{};
+  subLocation: any = {};
   filteredMinorLocations: any[] = [];
 
   // Department icons nav switches
@@ -163,7 +164,9 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.newSubLocModal_on = false;
     this.newLocationModal_on = false;
   }
-  editMinorLoc(){
+  editMinorLoc(value){
+    console.log(value);
+    this.subLocation = value;
     this.modal_on = false;
     this.newSubLocModal_on = true;
     this.newLocationModal_on = false;
