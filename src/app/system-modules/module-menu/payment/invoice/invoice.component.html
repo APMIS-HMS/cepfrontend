@@ -1,6 +1,12 @@
 <div class="inner-wrap-b body-wrap">
   <div class="facility-title">Bills/Payment</div>
   <div class="inner-page-wrap">
+    <ul class="topmenuwrap">
+        <li (click)="makePayment_show()">
+            <i class="fa fa-money" aria-hidden="true"></i>
+            <span>Make Payment</span>
+        </li>
+    </ul>
     <div class="megaPgWrap">
       <div class="feedsWrap leftCol">
         <!--<div class="feedbox">
@@ -182,4 +188,8 @@
 
   <div *ngIf="priceItemDetailPopup" class="modal-overlay">
     <app-item-detail [selectedBillItem]="selectedBillItem" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
+  </div>
+
+  <div *ngIf="makePaymentPopup" class="modal-overlay">
+    <app-make-payment (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-make-payment>
   </div>

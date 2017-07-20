@@ -1,5 +1,6 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
+    <div *ngIf="isStoreAvailable" class="small-header">{{storeTitle}}</div>
     <div class="inner-page-wrap">
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
