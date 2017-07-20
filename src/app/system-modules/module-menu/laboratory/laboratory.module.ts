@@ -10,6 +10,7 @@ import { LabSetupComponent } from './lab-setup/lab-setup.component';
 import { WorkbenchSetupComponent } from './workbench-setup/workbench-setup.component';
 import { InvestigationServiceSetupComponent } from './investigation-service-setup/investigation-service-setup.component';
 import { InvestigationSetupComponent } from './investigation-setup/investigation-setup.component';
+import { AddWorkbenchComponent } from './workbench-setup/add-workbench/add-workbench.component';
 
 
 @NgModule({
@@ -18,6 +19,6 @@ import { InvestigationSetupComponent } from './investigation-setup/investigation
     laboratoryRoutes,
     SharedModule,
   ],
-  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent, LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent]
+  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent, LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent, AddWorkbenchComponent]
 })
 export class LaboratoryModule { }
