@@ -20,6 +20,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { UpdateImgComponent } from './update-img/update-img.component';
 import { ExternalPrescriptionComponent } from './patientmanager-detailpage/external-prescription/external-prescription.component';
 import { DocumentationComponent } from './patientmanager-detailpage/documentation/documentation.component';
+import { DocumentationDetailComponent } from './patientmanager-detailpage/documentation/documentation-detail/documentation-detail.component';
 //import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
 //import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
 
@@ -38,6 +39,7 @@ import { DocumentationComponent } from './patientmanager-detailpage/documentatio
         UpdateImgComponent,
         ExternalPrescriptionComponent,
         DocumentationComponent,
+        DocumentationDetailComponent,
         //BillPrescriptionComponent,
         //AddPrescriptionComponent
     ],

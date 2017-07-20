@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentationComponent implements OnInit {
 
+  docDetail_view = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  docDetail_show(){
+    this.docDetail_view = true;
+  }
+
+  close_onClick(message: boolean): void {
+    this.docDetail_view = false;
   }
 
 }

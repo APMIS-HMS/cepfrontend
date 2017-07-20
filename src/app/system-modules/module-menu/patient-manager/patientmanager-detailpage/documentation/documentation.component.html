@@ -29,7 +29,7 @@
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="makePayment_show()">
+              <li (click)="docDetail_show()">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -55,7 +55,7 @@
           
         </div>
 
-        <div class="docCard-foot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>   
       
       <li class="doc-card shadow">
@@ -83,7 +83,7 @@
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="makePayment_show()">
+              <li (click)="docDetail_show()">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -117,7 +117,7 @@
           
         </div>
 
-        <div class="docCard-foot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>
 
       <li class="doc-card shadow">
@@ -145,7 +145,7 @@
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="makePayment_show()">
+              <li (click)="docDetail_show()">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -179,7 +179,7 @@
           
         </div>
 
-        <div class="docCard-foot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>
     </ul>
   </div>
@@ -213,11 +213,169 @@
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
         </li>
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Diclofenac</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Medication History</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diclofenac</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Current Medication</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diclofenac</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Family History</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diabetes</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Cancer</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Investigation</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Vitals</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diabetes</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Cancer</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Past Appointments</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Future Appointments</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Special Instructions</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
         </li>
       </ul>
     </div>
   </div>
+</div>
+
+<div *ngIf="docDetail_view" class="modal-overlay">
+  <app-documentation-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
 </div>
