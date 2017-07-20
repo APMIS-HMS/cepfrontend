@@ -23,6 +23,7 @@ export class PatientPrescriptionComponent implements OnInit {
     @Output() prescriptionItems: Prescription = <Prescription>{};
     isDispensed: Subject<any> = new Subject();
     facility: Facility = <Facility>{};
+    user: any = <any>{};
 
     showCuDropdown = false;
     cuDropdownLoading = false;
@@ -51,7 +52,6 @@ export class PatientPrescriptionComponent implements OnInit {
     priorityValue: String = '';
     selectedForm: string = '';
     selectedIngredients: any = [];
-    // isDispensed: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -74,6 +74,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
+        this.user = this._locker.getObject('auth');
         // Remove this when you are done
         this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
@@ -106,6 +107,7 @@ export class PatientPrescriptionComponent implements OnInit {
         if (valid) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._facilityService.announceNotification({
+                    users: [this.user._id],
                     type: 'Info',
                     text: 'Clinic has not been set!'
                 });
@@ -160,6 +162,7 @@ export class PatientPrescriptionComponent implements OnInit {
         if (valid && (this.prescriptionArray.length > 0)) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._facilityService.announceNotification({
+                    users: [this.user._id],
                     type: 'Info',
                     text: 'Clinic has not been set!'
                 });
@@ -178,6 +181,7 @@ export class PatientPrescriptionComponent implements OnInit {
                             serviceId: element.serviceId,
                             facilityId: this.facility._id,
                             patientId: this.prescriptions.patientId,
+                            description: element.productName,
                             quantity: element.quantity,
                             totalPrice: element.totalCost,
                             unitPrice: element.cost,
@@ -203,30 +207,41 @@ export class PatientPrescriptionComponent implements OnInit {
                 this._billingService.create(bill)
                     .then(res => {
                         console.log(res);
-                        // if this is true, send the prescribed drugs to the prescription service
-                        this._prescriptionService.create(this.prescriptions)
-                            .then(res => {
-                                this._facilityService.announceNotification({
-                                    type: 'Success',
-                                    text: 'Prescription has been sent!'
+                        if(res._id !== undefined) {
+                            this.prescriptions.billId = res._id;
+                            // if this is true, send the prescribed drugs to the prescription service
+                            this._prescriptionService.create(this.prescriptions)
+                                .then(res => {
+                                    this._facilityService.announceNotification({
+                                        users: [this.user._id],
+                                        type: 'Success',
+                                        text: 'Prescription has been sent!'
+                                    });
+                                    this.isDispensed.next(true);
+                                    this.prescriptionItems = <Prescription>{};
+                                    this.prescriptionItems.prescriptionItems = [];
+                                    this.prescriptionArray = [];
+                                    this.addPrescriptionForm.reset();
+                                    this.addPrescriptionForm.controls['refillCount'].reset(0);
+                                    this.addPrescriptionForm.controls['duration'].reset(0);
+                                    this.addPrescriptionForm.controls['startDate'].reset(new Date());
+                                    this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                                })
+                                .catch(err => {
+                                    this._facilityService.announceNotification({
+                                        users: [this.user._id],
+                                        type: 'Error',
+                                        text: 'There was an error creating prescription. Please try again later.'
+                                    });
+                                    console.log(err);
                                 });
-                                this.isDispensed.next(true);
-                                this.prescriptionItems = <Prescription>{};
-                                this.prescriptionItems.prescriptionItems = [];
-                                this.prescriptionArray = [];
-                                this.addPrescriptionForm.reset();
-                                this.addPrescriptionForm.controls['refillCount'].reset(0);
-                                this.addPrescriptionForm.controls['duration'].reset(0);
-                                this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                            })
-                            .catch(err => {
-                                this._facilityService.announceNotification({
-                                    type: 'Error',
-                                    text: 'There was an error creating prescription. Please try again later.'
-                                });
-                                console.log(err);
+                        } else {
+                            this._facilityService.announceNotification({
+                                users: [this.user._id],
+                                type: 'Error',
+                                text: 'There was an error generating bill. Please try again later.'
                             });
+                        }
                     })
                     .catch(err => {
                         console.log(err);
@@ -234,6 +249,7 @@ export class PatientPrescriptionComponent implements OnInit {
             }
         } else {
             this._facilityService.announceNotification({
+                users: [this.user._id],
                 type: 'Info',
                 text: 'Please select priority for these prescriptions!'
             });

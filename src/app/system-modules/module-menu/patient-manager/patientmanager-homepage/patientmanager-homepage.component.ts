@@ -33,6 +33,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   relationships: Relationship[] = [];
   selectedPatient: Patient = <Patient>{};
   searchControl = new FormControl();
+  loading: boolean = true;
 
   pageSize = 1;
   limit = 10;
@@ -125,11 +126,14 @@ export class PatientmanagerHomepageComponent implements OnInit {
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]);
   }
   getPatients(limit) {
-    console.log('event called');
     this.patientService.find({ query: { facilityId: this.facility._id, $limit: limit } }).then(payload => {
-      this.patients = payload.data;
-      console.log(this.patients);
       console.log(payload);
+      this.loading = false;
+      if(payload.data.length > 0) {
+        this.patients = payload.data;
+      } else {
+        this.patients = [];
+      }
     });
   }
   onScroll() {

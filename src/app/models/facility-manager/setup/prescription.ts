@@ -11,6 +11,7 @@ export interface Prescription {
     prescriptionItems: PrescriptionItem[];
     isAuthorised: Boolean;
     isDispensed?: Boolean;
+    billId?: string,
     totalQuantity?: number;
     totalCost?: number;
     priorityObject?: any;

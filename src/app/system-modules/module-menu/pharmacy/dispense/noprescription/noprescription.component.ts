@@ -17,6 +17,7 @@ export class NoprescriptionComponent implements OnInit {
 	@Input() selectedAppointment: Appointment = <Appointment>{};
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
+	user: any = <any>{};
 
 	noPrescriptionForm: FormGroup;
 	units: string[] = [];
@@ -64,6 +65,7 @@ export class NoprescriptionComponent implements OnInit {
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
+		this.user = this._locker.getObject('auth');
 
 		if (this.employeeDetails.storeCheckIn !== undefined) {
 			this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
@@ -105,6 +107,7 @@ export class NoprescriptionComponent implements OnInit {
 				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
 			} else {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Error',
 					text: 'Quantity should be greater than 0!'
 				});
@@ -119,6 +122,7 @@ export class NoprescriptionComponent implements OnInit {
 		// if(this.storeId !== '') {
 			if (value.drug === '' || value.qty === '' || value.batchNumber === '') {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Error',
 					text: 'Some fields are empty!'
 				});
@@ -226,6 +230,7 @@ export class NoprescriptionComponent implements OnInit {
 					this.noPrescriptionForm.controls['qty'].reset(0);
 					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
 					this._facilityService.announceNotification({
+						users: [this.user._id],
 						type: 'Success',
 						text: 'Prescription has been sent!'
 					});
@@ -235,6 +240,7 @@ export class NoprescriptionComponent implements OnInit {
 				});
 		} else {
 			this._facilityService.announceNotification({
+				users: [this.user._id],
 				type: 'Error',
 				text: 'You need to check into store.'
 			});
@@ -281,6 +287,7 @@ export class NoprescriptionComponent implements OnInit {
 					});
 			} else {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Error',
 					text: 'You need to check into store.'
 				});

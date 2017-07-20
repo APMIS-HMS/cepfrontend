@@ -14,8 +14,10 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 export class NewSubLocationComponent implements OnInit {
   @Input() locations: Location[];
   @Input() location: Location = <Location>{};
+  //@Input() subLocation: any = {};
+  ActionButton: string = 'Submit';
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -36,6 +38,7 @@ export class NewSubLocationComponent implements OnInit {
     this.facilityObj = <Facility> this.locker.getObject('selectedFacility');
     this.addNew();
     this.frmNewSubLoc.controls['sublocParent'].setValue(this.location._id);
+    //console.log(this.subLocation);
   }
   addNew() {
     this.frmNewSubLoc = this.formBuilder.group({
