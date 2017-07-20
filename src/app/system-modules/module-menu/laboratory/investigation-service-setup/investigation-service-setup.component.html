@@ -1,68 +1,13 @@
-<div class="page-title">investigation service Setup</div>
 <div class="preTbl-topItems-wrap">
     <ul class="topmenuwrap">
         <li (click)="close_onClick()">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            <span>Creat Panel</span>
+            <span>Create Panel</span>
         </li>
     </ul>
 </div>
-<section id="container">
-  <div class="survery">
-    <div class="container">
-      <!--<div class="col-sm-12">
-        <div class="pad margin no-print">
-          <div class="callout callout-info" style="margin-bottom: 0!important;">
-            <h4><i class="fa fa-info"></i> Note:</h4>
-            You can setup workbench, create and setup investigation service
-          </div>
-        </div>
-      </div>-->
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="x_panel">
-              <div class="x_title">
-                <h2>Investigation Service Setup</h2>
-                <div class="clearfix"></div>
-              </div>
-              <div class="x_content"> 
-                <div class="col-sm-12">
-                   <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Enter Investigation">
-                  </md-input-container>
-                </div>
-                <div class="col-sm-12">
-                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                      {{food.viewValue}}
-                    </md-option>
-                  </md-select>
-                </div>
-                <div class="col-sm-12">
-                  <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{food.viewValue}}
-                  </md-option>
-                </md-select>
-                </div>
-                <div class="col-sm-6">
-                  <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="Ref N0 from">
-                  </md-input-container>
-                </div>
-                <div class="col-sm-6">
-                  <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="Ref N0 to">
-                  </md-input-container>
-                </div>
-                <div class="text-center">
-                 <button md-raised-button class="apmis-blue"> Create Service </button>
-               </div>
-              </div>
-          </div>
-        </div>
-        <div class="col-sm-8">
-              <table class="points_table">
+  
+       <table class="points_table">
               <thead>
                 <tr>
                   <th class="col-xs-3">Investigations</th>
@@ -107,9 +52,50 @@
                 </tr>              
               </tbody>
 		        </table>
-        </div>
-      </div>
-    </div>
+
+          
+      <!--  <div class="col-sm-12">
+          <div class="x_panel">
+              <div class="x_title">
+                <h2>Investigation Service Setup</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content"> 
+                <div class="col-sm-12">
+                   <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Enter Investigation">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}
+                    </md-option>
+                  </md-select>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                </div>
+                <div class="col-sm-6">
+                  <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="Ref N0 from">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-6">
+                  <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="Ref N0 to">
+                  </md-input-container>
+                </div>
+                <div class="text-center">
+                 <button md-raised-button class="apmis-blue"> Create Service </button>
+               </div>
+              </div>
+          </div>
+        </div>-->
     <!--begin flyout-->
     <div *ngIf = "flyout" class="flyout">
       <div class="arrow">
@@ -119,7 +105,6 @@
         <md-input-container class="example-full-width">
           <input mdInput placeholder="Panel name">
         </md-input-container>
-        <button class="apmis-blue" md-raised-button>Create Panel</button>
       </div>
       <br>
       <div class="col-sm-12">
@@ -139,7 +124,7 @@
           </div>
       </div>
       <div class="panel-seperate">
-        <h5>Created Panel</h5>
+        <h5>Selected Investigation</h5>
       </div>
       <div class="col-sm-12">
           <div class="list-container">                  
@@ -154,9 +139,7 @@
               </li> 
             </ul>
           </div>
-          <button class="apmis-blue" md-raised-button>Save Panel</button>
+          <button class="apmis-blue" md-raised-button>Create Panel</button>
       </div>
     </div>
     <!-- end fly out -->
-  </div><!-- end survery -->
-</section>
