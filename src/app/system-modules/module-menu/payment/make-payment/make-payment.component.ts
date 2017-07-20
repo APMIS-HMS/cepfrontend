@@ -12,6 +12,7 @@ export class MakePaymentComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
+  InvoiceTotal = 5000;
 
   public frmMakePayment: FormGroup;
 
