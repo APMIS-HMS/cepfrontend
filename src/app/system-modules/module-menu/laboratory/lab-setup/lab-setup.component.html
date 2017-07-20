@@ -5,7 +5,7 @@
         <div class="col-sm-3">
           <div class="inner-page-menuTab">
             <ul class="nav-group">
-              <li (click)="worcheBenchSetup()" [class.navActive]="workbenchSetup">Setup Workbench</li>
+              <li (click)="workBenchSetup()" [class.navActive]="workbenchSetup">Setup Workbench</li>
               <li (click)="investigationServiceSetup()" [class.navActive]="investigationService">Setup Investigation service</li>
               <li (click)="investigationSetup()" [class.navActive]="investigationSetup">Setup Investigation</li>
             </ul>
@@ -13,7 +13,6 @@
         
         </div>
         <div class="col-sm-9">
-          <router-outlet></router-outlet>
           <div *ngIf = "workbench">
             <app-workbench-setup></app-workbench-setup>
           </div>

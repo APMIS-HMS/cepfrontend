@@ -80,43 +80,15 @@ a:hover {
 
 
 /* table */
-.points_table thead {
-	width: 100%;
-}
-
-.points_table tbody {
-	height: 200px;
-	overflow-y: auto;
-	width: 100%;
-}
-
-.points_table thead tr{
-	width: 100%;
-}
-
- .points_table tr{
- 	width: 100%;
- }
-
-.points_table thead, .points_table tbody, .points_table tr, .points_table td, .points_table th{
-	display: inline-block;
-}
-
-.points_table thead{
-	background:#03a9f4;
-	color: #000;
-}
-
-.points_table tbody td, .points_table thead > tr> th{
-	float: left;
-	border-bottom-width: 0;
-}
-
 .points_table>tbody>tr>td, .points_table>tbody>tr>th, .points_table>tfoot>tr>td, .points_table>tfoot>tr>th, .points_table>thead>tr>td, .points_table>thead>tr>th{
 	padding: 8px;
 	height: auto;
 	text-align: center;
 	line-height: 32px;
+}
+.points_table thead{
+	background:#03a9f4;
+	color: #000;
 }
 
 .points_table_scrollbar{

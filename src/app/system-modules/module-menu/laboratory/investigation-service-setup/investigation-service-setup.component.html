@@ -2,55 +2,12 @@
     <ul class="topmenuwrap">
         <li (click)="close_onClick()">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            <span>Creat Panel</span>
+            <span>Create Panel</span>
         </li>
     </ul>
 </div>
   
-        <div class="col-sm-12">
-          <div class="x_panel">
-              <div class="x_title">
-                <h2>Investigation Service Setup</h2>
-                <div class="clearfix"></div>
-              </div>
-              <div class="x_content"> 
-                <div class="col-sm-12">
-                   <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Enter Investigation">
-                  </md-input-container>
-                </div>
-                <div class="col-sm-12">
-                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                      {{food.viewValue}}
-                    </md-option>
-                  </md-select>
-                </div>
-                <div class="col-sm-12">
-                  <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{food.viewValue}}
-                  </md-option>
-                </md-select>
-                </div>
-                <div class="col-sm-6">
-                  <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="Ref N0 from">
-                  </md-input-container>
-                </div>
-                <div class="col-sm-6">
-                  <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="Ref N0 to">
-                  </md-input-container>
-                </div>
-                <div class="text-center">
-                 <button md-raised-button class="apmis-blue"> Create Service </button>
-               </div>
-              </div>
-          </div>
-        </div>
-        <div class="col-sm-12">
-              <table class="points_table">
+       <table class="points_table">
               <thead>
                 <tr>
                   <th class="col-xs-3">Investigations</th>
@@ -95,7 +52,50 @@
                 </tr>              
               </tbody>
 		        </table>
-        </div>
+
+          
+      <!--  <div class="col-sm-12">
+          <div class="x_panel">
+              <div class="x_title">
+                <h2>Investigation Service Setup</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content"> 
+                <div class="col-sm-12">
+                   <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Enter Investigation">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}
+                    </md-option>
+                  </md-select>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                </div>
+                <div class="col-sm-6">
+                  <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="Ref N0 from">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-6">
+                  <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="Ref N0 to">
+                  </md-input-container>
+                </div>
+                <div class="text-center">
+                 <button md-raised-button class="apmis-blue"> Create Service </button>
+               </div>
+              </div>
+          </div>
+        </div>-->
     <!--begin flyout-->
     <div *ngIf = "flyout" class="flyout">
       <div class="arrow">

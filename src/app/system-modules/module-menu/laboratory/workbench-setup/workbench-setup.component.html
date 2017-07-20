@@ -1,27 +1,13 @@
-
-  <div class="col-sm-12">
-    <div class="x_panel">
-        <div class="x_title">
-          <h2>Setup workbench</h2>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content"> 
-          <md-select placeholder="Select minor location" [(ngModel)]="selectedValue" name="food">
-            <md-option *ngFor="let food of foods" [value]="food.value">
-              {{food.viewValue}}
-            </md-option>
-          </md-select>
-          <md-input-container class="example-full-width">
-            <input mdInput placeholder="Workbench name">
-          </md-input-container>
-
-          <div class="text-center">
-            <button class="apmis-blue" md-raised-button>Add</button>
-          </div>
-        </div>
-    </div>
-  </div>
-  <div class="col-sm-12">
+<div class="preTbl-topItems-wrap">
+    <ul class="topmenuwrap">
+        <li (click)="close_onClick()">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Add Workbench</span>
+        </li>
+    </ul>
+</div>
+  
+<div class="">
       <table class="points_table">
         <thead>
           <tr>
@@ -59,3 +45,36 @@
         </tbody>
   </table>
   </div>
+  <!--<div class="modal-overlay">
+    <div class="modal-baseWrap animated pulse">
+        <div aria-hidden="true" class="modal-close-ico">X</div>
+        <legend class="modal_title">Add Workbench</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+        <div class="f_sg_1">
+            <form novalidate>
+            </form>
+        </div>
+    </div>
+  </div>-->
+  <!--<div class="col-sm-12">
+    <div class="x_panel">
+        <div class="x_title">
+          <h2>Setup workbench</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content"> 
+          <md-select placeholder="Select minor location" [(ngModel)]="selectedValue" name="food">
+            <md-option *ngFor="let food of foods" [value]="food.value">
+              {{food.viewValue}}
+            </md-option>
+          </md-select>
+          <md-input-container class="example-full-width">
+            <input mdInput placeholder="Workbench name">
+          </md-input-container>
+
+          <div class="text-center">
+            <button class="apmis-blue" md-raised-button>Add</button>
+          </div>
+        </div>
+    </div>
+  </div>-->
