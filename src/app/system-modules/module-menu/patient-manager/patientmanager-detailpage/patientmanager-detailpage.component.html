@@ -84,14 +84,13 @@
                 <div class="menu-sect">
                     <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
                     <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
-                    <div (click)="menuLists_click()" [class.active-menuItem]="menuLists" class="menu-item">Documentation</div>
+                    <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
                     <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
                     <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List</div>
                     <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
                 </div>
                 <div class="menu-sect">
                     <div (click)="menuImages_click()" [class.active-menuItem]="menuImages" class="menu-item">Images</div>
-                    <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
                     <div (click)="menuForms_click()" [class.active-menuItem]="menuForms" class="menu-item">Forms</div>
                 </div>
                 <div class="menu-sect">
@@ -111,6 +110,7 @@
 
         <div class="patientPage-contentArea">
             <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
+            <app-documentation *ngIf="menuDocs"></app-documentation>
             <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
             <app-external-prescription [patientDetails]="patientDetails" *ngIf="menuExternalPrescription"></app-external-prescription>
