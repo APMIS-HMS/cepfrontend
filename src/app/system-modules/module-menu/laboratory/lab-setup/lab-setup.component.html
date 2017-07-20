@@ -5,24 +5,29 @@
         <div class="col-sm-3">
           <div class="inner-page-menuTab">
             <ul class="nav-group">
-              <li>Setup Workbench</li>
-              <li>Setup Investigation service</li>
-              <li>Setup Investigation</li>
+              <li (click)="worcheBenchSetup()" [class.navActive]="workbenchSetup">Setup Workbench</li>
+              <li (click)="investigationServiceSetup()" [class.navActive]="investigationService">Setup Investigation service</li>
+              <li (click)="investigationSetup()" [class.navActive]="investigationSetup">Setup Investigation</li>
             </ul>
           </div>
         
         </div>
         <div class="col-sm-9">
-          <div *ngIf="workbenchSetup">
+          <router-outlet></router-outlet>
+          <div *ngIf = "workbench">
             <app-workbench-setup></app-workbench-setup>
           </div>
-            <div *ngIf="investigationService">
-              <app-investigation-service-setup></app-investigation-service-setup>
-            </div>
-            <div *ngIf="investigationSetup">
-                <app-investigation-setup></app-investigation-setup>
-            </div>
+          <div *ngIf = "investigationService">
+            <app-investigation-service-setup></app-investigation-service-setup>
+          </div>
+          <div *ngIf ="investigation">
+            <app-investigation-setup></app-investigation-setup>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div *ngIf="loadIndicatorVisible" class="div_loading">
+    <md-spinner></md-spinner>
+</div>

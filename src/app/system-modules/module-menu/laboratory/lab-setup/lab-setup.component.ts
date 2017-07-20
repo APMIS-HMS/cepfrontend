@@ -6,17 +6,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lab-setup.component.scss']
 })
 export class LabSetupComponent implements OnInit {
-  workbenchSetup = true;
+  loadIndicatorVisible = false;
+  workbench = true;
   investigationService = false;
-  investigationSetup = false;
+  investigation = false;
    foods = [
     {value: 'male', viewValue: 'name select'},
     {value: 'female', viewValue: 'name select'},
   ];
 
-  constructor() { }
+  constructor() { 
+  
+  }
 
   ngOnInit() {
   }
-
+  workBenchSetup() {
+    this.workbench = true;
+    this.investigationService = false;
+    this.investigation = false;
+  }
+  investigationServiceSetup() {
+    this.investigationService = true;
+    this.workbench = false;
+    this.investigation = false;
+  }
+  investigationSetup() {
+    this.investigationService = false;
+    this.workbench = false;
+    this.investigation = true;
+  }
 }
