@@ -16,6 +16,7 @@ export class BillPrescriptionComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
+	user: any = <any>{};
 
 	addBillForm: FormGroup;
 	drugs: any[] = [];
@@ -49,6 +50,7 @@ export class BillPrescriptionComponent implements OnInit {
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
+		this.user = this._locker.getObject('auth');
 		console.log(this.prescriptionData);
 		console.log(this.employeeDetails);
 
@@ -72,6 +74,7 @@ export class BillPrescriptionComponent implements OnInit {
 				this.totalCost = this.cost * val;
 			} else {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Error',
 					text: 'Quantity should be greater than 0!'
 				});
@@ -102,6 +105,7 @@ export class BillPrescriptionComponent implements OnInit {
 				this.closeModal.emit(true);
 			} else {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Error',
 					text: 'Unit price or Quantity is less than 0!'
 				});

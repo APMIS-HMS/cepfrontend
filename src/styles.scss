@@ -588,7 +588,8 @@ select {
     color: #424242;
     letter-spacing: 1.5px;
 }
-.page-title{
+
+.page-title {
     text-align: center;
     position: relative;
     top: -20px;
@@ -596,6 +597,7 @@ select {
     width: 100%;
     color: #A6ACAF;
 }
+
 .checker-wrap {
     display: flex;
     align-items: center;
@@ -735,7 +737,9 @@ select {
     background: #EEEEEE;
 }
 
-.edit-ico, .done-ico, .del-ico {
+.edit-ico,
+.done-ico,
+.del-ico {
     position: absolute;
     right: 10px;
     text-align: right;
@@ -1111,10 +1115,12 @@ select {
     background: #153d70;
     color: #fff;
 }
-#example-full-width{
+
+#example-full-width {
     text-align: center;
 }
-ul.topmenuwrap { 
+
+ul.topmenuwrap {
     position: absolute;
     top: -25px;
     right: 22px;
@@ -1199,7 +1205,8 @@ ul.topmenuwrap li:hover {
 .mat-input-container {
     width: 90%;
 }
-.tr-act-btn{
+
+.tr-act-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1208,32 +1215,47 @@ ul.topmenuwrap li:hover {
     cursor: pointer;
     border-radius: 7px;
 }
-.tr-act-btn:hover{
+
+.tr-act-btn:hover {
     background: #0288D1;
     color: #000;
 }
-.tr-act-btn i{
+
+.tr-act-btn i {
     padding-right: 10px;
 }
-*, ::after, ::before {
+
+*,
+ ::after,
+ ::before {
     -webkit-box-sizing: initial;
-    box-sizing: initial; 
+    box-sizing: initial;
 }
-.tbl-actions-wrap{
+
+.tbl-actions-wrap {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
 }
-.pointer{
+
+.pointer {
     cursor: pointer;
 }
-.td-iconCta-wrap{
+
+.td-iconCta-wrap {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
-.td-iconCta-wrap i{
+
+.td-iconCta-wrap i {
     font-size: 14px;
     margin: 0 5px;
+}
+
+.small-spinner {
+    display: inline-block !important;
+    height: 35px !important;
+    width: 35px !important;
 }

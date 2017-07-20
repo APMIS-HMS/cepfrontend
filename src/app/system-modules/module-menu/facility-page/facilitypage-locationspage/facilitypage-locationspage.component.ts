@@ -25,6 +25,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   locationsObj: Location[] = [];
 
   locationObj: Location = <Location>{};
+  subLocation: any = {};
   filteredMinorLocations: any[] = [];
 
   // Department icons nav switches
@@ -104,9 +105,12 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
     console.log(model);
-    if(model.name !== undefined && model.name.toLowerCase() === 'ward') {
+    if(model.name !== undefined && model.name.toLowerCase() == 'ward') {
       this.isWardSelected = true;
+    } else {
+      this.isWardSelected = false;
     }
+    
     this.locationObj = model;
     
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
@@ -160,7 +164,9 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.newSubLocModal_on = false;
     this.newLocationModal_on = false;
   }
-  editMinorLoc(){
+  editMinorLoc(value){
+    console.log(value);
+    this.subLocation = value;
     this.modal_on = false;
     this.newSubLocModal_on = true;
     this.newLocationModal_on = false;

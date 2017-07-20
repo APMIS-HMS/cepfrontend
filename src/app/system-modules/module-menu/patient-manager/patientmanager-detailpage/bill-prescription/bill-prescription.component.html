@@ -63,7 +63,9 @@
                                 <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">No product to bill from,<br> Please add product to your inventory.</div>
                             </div>
                             <div class="border-box" *ngIf="drugs.length === 0 && loading">
-                                <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                                <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </div>
                             </div>
                         </div>
                     </div><br><br>

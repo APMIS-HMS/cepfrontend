@@ -68,7 +68,7 @@
           <md-datepicker #picker></md-datepicker>
         </div>
         <div class="col-sm-3">
-          <md-input-container class="example-full-width">
+          <md-input-container>
               <input mdInput placeholder="Search by patient">
         </md-input-container>
         </div>
@@ -96,8 +96,9 @@
         <td><p>{{item.date}}</p></td>
         <td><p>{{item.location}}</p></td>
         <td><p>{{item.diagnosis}}</p></td>
-        <td><p>{{item.isexternal}}</p></td>
         <td><p>{{item.samples}}</p></td>
+        <td><p>{{item.isexternal}}</p></td>
+
         <td><p>{{item.payment}}</p></td>
         <td>
           <div class="tr-act-btn"><i aria-hidden="true" class="fa fa-sign-out"></i>Receive Specimen</div>

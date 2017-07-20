@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction,
+import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
@@ -19,7 +19,9 @@ export class PrescriptionComponent implements OnInit {
 	@Input() employeeDetails: any;
 	//dispenseForm: FormGroup;
 	facility: Facility = <Facility>{};
+	user: any = <any>{};
 	selectedPrescription: PrescriptionItem = <PrescriptionItem>{};
+	unBilledArray: PrescriptionItem[] = [];
 	billshow = false;
 	prescriptionId = '';
 	prescriptions: any[] = [];
@@ -53,8 +55,7 @@ export class PrescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
-
-		//this.storeId = '590b2070db527124e0697b18';
+		this.user = this._locker.getObject('auth');
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
@@ -66,20 +67,134 @@ export class PrescriptionComponent implements OnInit {
 	// Save prescription
 	onClickSavePrescription() {
 		console.log(this.prescriptionItems);
-		// Populate each on of the billed product with the batches
-		// available in the store seleted.
-		//this._loadRespectiveBatches(this.prescriptionItems);
-
-		this.prescriptions = this.prescriptionItems.prescriptionItems;
-		this.prescriptionItems.prescriptionItems.forEach(element => {
-			if(element.quantity !== undefined) {
-				this.totalQuantity += element.quantity;
-			}
-			
-			if(element.totalCost !== undefined) {
-				this.totalCost += element.totalCost;
+		console.log(this.unBilledArray);
+		const tempArray = [];
+		// Get the billed items from the unbilled items
+		this.unBilledArray.forEach((element, i) => {
+			// Billed items
+			if(element.isBilled) {
+				tempArray.push(element);
 			}
 		});
+
+		if(tempArray.length > 0) {
+			// Call the billing service
+			this._billingService.get(this.prescriptionItems.billId, {})
+				.then(res => {
+					console.log(res);
+					const billItemArray = [];
+					let totalCost = 0;
+					let totalQuantity = 0;
+					
+					this.unBilledArray.forEach(element => {
+						if(element.isBilled) {
+							const billItem = <BillItem> {
+								facilityServiceId: element.facilityServiceId,
+								serviceId: element.serviceId,
+								facilityId: res.facilityId,
+								patientId: res.patientId,
+								description: element.productName,
+								quantity: element.quantity,
+								totalPrice: element.totalCost,
+								unitPrice: element.cost,
+								unitDiscountedAmount: 0,
+								totalDiscoutedAmount: 0,
+							};
+
+							totalCost += element.totalCost;
+							totalQuantity += element.quantity;
+							this.totalQuantity += element.quantity;
+							this.totalCost += element.totalCost;
+
+							res.billItems.push(billItem);
+						}
+					});
+
+					// Update the subTotal and grandTotal in the billing response.
+					res.subTotal += totalCost;
+					res.grandTotal += totalCost;
+					// Update the totalCost and totalQuantity in the prescriptionItems object.
+					this.prescriptionItems.totalCost = this.totalCost;
+					this.prescriptionItems.totalQuantity = this.totalQuantity;
+					console.log(res);
+					// Update the Billing service
+					this._billingService.update(res)
+						.then(res => {
+							console.log(res);
+							console.log(this.prescriptionItems);
+							if(res._id !== undefined) {
+								this._prescriptionService.update(this.prescriptionItems)
+									.then(res => {
+										console.log(res);
+										if(res._id !== undefined) {
+											this.unBilledArray.forEach((element, i) => {
+												if(element.isBilled) {
+													// Remove items that has been billed
+													this.unBilledArray.splice(i, 1);
+													// Push the element to the view
+													this.prescriptions.push(element);
+												}
+											});
+										}
+									})
+									.catch(err => { console.log(err); });
+							}
+						})
+						.catch(err => { console.log(err); });
+
+					const tempArray = [];
+
+					// Get the billed items from the unbilled items
+					// this.unBilledArray.forEach((element, i) => {
+					// 	// Billed items
+					// 	if(element.isBilled) {
+					// 		if(element.quantity !== undefined) {
+					// 			this.totalQuantity += element.quantity;
+					// 		}
+
+					// 		if(element.totalCost !== undefined) {
+					// 			this.totalCost += element.totalCost;
+					// 		}
+							
+					// 		tempArray.push(element);
+					// 		this.unBilledArray.splice(i, 1);
+					// 	}
+					// });
+				})
+				.catch(err => {
+					console.log(err);
+				});
+
+			// send the billed items to the billing service
+			// this._billingService.create(bill)
+			// 	.then(res => {
+			// 		console.log(res);
+			// 		if(res._id !== undefined) {
+						
+			// 		} else {
+			// 			this._facilityService.announceNotification({
+			// 				users: [this.user._id],
+			// 				type: 'Error',
+			// 				text: 'There was an error generating bill. Please try again later.'
+			// 			});
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		console.log(err);
+			// 	});
+		}
+
+
+		// this.prescriptions = this.prescriptionItems.prescriptionItems;
+		// this.prescriptionItems.prescriptionItems.forEach(element => {
+		// 	if(element.quantity !== undefined) {
+		// 		this.totalQuantity += element.quantity;
+		// 	}
+			
+		// 	if(element.totalCost !== undefined) {
+		// 		this.totalCost += element.totalCost;
+		// 	}
+		// });
 	}
 
 	// Dispense prescription
@@ -146,6 +261,7 @@ export class PrescriptionComponent implements OnInit {
 					// 			.then(res => {
 					// 				console.log(res);
 					// 				this._facilityService.announceNotification({
+					//					users: [this.user._id],
 					// 					type: 'Success',
 					// 					text: 'Prescription has been Dispensed!'
 					// 				});
@@ -177,6 +293,7 @@ export class PrescriptionComponent implements OnInit {
 
 				// Reset all the prescriptionItem.transactions to an empty array.
 				this.prescriptionItems.prescriptionItems.forEach(element => {
+					// Billed items
 					if(element.isBilled) {
 						if(element.quantity !== undefined) {
 							this.totalQuantity += element.quantity;
@@ -186,6 +303,12 @@ export class PrescriptionComponent implements OnInit {
 							this.totalCost += element.totalCost;
 						}
 						this.prescriptions.push(element);
+					}
+
+					// Unbilled items
+					if(!element.isBilled) {
+						console.log(element);
+						this.unBilledArray.push(element);
 					}
 					element.transactions = [];
 				});
@@ -236,12 +359,14 @@ export class PrescriptionComponent implements OnInit {
 					});
 			} else {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Info',
 					text: 'Please check into store!'
 				});
 			}
 		} else {
 			this._facilityService.announceNotification({
+				users: [this.user._id],
 				type: 'Info',
 				text: 'This item is marked external, you can not bill the patient!'
 			});
@@ -272,12 +397,14 @@ export class PrescriptionComponent implements OnInit {
 					});
 			} else {
 				this._facilityService.announceNotification({
+					users: [this.user._id],
 					type: 'Info',
 					text: 'Please check into store!'
 				});
 			}
 		} else {
 			this._facilityService.announceNotification({
+				users: [this.user._id],
 				type: 'Info',
 				text: 'The quantity entered is greater than the quantity requested!'
 			});
@@ -322,18 +449,11 @@ export class PrescriptionComponent implements OnInit {
 			});
 	}
 
-	//Load all the dispenses with their respective batches
-	// private _loadRespectiveBatches(data) {
-	// 	data.prescriptionItems.forEach(element => {
-	// 		if (element.isBilled) {
-	// 			// this.totalCostOnPre += element.totalCost;
-	// 			// this.totalQtyOnPre += element.quantity;
-	// 			this.prescriptions.push(element);
-	// 		}
-	// 	});
-	// }
-
 	billToggle() {
 		this.billshow = !this.billshow;
+	}
+
+	private _remove(array, element) {
+		return array.filter(e => e !== element);
 	}
 }

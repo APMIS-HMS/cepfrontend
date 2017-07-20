@@ -17,10 +17,39 @@
                     <input mdInput placeholder="Last name">
               </md-input-container>
               </div>
+               <div class="col-sm-4">
+                <md-input-container class="example-full-width">
+                      <input mdInput placeholder="Home Address">
+                </md-input-container>
+              </div>
               <div class="col-sm-4">
                 <md-input-container class="example-full-width">
                     <input type="number" mdInput placeholder="Phone Number">
               </md-input-container>
+              </div>
+               <div class="col-sm-4">
+                <div style="margin-top:25px;">
+                  <md-checkbox>Don't know my age?</md-checkbox>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                 <md-input-container class="example-full-width">
+                      <input type="number" mdInput placeholder="Enter age">
+                </md-input-container>
+              </div>
+               <div class="col-sm-4">
+                <md-select placeholder="Gender">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{ food.viewValue }}
+                  </md-option>
+                </md-select>
+              </div>
+              <div class="col-sm-4">
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker" placeholder="Date of birth">
+                  <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                </md-input-container>
+                <md-datepicker #picker></md-datepicker>
               </div>
               <div class="col-sm-4">
                 <md-select placeholder="Nationality">
@@ -43,40 +72,13 @@
                   </md-option>
                 </md-select>
               </div>
+             
               <div class="col-sm-4">
                 <md-input-container class="example-full-width">
                       <input mdInput placeholder="Enter lab number">
                 </md-input-container>
               </div>
-              <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                      <input mdInput placeholder="Home Address">
-                </md-input-container>
-              </div>
-              <div class="col-sm-4">
-                <md-input-container>
-                  <input mdInput [mdDatepicker]="picker" placeholder="Date of birth">
-                  <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                </md-input-container>
-                <md-datepicker #picker></md-datepicker>
-              </div>
-              <div class="col-sm-4">
-                <md-select placeholder="Gender">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{ food.viewValue }}
-                  </md-option>
-                </md-select>
-              </div>
-              <div class="col-sm-4">
-                <div style="margin-top:25px;">
-                  <md-checkbox>Don't know my age?</md-checkbox>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                 <md-input-container class="example-full-width">
-                      <input type="number" mdInput placeholder="Enter age">
-                </md-input-container>
-              </div>
+             
               
               <div class="col-sm-12 text-center" style="margin-top:27px;margin-bottom:20px;">
                 <button md-raised-button class="apmis-blue">Save</button>
@@ -95,7 +97,8 @@
                         <md-checkbox>List1</md-checkbox>
                       </li> 
                       <li class="tree-item">
-                        <a (click)="clickParent()"><i class="fa fa-folder"></i>Panel</a>
+                        <span class="pull-right" style="margin-right:10px;"><i class="fa fa-plus"></i></span>
+                        <md-checkbox></md-checkbox><a style="margin-left: 9px;"(click)="clickParent()"><i class="fa fa-folder"></i>Panel</a>
                         <ul *ngIf="isParent" class="tree-parent open"> 
                           <li class="tree-item view">
                             <md-checkbox>List4</md-checkbox>
@@ -115,23 +118,20 @@
              <div class="col-sm-6">
               	<div class="panel panel-success custom-panel">
                     <div class="panel-heading" (click)="panelShow()">
-                      <h3 class="panel-title">Panel selected</h3>
+                      <h3 class="panel-title">Selected Investigation</h3>
                       <span *ngIf="isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                       <span *ngIf="!isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
                     </div>
                     <div *ngIf= "isPanel" class="panel-body">
                       <ul class="list-container">
                         <li>
-                          <md-checkbox>List1</md-checkbox>
+                          <md-checkbox>List1 (N200)</md-checkbox>
                         </li>
                         <li>
-                          <md-checkbox>List2</md-checkbox>
+                          <md-checkbox>List2 (N200)</md-checkbox>
                         </li>
                         <li>
-                          <md-checkbox>List3</md-checkbox>
-                        </li>
-                        <li>
-                          <md-checkbox>List4</md-checkbox>
+                          <md-checkbox>List3 (N200)</md-checkbox>
                         </li>
                      </ul>
                     </div>
@@ -168,10 +168,11 @@
               </div>
               <div class="row">
                 <div class="inv-header text-center">
-                 <h5>Selected Investigation</h5>
+                 <h5></h5>
                 </div>
-                <div class="inv-selected">
-                  <span><i class="fa fa-check-square"></i>investigation1 (N220)</span>
+                <div class="inv-selected pull-right">
+                  <p><strong>Sub Total:</strong> N50,000</p>
+                  <p><strong>Total:</strong> N50,000</p>
                 </div>
               </div>
               <div class="row">
