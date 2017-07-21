@@ -5,6 +5,7 @@ import {
 } from '../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +18,7 @@ export class DashboardComponent implements OnInit {
   unitCount: any = 0
   clinicCount: any = 0;
   constructor(private countryService: CountriesService,
+    private router: Router,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
     private userService: UserService,
@@ -30,7 +32,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility);
+    const loginEmployee = this.locker.getObject('loginEmployee');
     this.departments = this.selectedFacility.departments;
     this.departments.forEach((item, i) => {
       this.unitCount = this.unitCount + item.units.length;
@@ -38,7 +40,9 @@ export class DashboardComponent implements OnInit {
         this.clinicCount = this.clinicCount + itemu.clinics.length;
       })
     })
-    console.log(this.unitCount);
-    console.log(this.clinicCount);
+  }
+
+  navigateToClinic() {
+    this.router.navigate(['/dashboard/clinic']);
   }
 }

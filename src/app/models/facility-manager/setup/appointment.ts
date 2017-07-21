@@ -2,7 +2,7 @@ import { ClinicInteraction } from './clinicinteraction';
 export interface Appointment {
     _id: string;
     facilityId: string;
-    clinicId: string;
+    clinicId: any;
     appointmentTypeId: string;
     doctorId: string;
     startDate: Date;

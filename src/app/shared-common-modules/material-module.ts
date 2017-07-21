@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
-    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
     MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdSelectionModule, MdSelectModule, MdRadioModule
 }
     from '@angular/material';
@@ -69,7 +69,8 @@ import { CoolStorageModule } from 'angular2-cool-storage';
         StoreCheckInComponent,
         MomentModule,
         ToastModule,
-        CoolStorageModule
+        CoolStorageModule,
+        MdErrorDirective
     ],
     imports: [
         MdNativeDateModule,

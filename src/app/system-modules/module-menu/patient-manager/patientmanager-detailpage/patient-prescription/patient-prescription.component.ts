@@ -106,11 +106,7 @@ export class PatientPrescriptionComponent implements OnInit {
     onClickAddPrescription(value: any, valid: boolean) {
         if (valid) {
             if (this.selectedAppointment.clinicId === undefined) {
-                this._facilityService.announceNotification({
-                    users: [this.user._id],
-                    type: 'Info',
-                    text: 'Clinic has not been set!'
-                });
+                this._notification('Info', 'Clinic has not been set!');
             } else {
                 const prescriptionItem = <PrescriptionItem>{
                     genericName: value.drug,
@@ -161,11 +157,7 @@ export class PatientPrescriptionComponent implements OnInit {
     onClickAuthorizePrescription(value: any, valid: boolean) {
         if (valid && (this.prescriptionArray.length > 0)) {
             if (this.selectedAppointment.clinicId === undefined) {
-                this._facilityService.announceNotification({
-                    users: [this.user._id],
-                    type: 'Info',
-                    text: 'Clinic has not been set!'
-                });
+                this._notification('Info', 'Clinic has not been set!');
             } else {
                 this.prescriptions.priorityId = value.priority;
                 this.prescriptions.totalCost = value.totalCost;
@@ -203,56 +195,30 @@ export class PatientPrescriptionComponent implements OnInit {
                     grandTotal: totalCost,
                 }
                 console.log(bill);
-                // send the billed items to the billing service
-                this._billingService.create(bill)
-                    .then(res => {
-                        console.log(res);
-                        if(res._id !== undefined) {
-                            this.prescriptions.billId = res._id;
-                            // if this is true, send the prescribed drugs to the prescription service
-                            this._prescriptionService.create(this.prescriptions)
-                                .then(res => {
-                                    this._facilityService.announceNotification({
-                                        users: [this.user._id],
-                                        type: 'Success',
-                                        text: 'Prescription has been sent!'
-                                    });
-                                    this.isDispensed.next(true);
-                                    this.prescriptionItems = <Prescription>{};
-                                    this.prescriptionItems.prescriptionItems = [];
-                                    this.prescriptionArray = [];
-                                    this.addPrescriptionForm.reset();
-                                    this.addPrescriptionForm.controls['refillCount'].reset(0);
-                                    this.addPrescriptionForm.controls['duration'].reset(0);
-                                    this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                                    this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                                })
-                                .catch(err => {
-                                    this._facilityService.announceNotification({
-                                        users: [this.user._id],
-                                        type: 'Error',
-                                        text: 'There was an error creating prescription. Please try again later.'
-                                    });
-                                    console.log(err);
-                                });
-                        } else {
-                            this._facilityService.announceNotification({
-                                users: [this.user._id],
-                                type: 'Error',
-                                text: 'There was an error generating bill. Please try again later.'
-                            });
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                // If any item was billed, then call the billing service
+                if(billItemArray.length > 0) {
+                    // send the billed items to the billing service
+                    this._billingService.create(bill)
+                        .then(res => {
+                            console.log(res);
+                            if(res._id !== undefined) {
+                                this.prescriptions.billId = res._id;
+                                // if this is true, send the prescribed drugs to the prescription service
+                                this._sendPrescription(this.prescriptions);
+                            } else {
+                                this._notification('Error', 'There was an error generating bill. Please try again later.');
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                } else {
+                    // Else, if no item was billed, just save to the prescription table.
+                    this._sendPrescription(this.prescriptions);
+                }
             }
         } else {
-            this._facilityService.announceNotification({
-                users: [this.user._id],
-                type: 'Info',
-                text: 'Please select priority for these prescriptions!'
-            });
+            this._notification('Info', 'Please select priority for these prescriptions!');
         }
     }
 
@@ -375,4 +341,32 @@ export class PatientPrescriptionComponent implements OnInit {
     togglemedicalShow() {
         this.medicalShow = !this.medicalShow;
     }
+
+    private _sendPrescription(data: Prescription): void {
+        this._prescriptionService.create(data)
+            .then(res => {
+                this._notification('Success', 'Prescription has been sent!');
+                this.isDispensed.next(true);
+                this.prescriptionItems = <Prescription>{};
+                this.prescriptionItems.prescriptionItems = [];
+                this.prescriptionArray = [];
+                this.addPrescriptionForm.reset();
+                this.addPrescriptionForm.controls['refillCount'].reset(0);
+                this.addPrescriptionForm.controls['duration'].reset(0);
+                this.addPrescriptionForm.controls['startDate'].reset(new Date());
+                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+            })
+            .catch(err => {
+                this._notification('Error', 'There was an error creating prescription. Please try again later.');
+                console.log(err);
+            });
+    }
+
+    private _notification(type: string, text: string): void {
+		this._facilityService.announceNotification({
+			users: [this.user._id],
+			type: type,
+			text: text
+		});
+	}
 }

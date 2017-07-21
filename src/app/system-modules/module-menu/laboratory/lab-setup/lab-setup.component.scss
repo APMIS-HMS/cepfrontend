@@ -2,3 +2,12 @@
     width: auto;
     text-align: left;
 }
+.modal-overlay {
+    position: fixed;
+    top: 0px;
+    z-index: 10;
+    width: 100%;
+    left: 0;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+}

@@ -78,123 +78,144 @@ export class PrescriptionComponent implements OnInit {
 		});
 
 		if(tempArray.length > 0) {
-			// Call the billing service
-			this._billingService.get(this.prescriptionItems.billId, {})
-				.then(res => {
-					console.log(res);
-					const billItemArray = [];
-					let totalCost = 0;
-					let totalQuantity = 0;
-					
-					this.unBilledArray.forEach(element => {
-						if(element.isBilled) {
-							const billItem = <BillItem> {
-								facilityServiceId: element.facilityServiceId,
-								serviceId: element.serviceId,
-								facilityId: res.facilityId,
-								patientId: res.patientId,
-								description: element.productName,
-								quantity: element.quantity,
-								totalPrice: element.totalCost,
-								unitPrice: element.cost,
-								unitDiscountedAmount: 0,
-								totalDiscoutedAmount: 0,
-							};
+			// this has been billed before.
+			if(this.prescriptionItems.billId !== undefined) {
+				// Call the billing service
+				this._billingService.get(this.prescriptionItems.billId, {})
+					.then(res => {
+						console.log(res);
+						let totalCost = 0;
+						let totalQuantity = 0;
+						
+						this.unBilledArray.forEach(element => {
+							if(element.isBilled) {
+								const billItem = <BillItem> {
+									facilityServiceId: element.facilityServiceId,
+									serviceId: element.serviceId,
+									facilityId: res.facilityId,
+									patientId: res.patientId,
+									description: element.productName,
+									quantity: element.quantity,
+									totalPrice: element.totalCost,
+									unitPrice: element.cost,
+									unitDiscountedAmount: 0,
+									totalDiscoutedAmount: 0,
+								};
 
-							totalCost += element.totalCost;
-							totalQuantity += element.quantity;
-							this.totalQuantity += element.quantity;
-							this.totalCost += element.totalCost;
+								totalCost += element.totalCost;
+								totalQuantity += element.quantity;
+								this.totalQuantity += element.quantity;
+								this.totalCost += element.totalCost;
 
-							res.billItems.push(billItem);
-						}
-					});
-
-					// Update the subTotal and grandTotal in the billing response.
-					res.subTotal += totalCost;
-					res.grandTotal += totalCost;
-					// Update the totalCost and totalQuantity in the prescriptionItems object.
-					this.prescriptionItems.totalCost = this.totalCost;
-					this.prescriptionItems.totalQuantity = this.totalQuantity;
-					console.log(res);
-					// Update the Billing service
-					this._billingService.update(res)
-						.then(res => {
-							console.log(res);
-							console.log(this.prescriptionItems);
-							if(res._id !== undefined) {
-								this._prescriptionService.update(this.prescriptionItems)
-									.then(res => {
-										console.log(res);
-										if(res._id !== undefined) {
-											this.unBilledArray.forEach((element, i) => {
-												if(element.isBilled) {
-													// Remove items that has been billed
-													this.unBilledArray.splice(i, 1);
-													// Push the element to the view
-													this.prescriptions.push(element);
-												}
-											});
-										}
-									})
-									.catch(err => { console.log(err); });
+								res.billItems.push(billItem);
 							}
-						})
-						.catch(err => { console.log(err); });
+						});
 
-					const tempArray = [];
+						// Update the subTotal and grandTotal in the billing response.
+						res.subTotal += totalCost;
+						res.grandTotal += totalCost;
+						// Update the totalCost and totalQuantity in the prescriptionItems object.
+						this.prescriptionItems.totalCost = this.totalCost;
+						this.prescriptionItems.totalQuantity = this.totalQuantity;
+						console.log(res);
+						// Update the Billing service
+						this._billingService.update(res)
+							.then(res => {
+								console.log(res);
+								console.log(this.prescriptionItems);
+								if(res._id !== undefined) {
+									this._prescriptionService.update(this.prescriptionItems)
+										.then(res => {
+											console.log(res);
+											if(res._id !== undefined) {
+												this.unBilledArray.forEach((element, i) => {
+													if(element.isBilled) {
+														// Remove items that has been billed
+														this.unBilledArray.splice(i, 1);
+														// Push the element to the view
+														this.prescriptions.push(element);
+													}
+												});
+											}
+										})
+										.catch(err => { console.log(err); });
+								}
+							})
+							.catch(err => { console.log(err); });
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			} else {
+				// There has never been any bill
+				const billItemArray = [];
+				let totalCost = 0;
+				let totalQuantity = 0;
+				
+				this.unBilledArray.forEach(element => {
+					if(element.isBilled) {
+						const billItem = <BillItem> {
+							facilityServiceId: element.facilityServiceId,
+							serviceId: element.serviceId,
+							facilityId: this.prescriptionItems.facilityId,
+							patientId: this.prescriptionItems.patientId,
+							description: element.productName,
+							quantity: element.quantity,
+							totalPrice: element.totalCost,
+							unitPrice: element.cost,
+							unitDiscountedAmount: 0,
+							totalDiscoutedAmount: 0,
+						};
 
-					// Get the billed items from the unbilled items
-					// this.unBilledArray.forEach((element, i) => {
-					// 	// Billed items
-					// 	if(element.isBilled) {
-					// 		if(element.quantity !== undefined) {
-					// 			this.totalQuantity += element.quantity;
-					// 		}
+						totalCost += element.totalCost;
+						totalQuantity += element.quantity;
+						this.totalQuantity += element.quantity;
+						this.totalCost += element.totalCost;
 
-					// 		if(element.totalCost !== undefined) {
-					// 			this.totalCost += element.totalCost;
-					// 		}
-							
-					// 		tempArray.push(element);
-					// 		this.unBilledArray.splice(i, 1);
-					// 	}
-					// });
-				})
-				.catch(err => {
-					console.log(err);
+						billItemArray.push(billItem);
+					}
 				});
 
-			// send the billed items to the billing service
-			// this._billingService.create(bill)
-			// 	.then(res => {
-			// 		console.log(res);
-			// 		if(res._id !== undefined) {
-						
-			// 		} else {
-			// 			this._facilityService.announceNotification({
-			// 				users: [this.user._id],
-			// 				type: 'Error',
-			// 				text: 'There was an error generating bill. Please try again later.'
-			// 			});
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		console.log(err);
-			// 	});
+				const bill = <BillIGroup> {
+					facilityId: this.facility._id,
+					patientId: this.prescriptionItems.patientId,
+					billItems: billItemArray,
+					discount: 0,
+					subTotal: totalCost,
+					grandTotal: totalCost,
+				}
+				console.log(bill);
+				// send the billed items to the billing service
+				this._billingService.create(bill)
+					.then(res => {
+						console.log(res);
+						if(res._id !== undefined) {
+							// Update the totalCost and totalQuantity in the prescriptionItems object.
+							this.prescriptionItems.totalCost = this.totalCost;
+							this.prescriptionItems.totalQuantity = this.totalQuantity;
+							this.prescriptionItems.billId = res._id
+							this._prescriptionService.update(this.prescriptionItems)
+								.then(res => {
+									console.log(res);
+									if(res._id !== undefined) {
+										this.unBilledArray.forEach((element, i) => {
+											if(element.isBilled) {
+												// Remove items that has been billed
+												this.unBilledArray.splice(i, 1);
+												// Push the element to the view
+												this.prescriptions.push(element);
+											}
+										});
+									}
+								})
+								.catch(err => { console.log(err); });
+						}
+					})
+					.catch(err => { console.log(err); });
+			}
+		} else {
+			this._notification('Info', 'Please bill the prescribed drugs above.');
 		}
-
-
-		// this.prescriptions = this.prescriptionItems.prescriptionItems;
-		// this.prescriptionItems.prescriptionItems.forEach(element => {
-		// 	if(element.quantity !== undefined) {
-		// 		this.totalQuantity += element.quantity;
-		// 	}
-			
-		// 	if(element.totalCost !== undefined) {
-		// 		this.totalCost += element.totalCost;
-		// 	}
-		// });
 	}
 
 	// Dispense prescription
@@ -302,16 +323,35 @@ export class PrescriptionComponent implements OnInit {
 						if(element.totalCost !== undefined) {
 							this.totalCost += element.totalCost;
 						}
+						// Add the payment status on the fly
+						element.paymentCompleted = false;
 						this.prescriptions.push(element);
 					}
 
 					// Unbilled items
 					if(!element.isBilled) {
-						console.log(element);
 						this.unBilledArray.push(element);
 					}
 					element.transactions = [];
 				});
+
+				if(this.prescriptions.length > 0) {
+					if(this.prescriptionItems.billId !== undefined) {
+						this._billingService.get(this.prescriptionItems.billId, {})
+							.then(res => {
+								if(res._id !== undefined) {
+									res.billItems.forEach(i => {
+										this.prescriptions.forEach(j => {
+											if(i.serviceId === j.serviceId) {
+												j.paymentCompleted = i.paymentCompleted;
+											}
+										});
+									});
+								}
+							})
+							.catch(err => { console.log(err); });
+					}
+				}
 			})
 			.catch(err => {
 				console.log(err);
@@ -358,102 +398,104 @@ export class PrescriptionComponent implements OnInit {
 						console.log(err);
 					});
 			} else {
-				this._facilityService.announceNotification({
-					users: [this.user._id],
-					type: 'Info',
-					text: 'Please check into store!'
-				});
+				this._notification('Info', 'Please check into store!');
 			}
 		} else {
-			this._facilityService.announceNotification({
-				users: [this.user._id],
-				type: 'Info',
-				text: 'This item is marked external, you can not bill the patient!'
-			});
+			this._notification('Info', 'This item is marked external, you can not bill the patient!');
 		}
 	}
 
 	onClickBillProduct(parentIndex, index, batch, inputBatch) {
+		const item = this.prescriptionItems.prescriptionItems.filter(e => e._id === this.prescriptions[parentIndex]._id);
+		const itemId = item[0]._id;
 		// Check if the qty entered is less than or equal to the qty needed.
-		if(inputBatch[index] <= this.prescriptionItems.prescriptionItems[parentIndex].quantity) {
+		if(inputBatch[index] <= item[0].quantity) {
 			this.transactions.transactions.forEach(element => {	
 				if(element._id === batch._id) {
 					element.quantity = element.quantity - inputBatch[index];
 				}
 			});
 			this.transactions.totalQuantity = this.transactions.totalQuantity - inputBatch[index];
-			console.log(this.transactions);
-			//const productId = this.prescriptionItems.prescriptionItems[parentIndex].productId;
-			//const productId = '592419145fbce732205cf0ba';
-			// Make a call to the inventory service so that you can deduct the quantity from the inventory
+
 			if(this.storeId.typeObject.storeId !== undefined) {
-				this._inventoryService.patch(this.transactions._id, this.transactions, {})
+				// Update the quantityDispensed in the selected item.
+				const itemIndex = this.prescriptionItems.prescriptionItems.findIndex(item => item._id == itemId);
+				this.prescriptionItems.prescriptionItems[itemIndex].quantityDispensed = inputBatch[index];
+
+				// Make a call to update the prescription with the qty dispensed
+				this._prescriptionService.update(this.prescriptionItems)
 					.then(res => {
 						console.log(res);
-						
+						if(res._id !== undefined) {
+							// Make a call to the inventory service so that you can deduct the quantity from the inventory
+							this._inventoryService.patch(this.transactions._id, this.transactions, {})
+								.then(res => {
+									console.log(res);
+									this._notification('Success', 'Quantity has been deducted.');
+								})
+								.catch(err => {
+									console.log(err);
+								});
+						}
 					})
 					.catch(err => {
 						console.log(err);
 					});
 			} else {
-				this._facilityService.announceNotification({
-					users: [this.user._id],
-					type: 'Info',
-					text: 'Please check into store!'
-				});
+				this._notification('Info', 'Please check into store!');
 			}
 		} else {
-			this._facilityService.announceNotification({
-				users: [this.user._id],
-				type: 'Info',
-				text: 'The quantity entered is greater than the quantity requested!'
-			});
+			this._notification('Info', 'The quantity entered is greater than the quantity requested!');
 		}
 		
 	}
 
 	// Send bill to billing service to bill the patient
-	onClickBillPatient() {
-		console.log(this.prescriptionItems);
-		const billItemArray = []
-		this.prescriptionItems.prescriptionItems.forEach(element => {
-			const billItem = <BillItem> {
-				facilityServiceId: element.facilityServiceId,
-				serviceId: element.serviceId,
-				facilityId: this.facility._id,
-				patientId: this.prescriptionItems.patientId,
-				quantity: element.quantity,
-				totalPrice: element.totalCost,
-				unitPrice: element.cost,
-				unitDiscountedAmount: 0,
-  				totalDiscoutedAmount: 0,
-			};
+	// onClickBillPatient() {
+	// 	console.log(this.prescriptionItems);
+	// 	const billItemArray = []
+	// 	this.prescriptionItems.prescriptionItems.forEach(element => {
+	// 		const billItem = <BillItem> {
+	// 			facilityServiceId: element.facilityServiceId,
+	// 			serviceId: element.serviceId,
+	// 			facilityId: this.facility._id,
+	// 			patientId: this.prescriptionItems.patientId,
+	// 			quantity: element.quantity,
+	// 			totalPrice: element.totalCost,
+	// 			unitPrice: element.cost,
+	// 			unitDiscountedAmount: 0,
+  	// 			totalDiscoutedAmount: 0,
+	// 		};
 
-			billItemArray.push(billItem);
-		});
+	// 		billItemArray.push(billItem);
+	// 	});
 
-		const bill = <BillIGroup> {
-			facilityId: this.facility._id,
-			patientId: this.prescriptionItems.patientId,
-			billItems: billItemArray,
-			discount: 0,
-			subTotal: this.totalCost,
-			grandTotal: this.totalCost,
-		}
-		this._billingService.create(bill)
-			.then(res => {
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err);
-			});
-	}
+	// 	const bill = <BillIGroup> {
+	// 		facilityId: this.facility._id,
+	// 		patientId: this.prescriptionItems.patientId,
+	// 		billItems: billItemArray,
+	// 		discount: 0,
+	// 		subTotal: this.totalCost,
+	// 		grandTotal: this.totalCost,
+	// 	}
+	// 	this._billingService.create(bill)
+	// 		.then(res => {
+	// 			console.log(res);
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		});
+	// }
 
 	billToggle() {
 		this.billshow = !this.billshow;
 	}
 
-	private _remove(array, element) {
-		return array.filter(e => e !== element);
+	private _notification(type: string, text: string): void {
+		this._facilityService.announceNotification({
+			users: [this.user._id],
+			type: type,
+			text: text
+		});
 	}
 }

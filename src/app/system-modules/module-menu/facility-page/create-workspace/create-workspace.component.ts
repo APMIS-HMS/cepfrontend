@@ -169,7 +169,7 @@ export class CreateWorkspaceComponent implements OnInit {
           query:
           {
             facilityId: this.selectedFacility._id,
-            'locations.minorLocationId': minorLocationId, $limit: 100
+            'locations.minorLocationId._id': minorLocationId, $limit: 100
           }
         }).then(payload => {
           console.log(payload);
@@ -177,7 +177,7 @@ export class CreateWorkspaceComponent implements OnInit {
           this.filteredEmployees.forEach((emp, i) => {
             let workInSpace = false;
             payload.data.forEach((work, j) => {
-              if (work.employeeId === emp._id) {
+              if (work.employeeId._id === emp._id) {
                 workInSpace = true;
               }
             });
@@ -212,15 +212,16 @@ export class CreateWorkspaceComponent implements OnInit {
       this.loadIndicatorVisible = true;
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
+      console.log(employeesId);
       const createArrays: Employee[] = [];
       const updateArrays: Employee[] = [];
       this.workspaceService.find({
         query:
-        { facilityId: this.selectedFacility._id, employeeId: { $in: employeesId }, $limit: 100 }
+        { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
       }).then(payload => {
         filtered.forEach((iteme, e) => {
           let hasRecord = false;
-          if (payload.data.filter(x => x.employeeId === iteme._id).length > 0) {
+          if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
             hasRecord = true;
           }
           if (hasRecord) {
@@ -236,14 +237,15 @@ export class CreateWorkspaceComponent implements OnInit {
           console.log(createArrays);
           createArrays.forEach((emp, i) => {
             const space: WorkSpace = <WorkSpace>{};
-            space.employeeId = emp._id;
+            space.employeeId = emp;
             space.facilityId = this.selectedFacility._id;
             space.locations = [];
             const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value._id;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
+            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
             space.locations.push(locationModel);
             workSpaces.push(space);
+            console.log(workSpaces);
             workSpaces$.push(Observable.fromPromise(this.workspaceService.create(space)));
           });
         }
@@ -251,8 +253,8 @@ export class CreateWorkspaceComponent implements OnInit {
         {
           payload.data.forEach((work: WorkSpace, i) => {
             const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value._id;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
+            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
             work.locations.push(locationModel);
             workSpaces$.push(Observable.fromPromise(this.workspaceService.update(work)));
           });

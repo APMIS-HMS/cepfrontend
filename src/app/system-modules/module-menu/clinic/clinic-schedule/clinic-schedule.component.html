@@ -79,9 +79,9 @@
             </li>
 
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of scheduleManagers" class="li-itemWrap">
-                <div class="li-Item">{{manager.locationType.clinicName}}</div>
-                <div class="li-Item">{{manager.locationType.department.name}}</div>
-                <div class="li-Item">{{manager.locationType.unit.name}}</div>
+                <div class="li-Item">{{manager.clinicObject.clinicName}}</div>
+                <div class="li-Item">{{manager.clinicObject.department.name}}</div>
+                <div class="li-Item">{{manager.clinicObject.unit.name}}</div>
                 <div class="li-Item-group">
                     <div class="group-wrap" *ngFor="let schedule of manager.schedules">
                         <div class="group-Item">{{schedule.day}}</div>

@@ -69,7 +69,7 @@
                         <md-input-container>
                             <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="providerCtrl">
                         </md-input-container>
-
+                        <span style="margin-left: -15px;" *ngIf="loadingProvider" class="fa fa-spinner fa-spin"></span>
                         <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
                             <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
                                 {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
@@ -135,17 +135,17 @@
             <td>
                 <div class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.doctorId.employeeDetails.personFullName}}</div>
+                    <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
                 </div>
             </td>
             <td>Checked In</td>
             <td>
                 <div class="tbl-actions-wrap">
                     <div *ngIf="appointment.attendance !== undefined" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
-                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="editAppointment(appointment)"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
+                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn"  [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
                     <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
                 </div>
             </td>

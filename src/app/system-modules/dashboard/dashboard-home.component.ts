@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { FacilitiesService, UserService } from '../../services/facility-manager/setup/index';
-import { Facility } from '../../models/index';
+import { FacilitiesService, UserService, EmployeeService, WorkSpaceService } from '../../services/facility-manager/setup/index';
+import { Facility, Employee } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
@@ -17,6 +18,7 @@ export class DashboardHomeComponent implements OnInit {
   facilityObj: Facility = <Facility>{};
   facilityName = '';
   searchControl = new FormControl();
+
 
   modal_on = false;
   logoutConfirm_on = false;
@@ -39,9 +41,13 @@ export class DashboardHomeComponent implements OnInit {
   allModulesSubmenuActive = false;
   moduleAnalyticsSubmenuActive = false;
 
-  loadIndicatorVisible = true;
+  loadIndicatorVisible = false;
+  subscription: Subscription;
+  loginEmployee: Employee = <Employee>{};
+
   constructor(private _elRef: ElementRef, private locker: CoolSessionStorage, private userService: UserService,
-    private router: Router, public facilityService: FacilitiesService) {
+    private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
+    private workSpaceService: WorkSpaceService) {
     router.events.subscribe((routerEvent: Event) => {
       this.checkRouterEvent(routerEvent);
     });
@@ -61,6 +67,28 @@ export class DashboardHomeComponent implements OnInit {
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
     }
+
+
+    this.loadIndicatorVisible = true;
+    const auth = <any>this.locker.getObject('auth');
+    const emp$ = Observable.fromPromise(this.employeeService.find({
+      query: {
+        facilityId: this.facilityObj._id, personId: auth.data.personId, showbasicinfo: true
+      }
+    }));
+    this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin(
+      [
+        Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+        Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
+      ]))
+      .subscribe((results: any) => {
+        this.loginEmployee = results[0];
+        this.loginEmployee.workSpaces = results[1].data;
+        this.locker.setObject('loginEmployee', this.loginEmployee);
+        // this.employeeService.announceLoginEmployee(this.loginEmployee);
+        console.log(this.loginEmployee);
+        this.loadIndicatorVisible = false;
+      })
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
