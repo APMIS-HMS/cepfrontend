@@ -1,0 +1,47 @@
+<div class="modal-baseWrap animated pulse">
+
+  <div (click)="close_onClick()" class="modal-close-ico">X</div>
+  <legend class="modal_title">Clinical Note</legend>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+  <div class="docCard-header">
+
+    <div>
+      <md-input-container>
+        <input mdInput placeholder="Select Document Type" [mdAutocomplete]="auto" [formControl]="selectFormCtrl">
+      </md-input-container>
+
+      <md-autocomplete #auto="mdAutocomplete">
+        <md-option *ngFor="let state of filteredStates | async" [value]="state">
+          {{ state }}
+        </md-option>
+      </md-autocomplete>
+    </div>
+
+    <div>
+      <div class="val-tag">Status</div>
+      <div class="list-label">Draft</div>
+    </div>
+        
+    <div class="empWrap">
+      <div class="list-img">
+          <img src="assets/images/users/default.png">
+          <!-- <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div> -->
+      </div>
+      <div>
+        <div class="val-tag">Patient</div>
+        <div class="list-label">Jonathan Nelson</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cont-wrap">
+    <div class="docCard-body">
+      <div style="width:100%; text-align:center; font-size: 12px; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
+      <!--Load form here  -->
+      
+    </div>
+  </div>
+       
+</div>

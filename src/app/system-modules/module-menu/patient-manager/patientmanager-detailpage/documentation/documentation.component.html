@@ -1,5 +1,14 @@
 <div class="pg-subtitle">DOCUMENTATION</div>
 
+<div class="topmenuwrap2">
+  <ul class="topmenuwrap">
+    <li (click)="clinicalNote_show()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Clinical Note</span>
+    </li>
+  </ul>
+</div>
+
 <div class="doc-mainWrap">
   <div class="doc-contentArea">
     <ul class="doc-cardWrap">
@@ -29,7 +38,7 @@
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="makePayment_show()">
+              <li (click)="docDetail_show()">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -55,7 +64,7 @@
           
         </div>
 
-        <div class="docCard-foot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>   
       
       <li class="doc-card shadow">
@@ -83,7 +92,7 @@
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="makePayment_show()">
+              <li (click)="docDetail_show()">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -117,7 +126,7 @@
           
         </div>
 
-        <div class="docCard-foot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>
 
       <li class="doc-card shadow">
@@ -145,7 +154,7 @@
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="makePayment_show()">
+              <li (click)="docDetail_show()">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -179,14 +188,262 @@
           
         </div>
 
-        <div class="docCard-foot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>
     </ul>
   </div>
   <div class="doc-rArea">
     <div class="rArea-card">
       <div class="rAreaCard-header">
-        <span class="header-label">Issues</span>
+        <span class="header-label">Problems</span>
+        <i (click)="addProblem_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Other disorders of thyroid</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Problem</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Diagnosis</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Status</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Note</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Other Disorders of Thyroid</td>
+                      <td>July 12, 2017. 12:02pm</td>
+                      <td>Active</td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Other Disorders of Thyroid</td>
+                      <td>July 12, 2017. 12:02pm</td>
+                      <td>Active</td>
+                      <td></td>
+                  </tr>
+                  <!-- <tr *ngIf="patients.length === 0 && !loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                  </tr>
+                  <tr *ngIf="patients.length === 0 && loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                          <md-spinner class="small-spinner"></md-spinner>
+                      </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Secondary Diabetes Milletus</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Problem</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Diagnosis</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Status</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Note</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Secondary Diabetes Milletus</td>
+                      <td>July 12, 2017. 12:02pm</td>
+                      <td>Inactive</td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Secondary Diabetes Milletus</td>
+                      <td>July 12, 2017. 12:02pm</td>
+                      <td>Inactive</td>
+                      <td></td>
+                  </tr>
+                  <!-- <tr *ngIf="patients.length === 0 && !loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                  </tr>
+                  <tr *ngIf="patients.length === 0 && loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                          <md-spinner class="small-spinner"></md-spinner>
+                      </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Allergies</span>
+        <i (click)="addAllergy_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Penicillin</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Allergy</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reaction</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Note</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Penicillin</td>
+                      <td>Hives</td>
+                      <td>Was allergic since a child</td>
+                  </tr>
+                  <!-- <tr *ngIf="patients.length === 0 && !loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                  </tr>
+                  <tr *ngIf="patients.length === 0 && loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                          <md-spinner class="small-spinner"></md-spinner>
+                      </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Cat</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Allergy</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reaction</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Note</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Cats</td>
+                      <td>Shortness of breath/difficulty breathing</td>
+                      <td>From allergy test</td>
+                  </tr>
+                  <!-- <tr *ngIf="patients.length === 0 && !loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                  </tr>
+                  <tr *ngIf="patients.length === 0 && loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                          <md-spinner class="small-spinner"></md-spinner>
+                      </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Medication History</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diclofenac</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Current Medication</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diclofenac</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Family History</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Diabetes</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-content">Cancer</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Investigation</span>
         <i class="header-cta fa fa-plus" aria-hidden="true"></i>
       </div>
 
@@ -206,18 +463,96 @@
 
     <div class="rArea-card">
       <div class="rAreaCard-header">
-        <span class="header-label">Allergies</span>
+        <span class="header-label">Vitals</span>
         <i class="header-cta fa fa-plus" aria-hidden="true"></i>
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
-          <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
+          <div class="rAreaCard-content">Diabetes</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
         </li>
         <li class="rAreaCard-item">
-          <div class="rAreaCard-content">Diclofenac</div>
+          <div class="rAreaCard-content">Cancer</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Past Appointments</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Future Appointments</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rArea-card">
+      <div class="rAreaCard-header">
+        <span class="header-label">Special Instructions</span>
+        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+      </div>
+
+      <ul class="rAreaCard-body">
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-active">Active</div>
+          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+        </li>
+        <li class="rAreaCard-item">
+          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
+          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
         </li>
       </ul>
     </div>
   </div>
+</div>
+
+<div *ngIf="docDetail_view" class="modal-overlay">
+  <app-documentation-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+</div>
+
+<div *ngIf="clinicalNote_view" class="modal-overlay">
+  <app-clinical-note (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-clinical-note>
+</div>
+
+<div *ngIf="addProblem_view" class="modal-overlay">
+  <app-add-patient-problem (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
+</div>
+
+<div *ngIf="addAllergy_view" class="modal-overlay">
+  <app-add-allergy (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
 </div>

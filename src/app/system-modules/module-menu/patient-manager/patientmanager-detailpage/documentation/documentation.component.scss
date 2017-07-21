@@ -51,6 +51,12 @@
     padding: 5px;
     box-sizing: border-box;
 }
+.topmenuwrap2 ul.topmenuwrap {
+    position: absolute;
+    top: -20px;
+    right: 6px;
+    width: 104px;
+}
 ul.topmenuwrap{
     position: relative;
     top: auto;
@@ -71,10 +77,11 @@ ul.topmenuwrap{
 .list-img{
     width: 30px;
     height: 30px;
+    border-radius: 100%;
     margin-right: 10px;
 }
 .list-img img{
-    width: 30px;
+    width: 100%;
 }
 .val-tag {
     font-size: 9px;
@@ -173,7 +180,7 @@ ul.topmenuwrap{
     border-bottom: 1px solid #bebebe;
     padding: 0 5px;
     border-radius: 0 0 10px 0;
-    margin: 10px 0;
+    margin: 15px 0;
 }
 .rAreaCard-content{
     width: 90%;
@@ -194,7 +201,7 @@ ul.topmenuwrap{
 }
 .rAreaCard-status {
     position: absolute;
-    top: -7px;
+    top: -13px;
     font-size: 9px;
     width: 100%;
     text-align: center;
@@ -204,4 +211,34 @@ ul.topmenuwrap{
 }
 .rAreaCard-inactive{
     color: #0288D1;
+}
+.rAreaCard-detailWrap{
+    position: absolute;
+    bottom: 0px;
+    right: 40%;
+    display: none;
+    background: #b3e5fb;
+    padding: 10px;
+    width: auto;
+    border-radius: 10px;
+}
+.rAreaCard-item:hover{
+    .rAreaCard-detailWrap{
+        display: block;
+    }
+}
+.rAreaCard-detailWrap table, td { 
+    border: 0.5px solid #81d4f9;
+}
+.rAreaCard-detailWrap tr:hover {background-color: #4ec2f7}
+.rAreaCard-detailWrap tr:nth-child(even) {background-color: #9adcfa}
+.rAreaCard-detailWrap th {
+    height: 30px;
+    background: #9adcfa;
+    border: 0.5px solid #81d4f9;
+}
+.rAreaCard-detailWrap td {
+    vertical-align: center;
+    text-align: left;
+    padding: 5px;
 }
