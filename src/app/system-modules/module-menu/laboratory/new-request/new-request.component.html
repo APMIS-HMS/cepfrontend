@@ -1,5 +1,4 @@
 <div class="page-title">New Laboratory Request</div>
-
 <section id="container">
   <div class="survery">
     <div class="container">
@@ -17,15 +16,15 @@
                     <input mdInput placeholder="Last name">
               </md-input-container>
               </div>
+                 <div class="col-sm-4">
+                <md-input-container class="example-full-width">
+                    <input type="number" mdInput placeholder="Phone Number">
+              </md-input-container>
+              </div>
                <div class="col-sm-4">
                 <md-input-container class="example-full-width">
                       <input mdInput placeholder="Home Address">
                 </md-input-container>
-              </div>
-              <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="Phone Number">
-              </md-input-container>
               </div>
                <div class="col-sm-4">
                 <div style="margin-top:25px;">
@@ -34,8 +33,15 @@
               </div>
               <div class="col-sm-4">
                  <md-input-container class="example-full-width">
-                      <input type="number" mdInput placeholder="Enter age">
+                      <input type="number" disabled mdInput placeholder="Enter age">
                 </md-input-container>
+              </div>
+               <div class="col-sm-4">
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker" placeholder="Date of birth">
+                  <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                </md-input-container>
+                <md-datepicker #picker></md-datepicker>
               </div>
                <div class="col-sm-4">
                 <md-select placeholder="Gender">
@@ -44,12 +50,10 @@
                   </md-option>
                 </md-select>
               </div>
-              <div class="col-sm-4">
-                <md-input-container>
-                  <input mdInput [mdDatepicker]="picker" placeholder="Date of birth">
-                  <button mdSuffix [mdDatepickerToggle]="picker"></button>
+             <div class="col-sm-4">
+                <md-input-container class="example-full-width">
+                      <input mdInput placeholder="Enter lab number">
                 </md-input-container>
-                <md-datepicker #picker></md-datepicker>
               </div>
               <div class="col-sm-4">
                 <md-select placeholder="Nationality">
@@ -73,11 +77,7 @@
                 </md-select>
               </div>
              
-              <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                      <input mdInput placeholder="Enter lab number">
-                </md-input-container>
-              </div>
+              
              
               
               <div class="col-sm-12 text-center" style="margin-top:27px;margin-bottom:20px;">
@@ -97,7 +97,7 @@
                         <md-checkbox>List1</md-checkbox>
                       </li> 
                       <li class="tree-item">
-                        <span class="pull-right" style="margin-right:10px;"><i class="fa fa-plus"></i></span>
+                         <a class="btn btn-default pull-right">add panel </a>
                         <md-checkbox></md-checkbox><a style="margin-left: 9px;"(click)="clickParent()"><i class="fa fa-folder"></i>Panel</a>
                         <ul *ngIf="isParent" class="tree-parent open"> 
                           <li class="tree-item view">
@@ -112,6 +112,9 @@
                         </ul>   
                       </li> 
                     </ul>
+                    <div class="">
+                      <a class="btn btn-primary">save</a>
+                    </div>
                   </div>
                 </div>
              </div>

@@ -6,6 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-workbench.component.scss']
 })
 export class AddWorkbenchComponent implements OnInit {
+  
+  foods = [
+    {value: 'male', viewValue: 'name select'},
+    {value: 'female', viewValue: 'name select'},
+  ];
 
   constructor() { }
 

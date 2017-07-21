@@ -5,6 +5,12 @@
             <span>Create Panel</span>
         </li>
     </ul>
+    <ul class="topmenuwrap" id="topmenuwarap-1">
+        <li (click)="modal_onClick()">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Add Investigation Service</span>
+        </li>
+    </ul>
 </div>
   
        <table class="points_table">
@@ -13,43 +19,32 @@
                   <th class="col-xs-3">Investigations</th>
                   <th class="col-xs-3">Report Type</th>
                   <th class="col-xs-3">Specimen</th>
-                  <th class="col-xs-2">Ref N0</th>
+                   <th class="col-xs-1">Units</th>
+                  <th class="col-xs-1">Ref N0</th>
                   <th class="col-xs-1">Action</th>
                 </tr>
               </thead>
               <tbody class="points_table_scrollbar">
                 <tr>
                   <td class="col-xs-3">
-                    <div>Minor location name</div>
+                    <div>Lab name</div>
                   </td>
                   <td class="col-xs-3">
-                    <div>Minor location name</div>
+                    <div>Report type</div>
                   </td>
                   <td class="col-xs-3">
-                    <div>Minor location name</div>
+                    <div>specimen name</div>
                   </td>
-                  <td class="col-xs-2">
+                   <td class="col-xs-1">
+                    <div>Mol</div>
+                  </td>
+                  <td class="col-xs-1">
                     <div>5 - 40</div>
                   </td>
                   <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
                   </td>
                 </tr> 
-                 <tr>
-                  <td class="col-xs-3">
-                    <div>Minor location name</div>
-                  </td>
-                  <td class="col-xs-3">
-                    <div>Minor location name</div>
-                  </td>
-                  <td class="col-xs-3">
-                    <div>Minor location name</div>
-                  </td>
-                  <td class="col-xs-2">
-                    <div>20 - 100</div>
-                  </td>
-                  <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
-                  </td>
-                </tr>              
+                           
               </tbody>
 		        </table>
 
@@ -143,3 +138,63 @@
       </div>
     </div>
     <!-- end fly out -->
+
+
+  <!-- add investigation service -->
+  <div *ngIf = "openModal" class="survery">
+    <div class="cover-edit">
+    <form class="form-signin">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                  <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
+                  <legend class="modal_title">Add Investigation Service</legend>
+                    <form class="form form-signup" role="form">
+                        <div class="col-sm-12">
+                   <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Enter Investigation">
+                  </md-input-container>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}
+                    </md-option>
+                  </md-select>
+                </div>
+                <div class="col-sm-12">
+                  <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
+                  <md-option *ngFor="let food of foods" [value]="food.value">
+                    {{food.viewValue}}
+                  </md-option>
+                </md-select>
+                </div>
+                  <div class="col-sm-6">
+                    <md-input-container class="example-full-width">
+                      <input type="number" mdInput placeholder="Ref N0 from">
+                    </md-input-container>
+                  </div>
+                  <div class="col-sm-6">
+                    <md-input-container class="example-full-width">
+                      <input type="number" mdInput placeholder="Ref N0 to">
+                    </md-input-container>
+                  </div>
+                  <div class="col-sm-12">
+                    <md-input-container class="example-full-width">
+                    <textarea mdInput placeholder="Add Unit"></textarea>
+                  </md-input-container>
+                  </div>
+                  <div class="text-center">
+                  <button md-raised-button class="apmis-blue"> Create Service </button>
+                </div>
+                    </form>
+                  </div>      
+                </div>
+              </div>
+            </div>
+        </div>
+    </form>
+    </div>
+  </div>

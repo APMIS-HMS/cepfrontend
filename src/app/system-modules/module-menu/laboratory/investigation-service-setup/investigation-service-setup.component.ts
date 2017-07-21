@@ -10,6 +10,7 @@ export class InvestigationServiceSetupComponent implements OnInit {
     isParent = false;
     isPanel = false;
     flyout = false;
+    openModal = false;
    foods = [
     {value: 'male', viewValue: 'name select'},
     {value: 'female', viewValue: 'name select'},
@@ -29,5 +30,11 @@ panelShow() {
   }
   flayoutClose() {
     this.flyout = false;
+  }
+   modal_onClick() {
+    this.openModal = true;
+  }
+  closeModal()  {
+    this.openModal = false;
   }
 }
