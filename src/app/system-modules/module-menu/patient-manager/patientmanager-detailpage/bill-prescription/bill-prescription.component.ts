@@ -95,6 +95,7 @@ export class BillPrescriptionComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId; 
 				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
+				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
 				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
