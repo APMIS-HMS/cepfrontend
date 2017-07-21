@@ -10,6 +10,7 @@ import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Professi
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
     selector: 'app-new-appointment',
@@ -20,8 +21,10 @@ export class NewAppointmentComponent implements OnInit {
     selectedFacility: Facility = <Facility>{};
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};
+    selectedAppointment: Appointment = <Appointment>{};
     clinics: any[] = [];
     schedules: ScheduleRecordModel[] = [];
+    gSchedules: any[] = [];
 
     filteredClinics: Observable<any[]>
     filteredProviders: Observable<Employee[]>
@@ -33,6 +36,7 @@ export class NewAppointmentComponent implements OnInit {
     pastAppointments: any[] = [];
     isDoctor = false;
     loadIndicatorVisible = false;
+    loadingProviders = false;
     subscription: Subscription;
     auth: any;
     currentDate: Date = new Date();
@@ -106,7 +110,16 @@ export class NewAppointmentComponent implements OnInit {
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private facilityService: FacilitiesService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
-        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService) {
+        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
+        private route: ActivatedRoute) {
+
+        route.params.subscribe(params => {
+            if (params.id !== undefined) {
+                this.appointmentService.get(params.id, {}).subscribe(payload => {
+                    this.appointmentService.appointmentAnnounced(payload);
+                })
+            }
+        });
 
         this.appointmentService.schedulesAnnounced$.subscribe((payload: ScheduleRecordModel[]) => {
             this.schedules = payload;
@@ -148,28 +161,27 @@ export class NewAppointmentComponent implements OnInit {
         this.filteredStates = this.statusCtrl.valueChanges
             .startWith(null)
             .map(name => this.filterStates(name));
+        this.prime();
     }
 
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
-        this.getSchedules();
-        this.getLoginEmployee();
-        this.getEmployees();
-        // this.getAppointmentTypes();
+        this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+        this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
+            this.loginEmployee = employee;
+            this.prime();
+        })
     }
     getClinicAppointments(value) {
-        console.log(value);
         this.selectedClinic = value.clinicId;
         this.appointmentService.find({ query: { 'clinicId._id': value.clinicId._id, hasDate: true, startDate: value.startDate } })
             .subscribe(payload => {
                 this.appointments = payload.data;
-                console.log(this.appointments)
             })
     }
     setReturnValue(dateRange: any): any {
         this.dateRange = dateRange;
-        console.log(this.dateRange);
         this.appointmentService.find({
             query: {
                 isWithinRange: true, from: this.dateRange.from, to: this.dateRange.to,
@@ -177,7 +189,6 @@ export class NewAppointmentComponent implements OnInit {
                 'patientId._id': this.selectedPatient._id
             }
         }).subscribe(payload => {
-            console.log(payload);
             this.appointments = payload.data;
         })
     }
@@ -186,7 +197,6 @@ export class NewAppointmentComponent implements OnInit {
         if (value._id !== undefined) {
             this.appointmentService.find({ query: { 'patientId._id': value._id } }).subscribe(payload => {
                 this.pastAppointments = payload.data;
-                console.log(this.pastAppointments)
             });
         }
     }
@@ -211,60 +221,77 @@ export class NewAppointmentComponent implements OnInit {
                             }
                         });
                     } else if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name !== 'Doctor') {
-                        this.loginEmployee.workSpaces.forEach((itemw, w) => {
-                            itemw.locations.forEach((iteml, l) => {
-                                if (iteml.minorLocationId === itemk.clinicLocation) {
-                                    const clinicModel: ClinicModel = <ClinicModel>{};
-                                    clinicModel.clinic = itemk;
-                                    clinicModel.department = itemi;
-                                    clinicModel.unit = itemj;
-                                    clinicModel._id = itemk._id;
-                                    clinicModel.clinicName = itemk.clinicName;
-                                    this.clinics.push(clinicModel);
-                                    clinicIds.push(clinicModel._id);
-                                }
-                            });
-                        });
+                        this.loginEmployee.workSpaces.forEach((wrk, ii) => {
+                            wrk.locations.forEach((lct, li) => {
+                                this.gSchedules.forEach((sch: any, ji) => {
+                                    sch.schedules.forEach((sch2, jji) => {
+                                        if (sch2.location._id === lct.minorLocationId._id && sch.clinicObject.clinic._id === itemk._id) {
+                                            const clinicModel: ClinicModel = <ClinicModel>{};
+                                            clinicModel.clinic = sch.clinicObject.clinic;
+                                            clinicModel.department = itemi;
+                                            clinicModel.unit = itemj;
+                                            clinicModel._id = itemk._id;
+                                            clinicModel.clinicName = itemk.clinicName;
+                                            this.clinics.push(clinicModel);
+                                            clinicIds.push(clinicModel._id);
+                                        }
+                                    })
+                                })
+                            })
+                        })
+                        // this.loginEmployee.workSpaces.forEach((itemw, w) => {
+                        //     itemw.locations.forEach((iteml, l) => {
+                        //         if (iteml.minorLocationId === itemk.clinicLocation) {
+                        //             const clinicModel: ClinicModel = <ClinicModel>{};
+                        //             clinicModel.clinic = itemk;
+                        //             clinicModel.department = itemi;
+                        //             clinicModel.unit = itemj;
+                        //             clinicModel._id = itemk._id;
+                        //             clinicModel.clinicName = itemk.clinicName;
+                        //             this.clinics.push(clinicModel);
+                        //             clinicIds.push(clinicModel._id);
+                        //         }
+                        //     });
+                        // });
                     }
                 });
             });
         });
         this.loadIndicatorVisible = false;
     }
-    getSchedules() {
-        this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } })
-            .subscribe(payload => {
-            })
-    }
 
-    getLoginEmployee() {
-        this.loadIndicatorVisible = true;
-        const emp$ = Observable.fromPromise(this.employeeService.find({
-            query: {
-                facilityId: this.selectedFacility._id, personId: this.auth.data.personId, showbasicinfo: true
-            }
-        }));
-        // tslint:disable-next-line:max-line-length
-        this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin(
-            [
-                Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-                Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } })),
-                Observable.fromPromise(this.appointmentTypeService.findAll())
-            ]))
-            .subscribe((results: any) => {
-                this.loginEmployee = results[0];
-                this.loginEmployee.workSpaces = results[1].data;
-                this.appointmentTypes = results[2].data;
-                if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
-                    this.selectedProfession = this.loginEmployee.professionObject;
-                    if (this.loginEmployee.professionObject.name === 'Doctor') {
-                        this.isDoctor = true;
+    prime() {
+        if (this.loginEmployee._id !== undefined) {
+            this.loadIndicatorVisible = true;
+            this.subscription = Observable.forkJoin(
+                [
+                    Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
+                    Observable.fromPromise(this.appointmentTypeService.findAll()),
+                    Observable.fromPromise(this.professionService.findAll()),
+                    Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }))
+                ])
+                .subscribe((results: any) => {
+                    this.loginEmployee.workSpaces = results[0].data;
+                    this.appointmentTypes = results[1].data;
+                    const professions = results[2].data;
+                    this.gSchedules = results[3].data;
+                    const filteredProfessions = professions.filter(x => x.name === 'Doctor');
+                    if (filteredProfessions.length > 0) {
+                        this.selectedProfession = filteredProfessions[0];
                     }
-                    this.getClinics();
-                }
-            });
+                    if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
+                        this.selectedProfession = this.loginEmployee.professionObject;
+                        if (this.loginEmployee.professionObject.name === 'Doctor') {
+                            this.isDoctor = true;
+                        }
+                        this.getClinics();
+                        this.getEmployees();
+                    }
+                });
+        }
     }
     getEmployees() {
+        this.loadingProviders = true;
         this.providers = [];
         if (this.isDoctor) {
             this.employeeService.find({
@@ -276,14 +303,8 @@ export class NewAppointmentComponent implements OnInit {
                 .then(payload => {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
-                        if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
-                        }
                     });
-
-                    if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
-                        this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
-                        });
-                    }
+                    this.loadingProviders = false;
                 });
         } else {
             this.employeeService.find({
@@ -296,10 +317,7 @@ export class NewAppointmentComponent implements OnInit {
                     payload.data.forEach((itemi, i) => {
                         this.providers.push(itemi);
                     });
-                    if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
-                        this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
-                        });
-                    }
+                    this.loadingProviders = false;
                 });
         }
 

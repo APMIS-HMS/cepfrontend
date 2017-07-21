@@ -60,7 +60,9 @@ export class PasswordResetComponent implements OnInit {
           console.log(payload.data);
           if (payload.data.length > 0) {
             this.selectedPerson = payload.data[0];
+            console.log(this.selectedPerson);
             this.userService.resetPassword({ personId: this.selectedPerson._id }).then(tokenPayload => {
+              console.log(tokenPayload);
               this.isTokenAvailable = tokenPayload.text;
               console.log(this.isTokenAvailable);
               if (this.isTokenAvailable !== false) {
@@ -70,6 +72,8 @@ export class PasswordResetComponent implements OnInit {
                 this.mainErr = false;
                 this.errMsg = 'Error while generating isTokenAvailable, please try again!';
               }
+            }, error => {
+              console.log(error);
             });
 
           } else {

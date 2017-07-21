@@ -20,7 +20,7 @@
 
 <app-schedule-frm></app-schedule-frm>
 <div class="dr-wrap">
-     <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range>
+    <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range>
 </div>
 <table cellpadding="0" cellspacing="0" border="0.5">
     <thead>
@@ -78,7 +78,7 @@
                         <md-input-container>
                             <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="providerCtrl">
                         </md-input-container>
-
+                        <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
                         <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
                             <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
                                 {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
@@ -148,10 +148,10 @@
             <td>
                 <div class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.doctorId.employeeDetails.personFullName}}</div>
+                    <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
                 </div>
             </td>
             <td>Checked In</td>
@@ -209,7 +209,7 @@
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.doctorId.employeeDetails.personFullName}}</div>
+                    <div>{{appointment?.doctorId?.employeeDetails?.personFullName}}</div>
                 </div>
             </td>
             <td>Checked In</td>
