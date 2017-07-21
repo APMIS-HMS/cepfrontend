@@ -13,8 +13,10 @@ import {
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import * as getDay from 'date-fns/get_day';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 @Component({
     selector: 'app-schedule-frm',
     templateUrl: './schedule-frm.component.html',
@@ -73,7 +75,12 @@ export class ScheduleFrmComponent implements OnInit {
         private appointmentService: AppointmentService, private patientService: PatientService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
+        private toastyService: ToastyService, private toastyConfig: ToastyConfig,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
+
+        // this.toastyConfig.theme = 'material';
+        // this.toastyService.default('Hi there');
+
 
         appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
             this.appointment = payload;
@@ -133,6 +140,27 @@ export class ScheduleFrmComponent implements OnInit {
         this.primeComponent();
 
         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+    }
+
+    addToast() {
+        // Just add default Toast with title only
+
+        // Or create the instance of ToastOptions
+        const toastOptions: ToastOptions = {
+            title: 'My title',
+            msg: 'The message which should show here',
+            showClose: true,
+            timeout: 5000,
+            theme: 'default',
+            onAdd: (toast: ToastData) => {
+                console.log('Toast ' + toast.id + ' has been added!');
+            },
+            onRemove: function (toast: ToastData) {
+                console.log('Toast ' + toast.id + ' has been removed!');
+            }
+        };
+
+        this.toastyService.info(toastOptions);
     }
 
     ngOnInit() {
@@ -436,107 +464,108 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     scheduleAppointment() {
-        if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
-            this.loadIndicatorVisible = true;
-            const patient = this.patient.value;
-            const clinic = this.clinic.value;
-            const provider = this.provider.value;
-            const type = this.type.value;
-            const category = this.category.value;
-            const checkIn = this.checkIn.value;
-            const date = this.date;
-            const reason = this.reason.value;
-            const facility = this.selectedFacility;
+        this.addToast();
+        // if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
+        //     this.loadIndicatorVisible = true;
+        //     const patient = this.patient.value;
+        //     const clinic = this.clinic.value;
+        //     const provider = this.provider.value;
+        //     const type = this.type.value;
+        //     const category = this.category.value;
+        //     const checkIn = this.checkIn.value;
+        //     const date = this.date;
+        //     const reason = this.reason.value;
+        //     const facility = this.selectedFacility;
 
-            delete facility.address;
-            delete facility.countryItem;
-            delete facility.departments;
-            delete facility.facilityClassItem;
-            delete facility.facilityItem;
-            delete facility.facilityModules;
-            delete facility.facilitymoduleId;
-            delete facility.logoObject;
-            delete facility.minorLocations;
-            delete facility.invitees;
+        //     delete facility.address;
+        //     delete facility.countryItem;
+        //     delete facility.departments;
+        //     delete facility.facilityClassItem;
+        //     delete facility.facilityItem;
+        //     delete facility.facilityModules;
+        //     delete facility.facilitymoduleId;
+        //     delete facility.logoObject;
+        //     delete facility.minorLocations;
+        //     delete facility.invitees;
 
-            delete patient.appointments;
-            delete patient.encounterRecords;
-            delete patient.orders;
-            delete patient.tags;
-            delete patient.personDetails.addressObj;
-            delete patient.personDetails.countryItem;
-            delete patient.personDetails.homeAddress;
-            delete patient.personDetails.maritalStatus;
-            delete patient.personDetails.nationality;
-            delete patient.personDetails.nationalityObject;
-            delete patient.personDetails.nextOfKin;
+        //     delete patient.appointments;
+        //     delete patient.encounterRecords;
+        //     delete patient.orders;
+        //     delete patient.tags;
+        //     delete patient.personDetails.addressObj;
+        //     delete patient.personDetails.countryItem;
+        //     delete patient.personDetails.homeAddress;
+        //     delete patient.personDetails.maritalStatus;
+        //     delete patient.personDetails.nationality;
+        //     delete patient.personDetails.nationalityObject;
+        //     delete patient.personDetails.nextOfKin;
 
-            if (provider !== null) {
-                delete provider.department;
-                delete provider.employeeFacilityDetails;
-                delete provider.role;
-                delete provider.units;
-                delete provider.employeeDetails.countryItem;
-                delete provider.employeeDetails.homeAddress;
-                delete provider.employeeDetails.gender;
-                delete provider.employeeDetails.maritalStatus;
-                delete provider.employeeDetails.nationality;
-                delete provider.employeeDetails.nationalityObject;
-                delete provider.employeeDetails.nextOfKin;
-            }
+        //     if (provider !== null) {
+        //         delete provider.department;
+        //         delete provider.employeeFacilityDetails;
+        //         delete provider.role;
+        //         delete provider.units;
+        //         delete provider.employeeDetails.countryItem;
+        //         delete provider.employeeDetails.homeAddress;
+        //         delete provider.employeeDetails.gender;
+        //         delete provider.employeeDetails.maritalStatus;
+        //         delete provider.employeeDetails.nationality;
+        //         delete provider.employeeDetails.nationalityObject;
+        //         delete provider.employeeDetails.nextOfKin;
+        //     }
 
-            this.appointment.appointmentReason = reason;
-            this.appointment.appointmentTypeId = type;
-            this.appointment.clinicId = clinic.clinic;
-            this.appointment.doctorId = provider;
-            this.appointment.facilityId = <any>facility;
-            this.appointment.patientId = patient;
-            this.appointment.startDate = this.date;
-            if (checkIn === true) {
-                const logEmp: any = this.loginEmployee;
-                delete logEmp.department;
-                delete logEmp.employeeFacilityDetails;
-                delete logEmp.role;
-                delete logEmp.units;
-                delete logEmp.consultingRoomCheckIn;
-                delete logEmp.storeCheckIn;
-                delete logEmp.unitDetails;
-                delete logEmp.professionObject;
-                delete logEmp.employeeDetails.countryItem;
-                delete logEmp.employeeDetails.homeAddress;
-                delete logEmp.employeeDetails.gender;
-                delete logEmp.employeeDetails.maritalStatus;
-                delete logEmp.employeeDetails.nationality;
-                delete logEmp.employeeDetails.nationalityObject;
-                delete logEmp.employeeDetails.nextOfKin;
-                this.appointment.attendance = {
-                    employeeId: logEmp,
-                    dateCheckIn: new Date()
-                };
-            }
-            this.appointment.category = category;
-            if (this.appointment._id !== undefined) {
-                this.appointmentService.update(this.appointment).subscribe(payload => {
-                    this.appointmentService.patientAnnounced(this.patient);
-                    this.loadIndicatorVisible = false;
-                    this.newSchedule();
-                    this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                }, error => {
-                    this.loadIndicatorVisible = false;
-                })
-            } else {
-                this.appointmentService.create(this.appointment).subscribe(payload => {
-                    this.appointmentService.patientAnnounced(this.patient);
-                    this.loadIndicatorVisible = false;
-                    this.newSchedule();
-                    this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                }, error => {
-                    this.loadIndicatorVisible = false;
-                })
-            }
-        } else {
-            console.log('error');
-        }
+        //     this.appointment.appointmentReason = reason;
+        //     this.appointment.appointmentTypeId = type;
+        //     this.appointment.clinicId = clinic.clinic;
+        //     this.appointment.doctorId = provider;
+        //     this.appointment.facilityId = <any>facility;
+        //     this.appointment.patientId = patient;
+        //     this.appointment.startDate = this.date;
+        //     if (checkIn === true) {
+        //         const logEmp: any = this.loginEmployee;
+        //         delete logEmp.department;
+        //         delete logEmp.employeeFacilityDetails;
+        //         delete logEmp.role;
+        //         delete logEmp.units;
+        //         delete logEmp.consultingRoomCheckIn;
+        //         delete logEmp.storeCheckIn;
+        //         delete logEmp.unitDetails;
+        //         delete logEmp.professionObject;
+        //         delete logEmp.employeeDetails.countryItem;
+        //         delete logEmp.employeeDetails.homeAddress;
+        //         delete logEmp.employeeDetails.gender;
+        //         delete logEmp.employeeDetails.maritalStatus;
+        //         delete logEmp.employeeDetails.nationality;
+        //         delete logEmp.employeeDetails.nationalityObject;
+        //         delete logEmp.employeeDetails.nextOfKin;
+        //         this.appointment.attendance = {
+        //             employeeId: logEmp,
+        //             dateCheckIn: new Date()
+        //         };
+        //     }
+        //     this.appointment.category = category;
+        //     if (this.appointment._id !== undefined) {
+        //         this.appointmentService.update(this.appointment).subscribe(payload => {
+        //             this.appointmentService.patientAnnounced(this.patient);
+        //             this.loadIndicatorVisible = false;
+        //             this.newSchedule();
+        //             this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+        //         }, error => {
+        //             this.loadIndicatorVisible = false;
+        //         })
+        //     } else {
+        //         this.appointmentService.create(this.appointment).subscribe(payload => {
+        //             this.appointmentService.patientAnnounced(this.patient);
+        //             this.loadIndicatorVisible = false;
+        //             this.newSchedule();
+        //             this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+        //         }, error => {
+        //             this.loadIndicatorVisible = false;
+        //         })
+        //     }
+        // } else {
+        //     console.log('error');
+        // }
 
 
     }
