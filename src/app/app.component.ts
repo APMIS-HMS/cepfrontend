@@ -47,23 +47,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.auth = <any>this.locker.getObject('auth');
-    // const emp$ = Observable.fromPromise(this.employeeService.find({
-    //   query: {
-    //     facilityId: this.selectedFacility._id, personId: this.auth.data.personId, showbasicinfo: true
-    //   }
-    // }));
-    // this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin(
-    //   [
-    //     Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-    //     Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
-    //   ]))
-    //   .subscribe((results: any) => {
-    //     this.loginEmployee = results[0];
-    //     this.loginEmployee.workSpaces = results[1].data;
-    //     this.locker.setObject('loginEmployee', this.loginEmployee);
-    //     this.employeeService.announceLoginEmployee(this.loginEmployee);
-    //     console.log(this.loginEmployee);
-    //   })
   }
   success(text) {
     this.toastr.success(text, 'Success!');
