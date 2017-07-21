@@ -27,6 +27,7 @@ export class LandingpageComponent implements OnInit {
   selectedTransaction: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   selectedProduct: any = <any>{};
+  checkingStore: any = <any>{};
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService,
@@ -38,17 +39,21 @@ export class LandingpageComponent implements OnInit {
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-
+    this.checkingStore = this.locker.getObject('checkingObject');
     this.route.data.subscribe(data => {
       data['loginEmployee'].subscribe((payload) => {
         this.loginEmployee = payload.loginEmployee;
       });
     });
 
-    this.inventoryService.find({ query: { facilityId: this.selectedFacility._id, $limit: 200 } }).subscribe(payload => {
-      this.inventories = payload.data;
-      console.log(this.inventories);
-    });
+    this.inventoryService.find({
+      query:
+      { facilityId: this.selectedFacility._id, storeId: this.checkingStore.typeObject.storeId, $limit: 200 }
+    })
+      .subscribe(payload => {
+        this.inventories = payload.data;
+        console.log(this.inventories);
+      });
 
     const subscribeForCategory = this.searchControl.valueChanges
       .debounceTime(200)
