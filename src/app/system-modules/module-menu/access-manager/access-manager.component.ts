@@ -38,11 +38,9 @@ export class AccessManagerComponent implements OnInit {
     const facilityId = this.selectedFacility._id;
     this.userService.find({ query: { 'facilitiesRole.facilityId': facilityId, $limit: limit } }).then(payload => {
       this.users = payload.data;
-      console.log(payload);
     });
   }
   edit(item: any) {
-    console.log(item);
     this.router.navigate(['/dashboard/employee-manager/generate-user', item.person._id]);
   }
   empDetail(val: any) {

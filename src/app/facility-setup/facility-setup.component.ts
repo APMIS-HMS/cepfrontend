@@ -181,7 +181,6 @@ export class FacilitySetupComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
   beforeUpload(uploadingFile): void {
-    console.log(uploadingFile);
     this.getDataUri(uploadingFile.originalName, function (dataUri) {
       // Do whatever you'd like with the Data URI!
     });
@@ -398,21 +397,17 @@ export class FacilitySetupComponent implements OnInit {
 
           this.personService.create(personModel).then((ppayload) => {
             userModel.personId = ppayload._id;
-            console.log('Person');
             if (userModel.facilitiesRole === undefined) {
               userModel.facilitiesRole = [];
-              console.log('facilitiesRole is undefine');
             }
             userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
             this.userService.create(userModel).then((upayload) => {
-              console.log('user created');
             });
 
 
           });
         },
           error => {
-            console.log(error);
           });
 
       }
@@ -458,9 +453,7 @@ export class FacilitySetupComponent implements OnInit {
     this.selectModules_show = true;
     this.sg4_show = false;
     this.selectedFacility.logo = this.response;
-    console.log(this.response);
     this.facilityService.update(this.selectedFacility).then(payload => { });
-    console.log(this.selectedFacility.logo);
     this.facilityService.update(this.selectedFacility).then(payload => {
       if (payload != null && payload !== undefined) {
         this.sg3_show = false;

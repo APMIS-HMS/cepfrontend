@@ -35,7 +35,6 @@ export class AddFacilityModuleComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		console.log(this.inputFacility);
 		this.getModules();
 		this.frm_selectModules = this.formBuilder.group({
 			chk_pharmacy: [''],
@@ -107,16 +106,11 @@ export class AddFacilityModuleComponent implements OnInit {
 
 
 	selectModules_next() {
-		console.log(this.frm_selectModules.controls['chk_pharmacy'].value);
-		console.log("am calling save module");
 		this.f_module = false;
 		this.sg4_show = true;
-		console.log(this.inputFacility);
 		this._facilityService.update(this.inputFacility).then(payload => {
 			this.inputFacility = payload;
-			console.log(this.inputFacility);
 		}, error => {
-			console.log(error);
 		});
 	}
 

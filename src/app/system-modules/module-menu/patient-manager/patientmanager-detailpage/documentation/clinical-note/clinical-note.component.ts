@@ -45,10 +45,15 @@ export class ClinicalNoteComponent implements OnInit {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
     this.selectFormCtrl = new FormControl();
-    this.filteredForms = this.selectFormCtrl.valueChanges
-      .startWith(null)
-      .map((form: any) => form && typeof form === 'object' ? this.setSelectedForm(form) : form)
-      .map(val => val ? this.filterForms(val) : this.forms.slice());
+    this.selectFormCtrl.valueChanges.subscribe(form => {
+      this.setSelectedForm(form)
+    })
+
+
+    // this.filteredForms = this.selectFormCtrl.valueChanges
+    //   .startWith(null)
+    //   .map((form: any) => form && typeof form === 'object' ? this.setSelectedForm(form) : form)
+    //   .map(val => val ? this.filterForms(val) : this.forms.slice());
   }
 
   ngOnInit() {
@@ -58,9 +63,15 @@ export class ClinicalNoteComponent implements OnInit {
   getForms() {
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
     formType$.mergeMap(((formTypes: any) => Observable.
-      fromPromise(this.formService.find({ query: { facilityId: this.selectedFacility, typeOfDocumentId: formTypes.data[0] } }))))
+      fromPromise(this.formService.find({
+        query: {
+          $limit: 200, facilityId: this.selectedFacility._id,
+          typeOfDocumentId: formTypes.data[0]._id
+        }
+      }))))
       .subscribe((results: any) => {
         this.forms = results.data;
+        console.log(this.forms)
       })
   }
   setSelectedForm(form) {

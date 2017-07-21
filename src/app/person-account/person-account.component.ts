@@ -63,7 +63,6 @@ export class PersonAccountComponent implements OnInit {
   getGenders() {
     this.genderService.findAll().then((payload) => {
       this.genders = payload.data;
-      console.log(this.genders);
     })
   }
 
@@ -81,7 +80,6 @@ export class PersonAccountComponent implements OnInit {
   submit(valid, val) {
     if (valid) {
       if (this.frmPerson.controls['repassword'].value === this.frmPerson.controls['password'].value) {
-        console.log('Started');
         const personModel = <any>{
           firstName: this.frmPerson.controls['firstname'].value,
           lastName: this.frmPerson.controls['lastname'].value,
@@ -97,17 +95,13 @@ export class PersonAccountComponent implements OnInit {
           stateOfOriginId: this.frmPerson.controls['state'].value._id,
           lgaOfOriginId: this.frmPerson.controls['lga'].value
         };
-        console.log(personModel);
         const userModel = <User>{
           email: this.frmPerson.controls['email'].value,
           password: this.frmPerson.controls['password'].value
         };
-        console.log(userModel);
         this.personService.create(personModel).then((ppayload) => {
           userModel.personId = ppayload._id;
-          console.log('Person');
           this.userService.create(userModel).then((upayload) => {
-            console.log('user created');
           }, error => {
             this.mainErr = false;
             this.errMsg = 'An error has occured, please check and try again!';
@@ -120,7 +114,6 @@ export class PersonAccountComponent implements OnInit {
             + 'added successful'
           });
         }, err => {
-          console.log(err);
         });
       }
     } else {

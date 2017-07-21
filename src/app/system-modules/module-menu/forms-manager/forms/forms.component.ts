@@ -208,7 +208,6 @@ export class FormsComponent implements OnInit {
     });
 
     formsService.announce$.subscribe(payload => {
-      console.log(payload);
       const checkedModules = this.modules.filter(x => x.checked);
       const checkedModuleIds = [];
       checkedModules.forEach((item, i) => {
@@ -222,7 +221,6 @@ export class FormsComponent implements OnInit {
         body: payload,
         facilityId: this.selectedFacility._id
       };
-      console.log(full);
       this.formsService.create(full).then(payloads => {
         this.primeForms();
         this.onCreate();
@@ -270,23 +268,17 @@ export class FormsComponent implements OnInit {
       this.modules.forEach((item, i) => {
         this.checkboxArray.push(new FormControl(item.checked));
       });
-
       this.frm_checkboxGroup = this.formBuilder.group({
         myValues: this.checkboxArray
       });
 
 
-
-
-
       this.documentTypes = results[1].data;
       this.scopeLevels = results[2].data;
-      console.log(this.documentTypes);
-      console.log(this.scopeLevels);
     })
   }
   onValueChanged(event, model: ModuleViewModel) {
-    model.checked = event.value;
+    model.checked = event.checked;
   }
   getForms() {
     this.formsService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
