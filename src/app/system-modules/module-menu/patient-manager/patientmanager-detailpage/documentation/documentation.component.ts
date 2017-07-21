@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class DocumentationComponent implements OnInit {
 
   docDetail_view = false;
+  clinicalNote_view = false;
+  addProblem_view = false;
+  addAllergy_view = false;
 
   constructor() { }
 
@@ -17,9 +20,21 @@ export class DocumentationComponent implements OnInit {
   docDetail_show(){
     this.docDetail_view = true;
   }
+  clinicalNote_show(){
+    this.clinicalNote_view = true;
+  }
+  addProblem_show(){
+    this.addProblem_view = true;
+  }
+  addAllergy_show(){
+    this.addAllergy_view = true;
+  }
 
   close_onClick(message: boolean): void {
     this.docDetail_view = false;
+    this.clinicalNote_view = false;
+    this.addProblem_view = false;
+    this.addAllergy_view = false;
   }
 
 }

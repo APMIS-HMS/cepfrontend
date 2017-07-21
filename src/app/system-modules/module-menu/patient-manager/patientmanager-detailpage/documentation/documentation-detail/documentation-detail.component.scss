@@ -1,0 +1,25 @@
+@import "../documentation.component.scss";
+
+.modal-baseWrap {
+    position: relative;
+    width: 80%;
+    height: 90%;
+    box-sizing: border-box;
+    background: #fff;
+    overflow: hidden;
+    padding: 50px;
+    border-radius: 7px;
+}
+.cont-wrap{
+    width: 100%;
+    height: auto;
+    max-height: 95%;
+    overflow-y: auto;
+}
+.docCard-header{
+    margin: 20px 0;
+}
+.docCard-ctaWrap {
+    top: -18px;
+    bottom: auto;
+}

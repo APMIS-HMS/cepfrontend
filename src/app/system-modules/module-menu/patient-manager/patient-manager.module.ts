@@ -21,6 +21,9 @@ import { UpdateImgComponent } from './update-img/update-img.component';
 import { ExternalPrescriptionComponent } from './patientmanager-detailpage/external-prescription/external-prescription.component';
 import { DocumentationComponent } from './patientmanager-detailpage/documentation/documentation.component';
 import { DocumentationDetailComponent } from './patientmanager-detailpage/documentation/documentation-detail/documentation-detail.component';
+import { ClinicalNoteComponent } from './patientmanager-detailpage/documentation/clinical-note/clinical-note.component';
+import { AddPatientProblemComponent } from './patientmanager-detailpage/documentation/add-patient-problem/add-patient-problem.component';
+import { AddAllergyComponent } from './patientmanager-detailpage/documentation/add-allergy/add-allergy.component';
 //import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
 //import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
 
@@ -40,6 +43,9 @@ import { DocumentationDetailComponent } from './patientmanager-detailpage/docume
         ExternalPrescriptionComponent,
         DocumentationComponent,
         DocumentationDetailComponent,
+        ClinicalNoteComponent,
+        AddPatientProblemComponent,
+        AddAllergyComponent
         //BillPrescriptionComponent,
         //AddPrescriptionComponent
     ],
