@@ -12,6 +12,7 @@
     box-sizing: border-box;
 }
 .doc-contentArea, .doc-rArea{
+    position: relative;
     padding: 3px;
 }
 .doc-contentArea {
@@ -51,11 +52,25 @@
     padding: 5px;
     box-sizing: border-box;
 }
-.topmenuwrap2 ul.topmenuwrap {
-    position: absolute;
-    top: -20px;
-    right: 6px;
-    width: 104px;
+.actSect{
+    width: 90%;
+    margin: 0 auto;
+}
+.act-wrap{
+    width: 150px;
+    position: relative;
+    padding: 8px;
+    font-size: 12px;
+    text-align: center;
+    color: #bebebe;
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.act-wrap:hover{
+    border: 1px solid #bebebe;
 }
 ul.topmenuwrap{
     position: relative;
@@ -135,9 +150,6 @@ ul.topmenuwrap{
 .docCard-foot i:hover{
     cursor: pointer;
     color: #fff;
-}
-.doc-rArea{
-    margin-top: 20px;
 }
 .rArea-card {
     background: #fff;

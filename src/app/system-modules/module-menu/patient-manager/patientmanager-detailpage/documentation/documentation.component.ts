@@ -21,7 +21,7 @@ export class DocumentationComponent implements OnInit {
     this.docDetail_view = true;
   }
   clinicalNote_show(){
-    this.clinicalNote_view = true;
+    this.clinicalNote_view = !this.clinicalNote_view;
   }
   addProblem_show(){
     this.addProblem_view = true;
