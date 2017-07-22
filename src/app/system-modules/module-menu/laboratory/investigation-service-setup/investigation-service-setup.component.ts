@@ -39,6 +39,9 @@ export class InvestigationServiceSetupComponent implements OnInit {
     this.facility = <Facility> this._locker.getObject('selectedFacility');
     this.user = <User>this._locker.getObject('auth');
 
+    this._getReportTypes();
+    this._getSpecimens();
+
     this.investigationForm = this._fb.group({
       investigation: ['', [<any>Validators.required]],
       specimen: ['', [<any>Validators.required]],
@@ -54,8 +57,8 @@ export class InvestigationServiceSetupComponent implements OnInit {
     if(valid) {
       console.log(value);
       console.log(valid);
-      this.disableInvestigationBtn = true;
       this.investigationBtnText = "Creating Investigation... <i class='fa fa-spinner fa-spin'></i>";
+      this.disableInvestigationBtn = true;
       const investigation = <Investigation>({
         name: value.investigation,
         specimen: <InvestigationSpecimen> value.specimen,
@@ -67,14 +70,14 @@ export class InvestigationServiceSetupComponent implements OnInit {
       });
       console.log(investigation);
       // Create investigation
-      this._investigationService.create(investigation)
-        .then(res => {
-          console.log(res);
-          this.disableInvestigationBtn = false;
-          this.investigationBtnText = "Create Investigation";
-          this.investigationForm.reset();
-        })
-        .catch(err => { console.log(err); });
+      // this._investigationService.create(investigation)
+      //   .then(res => {
+      //     console.log(res);
+      //     this.disableInvestigationBtn = false;
+      //     this.investigationBtnText = "Create Investigation";
+      //     this.investigationForm.reset();
+      //   })
+      //   .catch(err => { console.log(err); });
     } else {
       this._notification('Info', 'Some fields are empty. Please fill in all required Fields!')
     }
@@ -85,6 +88,15 @@ export class InvestigationServiceSetupComponent implements OnInit {
       .then(res => {
         console.log(res);
         this.specimens = res.data;
+      })
+      .catch(err => { console.log(err); });
+  }
+  
+  private _getReportTypes() {
+    this._investigationReportTypeService.findAll()
+      .then(res => {
+        console.log(res);
+        this.reportTypes = res.data;
       })
       .catch(err => { console.log(err); });
   }
