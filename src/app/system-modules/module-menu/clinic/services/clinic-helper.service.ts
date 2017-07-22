@@ -109,8 +109,8 @@ export class ClinicHelperService {
 		if (this.loginEmployee.professionObject !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
 			this.schedules.forEach((items, s) => {
 				this.loginEmployee.units.forEach((itemu, u) => {
-					if (itemu === items.locationType.unit._id) {
-						const res = inClinicLocations.filter(x => x._id === items.locationType.clinic.clinicLocation);
+					if (itemu === items.clinicObject.unit._id) {
+						const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
 						if (res.length > 0) {
 							this.clinicLocations.push(res[0]);
 						}
