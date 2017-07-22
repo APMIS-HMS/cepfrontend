@@ -141,7 +141,8 @@
                     <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
                 </div>
             </td>
-            <td>Checked In</td>
+            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId?.name}}</td>
+            <td *ngIf="appointment.attendance !== undefined">Checked In</td>
             <td>
                 <div class="tbl-actions-wrap">
                     <div *ngIf="appointment.attendance !== undefined" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
