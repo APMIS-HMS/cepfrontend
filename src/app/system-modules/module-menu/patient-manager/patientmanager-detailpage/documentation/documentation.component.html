@@ -61,9 +61,9 @@
           <div class="cardSect-wrap">
 
             <div class="card-sect">
-              <div class="docCard-sectTitle">{{document?.documentType?.title}}</div>
+              <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div>
               <div class="docCard-sectContent">
-               {{document?.body | json}}
+               {{analyseObject(document?.document?.body)}}
               </div>
             </div>
           </div>
