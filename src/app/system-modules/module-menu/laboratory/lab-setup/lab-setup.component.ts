@@ -10,6 +10,7 @@ export class LabSetupComponent implements OnInit {
   workbench = true;
   investigationService = false;
   investigation = false;
+  addWorkbench = false;
    foods = [
     {value: 'male', viewValue: 'name select'},
     {value: 'female', viewValue: 'name select'},
@@ -36,4 +37,5 @@ export class LabSetupComponent implements OnInit {
     this.workbench = false;
     this.investigation = true;
   }
+ 
 }

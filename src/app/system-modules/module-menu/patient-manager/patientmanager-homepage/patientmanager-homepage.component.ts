@@ -15,12 +15,6 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 export class PatientmanagerHomepageComponent implements OnInit {
   selectedValue: string;
 
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
-
   nextOfKinForm: FormGroup;
 
   editPatient = false;
@@ -33,7 +27,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   relationships: Relationship[] = [];
   selectedPatient: Patient = <Patient>{};
   searchControl = new FormControl();
-  loading: boolean = true;
+  loading = true;
 
   pageSize = 1;
   limit = 10;
@@ -123,13 +117,15 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
   }
   navEpDetail(patient) {
-    this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]);
+    this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]).then(() => {
+      this.patientService.announcePatient(patient);
+    })
   }
   getPatients(limit) {
     this.patientService.find({ query: { facilityId: this.facility._id, $limit: limit } }).then(payload => {
       console.log(payload);
       this.loading = false;
-      if(payload.data.length > 0) {
+      if (payload.data.length > 0) {
         this.patients = payload.data;
       } else {
         this.patients = [];
@@ -169,7 +165,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
       console.log(this.selectedPatient);
       this.personService.update(this.selectedPatient).subscribe(payload => {
         console.log(payload);
-         this.close_onClick();
+        this.close_onClick();
       });
     }
   }

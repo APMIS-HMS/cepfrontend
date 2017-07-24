@@ -12,6 +12,7 @@ import {
 } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-patient-summary',
@@ -22,7 +23,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
- // @Input() vitalDocuments: any;
+  // @Input() vitalDocuments: any;
 
 
   subsect_biodata = true;
@@ -91,65 +92,70 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this.personService.updateListener.subscribe(payload => {
       this.patient.personDetails = payload;
     });
+
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
   }
 
   ngOnInit() {
     this.getForms();
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    this.route.data.subscribe(data => {
-      data['patient'].subscribe(payload => {
-        this.patient = payload;
-        // this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
-        //   
-        // });
-        this.getCurrentUser();
-      });
-      //this.documentations = this.vitalDocuments;
-      data['loginEmployee'].subscribe(payload => {
-        this.loginEmployee = payload.loginEmployee;
-        this.minorLocationList = payload.clinicLocations;
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    if (this.patient !== undefined) {
+      this.getCurrentUser();
+    }
+    // this.route.data.subscribe(data => {
+    //   data['patient'].subscribe(payload => {
+    //     this.patient = payload;
+    //     // this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
+    //     //   
+    //     // });
+    //     this.getCurrentUser();
+    //   });
+    //   //this.documentations = this.vitalDocuments;
+    //   data['loginEmployee'].subscribe(payload => {
+    //     this.loginEmployee = payload.loginEmployee;
+    //     this.minorLocationList = payload.clinicLocations;
 
-        if (payload.loginEmployee !== undefined) {
+    //     if (payload.loginEmployee !== undefined) {
 
-          this.route.params.subscribe(payloadk => {
-            if (payloadk['checkInId'] !== undefined) {
-              let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
-              if (isOnList.length > 0) {
-                let isOnObj = isOnList[0];
-                isOnObj.isOn = true;
-                this.employeeService.update(this.loginEmployee).then(payloadu => {
-                  this.loginEmployee = payloadu;
-                  if (data['appointment'] !== null) {
-                    data['appointment'].subscribe(payloada => {
-                      this.selectedAppointment = payloada;
-                      console.log(this.selectedAppointment);
-                      if (this.selectedAppointment !== undefined) {
-                        let isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
-                        if (isOnList.length > 0) {
-                          let isOn = isOnList[0];
-                          let minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
-                          if (minorLocationList.length > 0) {
-                            this.clinicInteraction.locationName = minorLocationList[0].name;
-                            this.clinicInteraction.startAt = new Date();
-                            this.clinicInteraction.employee = this.loginEmployee.employeeDetails;
-                          }
-                        }
-                      }
-                    }, error => {
-                      this.router.navigateByUrl(this.previousUrl);
-                    });
-                  }
-                });
-              }
+    //       this.route.params.subscribe(payloadk => {
+    //         if (payloadk['checkInId'] !== undefined) {
+    //           let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
+    //           if (isOnList.length > 0) {
+    //             let isOnObj = isOnList[0];
+    //             isOnObj.isOn = true;
+    //             this.employeeService.update(this.loginEmployee).then(payloadu => {
+    //               this.loginEmployee = payloadu;
+    //               if (data['appointment'] !== null) {
+    //                 data['appointment'].subscribe(payloada => {
+    //                   this.selectedAppointment = payloada;
+    //                   console.log(this.selectedAppointment);
+    //                   if (this.selectedAppointment !== undefined) {
+    //                     let isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
+    //                     if (isOnList.length > 0) {
+    //                       let isOn = isOnList[0];
+    //                       let minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
+    //                       if (minorLocationList.length > 0) {
+    //                         this.clinicInteraction.locationName = minorLocationList[0].name;
+    //                         this.clinicInteraction.startAt = new Date();
+    //                         this.clinicInteraction.employee = this.loginEmployee.employeeDetails;
+    //                       }
+    //                     }
+    //                   }
+    //                 }, error => {
+    //                   this.router.navigateByUrl(this.previousUrl);
+    //                 });
+    //               }
+    //             });
+    //           }
 
-            }
+    //         }
 
-          });
+    //       });
 
 
-        }
-      });
-    });
+    //     }
+    //   });
+    // });
   }
   getForms() {
     this.formsService.findAll().then(payload => {
@@ -157,13 +163,23 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     });
   }
   getCurrentUser() {
-    this.userService.find({ query: { personId: this.patient.personId } }).then(payload => {
-      if (payload.data.length > 0) {
-        this.selectedUser = payload.data[0];
-      } else {
-        this.selectedUser = <User>{};
-      }
-    });
+    if (this.patient !== null) {
+      const patient$ = Observable.fromPromise(this.patientService.get(this.patient._id, {}));
+      const user$ = Observable.fromPromise(this.userService.find({ query: { personId: this.patient.personId } }));
+      Observable.forkJoin([patient$, user$]).subscribe((results: any) => {
+        this.patient = results[0];
+        this.selectedUser = results[1];
+
+      })
+    }
+
+    // this.userService.find({ query: { personId: this.patient.personId } }).then(payload => {
+    //   if (payload.data.length > 0) {
+    //     this.selectedUser = payload.data[0];
+    //   } else {
+    //     this.selectedUser = <User>{};
+    //   }
+    // });
   }
   navEpDetail(val: Patient) {
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', val.personId]);

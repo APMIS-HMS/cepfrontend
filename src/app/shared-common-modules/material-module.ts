@@ -25,7 +25,8 @@ import { StoreCheckInComponent } from '../shared-module/store-check-in/store-che
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
-import { ToastyModule } from 'ng2-toasty'
+import { ToastyModule } from 'ng2-toasty';
+
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
         LogoUpdateComponent,
@@ -35,7 +36,9 @@ import { ToastyModule } from 'ng2-toasty'
         PatientPrescriptionComponent,
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
-        ImageUpdateComponent],
+        ImageUpdateComponent,
+        //  SurveyComponent, SurveyEditorComponent
+    ],
     exports: [
         MdNativeDateModule,
         MdDatepickerModule,
@@ -72,7 +75,8 @@ import { ToastyModule } from 'ng2-toasty'
         ToastModule,
         CoolStorageModule,
         MdErrorDirective,
-        ToastyModule
+        ToastyModule,
+        // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
         MdNativeDateModule,

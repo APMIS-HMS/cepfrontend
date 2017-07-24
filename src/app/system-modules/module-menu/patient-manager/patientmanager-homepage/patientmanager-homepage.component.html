@@ -26,11 +26,11 @@
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Email</span>
             </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+            <!-- <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> -->
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Address</span>
-            </th>
+                <!-- <span style="padding-left: 3px;">Address</span>
+            </th> -->
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
@@ -64,7 +64,7 @@
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.phoneNumber}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.email}}</td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td>
+            <!-- <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td> -->
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.dateOfBirth | date}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.apmisId}}</td>
             <td>

@@ -7,7 +7,7 @@ import {
     PrescriptionPriorityService, DictionariesService, BillingService,
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, Prescription, PrescriptionItem, BillItem, BillIGroup } from '../../../../../models/index';
+import { Appointment, Facility, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed } from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 
@@ -108,6 +108,11 @@ export class PatientPrescriptionComponent implements OnInit {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._notification('Info', 'Clinic has not been set!');
             } else {
+                const dispensed: Dispensed = {
+                    totalQtyDispensed: 0,
+                    outstandingBalance: 0,
+                    dispensedArray: []
+                };
                 const prescriptionItem = <PrescriptionItem>{
                     genericName: value.drug,
                     routeName: value.route,
@@ -123,7 +128,8 @@ export class PatientPrescriptionComponent implements OnInit {
                     totalCost: 0,
                     isExternal: false,
                     initiateBill: false,
-                    isBilled: false
+                    isBilled: false,
+                    dispensed: dispensed
                 };
 
                 this.addPrescriptionShow = true;
@@ -253,7 +259,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 if(res.ingredients.length > 0) {
                     this.selectedForm = res.form;
                     this.selectedIngredients = res.ingredients;
-                    let drugName: string = '';
+                    let drugName: string = res.form + ' ';
                     let strength: string = '';
                     let ingredientLength: number = res.ingredients.length;
                     let index: number = 0;
@@ -266,11 +272,6 @@ export class PatientPrescriptionComponent implements OnInit {
                             drugName += '/';
                             strength += '/';
                         }
-
-                        if(index === ingredientLength) {
-                            drugName += ' ' + res.form;
-                        }
-
                     });
                     this.addPrescriptionForm.controls['drug'].setValue(drugName);
                     this.addPrescriptionForm.controls['strength'].setValue(strength);

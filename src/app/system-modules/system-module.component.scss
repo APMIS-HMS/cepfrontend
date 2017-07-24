@@ -117,11 +117,13 @@
     text-decoration: underline;
 }
 .inRoom {
+    position: absolute;
     font-size: 10px;
     width: 100%;
     text-align: center;
     background: #aaa;
     color: #fff;
+    top: 17px;
 }
 .roomLabel {
     font-style: italic;

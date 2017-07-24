@@ -1,6 +1,6 @@
  <div class="preTbl-topItems-wrap">
     <ul class="topmenuwrap">
-        <li (click)="close_onClick()">
+        <li (click)="modal_onClick()">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
             <span>Add Investigation</span>
         </li>
@@ -11,7 +11,7 @@
       <table class="points_table">
       <thead>
         <tr>
-          <th class="col-xs-3">Minor Location</th>
+          <th class="col-xs-3">Lab Name</th>
           <th class="col-xs-3">Workbench</th>
           <th class="col-xs-3">Investigation</th>
           <th class="col-xs-2">Price</th>
@@ -33,6 +33,7 @@
             <div>N 2,000</div>
           </td>
           <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
+            <span>Inactive</span>
           </td>
         </tr> 
         <tr>
@@ -49,6 +50,7 @@
             <div>N 20,000</div>
           </td>
           <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
+            <span>Active</span>
           </td>
         </tr>              
       </tbody>
@@ -88,3 +90,47 @@
         </div>
     </div>
   </div>-->
+
+  <!-- add manage lab -->
+  <div *ngIf = "openModal" class="survery">
+    <div class="cover-edit">
+    <form class="form-signin">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                  <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
+                  <legend class="modal_title">Add Lab</legend>
+                    <form class="form form-signup" role="form">
+                        <md-select placeholder="Select Lab Name" [(ngModel)]="selectedValue" name="food">
+                          <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </md-option>
+                        </md-select>
+                        <md-select placeholder="Select bench" [(ngModel)]="selectedValue" name="food">
+                          <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </md-option>
+                        </md-select>
+                        <md-select placeholder="Select investigation" [(ngModel)]="selectedValue" name="food">
+                          <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </md-option>
+                        </md-select>
+                        <md-input-container class="example-full-width">
+                        <input type="number" mdInput placeholder="Set Price">
+                      </md-input-container>
+                      <md-checkbox>isActive?</md-checkbox>
+                       <div class="text-center">
+                          <button class="apmis-blue" md-raised-button>Add</button>
+                      </div>
+                    </form>
+                  </div>      
+                </div>
+              </div>
+            </div>
+        </div>
+    </form>
+    </div>
+  </div>

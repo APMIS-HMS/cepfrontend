@@ -26,6 +26,11 @@
             <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();"> Save </button>
         </div>
     </div>
+    <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
+        <div class="col-sm-12 col-md-12" style="float: right;">
+            <button class="refresh-payment" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+        </div>
+    </div>
     <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
         <b>Prescribed items to dispense</b>
     </div>
@@ -117,14 +122,16 @@
                                         </md-input-container>
                                     </td>
                                     <td class="table-content">
-                                        <button md-raised-button [disabled]="prescription.quantity === prescription.quantityDispensed" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)"> Dispense </button>
+                                        <button md-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
                                     </td>
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && !batchLoading">
                                     <td class="table-content" colspan="5" style="text-align: center"> No batch available, please bring items into store</td>
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && batchLoading">
-                                    <td class="table-content" colspan="5" style="text-align: center"><i class="fa fa-spinner fa-spin fa-2x"></i></td>
+                                    <td class="table-content" colspan="5" style="text-align: center">
+                                        <md-spinner class='small-spinner'></md-spinner>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

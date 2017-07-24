@@ -20,14 +20,17 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { UpdateImgComponent } from './update-img/update-img.component';
 import { ExternalPrescriptionComponent } from './patientmanager-detailpage/external-prescription/external-prescription.component';
 import { DocumentationComponent } from './patientmanager-detailpage/documentation/documentation.component';
+// tslint:disable-next-line:max-line-length
 import { DocumentationDetailComponent } from './patientmanager-detailpage/documentation/documentation-detail/documentation-detail.component';
 import { ClinicalNoteComponent } from './patientmanager-detailpage/documentation/clinical-note/clinical-note.component';
 import { AddPatientProblemComponent } from './patientmanager-detailpage/documentation/add-patient-problem/add-patient-problem.component';
 import { AddAllergyComponent } from './patientmanager-detailpage/documentation/add-allergy/add-allergy.component';
-//import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
-//import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { AddHistoryComponent } from './patientmanager-detailpage/documentation/add-history/add-history.component';
+import { FormTypeService } from '../../../services/module-manager/setup/index';
+import { SurveyComponent } from '../../../shared-module/form-generator/survey.component';
+import { SurveyEditorComponent } from '../../../shared-module/form-generator/survey.editor.component';
+import { SharedService } from '../../../shared-module/shared.service';
 
 @NgModule({
     declarations: [
@@ -48,9 +51,9 @@ import { AddHistoryComponent } from './patientmanager-detailpage/documentation/a
         ClinicalNoteComponent,
         AddPatientProblemComponent,
         AddAllergyComponent,
-        AddHistoryComponent
-        //BillPrescriptionComponent,
-        //AddPrescriptionComponent
+        AddHistoryComponent,
+        SurveyComponent,
+        SurveyEditorComponent
     ],
     exports: [
     ],
@@ -64,7 +67,8 @@ import { AddHistoryComponent } from './patientmanager-detailpage/documentation/a
         AngularDraggableModule,
         MaterialModule
     ],
-    providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FormsService]
+    providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
+        FormsService, FormTypeService, SharedService]
 })
 export class PatientManagerModule { }
 

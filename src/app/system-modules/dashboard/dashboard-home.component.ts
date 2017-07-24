@@ -67,10 +67,13 @@ export class DashboardHomeComponent implements OnInit {
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
     }
-
-
-    this.loadIndicatorVisible = true;
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     const auth = <any>this.locker.getObject('auth');
+    if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+      return;
+    }
+    this.loadIndicatorVisible = true;
+
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
         facilityId: this.facilityObj._id, personId: auth.data.personId, showbasicinfo: true

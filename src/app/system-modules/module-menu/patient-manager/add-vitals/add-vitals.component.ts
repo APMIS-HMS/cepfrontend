@@ -160,12 +160,12 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
       console.log(vitalValue);
-      this.documentation.facilityId = this.selectedFacility._id;
-      this.documentation.patientId = this.patientId;
+      // this.documentation.facilityId = this.selectedFacility._id;
+      // this.documentation.patientId = this.patientId;
       
-      this.documentation.createdBy = this.loginedUser._id;
-      console.log(this.loginedUser._id);
-      this.documentation.document = vitalValue;
+      // this.documentation.createdBy = this.loginedUser._id;
+      // console.log(this.loginedUser._id);
+      // this.documentation.document = vitalValue;
       
 
       this.documentationService.create(this.documentation).then(payload => {

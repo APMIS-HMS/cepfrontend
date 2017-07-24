@@ -13,6 +13,7 @@ export interface PrescriptionItem {
     quantity?: number;
     quantityDispensed?: number;
     dispensedBalance?: number;
+    dispensed?: Dispensed;
     paymentCompleted?: boolean;
     patientInstruction: string;
     isRefill?: Boolean;
@@ -26,4 +27,21 @@ export interface PrescriptionItem {
     serviceId?: string;
     facilityServiceId?: string;
     categoryId?: string;
+}
+
+export interface Dispensed {
+    totalQtyDispensed: number;
+	outstandingBalance: number;
+	dispensedArray?: DispensedArray[];
+}
+
+export interface DispensedArray {
+    orderIndex: number; // unique
+    dispensedDate: Date; // Date time
+    batchNumber: String;
+    qty: number;
+    employeeName: string;
+    storeName: string;
+    unitBilledPrice: number;
+    totalAmount: number;
 }

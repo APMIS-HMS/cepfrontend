@@ -11,7 +11,7 @@ ul.topmenuwrap {
     right: 0;
     font-size: 12px;
     background: #fff;
-    width: 350px;
+    width: 650px;
     z-index: 10000;
     height: 100vh;
     overflow-y: scroll;
@@ -20,7 +20,7 @@ ul.topmenuwrap {
     overflow: hidden;
 }
 .inv-container {
-    max-height: 400px;
+    max-height: auto;
     border: 2px solid #f5f5f5;
     margin: 10px 0;
     background: transparent;
@@ -47,4 +47,18 @@ ul.topmenuwrap {
 }
 .arrow a {
     color: #ff2500;
+}
+#topmenuwarap-1 {
+    right: 145px;
+}
+.list-container {
+    height: auto;
+}
+.fa-close {
+    color: red !important;
+    font-size: 16px;
+    margin-right: 6px;
+}
+span:hover {
+    cursor: pointer;
 }

@@ -11,21 +11,21 @@
         <form [formGroup]="frmNewUnit" novalidate>
 
             <div class="frm-item-wrap">
-                <i class="fa fa-building-o" aria-hidden="true"></i>
+                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
                 <md-input-container class="example-full-width">
                     <input mdInput formControlName="unitName" placeholder="Unit Name" autocomplete="off">
                 </md-input-container>
             </div>
 
             <div class="frm-item-wrap">
-                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
                 <md-input-container class="example-full-width">
                     <input mdInput formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
                 </md-input-container>
             </div>
 
             <div class="frm-item-wrap">
-                <i class="fa fa-object-group" aria-hidden="true"></i>
+                <!-- <i class="fa fa-object-group" aria-hidden="true"></i> -->
                 <md-select formControlName="unitParent">
                     <md-option  value="null" disabled selected>Select parent department</md-option>
                     <md-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</md-option>
@@ -48,11 +48,11 @@
                                             <input mdInput [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
                                         </md-input-container>
                                     </div>
-                                    <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
+                                    <!-- <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
                                         <md-input-container class="example-full-width">
                                             <input mdInput type="number" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicCapacity" placeholder="Daily Patient Capacity" autocomplete="off">
                                         </md-input-container>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(clinic,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                             </div>
@@ -80,7 +80,7 @@
             </md-input-container>
             </div>
              <div class="example-full-width" id="example-full-width">
-             <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" md-raised-button> CREATE UNIT</button>
+             <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" md-raised-button> {{btnText}}</button>
              </div>
 
         </form>

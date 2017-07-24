@@ -118,9 +118,9 @@
 
     <div class="timeline-headwrap">
         <div class="timelinehead-contentWrap">
-            <div class="timelinePatient-imgWrap"><img [src]="facilityService.transform(selectedCheckedInAppointment?.employeeDetails?.employeeDetails?.profileImageObject?.detailthumbnail)"></div>
+            <div class="timelinePatient-imgWrap"><img [src]="facilityService.transform(selectedCheckedInAppointment?.patientId.personDetails?.profileImageObject?.detailthumbnail)"></div>
             <div class="patientLabelGroup">
-                <div class="patientName">{{selectedCheckedInAppointment?.employeeDetails.employeeDetails.lastName}} {{selectedCheckedInAppointment?.employeeDetails.employeeDetails.firstName}}</div>
+                <div class="patientName">{{selectedCheckedInAppointment?.patientId.personDetails.lastName}} {{selectedCheckedInAppointment?.patientId.personDetails.firstName}}</div>
                 <div class="label">(Clinical Activity Timeline)</div>
             </div>
         </div>
