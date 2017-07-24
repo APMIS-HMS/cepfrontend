@@ -26,6 +26,33 @@
               </thead>
               <tbody class="points_table_scrollbar">
                 <tr>
+                  <td colspan="6">
+                  <div class="survery">
+                    <div class="col-sm-4">
+                      <md-select placeholder="Investigations" [(ngModel)]="selectedValue" name="food">
+                        <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </md-option>
+                        </md-select>
+                    </div>
+                    <div class="col-sm-4">
+                      <md-select placeholder="Report Type" [(ngModel)]="selectedValue" name="food">
+                        <md-option *ngFor="let food of foods" [value]="food.value">
+                          {{food.viewValue}}
+                        </md-option>
+                      </md-select>
+                    </div>
+                    <div class="col-sm-4">
+                      <md-select placeholder="Specimen" [(ngModel)]="selectedValue" name="food">
+                        <md-option *ngFor="let food of foods" [value]="food.value">
+                          {{food.viewValue}}
+                        </md-option>
+                      </md-select>
+                    </div>
+                  </div>
+                  </td>
+                </tr>
+                <tr>
                   <td class="col-xs-3">
                     <div>Lab name</div>
                   </td>
