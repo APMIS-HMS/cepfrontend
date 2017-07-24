@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { Facility, Patient, Employee, Documentation, PersonDocumentation, Document } from '../../../../../../models/index';
+import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
 
 @Component({

@@ -43,7 +43,6 @@ export class NewUnitComponent implements OnInit {
         }
       })
     });
-    // this.getFacility();
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
     this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
@@ -55,14 +54,6 @@ export class NewUnitComponent implements OnInit {
         this.mainErrClinic = true;
         this.errMsgClinic = '';
       });
-    // this.frmNewUnit = this.formBuilder.group({
-    //   unitName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-    //   unitAlias: ['', [<any>Validators.minLength(2)]],
-    //   unitParent: ['', [<any>Validators.required]],
-    //   isClinic: [false, []],
-    //   clinicCapacity: ['', []],
-    //   unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
-    // });
     if (this.unit !== undefined && this.unit._id !== undefined) {
       this.btnText = 'UPDATE UNIT';
       this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
@@ -75,12 +66,7 @@ export class NewUnitComponent implements OnInit {
           (<FormArray>this.clinicForm.controls['clinicArray']).push(
             this.formBuilder.group({
               clinicName: [clinic.clinicName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-              'readonly': [true],
-              // day: [itemi.day, [<any>Validators.required]],
-              // startTime: [time, [<any>Validators.required]],
-              // endTime: [etime, [<any>Validators.required]],
-              // location: [this.clinicLocations.filter(x => x._id === itemi.location._id)[0], [<any>Validators.required]],
-              // readOnly: [true]
+              'readonly': [true]
             })
           );
         })
@@ -159,32 +145,35 @@ export class NewUnitComponent implements OnInit {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
       } else {
-        const id = this.department._id;
-        const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
-        console.log(clinics);
-        const clinicList = [];
-        clinics.forEach((itemi, i) => {
-          clinicList.push(itemi.value);
-        });
-        this.facilityObj.departments.forEach(function (item, i) {
-          if (item._id === id) {
-            item.units.push({
-              name: val.unitName,
-              shortName: val.unitAlias,
-              description: val.unitDesc,
-              clinics: clinicList
-            });
-          }
-        });
-        this.facilityService.update(this.facilityObj).then((payload) => {
-          this.facilityObj = payload;
-          // this.addNew();
-          this.frmNewUnit.controls['isClinic'].reset(false);
-          this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
-          this.frmNewUnit.reset();
-        })
+        if (this.unit._id === undefined) {
+          const id = this.department._id;
+          const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
+          console.log(clinics);
+          const clinicList = [];
+          clinics.forEach((itemi, i) => {
+            clinicList.push(itemi.value);
+          });
+          this.facilityObj.departments.forEach(function (item, i) {
+            if (item._id === id) {
+              item.units.push({
+                name: val.unitName,
+                shortName: val.unitAlias,
+                description: val.unitDesc,
+                clinics: clinicList
+              });
+            }
+          });
+          this.facilityService.update(this.facilityObj).then((payload) => {
+            this.facilityObj = payload;
+            this.frmNewUnit.controls['isClinic'].reset(false);
+            this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
+            this.frmNewUnit.reset();
+          })
 
-        this.mainErr = true;
+          this.mainErr = true;
+        } else {
+          console.log(val);
+        }
       }
     } else {
       this.mainErr = false;

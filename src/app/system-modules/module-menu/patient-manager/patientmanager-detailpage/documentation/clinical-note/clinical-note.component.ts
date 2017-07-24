@@ -4,7 +4,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../../services/module-manager/setup/index';
-import { Facility, Patient, Employee, Documentation, PersonDocumentation, Document } from '../../../../../../models/index';
+import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../../shared-module/shared.service';

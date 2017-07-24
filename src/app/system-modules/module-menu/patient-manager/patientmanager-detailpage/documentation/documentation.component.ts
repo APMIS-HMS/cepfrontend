@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../services/module-manager/setup/index';
-import { Facility, Patient, Employee, Documentation, PersonDocumentation, Document } from '../../../../../models/index';
+import { Facility, Patient, Employee, Documentation, PatientDocumentation } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../shared-module/shared.service';
@@ -21,9 +21,9 @@ export class DocumentationComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
-  selectedDocument: Document = <Document>{};
-  personDocumentation: Documentation = <Documentation>{};
-  documents: Document[] = [];
+  selectedDocument: PatientDocumentation = <PatientDocumentation>{};
+  patientDocumentation: Documentation = <Documentation>{};
+  documents: PatientDocumentation[] = [];
 
   constructor(private formService: FormsService, private locker: CoolSessionStorage,
     private documentationService: DocumentationService,
@@ -32,14 +32,14 @@ export class DocumentationComponent implements OnInit {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
     this.sharedService.submitForm$.subscribe(payload => {
-      const doc: Document = <Document>{};
-      doc.document = {
+      const doc: PatientDocumentation = <PatientDocumentation>{};
+      doc.documentation = {
         documentType: this.selectedForm,
         body: payload
       };
       doc.createdBy = this.loginEmployee;
-      this.personDocumentation.documentations[0].documents.push(doc);
-      this.documentationService.update(this.personDocumentation).then(pay => {
+      this.patientDocumentation.documentations.push(doc);
+      this.documentationService.update(this.patientDocumentation).then(pay => {
         console.log(pay);
         this.getPersonDocumentation();
       })
@@ -52,16 +52,17 @@ export class DocumentationComponent implements OnInit {
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
-        this.personDocumentation.personId = this.patient.personDetails
-        const pDocumentation: PersonDocumentation = <PersonDocumentation>{};
-        pDocumentation.facilityId = this.selectedFacility;
-        pDocumentation.patientId = this.patient._id;
-        // pDocumentation.documents
-        this.personDocumentation.documentations = [];
-        this.personDocumentation.documentations.push(pDocumentation);
-        this.documentationService.create(this.personDocumentation).subscribe(pload => {
-          this.personDocumentation = pload;
-          console.log(this.personDocumentation);
+        this.patientDocumentation.personId = this.patient.personDetails;
+        this.patientDocumentation.documentations = [];
+        // const pDocumentation: PatientDocumentation = <PatientDocumentation>{};
+        // pDocumentation.facilityId = this.selectedFacility;
+        // pDocumentation.patientId = this.patient._id;
+
+        // this.patientDocumentation.documentations = [];
+        // this.patientDocumentation.documentations.push(pDocumentation);
+        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
+          this.patientDocumentation = pload;
+          console.log(this.patientDocumentation);
         })
       } else {
         this.documentationService.find({
@@ -72,9 +73,9 @@ export class DocumentationComponent implements OnInit {
           }
         }).subscribe((mload: any) => {
           if (mload.data.length > 0) {
-            this.personDocumentation = mload.data[0];
+            this.patientDocumentation = mload.data[0];
             this.populateDocuments();
-            console.log(this.personDocumentation);
+            console.log(this.patientDocumentation);
             // mload.data[0].documentations[0].documents.push(doct);
           }
         })
@@ -84,10 +85,8 @@ export class DocumentationComponent implements OnInit {
   }
   populateDocuments() {
     this.documents = [];
-    this.personDocumentation.documentations.forEach(documentation => {
-      documentation.documents.forEach(document => {
-        this.documents.push(document);
-      });
+    this.patientDocumentation.documentations.forEach(documentation => {
+      this.documents.push(documentation);
     });
     this.documents.reverse();
   }

@@ -80,5 +80,5 @@ export * from './facility-manager/setup/dispense-item';
 export * from './facility-manager/setup/dispense-by-prescription';
 export * from './facility-manager/setup/dispense-by-noprescription';
 export * from './facility-manager/setup/medication-list';
-export * from './facility-manager/setup/person-documentation';
+export * from './facility-manager/setup/patient-documentation';
 export * from './facility-manager/setup/document';
