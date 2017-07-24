@@ -75,7 +75,7 @@
     </ul>
   </div>
   <div class="doc-rArea">
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Problems</span>
         <i (click)="addProblem_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
@@ -87,7 +87,7 @@
           <div class="rAreaCard-content">Other disorders of thyroid</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
 
-          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
             <table cellpadding="0" cellspacing="0" border="0.5">
               <thead>
                   <tr>
@@ -136,7 +136,7 @@
           <div class="rAreaCard-content">Secondary Diabetes Milletus</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
 
-          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
             <table cellpadding="0" cellspacing="0" border="0.5">
               <thead>
                   <tr>
@@ -183,7 +183,7 @@
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Allergies</span>
         <i (click)="addAllergy_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
@@ -194,7 +194,7 @@
           <div class="rAreaCard-content">Penicillin</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
 
-          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
             <table cellpadding="0" cellspacing="0" border="0.5">
               <thead>
                   <tr>
@@ -232,7 +232,7 @@
           <div class="rAreaCard-content">Cat</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
 
-          <div class="rAreaCard-detailWrap shadow" style="min-width:500px;">
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
             <table cellpadding="0" cellspacing="0" border="0.5">
               <thead>
                   <tr>
@@ -269,99 +269,337 @@
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Medication History</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Medication</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Refills</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Instruction</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Date</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Penicillin</td>
+                      <td>2</td>
+                      <td>Take 1 a day</td>
+                      <td>11th Oct, 2016.</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Diclofenac</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Medication</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Refills</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Instruction</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Date</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Diclofenac</td>
+                      <td>2</td>
+                      <td>Take 1 a day</td>
+                      <td>11th Oct, 2016.</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
-        <span class="header-label">Current Medication</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <span class="header-label">Active Medication</span>
+        <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Allergy</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reaction</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Note</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Penicillin</td>
+                      <td>Hives</td>
+                      <td>Was allergic since a child</td>
+                  </tr>
+                  <!-- <tr *ngIf="patients.length === 0 && !loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                  </tr>
+                  <tr *ngIf="patients.length === 0 && loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                          <md-spinner class="small-spinner"></md-spinner>
+                      </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
         </li>
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Diclofenac</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Allergy</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reaction</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Note</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Penicillin</td>
+                      <td>Hives</td>
+                      <td>Was allergic since a child</td>
+                  </tr>
+                  <!-- <tr *ngIf="patients.length === 0 && !loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                  </tr>
+                  <tr *ngIf="patients.length === 0 && loading">
+                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                          <md-spinner class="small-spinner"></md-spinner>
+                      </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Family History</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <i (click)="addHistory_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Diabetes</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">History</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Diabetes</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
         <li class="rAreaCard-item">
           <div class="rAreaCard-content">Cancer</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">History</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Cancer</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Investigation</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
-          <div class="rAreaCard-status rAreaCard-active">Active</div>
-          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-status rAreaCard-active">Available</div>
+          <div class="rAreaCard-content">Blood Count</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Investigation</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Result</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Date</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>Blood Count</td>
+                      <td>Available</td>
+                      <td>11th October, 2016.</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
         <li class="rAreaCard-item">
-          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
-          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-status rAreaCard-inactive">Not Available</div>
+          <div class="rAreaCard-content">HIV Test</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Investigation</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Result</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Date</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>HIV Test</td>
+                      <td>Not Available</td>
+                      <td>11th October, 2016.</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Vitals</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <i (click)="addVitals_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
-          <div class="rAreaCard-content">Diabetes</div>
+          <div class="rAreaCard-content">EMT Clinic - Continental Hospital</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
-        </li>
-        <li class="rAreaCard-item">
-          <div class="rAreaCard-content">Cancer</div>
-          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Vitals</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Facility</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Date</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Past Appointments</span>
         <i class="header-cta fa fa-plus" aria-hidden="true"></i>
@@ -381,7 +619,7 @@
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Future Appointments</span>
         <i class="header-cta fa fa-plus" aria-hidden="true"></i>
@@ -401,7 +639,7 @@
       </ul>
     </div>
 
-    <div class="rArea-card">
+    <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Special Instructions</span>
         <i class="header-cta fa fa-plus" aria-hidden="true"></i>
@@ -421,7 +659,6 @@
       </ul>
     </div>
   </div>
-</div>
 
 <div *ngIf="docDetail_view" class="modal-overlay">
   <app-documentation-detail [document] ="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
@@ -433,4 +670,12 @@
 
 <div *ngIf="addAllergy_view" class="modal-overlay">
   <app-add-allergy (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
+</div>
+
+<div *ngIf="addHistory_view" class="modal-overlay">
+  <app-add-history (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-history>
+</div>
+
+<div *ngIf="addVitals_view" class="modal-overlay">
+  <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
 </div>

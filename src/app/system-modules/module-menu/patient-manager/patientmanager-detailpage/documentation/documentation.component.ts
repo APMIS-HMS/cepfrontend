@@ -17,6 +17,8 @@ export class DocumentationComponent implements OnInit {
   clinicalNote_view = false;
   addProblem_view = false;
   addAllergy_view = false;
+  addHistory_view = false;
+  addVitals_view = false;
 
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -114,12 +116,20 @@ export class DocumentationComponent implements OnInit {
   addAllergy_show() {
     this.addAllergy_view = true;
   }
+  addHistory_show(){
+    this.addHistory_view = true;
+  }
+  addVitals_show(){
+    this.addVitals_view = true;
+  }
 
   close_onClick(message: boolean): void {
     this.docDetail_view = false;
     this.clinicalNote_view = false;
     this.addProblem_view = false;
     this.addAllergy_view = false;
+    this.addHistory_view = false;
+    this.addVitals_view = false;
   }
 
 }
