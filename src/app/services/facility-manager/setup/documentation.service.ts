@@ -24,7 +24,7 @@ export class DocumentationService {
     this._socket.on('created', function (documentation) {
     });
   }
-transform(url) {
+  transform(url) {
     url = this._restService.getHost() + '/' + url + '?' + new Date().getTime();
     // return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
@@ -50,7 +50,9 @@ transform(url) {
   create(vital: any) {
     return this._socket.create(vital);
   }
-
+  update(document: any) {
+    return this._socket.update(document._id, document);
+  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

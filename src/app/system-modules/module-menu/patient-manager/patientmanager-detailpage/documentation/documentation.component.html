@@ -1,6 +1,6 @@
 <div class="pg-subtitle">DOCUMENTATION</div>
 
-<div class="doc-mainWrap">
+<div class=" survery doc-mainWrap" id="survery">
   <div class="doc-contentArea">
     
     <div class="clinicalNoteWrap">
@@ -12,22 +12,22 @@
         </div>
       </div>
 
-      <app-clinical-note *ngIf="clinicalNote_view" ></app-clinical-note>
+      <app-clinical-note [patient]="patient" *ngIf="clinicalNote_view" ></app-clinical-note>
     </div>
 
     <ul class="doc-cardWrap">
       
-      <li class="doc-card shadow">
+      <li class="doc-card shadow" *ngFor="let document of documents">
         <div class="docCard-header">
           
           <div class="empWrap">
             <div class="list-img">
-                <img src="assets/images/users/default.png">
-                <!-- <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div> -->
+                <img *ngIf="document?.createdBy?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                 <div *ngIf="document?.createdBy?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(document?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)"></div> 
             </div>
             <div>
               <div class="val-tag">Practitioner</div>
-              <div class="list-label">Jonathan Nelson</div>
+              <div class="list-label">{{document?.createdBy?.employeeDetails?.personFullName}}</div>
             </div>
           </div>
 
@@ -39,11 +39,11 @@
 
           <div>
             <div class="val-tag">Date/Time</div>
-            <div class="list-label">11th July, 2017. <span class="time">12:02pm</span></div>
+            <div class="list-label">{{document.createdAt | date:'shortDate'}}. <span class="time">{{document.createdAt | date:'shortTime'}}</span></div>
           </div>
 
           <ul class="topmenuwrap">
-              <li (click)="docDetail_show()">
+              <li (click)="docDetail_show(document)">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   <span>View</span>
               </li>
@@ -61,141 +61,17 @@
           <div class="cardSect-wrap">
 
             <div class="card-sect">
-              <div class="docCard-sectTitle">Clinical Documentation</div>
+              <div class="docCard-sectTitle">{{document?.documentType?.title}}</div>
               <div class="docCard-sectContent">
-                using 'Content here, lved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+               {{document?.body | json}}
               </div>
             </div>
           </div>
           
         </div>
 
-        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+        <div class="docCard-foot"><i (click)="docDetail_show(document)" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
       </li>   
-      
-      <li class="doc-card shadow">
-        <div class="docCard-header">
-          
-          <div class="empWrap">
-            <div class="list-img">
-                <img src="assets/images/users/default.png">
-                <!-- <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div> -->
-            </div>
-            <div>
-              <div class="val-tag">Practitioner</div>
-              <div class="list-label">Jonathan Nelson</div>
-            </div>
-          </div>
-
-          <div>
-            <div class="val-tag">Status</div>
-            <div class="list-label">Completed</div>
-          </div>
-          
-          <div>
-            <div class="val-tag">Date/Time</div>
-            <div class="list-label">11th July, 2017. <span class="time">12:02pm</span></div>
-          </div>
-
-          <ul class="topmenuwrap">
-              <li (click)="docDetail_show()">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                  <span>View</span>
-              </li>
-          </ul>
-
-        </div>
-
-        <div class="docCard-body">
-          <div class="cardSect-wrap">
-            <div class="card-sect">
-              <div class="docCard-sectTitle">Vitals</div>
-              <div class="docCard-sectContent">
-                using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </div>
-            </div>
-
-            <div class="card-sect">
-              <div class="docCard-sectTitle">Clinical Documentation</div>
-              <div class="docCard-sectContent">
-                using 'Content here, content here', mop publishin sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </div>
-            </div>
-
-            <div class="card-sect">
-              <div class="docCard-sectTitle">Alergies</div>
-              <div class="docCard-sectContent">
-                using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </div>
-            </div>
-          </div>
-          
-        </div>
-
-        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
-      </li>
-
-      <li class="doc-card shadow">
-        <div class="docCard-header">
-          
-          <div class="empWrap">
-            <div class="list-img">
-                <img src="assets/images/users/default.png">
-                <!-- <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div> -->
-            </div>
-            <div>
-              <div class="val-tag">Practitioner</div>
-              <div class="list-label">Jonathan Nelson</div>
-            </div>
-          </div>
-
-          <div>
-            <div class="val-tag">Status</div>
-            <div class="list-label">Completed</div>
-          </div>
-          
-          <div>
-            <div class="val-tag">Date/Time</div>
-            <div class="list-label">11th July, 2017. <span class="time">12:02pm</span></div>
-          </div>
-
-          <ul class="topmenuwrap">
-              <li (click)="docDetail_show()">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                  <span>View</span>
-              </li>
-          </ul>
-
-        </div>
-
-        <div class="docCard-body">
-          <div class="cardSect-wrap">
-            <div class="card-sect">
-              <div class="docCard-sectTitle">Vitals</div>
-              <div class="docCard-sectContent">
-                using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </div>
-            </div>
-
-            <div class="card-sect">
-              <div class="docCard-sectTitle">Clinical Documentation</div>
-              <div class="docCard-sectContent">
-                using 'Content here, content here', mop publishin sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </div>
-            </div>
-
-            <div class="card-sect">
-              <div class="docCard-sectTitle">Alergies</div>
-              <div class="docCard-sectContent">
-                using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </div>
-            </div>
-          </div>
-          
-        </div>
-
-        <div class="docCard-foot"><i (click)="docDetail_show()" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
-      </li>
     </ul>
   </div>
   <div class="doc-rArea">
@@ -548,7 +424,7 @@
 </div>
 
 <div *ngIf="docDetail_view" class="modal-overlay">
-  <app-documentation-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+  <app-documentation-detail [document] ="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
 </div>
 
 <div *ngIf="addProblem_view" class="modal-overlay">

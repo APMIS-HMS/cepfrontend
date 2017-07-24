@@ -11,6 +11,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 })
 export class NewUnitComponent implements OnInit {
   @Input() department: Department;
+  @Input() unit: any;
   deptsObj: Department[] = [];
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -18,6 +19,7 @@ export class NewUnitComponent implements OnInit {
   errMsgClinic = 'you have unresolved errors';
 
   isClinic = false;
+  btnText = 'CREATE UNIT';
 
   facilityObj: Facility = <Facility>{};
 
@@ -34,14 +36,14 @@ export class NewUnitComponent implements OnInit {
     this.addNew2();
     this.frmNewUnit.controls['unitParent'].valueChanges.subscribe(payload => {
       this.frmNewUnit.controls['isClinic'].valueChanges.subscribe(value => {
+        console.log(value);
         this.isClinic = value;
-        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
+        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0 && this.unit._id !== undefined) {
           this.addNew2();
         }
       })
     });
-    // this.getFacility();
-    this.facilityObj = <Facility> this.facilityService.getSelectedFacilityId();
+    this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
     this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
 
@@ -52,6 +54,26 @@ export class NewUnitComponent implements OnInit {
         this.mainErrClinic = true;
         this.errMsgClinic = '';
       });
+    if (this.unit !== undefined && this.unit._id !== undefined) {
+      this.btnText = 'UPDATE UNIT';
+      this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
+      this.frmNewUnit.controls['unitAlias'].setValue(this.unit.shortName);
+      this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
+      if (this.unit.clinics.length > 0) {
+        this.frmNewUnit.controls['isClinic'].setValue(true);
+        this.clinicForm.controls['clinicArray'] = new FormArray([]);
+        this.unit.clinics.forEach(clinic => {
+          (<FormArray>this.clinicForm.controls['clinicArray']).push(
+            this.formBuilder.group({
+              clinicName: [clinic.clinicName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+              'readonly': [true]
+            })
+          );
+        })
+      }
+    } else {
+      this.btnText = 'CREATE UNIT';
+    }
   }
   addNew() {
     this.frmNewUnit = this.formBuilder.group({
@@ -105,8 +127,8 @@ export class NewUnitComponent implements OnInit {
               'readonly': [false],
             })
             );
-            this.mainErrClinic = true;
-            this.errMsgClinic = '';
+          this.mainErrClinic = true;
+          this.errMsgClinic = '';
         } else {
           const innerChildren: any = children.value;
         }
@@ -123,32 +145,35 @@ export class NewUnitComponent implements OnInit {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
       } else {
-        const id = this.department._id;
-        const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
-        console.log(clinics);
-        const clinicList = [];
-        clinics.forEach((itemi, i) => {
-          clinicList.push(itemi.value);
-        });
-        this.facilityObj.departments.forEach(function (item, i) {
-          if (item._id === id) {
-            item.units.push({
-              name: val.unitName,
-              shortName: val.unitAlias,
-              description: val.unitDesc,
-              clinics: clinicList
-            });
-          }
-        });
-        this.facilityService.update(this.facilityObj).then((payload) => {
-          this.facilityObj = payload;
-          // this.addNew();
-          this.frmNewUnit.controls['isClinic'].reset(false);
-          this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
-          this.frmNewUnit.reset();
-        })
+        if (this.unit._id === undefined) {
+          const id = this.department._id;
+          const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
+          console.log(clinics);
+          const clinicList = [];
+          clinics.forEach((itemi, i) => {
+            clinicList.push(itemi.value);
+          });
+          this.facilityObj.departments.forEach(function (item, i) {
+            if (item._id === id) {
+              item.units.push({
+                name: val.unitName,
+                shortName: val.unitAlias,
+                description: val.unitDesc,
+                clinics: clinicList
+              });
+            }
+          });
+          this.facilityService.update(this.facilityObj).then((payload) => {
+            this.facilityObj = payload;
+            this.frmNewUnit.controls['isClinic'].reset(false);
+            this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
+            this.frmNewUnit.reset();
+          })
 
-        this.mainErr = true;
+          this.mainErr = true;
+        } else {
+          console.log(val);
+        }
       }
     } else {
       this.mainErr = false;
@@ -157,5 +182,7 @@ export class NewUnitComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+    this.btnText = 'CREATE UNIT';
+    this.unit = <any>{};
   }
 }

@@ -9,105 +9,156 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 
 @Component({
-  selector: 'app-clinic',
-  templateUrl: './clinic.component.html',
-  styleUrls: ['./clinic.component.scss']
+	selector: 'app-clinic',
+	templateUrl: './clinic.component.html',
+	styleUrls: ['./clinic.component.scss']
 })
 export class ClinicComponent implements OnInit, OnDestroy {
 
-  pageInView = 'Clinic Manager';
-  contentSecMenuShow = false;
-  modal_on = false;
+	pageInView = 'Clinic Manager';
+	contentSecMenuShow = false;
+	modal_on = false;
 
 
-  clinicLocations: MinorLocation[] = [];
-  professions: Profession[] = [];
-  loginEmployee: Employee = <Employee>{};
-  selectedProfession: Profession = <Profession>{};
-  clinic: Location = <Location>{};
-  selectedFacility: Facility = <Facility>{};
+	clinicLocations: MinorLocation[] = [];
+	professions: Profession[] = [];
+	loginEmployee: Employee = <Employee>{};
+	selectedProfession: Profession = <Profession>{};
+	clinic: Location = <Location>{};
+	selectedFacility: Facility = <Facility>{};
 
-  isDoctor = false;
-  counter = 0;
+	isDoctor = false;
+	counter = 0;
 
-  constructor(private router: Router, private appointmentService: AppointmentService,
-    private professionService: ProfessionService,
-    private locker: CoolSessionStorage,
-    private route: ActivatedRoute,
-    private employeeService: EmployeeService,
-    public clinicHelperService: ClinicHelperService,
-    private locationService: LocationService) {
+	constructor(private router: Router, private appointmentService: AppointmentService,
+		private professionService: ProfessionService,
+		private locker: CoolSessionStorage,
+		private route: ActivatedRoute,
+		private employeeService: EmployeeService,
+		public clinicHelperService: ClinicHelperService,
+		private locationService: LocationService) {
 
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe(payload => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //   });
-    // });
+		// this.route.data.subscribe(data => {
+		//   data['loginEmployee'].subscribe(payload => {
+		//     this.loginEmployee = payload.loginEmployee;
+		//   });
+		// });
 
-  }
+	}
 
 
-  ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    const auth: any = this.locker.getObject('auth');
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-      }
-    }));
-		emp$.mergeMap((emp: any) => {
-			if (emp.data.length > 0) {
-				return Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-				]);
-			} else {
-				return Observable.of(undefined);
-			}
-		})
-			.subscribe((results: any) => {
-				this.loginEmployee = results[0];
-				this.clinicHelperService.getClinicMajorLocation();
-				if (this.loginEmployee.professionObject !== undefined) {
-					if (this.loginEmployee.professionObject.name === 'Doctor'
-						&& (this.loginEmployee.consultingRoomCheckIn === undefined
-							|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
-						this.modal_on = true;
-					} else if (this.loginEmployee.professionObject.name === 'Doctor') {
-						let isOn = false;
-						this.isDoctor = true;
-						this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
-							if (itemr.isDefault === true) {
-								itemr.isOn = true;
-								itemr.lastLogin = new Date();
-								isOn = true;
-								if (this.counter === 0) {
-									this.employeeService.update(this.loginEmployee).then(payload => {
-										this.loginEmployee = payload;
-										this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
-									});
-								}
-							}
-						});
-						if (isOn === false) {
-							this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
-								if (r === 0) {
-									itemr.isOn = true;
-									itemr.lastLogin = new Date();
-									if (this.counter === 0) {
-										this.employeeService.update(this.loginEmployee).then(payload => {
-											this.loginEmployee = payload;
-											this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
-										});
-									}
-								}
+	ngOnInit() {
+		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+		const auth: any = this.locker.getObject('auth');
 
+
+		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+		this.clinicHelperService.getClinicMajorLocation();
+		if (this.loginEmployee.professionObject !== undefined) {
+			if (this.loginEmployee.professionObject.name === 'Doctor'
+				&& (this.loginEmployee.consultingRoomCheckIn === undefined
+					|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
+				this.modal_on = true;
+			} else if (this.loginEmployee.professionObject.name === 'Doctor') {
+				let isOn = false;
+				this.isDoctor = true;
+				this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+					if (itemr.isDefault === true) {
+						itemr.isOn = true;
+						itemr.lastLogin = new Date();
+						isOn = true;
+						if (this.counter === 0) {
+							this.employeeService.update(this.loginEmployee).then(payload => {
+								this.loginEmployee = payload;
+								this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
+							}, error => {
 							});
 						}
-						this.counter++;
-					} else {
-						this.isDoctor = false;
 					}
+				});
+				if (isOn === false) {
+					this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+						if (r === 0) {
+							itemr.isOn = true;
+							itemr.lastLogin = new Date();
+							if (this.counter === 0) {
+								this.employeeService.update(this.loginEmployee).then(payload => {
+									this.loginEmployee = payload;
+									this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
+								}, error => {
+								});
+							}
+						}
+
+					});
 				}
-			});
+				this.counter++;
+			} else {
+				this.isDoctor = false;
+			}
+		}
+
+
+
+
+		// const emp$ = Observable.fromPromise(this.employeeService.find({
+		//   query: {
+		//     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+		//   }
+		// }));
+		// 	emp$.mergeMap((emp: any) => {
+		// 		if (emp.data.length > 0) {
+		// 			return Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+		// 			]);
+		// 		} else {
+		// 			return Observable.of(undefined);
+		// 		}
+		// 	})
+		// 		.subscribe((results: any) => {
+		// 			this.loginEmployee = results[0];
+		// 			this.clinicHelperService.getClinicMajorLocation();
+		// 			if (this.loginEmployee.professionObject !== undefined) {
+		// 				if (this.loginEmployee.professionObject.name === 'Doctor'
+		// 					&& (this.loginEmployee.consultingRoomCheckIn === undefined
+		// 						|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
+		// 					this.modal_on = true;
+		// 				} else if (this.loginEmployee.professionObject.name === 'Doctor') {
+		// 					let isOn = false;
+		// 					this.isDoctor = true;
+		// 					this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+		// 						if (itemr.isDefault === true) {
+		// 							itemr.isOn = true;
+		// 							itemr.lastLogin = new Date();
+		// 							isOn = true;
+		// 							if (this.counter === 0) {
+		// 								this.employeeService.update(this.loginEmployee).then(payload => {
+		// 									this.loginEmployee = payload;
+		// 									this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
+		// 								});
+		// 							}
+		// 						}
+		// 					});
+		// 					if (isOn === false) {
+		// 						this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+		// 							if (r === 0) {
+		// 								itemr.isOn = true;
+		// 								itemr.lastLogin = new Date();
+		// 								if (this.counter === 0) {
+		// 									this.employeeService.update(this.loginEmployee).then(payload => {
+		// 										this.loginEmployee = payload;
+		// 										this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
+		// 									});
+		// 								}
+		// 							}
+
+		// 						});
+		// 					}
+		// 					this.counter++;
+		// 				} else {
+		// 					this.isDoctor = false;
+		// 				}
+		// 			}
+		// 		});
 
 	}
 

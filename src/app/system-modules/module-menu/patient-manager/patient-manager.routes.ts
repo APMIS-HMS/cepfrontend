@@ -10,9 +10,9 @@ const PATIENTMANAGER_ROUTES: Routes = [
             { path: '', component: PatientManagerComponent },
             { path: 'patient-manager-detail', component: PatientmanagerDetailpageComponent },
             {
-                path: 'patient-manager-detail/:id', component: PatientmanagerDetailpageComponent,
-                resolve: { patient: PatientResolverService, appointment: AppointmentResolverService,
-                loginEmployee: LoginEmployeeResolverService }
+                path: 'patient-manager-detail/:id', component: PatientmanagerDetailpageComponent
+                // resolve: { patient: PatientResolverService, appointment: AppointmentResolverService,
+                // loginEmployee: LoginEmployeeResolverService }
             }
         ]
     }

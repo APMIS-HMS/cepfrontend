@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./investigation-setup.component.scss']
 })
 export class InvestigationSetupComponent implements OnInit {
+  openModal = false;
    foods = [
     {value: 'male', viewValue: 'name select'},
     {value: 'female', viewValue: 'name select'},
@@ -15,5 +16,10 @@ export class InvestigationSetupComponent implements OnInit {
 
   ngOnInit() {
   }
-
+closeModal()  {
+    this.openModal = false;
+  }
+   modal_onClick() {
+    this.openModal = true;
+  }
 }
