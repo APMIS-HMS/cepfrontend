@@ -26,6 +26,8 @@ import { AddPatientProblemComponent } from './patientmanager-detailpage/document
 import { AddAllergyComponent } from './patientmanager-detailpage/documentation/add-allergy/add-allergy.component';
 //import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
 //import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
+import { AngularDraggableModule } from 'angular2-draggable';
+import { AddHistoryComponent } from './patientmanager-detailpage/documentation/add-history/add-history.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +47,8 @@ import { AddAllergyComponent } from './patientmanager-detailpage/documentation/a
         DocumentationDetailComponent,
         ClinicalNoteComponent,
         AddPatientProblemComponent,
-        AddAllergyComponent
+        AddAllergyComponent,
+        AddHistoryComponent
         //BillPrescriptionComponent,
         //AddPrescriptionComponent
     ],
@@ -58,6 +61,7 @@ import { AddAllergyComponent } from './patientmanager-detailpage/documentation/a
         // FormsModule,
         // DatePickerModule,
         patientManagerRoutes,
+        AngularDraggableModule,
         MaterialModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FormsService]

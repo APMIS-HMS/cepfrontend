@@ -219,17 +219,17 @@ ul.topmenuwrap{
     text-align: center;
 }
 .rAreaCard-active{
-    color: #ff2500;
+    color: #0288D1;
 }
 .rAreaCard-inactive{
-    color: #0288D1;
+    color: #ff2500;
 }
 .rAreaCard-detailWrap{
     position: absolute;
     bottom: 0px;
     right: 40%;
     display: none;
-    background: #b3e5fb;
+    background: #fff;
     padding: 10px;
     width: auto;
     border-radius: 10px;
@@ -240,14 +240,14 @@ ul.topmenuwrap{
     }
 }
 .rAreaCard-detailWrap table, td { 
-    border: 0.5px solid #81d4f9;
+    border: 0.5px solid #bebebe;
 }
-.rAreaCard-detailWrap tr:hover {background-color: #4ec2f7}
-.rAreaCard-detailWrap tr:nth-child(even) {background-color: #9adcfa}
+.rAreaCard-detailWrap tr:hover {background-color: #f3f3f3}
+.rAreaCard-detailWrap tr:nth-child(even) {background-color: #f9f9f9}
 .rAreaCard-detailWrap th {
     height: 30px;
-    background: #9adcfa;
-    border: 0.5px solid #81d4f9;
+    background: #f1f1f1;
+    border: 0.5px solid #bebebe;
 }
 .rAreaCard-detailWrap td {
     vertical-align: center;
