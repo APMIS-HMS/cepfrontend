@@ -602,19 +602,65 @@
     <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Past Appointments</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
           <div class="rAreaCard-status rAreaCard-active">Active</div>
-          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-content">10th July, 2017. 10:00am</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
-        </li>
-        <li class="rAreaCard-item">
-          <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
-          <div class="rAreaCard-content">Fever</div>
-          <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Date/Time</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Practitioner</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reason</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>10th April, 2017. 10:00am</td>
+                      <td>
+                        <div class="empWrap">
+                          <div class="list-img">
+                              <img src="assets/images/users/default.png">
+                              <!-- <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>  -->
+                          </div>
+                          <div>
+                              <div class="list-label">John Doe</div>
+                          </div>
+                      </div>
+                      </td>
+                      <td>Follow up appointment for patient's diabetic case</td>
+                  </tr>
+                  <tr>
+                      <td>10th April, 2017. 10:00am</td>
+                      <td>
+                        <div class="empWrap">
+                          <div class="list-img">
+                              <img src="assets/images/users/default.png">
+                              <!-- <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>  -->
+                          </div>
+                          <div>
+                              <div class="list-label">John Doe</div>
+                          </div>
+                      </div>
+                      </td>
+                      <td>Follow up appointment for patient's diabetic case</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
@@ -622,24 +668,126 @@
     <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Future Appointments</span>
-        <i class="header-cta fa fa-plus" aria-hidden="true"></i>
+        <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
       </div>
 
       <ul class="rAreaCard-body">
         <li class="rAreaCard-item">
           <div class="rAreaCard-status rAreaCard-active">Active</div>
-          <div class="rAreaCard-content">Malaria</div>
+          <div class="rAreaCard-content">10th April, 2017. 10:00am</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Date/Time</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Practitioner</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reason</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>10th April, 2017. 10:00am</td>
+                      <td>
+                        <div class="empWrap">
+                          <div class="list-img">
+                              <img src="assets/images/users/default.png">
+                              <!-- <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>  -->
+                          </div>
+                          <div>
+                              <div class="list-label">John Doe</div>
+                          </div>
+                      </div>
+                      </td>
+                      <td>Follow up appointment for patient's diabetic case</td>
+                  </tr>
+                  <tr>
+                      <td>10th April, 2017. 10:00am</td>
+                      <td>
+                        <div class="empWrap">
+                          <div class="list-img">
+                              <img src="assets/images/users/default.png">
+                              <!-- <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>  -->
+                          </div>
+                          <div>
+                              <div class="list-label">John Doe</div>
+                          </div>
+                      </div>
+                      </td>
+                      <td>Follow up appointment for patient's diabetic case</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
         <li class="rAreaCard-item">
           <div class="rAreaCard-status rAreaCard-inactive">Inactive</div>
-          <div class="rAreaCard-content">Fever</div>
+          <div class="rAreaCard-content">31st July, 2017. 08:00am</div>
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
+
+          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+              <thead>
+                  <tr>
+                      <th>
+                          <span style="padding-left: 3px;">Date/Time</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Practitioner</span>
+                      </th>
+                      <th>
+                          <span style="padding-left: 3px;">Reason</span>
+                      </th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>10th April, 2017. 10:00am</td>
+                      <td>
+                        <div class="empWrap">
+                          <div class="list-img">
+                              <img src="assets/images/users/default.png">
+                              <!-- <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>  -->
+                          </div>
+                          <div>
+                              <div class="list-label">John Doe</div>
+                          </div>
+                      </div>
+                      </td>
+                      <td>Follow up appointment for patient's diabetic case</td>
+                  </tr>
+                  <tr>
+                      <td>10th April, 2017. 10:00am</td>
+                      <td>
+                        <div class="empWrap">
+                          <div class="list-img">
+                              <img src="assets/images/users/default.png">
+                              <!-- <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>  -->
+                          </div>
+                          <div>
+                              <div class="list-label">John Doe</div>
+                          </div>
+                      </div>
+                      </td>
+                      <td>Follow up appointment for patient's diabetic case</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
       </ul>
     </div>
 
-    <div ngDraggable class="rArea-card">
+    <!-- <div ngDraggable class="rArea-card">
       <div class="rAreaCard-header">
         <span class="header-label">Special Instructions</span>
         <i class="header-cta fa fa-plus" aria-hidden="true"></i>
@@ -657,7 +805,7 @@
           <div class="rAreaCard-cta"><i class="fa fa-eye" aria-hidden="true"></i></div>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 
 <div *ngIf="docDetail_view" class="modal-overlay">
