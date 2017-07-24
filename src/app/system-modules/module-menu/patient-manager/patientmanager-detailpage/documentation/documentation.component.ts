@@ -17,6 +17,8 @@ export class DocumentationComponent implements OnInit {
   clinicalNote_view = false;
   addProblem_view = false;
   addAllergy_view = false;
+  addHistory_view = false;
+  addVitals_view = false;
 
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -30,19 +32,26 @@ export class DocumentationComponent implements OnInit {
     private formTypeService: FormTypeService, private sharedService: SharedService,
     private facilityService: FacilitiesService) {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 
     this.sharedService.submitForm$.subscribe(payload => {
       const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.documentation = {
+      doc.document = {
         documentType: this.selectedForm,
-        body: payload
+        body: payload,
       };
       doc.createdBy = this.loginEmployee;
+      doc.facilityId = this.selectedFacility;
+      doc.patientId = this.patient._id;
+      console.log(doc);
       this.patientDocumentation.documentations.push(doc);
       this.documentationService.update(this.patientDocumentation).then(pay => {
         console.log(pay);
         this.getPersonDocumentation();
       })
+    });
+    this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
+      this.selectedForm = payload.form;
     })
   }
 
@@ -90,6 +99,14 @@ export class DocumentationComponent implements OnInit {
     });
     this.documents.reverse();
   }
+  analyseObject(object) {
+    // console.log(Object.getOwnPropertyNames(object));
+    // const arr = Object.keys(object).map(function (k) { return object[k] });
+    const arr = Object.keys(object).map(function(_) { return object[_]; })
+
+    console.log(object.toString());
+    return object.toString();
+  }
   docDetail_show(document) {
     this.selectedDocument = document;
     this.docDetail_view = true;
@@ -103,12 +120,20 @@ export class DocumentationComponent implements OnInit {
   addAllergy_show() {
     this.addAllergy_view = true;
   }
+  addHistory_show() {
+    this.addHistory_view = true;
+  }
+  addVitals_show() {
+    this.addVitals_view = true;
+  }
 
   close_onClick(message: boolean): void {
     this.docDetail_view = false;
     this.clinicalNote_view = false;
     this.addProblem_view = false;
     this.addAllergy_view = false;
+    this.addHistory_view = false;
+    this.addVitals_view = false;
   }
 
 }

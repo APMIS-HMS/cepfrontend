@@ -25,8 +25,8 @@ import { DocumentationDetailComponent } from './patientmanager-detailpage/docume
 import { ClinicalNoteComponent } from './patientmanager-detailpage/documentation/clinical-note/clinical-note.component';
 import { AddPatientProblemComponent } from './patientmanager-detailpage/documentation/add-patient-problem/add-patient-problem.component';
 import { AddAllergyComponent } from './patientmanager-detailpage/documentation/add-allergy/add-allergy.component';
-// import { BillPrescriptionComponent } from './patientmanager-detailpage/bill-prescription/bill-prescription.component';
-// import { AddPrescriptionComponent } from './patientmanager-detailpage/add-prescription/add-prescription.component';
+import { AngularDraggableModule } from 'angular2-draggable';
+import { AddHistoryComponent } from './patientmanager-detailpage/documentation/add-history/add-history.component';
 import { FormTypeService } from '../../../services/module-manager/setup/index';
 import { SurveyComponent } from '../../../shared-module/form-generator/survey.component';
 import { SurveyEditorComponent } from '../../../shared-module/form-generator/survey.editor.component';
@@ -51,20 +51,22 @@ import { SharedService } from '../../../shared-module/shared.service';
         ClinicalNoteComponent,
         AddPatientProblemComponent,
         AddAllergyComponent,
-        SurveyComponent,
-        SurveyEditorComponent
+        AddHistoryComponent
+        // SurveyComponent,
+        // SurveyEditorComponent
         // BillPrescriptionComponent,
         // AddPrescriptionComponent
     ],
     exports: [
     ],
     imports: [
-        // SharedModule,
+        SharedModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
         // DatePickerModule,
         patientManagerRoutes,
+        AngularDraggableModule,
         MaterialModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
