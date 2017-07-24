@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 import {  Patient } from '../../../models/index';
-let request = require('superagent');
+const request = require('superagent');
 
 @Injectable()
 export class PatientService {
@@ -33,7 +33,7 @@ export class PatientService {
     return this.patientAnnouncedSource.asObservable();
   }
   InitializeEvent(event) {
-    let observable = new Observable(observer => {
+    const observable = new Observable(observer => {
       this._socket.on(event, (data) => {
         observer.next(data);
       });
@@ -82,8 +82,8 @@ export class PatientService {
   }
   searchPatient(facilityId: string, searchText: string) {
     // path = 'http://localhost:3030/patient?facilityid=5859041abf87fb1918b5c256&searchtext=Rebecca';
-    let host = this._restService.getHost();
-    let path = host + '/patient';
+    const host = this._restService.getHost();
+    const path = host + '/patient';
     return request
       .get(path)
       .query({ facilityid: facilityId, searchtext: searchText }); // query string 

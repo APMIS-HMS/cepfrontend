@@ -146,7 +146,7 @@
                             <textarea mdInput value="{{unit.description}}" [formControl]="unitDescEdit"></textarea>
                             </md-input-container>
                         </td>
-                        <td>
+                        <!-- <td>
                             <div class="clinicsWrap">
                                 <div class="clinicWrap">
                                     <div [hidden]="unitEditClinicIcoShow"> Authopeadic Clinic </div>
@@ -161,9 +161,21 @@
                                     </md-select>
                                 </div>
                             </div>
+                        </td> -->
+                        <td class="td-worspace">
+                            <div class="workspace-count">{{getClinicCount(unit)}} Clinic(s)</div>
+                            <ul *ngIf="unit.clinics !== undefined && unit.clinics.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
+                                <li [hidden]="clinic.isActive===false" *ngFor="let clinic of unit.clinics; let i = index" class="workspace-listItem">
+                                    <ng-container *ngIf="clinic!== undefined">
+                                        <span>{{clinic?.clinicName}}</span>
+                                        <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
+                                    </ng-container>
+                                </li>
+                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                            </ul>
                         </td>
                         <td>
-                            <i (click)="editUnit()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i (click)="editUnit(unit)" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                             <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
                             <i class="del-ico fa fa-trash" aria-hidden="true"></i>
                         </td>
@@ -182,5 +194,5 @@
 </div>
 
 <div *ngIf="newUnitModal_on" class="modal-overlay">
-    <app-new-unit [department]="deptObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-unit>
+    <app-new-unit [department]="deptObj" [unit]="selectedUnit" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-unit>
 </div>

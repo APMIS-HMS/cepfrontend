@@ -11,6 +11,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 })
 export class NewUnitComponent implements OnInit {
   @Input() department: Department;
+  @Input() unit: any;
   deptsObj: Department[] = [];
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -18,6 +19,7 @@ export class NewUnitComponent implements OnInit {
   errMsgClinic = 'you have unresolved errors';
 
   isClinic = false;
+  btnText = 'CREATE UNIT';
 
   facilityObj: Facility = <Facility>{};
 
@@ -34,14 +36,15 @@ export class NewUnitComponent implements OnInit {
     this.addNew2();
     this.frmNewUnit.controls['unitParent'].valueChanges.subscribe(payload => {
       this.frmNewUnit.controls['isClinic'].valueChanges.subscribe(value => {
+        console.log(value);
         this.isClinic = value;
-        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
+        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0 && this.unit._id !== undefined) {
           this.addNew2();
         }
       })
     });
     // this.getFacility();
-    this.facilityObj = <Facility> this.facilityService.getSelectedFacilityId();
+    this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
     this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
 
@@ -52,6 +55,39 @@ export class NewUnitComponent implements OnInit {
         this.mainErrClinic = true;
         this.errMsgClinic = '';
       });
+    // this.frmNewUnit = this.formBuilder.group({
+    //   unitName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+    //   unitAlias: ['', [<any>Validators.minLength(2)]],
+    //   unitParent: ['', [<any>Validators.required]],
+    //   isClinic: [false, []],
+    //   clinicCapacity: ['', []],
+    //   unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
+    // });
+    if (this.unit !== undefined && this.unit._id !== undefined) {
+      this.btnText = 'UPDATE UNIT';
+      this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
+      this.frmNewUnit.controls['unitAlias'].setValue(this.unit.shortName);
+      this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
+      if (this.unit.clinics.length > 0) {
+        this.frmNewUnit.controls['isClinic'].setValue(true);
+        this.clinicForm.controls['clinicArray'] = new FormArray([]);
+        this.unit.clinics.forEach(clinic => {
+          (<FormArray>this.clinicForm.controls['clinicArray']).push(
+            this.formBuilder.group({
+              clinicName: [clinic.clinicName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+              'readonly': [true],
+              // day: [itemi.day, [<any>Validators.required]],
+              // startTime: [time, [<any>Validators.required]],
+              // endTime: [etime, [<any>Validators.required]],
+              // location: [this.clinicLocations.filter(x => x._id === itemi.location._id)[0], [<any>Validators.required]],
+              // readOnly: [true]
+            })
+          );
+        })
+      }
+    } else {
+      this.btnText = 'CREATE UNIT';
+    }
   }
   addNew() {
     this.frmNewUnit = this.formBuilder.group({
@@ -105,8 +141,8 @@ export class NewUnitComponent implements OnInit {
               'readonly': [false],
             })
             );
-            this.mainErrClinic = true;
-            this.errMsgClinic = '';
+          this.mainErrClinic = true;
+          this.errMsgClinic = '';
         } else {
           const innerChildren: any = children.value;
         }
@@ -157,5 +193,7 @@ export class NewUnitComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+    this.btnText = 'CREATE UNIT';
+    this.unit = <any>{};
   }
 }

@@ -5,8 +5,8 @@
             <div class="sideTab-header">
                 <div class="patient-img">
                     <div class="patient-img-wrap">
-                        <div *ngIf="patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
-                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
+                        <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
+                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
                         <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
                     </div>
                     <section class="accBal-wrap">
@@ -109,8 +109,8 @@
         </div>
 
         <div class="patientPage-contentArea">
-            <app-patient-summary *ngIf="menuSummary"></app-patient-summary>
-            <app-documentation *ngIf="menuDocs"></app-documentation>
+            <app-patient-summary [patient]="patient" *ngIf="menuSummary && patient !== undefined"></app-patient-summary>
+            <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
             <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
             <app-external-prescription [patientDetails]="patientDetails" *ngIf="menuExternalPrescription"></app-external-prescription>

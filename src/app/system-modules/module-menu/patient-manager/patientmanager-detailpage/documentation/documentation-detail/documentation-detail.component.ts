@@ -1,4 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Facility, Patient, Employee, Documentation, PersonDocumentation, Document } from '../../../../../../models/index';
+import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-documentation-detail',
@@ -8,14 +10,15 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 export class DocumentationDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() document: Document = <Document>{};
 
-  constructor() { }
+  constructor(private facilityService: FacilitiesService) { }
 
   ngOnInit() {
   }
 
   close_onClick() {
-      this.closeModal.emit(true);
+    this.closeModal.emit(true);
   }
 
 }

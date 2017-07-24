@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 // tslint:disable-next-line:max-line-length
-import { FacilitiesService, EmployeeService, ConsultingRoomService, ProfessionService, WorkSpaceService, AppointmentService } from '../../../../services/facility-manager/setup/index';
+import {
+  FacilitiesService, EmployeeService, ConsultingRoomService, ProfessionService, WorkSpaceService, AppointmentService, PatientService
+} from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import {
   Appointment, ClinicModel, Profession, Timeline, Employee, Facility, Location, MinorLocation, Patient
@@ -50,7 +52,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     private professionService: ProfessionService,
     private consultingRoomService: ConsultingRoomService,
     private locationService: LocationService,
-    public clinicHelperService: ClinicHelperService,
+    public clinicHelperService: ClinicHelperService, private patientService: PatientService,
     private locker: CoolSessionStorage, public facilityService: FacilitiesService) {
     this.clinicHelperService.getConsultingRoom();
     this.subscription = this.employeeService.listner.subscribe(payload => {
@@ -70,6 +72,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.getEmployees();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.getAppointments();
     // this.route.data.subscribe(data => {
     //   this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
@@ -90,7 +93,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     //                 if (itemc._id === itemch.clinicId) {
     //                   this.checkedInAppointments.push(itemch);
     //                 }
-    //               });
+    //               });yyy
     //             });
     //           });
     //         } else if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name !== 'Doctor') {
@@ -234,10 +237,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
   getCheckedInTimeLine() {
     if (this.selectedCheckedInAppointment !== undefined) {
+      console.log(this.selectedCheckedInAppointment.attendance);
       const timeline: Timeline = <Timeline>{};
       timeline.startTime = this.selectedCheckedInAppointment.attendance.dateCheckIn;
       timeline.endTime = this.selectedCheckedInAppointment.attendance.dateCheckIn;
-      timeline.person = this.selectedCheckedInAppointment.attendance.employeeObject;
+      timeline.person = this.selectedCheckedInAppointment.attendance.employeeId.employeeDetails;
       timeline.label = 'Check In';
       this.timelines.push(timeline);
       this.getOtherTimeLines();
@@ -266,7 +270,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.addVital = true;
   }
   getConsultingRoom(appointment) {
-    let retVal = '';
+    const retVal = '';
     // if (appointment.employeeDetails.consultingRoomCheckIn !== undefined) {
     //   appointment.employeeDetails.consultingRoomCheckIn.forEach((itemr, r) => {
     //     if (itemr.isOn === true) {
@@ -291,15 +295,21 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
+        console.log(appointment);
+        this.locker.setObject('patient', appointment.patientId);
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
-          appointment.employeeDetails.personId, { appId: appointment._id, checkInId: isOnList[0]._id }]);
+          appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
+          .then((payload) => {
+            console.log('announced');
+            this.appointmentService.appointmentAnnounced(appointment);
+          });
       } else {
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
-          appointment.employeeDetails.personId, { appId: appointment._id }]);
+          appointment.patientId.personDetails._id, { appId: appointment._id }]);
       }
     } else {
       this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
-        appointment.employeeDetails.personId]);
+        appointment.patientId.personDetails._id]);
     }
 
   }
