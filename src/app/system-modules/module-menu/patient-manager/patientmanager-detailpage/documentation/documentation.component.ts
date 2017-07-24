@@ -100,7 +100,11 @@ export class DocumentationComponent implements OnInit {
     this.documents.reverse();
   }
   analyseObject(object) {
-    console.log(Object.getOwnPropertyNames(object))
+    // console.log(Object.getOwnPropertyNames(object));
+    // const arr = Object.keys(object).map(function (k) { return object[k] });
+    const arr = Object.keys(object).map(function(_) { return object[_]; })
+
+    console.log(object.toString());
     return object.toString();
   }
   docDetail_show(document) {
@@ -116,10 +120,10 @@ export class DocumentationComponent implements OnInit {
   addAllergy_show() {
     this.addAllergy_view = true;
   }
-  addHistory_show(){
+  addHistory_show() {
     this.addHistory_view = true;
   }
-  addVitals_show(){
+  addVitals_show() {
     this.addVitals_view = true;
   }
 

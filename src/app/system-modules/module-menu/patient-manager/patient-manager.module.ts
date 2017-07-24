@@ -51,6 +51,7 @@ import { SharedService } from '../../../shared-module/shared.service';
         ClinicalNoteComponent,
         AddPatientProblemComponent,
         AddAllergyComponent,
+        AddHistoryComponent
         // SurveyComponent,
         // SurveyEditorComponent
         // BillPrescriptionComponent,
