@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as Survey from 'survey-angular';
+import { SharedService } from '../shared.service';
+import { DocumentationService } from '../../services/facility-manager/setup/index';
 
 @Component({
     selector: 'survey',
@@ -7,10 +9,34 @@ import * as Survey from 'survey-angular';
 })
 export class SurveyComponent implements OnInit {
     @Input() json: any;
+    surveyModel: any;
+    constructor(private shareService: SharedService, private documentationService: DocumentationService) {
+        this.shareService.newFormAnnounced$.subscribe((json: any) => {
+            this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
+            Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+            this.surveyModel.onComplete.add(() => {
+                this.surveyResult();
+            });
+        })
+    }
 
     ngOnInit() {
-        //console.log(JSON.parse(this.json));
-        let surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
-        Survey.SurveyNG.render('surveyElement', { model: surveyModel });
+        this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
+        Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+        this.surveyModel.onComplete.add(() => {
+            this.surveyResult();
+        });
+    }
+    surveyResult() {
+        document.getElementById('surveyElement').innerHTML = 'Document saved successfully!';
+        const resultAsString = JSON.stringify(this.surveyModel.data);
+        this.shareService.submitForm(this.surveyModel.data)
+    }
+    sendDataToServer(survey) {
+        // document.getElementById('surveyElement').style.display = 'none';
+        document.getElementById('surveyElement').innerHTML = 'Document saved successfully!';
+        const resultAsString = JSON.stringify(survey.data);
+        this.shareService.submitForm(survey.data)
+        // alert(resultAsString); //send Ajax request to your web server.
     }
 }
