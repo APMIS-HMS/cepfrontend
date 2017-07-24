@@ -112,10 +112,10 @@
                         </ul>   
                       </li> 
                     </ul>
-                    <div class="">
+                  </div>
+                  <div class="text-center">
                       <a class="btn btn-primary">save</a>
                     </div>
-                  </div>
                 </div>
              </div>
              <div class="col-sm-6">
@@ -138,6 +138,11 @@
                         </li>
                      </ul>
                     </div>
+                     <div>
+                      <div class="col-sm-12 text-center" style="margin:10px 0;">
+                        <button md-raised-button class="apmis-blue">Generate Bill</button>
+                      </div>
+                    </div>
                 </div>
              </div>
             </md-tab>
@@ -151,7 +156,7 @@
         <div class="col-sm-4">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Billing</h3>
+              <h3 class="panel-title">Client Details</h3>
             </div>
             <div class="panel-body">
               <div class="">
@@ -166,6 +171,12 @@
               <div class="">
                 <p><strong>Lab N0:</strong> 231098</p>
               </div>
+              <div class="">
+                <p><strong>Phone Number:</strong> (+234) 8141344709</p>
+              </div>
+              <div class="">
+                <p><strong>Email:</strong> subaru4ten@gmail.com</p>
+              </div>
                <div class="">
                 <p><strong>Address:</strong>N0 26a fela job way, alausa</p>
               </div>
@@ -173,15 +184,9 @@
                 <div class="inv-header text-center">
                  <h5></h5>
                 </div>
-                <div class="inv-selected pull-right">
-                  <p><strong>Sub Total:</strong> N50,000</p>
+                <div class="inv-selected">
                   <p><strong>Total:</strong> N50,000</p>
                 </div>
-              </div>
-              <div class="row">
-                 <div class="col-sm-12 text-center">
-                   <button md-raised-button class="apmis-blue">Generate Bill</button>
-                 </div>
               </div>
             </div>
           </div>
@@ -190,3 +195,4 @@
     </div>
   </div>
 </section>
+<app-global-patient-lookup></app-global-patient-lookup>

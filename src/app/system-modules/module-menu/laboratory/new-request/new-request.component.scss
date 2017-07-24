@@ -17,7 +17,7 @@ md-tab-header {
 }
 .list-container{
     overflow-y: auto;
-    max-height: 300px;
+    max-height: 250px;
 }
 .custom-panel {
     margin: 10px;
@@ -111,4 +111,7 @@ a:hover, a.active {
 }
 .tree-item .btn-default {
     padding: 2px 5px;
+}
+.panel {
+    min-height: 290px;
 }

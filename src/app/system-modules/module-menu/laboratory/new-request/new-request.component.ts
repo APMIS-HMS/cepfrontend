@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewRequestComponent implements OnInit {
     isParent = false;
-    isPanel = false;
+    isPanel = true;
     foods = [
     {value: 'male', viewValue: 'Fale'},
     {value: 'female', viewValue: 'Female'},

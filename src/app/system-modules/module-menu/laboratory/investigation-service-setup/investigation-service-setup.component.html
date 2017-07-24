@@ -41,7 +41,9 @@
                   <td class="col-xs-1">
                     <div>5 - 40</div>
                   </td>
-                  <td class="col-xs-1"><a><i class="fa fa-edit"></i></a>
+                  <td class="col-xs-1">
+                    <a><i class="fa fa-edit"></i></a>
+                    <span>Active</span>
                   </td>
                 </tr> 
                            
@@ -96,13 +98,26 @@
       <div class="arrow">
         <a (click)="flayoutClose()"><i class="fa fa-arrow-circle-right"></i></a>
       </div>
-      <div class="col-sm-12">
+      <br><br>
+      <div class="row">
+        <div class="col-sm-6">
         <md-input-container class="example-full-width">
           <input mdInput placeholder="Panel name">
         </md-input-container>
+        </div>
+        <div *ngIf = "selectedPanel" class="col-sm-6">
+          <div class="panel-seperate">
+            <h5>Selected Investigation</h5>
+          </div>
+        </div>
+        <div *ngIf = "viewPanel" class="col-sm-6">
+          <div class="panel-seperate">
+            <h5>All Panel Investigations</h5>
+          </div>
+        </div>
       </div>
       <br>
-      <div class="col-sm-12">
+      <div class="col-sm-6">
         <div class="inv-container">
             <md-input-container class="example-full-width">
                   <input mdInput placeholder="Search investigation">
@@ -118,10 +133,7 @@
           </ul>
           </div>
       </div>
-      <div class="panel-seperate">
-        <h5>Selected Investigation</h5>
-      </div>
-      <div class="col-sm-12">
+      <div *ngIf="selectedPanel" class="col-sm-6">
           <div class="list-container">                  
             <ul class="tree">
               <li class="tree-item">
@@ -135,7 +147,26 @@
             </ul>
           </div>
           <button class="apmis-blue" md-raised-button>Create Panel</button>
+          <a class="pull-right" (click)="viewPanelShow()" md-raised-button>View Panels</a>
       </div>
+        <!-- all panels -->
+          <div *ngIf="viewPanel" class="col-sm-6">
+          <div class="list-container">                  
+            <ul class="tree">
+              <li class="tree-item">
+                <a (click)="clickParent()"><i class="fa fa-folder"></i>Panel name</a>
+                <span class="pull-right"><i class="fa fa-close"></i></span>
+                <ul *ngIf="isParent" class="tree-parent open"> 
+                  <li class="tree-item view">
+                    <md-checkbox>panel children</md-checkbox>
+                  </li>
+                </ul>   
+              </li> 
+            </ul>
+          </div>
+          <a (click)="backIvestigation()" md-raised-button>Back to selected panels</a>
+      </div>
+        <!-- end all panels -->
     </div>
     <!-- end fly out -->
 
@@ -150,7 +181,7 @@
                 <div class="panel panel-default">
                   <div class="panel-body">
                   <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
-                  <legend class="modal_title">Add Investigation Service</legend>
+                  <legend class="modal_title">Add Investigation</legend>
                     <form class="form form-signup" role="form">
                         <div class="col-sm-12">
                    <md-input-container class="example-full-width">
@@ -158,18 +189,18 @@
                   </md-input-container>
                 </div>
                 <div class="col-sm-12">
-                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                      {{food.viewValue}}
-                    </md-option>
-                  </md-select>
-                </div>
-                <div class="col-sm-12">
                   <md-select placeholder="Select Specimen" [(ngModel)]="selectedValue" name="food">
                   <md-option *ngFor="let food of foods" [value]="food.value">
                     {{food.viewValue}}
                   </md-option>
                 </md-select>
+                </div>
+                  <div class="col-sm-12">
+                  <md-select placeholder="Select Report Type" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}
+                    </md-option>
+                  </md-select>
                 </div>
                   <div class="col-sm-6">
                     <md-input-container class="example-full-width">
@@ -186,8 +217,9 @@
                     <textarea mdInput placeholder="Add Unit"></textarea>
                   </md-input-container>
                   </div>
+                  <md-checkbox>isActive?</md-checkbox>
                   <div class="text-center">
-                  <button md-raised-button class="apmis-blue"> Create Service </button>
+                  <button md-raised-button class="apmis-blue"> Create Investigation </button>
                 </div>
                     </form>
                   </div>      

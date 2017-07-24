@@ -7,10 +7,12 @@ import { Component, OnInit, EventEmitter} from '@angular/core';
 })
 export class InvestigationServiceSetupComponent implements OnInit {
 
-    isParent = false;
+    isParent = true;
     isPanel = false;
     flyout = false;
     openModal = false;
+    viewPanel = false;
+    selectedPanel = true;
    foods = [
     {value: 'male', viewValue: 'name select'},
     {value: 'female', viewValue: 'name select'},
@@ -37,4 +39,14 @@ panelShow() {
   closeModal()  {
     this.openModal = false;
   }
+  viewPanelShow() {
+    this.viewPanel = true;
+    this.selectedPanel = false;
+  }
+
+  backIvestigation() {
+    this.viewPanel = false;
+    this.selectedPanel = true;
+  }
+
 }
