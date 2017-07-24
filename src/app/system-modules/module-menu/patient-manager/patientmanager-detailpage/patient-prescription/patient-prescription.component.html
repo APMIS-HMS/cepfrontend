@@ -5,85 +5,87 @@
             <div class="col-md-12 col-sm-12">
                 <div style="display: flex; float: right;">
                     <div class="medical-list" style="margin-left: 2px;margin-right:10px;">
-                        <a (click)="togglemedicalShow()" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Current Medication List</a>
+                        <a (click)="onClickMedicationShow('Current')" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Current Medication List</a>
                     </div>
                     <div class="medical-list">
-                        <a (click)="togglemedicalShow()" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Past Medication List</a>
+                        <a (click)="onClickMedicationShow('Past')" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Past Medication List</a>
                     </div>
                 </div>
             </div>
-            <div *ngIf="medicalShow">
+            <div *ngIf="currentMedicationShow">
                 <table class="table table-bordered fly-out" id="table">
                     <thead>
                         <tr>
+                            <th>S/N</th>
                             <th>Drugs</th>
                             <th>Status</th>
                             <th>Dispense</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngFor="let medication of currentMedications;">
                         <tr>
-                            <td class="text-center" colspan="4">07/07/17</td>
+                            <td class="text-center" colspan="5">{{ medication.createdAt | date }}</td>
                         </tr>
-                        <tr>
+                        <tr *ngFor="let med of medication.prescriptionItems; let i = index;">
+                            <td>{{ i+1 }}</td>
                             <td>
-                                Syrup-novaquin 500mg - 2 times daily for 2 days<br>
-                                <span style="color:#2e7d32;">
-                                    Drug: BONABABE, Quantity: 2
-                                </span>
+                                {{ med.genericName }} - {{ med.frequency }} for {{ med.duration }}<br>
                             </td>
                             <td class="td-small">Started</td>
-                            <td class="td-small">11-03-20017</td>
-                            <td class="td-small"><button class="btn btn-default">Discontinue</button></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Paracetamol 500mg - 2 times daily for 2 days<br>
-                                <span style="color:#2e7d32;">
-                                    Drug: BONABABE, Quantity: 2
-                                </span>
-                            </td>
-                            <td class="td-small">Started</td>
-                            <td class="td-small">11-03-20017</td>
+                            <td class="td-small">{{ medication.createdAt | date }}</td>
                             <td class="td-small"><button class="btn btn-default">Discontinue</button></td>
                         </tr>
                     </tbody>
-                    <tbody>
+                    <tbody class="custom-tbody" *ngIf="currentMedications.length === 0 && !currMedLoading">
                         <tr>
-                            <td class="text-center" colspan="4">07/07/17</td>
+                            <td class="text-center" colspan="5"> No data available in table</td>
                         </tr>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngIf="currentMedications.length === 0 && currMedLoading">
                         <tr>
+                            <td class="text-center" colspan="5">
+                                <md-spinner class="small-spinner"></md-spinner>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="pastMedicationShow">
+                <table class="table table-bordered fly-out" id="table">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Drugs</th>
+                            <th>Status</th>
+                            <th>Dispense</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let medication of pastMedications;">
+                        <tr>
+                            <td class="text-center" colspan="5">{{ medication.createdAt | date }}</td>
+                        </tr>
+                        <tr *ngFor="let med of medication.prescriptionItems; let i = index;">
+                            <td>{{ i+1 }}</td>
                             <td>
-                                Syrup-novaquin 500mg - 2 times daily for 2 days<br>
-                                <span style="color:#2e7d32;">
-                                    Drug: BONABABE, Quantity: 2
-                                </span>
+                                {{ med.genericName }} - {{ med.frequency }} for {{ med.duration }}<br>
                             </td>
                             <td class="td-small">Started</td>
-                            <td class="td-small">11-03-20017</td>
-                            <td class="td-small"><button class="btn btn-default">Discontinue</button></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Paracetamol 500mg - 2 times daily for 2 days<br>
-                                <span style="color:#2e7d32;">
-                                    Drug: BONABABE, Quantity: 2
-                                </span>
-                            </td>
-                            <td class="td-small">Started</td>
-                            <td class="td-small">11-03-20017</td>
+                            <td class="td-small">{{ medication.createdAt | date }}</td>
                             <td class="td-small"><button class="btn btn-default">Discontinue</button></td>
                         </tr>
                     </tbody>
-                    <tbody class="custom-tbody">
+                    <tbody class="custom-tbody" *ngIf="pastMedications.length === 0 && !pastMedLoading">
                         <tr>
-                            <td class="text-center" colspan="4"> No data available in table</td>
+                            <td class="text-center" colspan="5"> No data available in table</td>
                         </tr>
                     </tbody>
-                    <tbody class="custom-tbody">
+                    <tbody class="custom-tbody" *ngIf="pastMedications.length === 0 && pastMedLoading">
                         <tr>
-                            <td class="text-center" colspan="4"><i class="fa fa-spinner fa-spin fa-2x"></i></td>
+                            <td class="text-center" colspan="5">
+                                <md-spinner class="small-spinner"></md-spinner>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
