@@ -188,7 +188,7 @@
                         <div class="col-sm-8">
                             <div class="col-sm-6" style="margin-top: 10px;">
                                 <md-select placeholder="Priority" formControlName="priority" class="md-select">
-                                    <md-option *ngFor="let priority of priorities" [value]="priority._id">{{ priority.name }}</md-option>
+                                    <md-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</md-option>
                                 </md-select>
                             </div>
                             <div class="col-sm-6 text-center">
