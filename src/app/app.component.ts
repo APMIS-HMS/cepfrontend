@@ -1,16 +1,27 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { FacilitiesService } from './services/facility-manager/setup/index';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import {
+  FacilitiesService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService, WorkSpaceService
+} from './services/facility-manager/setup/index';
+import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession } from './models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   loadIndicatorVisible = true;
+  selectedFacility: Facility = <Facility>{};
+  loginEmployee: Employee = <Employee>{};
+  auth: any;
+  subscription: Subscription;
+
   constructor(router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
+    private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
     private facilityService: FacilitiesService, private locker: CoolSessionStorage) {
     this.toastr.setRootViewContainerRef(vcr);
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
@@ -32,6 +43,10 @@ export class AppComponent {
       }
 
     });
+  }
+  ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.auth = <any>this.locker.getObject('auth');
   }
   success(text) {
     this.toastr.success(text, 'Success!');

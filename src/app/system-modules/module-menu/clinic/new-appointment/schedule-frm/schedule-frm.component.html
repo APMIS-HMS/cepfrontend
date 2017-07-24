@@ -1,11 +1,12 @@
 <div class="schedule-wrap">
+        <ng2-toasty [position]="'top-right'"></ng2-toasty>
     <div class="frm-appointment">
         <div class="sect-wrap">
             <div>
                 <md-input-container>
                     <input mdInput placeholder="Patient" [mdAutocomplete]="autoPatient" [formControl]="patient">
                 </md-input-container>
-
+                <span style="margin-left: -15px;" *ngIf="loadingPatients" class="fa fa-spinner fa-spin"></span>
                 <md-autocomplete #autoPatient="mdAutocomplete" [displayWith]="patientDisplayFn">
                     <md-option *ngFor="let patient of filteredPatients | async" [value]="patient">
                         {{ patient.personDetails.lastName }} {{ patient.personDetails.firstName }}
@@ -16,10 +17,13 @@
             <div>
                 <div class="survery">
                     <md-input-container>
-                        <input mdInput [value]="date | date: 'shortDate'" [mdDatepicker]="picker" placeholder="Choose a date" readonly>
+                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'shortDate'" [mdDatepicker]="picker" placeholder="Choose a date" readonly>
+                        <md-error *ngIf="dateCtrl.hasError('noValue')">
+                            Clinic does not hold on the selected date!!!
+                        </md-error>
                         <button mdSuffix [mdDatepickerToggle]="picker"></button>
                     </md-input-container>
-                    <md-datepicker (selectedChanged)="dateChange($event)" #picker></md-datepicker>
+                    <md-datepicker #picker></md-datepicker>
 
                 </div>
             </div>
@@ -65,7 +69,7 @@
                 <md-input-container>
                     <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="provider">
                 </md-input-container>
-
+                <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
                 <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
                     <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
                         {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
@@ -94,6 +98,6 @@
         </div>
     </div>
 
-    <div (click)="scheduleAppointment()" class="cta-1">Schedule Appointment</div>
-
+    <div (click)="scheduleAppointment()" class="cta-1">{{btnText}}</div>
+   
 </div>

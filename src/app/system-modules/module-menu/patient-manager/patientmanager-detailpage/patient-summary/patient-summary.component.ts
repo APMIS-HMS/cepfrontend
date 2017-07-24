@@ -448,7 +448,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   }
 
   addVitalsPop_show() {
-    console.log(this.selectedAppointment);
     this.addVitalsPop = true;
   }
   checkoutPatient_show() {

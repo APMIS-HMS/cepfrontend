@@ -7,7 +7,21 @@ export interface InventoryTransaction {
     quantity: number;
     purchaseEntryId: string;
     purchaseEntryDetailId: string;
+    batchTransactions?: BatchTransaction[],
     transactionTypeId: string;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface BatchTransaction {
+    batchNumber: string,
+    employeeId: string,
+    employeeName: string,
+    preQuantity: number, // Before Operation.
+    postQuantity: number, // After Operation.
+    quantity: number, // Operational qty.
+    comment?: string,
+    referenceId?: string, // Dispense id, Transfer id...
+    referenceService?: string, // Dispense, Transfer...
+    inventorytransactionTypeId?: string,
 }

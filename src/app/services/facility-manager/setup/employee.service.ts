@@ -19,6 +19,9 @@ export class EmployeeService {
   private employeeAnnouncedSource = new Subject<any>();
   employeeAnnounced$ = this.employeeAnnouncedSource.asObservable();
 
+  private loginEmployeeAnnouncedSource = new Subject<any>();
+  loginEmployeeAnnounced$ = this.loginEmployeeAnnouncedSource.asObservable();
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -36,7 +39,9 @@ export class EmployeeService {
   announceEmployee(employee: any) {
     this.employeeAnnouncedSource.next(employee);
   }
-
+  announceLoginEmployee(employee: any) {
+    this.loginEmployeeAnnouncedSource.next(employee);
+  }
   InitializeEvent(event) {
     const observable = new Observable(observer => {
       this._socket.on(event, (data) => {
@@ -86,7 +91,6 @@ export class EmployeeService {
     return this._rest.patch(null, data, param);
   }
   searchEmployee(facilityId: string, searchText: string, showbasicinfo: boolean) {
-    console.log('inin')
     const host = this._restService.getHost();
     const path = host + '/employee';
     return request

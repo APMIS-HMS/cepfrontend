@@ -42,7 +42,7 @@
 <div class="fronting">
     <div class="loggedIn-user"><span class="label">Hello!</span>
         <span class="val">
-      {{authData.email}} ({{authData.person?.lastName}} {{authData.person?.firstName}})
+      {{authData.email}} ({{selectedPerson?.personFullName}})
       <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'" class="inRoom">
         <span  class="roomLabel">Checked Into:</span>
         <span class="roomName">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</span>

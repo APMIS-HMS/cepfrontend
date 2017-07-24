@@ -20,6 +20,9 @@ const CLINICMODULES_ROUTES: Routes = [
             {
                 path: 'schedule-appointment', component: NewAppointmentComponent
             },
+            {
+                path: 'schedule-appointment/:id', component: NewAppointmentComponent
+            },
             { path: 'clinic-schedule', component: ClinicScheduleComponent },
             { path: 'consulting-room', component: ConsultingRoomComponent },
             {

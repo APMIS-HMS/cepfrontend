@@ -64,7 +64,7 @@ export class ClinicScheduleComponent implements OnInit {
   subscribToFormControls() {
     this.locationTypeControl.valueChanges.subscribe(value => {
       this.clearAllSchedules();
-      this.schedulerService.find({ query: { 'locationType._id': value._id.toString() } }).then(payload => {
+      this.schedulerService.find({ query: { 'clinicObject._id': value._id.toString() } }).then(payload => {
         if (payload.data.length > 0) {
           this.selectedManager = payload.data[0];
           this.loadManagerSchedules(false);
@@ -74,12 +74,12 @@ export class ClinicScheduleComponent implements OnInit {
   }
   onSelectSchedulerManager(manager: ScheduleRecordModel) {
     this.selectedManager = manager;
-    this.locationTypeControl.setValue(this.clinics.filter(x => x._id === this.selectedManager.locationType._id)[0]);
+    this.locationTypeControl.setValue(this.clinics.filter(x => x._id === this.selectedManager.clinicObject._id)[0]);
     this.loadManagerSchedules(false);
   }
   loadManagerSchedules(force: boolean) {
     this.clearAllSchedules();
-    if (this.selectedManager !== undefined && this.selectedManager.locationType !== undefined && force === false) {
+    if (this.selectedManager !== undefined && this.selectedManager.clinicObject !== undefined && force === false) {
       this.selectedManager.schedules.forEach((itemi, i) => {
         console.log(itemi.startTime);
         console.log(itemi.endTime);
@@ -172,7 +172,7 @@ export class ClinicScheduleComponent implements OnInit {
         }
       });
     console.log(hasReadOnly);
-    if (this.selectedManager !== undefined && this.selectedManager.locationType !== undefined && hasReadOnly) {
+    if (this.selectedManager !== undefined && this.selectedManager.clinicObject !== undefined && hasReadOnly) {
       this.selectedManager.schedules = [];
       (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray'])
         .controls.forEach((itemi, i) => {
@@ -194,14 +194,29 @@ export class ClinicScheduleComponent implements OnInit {
       });
     } else {
       const manager: ScheduleRecordModel = <ScheduleRecordModel>{ schedules: [] };
-      manager.locationType = this.locationTypeControl.value;
+      delete this.locationTypeControl.value.department.units;
+      manager.clinicObject = this.locationTypeControl.value;
       manager.schedulerType = this.selectedSchedulerType;
       manager.facilityId = this.selectedFacility._id;
       (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray'])
         .controls.forEach((itemi, i) => {
+          const startTime = new Date();
+          startTime.setHours(itemi.value.startTime.hour);
+          startTime.setMinutes(itemi.value.startTime.minute);
+          itemi.value.startTime = startTime;
+
+          const endTime = new Date();
+          endTime.setHours(itemi.value.endTime.hour);
+          endTime.setMinutes(itemi.value.endTime.minute);
+          itemi.value.endTime = endTime;
           console.log(itemi.value)
           manager.schedules.push(itemi.value);
         });
+      console.log(manager);
+      this.schedulerService.create(manager).subscribe(payload => {
+        this.selectedManager = payload;
+        this.loadManagerSchedules(true);
+      })
     }
   }
   closeClinicSchedule(clinic: any, i: any) {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
-    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
     MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdSelectionModule, MdSelectModule, MdRadioModule
 }
     from '@angular/material';
@@ -25,6 +25,7 @@ import { StoreCheckInComponent } from '../shared-module/store-check-in/store-che
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
+import { ToastyModule } from 'ng2-toasty'
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
         LogoUpdateComponent,
@@ -69,7 +70,9 @@ import { CoolStorageModule } from 'angular2-cool-storage';
         StoreCheckInComponent,
         MomentModule,
         ToastModule,
-        CoolStorageModule
+        CoolStorageModule,
+        MdErrorDirective,
+        ToastyModule
     ],
     imports: [
         MdNativeDateModule,
@@ -96,7 +99,8 @@ import { CoolStorageModule } from 'angular2-cool-storage';
         FormsModule,
         ImageCropperModule,
         NgUploaderModule,
-        CurrencyMaskModule
+        CurrencyMaskModule,
+        ToastyModule.forRoot()
     ],
     providers: []
 })
