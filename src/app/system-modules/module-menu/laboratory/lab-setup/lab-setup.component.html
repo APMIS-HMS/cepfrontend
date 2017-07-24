@@ -1,4 +1,6 @@
-<div class="page-title">Laboratory Setup</div>
+<div *ngIf = "workbench" class="page-title">Workbench Setup</div>
+<div *ngIf = "investigationService" class="page-title">Investigation Service Setup</div>
+<div *ngIf ="investigation" class="page-title">Manage Lab</div>
   <div class="survery">
     <div class="container">
       <div class="row">
@@ -7,7 +9,7 @@
             <ul class="nav-group">
               <li (click)="workBenchSetup()" [class.navActive]="workbenchSetup">Setup Workbench</li>
               <li (click)="investigationServiceSetup()" [class.navActive]="investigationService">Setup Investigation service</li>
-              <li (click)="investigationSetup()" [class.navActive]="investigationSetup">Setup Investigation</li>
+              <li (click)="investigationSetup()" [class.navActive]="investigationSetup">Manage Lab</li>
             </ul>
           </div>
         
@@ -27,6 +29,4 @@
     </div>
   </div>
 
-   <!--<div class="modal-overlay">
-    <app-add-workbench></app-add-workbench>
-  </div>-->
+  

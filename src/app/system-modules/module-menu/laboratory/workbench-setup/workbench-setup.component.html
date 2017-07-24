@@ -11,7 +11,7 @@
       <table class="points_table">
         <thead>
           <tr>
-            <th class="col-xs-4">Minor Location</th>
+            <th class="col-xs-4">Lab Name</th>
             <th class="col-xs-4">Worknbench</th>
             <th class="col-xs-4">Action</th>
           </tr>
@@ -19,7 +19,7 @@
         <tbody class="points_table_scrollbar">
           <tr>
             <td class="col-xs-4">
-              <div>Minor location name</div>
+              <div>lab name</div>
             </td>
             <td class="col-xs-4">
               <div *ngIf="!editworksetup">Workbench name</div>
@@ -29,52 +29,54 @@
                 </md-input-container>
               </div>
             </td>
-            <td class="col-xs-4"><a><i class="fa fa-edit"></i></a>
+            <td class="col-xs-4">
+              <a><i class="fa fa-edit"></i></a>
             </td>
           </tr>     
               <tr>
             <td class="col-xs-4">
-              <div>Minor location name</div>
+              <div>Lab name</div>
             </td>
             <td class="col-xs-4">
               <div>Workbench name</div>
             </td>
-            <td class="col-xs-4"><a><i class="fa fa-edit"></i></a>
+            <td class="col-xs-4">
+              <a><i class="fa fa-edit"></i></a>
             </td>
           </tr>           
         </tbody>
   </table>
   </div>
-  <!--<div class="modal-overlay">
-    <div class="modal-baseWrap animated pulse">
-        <div aria-hidden="true" class="modal-close-ico">X</div>
-        <legend class="modal_title">Add Workbench</legend>
-        <div class="modal_mini_title">All Purpose Medical Information System</div>
-        <div class="f_sg_1">
-            <form novalidate>
-            </form>
-        </div>
-    </div>
-  </div>-->
-  <!--<div class="col-sm-12">
-    <div class="x_panel">
-        <div class="x_title">
-          <h2>Setup workbench</h2>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content"> 
-          <md-select placeholder="Select minor location" [(ngModel)]="selectedValue" name="food">
-            <md-option *ngFor="let food of foods" [value]="food.value">
-              {{food.viewValue}}
-            </md-option>
-          </md-select>
-          <md-input-container class="example-full-width">
-            <input mdInput placeholder="Workbench name">
-          </md-input-container>
 
-          <div class="text-center">
-            <button class="apmis-blue" md-raised-button>Add</button>
-          </div>
+  <!-- add workbench -->
+  <div *ngIf = "openModal" class="survery">
+    <div class="cover-edit">
+    <form class="form-signin">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                  <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
+                  <legend class="modal_title">Add Workbench</legend>
+                    <form class="form form-signup" role="form">
+                        <md-select placeholder="Select Lab Name" [(ngModel)]="selectedValue" name="food">
+                          <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}}
+                          </md-option>
+                        </md-select>
+                        <md-input-container class="example-full-width">
+                          <input mdInput placeholder="Workbench name">
+                        </md-input-container>
+                        <div class="text-center">
+                          <button class="apmis-blue" md-raised-button>Add</button>
+                        </div>
+                    </form>
+                  </div>      
+                </div>
+              </div>
+            </div>
         </div>
+    </form>
     </div>
-  </div>-->
+  </div>
