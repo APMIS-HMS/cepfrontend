@@ -81,7 +81,7 @@ a:hover {
 
 /* table */
 .points_table>tbody>tr>td, .points_table>tbody>tr>th, .points_table>tfoot>tr>td, .points_table>tfoot>tr>th, .points_table>thead>tr>td, .points_table>thead>tr>th{
-	padding: 8px;
+	padding: 3px;
 	height: auto;
 	text-align: center;
 	line-height: 32px;
@@ -192,4 +192,13 @@ a:hover {
 }
 textarea.mat-input-element {
     height: 23px;
+}
+.mat-select {
+    width: 100%;
+}
+.mat-input-container {
+    width: 100%;
+}
+.survery table {
+    color: #000;
 }
