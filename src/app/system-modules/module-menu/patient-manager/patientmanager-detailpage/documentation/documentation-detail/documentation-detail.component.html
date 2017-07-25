@@ -1,7 +1,7 @@
 <div class="modal-baseWrap animated pulse">
 
   <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <legend class="modal_title">Clinical Documentation</legend>
+  <div class="modal_title">{{document?.document?.documentType?.title}}</div> 
 
   <div class="docCard-header">
         
@@ -11,7 +11,7 @@
         <div *ngIf="document?.createdBy?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(document?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)"></div> 
       </div>
       <div>
-        <div class="val-tag">Patient</div>
+        <div class="val-tag">Practitioner</div>
         <div class="list-label">{{document?.createdBy?.employeeDetails?.personFullName}}</div>
       </div>
     </div>
@@ -37,9 +37,13 @@
     <div class="docCard-body">
       <div class="cardSect-wrap">
         <div class="card-sect">
-          <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div>
+          <!-- <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div> -->
           <div class="docCard-sectContent">
-            {{document.document.body | json}}
+            <!-- {{document.document.body | json}} -->
+            <div *ngFor="let key of document?.document?.body | keys">
+              <div class="sect-key">{{key}}:</div> 
+              <div class="sect-value">{{document?.document?.body[key]}}</div>
+            </div>
           </div>
         </div>
       </div>

@@ -3,9 +3,10 @@
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <div class="modal-userStrap">
     <div class="strapImgWrap">
-      <img [src]="facilityService.transform(clinicHelperService.loginEmployee.employeeDetails.profileImageObject?.thumbnail)">
+        <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+      <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
     </div>
-    <div class="strapUser">{{clinicHelperService.loginEmployee.employeeDetails.lastName}} {{clinicHelperService.loginEmployee.employeeDetails.firstName}}</div>
+    <div class="strapUser">{{loginEmployee.employeeDetails.lastName}} {{loginEmployee.employeeDetails.firstName}}</div>
   </div>
 
   <div class="postStrap-title">Check Into Consulting Room</div>
@@ -15,7 +16,7 @@
 
       <form [formGroup]="roomCheckin" novalidate>
         <div class="frm-item-wrap">
-          <i class="fa fa-building-o" aria-hidden="true"></i>
+          <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
           <!--<label>Location</label>
           <select formControlName="location">
               <option value="" disabled selected>Select Location</option>
@@ -23,12 +24,12 @@
             </select>-->
             <md-select placeholder="Location" formControlName="location">
               <md-option value="" disabled selected>Select Location</md-option>
-              <md-option *ngFor="let location of clinicHelperService.clinicLocations" value={{location._id}}>{{location.name}}</md-option>
+              <md-option *ngFor="let location of locations" value={{location._id}}>{{location.name}}</md-option>
             </md-select>
         </div>
 
         <div class="frm-item-wrap">
-          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
           <!--<label>Consulting Room</label>
           <select formControlName="room">
               <option value="" disabled selected>Select Room</option>
@@ -65,7 +66,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let checkIn of clinicHelperService.loginEmployee.consultingRoomCheckIn">
+          <tr *ngFor="let checkIn of loginEmployee.consultingRoomCheckIn">
             <td>{{checkIn?.minorLocationObject?.name}}</td>
             <td>{{checkIn?.roomObject?.name}}</td>
             <td>{{checkIn?.lastLogin | date:'medium'}}</td>
