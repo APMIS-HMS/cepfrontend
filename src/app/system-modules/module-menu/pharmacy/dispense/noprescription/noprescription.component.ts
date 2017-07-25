@@ -327,6 +327,11 @@ export class NoprescriptionComponent implements OnInit {
 			})
 	}
 
+	onClickBatchSelect(event, batchId) {
+		console.log(event);
+		console.log(batchId);
+	}
+
 	// Delete item from stack
 	onClickDeleteItem(index, item) {
 		this.prescriptions.splice(index, 1);
