@@ -92,13 +92,14 @@
                 </md-input-container>
             </div>
             <div class="col-sm-3 col-md-3 col-xs-12">
-                <md-input-container class="example-full-width">
-                    <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
-                        <md-option *ngFor="let batch of batches" [(value)]="batch.productId" #batchId [attr.data-p-id]="batch.productId" [attr.data-p-fsid]="batch.facilityServiceId" [attr.data-p-price]="batch.price" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, batchId)">{{ batch.product }}
-                        </md-option>
-                    </md-select>
-                    <!-- <input mdInput formControlName="batchNumber" placeholder="Batch Number"> -->
-                </md-input-container>
+                <!-- <md-input-container class="example-full-width">
+                    
+                    <input mdInput formControlName="batchNumber" placeholder="Batch Number">
+                </md-input-container> -->
+                <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
+                    <md-option *ngFor="let batch of batches" [(value)]="batch.productId" #batchId [attr.data-p-id]="batch.productId" [attr.data-p-fsid]="batch.facilityServiceId" [attr.data-p-price]="batch.price" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, batchId)">{{ batch.product }}
+                    </md-option>
+                </md-select>
             </div>
             <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
