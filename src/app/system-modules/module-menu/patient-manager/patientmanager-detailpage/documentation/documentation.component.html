@@ -1,6 +1,6 @@
 <div class="pg-subtitle">DOCUMENTATION</div>
-
-<div class=" survery doc-mainWrap" id="survery">
+<div class="survery">
+<div class="doc-mainWrap">
   <div class="doc-contentArea">
     
     <div class="clinicalNoteWrap">
@@ -61,9 +61,9 @@
           <div class="cardSect-wrap">
 
             <div class="card-sect">
-              <div class="docCard-sectTitle">{{document?.documentType?.title}}</div>
+              <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div>
               <div class="docCard-sectContent">
-               {{document?.body | json}}
+               {{analyseObject(document?.document?.body) | json}}
               </div>
             </div>
           </div>
@@ -826,4 +826,5 @@
 
 <div *ngIf="addVitals_view" class="modal-overlay">
   <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+</div>
 </div>

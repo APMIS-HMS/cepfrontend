@@ -13,10 +13,13 @@ import { PharmacyEmitterService } from '../../../../services/facility-manager/ph
 export class PrescriptionListComponent implements OnInit {
 	facility: Facility = <Facility>{};
 	searchFormGroup: FormGroup;
+	searchNonePrescriptionFormGroup: FormGroup;
 	status: string[];
 	prescriptionLists: any[] = [];
+	noPrescriptionLists: any[] = [];
 	tempPrescriptionLists: any[] = [];
 	loading: boolean = true;
+	noPresLoading: boolean = true;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -36,8 +39,11 @@ export class PrescriptionListComponent implements OnInit {
 			search: ['', [<any>Validators]]
 		});
 
+		this.searchNonePrescriptionFormGroup = this._fb.group({
+			search: ['', [<any>Validators]]
+		});
+
 		this.searchFormGroup.controls['search'].valueChanges.subscribe(val => {
-			console.log(val);
 			let searchText = val;
 			const tempArray = [];
 

@@ -11,8 +11,8 @@ export class SurveyComponent implements OnInit {
     @Input() json: any;
     surveyModel: any;
     constructor(private shareService: SharedService, private documentationService: DocumentationService) {
-        this.shareService.newFormAnnounced$.subscribe((json: any) => {
-            this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
+        this.shareService.newFormAnnounced$.subscribe((payload: any) => {
+            this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(payload.json));
             Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
             this.surveyModel.onComplete.add(() => {
                 this.surveyResult();

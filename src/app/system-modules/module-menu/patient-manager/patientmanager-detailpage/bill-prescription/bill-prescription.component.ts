@@ -14,7 +14,7 @@ import {
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	@Input() employeeDetails: any;
+	//@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
 
@@ -51,15 +51,13 @@ export class BillPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.user = this._locker.getObject('auth');
-		console.log(this.prescriptionData);
-		console.log(this.employeeDetails);
 
 		// if(this.employeeDetails.storeCheckIn !== undefined) {
 		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
 		// }
 
 		// Remove this when you are done.
-		this.storeId = '591d71d971108943a0499665';
+		//this.storeId = '591d71d971108943a0499665';
 
 		this.getProductsForGeneric();
 
@@ -85,8 +83,6 @@ export class BillPrescriptionComponent implements OnInit {
 	//
 	onClickSaveCost(value, valid) {
 		if(valid) {
-			console.log(value);
-			console.log(this.cost);
 			if(this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
@@ -101,7 +97,6 @@ export class BillPrescriptionComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				this.prescriptionData.totalCost += this.totalCost;
 				this.prescriptionData.totalQuantity += this.totalQuantity;
-				console.log(this.prescriptionData);
 
 				this.closeModal.emit(true);
 			} else {
@@ -120,23 +115,23 @@ export class BillPrescriptionComponent implements OnInit {
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
 		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
-		// const genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
-			// Get the list of products from a facility, and then search if the generic
-			// that was entered by the doctor in contained in the list of products
-			this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }})
-				.then(res => {
-					console.log(res);
-					this.loading = false;
-					if(res.length > 0) {
-						this.stores = res[0].availability;
-						this.drugs = res;
-					} else {
-						this.drugs = [];
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
+
+		// Get the list of products from a facility, and then search if the generic
+		// that was entered by the doctor in contained in the list of products
+		this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }})
+			.then(res => {
+				console.log(res);
+				this.loading = false;
+				if(res.length > 0) {
+					this.stores = res[0].availability;
+					this.drugs = res;
+				} else {
+					this.drugs = [];
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 
 	onClickCustomSearchItem(event, drugId) {
@@ -148,45 +143,6 @@ export class BillPrescriptionComponent implements OnInit {
 		this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
 		this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
 		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
-
-		//const pId = '592417935fbce732205cf0aa';
-		// const sId = drugId._element.nativeElement.getAttribute('data-p-id');
-		// const fsId = drugId._element.nativeElement.getAttribute('data-p-fsid');
-		// const cId = drugId._element.nativeElement.getAttribute('data-p-cid');
-		// Get the service for the product
-		// if(this.storeId !== '') {
-			// this._assessmentDispenseService.find({ query: { facilityId : this.facility._id, productId: pId }})
-			// 	.then(res => {
-			// 		if (res.length > 0) {
-			// 			console.log(res);
-			// 			this.cost = res[0].price;
-			// 			this.batchNumber = res[0].batchNo;
-			// 			this.qtyInStores = res[0].availableQty;
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		console.log(err);
-			// 	});
-		// } else {
-		// 	this._facilityService.announceNotification({
-		// 		type: "Error",
-		// 		text: "You need to check into store."
-		// 	});
-		// }
-
-
-		// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		if(res.data.length > 0) {
-		// 			if(res.data[0].price !== undefined) {
-		// 				this.price = res.data[0].price;
-		// 			}
-		// 		}
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 	})
 	}
 
 	onClickClose(e) {

@@ -339,7 +339,6 @@ export class PrescriptionComponent implements OnInit {
 				});
 
 				if(this.prescriptions.length > 0) {
-					console.log('Calling');
 					this._getPaymentStatus();
 				}
 			})
@@ -352,8 +351,8 @@ export class PrescriptionComponent implements OnInit {
 		if(prescription.isBilled) {
 			this.selectedPrescription = prescription;
 			this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
-			//const productId = prescription.productId;
-			const productId = '592419145fbce732205cf0ba';
+			const productId = prescription.productId;
+			//const productId = '592419145fbce732205cf0ba';
 			if(this.storeId.typeObject.storeId !== undefined) {
 				// Get the batches for the selected product
 				this._inventoryService.find({ 
@@ -422,13 +421,6 @@ export class PrescriptionComponent implements OnInit {
 								console.log(res);
 								if(res._id !== undefined) {
 									this._batchTransactionTracking(index, inputBatch[index], batch);
-									// // Deduct from the batches before updating the batches in the inventory.
-									// this.transactions.transactions.forEach(element => {
-									// 	if(element._id === batch._id) {
-									// 		element.quantity = element.quantity - inputBatch[index];
-									// 	}
-									// });
-									// this.transactions.totalQuantity = this.transactions.totalQuantity - inputBatch[index];
 									// Make a call to the inventory service so that you can deduct the quantity from the inventory
 									this._inventoryService.patch(this.transactions._id, this.transactions, {})
 										.then(res => {
@@ -525,6 +517,7 @@ export class PrescriptionComponent implements OnInit {
 				.then(res => {
 					if(res._id !== undefined) {
 						this.disablePaymentBtn = false;
+						this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 						res.billItems.forEach(i => {
 							this.prescriptions.forEach(j => {
 								if(i.serviceId === j.serviceId) {

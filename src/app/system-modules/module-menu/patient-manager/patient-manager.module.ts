@@ -51,14 +51,16 @@ import { SharedService } from '../../../shared-module/shared.service';
         ClinicalNoteComponent,
         AddPatientProblemComponent,
         AddAllergyComponent,
-        AddHistoryComponent,
-        SurveyComponent,
-        SurveyEditorComponent
+        AddHistoryComponent
+        // SurveyComponent,
+        // SurveyEditorComponent
+        // BillPrescriptionComponent,
+        // AddPrescriptionComponent
     ],
     exports: [
     ],
     imports: [
-        // SharedModule,
+        SharedModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,

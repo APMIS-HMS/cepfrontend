@@ -76,9 +76,9 @@
         <div class="patientPage-contentArea">
             <app-patient-summary [patient]="patient" *ngIf="menuSummary && patient !== undefined"></app-patient-summary>
             <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
-            <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patientDetails" [employeeDetails]="employeeDetails" *ngIf="menuPrescription"></app-patient-prescription>
+            <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
-            <app-external-prescription [patientDetails]="patientDetails" *ngIf="menuExternalPrescription"></app-external-prescription>
+            <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
         </div>
 
         <div *ngIf="addVitalsPop" class="modal-overlay">

@@ -18,6 +18,26 @@
         </thead>
         <tbody class="points_table_scrollbar">
           <tr>
+              <td colspan="3">
+              <div class="survery">
+                <div class="col-sm-4">
+                  <md-select placeholder="Lab name" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </md-option>
+                    </md-select>
+                </div>
+                <div class="col-sm-4">
+                  <md-select placeholder="workbench" [(ngModel)]="selectedValue" name="food">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}
+                    </md-option>
+                  </md-select>
+                </div>
+              </div>
+              </td>
+          </tr>
+          <tr>
             <td class="col-xs-4">
               <div>lab name</div>
             </td>
