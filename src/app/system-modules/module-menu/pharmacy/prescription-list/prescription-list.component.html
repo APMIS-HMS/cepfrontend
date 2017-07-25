@@ -1,69 +1,132 @@
 <section id="presc-list">
-    <div class="survery">
-        <div class="col-xs-12 filter-wrapper">
-            <form [formGroup]=" searchFormGroup ">
-                <div style="float: right;margin-right: -10px;">
-                    <input type="search" formControlName="search" class="search" placeholder="Search">
+    <md-tab-group>
+        <md-tab label="Prescription">
+            <div class="survery">
+                <div class="col-xs-12 filter-wrapper">
+                    <form [formGroup]=" searchFormGroup ">
+                        <div style="float: right;margin-right: -10px;">
+                            <input type="search" formControlName="search" class="search" placeholder="Search">
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-        <div class="col-xs-12 " style="padding: 0; ">
-            <table cellpadding="0 " cellspacing="0 " border="0.5 ">
-                <thead>
-                    <tr class="table-header ">
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Date</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Patient</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Location</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Priority</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Prescriber</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Status</span>
-                        </th>
-                    </tr>
-                </thead>
+                <div class="col-xs-12 " style="padding: 0; ">
+                    <table cellpadding="0 " cellspacing="0 " border="0.5 ">
+                        <thead>
+                            <tr class="table-header ">
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Date</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Patient</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Location</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Priority</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Prescriber</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Status</span>
+                                </th>
+                            </tr>
+                        </thead>
 
-                <tbody>
-                    <tr *ngIf="prescriptionLists.length===0 && !loading ">
-                        <td class="table-content " colspan="6 " style="text-align: center "> No data available in table</td>
-                    </tr>
-                    <tr *ngIf="prescriptionLists.length===0 && loading ">
-                        <td class="table-content " colspan="6 " style="text-align: center ">
-                            <md-spinner class="small-spinner"></md-spinner>
-                        </td>
-                    </tr>
-                    <tr *ngFor="let prescription of prescriptionLists " routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
-                        <td class="table-content">{{prescription?.updatedAt | date}}</td>
-                        <td class="table-content">{{prescription?.patientName}}</td>
-                        <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
-                        <td class="table-content">{{prescription?.priorityObject?.name}}</td>
-                        <td class="table-content">{{prescription?.employeeName}}</td>
-                        <td class="table-content">
-                            <span *ngIf="false" style="color:forestgreen">Completely<br>Assessed</span>
-                            <span *ngIf="false" style="color:forestgreen">Completely<br>Dispensed</span>
-                            <span *ngIf="false" style="color:forestgreen">Completely<br>Paid</span>
-                            <span *ngIf="true" style="color:forestgreen">Partly<br>Assessed</span>
-                            <span *ngIf="false" style="color:forestgreen">Partly<br>Dispensed</span>
-                            <span *ngIf="false" style="color:forestgreen">Partly<br>Paid</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                        <tbody>
+                            <tr *ngIf="prescriptionLists.length===0 && !loading ">
+                                <td class="table-content " colspan="6 " style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="prescriptionLists.length===0 && loading ">
+                                <td class="table-content " colspan="6 " style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let prescription of prescriptionLists " routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
+                                <td class="table-content">{{prescription?.updatedAt | date}}</td>
+                                <td class="table-content">{{prescription?.patientName}}</td>
+                                <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
+                                <td class="table-content">{{prescription?.priorityObject?.name}}</td>
+                                <td class="table-content">{{prescription?.employeeName}}</td>
+                                <td class="table-content">
+                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Assessed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Dispensed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Paid</span>
+                                    <span *ngIf="true" style="color:forestgreen">Partly<br>Assessed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Partly<br>Dispensed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Partly<br>Paid</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </md-tab>
+        <md-tab label="Walk in">
+            <div class="survery">
+                <div class="col-xs-12 filter-wrapper">
+                    <form [formGroup]="searchNonePrescriptionFormGroup">
+                        <div style="float: right;margin-right: -10px;">
+                            <input type="search" formControlName="search" class="search" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-12 " style="padding: 0; ">
+                    <table cellpadding="0 " cellspacing="0 " border="0.5 ">
+                        <thead>
+                            <tr class="table-header ">
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Date</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Client</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Prescriber</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Status</span>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngIf="noPrescriptionLists.length===0 && !noPresLoading ">
+                                <td class="table-content " colspan="6 " style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="noPrescriptionLists.length===0 && noPresLoading ">
+                                <td class="table-content " colspan="6 " style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let prescription of noPrescriptionLists " routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
+                                <td class="table-content">{{prescription?.updatedAt | date}}</td>
+                                <td class="table-content">{{prescription?.patientName}}</td>
+                                <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
+                                <td class="table-content">
+                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Assessed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Dispensed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Paid</span>
+                                    <span *ngIf="true" style="color:forestgreen">Partly<br>Assessed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Partly<br>Dispensed</span>
+                                    <span *ngIf="false" style="color:forestgreen">Partly<br>Paid</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </md-tab>
+    </md-tab-group>
 </section>

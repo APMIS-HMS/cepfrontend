@@ -37,7 +37,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: #eee;
+    background: #f8f8f8;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -130,7 +130,7 @@
 }
 
 .sideTab-nav {
-    background: #ddd;
+    background: #eee;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -153,7 +153,7 @@
 .menu-item:hover,
 .active-menuItem {
     border-left: 5px solid #aaa;
-    background: #ccc;
+    background: #d6d6d6;
     font-weight: bold;
 }
 .pg-subtitle{
@@ -299,4 +299,20 @@ th {
 }
 .pp-cta:hover{
     text-decoration: underline;
+}
+ul.topmenuwrap {
+    position: relative;
+    top: auto;
+    right: auto;
+    font-size: 11px;
+    color: #0288D1;
+    width: 127px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+ul.topmenuwrap li{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
