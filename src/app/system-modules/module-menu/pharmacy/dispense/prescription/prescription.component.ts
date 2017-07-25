@@ -339,7 +339,6 @@ export class PrescriptionComponent implements OnInit {
 				});
 
 				if(this.prescriptions.length > 0) {
-					console.log('Calling');
 					this._getPaymentStatus();
 				}
 			})
@@ -518,6 +517,7 @@ export class PrescriptionComponent implements OnInit {
 				.then(res => {
 					if(res._id !== undefined) {
 						this.disablePaymentBtn = false;
+						this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 						res.billItems.forEach(i => {
 							this.prescriptions.forEach(j => {
 								if(i.serviceId === j.serviceId) {

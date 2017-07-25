@@ -27,8 +27,8 @@
         </div>
     </div>
     <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
-        <div class="col-sm-12 col-md-12" style="float: right;">
-            <button class="refresh-payment" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+        <div class="col-sm-12 col-md-12" style="float: right; margin-top: -12px;">
+            <button class="refresh-payment btn btn-default" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
         </div>
     </div>
     <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
