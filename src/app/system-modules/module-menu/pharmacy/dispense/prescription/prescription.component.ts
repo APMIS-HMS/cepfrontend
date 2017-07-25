@@ -7,7 +7,7 @@ import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, Inventor
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService, InventoryTransactionTypeService,
+import { FacilitiesService, PrescriptionService, InventoryTransactionTypeService, ExternalPrescriptionService,
 	DispenseService, MedicationListService, InventoryService, BillingService} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -50,7 +50,8 @@ export class PrescriptionComponent implements OnInit {
 		private _inventoryService: InventoryService,
 		//private _medicationListService: MedicationListService,
 		private _billingService: BillingService,
-		private _inventoryTransactionTypeService: InventoryTransactionTypeService
+		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
+		private _externalPrescriptionService: ExternalPrescriptionService
 	) {
 
 	}
@@ -223,88 +224,86 @@ export class PrescriptionComponent implements OnInit {
 
 	// Dispense prescription
 	onClickDispense() {
-		const dispenseArray = [];
-		this.prescriptionItems.prescriptionItems.forEach(element => {
-			const dispenseItem = <DispenseItem> {
-				productId: (element.isExternal === false) ? element.productId : '',
-				cost: element.cost,
-				quantity: (element.quantity === undefined) ? 0 : element.quantity,
-				refillCount: (element.refillCount === undefined) ? 0 : element.refillCount,
-				isExternal: element.isExternal,
-				instruction: element.patientInstruction
-			};
+		if(this.prescriptions.length > 0) {
+			const dispenseArray = [];
+			const externalDrug = [];
 
-			if (!element.isExternal) {
-				if(element.quantity !== undefined) {
-					this.totalQuantity += element.quantity;
-				}
-
-				if(element.totalCost !== undefined) {
-					this.totalCost += element.totalCost;
-				}
-			}
-			// Push all dispenseItem into dispenseArray
-			dispenseArray.push(dispenseItem);
-		});
-
-		const prescription = <DispenseByPrescription> {
-			prescriptionId: this.prescriptionItems._id,
-			employeeId: this.prescriptionItems.employeeId,
-			patientId: this.prescriptionItems.patientId,
-			drugs: dispenseArray,
-			totalQuantity: this.totalQuantity,
-			totalCost: this.totalCost
-		};
-		const dispense = <Dispense> {
-			facilityId: this.facility._id,
-			prescription: prescription,
-			isPrescription: true,
-			storeId: this.storeId,
-		}
-		console.log(dispense);
-		this._dispenseService.create(dispense)
-			.then(res => {
-				console.log(res);
-				if(res) {
-					let medication = <MedicationList>{
-						facilityId: this.facility._id,
-						dispenseById: res.prescription.employeeId,
-						dispenseId: res._id,
-						storeId: this.storeId,
-						prescriptionId: res.prescription.prescriptionId,
-						statusId: res.statusId,
-						patientId: res.prescription.patientId,
-						medicationEndDate: res.createdAt
+			this.prescriptionItems.prescriptionItems.forEach(element => {
+				if (!element.isExternal && element.isBilled) {
+					const dispenseItem = <DispenseItem> {
+						productId: (element.isExternal === false) ? element.productId : '',
+						cost: element.cost,
+						quantity: (element.quantity === undefined) ? 0 : element.quantity,
+						refillCount: (element.refillCount === undefined) ? 0 : element.refillCount,
+						isExternal: element.isExternal,
+						instruction: element.patientInstruction
 					};
+					
+					// Push all dispenseItem into dispenseArray
+					dispenseArray.push(dispenseItem);
+				} else {
+					const external = {
+						genericName: element.genericName,
+					}
 
-					// this._medicationListService.create(medication)
-					// 	.then(res => {
-					// 		console.log(res);
-					// 		this.prescriptionItems.isDispensed = true;
-					// 		this._prescriptionService.update(this.prescriptionItems)
-					// 			.then(res => {
-					// 				console.log(res);
-					// 				this._facilityService.announceNotification({
-					//					users: [this.user._id],
-					// 					type: 'Success',
-					// 					text: 'Prescription has been Dispensed!'
-					// 				});
-					// 				setTimeout( e => {
-					// 					this._router.navigate(['/dashboard/pharmacy/prescriptions']);
-					// 				}, 1000);
-					// 			})
-					// 			.catch(err => {
-					// 				console.log(err);
-					// 			});
-					// 	})
-					// 	.catch(err => {
-					// 		console.log(err);
-					// 	});
+					externalDrug.push(external);
 				}
-			})
-			.catch(err => {
-				console.log(err);
 			});
+
+			const externalDispense = {
+				facilityId: this.prescriptionItems.facilityId,
+				patientId: this.prescriptionItems.patientId,
+				patientName: this.prescriptionItems.patientName,
+				generics: externalDrug,
+				prescribeById: this.prescriptionItems.employeeId,
+			}
+
+			const prescription = <DispenseByPrescription> {
+				prescriptionId: this.prescriptionItems._id,
+				employeeId: this.prescriptionItems.employeeId,
+				patientId: this.prescriptionItems.patientId,
+				drugs: dispenseArray,
+				totalQuantity: this.totalQuantity,
+				totalCost: this.totalCost
+			};
+			const dispense = <Dispense> {
+				facilityId: this.facility._id,
+				prescription: prescription,
+				isPrescription: true,
+				storeId: this.storeId,
+			}
+			console.log(dispense);
+			this._dispenseService.create(dispense)
+				.then(res => {
+					console.log(res);
+					// if(res) {
+					// 	let medication = <MedicationList>{
+					// 		facilityId: this.facility._id,
+					// 		dispenseById: res.prescription.employeeId,
+					// 		dispenseId: res._id,
+					// 		storeId: this.storeId,
+					// 		prescriptionId: res.prescription.prescriptionId,
+					// 		statusId: res.statusId,
+					// 		patientId: res.prescription.patientId,
+					// 		medicationEndDate: res.createdAt
+					// 	};
+					// }
+				})
+				.catch(err => {
+					console.log(err);
+				});
+			console.log(externalDispense);
+			// Save external Prescriptions.
+			this._externalPrescriptionService.create(externalDispense)
+				.then(res => {
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		} else {
+			this._notification('Info', 'Please Bill the drugs that has been prescribed above.');
+		}
 	}
 
 	// Get all drugs from generic

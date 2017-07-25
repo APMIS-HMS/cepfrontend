@@ -6,152 +6,15 @@
         <div class="col-sm-8">
           <md-tab-group>
             <md-tab label="Add a Person">
-              <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                      <input mdInput placeholder="First Name">
-                </md-input-container>
-              </div>
-              <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Last name">
-              </md-input-container>
-              </div>
-                 <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                    <input type="number" mdInput placeholder="Phone Number">
-              </md-input-container>
-              </div>
-               <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                      <input mdInput placeholder="Home Address">
-                </md-input-container>
-              </div>
-               <div class="col-sm-4">
-                <div style="margin-top:25px;">
-                  <md-checkbox>Don't know my age?</md-checkbox>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                 <md-input-container class="example-full-width">
-                      <input type="number" disabled mdInput placeholder="Enter age">
-                </md-input-container>
-              </div>
-               <div class="col-sm-4">
-                <md-input-container>
-                  <input mdInput [mdDatepicker]="picker" placeholder="Date of birth">
-                  <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                </md-input-container>
-                <md-datepicker #picker></md-datepicker>
-              </div>
-               <div class="col-sm-4">
-                <md-select placeholder="Gender">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{ food.viewValue }}
-                  </md-option>
-                </md-select>
-              </div>
-             <div class="col-sm-4">
-                <md-input-container class="example-full-width">
-                      <input mdInput placeholder="Enter lab number">
-                </md-input-container>
-              </div>
-              <div class="col-sm-4">
-                <md-select placeholder="Nationality">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{ food.viewValue }}
-                  </md-option>
-                </md-select>
-              </div>
-                <div class="col-sm-4">
-                <md-select placeholder="State of origin">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{ food.viewValue }}
-                  </md-option>
-                </md-select>
-              </div>
-                <div class="col-sm-4">
-                <md-select placeholder="LGA">
-                  <md-option *ngFor="let food of foods" [value]="food.value">
-                    {{ food.viewValue }}
-                  </md-option>
-                </md-select>
-              </div>
-             
-              
-             
-              
-              <div class="col-sm-12 text-center" style="margin-top:27px;margin-bottom:20px;">
-                <button md-raised-button class="apmis-blue">Save</button>
-              </div>
+              <app-add-person></app-add-person>
             </md-tab>
             <md-tab label="Select Investigation">
-             <div class="col-sm-6">
-                <div class="inv-container">
-                  <md-input-container class="example-full-width">
-                        <input mdInput placeholder="Search investigation">
-                  </md-input-container>
-                  <i style="margin-left: -19px;" class="fa fa-search"></i>
-                  <div class="list-container">                  
-                    <ul class="tree">
-                      <li class="stand-alone">
-                        <md-checkbox>List1</md-checkbox>
-                      </li> 
-                      <li class="tree-item">
-                         <a class="btn btn-default pull-right">add panel </a>
-                        <md-checkbox></md-checkbox><a style="margin-left: 9px;"(click)="clickParent()"><i class="fa fa-folder"></i>Panel</a>
-                        <ul *ngIf="isParent" class="tree-parent open"> 
-                          <li class="tree-item view">
-                            <md-checkbox>List4</md-checkbox>
-                          </li>
-                          <li class="tree-item view">
-                            <md-checkbox>List4</md-checkbox>
-                          </li>
-                          <li class="tree-item view">
-                            <md-checkbox>List4</md-checkbox>
-                          </li>
-                        </ul>   
-                      </li> 
-                    </ul>
-                  </div>
-                  <div class="text-center">
-                      <a class="btn btn-primary">save</a>
-                    </div>
-                </div>
-             </div>
-             <div class="col-sm-6">
-              	<div class="panel panel-success custom-panel">
-                    <div class="panel-heading" (click)="panelShow()">
-                      <h3 class="panel-title">Selected Investigation</h3>
-                      <span *ngIf="isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                      <span *ngIf="!isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
-                    </div>
-                    <div *ngIf= "isPanel" class="panel-body">
-                      <ul class="list-container">
-                        <li>
-                          <md-checkbox>List1 (N200)</md-checkbox>
-                        </li>
-                        <li>
-                          <md-checkbox>List2 (N200)</md-checkbox>
-                        </li>
-                        <li>
-                          <md-checkbox>List3 (N200)</md-checkbox>
-                        </li>
-                     </ul>
-                    </div>
-                     <div>
-                      <div class="col-sm-12 text-center" style="margin:10px 0;">
-                        <button md-raised-button class="apmis-blue">Generate Bill</button>
-                      </div>
-                    </div>
-                </div>
-             </div>
+              <app-investigation></app-investigation>
+              <div class="col-sm-12 text-center" style="margin:10px 0;">
+                 <button md-raised-button class="apmis-blue">Generate Bill</button>
+              </div>
             </md-tab>
           </md-tab-group>
-            <!--<div class="row">
-                <div class="col-sm-12 text-center margin">
-                  <a md-raised-button>Generate Bill</a>
-              </div>
-             </div>-->
         </div>
         <div class="col-sm-4">
           <div class="panel panel-default">
@@ -180,18 +43,15 @@
                <div class="">
                 <p><strong>Address:</strong>N0 26a fela job way, alausa</p>
               </div>
-              <div class="row">
-                <div class="inv-header text-center">
-                 <h5></h5>
+            <div class="row">
+                <div class="inv-header">
+                 <h5><strong>Total:</strong>  50,000</h5>
                 </div>
-                <div class="inv-selected">
-                  <p><strong>Total:</strong> N50,000</p>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
+          </div>
       </div>
+    </div>
     </div>
   </div>
 </section>

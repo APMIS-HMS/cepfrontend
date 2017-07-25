@@ -32,6 +32,7 @@ import { SurveyComponent } from '../../../shared-module/form-generator/survey.co
 import { SurveyEditorComponent } from '../../../shared-module/form-generator/survey.editor.component';
 import { SharedService } from '../../../shared-module/shared.service';
 import {KeysPipe } from '../patient-manager/patientmanager-detailpage/documentation/keypipe';
+import { PatientLaboratoryComponent } from './patientmanager-detailpage/patient-laboratory/patient-laboratory.component';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import {KeysPipe } from '../patient-manager/patientmanager-detailpage/documentat
         AddPatientProblemComponent,
         AddAllergyComponent,
         AddHistoryComponent,
-        KeysPipe
+        KeysPipe,
+        PatientLaboratoryComponent
         // SurveyComponent,
         // SurveyEditorComponent
         // BillPrescriptionComponent,
