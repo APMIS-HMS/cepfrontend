@@ -3,7 +3,7 @@
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <div class="modal-userStrap">
     <div class="strapImgWrap">
-      <img [src]="facilityService.transform(clinicHelperService.loginEmployee.employeeDetails.profileImageObject?.thumbnail)">
+      <img [src]="facilityService.transform(clinicHelperService.loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
     </div>
     <div class="strapUser">{{clinicHelperService.loginEmployee.employeeDetails.lastName}} {{clinicHelperService.loginEmployee.employeeDetails.firstName}}</div>
   </div>
