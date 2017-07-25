@@ -13,6 +13,7 @@ import { InvestigationSetupComponent } from './investigation-setup/investigation
 import { AddWorkbenchComponent } from './workbench-setup/add-workbench/add-workbench.component';
 import { AddPersonComponent } from './new-request/add-person/add-person.component';
 import { InvestigationComponent } from './new-request/investigation/investigation.component';
+import { ClientDetailsComponent } from './new-request/client-details/client-details.component';
 
 
 @NgModule({
@@ -21,6 +22,6 @@ import { InvestigationComponent } from './new-request/investigation/investigatio
     laboratoryRoutes,
     SharedModule,
   ],
-  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent, LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent, AddWorkbenchComponent, AddPersonComponent, InvestigationComponent]
+  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent, LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent, AddWorkbenchComponent, AddPersonComponent, InvestigationComponent, ClientDetailsComponent]
 })
 export class LaboratoryModule { }
