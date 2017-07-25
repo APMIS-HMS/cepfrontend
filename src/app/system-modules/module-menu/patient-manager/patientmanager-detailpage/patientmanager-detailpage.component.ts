@@ -111,6 +111,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
       this.selectedAppointment = appointment;
       this.patient = appointment.patientId;
+      console.log(appointment);
       this.patientDetails = appointment.patientId;
       this.employeeDetails = this.loginEmployee;
       this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
