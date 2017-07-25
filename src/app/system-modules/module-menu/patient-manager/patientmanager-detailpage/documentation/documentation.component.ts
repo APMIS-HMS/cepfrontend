@@ -102,10 +102,21 @@ export class DocumentationComponent implements OnInit {
   analyseObject(object) {
     // console.log(Object.getOwnPropertyNames(object));
     // const arr = Object.keys(object).map(function (k) { return object[k] });
-    const arr = Object.keys(object).map(function(_) { return object[_]; })
-
-    console.log(object.toString());
-    return object.toString();
+    // const arr = Object.keys(object).map(function(_) { return object[_]; })
+    // const obj = JSON.parse(object);
+    // console.log(object.split(':'));
+    const splitObject = JSON.stringify(object).split(':'); //.replace('{"', '')
+    console.log(this.trimValue(splitObject[1]));
+    // console.log(splitObject[1]);
+    return object;
+  }
+  trimKey(value) {
+    const init = value.replace('{"', '');
+    return init.replace('"', '');
+  }
+  trimValue(value) {
+    const init = value.replace('"', '');
+    return init.replace('"}', '');
   }
   docDetail_show(document) {
     this.selectedDocument = document;
