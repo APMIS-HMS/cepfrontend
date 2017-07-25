@@ -76,6 +76,7 @@
             <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
             <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
+            <app-patient-laboratory *ngIf="menuLab"></app-patient-laboratory>    
         </div>
 
         <div *ngIf="addVitalsPop" class="modal-overlay">
