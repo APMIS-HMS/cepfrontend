@@ -8,8 +8,10 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class AddAllergyComponent implements OnInit {
 
-  problemFormCtrl: FormControl;
-  statusFormCtrl: FormControl;
+  allergyFormCtrl: FormControl;
+  noteFormCtrl: FormControl;
+  reactionFormCtrl: FormControl;
+  severityFormCtrl: FormControl;
   filteredStates: any;
 
   mainErr = true;
@@ -68,16 +70,21 @@ export class AddAllergyComponent implements OnInit {
     'Wyoming',
   ];
 
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder) { 
-    this.problemFormCtrl = new FormControl();
-    this.filteredStates = this.problemFormCtrl.valueChanges
+    this.allergyFormCtrl = new FormControl();
+    this.filteredStates = this.allergyFormCtrl.valueChanges
         .startWith(null)
         .map(name => this.filterStates(name));
 
-    this.statusFormCtrl = new FormControl();
-    this.filteredStates = this.statusFormCtrl.valueChanges
+    this.severityFormCtrl = new FormControl();
+    this.filteredStates = this.severityFormCtrl.valueChanges
         .startWith(null)
         .map(name => this.filterStates(name));
   }

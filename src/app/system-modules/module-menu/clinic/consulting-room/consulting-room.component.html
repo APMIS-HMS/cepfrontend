@@ -18,7 +18,7 @@
                                     <div class="frmitemwrap">
                                         <div class="dx-field">
                                             <md-input-container class="example-full-width">
-                                                 <input mdInput placeholder="Room Name" formControlName="name">
+                                                <input mdInput placeholder="Room Name" formControlName="name">
                                             </md-input-container>
                                         </div>
                                     </div>
@@ -26,7 +26,7 @@
                                     <div class="frmitemwrap">
                                         <div class="dx-field">
                                             <md-input-container class="example-full-width">
-                                                 <input mdInput placeholder="Room capacity" formControlName="capacity">
+                                                <input mdInput placeholder="Room capacity" formControlName="capacity">
                                             </md-input-container>
                                         </div>
                                     </div>
@@ -39,10 +39,9 @@
 
                 </form>
 
-                <div *ngIf="consultingRoomForm.controls['consultingRoomArray'].value.length === 0 && locationTypeControl.value != null"
-                    (click)="pushNewConsultingRoom(room)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Another Room</span></div>
-                    <button *ngIf="locationTypeControl.value != null" [disabled]="consultingRoomForm.controls['consultingRoomArray'].valid == false || consultingRoomForm.controls['consultingRoomArray'].value.length === 0"
-                    md-raised-button class="apmis-blue">Create</button>
+                <div *ngIf="consultingRoomForm.controls['consultingRoomArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewConsultingRoom(room)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Another Room</span>
+                </div>
+                <button (click)="onCreateSchedule()" *ngIf="locationTypeControl.value != null" [disabled]="consultingRoomForm.controls['consultingRoomArray'].valid == false || consultingRoomForm.controls['consultingRoomArray'].value.length === 0" md-raised-button class="apmis-blue">Create</button>
             </form>
 
         </div>
@@ -68,7 +67,7 @@
                 <div class="li-cta">
                     <i (click)="onSelectSchedulerManager(manager)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     <i class="fa fa-trash" aria-hidden="true"></i>
-                </div> 
+                </div>
             </li>
         </ul>
     </div>
