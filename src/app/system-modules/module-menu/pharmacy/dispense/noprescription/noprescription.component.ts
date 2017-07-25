@@ -261,23 +261,14 @@ export class NoprescriptionComponent implements OnInit {
 			this.cuDropdownLoading = true;
 
 			if (this.storeId !== '') {
-				// this._productService.find({ query: { facilityId : this.facility._id }})
 				this._inventoryService.find({ query: { facilityId : this.facility._id, storeId: this.storeId }})
 					.then(res => {
 						console.log(res);
-						const tempArray = [];
 						// Get all products in the facility, then search for the item you are looing for.
-						res.data.forEach(element => {
-							if (
-								(element.totalQuantity > 0) &&
-								element.productObject.name.toLowerCase().includes(this.searchText.toLowerCase())
-							) {
-								tempArray.push(element);
-							}
-						});
-						console.log(tempArray);
-						if (tempArray.length !== 0) {
-							this.products = tempArray;
+						const contains = res.data.filter(x => (x.totalQuantity > 0) && x.productObject.name.toLowerCase().includes(this.searchText.toLowerCase()));
+						console.log(contains);
+						if (contains.length !== 0) {
+							this.products = contains;
 							this.cuDropdownLoading = false;
 						} else {
 							this.products = [];
