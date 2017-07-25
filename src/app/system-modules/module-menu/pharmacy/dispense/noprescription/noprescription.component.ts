@@ -32,6 +32,7 @@ export class NoprescriptionComponent implements OnInit {
 	individualShow = false;
 	internalShow = false;
 	prescriptions: any[] = [];
+	stores: any[] = [];
 	prescription = {};
 	storeId = '';
 	// search variables
@@ -269,9 +270,11 @@ export class NoprescriptionComponent implements OnInit {
 						console.log(contains);
 						if (contains.length !== 0) {
 							this.products = contains;
+							this.stores = contains.transactions;
 							this.cuDropdownLoading = false;
 						} else {
 							this.products = [];
+							this.stores = [];
 							this.cuDropdownLoading = false;
 						}
 					})
