@@ -422,13 +422,6 @@ export class PrescriptionComponent implements OnInit {
 								console.log(res);
 								if(res._id !== undefined) {
 									this._batchTransactionTracking(index, inputBatch[index], batch);
-									// // Deduct from the batches before updating the batches in the inventory.
-									// this.transactions.transactions.forEach(element => {
-									// 	if(element._id === batch._id) {
-									// 		element.quantity = element.quantity - inputBatch[index];
-									// 	}
-									// });
-									// this.transactions.totalQuantity = this.transactions.totalQuantity - inputBatch[index];
 									// Make a call to the inventory service so that you can deduct the quantity from the inventory
 									this._inventoryService.patch(this.transactions._id, this.transactions, {})
 										.then(res => {

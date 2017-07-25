@@ -110,7 +110,6 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     onClickAddPrescription(value: any, valid: boolean) {
-        console.log(value);
         if (valid) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._notification('Info', 'Clinic has not been set!');
@@ -215,7 +214,6 @@ export class PatientPrescriptionComponent implements OnInit {
                     subTotal: totalCost,
                     grandTotal: totalCost,
                 }
-                console.log(bill);
                 // If any item was billed, then call the billing service
                 if(billItemArray.length > 0) {
                     // send the billed items to the billing service
