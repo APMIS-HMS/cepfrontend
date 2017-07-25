@@ -10,14 +10,9 @@ import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 
-<<<<<<< HEAD
-//const HOST = 'http://40.68.100.29:3030'; // Online
-//const HOST = 'http://192.168.20.11:3030'; // Sunday
-=======
 // const HOST = 'http://40.68.100.29:3030'; // Online
-// const HOST = 'http://192.168.20.4:3030'; // Sunday
->>>>>>> da96455f99a6fcf5a5f245d061207443ae17bb17
-const HOST = 'http://localhost:3030'; // Local Server
+   const HOST = 'http://192.168.20.3:3030'; // Sunday
+//const HOST = 'http://localhost:3030'; // Local Server
 
 
 @Injectable()
