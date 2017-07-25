@@ -9,20 +9,17 @@ md-tab-header {
 }
 .inv-container {
     max-height: 400px;
-    border: 1px solid #f5f5f5;
-    margin: 10px 0;
+    border: 2px solid #f5f5f5;
     background: transparent;
     border-radius: 10px;
-    padding: 0 10px;
+    padding: 5px 10px;
 }
 .list-container{
     overflow-y: auto;
-    max-height: 250px;
+    min-height: 250px;
 }
-.custom-panel {
-    margin: 10px;
-}
-.survery .glyphicon {
+
+.glyphicon {
     top: -16px;
 }
 .inv-header {
@@ -37,7 +34,7 @@ md-tab-header {
     font-size: 12px;
 }
 .inv-selected {
-    padding: 10px;
+    padding-left: 15px;
 }
  .apmis-blue {
     max-width: 200px;
@@ -113,5 +110,15 @@ a:hover, a.active {
     padding: 2px 5px;
 }
 .panel {
-    min-height: 290px;
+    min-height: 250px;
+}
+ .panel > .panel-heading {
+    color: #000;
+    background-color: #f5f5f5;
+    border-color: #f5f5f5;
+}
+.background-color {
+    background: #f5f5f5;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ccc;
 }
