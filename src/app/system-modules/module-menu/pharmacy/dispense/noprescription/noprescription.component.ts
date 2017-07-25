@@ -157,6 +157,9 @@ export class NoprescriptionComponent implements OnInit {
 				console.log(prescription);
 
 				this.prescriptions.push(prescription);
+
+				// Empty the form
+				this.noPrescriptionForm.reset();
 			}
 		// } else {
 		// 	this._facilityService.announceNotification({
