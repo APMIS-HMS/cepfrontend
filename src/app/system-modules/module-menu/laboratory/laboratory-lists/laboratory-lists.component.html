@@ -1,110 +1,135 @@
 <section id="box-wrapper">
-<div class="page-title">Laboratory Lists</div>
+    <div class="page-title">Laboratory Lists</div>
 
-<div class="preTbl-topItems-wrap">
-    <ul class="topmenuwrap">
-        <li [routerLink]="['/dashboard/laboratory/new-laboratory-request']">
-            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            <span>Make new request</span>
-        </li>
-    </ul>
-</div>
+    <div class="preTbl-toplaboratorys-wrap">
+        <ul class="topmenuwrap">
+            <li [routerLink]="['/dashboard/laboratory/new-laboratory-request']">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>Make new request</span>
+            </li>
+        </ul>
+    </div>
 
-<table cellpadding="0" cellspacing="0" border="0.5">
-    <thead>
-        <tr>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Full Names</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Sex</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Doctor</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Date</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Location</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Diagnosis</span>
-            </th>
-             <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Sample Taken</span>
-            </th>
-             <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">is External?</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Status</span>
-            </th>
-            <th>
-              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-              <span style="padding-left: 3px;">Specimen</span>
-            </th>
-        </tr>
-    </thead>
+    <table cellpadding="0" cellspacing="0" border="0.5">
+        <thead>
+            <tr>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Full Names</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Sex</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Doctor</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Date</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Location</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Diagnosis</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Sample Taken</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">is External?</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Status</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Specimen</span>
+                </th>
+            </tr>
+        </thead>
 
-    <tbody>
-      <tr>
-        <td colspan="10">
-        <div class="survery">
-        <div class="col-sm-3">
-          <md-input-container>
-            <input mdInput [mdDatepicker]="picker" placeholder="filter by date">
-            <button mdSuffix [mdDatepickerToggle]="picker"></button>
-          </md-input-container>
-          <md-datepicker #picker></md-datepicker>
-        </div>
-        <div class="col-sm-3">
-          <md-input-container>
-              <input mdInput placeholder="Search by patient">
-        </md-input-container>
-        </div>
-        <div class="col-sm-3">
-          <md-select placeholder="Search by Doctor" [(ngModel)]="selectedValue" name="food">
-            <md-option *ngFor="let food of foods" [value]="food.value">
-                {{food.viewValue}}
-              </md-option>
-            </md-select>
-        </div>
-        <div class="col-sm-3">
-          <md-select placeholder="Search by location" [(ngModel)]="selectedValue" name="food">
-            <md-option *ngFor="let food of foods" [value]="food.value">
-              {{food.viewValue}}
-            </md-option>
-          </md-select>
-        </div>
-      </div>
-        </td>
-      </tr>
-      <tr *ngFor = "let item of lists" >
-        <td><p>{{item.fullname}}</p></td>
-        <td><p>{{item.sex}}</p></td>
-        <td><p>{{item.doctor}}</p></td>
-        <td><p>{{item.date}}</p></td>
-        <td><p>{{item.location}}</p></td>
-        <td><p>{{item.diagnosis}}</p></td>
-        <td><p>{{item.samples}}</p></td>
-        <td><p>{{item.isexternal}}</p></td>
+        <tbody>
+            <tr>
+                <td colspan="10">
+                    <div class="survery">
+                        <div class="col-sm-3">
+                            <md-input-container>
+                                <input mdInput [mdDatepicker]="picker" placeholder="filter by date">
+                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                            </md-input-container>
+                            <md-datepicker #picker></md-datepicker>
+                        </div>
+                        <div class="col-sm-3">
+                            <md-input-container>
+                                <input mdInput placeholder="Search by patient">
+                            </md-input-container>
+                        </div>
+                        <div class="col-sm-3">
+                            <md-select placeholder="Search by Doctor">
+                                <md-option *ngFor="let doctor of doctors" [value]="doctor._id">
+                                    {{doctor.name}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div class="col-sm-3">
+                            <md-select placeholder="Search by location">
+                                <md-option *ngFor="let location of locations" [value]="location._id">
+                                    {{location.name}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngFor="let laboratory of laboratories">
+                <td>
+                    <p>{{laboratory.fullname}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.sex}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.doctor}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.date}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.location}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.diagnosis}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.samples}}</p>
+                </td>
+                <td>
+                    <p>{{laboratory.isexternal}}</p>
+                </td>
 
-        <td><p>{{item.payment}}</p></td>
-        <td>
-          <div class="tr-act-btn"><i aria-hidden="true" class="fa fa-sign-out"></i>Receive Specimen</div>
-        </td>
-      </tr>
-       
-    </tbody>
-</table>
+                <td>
+                    <p>{{laboratory.payment}}</p>
+                </td>
+                <td>
+                    <div class="tr-act-btn"><i aria-hidden="true" class="fa fa-sign-out"></i>Receive Specimen</div>
+                </td>
+            </tr>
+            <tr *ngIf="laboratories.length === 0 && !loading">
+                <td class="table-content" colspan="10" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+            </tr>
+            <tr *ngIf="laboratories.length === 0 && loading">
+                <td class="table-content" colspan="10" style="text-align: center !important; padding: 10px !important;">
+                    <md-spinner class="small-spinner"></md-spinner>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>

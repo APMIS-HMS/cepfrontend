@@ -18,8 +18,9 @@
     <ul class="doc-cardWrap">
       
       <li class="doc-card shadow" *ngFor="let document of documents">
+        <div class="modal_title">{{document?.document?.documentType?.title}}</div> 
         <div class="docCard-header">
-          
+                    
           <div class="empWrap">
             <div class="list-img">
                 <img *ngIf="document?.createdBy?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
@@ -61,10 +62,10 @@
           <div class="cardSect-wrap">
 
             <div class="card-sect">
-              <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div>
               <div class="docCard-sectContent">
                     <div *ngFor="let key of document?.document?.body | keys">
-                            <b>{{key}}: </b>{{document?.document?.body[key]}}
+                            <div class="sect-key">{{key}}:</div> 
+                            <div class="sect-value">{{document?.document?.body[key]}}</div>
                     </div>
                 <!-- {{analyseObject(document?.document?.body) | json}}  -->
                <!-- <div *ngFor="let obj of document?.document?.body">

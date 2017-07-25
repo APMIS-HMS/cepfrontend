@@ -3,46 +3,43 @@
         <div class="page-title">Patient Page</div>
         <div class="patientPage-sideTab">
             <div class="sideTab-header">
-                <div class="patient-img">
-                    <div class="patient-img-wrap">
-                        <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
-                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
-                        <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
+                <div class="header-secA">
+                    <div class="patient-img">
+                        <div class="patient-img-wrap">
+                            <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
+                            <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
+                            <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
+                        </div>
                     </div>
-                    <section class="accBal-wrap">
-                        <span class="accBal-label">Account Balance</span>
-                        <span class="accBal-val">&#8358; 20,000</span>
-                    </section>
+                    <div class="headerDetail-wrap">
+                        <div class="patient-name">{{patient?.personDetails.lastName}} {{patient?.personDetails.firstName}} {{patient?.personDetails.title.name}}</div>
+                        <div class="headDetail-group">
+                            <div class="patient-gender">{{patient?.personDetails.gender.name}}</div>
+                            <div class="patient-apmisNo">{{patient?.personDetails.apmisId}}</div>
+                        </div>
+                        <div class="headDetail-group">
+                            <div class="patient-dob">{{patient?.personDetails.dateOfBirth | date}}</div>
+                            <div class="patient-phone">{{patient?.personDetails.phoneNumber}}</div>
+                        </div>
+                        <div class="patient-email">{{patient?.personDetails.email}}</div>
+
+                        <section class="accBal-wrap">
+                            <span class="accBal-label">Account Balance</span>
+                            <span class="accBal-val">&#8358; 20,000</span>
+                        </section>
+                    </div>
                 </div>
-                <div class="headerDetail-wrap">
-                    <div class="patient-name">{{patient?.personDetails.lastName}} {{patient?.personDetails.firstName}} {{patient?.personDetails.title.name}}</div>
-                    <div class="headDetail-group">
-                        <div class="patient-gender">{{patient?.personDetails.gender.name}}</div>
-                        <div class="patient-apmisNo">{{patient?.personDetails.apmisId}}</div>
-                    </div>
-                    <div class="headDetail-group">
-                        <div class="patient-dob">{{patient?.personDetails.dateOfBirth | date}}</div>
-                        <div class="patient-phone">{{patient?.personDetails.phoneNumber}}</div>
-                    </div>
-                    <div class="patient-email">{{patient?.personDetails.email}}</div>
 
-                    <!-- <div class="cta-wrap">
-                        <div class="checkoutBtn">Set Appointment</div>
-                        <legend (click)="checkoutPatient_show()" class="checkoutBtn">Checkout</legend>
-                    </div> -->
-
-                    <ul class="topmenuwrap">
-                        <li [routerLink]="['/dashboard/clinic/schedule-appointment']">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                            <span>Set Appointment</span>
-                        </li>
-                        <li (click)="checkoutPatient_show()">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            <span>Checkout</span>
-                        </li>
-                    </ul>
-
-                </div>
+                <ul class="topmenuwrap">
+                    <li (click)="checkoutPatient_show()">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                        <span>Checkout</span>
+                    </li>
+                    <li [routerLink]="['/dashboard/clinic/schedule-appointment']">
+                        <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+                        <span>Set Appointment</span>
+                    </li>
+                </ul>
             </div>
 
             <div class="sideTab-nav">

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { ConsultingRoomModel, Employee } from '../../../../models/index';
 import { ClinicHelperService } from '../services/clinic-helper.service';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-consulting-room-checkin',
@@ -14,6 +15,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   loginEmployee: Employee = <Employee>{};
+  locations: any[] = [];
 
   public roomCheckin: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -24,10 +26,18 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     public clinicHelperService: ClinicHelperService,
     public facilityService: FacilitiesService,
     private consultingRoomService: ConsultingRoomService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private locker: CoolSessionStorage
   ) { }
 
   ngOnInit() {
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    console.log(this.loginEmployee);
+    this.loginEmployee.workSpaces.forEach(work => {
+      work.locations.forEach(loc => {
+        this.locations.push(loc.minorLocationId);
+      })
+    })
     this.roomCheckin = this.formBuilder.group({
       location: ['', []],
       room: ['', []],
@@ -43,7 +53,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       });
     });
 
-     this.roomCheckin.controls['room'].valueChanges.subscribe(value => {
+    this.roomCheckin.controls['room'].valueChanges.subscribe(value => {
     });
   }
   close_onClick() {
@@ -56,33 +66,33 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     checkIn.lastLogin = new Date();
     checkIn.isOn = true;
     checkIn.isDefault = value.isDefault;
-    if (this.clinicHelperService.loginEmployee.consultingRoomCheckIn === undefined) {
-      this.clinicHelperService.loginEmployee.consultingRoomCheckIn = [];
+    if (this.loginEmployee.consultingRoomCheckIn === undefined) {
+      this.loginEmployee.consultingRoomCheckIn = [];
     }
-    this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
+    this.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
       itemi.isOn = false;
       if (value.isDefault === true) {
         itemi.isDefault = false;
       }
     });
-    this.loginEmployee = this.clinicHelperService.loginEmployee;
+    // this.loginEmployee = this.clinicHelperService.loginEmployee;
     this.loginEmployee.consultingRoomCheckIn.push(checkIn);
-    this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-      this.clinicHelperService.loginEmployee = payload;
+    this.employeeService.update(this.loginEmployee).then(payload => {
+      this.loginEmployee = payload;
       this.close_onClick();
     });
   }
   changeRoom(checkIn: any) {
     let keepCheckIn = undefined;
-    this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
+    this.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
       itemi.isOn = false;
       if (itemi._id === checkIn._id) {
         itemi.isOn = true;
         keepCheckIn = itemi;
       }
     });
-    this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-      this.clinicHelperService.loginEmployee = payload;
+    this.employeeService.update(this.loginEmployee).then(payload => {
+      this.loginEmployee = payload;
       this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'clinic' });
       this.close_onClick();
     });
