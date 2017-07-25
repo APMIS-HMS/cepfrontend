@@ -5,7 +5,7 @@ import { DocumentationService } from '../../services/facility-manager/setup/inde
 
 @Component({
     selector: 'survey',
-    template: `<div class="survey-container contentcontainer codecontainer"><div id="surveyElement"></div></div>`,
+    template: `<div class="survey-container contentcontainer codecontainer survery"><div id="surveyElement"></div></div>`,
 })
 export class SurveyComponent implements OnInit {
     @Input() json: any;
@@ -13,10 +13,9 @@ export class SurveyComponent implements OnInit {
     constructor(private shareService: SharedService, private documentationService: DocumentationService) {
         this.shareService.newFormAnnounced$.subscribe((payload: any) => {
             this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(payload.json));
-            // Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
-            // Survey.defaultBootstrapCss.progressBar = 'bar-green';
             Survey.Survey.cssType = 'bootstrap';
             Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+            Survey.Survey.cssType = 'bootstrap';
             this.surveyModel.onComplete.add(() => {
                 this.surveyResult();
             });
@@ -25,10 +24,9 @@ export class SurveyComponent implements OnInit {
 
     ngOnInit() {
         this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
-        // Survey.defaultBootstrapCss.navigationButton = 'btn btn-green';
-        // Survey.defaultBootstrapCss.progressBar = 'bar-green';
         Survey.Survey.cssType = 'bootstrap';
         Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+        Survey.Survey.cssType = 'bootstrap';
         this.surveyModel.onComplete.add(() => {
             this.surveyResult();
         });
