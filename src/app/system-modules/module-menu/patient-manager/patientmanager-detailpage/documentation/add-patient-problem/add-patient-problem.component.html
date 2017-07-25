@@ -6,14 +6,8 @@
     <div>
         <div>
           <md-input-container>
-            <input mdInput placeholder="Problem" [mdAutocomplete]="auto" [formControl]="problemFormCtrl">
+            <input mdInput placeholder="Problem" [formControl]="problemFormCtrl">
           </md-input-container>
-
-          <md-autocomplete #auto="mdAutocomplete">
-            <md-option *ngFor="let state of filteredStates | async" [value]="state">
-              {{ state }}
-            </md-option>
-          </md-autocomplete>
         </div>
         <div>
           <md-input-container>
@@ -25,6 +19,11 @@
               {{ state }}
             </md-option>
           </md-autocomplete>
+        </div>
+        <div>
+          <md-input-container>
+            <textarea mdInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
+          </md-input-container>
         </div>
 
         <div class="cta-1">SAVE</div>

@@ -10,6 +10,7 @@ export class AddPatientProblemComponent implements OnInit {
 
   problemFormCtrl: FormControl;
   statusFormCtrl: FormControl;
+  noteFormCtrl: FormControl;
   filteredStates: any;
 
   mainErr = true;
