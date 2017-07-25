@@ -7,7 +7,7 @@ import {
     PrescriptionPriorityService, DictionariesService, BillingService,
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed } from '../../../../../models/index';
+import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed } from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 
@@ -17,20 +17,22 @@ import { Subject } from 'rxjs/Subject';
     styleUrls: ['./patient-prescription.component.scss']
 })
 export class PatientPrescriptionComponent implements OnInit {
-    @Input() employeeDetails: any;
 	@Input() patientDetails: any;
     @Input() selectedAppointment: Appointment = <Appointment>{};
     @Output() prescriptionItems: Prescription = <Prescription>{};
     isDispensed: Subject<any> = new Subject();
     facility: Facility = <Facility>{};
+    clinicObj: any = {};
+    employeeDetails: any = {};
     user: any = <any>{};
 
-    showCuDropdown = false;
-    cuDropdownLoading = false;
-    addPrescriptionShow = false;
-    medicalShow = false;
-    mainErr = true;
-    errMsg = 'You have unresolved errors';
+    showCuDropdown: boolean = false;
+    cuDropdownLoading: boolean = false;
+    addPrescriptionShow: boolean = false;
+    currentMedicationShow: boolean = false;
+    pastMedicationShow: boolean = false;
+    mainErr: boolean = true;
+    errMsg: string = 'You have unresolved errors';
     addPrescriptionForm: FormGroup;
     allPrescriptionsForm: FormGroup;
     facilityId: string;
@@ -49,9 +51,12 @@ export class PatientPrescriptionComponent implements OnInit {
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
-    priorityValue: String = '';
     selectedForm: string = '';
     selectedIngredients: any = [];
+    currentMedications: any[] = [];
+    pastMedications: any[] = [];
+    currMedLoading: boolean = false;
+    pastMedLoading: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -75,16 +80,17 @@ export class PatientPrescriptionComponent implements OnInit {
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
         this.user = this._locker.getObject('auth');
+        this.employeeDetails = this._locker.getObject('loginEmployee');
+
         // Remove this when you are done
-        this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
+        //this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
-        this.selectedValue = DurationUnits[0].name;
-        this.getAllPriorities();
-        this.getAllRoutes();
-        this.getAllFrequencies();
-        //this.getMedicationList();
+        this.selectedValue = DurationUnits[1].name;
+        this._getAllPriorities();
+        this._getAllRoutes();
+        this._getAllFrequencies();
 
         this.allPrescriptionsForm = this.fb.group({
             priority: ['', [<any>Validators.required]],
@@ -104,6 +110,7 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     onClickAddPrescription(value: any, valid: boolean) {
+        console.log(value);
         if (valid) {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._notification('Info', 'Clinic has not been set!');
@@ -133,7 +140,15 @@ export class PatientPrescriptionComponent implements OnInit {
                 };
 
                 this.addPrescriptionShow = true;
-                this.prescriptionArray.push(prescriptionItem);
+                if(this.prescriptions.prescriptionItems !== undefined) {
+                    // Check if generic has been added already.
+                    const containsGeneric = this.prescriptionArray.filter(x => prescriptionItem.genericName === x.genericName);
+                    if(containsGeneric.length < 1) {
+                        this.prescriptionArray.push(prescriptionItem);
+                    }
+                } else {
+                    this.prescriptionArray.push(prescriptionItem);
+                }
 
                 const prescription = <Prescription>{
                     facilityId: this.facility._id,
@@ -284,32 +299,52 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     //Get all medications
-	// getMedicationList() {
-	// 	this._medicationListService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id }})
-	// 		.then(res => {
-	// 			console.log(res);
-				
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 		});
-    // }
+	private _getPrescriptionList() {
+		this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id }})
+			.then(res => {
+                this.currMedLoading = false;
+                this.pastMedLoading = false;
+                // Bind to current medication list
+                const currentMedications = res.data.filter(x => {
+                    const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+                    if(lastSevenDays < new Date(x.updatedAt)) {
+                        return x;
+                    }
+                });
+                this.currentMedications = currentMedications.splice(0, 3);
+                
+                // Bind to past medication list
+                const pastMedications = res.data.filter(x => { 
+                    const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+                    if(lastSevenDays > new Date(x.updatedAt)) {
+                        return x;
+                    }
+                });
+                console.log(pastMedications);
+                this.pastMedications = pastMedications.splice(0, 3);
+			})
+			.catch(err => {
+				console.log(err);
+			});
+    }
     
     onClickReset() {
         this.addPrescriptionForm.reset();
     }
 
-    getAllPriorities() {
+    private _getAllPriorities() {
         this._priorityService.findAll()
             .then(res => {
                 this.priorities = res.data;
+                const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
+                this.allPrescriptionsForm.controls['priority'].setValue(priority[0]._id);
             })
             .catch(err => {
                 console.log(err);
             });
     }
 
-    getAllRoutes() {
+    private _getAllRoutes() {
         this._routeService.findAll()
             .then(res => {
                 this.routes = res.data;
@@ -319,7 +354,7 @@ export class PatientPrescriptionComponent implements OnInit {
             });
     }
 
-    getAllFrequencies() {
+    private _getAllFrequencies() {
         this._frequencyService.findAll()
             .then(res => {
                 this.frequencies = res.data;
@@ -339,8 +374,25 @@ export class PatientPrescriptionComponent implements OnInit {
         }, 300);
     }
 
-    togglemedicalShow() {
-        this.medicalShow = !this.medicalShow;
+    onClickMedicationShow(value) {
+        if((this.currentMedicationShow === false ) && (this.pastMedicationShow === false)) {
+            if(value === 'Current') {
+                this.currMedLoading = true;
+            } else {
+                this.pastMedLoading = true;
+            }
+            this._getPrescriptionList();
+        }
+
+        if(value === 'Current') {
+            this.currentMedicationShow = !this.currentMedicationShow;
+            this.pastMedicationShow = false;
+        }
+
+        if(value === 'Past') {
+            this.pastMedicationShow = !this.pastMedicationShow;
+            this.currentMedicationShow = false;
+        }
     }
 
     private _sendPrescription(data: Prescription): void {

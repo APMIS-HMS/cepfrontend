@@ -63,7 +63,7 @@
             <div class="card-sect">
               <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div>
               <div class="docCard-sectContent">
-               {{analyseObject(document?.document?.body)}}
+               {{analyseObject(document?.document?.body) | json}}
               </div>
             </div>
           </div>
