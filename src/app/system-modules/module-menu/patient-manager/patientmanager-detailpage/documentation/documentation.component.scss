@@ -1,3 +1,4 @@
+
 @import "../patientmanager-detailpage.component.scss";
 
 .doc-mainWrap{
@@ -146,6 +147,7 @@ ul.topmenuwrap{
     padding-left: 10px;
     color: #000;
     background: #03A9F4;
+    border-top: 5px solid #fff;
 }
 .docCard-foot i:hover{
     cursor: pointer;
@@ -199,17 +201,6 @@ ul.topmenuwrap{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-.rAreaCard-cta{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.rAreaCard-cta i{
-    cursor: pointer;
-}
-.rAreaCard-cta i:hover{
-    color: #0288D1;
 }
 .rAreaCard-status {
     position: absolute;

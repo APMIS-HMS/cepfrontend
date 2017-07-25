@@ -1,0 +1,71 @@
+ <div class="col-sm-12  background-color">
+                    <div class="col-sm-4">
+                    <md-input-container class="example-full-width">
+                      <textarea mdInput placeholder="Enter Clinical Information"></textarea>
+                    </md-input-container>
+                  </div>
+                    <div class="col-sm-4">
+                      <md-input-container class="example-full-width">
+                        <textarea mdInput placeholder="Enter Diagnosis"></textarea>
+                      </md-input-container>
+                    </div>
+                    <div class="col-sm-4">
+                      <br>
+                      <md-input-container class="example-full-width">
+                        <input mdInput type="number" placeholder="Enter lab number">
+                      </md-input-container>
+                    </div>
+                  </div>
+             <div class="col-sm-6">
+                <div class="inv-container">
+                  <md-input-container class="example-full-width">
+                        <input mdInput placeholder="Search investigation">
+                  </md-input-container>
+                  <i style="margin-left: -19px;" class="fa fa-search"></i>
+                  <div class="list-container">                  
+                    <ul class="tree">
+                      <li class="stand-alone">
+                        <md-checkbox>List1</md-checkbox>
+                      </li> 
+                      <li class="tree-item">
+                        <md-checkbox></md-checkbox><a style="margin-left: 9px;"(click)="clickParent()"><i class="fa fa-folder"></i>Panel</a>
+                        <ul *ngIf="isParent" class="tree-parent open"> 
+                          <li class="tree-item view">
+                            <md-checkbox>List4</md-checkbox>
+                          </li>
+                          <li class="tree-item view">
+                            <md-checkbox>List4</md-checkbox>
+                          </li>
+                          <li class="tree-item view">
+                            <md-checkbox>List4</md-checkbox>
+                          </li>
+                        </ul>   
+                      </li> 
+                    </ul>
+                  </div>
+                </div>
+             </div>
+             <div class="col-sm-6">
+              	<div class="panel panel-success custom-panel">
+                    <div class="panel-heading" (click)="panelShow()">
+                      <h3 class="panel-title">Selected Investigation</h3>
+                      <span *ngIf="isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                      <span *ngIf="!isPanel" class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div *ngIf= "isPanel" class="panel-body">
+                      <ul class="list-container">
+                        <li>
+                          <md-checkbox>List1 (N200)</md-checkbox>
+                        </li>
+                        <li>
+                          <md-checkbox>List2 (N200)</md-checkbox>
+                        </li>
+                        <li>
+                          <md-checkbox>List3 (N200)</md-checkbox>
+                        </li>
+                     </ul>
+                    </div>
+                     <div>
+                    </div>
+                </div>
+             </div>
