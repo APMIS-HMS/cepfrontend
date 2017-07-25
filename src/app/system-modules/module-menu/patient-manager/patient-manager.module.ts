@@ -31,6 +31,7 @@ import { FormTypeService } from '../../../services/module-manager/setup/index';
 import { SurveyComponent } from '../../../shared-module/form-generator/survey.component';
 import { SurveyEditorComponent } from '../../../shared-module/form-generator/survey.editor.component';
 import { SharedService } from '../../../shared-module/shared.service';
+import {KeysPipe } from '../patient-manager/patientmanager-detailpage/documentation/keypipe';
 
 @NgModule({
     declarations: [
@@ -51,7 +52,8 @@ import { SharedService } from '../../../shared-module/shared.service';
         ClinicalNoteComponent,
         AddPatientProblemComponent,
         AddAllergyComponent,
-        AddHistoryComponent
+        AddHistoryComponent,
+        KeysPipe
         // SurveyComponent,
         // SurveyEditorComponent
         // BillPrescriptionComponent,

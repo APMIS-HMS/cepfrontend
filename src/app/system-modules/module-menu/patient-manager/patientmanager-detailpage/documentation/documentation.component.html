@@ -63,7 +63,13 @@
             <div class="card-sect">
               <div class="docCard-sectTitle">{{document?.document?.documentType?.title}}</div>
               <div class="docCard-sectContent">
-               {{analyseObject(document?.document?.body) | json}}
+                    <div *ngFor="let key of document?.document?.body | keys">
+                            <b>{{key}}: </b>{{document?.document?.body[key]}}
+                    </div>
+                <!-- {{analyseObject(document?.document?.body) | json}}  -->
+               <!-- <div *ngFor="let obj of document?.document?.body">
+                   <span>{{}}</span>
+               </div> -->
               </div>
             </div>
           </div>

@@ -99,15 +99,34 @@ export class DocumentationComponent implements OnInit {
     });
     this.documents.reverse();
   }
+  toObject(arr) {
+    const rv = {};
+    for (let i = 0; i < arr.length; ++i) {
+      rv[i] = arr[i];
+    }
+    return rv;
+  }
   analyseObject(object) {
-    // console.log(Object.getOwnPropertyNames(object));
+    const props = Object.getOwnPropertyNames(object);
+    const docs: any[] = [];
+    props.forEach((prop, i) => {
+      const property = prop.toString();
+      console.log(Object.assign({}, object));
+      docs.push({ property: object[prop] });
+      // console.log(object[Object.getOwnPropertyNames(object)[1]])
+    })
+
+
+    // console.log(object[Object.getOwnPropertyNames(object)[1]])
+
     // const arr = Object.keys(object).map(function (k) { return object[k] });
     // const arr = Object.keys(object).map(function(_) { return object[_]; })
     // const obj = JSON.parse(object);
     // console.log(object.split(':'));
-    const splitObject = JSON.stringify(object).split(':'); //.replace('{"', '')
-    console.log(this.trimValue(splitObject[1]));
+    // const splitObject = JSON.stringify(object).split(':'); //.replace('{"', '')
+    // console.log(splitObject);
     // console.log(splitObject[1]);
+    console.log(docs);
     return object;
   }
   trimKey(value) {
