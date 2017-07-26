@@ -1,13 +1,22 @@
 <div class="">
-    <div class="table-container">
+    <div class="survery table-container">
         <div class="col-sm-4">
-            <select [formControl]="selProductType" class="form-control">
+            <!--<select [formControl]="selProductType" class="form-control">
                 <option value="" disabled selected>Select by type</option>
                 <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
-            </select>
+            </select>-->
+            <md-select [formControl]="selProductType" placeholder="Select by type" [(ngModel)]="selectedValue" name="food">
+                <md-option value="" disabled selected>Select by type</md-option>
+                <md-option *ngFor="let productType of productTypes" value="{{productType._id}}">
+                {{productType.name}}
+                </md-option>
+            </md-select>
         </div>
         <div class="col-sm-4 pull-right">
-            <input [formControl]="searchControl" type="search" placeholder="Search..." class="searchInput" />
+           <!-- <input [formControl]="searchControl" type="search" placeholder="Search..." class="searchInput" />-->
+           <md-input-container class="example-full-width">
+            <input mdInput placeholder="Search..." [formControl]="searchControl">
+            </md-input-container>
         </div>
         <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
     </div>

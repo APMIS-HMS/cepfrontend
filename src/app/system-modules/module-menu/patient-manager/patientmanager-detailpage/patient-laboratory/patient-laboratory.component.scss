@@ -1,11 +1,16 @@
-#container{
-    width: 100%;
-    background: #f8f8f8;
-}
+
 .pg-subtitle {
     text-align: left;
     color: #0288D1;
     font-size: 14px;
     margin-top: -15px;
     margin-left: 5px;
+}
+.doc-mainWrap {
+    min-height: 100vh;
+    height: auto;
+    background: transparent;
+    margin-top: 4px;
+    padding: 5px;
+    box-sizing: border-box;
 }
