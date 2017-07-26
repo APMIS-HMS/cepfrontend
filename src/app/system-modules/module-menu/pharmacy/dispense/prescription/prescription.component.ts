@@ -238,7 +238,7 @@ export class PrescriptionComponent implements OnInit {
 						isExternal: element.isExternal,
 						instruction: element.patientInstruction
 					};
-					
+
 					// Push all dispenseItem into dispenseArray
 					dispenseArray.push(dispenseItem);
 				} else {
@@ -276,6 +276,7 @@ export class PrescriptionComponent implements OnInit {
 			this._dispenseService.create(dispense)
 				.then(res => {
 					console.log(res);
+					this._notification('Success', 'Drugs has been sent.');
 					// if(res) {
 					// 	let medication = <MedicationList>{
 					// 		facilityId: this.facility._id,
@@ -293,14 +294,16 @@ export class PrescriptionComponent implements OnInit {
 					console.log(err);
 				});
 			console.log(externalDispense);
-			// Save external Prescriptions.
-			this._externalPrescriptionService.create(externalDispense)
-				.then(res => {
-					console.log(res);
-				})
-				.catch(err => {
-					console.log(err);
-				});
+			if(externalDispense.generics.length > 0) {
+				// Save external Prescriptions.
+				this._externalPrescriptionService.create(externalDispense)
+					.then(res => {
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			}
 		} else {
 			this._notification('Info', 'Please Bill the drugs that has been prescribed above.');
 		}

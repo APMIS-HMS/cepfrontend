@@ -26,7 +26,7 @@
         </div>
         <div class="clear"></div>
         <div *ngIf="modal_on" class="modal-overlay">
-            <app-store-check-in [loginEmployee]="loginEmployee" [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
+            <app-store-check-in  [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
         </div>
     </div>
 </div>

@@ -15,6 +15,11 @@
             <div *ngIf="individualShow">
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-input-container class="example-full-width">
+                        <input mdInput formControlName="phone" placeholder="Phone Number">
+                    </md-input-container>
+                </div>
+                <div class="col-sm-4 col-md-4 col-xs-12">
+                    <md-input-container class="example-full-width">
                         <input mdInput formControlName="lastName" placeholder="Last Name">
                     </md-input-container>
                 </div>
@@ -23,23 +28,18 @@
                         <input mdInput formControlName="firstName" placeholder="First Name">
                     </md-input-container>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="phone" placeholder="Phone Number">
-                    </md-input-container>
-                </div>
             </div>
             <!--end individual-->
             <!-- begin corporate -->
             <div *ngIf="corporateShow">
-                <div class="col-sm-8 col-md-8 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="companyName" placeholder="Company Name">
-                    </md-input-container>
-                </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-input-container class="example-full-width">
                         <input mdInput formControlName="companyPhone" placeholder="Company Phone">
+                    </md-input-container>
+                </div>
+                <div class="col-sm-8 col-md-8 col-xs-12">
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="companyName" placeholder="Company Name">
                     </md-input-container>
                 </div>
             </div>
@@ -66,7 +66,7 @@
             <div class="col-sm-4 col-md-4 col-xs-12" style="margin-top: 20px;">
                 <div class="cu-search-box">
                     <md-input-container>
-                        <input mdInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
+                        <input mdInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
                     </md-input-container>
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
@@ -86,20 +86,16 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: -5px;">
+                <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
+                    <md-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
+                    </md-option>
+                </md-select>
+            </div>
             <div class="col-sm-2 col-md-2 col-xs-12">
                 <md-input-container class="example-full-width">
                     <input mdInput type="number" formControlName="qty" placeholder="Quantity">
                 </md-input-container>
-            </div>
-            <div class="col-sm-3 col-md-3 col-xs-12">
-                <!-- <md-input-container class="example-full-width">
-                    
-                    <input mdInput formControlName="batchNumber" placeholder="Batch Number">
-                </md-input-container> -->
-                <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
-                    <md-option *ngFor="let batch of batches" [(value)]="batch.productId" #batchId [attr.data-p-id]="batch.productId" [attr.data-p-fsid]="batch.facilityServiceId" [attr.data-p-price]="batch.price" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.product }}
-                    </md-option>
-                </md-select>
             </div>
             <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
@@ -116,7 +112,58 @@
     </div>
 </div>
 <div class="sec-border">
-    <div class="table-head">
+    <table>
+        <thead>
+            <tr>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Drugs</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Qty</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Batch</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Unit Price</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Action</span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let prescription of prescriptions; let j = index;">
+                <td class="table-content">{{ prescription.productName }}</td>
+                <td class="table-content">{{ prescription.qty }}</td>
+                <td class="table-content">{{ prescription.batchNumber }}</td>
+                <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
+                <td class="table-content">
+                    <a *ngIf="!prescription.isBilled" style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
+                    <!-- <button md-raised-button [disabled]="prescription.isBilled" style="color:#000!important; background:#ccc!important; padding: 6px 12px;" (click)="onClickBillProduct(prescription)" [innerHtml]="qtyDispenseBtn"> </button> -->
+                </td>
+            </tr>
+            <tr *ngIf="prescriptions.length === 0">
+                <td class="table-content" colspan="5" style="text-align: center"> No data to display in table</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+    <!-- <div class="table-head">
         <div class="table-head-inner-content drugs">
             <p>Drugs</p>
         </div>
@@ -128,9 +175,6 @@
         </div>
         <div class="table-head-inner-content unit-price">
             <p>Unit Price</p>
-        </div>
-        <div class="table-head-inner-content cost-price">
-            <p>Cost</p>
         </div>
         <div class="table-head-inner-content">
             <p>Action</p>
@@ -149,22 +193,20 @@
         <div class="table-data unit-price">
             <p><b>&#x20A6;{{ prescription.unitPrice }}</b></p>
         </div>
-        <div class="table-data cost-price">
-            <p><b>&#x20A6;{{ prescription.cost }}</b></p>
-        </div>
         <div class="table-data">
             <p> <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></p>
+            <button md-raised-button [disabled]="prescription.isDispensed" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(prescription)" [innerHtml]="qtyDispenseBtn"> </button>
         </div>
     </div>
     <div class="table-inner" *ngIf="prescriptions.length === 0" style="font-size: 13px; padding: 10px;">
         <p class="text-center" style="width: 100%;">No data to display in table</p>
-    </div>
+    </div> -->
 </div>
 <div class="row" style="padding-right: 20px;">
-    <p class="pull-right"> <b>Total Cost: &#x20A6;{{ totalItemPrice }}</b></p>
+    <!-- <p class="pull-right"> <b>Total Cost: &#x20A6;{{ totalItemPrice }}</b></p> -->
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="mat-lg-btn" (click)="onClickDispense();" md-raised-button>Dispense</button>
+        <button class="mat-lg-btn" [disabled]="dispenseAllBtn" (click)="onClickDispense();" md-raised-button>Dispense</button>
     </div>
 </div>

@@ -15,11 +15,17 @@ const PURCHASEMODULES_ROUTES: Routes = [
             { path: 'order-details/:id', component: NewPurchaseOrderComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
             { path: 'invoices', component: InvoicesComponent },
             { path: 'new-order', component: NewPurchaseOrderComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
-            { path: 'purchase-entry', component: PurchaseEntryComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
-            { path: 'purchase-entry/:id', component: PurchaseEntryComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
+            {
+                path: 'purchase-entry', component: PurchaseEntryComponent,
+                // resolve: { loginEmployee: LoginEmployeeResolverService }
+            },
+            {
+                path: 'purchase-entry/:id', component: PurchaseEntryComponent,
+                // resolve: { loginEmployee: LoginEmployeeResolverService }
+            },
             {
                 path: 'purchase-entry-edit/:invoiceId', component: PurchaseEntryComponent,
-                resolve: { loginEmployee: LoginEmployeeResolverService }
+                // resolve: { loginEmployee: LoginEmployeeResolverService }
             }
 
         ]

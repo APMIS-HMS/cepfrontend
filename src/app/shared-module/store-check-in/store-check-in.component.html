@@ -3,7 +3,9 @@
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <div class="modal-userStrap">
         <div class="strapImgWrap">
-            <img [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
+            <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+            <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
+            <!-- <img [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)"> -->
         </div>
         <div class="strapUser">{{loginEmployee.employeeDetails?.lastName}} {{loginEmployee.employeeDetails?.firstName}}</div>
     </div>
@@ -16,7 +18,8 @@
             <form [formGroup]="storeCheckin" novalidate>
                 <div class="frm-item-wrap">
                     <md-select class="example-full-width" placeholder="Location" formControlName="location">
-                        <md-option *ngFor="let location of workSpace?.locations" [value]="location.minorLocationId">{{location.minorLoactionDetails.name}}</md-option>
+                        <md-option *ngFor="let location of locations" value={{location._id}}>{{location.name}}</md-option>
+                        <!-- <md-option *ngFor="let location of workSpace?.locations" [value]="location.minorLocationId">{{location.minorLoactionDetails.name}}</md-option> -->
                     </md-select>
                 </div>
 
@@ -57,8 +60,8 @@
                     </tr>
                 </thead>
 
-                <tbody *ngIf="clinicHelperService.loginEmployee?.storeCheckIn?.length > 0">
-                    <tr *ngFor="let checkIn of clinicHelperService.loginEmployee.storeCheckIn">
+                <tbody *ngIf="loginEmployee?.storeCheckIn?.length > 0">
+                    <tr *ngFor="let checkIn of loginEmployee.storeCheckIn">
                         <td>{{checkIn?.minorLocationObject?.name}}</td>
                         <td>{{checkIn?.storeObject?.name}}</td>
                         <td>{{checkIn?.lastLogin | date:'medium'}}</td>
@@ -71,8 +74,8 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody *ngIf="clinicHelperService.loginEmployee?.storeCheckIn == undefined">
-                    <tr >
+                <tbody *ngIf="loginEmployee?.storeCheckIn == undefined">
+                    <tr>
                         <td colspan="4"><span class="fa fa-spinner fa-spin"></span> Please wait while loading recent stores checked into!</td>
                     </tr>
                 </tbody>
