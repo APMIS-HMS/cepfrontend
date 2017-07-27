@@ -34,7 +34,8 @@ import { SharedService } from '../../../shared-module/shared.service';
 import {KeysPipe } from '../patient-manager/patientmanager-detailpage/documentation/keypipe';
 import { PatientLaboratoryComponent } from './patientmanager-detailpage/patient-laboratory/patient-laboratory.component';
 import {InvestigationComponent} from '../laboratory/new-request/investigation/investigation.component';
-import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component'
+import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
+import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -57,7 +58,8 @@ import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline
         AddHistoryComponent,
         KeysPipe,
         PatientLaboratoryComponent,
-        TimelineComponent
+        TimelineComponent,
+        RightTabComponent
         // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent
