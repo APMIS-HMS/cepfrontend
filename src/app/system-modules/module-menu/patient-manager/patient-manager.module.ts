@@ -56,7 +56,7 @@ import {InvestigationComponent} from '../laboratory/new-request/investigation/in
         AddHistoryComponent,
         KeysPipe,
         PatientLaboratoryComponent,
-        InvestigationComponent
+        // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent
         // BillPrescriptionComponent,

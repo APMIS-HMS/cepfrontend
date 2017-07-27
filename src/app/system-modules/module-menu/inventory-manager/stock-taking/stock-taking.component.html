@@ -28,9 +28,11 @@
                     </div>
                     <div class="product-sect">
                         <div class="control-group" *ngFor="let group of superGroups">
-                            <!--<label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
-                                <div class="control__indicator"> <dx-check-box (onValueChanged)="onProductCheckChange($event,item)" [value]="item.checked"></dx-check-box></div>
-                            </label>-->
+                            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+                                <div class="control__indicator"> 
+                                    <md-checkbox (change)="onProductCheckChange($event,item)" [value]="item.checked"></md-checkbox>
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -92,7 +94,7 @@
             <div class="wrap2">
                 <div class="frm-item-wrap">
                     <md-input-container class="example-full-width">
-                        <textarea mdInput md-error placeholder="Remark"  formControlName="desc"></textarea>
+                        <textarea mdInput md-error placeholder="Remark" formControlName="desc"></textarea>
                     </md-input-container>
                 </div>
             </div>

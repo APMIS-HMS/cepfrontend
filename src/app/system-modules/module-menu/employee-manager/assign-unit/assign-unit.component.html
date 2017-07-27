@@ -80,7 +80,7 @@
                         <td class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <md-checkbox [formControl]="checkAll" (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
+                                    <md-checkbox [formControl]="checkAll" (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
                                 </div>
                             </div>
                         </td>

@@ -402,7 +402,7 @@ export class PurchaseEntryComponent implements OnInit {
     });
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
-  onProductCheckChange(event, value) {
+  onProductCheckChange(event, value, index?) {
     value.checked = event.checked;
 
     const storeId = this.frm_purchaseOrder.controls['store'].value;
@@ -437,18 +437,18 @@ export class PurchaseEntryComponent implements OnInit {
           }
         });
     } else {
-      let indexToRemove = 0;
-      (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
-        const productControlValue: any = (<any>item).controls['id'].value;
-        if (productControlValue === value._id) {
-          indexToRemove = i;
-        }
-      });
+      // let indexToRemove = 0;
+      // (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
+      //   const productControlValue: any = (<any>item).controls['id'].value;
+      //   if (productControlValue === value._id) {
+      //     indexToRemove = i;
+      //   }
+      // });
       const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
       if (count === 1) {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       } else {
-        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
       }
     }
   }
@@ -458,7 +458,7 @@ export class PurchaseEntryComponent implements OnInit {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
-          this.onProductCheckChange({ checked: false }, value);
+          this.onProductCheckChange({ checked: false }, value, index);
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
           if (count === 0) {
             this.addNewProductTables();

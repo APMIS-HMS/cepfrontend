@@ -29,15 +29,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
     private _router: Router, private employeeService: EmployeeService,
-    private locker: CoolSessionStorage, private workSpaceService: WorkSpaceService) { }
-
-  ngOnInit() {
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe((payload) => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //     console.log(this.loginEmployee)
-    //   });
-    // });
+    private locker: CoolSessionStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
@@ -55,6 +47,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
           isOn = true;
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
+          console.log(checkingObject)
           console.log('sent');
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
@@ -81,6 +74,10 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       }
 
     }
+
+  }
+
+  ngOnInit() {
 
 
 
