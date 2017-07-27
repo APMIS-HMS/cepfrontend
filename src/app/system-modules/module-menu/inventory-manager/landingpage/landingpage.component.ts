@@ -40,11 +40,7 @@ export class LandingpageComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
-    this.route.data.subscribe(data => {
-      data['loginEmployee'].subscribe((payload) => {
-        this.loginEmployee = payload.loginEmployee;
-      });
-    });
+    this.loginEmployee = <Employee> this.locker.getObject('loginEmployee');
 
     this.inventoryService.find({
       query:
@@ -83,6 +79,8 @@ export class LandingpageComponent implements OnInit {
     }
   }
   onAdjustStock(inventory, transaction) {
+    console.log(inventory);
+    console.log(transaction)
     this.selectedInventory = inventory;
     this.selectedTransaction = transaction;
     this.systemQuantity.setValue(this.selectedTransaction.quantity);

@@ -38,7 +38,7 @@
                 <div class="prod-rowItem item1">Product</div>
                 <div class="prod-rowItem item4">Batches</div>
                 <div class="prod-rowItem item2">Quantity</div>
-                <div class="prod-rowItem item3">Actions</div>
+                <!-- <div class="prod-rowItem item3">Actions</div> -->
             </div>
 
             <div class="prodParent-content">
@@ -47,11 +47,11 @@
                         <div (click)="onShowBatch(inventory)" class="prod-rowItem item1">{{inventory.productObject.name}}</div>
                         <div (click)="onShowBatch(inventory)" class="prod-rowItem item4">{{inventory.transactions.length}}</div>
                         <div (click)="onShowBatch(inventory)" class="prod-rowItem item2">{{inventory.totalQuantity}}</div>
-                        <div class="prod-rowItem item3">
+                        <!-- <div class="prod-rowItem item3">
                             <a class="action-btn" (click)="slideInventoryDetailsToggle(inventory)"><i class="fa fa-eye"></i></a>
                             <a class="action-btn" (click)="onSelectProduct(product)"><i class="fa fa-pencil"></i></a>
                             <a class="action-btn"><i class="fa fa-trash"></i></a>
-                        </div>
+                        </div> -->
                     </div>
                     <div *ngIf="inventory.isOpen===true && (selectedInventory._id === inventory._id)" class="prodBatch-wrap animated flipInX">
                         <div class="prodBatch-row batchHeader">

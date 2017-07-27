@@ -10,10 +10,11 @@ const FORMSMANAGERMODULES_ROUTES: Routes = [
         path: '', component: FormsManagerComponent, children: [
             { path: '', redirectTo: 'forms' },
             {
-                path: 'forms', component: FormsComponent, resolve: {
-                    modules: SystemModulesResolverService, documentTypes: FormTypeResolverService,
-                    scopeLevels: ScopeLevelResolverService
-                }
+                path: 'forms', component: FormsComponent,
+                // resolve: {
+                //     modules: SystemModulesResolverService, documentTypes: FormTypeResolverService,
+                //     scopeLevels: ScopeLevelResolverService
+                // }
             },
         ]
     }
