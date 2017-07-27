@@ -32,7 +32,6 @@ export class ConsultingRoomCheckinComponent implements OnInit {
 
   ngOnInit() {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    console.log(this.loginEmployee);
     this.loginEmployee.workSpaces.forEach(work => {
       work.locations.forEach(loc => {
         this.locations.push(loc.minorLocationId);
@@ -79,11 +78,13 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     this.loginEmployee.consultingRoomCheckIn.push(checkIn);
     this.employeeService.update(this.loginEmployee).then(payload => {
       this.loginEmployee = payload;
+      this.locker.setObject('loginEmployee', this.loginEmployee);
+      this.employeeService.announceCheckIn({ typeObject: checkIn, type: 'clinic' });
       this.close_onClick();
     });
   }
   changeRoom(checkIn: any) {
-    let keepCheckIn = undefined;
+    let keepCheckIn;
     this.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
       itemi.isOn = false;
       if (itemi._id === checkIn._id) {
@@ -93,6 +94,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     });
     this.employeeService.update(this.loginEmployee).then(payload => {
       this.loginEmployee = payload;
+      this.locker.setObject('loginEmployee', this.loginEmployee);
       this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'clinic' });
       this.close_onClick();
     });

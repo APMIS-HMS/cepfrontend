@@ -14,6 +14,7 @@ import { AddWorkbenchComponent } from './workbench-setup/add-workbench/add-workb
 import { AddPersonComponent } from './new-request/add-person/add-person.component';
 import { InvestigationComponent } from './new-request/investigation/investigation.component';
 import { ClientDetailsComponent } from './new-request/client-details/client-details.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 
 @NgModule({
@@ -21,7 +22,10 @@ import { ClientDetailsComponent } from './new-request/client-details/client-deta
     CommonModule,
     laboratoryRoutes,
     SharedModule,
+    MaterialModule
   ],
-  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent, LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent, AddWorkbenchComponent, AddPersonComponent, InvestigationComponent, ClientDetailsComponent]
+  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent,
+    LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent,
+    AddWorkbenchComponent, AddPersonComponent, ClientDetailsComponent]
 })
 export class LaboratoryModule { }

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService, StoreService } from '../../services/facility-manager/setup/index';
 import { ConsultingRoomModel, Employee } from '../../models/index';
 import { ClinicHelperService } from '../../system-modules/module-menu/clinic/services/clinic-helper.service';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-store-check-in',
@@ -20,18 +21,28 @@ export class StoreCheckInComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
 	stores: any[] = [];
+	locations: any[] = [];
 
 	constructor(public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
 		public facilityService: FacilitiesService,
 		public consultingRoomService: ConsultingRoomService,
 		public employeeService: EmployeeService,
-		public storeService: StoreService
-	) { }
+		public storeService: StoreService,
+		public locker: CoolSessionStorage
+	) {
+		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+		console.log(this.loginEmployee);
+	}
 
 	ngOnInit() {
 		console.log(this.loginEmployee);
-		console.log(this.workSpace);
+		this.loginEmployee.workSpaces.forEach(work => {
+			work.locations.forEach(loc => {
+				this.locations.push(loc.minorLocationId);
+			})
+		})
+
 		this.storeCheckin = this.formBuilder.group({
 			location: ['', []],
 			room: ['', []],
@@ -60,23 +71,23 @@ export class StoreCheckInComponent implements OnInit {
 		checkIn.lastLogin = new Date();
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
-		if (this.clinicHelperService.loginEmployee.storeCheckIn === undefined) {
-			this.clinicHelperService.loginEmployee.storeCheckIn = [];
+		if (this.loginEmployee.storeCheckIn === undefined) {
+			this.loginEmployee.storeCheckIn = [];
 		}
-		this.clinicHelperService.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 			itemi.isOn = false;
 			if (value.isDefault === true) {
 				itemi.isDefault = false;
 			}
 		});
-		this.loginEmployee = this.clinicHelperService.loginEmployee;
+		// this.loginEmployee = this.clinicHelperService.loginEmployee;
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-			this.clinicHelperService.loginEmployee = payload;
+		this.employeeService.update(this.loginEmployee).then(payload => {
+			this.loginEmployee = payload;
 
 
 			let keepCheckIn;
-			this.clinicHelperService.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
 				if (itemi._id === checkIn._id) {
 					itemi.isOn = true;
@@ -92,15 +103,15 @@ export class StoreCheckInComponent implements OnInit {
 	}
 	changeRoom(checkIn: any) {
 		let keepCheckIn;
-		this.clinicHelperService.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 			itemi.isOn = false;
 			if (itemi._id === checkIn._id) {
 				itemi.isOn = true;
 				keepCheckIn = itemi;
 			}
 		});
-		this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-			this.clinicHelperService.loginEmployee = payload;
+		this.employeeService.update(this.loginEmployee).then(payload => {
+			this.loginEmployee = payload;
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.close_onClick();
 		});

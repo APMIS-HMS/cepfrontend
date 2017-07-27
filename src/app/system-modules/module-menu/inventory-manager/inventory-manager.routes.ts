@@ -12,7 +12,10 @@ const INVENTORYMODULES_ROUTES: Routes = [
     {
         path: '', component: InventoryManagerComponent, children: [
             { path: '', redirectTo: 'inventory' },
-            { path: 'inventory', component: LandingpageComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
+            {
+                path: 'inventory', component: LandingpageComponent,
+                // resolve: { loginEmployee: LoginEmployeeResolverService }
+            },
             { path: 'stock-taking', component: StockTakingComponent },
             { path: 'stock-transfer', component: StockTransferComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
             { path: 'stock-history', component: StockHistoryComponent },

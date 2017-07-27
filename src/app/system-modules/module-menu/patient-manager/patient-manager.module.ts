@@ -57,8 +57,8 @@ import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline
         AddHistoryComponent,
         KeysPipe,
         PatientLaboratoryComponent,
-        InvestigationComponent,
         TimelineComponent
+        // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent
         // BillPrescriptionComponent,
