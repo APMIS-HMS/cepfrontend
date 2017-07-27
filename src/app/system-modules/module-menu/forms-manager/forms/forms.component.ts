@@ -183,6 +183,7 @@ export class FormsComponent implements OnInit {
   frm_checkboxGroup: FormGroup;
   selectedFacility: Facility = <Facility>{};
   selectedForm: any = <any>{};
+  checkboxArray = new FormArray([]);
 
   constructor(private route: ActivatedRoute, private formsService: FormsService, private scopeLevelService: ScopeLevelService,
     private locker: CoolSessionStorage, private facilityModuleService: FacilityModuleService, private formTypeService: FormTypeService,
@@ -232,7 +233,7 @@ export class FormsComponent implements OnInit {
     });
 
     this.frm_checkboxGroup = this.formBuilder.group({
-      myValues: []
+      myValues: this.checkboxArray
     });
 
 
@@ -244,9 +245,9 @@ export class FormsComponent implements OnInit {
     this.getForms();
   }
   prime() {
-    const modules$ = this.facilityModuleService.findAll();
-    const formType$ = this.formTypeService.findAll();
-    const scopeLevel$ = this.scopeLevelService.findAll();
+    const modules$ = Observable.fromPromise(this.facilityModuleService.findAll());
+    const formType$ = Observable.fromPromise(this.formTypeService.findAll());
+    const scopeLevel$ = Observable.fromPromise(this.scopeLevelService.findAll());
 
     Observable.forkJoin([modules$, formType$, scopeLevel$]).subscribe((results: any) => {
       this.modules = results[0].data;
@@ -258,13 +259,13 @@ export class FormsComponent implements OnInit {
         });
       });
 
-      const checkboxArray = new FormArray([]);
+
       this.modules.forEach((item, i) => {
-        checkboxArray.push(new FormControl(item.checked));
+        this.checkboxArray.push(new FormControl(item.checked));
       });
 
       this.frm_checkboxGroup = this.formBuilder.group({
-        myValues: checkboxArray
+        myValues: this.checkboxArray
       });
 
 
@@ -273,6 +274,8 @@ export class FormsComponent implements OnInit {
 
       this.documentTypes = results[1].data;
       this.scopeLevels = results[2].data;
+      console.log(this.documentTypes);
+      console.log(this.scopeLevels);
     })
   }
   onValueChanged(event, model: ModuleViewModel) {
