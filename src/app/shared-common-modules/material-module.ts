@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdSelectionModule, MdSelectModule, MdRadioModule
+    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule,MdListModule, MdSelectionModule, MdSelectModule, MdRadioModule
 }
     from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -53,8 +53,10 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         MdSelectionModule,
         MdSelectModule,
         MdRadioModule,
+        MdListModule,
         MdTabsModule,
         NgbModule,
+
 
 
         CommonModule,
@@ -93,6 +95,7 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         MdOptionModule,
         MdSelectionModule,
         MdSelectModule,
+        MdListModule,
         MdRadioModule,
         MdTabsModule,
         NgbModule.forRoot(),
