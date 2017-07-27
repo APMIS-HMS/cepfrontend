@@ -1,10 +1,40 @@
 <section id="container" class="survery">
   <div class="pg-subtitle">Laboratory</div>
-    <div class="doc-mainWrap">
-        <div class="row">
-           <div class="col-sm-12"> 
+    <div class="row background-color">
+        <div class="col-sm-12">
+            <div class="actSect">
+                <div (click)="clinicalNote_show()" class="act-wrap">
+                <i *ngIf="clinicalNote_view" class="fa fa-minus" aria-hidden="true"></i>
+                <i [hidden]="clinicalNote_view" class="fa fa-plus" aria-hidden="true"></i>
+                <span>Add Clinical Note</span>
+                </div>
+            </div>
+            <div *ngIf = "investigationShow" class="inv-container">
               <app-investigation></app-investigation>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Investigation</th>
+                        <th>Specimen</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
 </section>
+
+
+
+
+ 
+
