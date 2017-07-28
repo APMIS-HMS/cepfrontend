@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { Facility, Appointment, BatchTransaction } from '../../../../../models/index';
+import { Facility, Appointment, BatchTransaction, Employee } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
-	 InventoryTransactionTypeService,
+	 InventoryTransactionTypeService, DispenseCollectionDrugService,
 	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -42,15 +42,14 @@ export class NoprescriptionComponent implements OnInit {
 	selectedProductId = '';
 	showCuDropdown = false;
 	price = 0;
-	itemPrice = 0;
-	itemQuantity = 0;
-	totalItemPrice = 0;
-	totalItemQuantity = 0;
+	totalPrice = 0;
+	totalQuantity = 0;
 	selectedBatch: string = '';
 	disableDispenseBtn: boolean = false;
-	dispenseAllBtn: boolean = false;
+	dispenseAllBtn: boolean = true;
 	qtyDispenseBtn: string = 'Bill';
 	inventoryTransactionTypeId: string = '';
+	selectedIventoryId: string = '';
 
 	constructor(
 		private _fb: FormBuilder,
@@ -65,7 +64,8 @@ export class NoprescriptionComponent implements OnInit {
 		private _employeeService: EmployeeService,
 		private _purchaseEntryService: PurchaseEntryService,
 		private _assessmentDispenseService: AssessmentDispenseService,
-		private _inventoryTransactionTypeService: InventoryTransactionTypeService
+		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
+		private _dispenseCollectionDrugs: DispenseCollectionDrugService
 	) {
 
 	}
@@ -74,19 +74,15 @@ export class NoprescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
-		this.employeeDetails = this._locker.getObject('loginEmployee');
+		this.employeeDetails = <Employee> this._locker.getObject('loginEmployee');
 		this.user = this._locker.getObject('auth');
-		console.log(this.user);
-
-		// if (this.employeeDetails.storeCheckIn !== undefined) {
-		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
-		// }
 
 		this.clients = Clients;
 		this.selectedClient = Clients[0].name;
 		this.individualShow = true;
 
 		this.getFacilityData();
+		this._getInventoryTransactionTypes();
 
 		// Nonprescription form group
 		this.noPrescriptionForm = this._fb.group({
@@ -113,9 +109,9 @@ export class NoprescriptionComponent implements OnInit {
 		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
 			if (val > 0) {
 				// this.itemPrice = this.price*val;
-				this.itemQuantity = val;
-				this.itemPrice = this.price * val;
-				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
+				// this.itemQuantity = val;
+				// this.itemPrice = this.price * val;
+				this.noPrescriptionForm.controls['cost'].setValue(this.price);
 			} else {
 				this._facilityService.announceNotification({
 					users: [this.user._id],
@@ -125,23 +121,19 @@ export class NoprescriptionComponent implements OnInit {
 			}
 		});
 
+		// Disable dispense button if there are no items in the prescription array.
 		if(this.prescriptions.length === 0) {
 			this.dispenseAllBtn = true;
 		} else {
-			this.prescriptions.forEach(x => {
-				if(!x.isBilled) {
-					this.dispenseAllBtn = false;
-				}
-			});
+			this.dispenseAllBtn = false;
 		}
 	}
 
 	// Add items to the prescriptions array.
 	onClickSaveNoPrescription(value: any, valid: boolean) {
-		console.log(value);
 		const prescription = {};
 
-		// if(this.storeId !== '') {
+		if(this.storeId.typeObject.storeId !== '') {
 			if (value.drug === '' || value.qty === '' || value.batchNumber === '') {
 				this._facilityService.announceNotification({
 					users: [this.user._id],
@@ -165,8 +157,9 @@ export class NoprescriptionComponent implements OnInit {
 						prescription['locationId'] = value.minorLocation;
 						break;
 				}
-				this.totalItemPrice = this.totalItemPrice + this.itemPrice;
-				this.totalItemQuantity = this.totalItemQuantity + this.itemQuantity;
+					this.dispenseAllBtn = false;
+				this.totalPrice = this.totalPrice + this.price;
+				this.totalQuantity = this.totalQuantity + value.qty;
 				prescription['productName'] = value.product;
 				prescription['productId'] = this.selectedProductId;
 				prescription['client'] = value.client;
@@ -175,8 +168,9 @@ export class NoprescriptionComponent implements OnInit {
 				prescription['unitPrice'] = this.price;
 				prescription['batchNumber'] = this.selectedBatch;
 				prescription['batchNumberId'] = value.batchNumber;
-				prescription['totalQuantity'] = this.totalItemQuantity;
-				prescription['totalCost'] = this.totalItemPrice;
+				prescription['totalQuantity'] = this.totalQuantity;
+				prescription['totalCost'] = this.totalPrice;
+				prescription['inventoryId'] = this.selectedIventoryId;
 				prescription['isBilled'] = false;
 				console.log(prescription);
 
@@ -184,17 +178,18 @@ export class NoprescriptionComponent implements OnInit {
 
 				// Empty the form
 				this.price = 0;
-				this
-				this.noPrescriptionForm.controls['drug'].setValue('');
+				this.batches = [];
+				this.products = [];
+				this.noPrescriptionForm.controls['product'].setValue('');
 				this.noPrescriptionForm.controls['batchNumber'].setValue('');
 				this.noPrescriptionForm.controls['qty'].setValue(1);
 			}
-		// } else {
-		// 	this._facilityService.announceNotification({
-		// 		type: "Error",
-		// 		text: "You need to check into store."
-		// 	});
-		// }
+		} else {
+			this._facilityService.announceNotification({
+				type: "Error",
+				text: "You need to check into store."
+			});
+		}
 	}
 
 	// Save Nonpresciption form data in to the database.
@@ -228,11 +223,15 @@ export class NoprescriptionComponent implements OnInit {
 				product['productName'] = element.productName;
 				product['cost'] = element.unitPrice;
 				product['quantity'] = element.qty;
+				product['inventoryId'] = element.inventoryId;
+				product['referenceId'] = '';
+				product['referenceService'] = 'NoPrescriptionService';
+				product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
 				prescription['client'] = element.client;
 				prescription['client'] = element.client;
 				prescription['employeeId'] = this.employeeDetails.employeeDetails._id;
-				prescription['totalQuantity'] = this.totalItemQuantity;
-				prescription['totalCost'] = this.totalItemPrice;
+				prescription['totalQuantity'] = this.totalQuantity;
+				prescription['totalCost'] = this.totalPrice;
 				drugs.push(product);
 			});
 			prescription['drugs'] = drugs;
@@ -246,30 +245,44 @@ export class NoprescriptionComponent implements OnInit {
 
 			console.log(payload);
 
-			this._dispenseService.create(payload)
+			const collectionDrugs = {
+				drugs: drugs,
+			};
+			console.log(collectionDrugs);
+
+			// Call a service to 
+			this._dispenseCollectionDrugs.create(collectionDrugs)
 				.then(res => {
 					console.log(res);
-					// Once changed, reset all variables
-					this.selectedProducts = [];
-					this.prescriptions = [];
-					this.prescription = {};
-					this.totalItemPrice = 0;
-					this.itemPrice = 0;
-					this.totalItemQuantity = 0;
-					this.itemQuantity = 0;
-					this.price = 0;
-					this.noPrescriptionForm.reset();
-					this.noPrescriptionForm.controls['qty'].reset(0);
-					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
-					this._facilityService.announceNotification({
-						users: [this.user._id],
-						type: 'Success',
-						text: 'Prescription has been sent!'
-					});
 				})
 				.catch(err => {
 					console.log(err);
 				});
+
+			// this._dispenseService.create(payload)
+			// 	.then(res => {
+			// 		console.log(res);
+			// 		// Once changed, reset all variables
+			// 		this.selectedProducts = [];
+			// 		this.prescriptions = [];
+			// 		this.prescription = {};
+			// 		this.totalItemPrice = 0;
+			// 		this.itemPrice = 0;
+			// 		this.totalItemQuantity = 0;
+			// 		this.itemQuantity = 0;
+			// 		this.price = 0;
+			// 		this.noPrescriptionForm.reset();
+			// 		this.noPrescriptionForm.controls['qty'].reset(0);
+			// 		this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
+			// 		this._facilityService.announceNotification({
+			// 			users: [this.user._id],
+			// 			type: 'Success',
+			// 			text: 'Prescription has been sent!'
+			// 		});
+			// 	})
+			// 	.catch(err => {
+			// 		console.log(err);
+			// 	});
 		} else {
 			this._facilityService.announceNotification({
 				users: [this.user._id],
@@ -322,6 +335,7 @@ export class NoprescriptionComponent implements OnInit {
 	onClickCustomSearchItem(event, drugId) {
 		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
 		this.selectedProductId = drugId.getAttribute('data-p-id');
+		this.selectedIventoryId = drugId.getAttribute('data-p-iid');
 		// const fsId = drugId.getAttribute('data-p-fsid');
 		// const sId = drugId.getAttribute('data-p-sid');
 		// const cId = drugId.getAttribute('data-p-cid');
@@ -419,8 +433,8 @@ export class NoprescriptionComponent implements OnInit {
 	// Delete item from stack
 	onClickDeleteItem(index, item) {
 		this.prescriptions.splice(index, 1);
-		this.totalItemPrice = this.totalItemPrice - item.cost;
-		this.totalItemQuantity = this.totalItemQuantity - item.qty;
+		this.totalPrice = this.totalPrice - item.cost;
+		this.totalQuantity = this.totalQuantity - item.qty;
 	}
 
 	focusSearch() {
@@ -458,10 +472,8 @@ export class NoprescriptionComponent implements OnInit {
 		this.selectedProducts = [];
 		this.prescriptions = [];
 		this.prescription = {};
-		this.totalItemPrice = 0;
-		this.itemPrice = 0;
-		this.totalItemQuantity = 0;
-		this.itemQuantity = 0;
+		this.totalPrice = 0;
+		this.totalQuantity = 0;
 		this.price = 0;
 		this.noPrescriptionForm.reset();
 		this.noPrescriptionForm.controls['qty'].reset(0);
