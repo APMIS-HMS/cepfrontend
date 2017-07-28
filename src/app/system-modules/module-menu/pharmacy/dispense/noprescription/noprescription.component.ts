@@ -184,9 +184,10 @@ export class NoprescriptionComponent implements OnInit {
 
 				// Empty the form
 				this.price = 0;
-				this.noPrescriptionForm.reset('drug');
-				this.noPrescriptionForm.reset('batchNumber');
-				this.noPrescriptionForm.controls['qty'].setValue(0);
+				this
+				this.noPrescriptionForm.controls['drug'].setValue('');
+				this.noPrescriptionForm.controls['batchNumber'].setValue('');
+				this.noPrescriptionForm.controls['qty'].setValue(1);
 			}
 		// } else {
 		// 	this._facilityService.announceNotification({
@@ -321,9 +322,9 @@ export class NoprescriptionComponent implements OnInit {
 	onClickCustomSearchItem(event, drugId) {
 		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
 		this.selectedProductId = drugId.getAttribute('data-p-id');
-		const fsId = drugId.getAttribute('data-p-fsid');
-		const sId = drugId.getAttribute('data-p-sid');
-		const cId = drugId.getAttribute('data-p-cid');
+		// const fsId = drugId.getAttribute('data-p-fsid');
+		// const sId = drugId.getAttribute('data-p-sid');
+		// const cId = drugId.getAttribute('data-p-cid');
 		//const batchNumber = drugId.getAttribute('data-p-batchNumber');
 		//this.price = drugId.getAttribute('data-p-costPrice');
 		//this.noPrescriptionForm.controls['batchNumber'].setValue(batchNumber);
@@ -334,88 +335,86 @@ export class NoprescriptionComponent implements OnInit {
 		// 		facilityServiceId: fsId,
 		// 		serviceId: sId, categoryId: cId
 		// 	}})
-		this._assessmentDispenseService.find({ query : {
-				facilityId : this.facility._id,
-				productId: this.selectedProductId,
-				facilityServiceId: fsId,
-				serviceId: sId, categoryId: cId
-			}})
-			.then(res => {
-				console.log(res);
-				if (res.data.length > 0) {
-					if (res.data[0].price !== undefined) {
-						this.price = res.data[0].price;
-					}
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			})
+		// this._assessmentDispenseService.find({ query : {
+		// 		facilityId : this.facility._id,
+		// 		productId: this.selectedProductId,
+		// 		facilityServiceId: fsId,
+		// 		serviceId: sId, categoryId: cId
+		// 	}})
+		// 	.then(res => {
+		// 		console.log(res);
+		// 		if (res.data.length > 0) {
+		// 			if (res.data[0].price !== undefined) {
+		// 				this.price = res.data[0].price;
+		// 			}
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		console.log(err);
+		// 	})
 	}
 
 	onClickBatchSelect(event, batchId) {
-		console.log(event);
-		console.log(batchId);
 		this.price = batchId._element.nativeElement.getAttribute('data-p-price');
 		this.selectedBatch = batchId._element.nativeElement.getAttribute('data-p-batch');
 	}
 
-	onClickBillProduct(prescription) {
-		console.log(prescription);
-		this.disableDispenseBtn = true;
-		this.qtyDispenseBtn = "Billing... <i class='fa fa-spinner fa-spin'></i>";
+	// onClickBillProduct(prescription) {
+	// 	console.log(prescription);
+	// 	this.disableDispenseBtn = true;
+	// 	this.qtyDispenseBtn = "Billing... <i class='fa fa-spinner fa-spin'></i>";
 
-		 this._inventoryService.find({ query: { 
-					facilityId: this.facility._id, 
-					productId: prescription.productId, storeId: this.storeId.typeObject.storeId 
-				}})
-			.then(res => {
-				this.transactions = res.data[0];
-				if(res.data.length > 0) {
-					console.log(res.data[0]);
-					this.transactions = res.data[0];
-					//Deduct from the batches before updating the batches in the inventory.
-					this.transactions.transactions.forEach(element => {
-						if(element._id === prescription.batchNumberId) {
-							let batchTransaction: BatchTransaction = {
-								batchNumber: prescription.batchNumber,
-								employeeId: this.employeeDetails.employeeDetails._id,
-								employeeName: this.employeeDetails.employeeDetails.personFullName,
-								preQuantity: element.quantity, // Before Operation.
-								postQuantity: element.quantity - prescription.qty, // After Operation.
-								quantity: prescription.qty, // Operational qty.
-								referenceId: 'Dispense', // Dispense id, Transfer id...
-								referenceService: 'Prescription/Dispense Service', // Dispense, Transfer...
-								inventorytransactionTypeId: this.inventoryTransactionTypeId,
-							}
-							element.batchTransactions.push(batchTransaction);
-							element.quantity = element.quantity - prescription.qty;
-						}
-					});
-					this.transactions.totalQuantity = this.transactions.totalQuantity - prescription.qty;
+	// 	 this._inventoryService.find({ query: { 
+	// 				facilityId: this.facility._id, 
+	// 				productId: prescription.productId, storeId: this.storeId.typeObject.storeId 
+	// 			}})
+	// 		.then(res => {
+	// 			this.transactions = res.data[0];
+	// 			if(res.data.length > 0) {
+	// 				console.log(res.data[0]);
+	// 				this.transactions = res.data[0];
+	// 				//Deduct from the batches before updating the batches in the inventory.
+	// 				this.transactions.transactions.forEach(element => {
+	// 					if(element._id === prescription.batchNumberId) {
+	// 						let batchTransaction: BatchTransaction = {
+	// 							batchNumber: prescription.batchNumber,
+	// 							employeeId: this.employeeDetails.employeeDetails._id,
+	// 							employeeName: this.employeeDetails.employeeDetails.personFullName,
+	// 							preQuantity: element.quantity, // Before Operation.
+	// 							postQuantity: element.quantity - prescription.qty, // After Operation.
+	// 							quantity: prescription.qty, // Operational qty.
+	// 							referenceId: 'Dispense', // Dispense id, Transfer id...
+	// 							referenceService: 'Prescription/Dispense Service', // Dispense, Transfer...
+	// 							inventorytransactionTypeId: this.inventoryTransactionTypeId,
+	// 						}
+	// 						element.batchTransactions.push(batchTransaction);
+	// 						element.quantity = element.quantity - prescription.qty;
+	// 					}
+	// 				});
+	// 				this.transactions.totalQuantity = this.transactions.totalQuantity - prescription.qty;
 
-					this._inventoryService.patch(res.data[0]._id, res.data[0], {})
-						.then(res => {
-							prescription.isBilled = true;
-							// disable the dispense button.
-							this.disableDispenseBtn = false;
-							this.qtyDispenseBtn = "Dispense";
-							console.log(res);
-							this._notification('Success', 'Quantity has been deducted.');
-						})
-						.catch(err => {
-							console.log(err);
-						});
-				} else {
-					this.disableDispenseBtn = false;
-					this.qtyDispenseBtn = "Dispense";
-					this._notification('Error', 'Sorry, This process can not be performed at the moment.');
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			});
-	}
+	// 				this._inventoryService.patch(res.data[0]._id, res.data[0], {})
+	// 					.then(res => {
+	// 						prescription.isBilled = true;
+	// 						// disable the dispense button.
+	// 						this.disableDispenseBtn = false;
+	// 						this.qtyDispenseBtn = "Dispense";
+	// 						console.log(res);
+	// 						this._notification('Success', 'Quantity has been deducted.');
+	// 					})
+	// 					.catch(err => {
+	// 						console.log(err);
+	// 					});
+	// 			} else {
+	// 				this.disableDispenseBtn = false;
+	// 				this.qtyDispenseBtn = "Dispense";
+	// 				this._notification('Error', 'Sorry, This process can not be performed at the moment.');
+	// 			}
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		});
+	// }
 
 	// Delete item from stack
 	onClickDeleteItem(index, item) {
