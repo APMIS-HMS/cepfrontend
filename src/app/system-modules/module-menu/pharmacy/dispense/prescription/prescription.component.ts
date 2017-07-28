@@ -353,8 +353,8 @@ export class PrescriptionComponent implements OnInit {
 		if(prescription.isBilled) {
 			this.selectedPrescription = prescription;
 			this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
-			const productId = prescription.productId;
-			//const productId = '592419145fbce732205cf0ba';
+			//const productId = prescription.productId;
+			const productId = '592419145fbce732205cf0ba';
 			if(this.storeId.typeObject.storeId !== undefined) {
 				// Get the batches for the selected product
 				this._inventoryService.find({ 

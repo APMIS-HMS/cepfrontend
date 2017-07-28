@@ -28,6 +28,8 @@ export class LandingpageComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   selectedProduct: any = <any>{};
   checkingStore: any = <any>{};
+  loading: boolean = true;
+
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService,
@@ -47,6 +49,7 @@ export class LandingpageComponent implements OnInit {
       { facilityId: this.selectedFacility._id, storeId: this.checkingStore.typeObject.storeId, $limit: 200 }
     })
       .subscribe(payload => {
+        this.loading = false;
         this.inventories = payload.data;
         console.log(this.inventories);
       });
@@ -59,6 +62,7 @@ export class LandingpageComponent implements OnInit {
         { search: this.searchControl.value, facilityId: this.selectedFacility._id }
       }).
         then(payload => {
+          this.loading = false;
           this.inventories = payload.data;
         }));
 

@@ -1,183 +1,65 @@
-@import "../patientmanager-detailpage.component.scss";
+@import "../documentation/documentation.component.scss";
 
-.patientPage-subSect {
-    position: relative;
-    background: rgba(133, 193, 233, 0.2);
-    width: 47%;
-    min-width: 350px;
-    height: 307px;
-    overflow: hidden;
-    margin: 5px;
-    padding: 10px;
-    padding-bottom: 30px;
-    border-radius: 7px;
-    box-sizing: border-box;
-}
-
-.subsect-title {
-    font-size: 12px;
-    padding: 5px;
-    background: rgba(133, 193, 233, 0.2);
-    border-bottom: 1px solid #5DADE2;
-}
-
-.subsect-contentWrap {
+.docCard-body{
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    font-size: 13px;
+    flex-wrap: wrap;
 }
-
+.doc-card2{
+    margin-top: 0;
+}
+.doc-cardWrap{
+    margin-top: 0;
+}
+.body-divide{
+    width: 47%;
+}
 .subsect-itemWrap {
     display: flex;
-    margin: 5px 10px;
-    max-width: 95%;
-    width: auto;
-    border: 1px solid rgba(166, 210, 240, 0.5);
-    align-items: center;
-    padding: 3px;
-    border-radius: 5px;
-}
-
-.subsect-itemWrap-vitals {
     justify-content: space-between;
-    padding: 2px 5px;
-}
-
-.subsect-label {
-    color: #2874A6;
-    margin-right: 10px;
+    align-items: center;
     font-size: 12px;
+    margin: 10px 0;
 }
-
-.subsect-val {
-    color: #154360;
+.subsect-val{
+    width: 58%;
 }
-
-.sect-prebottomMenuWrap {
-    position: absolute;
-    bottom: 25px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    box-sizing: border-box;
+.subsect-label{
+    margin-right: 10px;
+    width: 38%;
+    color: #a6a6a6;
     font-size: 10px;
-    padding: 2px;
-}
-
-.sect-bottomMenuWrap {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    background: #7fb6db;
-    box-sizing: border-box;
-    font-size: 12px;
-    padding: 2px;
-}
-
-.sect-bottomMenuWrap .bottomMenuItem {
-    color: #fff;
-    cursor: pointer;
-    margin-right: 10px;
-    padding: 3px;
-    border: 1px solid transparent;
-}
-
-.sect-prebottomMenuWrap .bottomMenuItem {
-    color: #154360;
-    cursor: pointer;
-    margin-right: 30px;
-    padding: 3px;
-    border: 1px solid transparent;
-}
-
-.sect-prebottomMenuWrap .bottomMenuItem:hover {
     text-decoration: underline;
 }
-
-.sect-bottomMenuWrap .bottomMenuItem:hover,
-.sect-bottomMenuWrap .bottomMenuItem-active {
-    border: 1px solid #a6d2f0;
-    color: #154360;
+.list-label[_ngcontent-c9] {
+    color: #ff2500;
 }
-
-.subsect-itemGroupWrap {
-    position: relative;
-    overflow-y: scroll;
-    height: 220px;
-    width: 100%;
-}
-
-.subsect-itemGroupWrap-vitals .subsect-itemGroup {
-    padding-top: 0;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.subsect-itemGroup {
-    position: relative;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 7px;
-    margin: 5px 0;
-    padding-top: 20px;
-}
-
-.isNOK {
-    position: absolute;
-    top: 3px;
-    right: 5px;
-    background: #5DADE2;
-    font-size: 10px;
-    padding: 2px;
+.val-tag[_ngcontent-c9] {
     color: #000;
-    font-style: italic;
-    -webkit-box-shadow: 0 8px 6px -6px black;
-    -moz-box-shadow: 0 8px 6px -6px black;
-    box-shadow: 0 8px 6px -6px black;
 }
-
-.ctrl-wrap {
-    position: absolute;
-    top: 3px;
-    right: 5px;
-}
-
-.medic-data {
-    display: flex;
-    align-items: center;
-}
-
-.medicImgWrap {
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    overflow: hidden;
-    margin-left: 5px;
-}
-
-.medicImgWrap img {
-    width: 30px;
-}
-
-.medicWrap {
-    display: flex;
-    align-items: center;
-    line-height: 0;
-}
-
-.medic-label {
-    position: absolute;
-    top: -10px;
-    font-size: 10px;
-    color: #7B7D7D;
-}
-
-.menuSummary{
+.nok-wrap{
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    border: 1px solid #f8f8f8;
-    margin-top: 4px;
+    width: 100%;
+    margin-top: 5px;
+    background: #f8f8f8;
+    padding: 10px;
+}
+.isNOK {
+    font-size: 12px;
+    color: #fff;
+    background: #ff2500;
+    padding: 2px;
+    text-align: center;
+}
+.modal_title{
+    position: relative;
+}
+.modal_title i{
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+}
+.modal_title i:hover{
+    color: #0288D1;
 }
