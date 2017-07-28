@@ -36,6 +36,8 @@ import { PatientLaboratoryComponent } from './patientmanager-detailpage/patient-
 import {InvestigationComponent} from '../laboratory/new-request/investigation/investigation.component';
 import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -59,7 +61,8 @@ import { RightTabComponent } from './patientmanager-detailpage/documentation/rig
         KeysPipe,
         PatientLaboratoryComponent,
         TimelineComponent,
-        RightTabComponent
+        RightTabComponent,
+        InvestigationComponent
         // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent
@@ -76,7 +79,8 @@ import { RightTabComponent } from './patientmanager-detailpage/documentation/rig
         // DatePickerModule,
         patientManagerRoutes,
         AngularDraggableModule,
-        MaterialModule
+        MaterialModule,
+        ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
         FormsService, FormTypeService, SharedService]
