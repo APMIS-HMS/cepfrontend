@@ -71,28 +71,29 @@ export class AddPatientProblemComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder) {
     this.problemFormCtrl = new FormControl();
+    this.noteFormCtrl = new FormControl();
     this.filteredStates = this.problemFormCtrl.valueChanges
-        .startWith(null)
-        .map(name => this.filterStates(name));
+      .startWith(null)
+      .map(name => this.filterStates(name));
 
     this.statusFormCtrl = new FormControl();
     this.filteredStates = this.statusFormCtrl.valueChanges
-        .startWith(null)
-        .map(name => this.filterStates(name));
+      .startWith(null)
+      .map(name => this.filterStates(name));
   }
 
   ngOnInit() {
   }
 
   close_onClick() {
-      this.closeModal.emit(true);
+    this.closeModal.emit(true);
   }
 
   filterStates(val: string) {
     return val ? this.states.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
-               : this.states;
+      : this.states;
   }
 
 }

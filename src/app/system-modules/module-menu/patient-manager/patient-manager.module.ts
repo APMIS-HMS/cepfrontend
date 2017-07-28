@@ -61,7 +61,7 @@ import { RightTabComponent } from './patientmanager-detailpage/documentation/rig
         PatientLaboratoryComponent,
         TimelineComponent,
         RightTabComponent,
-        InvestigationComponent
+        // InvestigationComponent
         // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent
