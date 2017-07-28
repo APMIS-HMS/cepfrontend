@@ -21,6 +21,7 @@ import { BillPrescriptionComponent } from '../system-modules/module-menu/patient
 // tslint:disable-next-line:max-line-length
 import { PatientPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
+import { SimdilizedLookupComponent } from '../shared-module/simdilized-lookup/simdilized-lookup.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
@@ -38,7 +39,8 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
-        InvestigationComponent
+        InvestigationComponent,
+        SimdilizedLookupComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -78,7 +80,8 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         CoolStorageModule,
         MdErrorDirective,
         ToastyModule,
-        InvestigationComponent
+        InvestigationComponent,
+        SimdilizedLookupComponent
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
