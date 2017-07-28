@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdSelectionModule, MdSelectModule, MdRadioModule
+    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule,MdListModule, MdSelectionModule, MdSelectModule, MdRadioModule
 }
     from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,6 @@ import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
-import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
 
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
@@ -39,7 +38,6 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
-        InvestigationComponent,
         SimdilizedLookupComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
@@ -55,8 +53,10 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         MdSelectionModule,
         MdSelectModule,
         MdRadioModule,
+        MdListModule,
         MdTabsModule,
         NgbModule,
+
 
 
         CommonModule,
@@ -80,7 +80,6 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         CoolStorageModule,
         MdErrorDirective,
         ToastyModule,
-        InvestigationComponent,
         SimdilizedLookupComponent
         // SurveyComponent, SurveyEditorComponent
     ],
@@ -96,6 +95,7 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         MdOptionModule,
         MdSelectionModule,
         MdSelectModule,
+        MdListModule,
         MdRadioModule,
         MdTabsModule,
         NgbModule.forRoot(),

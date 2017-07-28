@@ -1,10 +1,41 @@
 <section id="container" class="survery">
   <div class="pg-subtitle">Laboratory</div>
-    <div class="doc-mainWrap">
-        <div class="row">
-           <div class="col-sm-12"> 
-              <app-investigation></app-investigation>
+    <div class="row background-color">
+        <div class="col-sm-8">
+            <div class="actSect">
+                <div (click)="clinicalNote_show()" class="act-wrap">
+                <i *ngIf="clinicalNote_view" class="fa fa-minus" aria-hidden="true"></i>
+                <i [hidden]="clinicalNote_view" class="fa fa-plus" aria-hidden="true"></i>
+                <span>Investigation</span>
+                </div>
             </div>
+            <div *ngIf = "investigationShow" class="inv-container">
+              <app-investigation></app-investigation>
+            </div> 
+        </div>
+        <div class="col-sm-4">
+            <div class="actSect">
+                <div (click)="external_show()" class="act-wrap">
+                <i *ngIf="externalShow" class="fa fa-minus" aria-hidden="true"></i>
+                <i [hidden]="externalSow" class="fa fa-plus" aria-hidden="true"></i>
+                <span>External</span>
+                </div>
+            </div>
+            <div *ngIf="externaShow" class="extrnal">
+                <md-input-container class="example-full-width">
+                    <textarea mdInput placeholder="Enter external investigation"></textarea>
+                </md-input-container>
+                <input type="file" name="pic" accept="image/*">
+            </div>
+        </div>
+        <div class="col-sm-12" style="margin-top:27px;margin-bottom:20px;">
+        <button disabled class="apmis-blue" md-raised-button>Save</button>
         </div>
     </div>
 </section>
+
+
+
+
+ 
+

@@ -13,6 +13,8 @@ export class NewPriceComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  isPrice = false;
+
   mainErr = true;
   errMsg = 'you have unresolved errors';
   categories: FacilityService[] = [];
@@ -95,6 +97,10 @@ export class NewPriceComponent implements OnInit {
         this.selectedCategory = newValue;
       });
     });
+  }
+
+  showPrice() {
+    this.isPrice = !this.isPrice;
   }
 
 }
