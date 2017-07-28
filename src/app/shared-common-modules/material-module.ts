@@ -26,7 +26,6 @@ import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
-import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
 
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
@@ -38,7 +37,6 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
-        InvestigationComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -80,7 +78,6 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
         CoolStorageModule,
         MdErrorDirective,
         ToastyModule,
-        InvestigationComponent
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [

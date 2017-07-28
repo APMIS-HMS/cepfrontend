@@ -100,7 +100,7 @@ export class NewPriceComponent implements OnInit {
   }
 
   showPrice() {
-    this.isPrice = !this.isPrice;
+    this.isPrice = true;
   }
 
 }

@@ -61,7 +61,8 @@ import { ChartsModule } from 'ng2-charts';
         KeysPipe,
         PatientLaboratoryComponent,
         TimelineComponent,
-        RightTabComponent
+        RightTabComponent,
+        InvestigationComponent
         // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent
