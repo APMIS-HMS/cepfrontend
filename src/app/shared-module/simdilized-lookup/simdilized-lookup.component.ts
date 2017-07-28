@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { SimdilizedControlService } from './../../services/facility-manager/setup/index';
 import { SocketService, RestService } from './../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
