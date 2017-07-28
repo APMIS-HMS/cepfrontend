@@ -24,7 +24,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     SharedModule,
     MaterialModule
   ],
-  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent,
+  declarations: [InvestigationComponent,LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent,
     LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent,
     AddWorkbenchComponent, AddPersonComponent, ClientDetailsComponent]
 })

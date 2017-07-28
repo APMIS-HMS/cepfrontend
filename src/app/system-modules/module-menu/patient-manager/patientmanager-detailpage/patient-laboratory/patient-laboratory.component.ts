@@ -9,6 +9,7 @@ export class PatientLaboratoryComponent implements OnInit {
 
   investigationShow = false;
   clinicalNote_view = false;
+  externaShow = false;
   constructor() { }
 
   ngOnInit() {
@@ -21,5 +22,8 @@ export class PatientLaboratoryComponent implements OnInit {
    clinicalNote_show() {
     this.clinicalNote_view = !this.clinicalNote_view;
     this.investigationShow = !this.investigationShow;
+  }
+  external_show() {
+    this.externaShow = !this.externaShow
   }
 }
