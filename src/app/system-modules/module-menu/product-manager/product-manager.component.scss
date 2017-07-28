@@ -10,6 +10,7 @@
     top: 10px;
     right: auto;
     left: 0px;
+    z-index:2;
 }
 
 .content-sec-ico {
@@ -46,6 +47,6 @@
 }
 
 
-.inner-page-wrap {
-    margin-top: 40px !important;
+#inner-page-wrap {
+    margin-top: 55px !important;
 }

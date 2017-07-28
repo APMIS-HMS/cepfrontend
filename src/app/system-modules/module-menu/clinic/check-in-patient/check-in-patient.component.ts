@@ -69,10 +69,14 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getEmployees();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    if (this.loginEmployee.professionObject.name === 'Doctor') {
+      this.isDoctor = true;
+      this.selectedProfession = this.loginEmployee.professionObject;
+    }
+    this.getEmployees();
     this.getAppointments();
     // this.route.data.subscribe(data => {
     //   this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
@@ -121,7 +125,6 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true } })
       .subscribe(payload => {
         this.checkedInAppointments = payload.data;
-        console.log(this.checkedInAppointments)
       })
   }
   getClinics() {
@@ -216,28 +219,41 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.employeeService.find({
-        query: {
-          facilityId: this.selectedFacility._id,
-          professionId: this.selectedProfession._id
+      const profession$ = Observable.fromPromise(this.professionService.find({ query: { name: 'Doctor' } }));
+      profession$.mergeMap((result: any) => {
+        if (result.data.length > 0) {
+          this.selectedProfession = result.data[0];
+          return Observable.fromPromise(this.employeeService.find({
+            query: {
+              facilityId: this.selectedFacility._id,
+              professionId: result.data[0].name
+            }
+          }))
         }
-      })
-        .then(payload => {
-          payload.data.forEach((itemi, i) => {
-            this.employees.push(itemi);
-          });
+      }).subscribe(results => {
 
-          if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
-            this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
-            });
-          }
-        });
+      });
+      // this.employeeService.find({
+      //   query: {
+      //     facilityId: this.selectedFacility._id,
+      //     professionId: this.selectedProfession._id
+      //   }
+      // })
+      //   .then(payload => {
+      //     payload.data.forEach((itemi, i) => {
+      //       this.employees.push(itemi);
+      //     });
+
+      //     if (this.loginEmployee !== undefined && this.selectedProfession._id !== undefined) {
+      //       this.workSpaceService.find({ query: { employeeId: this.loginEmployee._id } }).then(payloade => {
+      //       });
+      //     }
+      //   });
     }
 
   }
   getCheckedInTimeLine() {
     if (this.selectedCheckedInAppointment !== undefined) {
-      console.log(this.selectedCheckedInAppointment.attendance);
       const timeline: Timeline = <Timeline>{};
       timeline.startTime = this.selectedCheckedInAppointment.attendance.dateCheckIn;
       timeline.endTime = this.selectedCheckedInAppointment.attendance.dateCheckIn;
@@ -295,12 +311,10 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
-        console.log(appointment);
         this.locker.setObject('patient', appointment.patientId);
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
           .then((payload) => {
-            console.log('announced');
             this.appointmentService.appointmentAnnounced(appointment);
           });
       } else {

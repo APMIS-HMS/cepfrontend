@@ -7,29 +7,47 @@
     <div class="f_sg1">
 
         <form [formGroup]="frmNewprice" novalidate>
-
+            <div class="survery">
+                <div class="alert alert-info text-center" role="alert">Note: Click on each service to enter individual price</div>
+            </div>
             <div class="frm-item-wrap">
                 <md-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat">
                     <md-option *ngFor="let category of categories" [value]="category">{{category.name}}</md-option>
                 </md-select>
             </div>
 
-            <div class="frm-item-wrap">
+            <!--<div class="frm-item-wrap">
                 <md-select class="example-full-width" placeholder="Service" formControlName="service">
                     <md-option *ngFor="let service of services" [value]="service">{{service.service}}</md-option>
                 </md-select>
-            </div>
+            </div>-->
 
-            <div class="frm-item-wrap">
+            <!--<div class="frm-item-wrap">
                 <md-input-container class="example-full-width">
                     <input style="text-align:left" currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" mdInput md-error placeholder="Amount" formControlName="price">
                 </md-input-container>
-            </div>
-             <div class="text-center">
-                <button md-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)" class="mat-lg-btn">
-                  ADD PRICE TO LIST
-                </button>
-            </div>
+            </div>-->  
+            <div class="survery">
+                <div class="">
+                    <div class="list-div">
+                        <div class="col-sm-7 border-right">
+                            <md-list *ngFor="let service of services">
+                                <md-list-item (click)="showPrice()" value="service">{{service.service}}</md-list-item>
+                            </md-list>
+                        </div>
+                        <div class="col-sm-5">
+                            <md-input-container *ngIf="isPrice" class="example-full-width">
+                                <input style="text-align:left" currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" mdInput md-error placeholder="Amount" formControlName="price">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>   
+                <div class="col-sm-12 text-center" style="margin-top:20px;">
+                        <button md-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)">
+                        ADD PRICE TO LIST
+                        </button>
+                </div>
+            </div>         
         </form>
     </div>
 

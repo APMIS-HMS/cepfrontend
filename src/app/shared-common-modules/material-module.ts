@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdSelectionModule, MdSelectModule, MdRadioModule
+    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule,MdListModule, MdSelectionModule, MdSelectModule, MdRadioModule
 }
     from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -51,8 +51,10 @@ import { ToastyModule } from 'ng2-toasty';
         MdSelectionModule,
         MdSelectModule,
         MdRadioModule,
+        MdListModule,
         MdTabsModule,
         NgbModule,
+
 
 
         CommonModule,
@@ -90,6 +92,7 @@ import { ToastyModule } from 'ng2-toasty';
         MdOptionModule,
         MdSelectionModule,
         MdSelectModule,
+        MdListModule,
         MdRadioModule,
         MdTabsModule,
         NgbModule.forRoot(),

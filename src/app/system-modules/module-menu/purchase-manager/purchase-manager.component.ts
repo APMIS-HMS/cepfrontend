@@ -29,75 +29,117 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
     private _router: Router, private employeeService: EmployeeService,
-    private locker: CoolSessionStorage, private workSpaceService: WorkSpaceService) { }
-
-  ngOnInit() {
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe((payload) => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //     console.log(this.loginEmployee)
-    //   });
-    // });
+    private locker: CoolSessionStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-      }
-    }));
-    emp$.mergeMap((emp: any) => Observable.forkJoin([
-      Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-      Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } }))
-    ]))
-      .subscribe((results: any) => {
-        if (results[1].data.length > 0) {
-          this.workSpace = results[1].data[0];
-        }
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    console.log(this.loginEmployee);
 
-        this.loginEmployee = results[0];
-        console.log(this.loginEmployee);
-        if ((this.loginEmployee.storeCheckIn === undefined
-          || this.loginEmployee.storeCheckIn.length === 0)) {
-          this.modal_on = true;
-        } else {
-          let isOn = false;
-          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-            if (itemr.isDefault === true) {
-              itemr.isOn = true;
-              itemr.lastLogin = new Date();
-              isOn = true;
-              let checkingObject = { typeObject: itemr, type: 'store' };
-              this.employeeService.announceCheckIn(checkingObject);
-              console.log('sent');
-              this.employeeService.update(this.loginEmployee).then(payload => {
-                this.loginEmployee = payload;
-                checkingObject = { typeObject: itemr, type: 'store' };
-                this.employeeService.announceCheckIn(checkingObject);
-                this.locker.setObject('checkingObject', checkingObject);
-              });
-            }
+    if ((this.loginEmployee.storeCheckIn === undefined
+      || this.loginEmployee.storeCheckIn.length === 0)) {
+      this.modal_on = true;
+    } else {
+      let isOn = false;
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true) {
+          itemr.isOn = true;
+          itemr.lastLogin = new Date();
+          isOn = true;
+          let checkingObject = { typeObject: itemr, type: 'store' };
+          this.employeeService.announceCheckIn(checkingObject);
+          console.log(checkingObject)
+          console.log('sent');
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+            checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(checkingObject);
+            this.locker.setObject('checkingObject', checkingObject);
           });
-          if (isOn === false) {
-            this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-              if (r === 0) {
-                itemr.isOn = true;
-                itemr.lastLogin = new Date();
-                this.employeeService.update(this.loginEmployee).then(payload => {
-                  this.loginEmployee = payload;
-                  const checkingObject = { typeObject: itemr, type: 'store' };
-                  this.employeeService.announceCheckIn(checkingObject);
-                  this.locker.setObject('checkingObject', checkingObject);
-                });
-              }
-
+        }
+      });
+      if (isOn === false) {
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (r === 0) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            this.employeeService.update(this.loginEmployee).then(payload => {
+              this.loginEmployee = payload;
+              const checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(checkingObject);
+              this.locker.setObject('checkingObject', checkingObject);
             });
           }
 
-        }
+        });
+      }
 
-      }, error => {
-        console.log(error);
-      });
+    }
+
+  }
+
+  ngOnInit() {
+
+
+
+
+    // const emp$ = Observable.fromPromise(this.employeeService.find({
+    //   query: {
+    //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+    //   }
+    // }));
+    // emp$.mergeMap((emp: any) => Observable.forkJoin([
+    //   Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    //   Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } }))
+    // ]))
+    //   .subscribe((results: any) => {
+    //     if (results[1].data.length > 0) {
+    //       this.workSpace = results[1].data[0];
+    //     }
+
+    //     this.loginEmployee = results[0];
+    //     console.log(this.loginEmployee);
+    //     if ((this.loginEmployee.storeCheckIn === undefined
+    //       || this.loginEmployee.storeCheckIn.length === 0)) {
+    //       this.modal_on = true;
+    //     } else {
+    //       let isOn = false;
+    //       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+    //         if (itemr.isDefault === true) {
+    //           itemr.isOn = true;
+    //           itemr.lastLogin = new Date();
+    //           isOn = true;
+    //           let checkingObject = { typeObject: itemr, type: 'store' };
+    //           this.employeeService.announceCheckIn(checkingObject);
+    //           console.log('sent');
+    //           this.employeeService.update(this.loginEmployee).then(payload => {
+    //             this.loginEmployee = payload;
+    //             checkingObject = { typeObject: itemr, type: 'store' };
+    //             this.employeeService.announceCheckIn(checkingObject);
+    //             this.locker.setObject('checkingObject', checkingObject);
+    //           });
+    //         }
+    //       });
+    //       if (isOn === false) {
+    //         this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+    //           if (r === 0) {
+    //             itemr.isOn = true;
+    //             itemr.lastLogin = new Date();
+    //             this.employeeService.update(this.loginEmployee).then(payload => {
+    //               this.loginEmployee = payload;
+    //               const checkingObject = { typeObject: itemr, type: 'store' };
+    //               this.employeeService.announceCheckIn(checkingObject);
+    //               this.locker.setObject('checkingObject', checkingObject);
+    //             });
+    //           }
+
+    //         });
+    //       }
+
+    //     }
+
+    //   }, error => {
+    //     console.log(error);
+    //   });
     const page: string = this._router.url;
     this.checkPageUrl(page);
     this._purchaseEventEmitter.announcedUrl.subscribe(url => {

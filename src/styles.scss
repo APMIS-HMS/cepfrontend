@@ -1112,8 +1112,8 @@ select {
 .mat-raised-button {
     max-width: 200px;
     text-align: center;
-    background: #153d70;
-    color: #fff;
+    background: #0288D1;
+    color: #fff !important;
 }
 
 #example-full-width {
@@ -1258,4 +1258,12 @@ ul.topmenuwrap li:hover {
     display: inline-block !important;
     height: 35px !important;
     width: 35px !important;
+}
+
+.mat-list .mat-list-item .mat-list-item-content, .mat-nav-list .mat-list-item .mat-list-item-content {
+    height: 35px !important;
+    cursor: pointer;
+}
+.mat-list:hover {
+    background-color: #eee;
 }

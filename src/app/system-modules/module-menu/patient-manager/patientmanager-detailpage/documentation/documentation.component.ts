@@ -144,16 +144,16 @@ export class DocumentationComponent implements OnInit {
   clinicalNote_show() {
     this.clinicalNote_view = !this.clinicalNote_view;
   }
-  addProblem_show() {
+  addProblem_show(e) {
     this.addProblem_view = true;
   }
-  addAllergy_show() {
+  addAllergy_show(e) {
     this.addAllergy_view = true;
   }
-  addHistory_show() {
+  addHistory_show(e) {
     this.addHistory_view = true;
   }
-  addVitals_show() {
+  addVitals_show(e) {
     this.addVitals_view = true;
   }
 

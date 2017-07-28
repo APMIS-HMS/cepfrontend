@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PharmacyEmitterService } from '../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 	styleUrls: ['./pharmacy-manager.component.scss']
 })
 
-export class PharmacyManagerComponent implements OnInit {
+export class PharmacyManagerComponent implements OnInit, OnDestroy {
 	pageInView: String = '';
 	storeTitle: String = '';
 	modal_on: boolean = false;
@@ -64,63 +64,52 @@ export class PharmacyManagerComponent implements OnInit {
 	ngOnInit() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		const auth: any = this._locker.getObject('auth');
-		const emp$ = Observable.fromPromise(this._employeeService.find({
-			query: {
-				facilityId: this.selectedFacility._id,
-				personId: auth.data.personId,
-				showbasicinfo: true
-			}
-		}));
-		emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this._employeeService.get(emp.data[0]._id, {})),
-		]))
-			.subscribe((results: any) => {
-				this.loginEmployee = results[0];
-				console.log(results);
-				if ((this.loginEmployee.storeCheckIn === undefined
-					|| this.loginEmployee.storeCheckIn.length === 0)) {
-					this.modal_on = true;
-				} else {
-					let isOn = false;
-					this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-						if (itemr.isDefault === true) {
-							itemr.isOn = true;
-							itemr.lastLogin = new Date();
-							isOn = true;
-							let checkingObject = { typeObject: itemr, type: 'store' };
-							this._employeeService.announceCheckIn(checkingObject);
-							// Set page title
-							this.isStoreAvailable = true;
-							this.storeTitle = itemr.storeObject.name;
-							this._employeeService.update(this.loginEmployee).then(payload => {
-								this.loginEmployee = payload;
-								checkingObject = { typeObject: itemr, type: 'store' };
-								this._employeeService.announceCheckIn(checkingObject);
-								this._locker.setObject('checkingObject', checkingObject);
-							});
-						}
+		this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
+
+		if ((this.loginEmployee.storeCheckIn === undefined
+			|| this.loginEmployee.storeCheckIn.length === 0)) {
+			this.modal_on = true;
+		} else {
+			let isOn = false;
+			this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+				if (itemr.isDefault === true) {
+					itemr.isOn = true;
+					itemr.lastLogin = new Date();
+					isOn = true;
+					let checkingObject = { typeObject: itemr, type: 'store' };
+					this._employeeService.announceCheckIn(checkingObject);
+					// Set page title
+					this.isStoreAvailable = true;
+					this.storeTitle = itemr.storeObject.name;
+					this._employeeService.update(this.loginEmployee).then(payload => {
+						this.loginEmployee = payload;
+						checkingObject = { typeObject: itemr, type: 'store' };
+						this._employeeService.announceCheckIn(checkingObject);
+						this._locker.setObject('checkingObject', checkingObject);
 					});
-					if (isOn === false) {
-						this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-							if (r === 0) {
-								itemr.isOn = true;
-								itemr.lastLogin = new Date();
-								// Set page title
-								this.isStoreAvailable = true;
-								this.storeTitle = itemr.storeObject.name;
-								this._employeeService.update(this.loginEmployee).then(payload => {
-									this.loginEmployee = payload;
-									const checkingObject = { typeObject: itemr, type: 'store' };
-									this._employeeService.announceCheckIn(checkingObject);
-									this._locker.setObject('checkingObject', checkingObject);
-								});
-							}
-						});
-					}
 				}
 			});
+			if (isOn === false) {
+				this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+					if (r === 0) {
+						itemr.isOn = true;
+						itemr.lastLogin = new Date();
+						// Set page title
+						this.isStoreAvailable = true;
+						this.storeTitle = itemr.storeObject.name;
+						this._employeeService.update(this.loginEmployee).then(payload => {
+							this.loginEmployee = payload;
+							const checkingObject = { typeObject: itemr, type: 'store' };
+							this._employeeService.announceCheckIn(checkingObject);
+							this._locker.setObject('checkingObject', checkingObject);
+						});
+					}
+				});
+			}
+		}
 
-		let page: string = this._router.url;
-		//this.checkPageUrl(page);
+		const page: string = this._router.url;
+		// this.checkPageUrl(page);
 		this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});

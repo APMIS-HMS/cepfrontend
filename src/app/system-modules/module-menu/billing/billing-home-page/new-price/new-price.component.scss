@@ -5,7 +5,7 @@
     font-size: 14px;
 }
 .modal-baseWrap {
-    width: 340px;
+    width: 540px;
 }
 .suggestionFeeds{
     width: 100%;
@@ -34,4 +34,26 @@
 }
 .suggetedName {
     font-size: 12px;
+}
+.list-div {
+    width: 90%;
+    border: 1px solid #eee;
+    max-height: 200px;
+    min-height: 150px;
+    overflow-y: scroll;
+    border-radius: 5px;
+}
+.md-list-item {
+    height: 25px !important;
+}
+.survery .alert-info {
+    font-size: 12px;
+    width: 90%;
+    padding: 5px;
+}
+.mat-raised-button {
+    padding: 10px;
+}
+.border-right {
+    border-right: 1px solid #eee;
 }

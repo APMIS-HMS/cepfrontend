@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormsService } from '../../../../services/facility-manager/setup/index';
+import { FormsService, FacilityModuleService } from '../../../../services/facility-manager/setup/index';
 import { ModuleViewModel, Facility } from '../../../../models/index';
+import { FormTypeService, ScopeLevelService } from '../../../../services/module-manager/setup/index';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-forms',
@@ -181,9 +183,10 @@ export class FormsComponent implements OnInit {
   frm_checkboxGroup: FormGroup;
   selectedFacility: Facility = <Facility>{};
   selectedForm: any = <any>{};
+  checkboxArray = new FormArray([]);
 
-  constructor(private route: ActivatedRoute, private formsService: FormsService,
-    private locker: CoolSessionStorage,
+  constructor(private route: ActivatedRoute, private formsService: FormsService, private scopeLevelService: ScopeLevelService,
+    private locker: CoolSessionStorage, private facilityModuleService: FacilityModuleService, private formTypeService: FormTypeService,
     private formBuilder: FormBuilder) {
 
     this.txtForm.valueChanges.subscribe(value => {
@@ -229,40 +232,51 @@ export class FormsComponent implements OnInit {
       formName: ['', [<any>Validators.required]],
     });
 
+    this.frm_checkboxGroup = this.formBuilder.group({
+      myValues: this.checkboxArray
+    });
+
 
   }
 
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.prime();
     this.getForms();
-    this.route.data.subscribe(data => {
-      data['modules'].subscribe((payload) => {
-        payload.forEach((item, i) => {
-          this.modules.push({
-            _id: item._id,
-            name: item.name,
-            checked: false
-          });
+  }
+  prime() {
+    const modules$ = Observable.fromPromise(this.facilityModuleService.findAll());
+    const formType$ = Observable.fromPromise(this.formTypeService.findAll());
+    const scopeLevel$ = Observable.fromPromise(this.scopeLevelService.findAll());
+
+    Observable.forkJoin([modules$, formType$, scopeLevel$]).subscribe((results: any) => {
+      this.modules = results[0].data;
+      this.modules.forEach((item, i) => {
+        this.modules.push({
+          _id: item._id,
+          name: item.name,
+          checked: false
         });
-
-
-        const checkboxArray = new FormArray([]);
-        this.modules.forEach((item, i) => {
-          checkboxArray.push(new FormControl(item.checked));
-        });
-
-        this.frm_checkboxGroup = this.formBuilder.group({
-          myValues: checkboxArray
-        });
-
       });
-      data['documentTypes'].subscribe((payload) => {
-        this.documentTypes = payload;
+
+
+      this.modules.forEach((item, i) => {
+        this.checkboxArray.push(new FormControl(item.checked));
       });
-      data['scopeLevels'].subscribe((payload) => {
-        this.scopeLevels = payload;
+
+      this.frm_checkboxGroup = this.formBuilder.group({
+        myValues: this.checkboxArray
       });
-    });
+
+
+
+
+
+      this.documentTypes = results[1].data;
+      this.scopeLevels = results[2].data;
+      console.log(this.documentTypes);
+      console.log(this.scopeLevels);
+    })
   }
   onValueChanged(event, model: ModuleViewModel) {
     model.checked = event.value;

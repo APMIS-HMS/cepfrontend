@@ -1,0 +1,103 @@
+<div class="pg-subtitle">TIMELINE</div>
+<div>
+<div class="doc-mainWrap">
+  <div class="doc-contentArea">
+    <ul>
+      <li class="timeline-wrap">
+        <div class="timeline-liner">
+          <div class="date-time">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <div class="date">11th July, 2017.</div>
+            <div class="time">10:00AM</div>
+          </div>
+        </div>
+        <div class="timeline-content">
+          <div class="empWrap">
+            <div class="list-img">
+                <img src="assets/images/users/default.png">
+            </div>
+            <div>
+              <div class="list-label">Dr. John Doe</div>
+            </div>
+          </div>
+
+          <div class="content">Added a new clinical documentation</div>
+        </div>
+      </li>
+
+      <li class="timeline-wrap">
+        <div class="timeline-liner">
+          <div class="date-time">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <div class="date">11th July, 2017.</div>
+            <div class="time">10:00AM</div>
+          </div>
+        </div>
+        <div class="timeline-content">
+          <div class="empWrap">
+            <div class="list-img">
+                <img src="assets/images/users/default.png">
+            </div>
+            <div>
+              <div class="list-label">Suzan Wade</div>
+            </div>
+          </div>
+
+          <div class="content">Scheduled an appointment for the 22nd of July, 2017 at the EMT Clinic, Continental Hospital.</div>
+        </div>
+      </li>
+
+      <li class="timeline-wrap">
+        <div class="timeline-liner">
+          <div class="date-time">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <div class="date">11th July, 2017.</div>
+            <div class="time">12:02PM</div>
+          </div>
+        </div>
+        <div class="timeline-content">
+          <div class="empWrap">
+            <div class="list-img">
+                <img src="assets/images/users/default.png">
+            </div>
+            <div>
+              <div class="list-label">Dr. Jude Halaman</div>
+            </div>
+          </div>
+
+          <div class="content">
+            Added a new clinical documentationever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </div>
+        </div>
+      </li>
+    </ul>    
+  </div>
+  <div class="doc-rArea">
+    <app-right-tab 
+        (addProblem)="addProblem_show($event)"
+        (addAllergy)="addAllergy_show($event)"
+        (addHistory)="addHistory_show($event)"
+        (addVitals)="addVitals_show($event)"
+        ></app-right-tab>
+  </div>
+
+<div *ngIf="docDetail_view" class="modal-overlay">
+  <app-documentation-detail [document] ="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+</div>
+
+<div *ngIf="addProblem_view" class="modal-overlay">
+  <app-add-patient-problem (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
+</div>
+
+<div *ngIf="addAllergy_view" class="modal-overlay">
+  <app-add-allergy (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
+</div>
+
+<div *ngIf="addHistory_view" class="modal-overlay">
+  <app-add-history (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-history>
+</div>
+
+<div *ngIf="addVitals_view" class="modal-overlay">
+  <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+</div>
+</div>

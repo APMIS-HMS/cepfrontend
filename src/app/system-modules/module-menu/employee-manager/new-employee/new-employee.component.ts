@@ -3,11 +3,11 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService,
-    PersonService
+    PersonService,UserService
 } from '../../../../services/facility-manager/setup/index';
 
 import {
-    Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country
+    Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country,User, Role
 } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
@@ -24,6 +24,7 @@ export class NewEmployeeComponent implements OnInit {
     errMsg = 'you have unresolved errors';
 
     selectedPerson: Person = <Person>{};
+    user: User = <User>{};
     apmisId_show = true;
     frmNewPerson1_show = false;
     frmNewPerson2_show = false;
@@ -69,7 +70,7 @@ export class NewEmployeeComponent implements OnInit {
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
         private locker: CoolSessionStorage, private employeeService: EmployeeService,
-        private personService: PersonService
+        private personService: PersonService, private userService: UserService
     ) {
         this.cropperSettings = new CropperSettings();
         this.cropperSettings.width = 400;
@@ -416,6 +417,11 @@ export class NewEmployeeComponent implements OnInit {
 
             this.personService.create(person).then(payload => {
                 this.selectedPerson = payload;
+                this.user.email = payload.email;
+                this.user.personId = payload._id;
+                this.user.facilitiesRole = [];
+                this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
+                this.userService.create(this.user).then((upayload) => {});
                 if (this.skipNok) {
                     this.saveEmployee();
                 }
