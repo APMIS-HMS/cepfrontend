@@ -56,6 +56,7 @@ export class DocumentationComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.patient);
     this.getPersonDocumentation();
   }
   getPersonDocumentation() {

@@ -1,5 +1,11 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
+import { FormTypeService, SeverityService } from '../../../../../../services/module-manager/setup/index';
+import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
+import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Rx';
+import { SharedService } from '../../../../../../shared-module/shared.service';
 
 @Component({
   selector: 'app-add-allergy',
@@ -8,6 +14,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class AddAllergyComponent implements OnInit {
 
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() patient;
   allergyFormCtrl: FormControl;
   noteFormCtrl: FormControl;
   reactionFormCtrl: FormControl;
@@ -16,90 +24,117 @@ export class AddAllergyComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  severities: any[] = [];
 
-  states = [
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
-    'California',
-    'Colorado',
-    'Connecticut',
-    'Delaware',
-    'Florida',
-    'Georgia',
-    'Hawaii',
-    'Idaho',
-    'Illinois',
-    'Indiana',
-    'Iowa',
-    'Kansas',
-    'Kentucky',
-    'Louisiana',
-    'Maine',
-    'Maryland',
-    'Massachusetts',
-    'Michigan',
-    'Minnesota',
-    'Mississippi',
-    'Missouri',
-    'Montana',
-    'Nebraska',
-    'Nevada',
-    'New Hampshire',
-    'New Jersey',
-    'New Mexico',
-    'New York',
-    'North Carolina',
-    'North Dakota',
-    'Ohio',
-    'Oklahoma',
-    'Oregon',
-    'Pennsylvania',
-    'Rhode Island',
-    'South Carolina',
-    'South Dakota',
-    'Tennessee',
-    'Texas',
-    'Utah',
-    'Vermont',
-    'Virginia',
-    'Washington',
-    'West Virginia',
-    'Wisconsin',
-    'Wyoming',
-  ];
+  selectedFacility: Facility = <Facility>{};
+  loginEmployee: Employee = <Employee>{};
+  selectedForm: any = <any>{};
+  selectedDocument: PatientDocumentation = <PatientDocumentation>{};
+  patientDocumentation: Documentation = <Documentation>{};
 
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
 
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder, private formService: FormsService, private locker: CoolSessionStorage,
+    private documentationService: DocumentationService,
+    private formTypeService: FormTypeService, private sharedService: SharedService,
+    private facilityService: FacilitiesService, private severityService: SeverityService) {
     this.allergyFormCtrl = new FormControl();
-    this.filteredStates = this.allergyFormCtrl.valueChanges
-        .startWith(null)
-        .map(name => this.filterStates(name));
-
     this.severityFormCtrl = new FormControl();
-    this.filteredStates = this.severityFormCtrl.valueChanges
-        .startWith(null)
-        .map(name => this.filterStates(name));
+    this.reactionFormCtrl = new  FormControl();
+    this.noteFormCtrl = new FormControl();
+
   }
 
   ngOnInit() {
+    this.getSeverities();
+    this.getForm();
+    this.getPersonDocumentation();
   }
+  getSeverities() {
+    Observable.fromPromise(this.severityService.findAll()).subscribe((payload: any) => {
+      this.severities = payload.data;
+    });
+  }
+  getForm() {
+    Observable.fromPromise(this.formService.find({ query: { title: 'Allegies' } }))
+      .subscribe((payload: any) => {
+        if (payload.data.length > 0) {
+          this.selectedForm = payload.data[0];
+        }
+      });
+  }
+  getPersonDocumentation() {
+    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+      if (payload.data.length === 0) {
+        this.patientDocumentation.personId = this.patient.personDetails;
+        this.patientDocumentation.documentations = [];
+        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
+          this.patientDocumentation = pload;
+          console.log(this.patientDocumentation);
+        })
+      } else {
+        this.documentationService.find({
+          query:
+          {
+            'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+            // $select: ['documentations.documents', 'documentations.facilityId']
+          }
+        }).subscribe((mload: any) => {
+          if (mload.data.length > 0) {
+            this.patientDocumentation = mload.data[0];
+            // this.populateDocuments();
+            console.log(this.patientDocumentation);
+            // mload.data[0].documentations[0].documents.push(doct);
+          }
+        })
+      }
 
+    })
+  }
   close_onClick() {
-      this.closeModal.emit(true);
+    this.closeModal.emit(true);
   }
-
-  filterStates(val: string) {
-    return val ? this.states.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
-               : this.states;
+  severityDisplayFn(severity: any): any {
+    return severity ? severity.name : severity;
   }
-
+  save() {
+    let isExisting = false;
+    this.patientDocumentation.documentations.forEach(documentation => {
+      if (documentation.document.documentType._id === this.selectedForm._id) {
+        isExisting = true;
+        documentation.document.body.allegies.push({
+          allergy: this.allergyFormCtrl.value,
+          reaction: this.reactionFormCtrl.value,
+          severity: this.severityFormCtrl.value,
+          note: this.noteFormCtrl.value
+        })
+      }
+    });
+    if (!isExisting) {
+      const doc: PatientDocumentation = <PatientDocumentation>{};
+      doc.facilityId = this.selectedFacility;
+      doc.createdBy = this.loginEmployee;
+      doc.patientId = this.patient._id;
+      doc.document = {
+        documentType: this.selectedForm,
+        body: {
+          allegies: []
+        }
+      }
+      doc.document.body.allegies.push({
+        allergy: this.allergyFormCtrl.value,
+        reaction: this.reactionFormCtrl.value,
+        severity: this.severityFormCtrl.value,
+        note: this.noteFormCtrl.value
+      });
+      this.patientDocumentation.documentations.push(doc);
+    }
+    this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+      this.patientDocumentation = payload;
+      this.allergyFormCtrl.reset();
+      this.reactionFormCtrl.reset();
+      this.severityFormCtrl.reset();
+      this.noteFormCtrl.reset();
+    })
+  }
 }
 

@@ -62,7 +62,7 @@ import { ChartsModule } from 'ng2-charts';
         PatientLaboratoryComponent,
         TimelineComponent,
         RightTabComponent,
-        InvestigationComponent
+        // InvestigationComponent
         // InvestigationComponent
         // SurveyComponent,
         // SurveyEditorComponent

@@ -9,6 +9,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../../shared-module/shared.service';
 
+
 @Component({
   selector: 'app-clinical-note',
   templateUrl: './clinical-note.component.html',
