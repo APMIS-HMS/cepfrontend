@@ -14,9 +14,9 @@
             <input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusFormCtrl">
           </md-input-container>
 
-          <md-autocomplete #auto="mdAutocomplete">
-            <md-option *ngFor="let state of filteredStates | async" [value]="state">
-              {{ state }}
+          <md-autocomplete #auto="mdAutocomplete" [displayWith]="statusDisplayFn">
+            <md-option *ngFor="let status of orderStatuses" [value]="status">
+              {{ status.name }}
             </md-option>
           </md-autocomplete>
         </div> 
@@ -26,6 +26,6 @@
           </md-input-container>
         </div> 
 
-        <div class="cta-1">SAVE</div>
+        <div class="cta-1" (click)="save()">SAVE</div>
     </div>
 </div>
