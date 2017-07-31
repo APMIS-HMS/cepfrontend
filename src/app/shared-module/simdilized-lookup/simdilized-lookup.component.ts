@@ -12,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SimdilizedLookupComponent implements OnInit {
     @Input() displayKey = "";
+    @Input() innerValue = "";
     @Input() url = "";
     @Input() query = {};
     @Input() isRest = false;
@@ -27,10 +28,7 @@ export class SimdilizedLookupComponent implements OnInit {
     results = [];
     constructor(private fb: FormBuilder,
         private _socketService: SocketService,
-        private _restService: RestService) {
-
-
-    }
+        private _restService: RestService) { }
 
     ngOnInit() {
         this._rest = this._restService.getService(this.url);
@@ -52,11 +50,11 @@ export class SimdilizedLookupComponent implements OnInit {
         //     });
 
         this.form.controls['searchtext'].valueChanges.subscribe(value => {
+            console.log(this.displayKey);
             this.cuDropdownLoading = true;
             this.filter({ query: this.query }, this.isRest).then(filteredValue => {
                 this.cuDropdownLoading = false;
                 this.results = filteredValue;
-                console.log(filteredValue);
             })
                 .catch(err => {
                     this.cuDropdownLoading = false;
@@ -69,13 +67,17 @@ export class SimdilizedLookupComponent implements OnInit {
         if (isRest) {
             return this._socket.find(query);
         } else {
-            console.log(this._rest.find(query));
             return this._rest.find(query);
         }
     }
 
     onSelectedItem(value) {
+        this.form.controls['searchtext'].setValue(value[this.innerValue]);
         this.selectedItem.emit(value);
+    }
+
+    onDisplayText() {
+        console.log(this.innerValue);
     }
 
     focusSearch() {
