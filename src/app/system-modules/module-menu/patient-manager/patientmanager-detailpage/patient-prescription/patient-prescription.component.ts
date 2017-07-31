@@ -17,7 +17,7 @@ import { Subject } from 'rxjs/Subject';
     styleUrls: ['./patient-prescription.component.scss']
 })
 export class PatientPrescriptionComponent implements OnInit {
-	@Input() patientDetails: any;
+    @Input() patientDetails: any;
     @Input() selectedAppointment: Appointment = <Appointment>{};
     @Output() prescriptionItems: Prescription = <Prescription>{};
     isDispensed: Subject<any> = new Subject();
@@ -57,8 +57,13 @@ export class PatientPrescriptionComponent implements OnInit {
     pastMedications: any[] = [];
     currMedLoading: boolean = false;
     pastMedLoading: boolean = false;
+<<<<<<< HEAD
+    query = {};
+    url = "";
+=======
     authorizeRx: string = 'Authorize RX';
     disableAuthorizeRx: boolean = false;
+>>>>>>> de10cca52110c20ef5ac3deb68d1e4409436b749
 
     constructor(
         private fb: FormBuilder,
@@ -83,7 +88,6 @@ export class PatientPrescriptionComponent implements OnInit {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
         this.user = this._locker.getObject('auth');
         this.employeeDetails = this._locker.getObject('loginEmployee');
-
         // Remove this when you are done
         this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
@@ -109,6 +113,24 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
+        this.url = "drug-generic-list-api";
+
+        this.query = {
+                "searchtext": "parace",
+                "po": false,
+                "brandonly": false,
+                "genericonly": true
+            }
+
+        this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
+            console.log(value);
+            // this.query = {
+            //     "searchtext": value,
+            //     "po": false,
+            //     "brandonly": false,
+            //     "genericonly": true
+            // }
+        })
     }
 
     onClickAddPrescription(value: any, valid: boolean) {
@@ -141,10 +163,10 @@ export class PatientPrescriptionComponent implements OnInit {
                 };
 
                 this.addPrescriptionShow = true;
-                if(this.prescriptions.prescriptionItems !== undefined) {
+                if (this.prescriptions.prescriptionItems !== undefined) {
                     // Check if generic has been added already.
                     const containsGeneric = this.prescriptionArray.filter(x => prescriptionItem.genericName === x.genericName);
-                    if(containsGeneric.length < 1) {
+                    if (containsGeneric.length < 1) {
                         this.prescriptionArray.push(prescriptionItem);
                     }
                 } else {
@@ -163,7 +185,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     totalCost: 0,
                     totalQuantity: 0
                 };
-
+console.log("trying");
                 console.log(prescription);
                 this.prescriptionItems = prescription;
                 this.prescriptions = prescription;
@@ -191,8 +213,8 @@ export class PatientPrescriptionComponent implements OnInit {
                 const billItemArray = [];
                 let totalCost = 0;
                 this.prescriptions.prescriptionItems.forEach(element => {
-                    if(element.isBilled) {
-                        const billItem = <BillItem> {
+                    if (element.isBilled) {
+                        const billItem = <BillItem>{
                             facilityServiceId: element.facilityServiceId,
                             serviceId: element.serviceId,
                             facilityId: this.facility._id,
@@ -210,7 +232,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     }
                 });
 
-                const bill = <BillIGroup> {
+                const bill = <BillIGroup>{
                     facilityId: this.facility._id,
                     patientId: this.prescriptions.patientId,
                     billItems: billItemArray,
@@ -219,12 +241,12 @@ export class PatientPrescriptionComponent implements OnInit {
                     grandTotal: totalCost,
                 }
                 // If any item was billed, then call the billing service
-                if(billItemArray.length > 0) {
+                if (billItemArray.length > 0) {
                     // send the billed items to the billing service
                     this._billingService.create(bill)
                         .then(res => {
                             console.log(res);
-                            if(res._id !== undefined) {
+                            if (res._id !== undefined) {
                                 this.prescriptions.billId = res._id;
                                 // if this is true, send the prescribed drugs to the prescription service
                                 this._sendPrescription(this.prescriptions);
@@ -273,7 +295,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this._drugDetailsApi.find({ query: { 'productId': productId } })
             .then(res => {
                 console.log(res);
-                if(res.ingredients.length > 0) {
+                if (res.ingredients.length > 0) {
                     this.selectedForm = res.form;
                     this.selectedIngredients = res.ingredients;
                     let drugName: string = res.form + ' ';
@@ -285,7 +307,7 @@ export class PatientPrescriptionComponent implements OnInit {
                         drugName += element.name;
                         strength += element.strength + element.strengthUnit;
 
-                        if(index !== ingredientLength) {
+                        if (index !== ingredientLength) {
                             drugName += '/';
                             strength += '/';
                         }
@@ -301,35 +323,35 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     //Get all medications
-	private _getPrescriptionList() {
-		this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id }})
-			.then(res => {
+    private _getPrescriptionList() {
+        this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } })
+            .then(res => {
                 this.currMedLoading = false;
                 this.pastMedLoading = false;
                 // Bind to current medication list
                 const currentMedications = res.data.filter(x => {
                     const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-                    if(lastSevenDays < new Date(x.updatedAt)) {
+                    if (lastSevenDays < new Date(x.updatedAt)) {
                         return x;
                     }
                 });
                 this.currentMedications = currentMedications.splice(0, 3);
-                
+
                 // Bind to past medication list
-                const pastMedications = res.data.filter(x => { 
+                const pastMedications = res.data.filter(x => {
                     const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-                    if(lastSevenDays > new Date(x.updatedAt)) {
+                    if (lastSevenDays > new Date(x.updatedAt)) {
                         return x;
                     }
                 });
                 console.log(pastMedications);
                 this.pastMedications = pastMedications.splice(0, 3);
-			})
-			.catch(err => {
-				console.log(err);
-			});
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
-    
+
     onClickReset() {
         this.addPrescriptionForm.reset();
     }
@@ -377,8 +399,8 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     onClickMedicationShow(value) {
-        if((this.currentMedicationShow === false ) && (this.pastMedicationShow === false)) {
-            if(value === 'Current') {
+        if ((this.currentMedicationShow === false) && (this.pastMedicationShow === false)) {
+            if (value === 'Current') {
                 this.currMedLoading = true;
             } else {
                 this.pastMedLoading = true;
@@ -386,12 +408,12 @@ export class PatientPrescriptionComponent implements OnInit {
             this._getPrescriptionList();
         }
 
-        if(value === 'Current') {
+        if (value === 'Current') {
             this.currentMedicationShow = !this.currentMedicationShow;
             this.pastMedicationShow = false;
         }
 
-        if(value === 'Past') {
+        if (value === 'Past') {
             this.pastMedicationShow = !this.pastMedicationShow;
             this.currentMedicationShow = false;
         }
@@ -420,10 +442,10 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
+        this._facilityService.announceNotification({
+            users: [this.user._id],
+            type: type,
+            text: text
+        });
+    }
 }

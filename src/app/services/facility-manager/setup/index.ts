@@ -71,4 +71,4 @@ export * from './assessment-dispense.service';
 export * from './medication-list.service';
 export * from './external-prescription.service';
 export * from './laboratory.service';
-export * from './dispense-collection-drugs.service';
+export * from './simdilized-control.service';

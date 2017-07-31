@@ -18,7 +18,7 @@
             <ul class="doc-cardWrap">
 
                 <li class="doc-card shadow" *ngFor="let document of documents">
-                    <div class="modal_title">{{document?.document?.documentType?.title}}</div>
+                    <div class="modal_title">{{document?.document?.documentType?.title}} @ {{document?.facilityId?.name}}</div>
                     <div class="docCard-header">
 
                         <div class="empWrap">
@@ -77,7 +77,7 @@
             </ul>
         </div>
         <div class="doc-rArea">
-            <app-right-tab (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)" (addVitals)="addVitals_show($event)"></app-right-tab>
+            <app-right-tab [patient]="patient" (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)" (addVitals)="addVitals_show($event)"></app-right-tab>
         </div>
 
         <div *ngIf="docDetail_view" class="modal-overlay">
@@ -89,7 +89,7 @@
         </div>
 
         <div *ngIf="addAllergy_view" class="modal-overlay">
-            <app-add-allergy (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
+            <app-add-allergy [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
         </div>
 
         <div *ngIf="addHistory_view" class="modal-overlay">

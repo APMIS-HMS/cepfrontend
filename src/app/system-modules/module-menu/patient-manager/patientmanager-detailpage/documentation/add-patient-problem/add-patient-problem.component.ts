@@ -64,6 +64,7 @@ export class AddPatientProblemComponent implements OnInit {
   }
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+      console.log(payload);
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -72,20 +73,24 @@ export class AddPatientProblemComponent implements OnInit {
           console.log(this.patientDocumentation);
         })
       } else {
-        this.documentationService.find({
-          query:
-          {
-            'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-            // $select: ['documentations.documents', 'documentations.facilityId']
-          }
-        }).subscribe((mload: any) => {
-          if (mload.data.length > 0) {
-            this.patientDocumentation = mload.data[0];
-            // this.populateDocuments();
-            console.log(this.patientDocumentation);
-            // mload.data[0].documentations[0].documents.push(doct);
-          }
-        })
+        if (payload.data[0].documentations.length === 0) {
+          this.patientDocumentation = payload.data[0];
+        } else {
+          this.documentationService.find({
+            query:
+            {
+              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+              // $select: ['documentations.documents', 'documentations.facilityId']
+            }
+          }).subscribe((mload: any) => {
+            if (mload.data.length > 0) {
+              this.patientDocumentation = mload.data[0];
+              // this.populateDocuments();
+              console.log(this.patientDocumentation);
+              // mload.data[0].documentations[0].documents.push(doct);
+            }
+          })
+        }
       }
 
     })
@@ -105,6 +110,7 @@ export class AddPatientProblemComponent implements OnInit {
   }
   save() {
     let isExisting = false;
+    console.log(this.patientDocumentation)
     this.patientDocumentation.documentations.forEach(documentation => {
       if (documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
@@ -138,6 +144,7 @@ export class AddPatientProblemComponent implements OnInit {
       this.problemFormCtrl.reset();
       this.statusFormCtrl.reset();
       this.noteFormCtrl.reset();
+      this.documentationService.announceDocumentation({});
     })
   }
 }

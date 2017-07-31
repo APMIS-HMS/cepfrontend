@@ -39,7 +39,7 @@ export class AddAllergyComponent implements OnInit {
     private facilityService: FacilitiesService, private severityService: SeverityService) {
     this.allergyFormCtrl = new FormControl();
     this.severityFormCtrl = new FormControl();
-    this.reactionFormCtrl = new  FormControl();
+    this.reactionFormCtrl = new FormControl();
     this.noteFormCtrl = new FormControl();
 
   }
@@ -55,7 +55,7 @@ export class AddAllergyComponent implements OnInit {
     });
   }
   getForm() {
-    Observable.fromPromise(this.formService.find({ query: { title: 'Allegies' } }))
+    Observable.fromPromise(this.formService.find({ query: { title: 'Allergies' } }))
       .subscribe((payload: any) => {
         if (payload.data.length > 0) {
           this.selectedForm = payload.data[0];
@@ -72,20 +72,24 @@ export class AddAllergyComponent implements OnInit {
           console.log(this.patientDocumentation);
         })
       } else {
-        this.documentationService.find({
-          query:
-          {
-            'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-            // $select: ['documentations.documents', 'documentations.facilityId']
-          }
-        }).subscribe((mload: any) => {
-          if (mload.data.length > 0) {
-            this.patientDocumentation = mload.data[0];
-            // this.populateDocuments();
-            console.log(this.patientDocumentation);
-            // mload.data[0].documentations[0].documents.push(doct);
-          }
-        })
+        if (payload.data[0].documentations.length === 0) {
+          this.patientDocumentation = payload.data[0];
+        } else {
+          this.documentationService.find({
+            query:
+            {
+              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+              // $select: ['documentations.documents', 'documentations.facilityId']
+            }
+          }).subscribe((mload: any) => {
+            if (mload.data.length > 0) {
+              this.patientDocumentation = mload.data[0];
+              // this.populateDocuments();
+              console.log(this.patientDocumentation);
+              // mload.data[0].documentations[0].documents.push(doct);
+            }
+          })
+        }
       }
 
     })
@@ -101,7 +105,7 @@ export class AddAllergyComponent implements OnInit {
     this.patientDocumentation.documentations.forEach(documentation => {
       if (documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
-        documentation.document.body.allegies.push({
+        documentation.document.body.allergies.push({
           allergy: this.allergyFormCtrl.value,
           reaction: this.reactionFormCtrl.value,
           severity: this.severityFormCtrl.value,
@@ -117,10 +121,10 @@ export class AddAllergyComponent implements OnInit {
       doc.document = {
         documentType: this.selectedForm,
         body: {
-          allegies: []
+          allergies: []
         }
       }
-      doc.document.body.allegies.push({
+      doc.document.body.allergies.push({
         allergy: this.allergyFormCtrl.value,
         reaction: this.reactionFormCtrl.value,
         severity: this.severityFormCtrl.value,
@@ -134,6 +138,7 @@ export class AddAllergyComponent implements OnInit {
       this.reactionFormCtrl.reset();
       this.severityFormCtrl.reset();
       this.noteFormCtrl.reset();
+      this.documentationService.announceDocumentation({});
     })
   }
 }
