@@ -11,7 +11,7 @@ import {
   styleUrls: ['./client-details.component.scss']
 })
 export class ClientDetailsComponent implements OnInit {
-
+  personDetails: Person = <Person>{};
   constructor(
 		private _locker: CoolSessionStorage,
     private _facilityService: FacilitiesService,
@@ -19,8 +19,8 @@ export class ClientDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._personService.receivePerson().subscribe(val => {
-      console.log(val);
+    this._personService.receivePerson().subscribe(person => {
+      this.personDetails = person;
     });
   }
 
