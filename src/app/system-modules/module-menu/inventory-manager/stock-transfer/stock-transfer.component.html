@@ -36,7 +36,6 @@
     </div>-->
     <div class="row">
         <div class="col-md-4">
-            <br>
             <div class="frm-item-wrap">
                 <md-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Stock" [formControl]="frmDestinationStore">
                     <md-option  *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
