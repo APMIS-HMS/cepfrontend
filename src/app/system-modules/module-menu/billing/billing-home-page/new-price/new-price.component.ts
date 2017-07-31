@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -41,7 +41,8 @@ export class NewPriceComponent implements OnInit {
     this.frmNewprice = this.formBuilder.group({
       serviceCat: ['', [<any>Validators.required]],
       service: ['', [<any>Validators.required]],
-      price: [0.00, [<any>Validators.required]]
+      price: new FormArray([])
+      //price: [0.00, [<any>Validators.required]]
     });
   }
   filterServices(itemj) {
@@ -101,6 +102,9 @@ export class NewPriceComponent implements OnInit {
 
   showPrice() {
     this.isPrice = true;
+  }
+  buildPrice(){
+
   }
 
 }

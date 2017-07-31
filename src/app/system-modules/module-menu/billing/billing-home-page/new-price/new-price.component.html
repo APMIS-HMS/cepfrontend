@@ -31,12 +31,12 @@
                 <div class="">
                     <div class="list-div">
                         <div *ngFor="let service of services" class="col-sm-12">
-                            <div class="col-sm-6 border-right">
+                            <div class="col-sm-7">
                                 <md-list>
                                 <md-list-item (click)="showPrice()" value="service">{{service.service}}</md-list-item>
                             </md-list>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <md-input-container class="example-full-width">
                                 <input style="text-align:left" currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" mdInput md-error placeholder="Amount" formControlName="price">
                             </md-input-container>
