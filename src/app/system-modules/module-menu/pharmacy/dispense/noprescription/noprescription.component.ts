@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { Facility, Appointment, BatchTransaction, Employee } from '../../../../../models/index';
+import { Facility, Appointment, BatchTransaction, Employee, BillItem, BillIGroup } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
-	 InventoryTransactionTypeService, DispenseCollectionDrugService,
+	 InventoryTransactionTypeService, DispenseCollectionDrugService, BillingService, InvoiceService,
 	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -50,6 +50,9 @@ export class NoprescriptionComponent implements OnInit {
 	qtyDispenseBtn: string = 'Bill';
 	inventoryTransactionTypeId: string = '';
 	selectedIventoryId: string = '';
+	selectedFsId: string = '';
+	selectedSId: string = '';
+	selectedCId: string = '';
 
 	constructor(
 		private _fb: FormBuilder,
@@ -65,7 +68,9 @@ export class NoprescriptionComponent implements OnInit {
 		private _purchaseEntryService: PurchaseEntryService,
 		private _assessmentDispenseService: AssessmentDispenseService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
-		private _dispenseCollectionDrugs: DispenseCollectionDrugService
+		private _dispenseCollectionDrugs: DispenseCollectionDrugService,
+		private _billingService: BillingService,
+		private _invoiceService: InvoiceService
 	) {
 
 	}
@@ -108,9 +113,6 @@ export class NoprescriptionComponent implements OnInit {
 
 		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
 			if (val > 0) {
-				// this.itemPrice = this.price*val;
-				// this.itemQuantity = val;
-				// this.itemPrice = this.price * val;
 				this.noPrescriptionForm.controls['cost'].setValue(this.price);
 			} else {
 				this._facilityService.announceNotification({
@@ -134,11 +136,11 @@ export class NoprescriptionComponent implements OnInit {
 		const prescription = {};
 
 		if(this.storeId.typeObject.storeId !== '') {
-			if (value.drug === '' || value.qty === '' || value.batchNumber === '') {
+			if (value.drug === '' || value.qty === '' || value.qty === 0 || value.batchNumber === '') {
 				this._facilityService.announceNotification({
 					users: [this.user._id],
 					type: 'Error',
-					text: 'Some fields are empty!'
+					text: 'Some fields are empty or Quantity is less than 1!'
 				});
 			} else {
 				switch (value.client) {
@@ -157,9 +159,9 @@ export class NoprescriptionComponent implements OnInit {
 						prescription['locationId'] = value.minorLocation;
 						break;
 				}
-					this.dispenseAllBtn = false;
-				this.totalPrice = this.totalPrice + this.price;
-				this.totalQuantity = this.totalQuantity + value.qty;
+				this.dispenseAllBtn = false;
+				this.totalPrice = Number(this.totalPrice) + (Number(this.price) * Number(value.qty));
+				this.totalQuantity = Number(this.totalQuantity) + Number(value.qty);
 				prescription['productName'] = value.product;
 				prescription['productId'] = this.selectedProductId;
 				prescription['client'] = value.client;
@@ -171,6 +173,8 @@ export class NoprescriptionComponent implements OnInit {
 				prescription['totalQuantity'] = this.totalQuantity;
 				prescription['totalCost'] = this.totalPrice;
 				prescription['inventoryId'] = this.selectedIventoryId;
+				prescription['facilityServiceId'] = this.selectedFsId;
+				prescription['serviceId'] = this.selectedSId;
 				prescription['isBilled'] = false;
 				console.log(prescription);
 
@@ -179,7 +183,6 @@ export class NoprescriptionComponent implements OnInit {
 				// Empty the form
 				this.price = 0;
 				this.batches = [];
-				this.products = [];
 				this.noPrescriptionForm.controls['product'].setValue('');
 				this.noPrescriptionForm.controls['batchNumber'].setValue('');
 				this.noPrescriptionForm.controls['qty'].setValue(1);
@@ -200,15 +203,16 @@ export class NoprescriptionComponent implements OnInit {
 
 			this.prescriptions.forEach(element => {
 				const product = {};
-				console.log(element);
 				switch (element.client) {
 					case 'Individual':
 						prescription['lastName'] = element.lastName;
 						prescription['firstName'] = element.firstName;
+						prescription['fullname'] = element.firstName + ' ' + element.lastName;
 						prescription['phoneNumber'] = element.phoneNumber;
 						break;
 					case 'Corporate':
 						prescription['companyName'] = element.companyName;
+						prescription['fullname'] = element.companyName;
 						prescription['companyPhone'] = element.companyPhone;
 						break;
 					case 'Internal':
@@ -220,6 +224,7 @@ export class NoprescriptionComponent implements OnInit {
 				product['productId'] = element.productId;
 				product['batchNumber'] = element.batchNumber;
 				product['batchNumberId'] = element.batchNumberId;
+				product['productId'] = element.productId;
 				product['productName'] = element.productName;
 				product['cost'] = element.unitPrice;
 				product['quantity'] = element.qty;
@@ -254,10 +259,92 @@ export class NoprescriptionComponent implements OnInit {
 			this._dispenseCollectionDrugs.create(collectionDrugs)
 				.then(res => {
 					console.log(res);
+					// Build your billing service
+					// bill model
+					const billItemArray = [];
+					let totalCost = 0;
+					const clientDetails: any = <any>{};
+					this.prescriptions.forEach((element, i) => {
+						if(i === 0) {
+							
+							switch (element.client.toLowerCase()) {
+								case 'individual':
+									clientDetails.name = element.firstName + ' ' + element.lastName;
+									clientDetails.phone = element.phoneNumber;
+									break;
+								case 'corporate':
+									clientDetails.name = element.companyName;
+									clientDetails.phone = element.companyPhone;
+									break;
+								case 'internal':
+									clientDetails.dept = element.dept;
+									clientDetails.unit = element.unit;
+									clientDetails.location = element.minorLocation;
+									break;
+							}
+						}
+						
+						const billItem = <BillItem> {
+							facilityServiceId: element.facilityServiceId,
+							serviceId: element.serviceId,
+							facilityId: this.facility._id,
+							description: element.productName,
+							quantity: element.qty,
+							totalPrice: element.cost * element.qty,
+							unitPrice: element.cost,
+							unitDiscountedAmount: 0,
+							totalDiscoutedAmount: 0,
+						};
+
+						totalCost += element.totalCost;
+						billItemArray.push(billItem);
+					});
+
+					const bill = <BillIGroup> {
+						facilityId: this.facility._id,
+						walkInClientDetails: clientDetails,
+    					isWalkIn: true,
+						billItems: billItemArray,
+						discount: 0,
+						subTotal: totalCost,
+						grandTotal: totalCost,
+					}
+					// Create a bill.
+					this._billingService.create(bill)
+						.then(res => {
+							console.log(res);
+							const billingIds = [];
+							// Get all the billing items
+							// res.drugs.forEach(element => {
+							// 	const ids = {
+							// 		productId: element._id,
+							// 		productName: element.productName
+							// 	}
+							// 	billingIds.push(ids);
+							// });
+							
+							// const invoice = {
+							// 	facilityId: this.facility._id,
+							// 	walkInClientDetails: clientDetails,
+							// 	isWalkIn: true,
+							// 	billingIds: billingIds,
+							// 	payments: billingIds, // Don't know what to insert in this.
+							// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
+							// 	paymentCompleted: true,
+							// 	invoiceNo: { type: String, require: false },
+							// 	totalDiscount: { type: Number, require: false },
+							// 	totalPrice: { type: Number, require: false },
+							// };
+							// // call the invoice service.
+							// this._invoiceService.create(invoice)
+							// 	.then(res => {
+							// 		console.log(res);
+							// 	})
+							// 	.catch(err => { console.log(err); });
+						})
+						.catch(err => { console.log(err); });
 				})
-				.catch(err => {
-					console.log(err);
-				});
+				.catch(err => { console.log(err); });
 
 			// this._dispenseService.create(payload)
 			// 	.then(res => {
@@ -336,9 +423,9 @@ export class NoprescriptionComponent implements OnInit {
 		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
 		this.selectedProductId = drugId.getAttribute('data-p-id');
 		this.selectedIventoryId = drugId.getAttribute('data-p-iid');
-		// const fsId = drugId.getAttribute('data-p-fsid');
-		// const sId = drugId.getAttribute('data-p-sid');
-		// const cId = drugId.getAttribute('data-p-cid');
+		this.selectedFsId = drugId.getAttribute('data-p-fsid');
+		this.selectedSId = drugId.getAttribute('data-p-sid');
+		this.selectedCId = drugId.getAttribute('data-p-cid');
 		//const batchNumber = drugId.getAttribute('data-p-batchNumber');
 		//this.price = drugId.getAttribute('data-p-costPrice');
 		//this.noPrescriptionForm.controls['batchNumber'].setValue(batchNumber);
