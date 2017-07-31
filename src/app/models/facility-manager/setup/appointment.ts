@@ -19,4 +19,5 @@ export interface Appointment {
     checkIn: boolean;
     clinicInteractions: ClinicInteraction[];
     category: any;
+    orderStatusId: any;
 }

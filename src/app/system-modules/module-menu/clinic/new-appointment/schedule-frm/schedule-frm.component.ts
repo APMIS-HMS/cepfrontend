@@ -6,7 +6,7 @@ import {
     FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService,
     WorkSpaceService, PatientService, FacilitiesServiceCategoryService
 } from '../../../../../services/facility-manager/setup/index';
-import { LocationService } from '../../../../../services/module-manager/setup/index';
+import { LocationService, OrderStatusService } from '../../../../../services/module-manager/setup/index';
 import {
     Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, Patient, ScheduleRecordModel, MinorLocation
 } from '../../../../../models/index';
@@ -47,6 +47,7 @@ export class ScheduleFrmComponent implements OnInit {
     professions: Profession[] = [];
     categoryServices: any[] = [];
     appointments: any[] = [];
+    orderStatuses: any[] = [];
     selectedClinic: any = <any>{};
     isDoctor = false;
     loadIndicatorVisible = false;
@@ -61,6 +62,7 @@ export class ScheduleFrmComponent implements OnInit {
     clinic: FormControl;
     provider: FormControl;
     type: FormControl;
+    status: FormControl;
     category: FormControl;
     checkIn: FormControl;
     date = new Date(); // FormControl = new FormControl();
@@ -75,7 +77,7 @@ export class ScheduleFrmComponent implements OnInit {
         private appointmentService: AppointmentService, private patientService: PatientService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
-        private toastyService: ToastyService, private toastyConfig: ToastyConfig,
+        private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
 
         // this.toastyConfig.theme = 'material';
@@ -113,10 +115,11 @@ export class ScheduleFrmComponent implements OnInit {
             .map(val => val ? this.filterPatients(val) : this.patients.slice());
 
         this.clinic = new FormControl('', [Validators.required]);
-        this.filteredClinics = this.clinic.valueChanges
-            .startWith(null)
-            .map(clinic => clinic && typeof clinic === 'object' ? this.getOthers(clinic) : clinic)
-            .map(val => val ? this.filterClinics(val) : this.clinics.slice());
+        this.status = new FormControl('', [Validators.required]);
+        // this.filteredClinics = this.clinic.valueChanges
+        //     .startWith(null)
+        //     .map(clinic => clinic && typeof clinic === 'object' ? this.getOthers(clinic) : clinic)
+        //     .map(val => val ? this.filterClinics(val) : this.clinics.slice());
 
         this.provider = new FormControl();
         this.filteredProviders = this.provider.valueChanges
@@ -125,16 +128,16 @@ export class ScheduleFrmComponent implements OnInit {
             .map(val => val ? this.filterProviders(val) : this.providers.slice());
 
         this.type = new FormControl('', [Validators.required]);
-        this.filteredAppointmentTypes = this.type.valueChanges
-            .startWith(null)
-            .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
-            .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
+        // this.filteredAppointmentTypes = this.type.valueChanges
+        //     .startWith(null)
+        //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
+        //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
         this.category = new FormControl('', [Validators.required]);
-        this.filteredCategoryServices = this.category.valueChanges
-            .startWith(null)
-            .map((type: any) => type && typeof type === 'object' ? type.name : type)
-            .map(val => val ? this.filterCategoryServices(val) : this.categoryServices.slice());
+        // this.filteredCategoryServices = this.category.valueChanges
+        //     .startWith(null)
+        //     .map((type: any) => type && typeof type === 'object' ? type.name : type)
+        //     .map(val => val ? this.filterCategoryServices(val) : this.categoryServices.slice());
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
         this.primeComponent();
@@ -180,8 +183,9 @@ export class ScheduleFrmComponent implements OnInit {
         const facilityServiceCategory$ = Observable.fromPromise(this.facilityServiceCategoryService
             .find({ query: { facilityId: this.selectedFacility._id } }));
         const workSpaces$ = Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } }));
-
-        Observable.forkJoin([majorLocation$, appointmentTypes$, professions$, facilityServiceCategory$, workSpaces$, schedule$])
+        const orderStatuses$ = Observable.fromPromise(this.orderStatusService.findAll());
+        Observable
+            .forkJoin([majorLocation$, appointmentTypes$, professions$, facilityServiceCategory$, workSpaces$, schedule$, orderStatuses$])
             .subscribe((results: any) => {
                 results[0].data.forEach((itemi, i) => {
                     if (itemi.name === 'Clinic') {
@@ -203,7 +207,7 @@ export class ScheduleFrmComponent implements OnInit {
                     }
                 }
                 // this.loginEmployee = results[4].data;
-
+                this.orderStatuses = results[6].data;
                 if (this.loginEmployee.professionObject.name === 'Doctor') {
                     this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
                     this.isDoctor = true;
@@ -463,6 +467,10 @@ export class ScheduleFrmComponent implements OnInit {
         return category ? category.name : category;
     }
 
+    orderStatusDisplayFn(order: any) {
+        return order ? order.name : order;
+    }
+
     scheduleAppointment() {
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
             this.loadIndicatorVisible = true;
@@ -471,6 +479,7 @@ export class ScheduleFrmComponent implements OnInit {
             const provider = this.provider.value;
             const type = this.type.value;
             const category = this.category.value;
+            const orderStatus = this.status.value;
             const checkIn = this.checkIn.value;
             const date = this.date;
             const reason = this.reason.value;
@@ -543,6 +552,7 @@ export class ScheduleFrmComponent implements OnInit {
                 };
             }
             this.appointment.category = category;
+            this.appointment.orderStatusId = orderStatus;
             if (this.appointment._id !== undefined) {
                 this.appointmentService.update(this.appointment).subscribe(payload => {
                     this.appointmentService.patientAnnounced(this.patient);
