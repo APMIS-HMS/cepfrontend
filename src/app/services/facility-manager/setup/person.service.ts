@@ -1,6 +1,9 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/Rx';
+import {  Person } from '../../../models/index';
 
 @Injectable()
 export class PersonService {
@@ -8,6 +11,9 @@ export class PersonService {
   public createListener;
   public updateListener;
   private _rest;
+
+  private personAnnouncedSource = new Subject<Person>();
+  personAnnounced$ = this.personAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
@@ -18,6 +24,13 @@ export class PersonService {
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.updateListener = Observable.fromEvent(this._socket, 'updated');
+  }
+
+  announcePerson(person: Person) {
+    this.personAnnouncedSource.next(person);
+  }
+  receivePerson(): Observable<Person> {
+    return this.personAnnouncedSource.asObservable();
   }
 
   find(query: any) {
