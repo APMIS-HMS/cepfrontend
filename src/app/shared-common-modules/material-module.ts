@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule,MdListModule, MdSelectionModule, MdSelectModule, MdRadioModule
+    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectionModule, MdSelectModule, MdRadioModule
 }
     from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +27,8 @@ import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
+import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
+import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
@@ -38,7 +40,11 @@ import { ToastyModule } from 'ng2-toasty';
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
+<<<<<<< HEAD
         SimdilizedLookupComponent
+=======
+        InvestigationComponent
+>>>>>>> de10cca52110c20ef5ac3deb68d1e4409436b749
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -112,7 +118,7 @@ import { ToastyModule } from 'ng2-toasty';
         CurrencyMaskModule,
         ToastyModule.forRoot()
     ],
-    providers: []
+    providers: [OrderStatusService, SeverityService]
 })
 export class MaterialModule { }
 

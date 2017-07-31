@@ -26,6 +26,83 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   // @Input() vitalDocuments: any;
 
 
+  // lineChart
+  public lineChartData:Array<any> = [
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Pulse Rate'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Blood Pressure'},
+    {data: [18, 48, 77, 9, 100, 27, 40], label: 'Temperature'},
+    {data: [18, 12, 19, 24, 10, 7, 16], label: 'Respiratory Rate'},
+    {data: [20, 21, 27, 29, 29, 29, 29], label: 'Height'},
+    {data: [40, 48, 49, 49, 51, 54, 60], label: 'Weight'},
+    {data: [11, 38, 57, 29, 10, 27, 40], label: 'BMI'}
+  ];
+  public lineChartLabels:Array<any> = ['12th Jan, 17.', '1st Feb, 17.', '11th Mar, 17.', '16th Mar, 17.', '2nd May, 17.', '5th Jun, 17.', '4th Jul, 17.'];
+  public lineChartOptions:any = {
+    responsive: true
+  };
+  public lineChartColors:Array<any> = [
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // dark grey
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    },
+    { // cyan
+      backgroundColor: 'rgba(77,208,225,0.2)',
+      borderColor: 'rgba(77,208,225,1)',
+      pointBackgroundColor: 'rgba(77,208,225,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,208,225,0.8)'
+    },
+    { // green
+      backgroundColor: 'rgba(129,199,132,0.2)',
+      borderColor: 'rgba(129,199,132,1)',
+      pointBackgroundColor: 'rgba(129,199,132,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(129,199,132,0.8)'
+    },
+    { // lime
+      backgroundColor: 'rgba(220,231,117,0.2)',
+      borderColor: 'rgba(220,231,117,1)',
+      pointBackgroundColor: 'rgba(220,231,117,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(220,231,117,0.8)'
+    },
+    { // purple
+      backgroundColor: 'rgba(186,104,200,0.2)',
+      borderColor: 'rgba(186,104,200,1)',
+      pointBackgroundColor: 'rgba(186,104,200,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(186,104,200,0.8)'
+    },
+    { // red
+      backgroundColor: 'rgba(229,	115,	115,0.2)',
+      borderColor: 'rgba(229,115,115,1)',
+      pointBackgroundColor: 'rgba(229,115,115,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(229,115,115,0.8)'
+    }
+  ];
+  public lineChartLegend:boolean = true;
+  public lineChartType:string = 'line';
+
+
+
   subsect_biodata = true;
   subsect_contacts = false;
   subsect_vitals = true;
@@ -33,6 +110,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   addVitalsPop = false;
   addTagsPop = false;
   checkoutPatient = false;
+
+  addProblem_view = false;
+  addAllergy_view = false;
+  addHistory_view = false;
+  addVitals_view = false;
 
   menuSummary = true;
   menuPharmacy = false;
@@ -102,60 +184,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     if (this.patient !== undefined) {
       this.getCurrentUser();
     }
-    // this.route.data.subscribe(data => {
-    //   data['patient'].subscribe(payload => {
-    //     this.patient = payload;
-    //     // this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
-    //     //   
-    //     // });
-    //     this.getCurrentUser();
-    //   });
-    //   //this.documentations = this.vitalDocuments;
-    //   data['loginEmployee'].subscribe(payload => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //     this.minorLocationList = payload.clinicLocations;
-
-    //     if (payload.loginEmployee !== undefined) {
-
-    //       this.route.params.subscribe(payloadk => {
-    //         if (payloadk['checkInId'] !== undefined) {
-    //           let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
-    //           if (isOnList.length > 0) {
-    //             let isOnObj = isOnList[0];
-    //             isOnObj.isOn = true;
-    //             this.employeeService.update(this.loginEmployee).then(payloadu => {
-    //               this.loginEmployee = payloadu;
-    //               if (data['appointment'] !== null) {
-    //                 data['appointment'].subscribe(payloada => {
-    //                   this.selectedAppointment = payloada;
-    //                   console.log(this.selectedAppointment);
-    //                   if (this.selectedAppointment !== undefined) {
-    //                     let isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
-    //                     if (isOnList.length > 0) {
-    //                       let isOn = isOnList[0];
-    //                       let minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
-    //                       if (minorLocationList.length > 0) {
-    //                         this.clinicInteraction.locationName = minorLocationList[0].name;
-    //                         this.clinicInteraction.startAt = new Date();
-    //                         this.clinicInteraction.employee = this.loginEmployee.employeeDetails;
-    //                       }
-    //                     }
-    //                   }
-    //                 }, error => {
-    //                   this.router.navigateByUrl(this.previousUrl);
-    //                 });
-    //               }
-    //             });
-    //           }
-
-    //         }
-
-    //       });
-
-
-    //     }
-    //   });
-    // });
+    
   }
   getForms() {
     this.formsService.findAll().then(payload => {
@@ -168,18 +197,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       const user$ = Observable.fromPromise(this.userService.find({ query: { personId: this.patient.personId } }));
       Observable.forkJoin([patient$, user$]).subscribe((results: any) => {
         this.patient = results[0];
+        console.log(this.patient.personDetails.nextOfKin);
         this.selectedUser = results[1];
 
       })
     }
-
-    // this.userService.find({ query: { personId: this.patient.personId } }).then(payload => {
-    //   if (payload.data.length > 0) {
-    //     this.selectedUser = payload.data[0];
-    //   } else {
-    //     this.selectedUser = <User>{};
-    //   }
-    // });
   }
   navEpDetail(val: Patient) {
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', val.personId]);
@@ -204,11 +226,27 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
+  addProblem_show(e) {
+    this.addProblem_view = true;
+  }
+  addAllergy_show(e) {
+    this.addAllergy_view = true;
+  }
+  addHistory_show(e) {
+    this.addHistory_view = true;
+  }
+  addVitals_show(e) {
+    this.addVitals_view = true;
+  }
   close_onClick(message: boolean): void {
     this.changeUserImg = false;
     this.addVitalsPop = false;
     this.addTagsPop = false;
     this.checkoutPatient = false;
+    this.addProblem_view = false;
+    this.addAllergy_view = false;
+    this.addHistory_view = false;
+    this.addVitals_view = false;
   }
   show_changeUserImg() {
     this.changeUserImg = true;
@@ -485,6 +523,29 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
       });
     }
+  }
+
+
+
+    
+  // public randomize():void {
+  //   let _lineChartData:Array<any> = new Array(this.lineChartData.length);
+  //   for (let i = 0; i < this.lineChartData.length; i++) {
+  //     _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
+  //     for (let j = 0; j < this.lineChartData[i].data.length; j++) {
+  //       _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
+  //     }
+  //   }
+  //   this.lineChartData = _lineChartData;
+  // }
+ 
+  // events
+  public chartClicked(e:any):void {
+    console.log(e);
+  }
+ 
+  public chartHovered(e:any):void {
+    console.log(e);
   }
 
 }

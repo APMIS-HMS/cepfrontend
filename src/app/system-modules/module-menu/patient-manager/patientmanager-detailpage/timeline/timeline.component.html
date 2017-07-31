@@ -1,5 +1,5 @@
 <div class="pg-subtitle">TIMELINE</div>
-<div>
+
 <div class="doc-mainWrap">
   <div class="doc-contentArea">
     <ul>
@@ -81,23 +81,23 @@
         ></app-right-tab>
   </div>
 
-<div *ngIf="docDetail_view" class="modal-overlay">
-  <app-documentation-detail [document] ="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
-</div>
+  <div *ngIf="docDetail_view" class="modal-overlay">
+    <app-documentation-detail [document] ="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+  </div>
 
-<div *ngIf="addProblem_view" class="modal-overlay">
-  <app-add-patient-problem (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
-</div>
+  <div *ngIf="addProblem_view" class="modal-overlay">
+    <app-add-patient-problem (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
+  </div>
 
-<div *ngIf="addAllergy_view" class="modal-overlay">
-  <app-add-allergy (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
-</div>
+  <div *ngIf="addAllergy_view" class="modal-overlay">
+    <app-add-allergy (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
+  </div>
 
-<div *ngIf="addHistory_view" class="modal-overlay">
-  <app-add-history (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-history>
-</div>
+  <div *ngIf="addHistory_view" class="modal-overlay">
+    <app-add-history (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-history>
+  </div>
 
-<div *ngIf="addVitals_view" class="modal-overlay">
-  <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
-</div>
+  <div *ngIf="addVitals_view" class="modal-overlay">
+    <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+  </div>
 </div>

@@ -57,8 +57,13 @@ export class PatientPrescriptionComponent implements OnInit {
     pastMedications: any[] = [];
     currMedLoading: boolean = false;
     pastMedLoading: boolean = false;
+<<<<<<< HEAD
     query = {};
     url = "";
+=======
+    authorizeRx: string = 'Authorize RX';
+    disableAuthorizeRx: boolean = false;
+>>>>>>> de10cca52110c20ef5ac3deb68d1e4409436b749
 
     constructor(
         private fb: FormBuilder,
@@ -180,7 +185,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     totalCost: 0,
                     totalQuantity: 0
                 };
-
+console.log("trying");
                 console.log(prescription);
                 this.prescriptionItems = prescription;
                 this.prescriptions = prescription;
@@ -188,7 +193,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.addPrescriptionForm.controls['refillCount'].reset(0);
                 this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
             }
         }
     }
@@ -198,6 +203,8 @@ export class PatientPrescriptionComponent implements OnInit {
             if (this.selectedAppointment.clinicId === undefined) {
                 this._notification('Info', 'Clinic has not been set!');
             } else {
+                this.disableAuthorizeRx = true;
+                this.authorizeRx = 'Authorizing Rx... <i class="fa fa-spinner fa-spin"></i>';
                 this.prescriptions.priorityId = value.priority;
                 this.prescriptions.totalCost = value.totalCost;
                 this.prescriptions.totalQuantity = value.totalQuantity;
@@ -425,6 +432,8 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
                 this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                this.disableAuthorizeRx = true;
+                this.authorizeRx = 'Authorize Rx';
             })
             .catch(err => {
                 this._notification('Error', 'There was an error creating prescription. Please try again later.');

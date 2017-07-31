@@ -77,7 +77,7 @@
                             <li><a class="header">Select item</a></li>
                             <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                             <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions[product.transactions?.length - 1].batchNumber"
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-iid]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions[product.transactions?.length - 1].batchNumber"
                                 [attr.data-p-costPrice]="product.transactions[product.transactions?.length - 1].costPrice" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.productObject.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
@@ -133,24 +133,29 @@
                 </th>
                 <th class="th-header">
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Cost</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                     <span style="padding-left: 3px;">Action</span>
                 </th>
             </tr>
         </thead>
 
         <tbody>
-            <tr *ngFor="let prescription of prescriptions; let j = index;">
+            <tr *ngFor="let prescription of prescriptions; let i = index;">
                 <td class="table-content">{{ prescription.productName }}</td>
                 <td class="table-content">{{ prescription.qty }}</td>
                 <td class="table-content">{{ prescription.batchNumber }}</td>
                 <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
+                <td class="table-content">&#x20A6;{{ prescription.qty * prescription.unitPrice }}</td>
                 <td class="table-content">
                     <a *ngIf="!prescription.isBilled" style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
                     <!-- <button md-raised-button [disabled]="prescription.isBilled" style="color:#000!important; background:#ccc!important; padding: 6px 12px;" (click)="onClickBillProduct(prescription)" [innerHtml]="qtyDispenseBtn"> </button> -->
                 </td>
             </tr>
             <tr *ngIf="prescriptions.length === 0">
-                <td class="table-content" colspan="5" style="text-align: center"> No data to display in table</td>
+                <td class="table-content" colspan="6" style="text-align: center"> No data to display in table</td>
             </tr>
         </tbody>
     </table>
@@ -203,7 +208,8 @@
     </div> -->
 </div>
 <div class="row" style="padding-right: 20px;">
-    <!-- <p class="pull-right"> <b>Total Cost: &#x20A6;{{ totalItemPrice }}</b></p> -->
+    <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Quantity: {{ totalQuantity }}</b></p>
+    <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Cost: &#x20A6;{{ totalPrice }}</b></p>
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">
