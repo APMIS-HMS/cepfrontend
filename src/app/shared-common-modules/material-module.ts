@@ -29,6 +29,7 @@ import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
 import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
+import {KeysPipe } from './keypipe';
 
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
@@ -41,7 +42,8 @@ import { OrderStatusService, SeverityService } from '../services/module-manager/
         StoreCheckInComponent,
         ImageUpdateComponent,
         SimdilizedLookupComponent,
-        InvestigationComponent
+        InvestigationComponent,
+        KeysPipe
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -83,7 +85,9 @@ import { OrderStatusService, SeverityService } from '../services/module-manager/
         CoolStorageModule,
         MdErrorDirective,
         ToastyModule,
-        SimdilizedLookupComponent
+        SimdilizedLookupComponent,
+        InvestigationComponent,
+        KeysPipe
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
