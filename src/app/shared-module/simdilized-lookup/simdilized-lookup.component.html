@@ -1,6 +1,7 @@
+<form [formGroup]="form" novalidate>
 <div class="cu-search-box">
     <md-input-container>
-        <input mdInput formControlName="searchtext" class="cu-search" (keydown)="keyupSearch()" autocomplete="off">
+        <input mdInput formControlName="searchtext" class="cu-search" (focus)="focusSearch()" (focusout)="focusOutSearch()" autocomplete="off">
     </md-input-container>
     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
         <div class="cu-popover-arrow"></div>
@@ -11,10 +12,11 @@
             <li><a class="header">Select item</a></li>
             <li *ngIf="results.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
             <li *ngIf="results.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-            <li *ngFor="let item of results" (click)="onSelectedItem(item)"><a>{{item[displayKey]}}</a></li>
+            <li *ngFor="let item of results" (click)="onSelectedItem(item)"><a>{{results[displayKey]}}</a></li>
         </ul>
         <div class="cu-footer">
             <button class="btn btn-default">Cancel</button>
         </div>
     </div>
 </div>
+</form>

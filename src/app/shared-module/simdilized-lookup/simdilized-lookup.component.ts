@@ -24,38 +24,58 @@ export class SimdilizedLookupComponent implements OnInit {
     form: FormGroup;
     selectedValue: any = {};
 
-    result = [];
+    results = [];
     constructor(private fb: FormBuilder,
         private _socketService: SocketService,
         private _restService: RestService) {
-        this._rest = _restService.getService(this.url);
-        this._socket = _socketService.getService(this.url);
-       
+
+
     }
 
     ngOnInit() {
+        this._rest = this._restService.getService(this.url);
+        this._socket = this._socketService.getService(this.url);
         this.form = this.fb.group({ searchtext: [''] });
+        console.log(this.query);
+        console.log(this.url);
+        console.log(this.isRest);
 
-        this.form.controls['searchtext'].valueChanges
-            .distinctUntilChanged()
-            .debounceTime(100)
-            .switchMap((term) => Observable.fromPromise(this.filter({ query: this.query }, this.isRest)))
-            .subscribe((payload: any) => {
-                this.result = payload.data;
-                console.log(this.result);
-            });
+        // this.form.controls['searchtext'].valueChanges
+        //     .distinctUntilChanged()
+        //     .debounceTime(100)
+        //     .switchMap((term) => this.filter({ query: this.query }, this.isRest))
+        //     .subscribe((payload: any) => {
+        //         console.log(this.query);
+        //         console.log(this.isRest);
+        //         this.result = payload;
+        //         console.log(this.result);
+        //     });
+
+        this.form.controls['searchtext'].valueChanges.subscribe(value => {
+            this.cuDropdownLoading = true;
+            this.filter({ query: this.query }, this.isRest).then(filteredValue => {
+                this.cuDropdownLoading = false;
+                this.results = filteredValue;
+                console.log(filteredValue);
+            })
+                .catch(err => {
+                    this.cuDropdownLoading = false;
+                    console.log(err);
+                });
+        });
     }
 
     filter(query: any, isRest: boolean) {
         if (isRest) {
             return this._socket.find(query);
         } else {
+            console.log(this._rest.find(query));
             return this._rest.find(query);
         }
     }
 
-    onSelectedItem(value){
-         this.selectedItem.emit(value);
+    onSelectedItem(value) {
+        this.selectedItem.emit(value);
     }
 
     focusSearch() {

@@ -108,15 +108,23 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
-        this.url = "http://localhost:3030/drug-generic-list-api";
+        this.url = "drug-generic-list-api";
 
-        this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
-            this.query = {
-                "searchtext": value,
+        this.query = {
+                "searchtext": "parace",
                 "po": false,
                 "brandonly": false,
                 "genericonly": true
             }
+
+        this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
+            console.log(value);
+            // this.query = {
+            //     "searchtext": value,
+            //     "po": false,
+            //     "brandonly": false,
+            //     "genericonly": true
+            // }
         })
     }
 
