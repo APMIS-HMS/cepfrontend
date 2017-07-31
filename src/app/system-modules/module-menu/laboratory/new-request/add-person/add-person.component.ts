@@ -3,7 +3,9 @@ import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, User, Person, Address } from '../../../../../models/index';
-import { FacilitiesService, CountriesService, GenderService, PersonService } from '../../../../../services/facility-manager/setup/index';
+import { 
+  FacilitiesService, CountriesService, GenderService, PersonService
+ } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-add-person',
@@ -68,6 +70,7 @@ export class AddPersonComponent implements OnInit {
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
       console.log(value);
       console.log(valid);
+      this._personService.announcePerson(value);
       // create person and user
       // const personModel = <Person>{
       //   firstName: value.firstName,
