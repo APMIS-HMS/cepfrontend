@@ -1,7 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { OrderStatusService } from '../../../../../../services/module-manager/setup/index';
 import { OrderStatus } from '../../../../../../models/index';
-import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
+import { FormsService, FacilitiesService, DocumentationService, AppointmentService }
+    from '../../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -29,17 +30,21 @@ export class RightTabComponent implements OnInit {
 
     problems: any[] = [];
     allergies: any[] = [];
+    pastAppointments: any[] = [];
+    futureAppointments: any[] = [];
 
     constructor(private orderStatusService: OrderStatusService,
         private formService: FormsService, private locker: CoolSessionStorage,
-        private documentationService: DocumentationService,
+        private documentationService: DocumentationService, private appointmentService: AppointmentService,
         private formTypeService: FormTypeService, private sharedService: SharedService,
         private facilityService: FacilitiesService) {
         this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+        this.documentationService.announceDocumentation$.subscribe(payload => {
+            this.getPersonDocumentation();
+        })
     }
 
     ngOnInit() {
-        console.log(this.patient)
         this.getPersonDocumentation();
     }
     getPersonDocumentation() {
@@ -53,6 +58,9 @@ export class RightTabComponent implements OnInit {
                         console.log(this.patientDocumentation);
                     });
                     this.getProblems();
+                    this.getAllergies();
+                    this.getPastAppointments();
+                    this.getFutureAppointments();
                 } else {
                     if (payload.data[0].documentations.length === 0) {
                         this.patientDocumentation = payload.data[0];
@@ -68,7 +76,9 @@ export class RightTabComponent implements OnInit {
                                 this.patientDocumentation = mload.data[0];
                                 console.log(this.patientDocumentation);
                                 this.getProblems();
-                                this.getAllergies()
+                                this.getAllergies();
+                                this.getPastAppointments();
+                                this.getFutureAppointments();
                             }
                         })
                     }
@@ -97,6 +107,20 @@ export class RightTabComponent implements OnInit {
             }
         });
         console.log(this.allergies);
+    }
+    getPastAppointments() {
+        this.pastAppointments = [];
+        Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isPast: true } }))
+            .subscribe((payload: any) => {
+                this.pastAppointments = payload.data;
+            })
+    }
+    getFutureAppointments() {
+        this.futureAppointments = [];
+        Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isFuture: true } }))
+            .subscribe((payload: any) => {
+                this.futureAppointments = payload.data;
+            })
     }
     addProblem_show() {
         this.addProblem.emit(true);

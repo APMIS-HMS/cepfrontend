@@ -7,11 +7,12 @@ import { Subject } from 'rxjs/Subject';
 export class DocumentationService {
   public _socket;
   private _rest;
-  private announceSource = new Subject<any>();
-  announce$ = this.announceSource.asObservable();
 
-  private returnAnnounceSource = new Subject<any>();
-  returnAnnounce$ = this.returnAnnounceSource.asObservable();
+  private announceDocumentationSource = new Subject<any>();
+  announceDocumentation$ = this.announceDocumentationSource.asObservable();
+
+  // private returnAnnounceSource = new Subject<any>();
+  // returnAnnounce$ = this.returnAnnounceSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
@@ -29,13 +30,10 @@ export class DocumentationService {
     // return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  announceFormCreation(form: any) {
-    this.announceSource.next(form);
+  announceDocumentation(documentation: any) {
+    this.announceDocumentationSource.next(documentation);
   }
 
-  announceFormEdit(form: any) {
-    this.returnAnnounceSource.next(form);
-  }
   find(query: any) {
     return this._socket.find(query);
   }

@@ -138,6 +138,7 @@ export class AddAllergyComponent implements OnInit {
       this.reactionFormCtrl.reset();
       this.severityFormCtrl.reset();
       this.noteFormCtrl.reset();
+      this.documentationService.announceDocumentation({});
     })
   }
 }

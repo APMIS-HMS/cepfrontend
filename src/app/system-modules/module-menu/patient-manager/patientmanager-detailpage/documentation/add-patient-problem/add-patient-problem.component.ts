@@ -144,6 +144,7 @@ export class AddPatientProblemComponent implements OnInit {
       this.problemFormCtrl.reset();
       this.statusFormCtrl.reset();
       this.noteFormCtrl.reset();
+      this.documentationService.announceDocumentation({});
     })
   }
 }
