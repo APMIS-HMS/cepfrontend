@@ -57,13 +57,10 @@ export class PatientPrescriptionComponent implements OnInit {
     pastMedications: any[] = [];
     currMedLoading: boolean = false;
     pastMedLoading: boolean = false;
-<<<<<<< HEAD
     query = {};
     url = "";
-=======
     authorizeRx: string = 'Authorize RX';
     disableAuthorizeRx: boolean = false;
->>>>>>> de10cca52110c20ef5ac3deb68d1e4409436b749
 
     constructor(
         private fb: FormBuilder,
