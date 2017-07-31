@@ -1,33 +1,30 @@
-   <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Client Details</h3>
-            </div>
-            <div class="panel-body">
-              <div class="">
-                <p><strong>Names:</strong> Samuel el Jackson</p>
-              </div>
-               <div class="">
-                <p><strong>Age:</strong> 26 years</p>
-              </div>
-                <div class="">
-                <p><strong>Sex:</strong> Mlae</p>
-              </div>
-              <div class="">
-                <p><strong>Lab N0:</strong> 231098</p>
-              </div>
-              <div class="">
-                <p><strong>Phone Number:</strong> (+234) 8141344709</p>
-              </div>
-              <div class="">
-                <p><strong>Email:</strong> subaru4ten@gmail.com</p>
-              </div>
-               <div class="">
-                <p><strong>Address:</strong>N0 26a fela job way, alausa</p>
-              </div>
-            <div class="row">
-                <div class="inv-header">
-                 <h5><strong>Total:</strong>  50,000</h5>
-                </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Client Details</h3>
+    </div>
+    <div class="panel-body">
+        <div class="">
+            <p><strong>Names:</strong> {{ personDetails.lastName }} {{ personDetails.firstName }}</p>
+        </div>
+        <div class="">
+            <p><strong>Age:</strong> {{ personDetails.dob }}</p>
+        </div>
+        <div class="">
+            <p><strong>Sex:</strong> {{ personDetails.gender }}</p>
+        </div>
+        <div class="">
+            <p><strong>Lab N0:</strong> {{ personDetails.labNumber}}</p>
+        </div>
+        <div class="">
+            <p><strong>Phone Number:</strong> {{ personDetails.phone }}</p>
+        </div>
+        <div class="">
+            <p><strong>Address:</strong>{{ personDetails.address }}</p>
+        </div>
+        <div class="row">
+            <div class="inv-header">
+                <h5><strong>Total: </strong> &#x20A6; {{ totalPrice }}</h5>
             </div>
         </div>
-          </div>
+    </div>
+</div>
