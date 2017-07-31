@@ -12,7 +12,7 @@ import { InvestigationServiceSetupComponent } from './investigation-service-setu
 import { InvestigationSetupComponent } from './investigation-setup/investigation-setup.component';
 import { AddWorkbenchComponent } from './workbench-setup/add-workbench/add-workbench.component';
 import { AddPersonComponent } from './new-request/add-person/add-person.component';
-import { InvestigationComponent } from './new-request/investigation/investigation.component';
+// import { InvestigationComponent } from './new-request/investigation/investigation.component';
 import { ClientDetailsComponent } from './new-request/client-details/client-details.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 
@@ -24,7 +24,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     SharedModule,
     MaterialModule
   ],
-  declarations: [InvestigationComponent,LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent,
+  declarations: [LaboratoryHomePageComponent, LaboratoryListsComponent, LaboratoryComponent, NewRequestComponent,
     LabSetupComponent, WorkbenchSetupComponent, InvestigationServiceSetupComponent, InvestigationSetupComponent,
     AddWorkbenchComponent, AddPersonComponent, ClientDetailsComponent]
 })

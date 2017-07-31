@@ -82,3 +82,4 @@ export * from './facility-manager/setup/dispense-by-noprescription';
 export * from './facility-manager/setup/medication-list';
 export * from './facility-manager/setup/patient-documentation';
 export * from './facility-manager/setup/document';
+export * from './module-manager/setup/orderstatus';

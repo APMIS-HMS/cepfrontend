@@ -19,7 +19,7 @@ export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
-	user: any = <any>{};
+	user: User = <User>{};
 	selectedPrescription: PrescriptionItem = <PrescriptionItem>{};
 	unBilledArray: PrescriptionItem[] = [];
 	billshow = false;
@@ -60,7 +60,7 @@ export class PrescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
-		this.user = this._locker.getObject('auth');
+		this.user = <User>this._locker.getObject('auth');
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
@@ -351,43 +351,48 @@ export class PrescriptionComponent implements OnInit {
 
 	onClickEachPrescription(index, prescription) {
 		if(prescription.isBilled) {
-			this.selectedPrescription = prescription;
-			this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
-			const productId = prescription.productId;
-			//const productId = '592419145fbce732205cf0ba';
-			if(this.storeId.typeObject.storeId !== undefined) {
-				// Get the batches for the selected product
-				this._inventoryService.find({ 
-					query: { 
-						facilityId: this.facility._id, 
-						productId: productId, 
-						storeId: this.storeId.typeObject.storeId 
-					}})
-					.then(res => {
-						console.log(res);
-						if(res.data.length > 0) {
-							this.transactions = res.data[0];
-							const tempArray = [];
-							// Display only batches that have qty greater than 0.
-							if(res.data[0].transactions.length !== 0) {
-								res.data[0].transactions.forEach(element => {
-									if(element.quantity > 0) {
-										tempArray.push(element);
-									}
-								});
+			if(prescription.paymentCompleted) {
+
+				this.selectedPrescription = prescription;
+				this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
+				//const productId = prescription.productId;
+				const productId = '592419145fbce732205cf0ba';
+				if(this.storeId.typeObject.storeId !== undefined) {
+					// Get the batches for the selected product
+					this._inventoryService.find({ 
+						query: { 
+							facilityId: this.facility._id, 
+							productId: productId, 
+							storeId: this.storeId.typeObject.storeId 
+						}})
+						.then(res => {
+							console.log(res);
+							if(res.data.length > 0) {
+								this.transactions = res.data[0];
+								const tempArray = [];
+								// Display only batches that have qty greater than 0.
+								if(res.data[0].transactions.length !== 0) {
+									res.data[0].transactions.forEach(element => {
+										if(element.quantity > 0) {
+											tempArray.push(element);
+										}
+									});
+								}
+								if(tempArray.length !== 0) {
+									this.viewTransactions = tempArray;
+								} else {
+									this.viewTransactions = [];
+								}
 							}
-							if(tempArray.length !== 0) {
-								this.viewTransactions = tempArray;
-							} else {
-								this.viewTransactions = [];
-							}
-						}
-					})
-					.catch(err => {
-						console.log(err);
-					});
+						})
+						.catch(err => {
+							console.log(err);
+						});
+				} else {
+					this._notification('Info', 'Please check into store!');
+				}
 			} else {
-				this._notification('Info', 'Please check into store!');
+				this._notification('Error', 'Patient has not paid for this item, so you can not dispense it!');	
 			}
 		} else {
 			this._notification('Info', 'This item is marked external, you can not bill the patient!');

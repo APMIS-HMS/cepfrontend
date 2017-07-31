@@ -56,6 +56,7 @@ export class DocumentationComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.patient);
     this.getPersonDocumentation();
   }
   getPersonDocumentation() {
@@ -95,7 +96,9 @@ export class DocumentationComponent implements OnInit {
   populateDocuments() {
     this.documents = [];
     this.patientDocumentation.documentations.forEach(documentation => {
-      this.documents.push(documentation);
+      if (documentation.document.documentType.isSide === false) {
+        this.documents.push(documentation);
+      }
     });
     this.documents.reverse();
   }

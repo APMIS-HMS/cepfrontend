@@ -36,8 +36,8 @@
         <div class="product-parentWrap">
             <div class="prod-row prodParent-header">
                 <div class="prod-rowItem item1">Product</div>
-                <div class="prod-rowItem item4">Batches</div>
-                <div class="prod-rowItem item2">Quantity</div>
+                <div class="prod-rowItem item2">Batches</div>
+                <div class="prod-rowItem item3">Quantity</div>
                 <!-- <div class="prod-rowItem item3">Actions</div> -->
             </div>
 
@@ -45,8 +45,20 @@
                 <div class="prodWrap" *ngFor="let inventory of inventories">
                     <div class="prod-row">
                         <div (click)="onShowBatch(inventory)" class="prod-rowItem item1">{{inventory.productObject.name}}</div>
-                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item4">{{inventory.transactions.length}}</div>
-                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item2">{{inventory.totalQuantity}}</div>
+                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item2">
+                            <div class="workspace-count">{{inventory.transactions.length}}</div>
+                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
+                                    <ng-container>
+                                        <span>{{store.batchNumber}}, Qty: {{store.quantity}}</span>
+                                    </ng-container>
+                                </li>
+                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                            </ul>
+                        </div>
+                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
+                            <div style="width: 100%;text-align: center;">{{inventory.totalQuantity}}</div>
+                        </div>
                         <!-- <div class="prod-rowItem item3">
                             <a class="action-btn" (click)="slideInventoryDetailsToggle(inventory)"><i class="fa fa-eye"></i></a>
                             <a class="action-btn" (click)="onSelectProduct(product)"><i class="fa fa-pencil"></i></a>
@@ -67,6 +79,18 @@
                             <div class="prodBatch-item batchItem4">
                                 <div (click)="onAdjustStock(inventory,transaction)" class="btn-liner">Adjust Stock</div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prodWrap" *ngIf="inventories.length === 0 && !loading">
+                    <div class="prod-row" style="height: 55px">
+                        <div style="width: 100%; text-align:center;">No data available in table</div>
+                    </div>
+                </div>
+                <div class="prodWrap" *ngIf="inventories.length === 0 && loading">
+                    <div class="prod-row" style="height: 55px">
+                        <div style="width: 100%; text-align:center;">
+                            <md-spinner class="small-spinner"></md-spinner>
                         </div>
                     </div>
                 </div>

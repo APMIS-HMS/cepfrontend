@@ -95,7 +95,7 @@
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
                     <div class="col-sm-6 col-md-6">
-                        <div class="cu-search-box">
+                        <!-- <div class="cu-search-box">
                             <md-input-container>
                                 <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
                             </md-input-container>
@@ -114,7 +114,9 @@
                                     <button class="btn btn-default">Cancel</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        <input mdInput formControlName="drug" placeholder="Drug" autocomplete="off"><br/><br/><br/><br/>
+                         <apmis-simdilized-lookup [url]="url" [query]="query" [isRest]="false" [displayKey]="details"></apmis-simdilized-lookup> 
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <md-input-container>
@@ -192,7 +194,7 @@
                                 </md-select>
                             </div>
                             <div class="col-sm-6 text-center">
-                                <button md-raised-button [disabled]="!allPrescriptionsForm.valid" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">Authorize RX</button>
+                                <button md-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
                             </div>
                         </div>
                         <div class="col-sm-2"></div>

@@ -83,7 +83,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
     SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService,
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
-    SetupService.ExternalPrescriptionService
+    SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService
 
   ],
   bootstrap: [AppComponent]

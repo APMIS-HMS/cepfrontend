@@ -224,8 +224,21 @@ export class FormsComponent implements OnInit {
       };
       console.log(full);
       this.formsService.create(full).then(payloads => {
+        this.primeForms();
+        this.onCreate();
+        this.getForms();
       });
     });
+
+    this.primeForms();
+  }
+
+  ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.prime();
+    this.getForms();
+  }
+  primeForms() {
     this.frm_document = this.formBuilder.group({
       scopeLevel: ['', [<any>Validators.required]],
       documentType: ['', [<any>Validators.required]],
@@ -236,13 +249,6 @@ export class FormsComponent implements OnInit {
       myValues: this.checkboxArray
     });
 
-
-  }
-
-  ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.prime();
-    this.getForms();
   }
   prime() {
     const modules$ = Observable.fromPromise(this.facilityModuleService.findAll());
@@ -250,8 +256,9 @@ export class FormsComponent implements OnInit {
     const scopeLevel$ = Observable.fromPromise(this.scopeLevelService.findAll());
 
     Observable.forkJoin([modules$, formType$, scopeLevel$]).subscribe((results: any) => {
-      this.modules = results[0].data;
-      this.modules.forEach((item, i) => {
+      this.modules = [];
+      const modules = results[0].data;
+      modules.forEach((item, i) => {
         this.modules.push({
           _id: item._id,
           name: item.name,
