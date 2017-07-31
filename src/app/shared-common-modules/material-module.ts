@@ -40,11 +40,8 @@ import { OrderStatusService, SeverityService } from '../services/module-manager/
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
-<<<<<<< HEAD
-        SimdilizedLookupComponent
-=======
+        SimdilizedLookupComponent,
         InvestigationComponent
->>>>>>> de10cca52110c20ef5ac3deb68d1e4409436b749
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
