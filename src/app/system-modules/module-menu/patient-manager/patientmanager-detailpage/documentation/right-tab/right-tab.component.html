@@ -49,8 +49,8 @@
       </div>
 
       <ul class="rAreaCard-body">
-        <li class="rAreaCard-item">
-          <div class="rAreaCard-content">Penicillin</div>
+        <li class="rAreaCard-item" *ngFor="let allergy of allergies">
+          <div class="rAreaCard-content">{{allergy.allergy}}</div>
 
           <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
             <table cellpadding="0" cellspacing="0" border="0.5">
@@ -73,51 +73,10 @@
 
               <tbody>
                   <tr>
-                      <td>Penicillin</td>
-                      <td>Hives</td>
-                      <td></td>
-                      <td>Was allergic since a child</td>
-                  </tr>
-                  <!-- <tr *ngIf="patients.length === 0 && !loading">
-                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
-                  </tr>
-                  <tr *ngIf="patients.length === 0 && loading">
-                      <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                          <md-spinner class="small-spinner"></md-spinner>
-                      </td>
-                  </tr> -->
-              </tbody>
-            </table>
-          </div>
-        </li>
-        <li class="rAreaCard-item">
-          <div class="rAreaCard-content">Cat</div>
-
-          <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
-            <table cellpadding="0" cellspacing="0" border="0.5">
-              <thead>
-                  <tr>
-                      <th>
-                          <span style="padding-left: 3px;">Allergy</span>
-                      </th>
-                      <th>
-                          <span style="padding-left: 3px;">Reaction</span>
-                      </th>
-                      <th>
-                          <span style="padding-left: 3px;">Severity</span>
-                      </th>
-                      <th>
-                          <span style="padding-left: 3px;">Note</span>
-                      </th>
-                  </tr>
-              </thead>
-
-              <tbody>
-                  <tr>
-                      <td>Cats</td>
-                      <td>Shortness of breath/difficulty breathing</td>
-                      <td></td>
-                      <td>From allergy test</td>
+                      <td>{{allergy.allergy}}</td>
+                      <td>{{allergy.reaction}}</td>
+                      <td>{{allergy.severity.name}}</td>
+                      <td>{{allergy.note}}</td>
                   </tr>
                   <!-- <tr *ngIf="patients.length === 0 && !loading">
                       <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>

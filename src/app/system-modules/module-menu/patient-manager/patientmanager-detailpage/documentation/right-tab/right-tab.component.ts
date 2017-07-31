@@ -28,6 +28,7 @@ export class RightTabComponent implements OnInit {
     patientDocumentation: Documentation = <Documentation>{};
 
     problems: any[] = [];
+    allergies: any[] = [];
 
     constructor(private orderStatusService: OrderStatusService,
         private formService: FormsService, private locker: CoolSessionStorage,
@@ -42,36 +43,42 @@ export class RightTabComponent implements OnInit {
         this.getPersonDocumentation();
     }
     getPersonDocumentation() {
-        this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
-            if (payload.data.length === 0) {
-                this.patientDocumentation.personId = this.patient.personDetails;
-                this.patientDocumentation.documentations = [];
-                this.documentationService.create(this.patientDocumentation).subscribe(pload => {
-                    this.patientDocumentation = pload;
-                    console.log(this.patientDocumentation);
-                });
-                this.getProblems();
-            } else {
-                this.documentationService.find({
-                    query:
-                    {
-                        'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-                        // $select: ['documentations.documents', 'documentations.facilityId']
-                    }
-                }).subscribe((mload: any) => {
-                    if (mload.data.length > 0) {
-                        this.patientDocumentation = mload.data[0];
-                        // this.populateDocuments();
+        Observable.fromPromise(this.documentationService.find({ query: { 'personId._id': this.patient.personId } }))
+            .subscribe((payload: any) => {
+                if (payload.data.length === 0) {
+                    this.patientDocumentation.personId = this.patient.personDetails;
+                    this.patientDocumentation.documentations = [];
+                    this.documentationService.create(this.patientDocumentation).subscribe(pload => {
+                        this.patientDocumentation = pload;
                         console.log(this.patientDocumentation);
-                        this.getProblems();
-                        // mload.data[0].documentations[0].documents.push(doct);
+                    });
+                    this.getProblems();
+                } else {
+                    if (payload.data[0].documentations.length === 0) {
+                        this.patientDocumentation = payload.data[0];
+                    } else {
+                        Observable.fromPromise(this.documentationService.find({
+                            query:
+                            {
+                                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                                // $select: ['documentations.documents', 'documentations.facilityId']
+                            }
+                        })).subscribe((mload: any) => {
+                            if (mload.data.length > 0) {
+                                this.patientDocumentation = mload.data[0];
+                                console.log(this.patientDocumentation);
+                                this.getProblems();
+                                this.getAllergies()
+                            }
+                        })
                     }
-                })
-            }
 
-        })
+                }
+
+            })
     }
     getProblems() {
+        this.problems = [];
         this.patientDocumentation.documentations.forEach(documentation => {
             if (documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
@@ -79,7 +86,17 @@ export class RightTabComponent implements OnInit {
                 })
             }
         });
-        console.log(this.problems);
+    }
+    getAllergies() {
+        this.allergies = [];
+        this.patientDocumentation.documentations.forEach(documentation => {
+            if (documentation.document.documentType.title === 'Allergies') {
+                documentation.document.body.allergies.forEach(allergy => {
+                    this.allergies.push(allergy);
+                })
+            }
+        });
+        console.log(this.allergies);
     }
     addProblem_show() {
         this.addProblem.emit(true);
