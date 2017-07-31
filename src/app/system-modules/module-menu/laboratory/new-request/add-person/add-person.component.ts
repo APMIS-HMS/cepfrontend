@@ -3,7 +3,9 @@ import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, User, Person, Address } from '../../../../../models/index';
-import { FacilitiesService, CountriesService, GenderService, PersonService } from '../../../../../services/facility-manager/setup/index';
+import { 
+  FacilitiesService, CountriesService, GenderService, PersonService
+ } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-add-person',
@@ -66,28 +68,27 @@ export class AddPersonComponent implements OnInit {
     if(valid) {
       this.disableSaveBtn = true;
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
-      console.log(value);
-      console.log(valid);
+      this._personService.announcePerson(value);
       // create person and user
-      // const personModel = <Person>{
-      //   firstName: value.firstName,
-      //   lastName: value.lastName,
-      //   genderId: value.gender,
-      //   homeAddress: <Address>({
-      //     state: value.address
-      //   }),
-      //   phoneNumber: value.phone,
-      //   lgaOfOriginId: value.lga,
-      //   nationalityId: value.nationality,
-      //   stateOfOriginId: value.state,
-      //   dateOfBirth: value.dob
-      // };
+      const personModel = <Person>{
+        firstName: value.firstName,
+        lastName: value.lastName,
+        genderId: value.gender,
+        homeAddress: <Address>({
+          state: value.address
+        }),
+        phoneNumber: value.phone,
+        lgaOfOriginId: value.lga,
+        nationalityId: value.nationality,
+        stateOfOriginId: value.state,
+        dateOfBirth: value.dob
+      };
 
-      // this._personService.create(personModel).then((res) => {
-      //   console.log(res);
+      this._personService.create(personModel).then((res) => {
+        console.log(res);
 
-      // })
-      // .catch(err => { console.log(err); });
+      })
+      .catch(err => { console.log(err); });
     } else {
       this._notification('Info', 'Some fields are empty. Please ensure that you fill in all fields.');
     }
