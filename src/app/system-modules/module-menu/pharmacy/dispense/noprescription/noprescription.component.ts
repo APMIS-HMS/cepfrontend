@@ -230,6 +230,8 @@ export class NoprescriptionComponent implements OnInit {
 				product['quantity'] = element.qty;
 				product['inventoryId'] = element.inventoryId;
 				product['referenceId'] = '';
+				product['employeeId'] = this.employeeDetails.employeeDetails._id;
+				product['employeeName'] = this.employeeDetails.employeeDetails.employeeName;
 				product['referenceService'] = 'NoPrescriptionService';
 				product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
 				prescription['client'] = element.client;

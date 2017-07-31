@@ -19,7 +19,7 @@ export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
-	user: any = <any>{};
+	user: User = <User>{};
 	selectedPrescription: PrescriptionItem = <PrescriptionItem>{};
 	unBilledArray: PrescriptionItem[] = [];
 	billshow = false;
@@ -60,7 +60,7 @@ export class PrescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
-		this.user = this._locker.getObject('auth');
+		this.user = <User>this._locker.getObject('auth');
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
