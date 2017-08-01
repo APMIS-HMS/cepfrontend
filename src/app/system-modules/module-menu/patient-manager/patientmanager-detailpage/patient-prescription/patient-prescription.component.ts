@@ -46,17 +46,10 @@ export class PatientPrescriptionComponent implements OnInit {
     frequencies: string[] = [];
     durationUnits: any[] = [];
     selectedValue: any;
-<<<<<<< HEAD
     drugId = "";
     selectedDrugId = "";
     searchText = "";
     apmisLookupText = "";
-=======
-    drugId = '';
-    selectedDrugId = '';
-    searchText = '';
-    simdilizeInnerValue = '';
->>>>>>> 49057c135eb8cb97009e4103d681d1fd6adebdad
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
