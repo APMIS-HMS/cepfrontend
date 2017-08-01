@@ -53,15 +53,10 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         console.log(this.query);
         console.log(this.url);
         console.log(this.isRest);
-        this.cuDropdownLoading = true;
         this.form.controls['searchtext'].valueChanges
             .debounceTime(200)
             .distinctUntilChanged()
-    .switchMap((value) =>{
-Observable.of(this.filter({ query: this.query }, this.isRest))
-    })
-                 
-
+            .switchMap(value => this.filter({ query: this.query }, this.isRest))
             .subscribe((payload: any) => {
                 this.cuDropdownLoading = false;
                 this.results = payload;
@@ -83,6 +78,7 @@ Observable.of(this.filter({ query: this.query }, this.isRest))
     }
 
     filter(query: any, isRest: boolean) {
+        this.cuDropdownLoading = true;
         if (isRest) {
             return this._socket.find(query);
         } else {

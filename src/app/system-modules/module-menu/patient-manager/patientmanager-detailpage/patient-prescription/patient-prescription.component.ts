@@ -46,10 +46,10 @@ export class PatientPrescriptionComponent implements OnInit {
     frequencies: string[] = [];
     durationUnits: any[] = [];
     selectedValue: any;
-    drugId = "";
-    selectedDrugId = "";
-    searchText = "";
-    apmisLookupText = "";
+    drugId = '';
+    selectedDrugId = '';
+    searchText = '';
+    apmisLookupText = '';
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
@@ -113,10 +113,10 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
-        this.simdilizeUrl = "drug-generic-list-api";
+        this.simdilizeUrl = 'drug-generic-list-api';
 
-        
-        this.simdilizeDisplayKey = "details";
+
+        this.simdilizeDisplayKey = 'details';
         // this.simdilizeQuery = {
         //         "searchtext": "parace",
         //         "po": false,
@@ -127,15 +127,15 @@ export class PatientPrescriptionComponent implements OnInit {
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
             console.log(value);
             this.simdilizeQuery = {
-                "searchtext": value,
-                "po": false,
-                "brandonly": false,
-                "genericonly": true
+                'searchtext': value,
+                'po': false,
+                'brandonly': false,
+                'genericonly': true
             };
         });
     }
 
-    simdilizeHandleSelectedItem(item) { 
+    simdilizeHandleSelectedItem(item) {
         this.apmisLookupText = item.details;
         this._drugDetailsApi.find({ query: { 'productId': item.productId } })
             .then(res => {
