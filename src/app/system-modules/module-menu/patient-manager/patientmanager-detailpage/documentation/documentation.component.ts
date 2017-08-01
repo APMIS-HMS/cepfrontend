@@ -44,7 +44,7 @@ export class DocumentationComponent implements OnInit {
         body: payload,
       };
       doc.createdBy = this.loginEmployee;
-      doc.facilityId = this.selectedFacility;
+      doc.facilityId = this.selectedMiniFacility;
       doc.patientId = this.patient._id;
       console.log(doc);
       this.patientDocumentation.documentations.push(doc);
