@@ -4,22 +4,25 @@
     </div>
     <div class="panel-body">
         <div class="">
-            <p><strong>Names:</strong> {{ personDetails.lastName }} {{ personDetails.firstName }}</p>
+            <p><strong>APMIS ID:</strong> {{ personDetails.apmisId }}</p>
         </div>
         <div class="">
-            <p><strong>Age:</strong> {{ personDetails.dob }}</p>
+            <p><strong>NAME:</strong> {{ personDetails.lastName }} {{ personDetails.firstName }}</p>
         </div>
         <div class="">
-            <p><strong>Sex:</strong> {{ personDetails.gender }}</p>
+            <p><strong>AGE:</strong> {{ personDetails.age }} Year(s)</p>
         </div>
         <div class="">
-            <p><strong>Lab N0:</strong> {{ personDetails.labNumber}}</p>
+            <p><strong>SEX:</strong> {{ personDetails.gender?.name }}</p>
         </div>
         <div class="">
-            <p><strong>Phone Number:</strong> {{ personDetails.phone }}</p>
+            <p><strong>LAB N0:</strong> {{ personDetails.labNumber}}</p>
         </div>
         <div class="">
-            <p><strong>Address:</strong>{{ personDetails.address }}</p>
+            <p><strong>PHONE NUMBER:</strong> {{ personDetails.phoneNumber }}</p>
+        </div>
+        <div class="">
+            <p><strong>ADDRESS:</strong> {{ personDetails.homeAddress?.street }}</p>
         </div>
         <div class="row">
             <div class="inv-header">

@@ -73,3 +73,6 @@ export * from './external-prescription.service';
 export * from './dispense-collection-drugs.service';
 export * from './laboratory.service';
 export * from './simdilized-control.service';
+export * from './investigation.service';
+export * from './investigation-report-type.service';
+export * from './investigation-specimen.service';
