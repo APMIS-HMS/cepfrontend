@@ -14,8 +14,6 @@ export class NewPriceComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  isPrice = false;
-
   mainErr = true;
   errMsg = 'you have unresolved errors';
   categories: FacilityService[] = [];
@@ -41,9 +39,10 @@ export class NewPriceComponent implements OnInit {
   addNew() {
     this.frmNewprice = this.formBuilder.group({
       serviceCat: ['', [<any>Validators.required]],
-      service: ['', [<any>Validators.required]],
-      price: new FormArray([])
+      //service: ['', [<any>Validators.required]],
+      service: new FormArray ([], <any>Validators.required),
       //price: [0.00, [<any>Validators.required]]
+      price:new FormArray([], <any>Validators.required )
     });
   }
   filterServices(itemj) {
@@ -104,9 +103,4 @@ export class NewPriceComponent implements OnInit {
       .subscribe((payload: any) => {
       })
   }
-
-  showPrice() {
-    this.isPrice = true;
-  }
-
 }
