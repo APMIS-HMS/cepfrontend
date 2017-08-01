@@ -57,10 +57,13 @@ export class AppointmentComponent implements OnInit {
         private scheduleService: SchedulerService) {
 
         this.clinicCtrl = new FormControl();
-        this.filteredClinics = this.clinicCtrl.valueChanges
-            .startWith(null)
-            .map(clinic => clinic && typeof clinic === 'object' ? clinic.clinicName : clinic)
-            .map(val => val ? this.filterClinics(val) : this.clinics.slice());
+        this.clinicCtrl.valueChanges.subscribe(val => {
+            this.filterClinics(val);
+        })
+        // this.filteredClinics = this.clinicCtrl.valueChanges
+        //     .startWith(null)
+        //     .map(clinic => clinic && typeof clinic === 'object' ? clinic.clinicName : clinic)
+        //     .map(val => val ? this.filterClinics(val) : this.clinics.slice());
 
         this.providerCtrl = new FormControl();
         this.filteredProviders = this.providerCtrl.valueChanges
@@ -69,10 +72,10 @@ export class AppointmentComponent implements OnInit {
             .map(val => val ? this.filterProviders(val) : this.providers.slice());
 
         this.typeCtrl = new FormControl();
-        this.filteredAppointmentTypes = this.typeCtrl.valueChanges
-            .startWith(null)
-            .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
-            .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
+        // this.filteredAppointmentTypes = this.typeCtrl.valueChanges
+        //     .startWith(null)
+        //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
+        //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
 
         this.statusCtrl = new FormControl();
@@ -146,7 +149,7 @@ export class AppointmentComponent implements OnInit {
         this.loadIndicatorVisible = false;
         this.appointmentService.find({
             query:
-            { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds } }
+            { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
         })
             .subscribe(payload => {
                 this.filteredAppointments = this.appointments = payload.data;
@@ -235,9 +238,10 @@ export class AppointmentComponent implements OnInit {
     }
     filterClinics(val: any) {
         // tslint:disable-next-line:max-line-length
-        this.filteredAppointments = val ? this.appointments.filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
-        return val ? this.clinics.filter(s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0)
-            : this.clinics;
+        console.log(val);
+        this.filteredAppointments = val ? this.appointments.filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
+        // return val ? this.clinics.filter(s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0)
+        //     : this.clinics;
 
     }
     filterProviders(val: any) {

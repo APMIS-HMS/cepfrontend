@@ -62,7 +62,6 @@ export class InPatientTransferStatusService {
   }
 
   getAnnounceMission() {
-    console.log(this.inPatientItem);
     return this.inPatientItem;
 
   }

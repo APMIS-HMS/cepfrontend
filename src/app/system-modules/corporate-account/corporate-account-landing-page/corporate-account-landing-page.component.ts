@@ -111,7 +111,6 @@ export class CorporateAccountLandingPageComponent implements OnInit {
     this.companyHealthCoverService.find({ query: { corporateFacilityId: this.selectedFacility._id, isAccepted: false } })
       .then(payload => {
         this.pendingHealthCovers = payload.data;
-        console.log(this.pendingHealthCovers);
       });
   }
   logOutShow() {
@@ -122,7 +121,6 @@ export class CorporateAccountLandingPageComponent implements OnInit {
   }
   getFacilities() {
     this.facilityService.findAll().then(payload => {
-      console.log(payload);
       this.facilities = payload.data;
     });
   }

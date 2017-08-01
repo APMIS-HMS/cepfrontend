@@ -62,7 +62,6 @@ export class InPatientListService {
   }
 
   getAnnounceMission() {
-    console.log(this.inPatientItem);
     return this.inPatientItem;
 
   }

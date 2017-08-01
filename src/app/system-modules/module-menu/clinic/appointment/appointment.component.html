@@ -60,7 +60,7 @@
                         </md-input-container>
 
                         <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
-                            <md-option *ngFor="let clinic of filteredClinics | async " [value]="clinic">
+                            <md-option *ngFor="let clinic of clinics " [value]="clinic">
                                 {{ clinic.clinicName }}
                             </md-option>
                         </md-autocomplete>
@@ -82,7 +82,7 @@
 						</md-input-container>
 
 						<md-autocomplete #autoType="mdAutocomplete"  [displayWith]="appointmentTypeDisplayFn">
-							<md-option *ngFor="let type of filteredAppointmentTypes | async" [value]="type">
+							<md-option *ngFor="let type of appointmentTypes" [value]="type">
 								{{ type.name }}
 							</md-option>
 						</md-autocomplete>
