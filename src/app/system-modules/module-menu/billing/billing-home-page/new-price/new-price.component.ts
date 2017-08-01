@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray,FormControl } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -99,12 +99,8 @@ export class NewPriceComponent implements OnInit {
       });
     });
   }
-
-  showPrice() {
-    this.isPrice = true;
-  }
-  buildPrice(){
-
+  addPrice(price: HTMLInputElement){
+    (this.frmNewprice.get('price') as FormArray).push(new FormControl(price.value))
   }
 
 }

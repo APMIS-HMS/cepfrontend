@@ -36,10 +36,10 @@
                                 <md-list-item (click)="showPrice()" value="service">{{service.service}}</md-list-item>
                             </md-list>
                             </div>
-                            <div class="col-sm-5">
+                            <div *ngFor = "let price of frmNewprice.get('price').controls" class="col-sm-5">
                                 <md-input-container class="example-full-width">
-                                <input style="text-align:left" currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" mdInput md-error placeholder="Amount" formControlName="price">
-                            </md-input-container>
+                                    <input style="text-align:left" #price currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" value="{{price.value}}" type="text" mdInput md-error placeholder="Amount" formControlName="price">
+                                </md-input-container>
                             </div>
                         </div>
                     </div>
