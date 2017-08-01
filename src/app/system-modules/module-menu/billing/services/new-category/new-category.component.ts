@@ -30,7 +30,6 @@ export class NewCategoryComponent implements OnInit {
     this.btnTitle = 'CREATE CATEGORY';
     this.addNew();
     this.facility = <Facility> this._locker.getObject('selectedFacility');
-    console.log(this.selectedCategory);
     if (this.selectedCategory.name !== undefined && this.selectedCategory.name.length > 1) {
       this.btnTitle = 'UPDATE CATEGORY';
       this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
@@ -61,7 +60,6 @@ export class NewCategoryComponent implements OnInit {
         facilityServiceModel.categories = [];
         if (payload.data.length === 0) {
           facilityServiceModel.categories.push(facilityCategoryeModel);
-          console.log(facilityServiceModel);
           this._facilitiesServiceCategoryService.create(facilityServiceModel).then(callback => {
             this.frmNewcat.reset();
           });

@@ -19,10 +19,8 @@ export class WorkspaceResolverService implements Resolve<WorkSpace> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<WorkSpace> {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility._id);
     return this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 100 } })
       .then(payload => {
-        console.log(payload);
         const result = payload.data.filter(x => x.isActive === true || x.isActive === undefined);
         result.forEach((itemi, i) => {
           itemi.locations = itemi.locations.filter(x => x.isActive === true);

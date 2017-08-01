@@ -57,12 +57,9 @@ export class ChangePasswordComponent implements OnInit {
       const oldpassword = this.frm_changePass.controls['oldPass'].value;
       const password = this.frm_changePass.controls['password'].value;
       this.userService.changePassword({ oldpassword: oldpassword, _id: id }).then(payload => {
-        console.log(payload.body);
         if (payload.body === true) {
-          console.log('in')
           this.userService.patch(id, { password: password }, {})
             .then(nPayload => {
-              console.log(nPayload);
               this.userService.logOut();
               this.userService.announceMission('out');
               this.userService.isLoggedIn = false;

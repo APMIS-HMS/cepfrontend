@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule,FormControl,FormGroup }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -8,16 +8,11 @@ import { FormsModule, ReactiveFormsModule,FormControl,FormGroup }   from '@angul
   styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent implements OnInit {
- optionShow:boolean= false;
-  shortanswerShow: boolean = false;
-  numberShow: boolean = false;
+  optionShow = false;
+  shortanswerShow = false;
+  numberShow = false;
   modules: string[];
-  constructor() { 
-    this.modules = ['pharmacy', 'hospital', 'public', 'private'];
-  }
 
-  ngOnInit() {
-  }
   userform = new FormGroup({
     module: new FormControl(),
     question: new FormControl(),
@@ -26,39 +21,46 @@ export class QuestionsComponent implements OnInit {
     numbers: new FormControl(),
     textarea: new FormControl(),
   });
-  onSubmit(value: any){
-    console.log(value);
+  inputs = [{ value: 'inputs' }];
+  constructor() {
+    this.modules = ['pharmacy', 'hospital', 'public', 'private'];
   }
-  inputs = [{value: "inputs"}];
-  addInput()  {
-    this.inputs.push({value: ''});
+
+  ngOnInit() {
   }
-  onChange(param){
-    switch(param){
+
+  onSubmit(value: any) {
+  }
+
+  addInput() {
+    this.inputs.push({ value: '' });
+  }
+  onChange(param) {
+    switch (param) {
       case 'Multiple choices':
-      this.optionShow = true;
-      this.shortanswerShow = false;
-      this.numberShow = false;
-      break;
+        this.optionShow = true;
+        this.shortanswerShow = false;
+        this.numberShow = false;
+        break;
       case 'Numbers':
-      this.optionShow = false;
-      this.shortanswerShow = false;
-      this.numberShow = true;
-      break;
+        this.optionShow = false;
+        this.shortanswerShow = false;
+        this.numberShow = true;
+        break;
       case 'Checkboxes':
-      this.optionShow = true;
-      this.shortanswerShow = false;
-      this.numberShow = false;
-      break;
+        this.optionShow = true;
+        this.shortanswerShow = false;
+        this.numberShow = false;
+        break;
       case 'Dropdown':
-      this.optionShow = true;
-      this.shortanswerShow = false;
-      this.numberShow = false;
-      break;
+        this.optionShow = true;
+        this.shortanswerShow = false;
+        this.numberShow = false;
+        break;
       case 'Short answer':
-      this.shortanswerShow = true;
-      this.numberShow = false;
-      this.optionShow= false;
+        this.shortanswerShow = true;
+        this.numberShow = false;
+        this.optionShow = false;
 
     }
 
