@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-lab',
@@ -9,6 +9,9 @@ export class LabComponent implements OnInit {
 
   pageInView = 'Laboratory';
   contentSecMenuShow = false;
+  @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  workbenchContentArea = true;
 
   constructor() { }
 
