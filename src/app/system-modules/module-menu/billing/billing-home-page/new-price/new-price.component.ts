@@ -35,14 +35,15 @@ export class NewPriceComponent implements OnInit {
       this.filterServices(value);
       this.selectedCategory = value;
     });
+
   }
   addNew() {
     this.frmNewprice = this.formBuilder.group({
       serviceCat: ['', [<any>Validators.required]],
-      //service: ['', [<any>Validators.required]],
-      service: new FormArray ([], <any>Validators.required),
-      //price: [0.00, [<any>Validators.required]]
-      price:new FormArray([], <any>Validators.required )
+      service: ['', [<any>Validators.required]],
+     // service: new FormArray ([], <any>Validators.required),
+      price: [0.00, [<any>Validators.required]]
+      //price:new FormArray([], <any>Validators.required )
     });
   }
   filterServices(itemj) {
