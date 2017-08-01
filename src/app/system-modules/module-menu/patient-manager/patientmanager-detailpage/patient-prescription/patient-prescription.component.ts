@@ -49,7 +49,7 @@ export class PatientPrescriptionComponent implements OnInit {
     drugId = '';
     selectedDrugId = '';
     searchText = '';
-    simdilizeInnerValue = '';
+    apmisLookupText = '';
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
@@ -59,9 +59,9 @@ export class PatientPrescriptionComponent implements OnInit {
     pastMedications: any[] = [];
     currMedLoading = false;
     pastMedLoading = false;
-    simdilizeQuery = {};
-    simdilizeUrl = '';
-    simdilizeDisplayKey = '';
+    apmisLookupQuery = {};
+    apmisLookupUrl = '';
+    apmisLookupDisplayKey = '';
     authorizeRx = 'Authorize RX';
     disableAuthorizeRx = false;
 
@@ -113,31 +113,23 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
-        this.simdilizeUrl = 'drug-generic-list-api';
+        this.apmisLookupUrl = 'drug-generic-list-api';
 
-        this.simdilizeQuery = {
-            'searchtext': 'parace',
-            'po': false,
-            'brandonly': false,
-            'genericonly': true
-        };
 
-        this.simdilizeDisplayKey = 'details';
-        this.simdilizeInnerValue = 'details';
-
+        this.apmisLookupDisplayKey = 'details';
+        
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
-            console.log(value);
-            // this.query = {
-            //     "searchtext": value,
-            //     "po": false,
-            //     "brandonly": false,
-            //     "genericonly": true
-            // }
-        })
+            this.apmisLookupQuery = {
+                'searchtext': value,
+                'po': false,
+                'brandonly': false,
+                'genericonly': true
+            };
+        });
     }
 
-    simdilizeHandleSelectedItem(item) { 
-        this.simdilizeInnerValue = item.details;
+    apmisLookupHandleSelectedItem(item) {
+        this.apmisLookupText = item.details;
         this._drugDetailsApi.find({ query: { 'productId': item.productId } })
             .then(res => {
                 console.log(res);
@@ -302,26 +294,26 @@ export class PatientPrescriptionComponent implements OnInit {
         }
     }
 
-    keyupSearch() {
-        this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
-            this.searchText = val;
-        });
+    // keyupSearch() {
+    //     this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
+    //         this.searchText = val;
+    //     });
 
-        if (this.searchText.length > 3) {
-            this.drugs = [];
-            this.cuDropdownLoading = true;
-            this._drugListApi.find({ query: { 'searchtext': this.searchText, 'po': false, 'brandonly': false, 'genericonly': true } })
-                .then(res => {
-                    console.log(res);
-                    this.cuDropdownLoading = false;
-                    this.drugs = res.reverse();
-                })
-                .catch(err => {
-                    this.cuDropdownLoading = false;
-                    console.log(err);
-                });
-        }
-    }
+    //     if (this.searchText.length > 3) {
+    //         this.drugs = [];
+    //         this.cuDropdownLoading = true;
+    //         this._drugListApi.find({ query: { 'searchtext': this.searchText, 'po': false, 'brandonly': false, 'genericonly': true } })
+    //             .then(res => {
+    //                 console.log(res);
+    //                 this.cuDropdownLoading = false;
+    //                 this.drugs = res.reverse();
+    //             })
+    //             .catch(err => {
+    //                 this.cuDropdownLoading = false;
+    //                 console.log(err);
+    //             });
+    //     }
+    // }
 
     // onClickCustomSearchItem(event, drugId) {
     //     this.addPrescriptionForm.controls['drug'].setValue(event.srcElement.innerText);

@@ -21,7 +21,7 @@ export class DocumentationComponent implements OnInit {
   addVitals_view = false;
 
   selectedFacility: Facility = <Facility>{};
-  selecedMiniFacility: Facility = <Facility>{};
+  selectedMiniFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
@@ -34,6 +34,8 @@ export class DocumentationComponent implements OnInit {
     private facilityService: FacilitiesService) {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
+    console.log(this.selectedMiniFacility);
 
     this.sharedService.submitForm$.subscribe(payload => {
       const doc: PatientDocumentation = <PatientDocumentation>{};
