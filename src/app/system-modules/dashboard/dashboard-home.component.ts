@@ -83,10 +83,22 @@ export class DashboardHomeComponent implements OnInit {
       [
         Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
         Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
+        Observable.fromPromise(this.facilityService
+          .find({
+            query: {
+              '_id': this.facilityObj._id,
+              $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
+            }
+          }))
       ]))
       .subscribe((results: any) => {
         this.loginEmployee = results[0];
         this.loginEmployee.workSpaces = results[1].data;
+
+        if (results[2].data.length > 0) {
+          this.locker.setObject('miniFacility', results[2].data[0])
+        }
+
         this.locker.setObject('loginEmployee', this.loginEmployee);
         this.loadIndicatorVisible = false;
       })
