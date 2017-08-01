@@ -20,9 +20,6 @@ export class ClientDetailsComponent implements OnInit {
 
   ngOnInit() {
     this._personService.receivePerson().subscribe(person => {
-      const today = new Date();
-      const birthDate = new Date(person.dateOfBirth);
-      const age = today.getFullYear() - birthDate.getFullYear();
       this.personDetails = person;
     });
   }

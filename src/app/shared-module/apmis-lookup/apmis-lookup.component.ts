@@ -28,7 +28,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     @Input() displayKey = "";
     @Input() url = "";
     @Input() query = {};
-    @Input() isRest = false;
+    @Input() isSocket = false;
     @Output() selectedItem = new EventEmitter();
     public _socket;
     private _rest;
@@ -52,11 +52,11 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         this.form = this.fb.group({ searchtext: [''] });
         console.log(this.query);
         console.log(this.url);
-        console.log(this.isRest);
+        console.log(this.isSocket);
         this.form.controls['searchtext'].valueChanges
             .debounceTime(200)
             .distinctUntilChanged()
-            .switchMap(value => this.filter({ query: this.query }, this.isRest))
+            .switchMap(value => this.filter({ query: this.query }, this.isSocket))
             .subscribe((payload: any) => {
                 this.cuDropdownLoading = false;
                 this.results = payload;
@@ -77,9 +77,9 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         // });
     }
 
-    filter(query: any, isRest: boolean) {
+    filter(query: any, isSocket: boolean) {
         this.cuDropdownLoading = true;
-        if (isRest) {
+        if (isSocket) {
             return this._socket.find(query);
         } else {
             return this._rest.find(query);

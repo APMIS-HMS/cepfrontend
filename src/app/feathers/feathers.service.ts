@@ -21,7 +21,6 @@ export class SocketService {
   private _app: any;
   constructor(public locker: CoolSessionStorage) {
     this.socket = io(HOST);
-
     this._app = feathers()
       .configure(socketio(this.socket))
       .configure(rx(RxJS, { listStrategy: 'always' }))
