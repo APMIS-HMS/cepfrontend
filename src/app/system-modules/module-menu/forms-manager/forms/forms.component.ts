@@ -197,10 +197,13 @@ export class FormsComponent implements OnInit {
         this.frm_document.controls['documentType'].setValue(this.selectedForm.typeOfDocumentId);
         this.frm_document.controls['scopeLevel'].setValue(this.selectedForm.scopeLevelId);
         this.formsService.announceFormEdit(this.selectedForm);
-
+        console.log(this.selectedForm.moduleIds);
+        console.log(this.checkboxArray);
+        this.unCheckAll();
         this.modules.forEach((item, i) => {
           const filteredModule = this.selectedForm.moduleIds.filter(x => x === item._id);
           if (filteredModule.length > 0) {
+            this.checkboxArray.controls[i].setValue(true);
             item.checked = true;
           }
         });
@@ -213,19 +216,34 @@ export class FormsComponent implements OnInit {
       checkedModules.forEach((item, i) => {
         checkedModuleIds.push(item._id);
       });
-      const full = {
-        moduleIds: checkedModuleIds,
-        typeOfDocumentId: this.frm_document.value.documentType,
-        scopeLevelId: this.frm_document.value.scopeLevel,
-        title: this.frm_document.value.formName,
-        body: payload,
-        facilityId: this.selectedFacility._id
-      };
-      this.formsService.create(full).then(payloads => {
-        this.primeForms();
-        this.onCreate();
-        this.getForms();
-      });
+
+      if (this.selectedForm._id !== undefined) {
+        this.selectedForm.moduleIds = checkedModuleIds;
+        this.selectedForm.typeOfDocumentId = this.frm_document.value.documentType;
+        this.selectedForm.scopeLevelId = this.frm_document.value.scopeLevel;
+        this.selectedForm.body = payload;
+        this.formsService.update(this.selectedForm).then(payloads => {
+          this.primeForms();
+          this.onCreate();
+          this.getForms();
+        });
+      } else {
+        const full = {
+          moduleIds: checkedModuleIds,
+          typeOfDocumentId: this.frm_document.value.documentType,
+          scopeLevelId: this.frm_document.value.scopeLevel,
+          title: this.frm_document.value.formName,
+          body: payload,
+          facilityId: this.selectedFacility._id,
+          isSide: false
+        };
+        this.formsService.create(full).then(payloads => {
+          this.primeForms();
+          this.onCreate();
+          this.getForms();
+        });
+      }
+
     });
 
     this.primeForms();
@@ -235,6 +253,11 @@ export class FormsComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.prime();
     this.getForms();
+  }
+  unCheckAll() {
+    this.modules.forEach((item, i) => {
+      this.checkboxArray.controls[i].setValue(false);
+    })
   }
   primeForms() {
     this.frm_document = this.formBuilder.group({
@@ -256,12 +279,23 @@ export class FormsComponent implements OnInit {
     Observable.forkJoin([modules$, formType$, scopeLevel$]).subscribe((results: any) => {
       this.modules = [];
       const modules = results[0].data;
+      console.log(this.selectedForm)
       modules.forEach((item, i) => {
-        this.modules.push({
-          _id: item._id,
-          name: item.name,
-          checked: false
-        });
+        if (this.selectedForm._id === undefined) {
+          this.modules.push({
+            _id: item._id,
+            name: item.name,
+            checked: false
+          });
+        } else {
+          this.modules.push({
+            _id: item._id,
+            name: item.name,
+            checked: this.selectedForm.moduleIds.filter(x => x === item._id).length > 0
+          });
+        }
+
+
       });
 
 
@@ -277,11 +311,15 @@ export class FormsComponent implements OnInit {
       this.scopeLevels = results[2].data;
     })
   }
+  getCheckedValue(value) {
+    console.log(value);
+    value.checked = true;
+  }
   onValueChanged(event, model: ModuleViewModel) {
     model.checked = event.checked;
   }
   getForms() {
-    this.formsService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.formsService.find({ query: { facilityId: this.selectedFacility._id, isSide: false, $limit: 100 } }).then(payload => {
       this.forms = payload.data;
     });
   }

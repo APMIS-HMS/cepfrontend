@@ -40,10 +40,12 @@ export class FormsService {
     return this._socket.get(id, query);
   }
 
-  create(gender: any) {
-    return this._socket.create(gender);
+  create(form: any) {
+    return this._socket.create(form);
   }
-
+  update(form: any) {
+    return this._socket.update(form._id, form);
+  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

@@ -49,7 +49,7 @@ export class PatientPrescriptionComponent implements OnInit {
     drugId = '';
     selectedDrugId = '';
     searchText = '';
-    simdilizeInnerValue = '';
+    apmisLookupText = '';
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
@@ -115,29 +115,28 @@ export class PatientPrescriptionComponent implements OnInit {
         });
         this.simdilizeUrl = 'drug-generic-list-api';
 
-        this.simdilizeQuery = {
-            'searchtext': 'parace',
-            'po': false,
-            'brandonly': false,
-            'genericonly': true
-        };
 
         this.simdilizeDisplayKey = 'details';
-        this.simdilizeInnerValue = 'details';
+        // this.simdilizeQuery = {
+        //         "searchtext": "parace",
+        //         "po": false,
+        //         "brandonly": false,
+        //         "genericonly": true
+        //     }
 
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
             console.log(value);
-            // this.query = {
-            //     "searchtext": value,
-            //     "po": false,
-            //     "brandonly": false,
-            //     "genericonly": true
-            // }
-        })
+            this.simdilizeQuery = {
+                'searchtext': value,
+                'po': false,
+                'brandonly': false,
+                'genericonly': true
+            };
+        });
     }
 
-    simdilizeHandleSelectedItem(item) { 
-        this.simdilizeInnerValue = item.details;
+    simdilizeHandleSelectedItem(item) {
+        this.apmisLookupText = item.details;
         this._drugDetailsApi.find({ query: { 'productId': item.productId } })
             .then(res => {
                 console.log(res);

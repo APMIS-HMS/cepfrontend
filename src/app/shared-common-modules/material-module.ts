@@ -21,7 +21,7 @@ import { BillPrescriptionComponent } from '../system-modules/module-menu/patient
 // tslint:disable-next-line:max-line-length
 import { PatientPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
-import { SimdilizedLookupComponent } from '../shared-module/simdilized-lookup/simdilized-lookup.component';
+import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
@@ -41,7 +41,7 @@ import {KeysPipe } from './keypipe';
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
-        SimdilizedLookupComponent,
+        ApmisLookupComponent,
         InvestigationComponent,
         KeysPipe
         //  SurveyComponent, SurveyEditorComponent
@@ -85,7 +85,7 @@ import {KeysPipe } from './keypipe';
         CoolStorageModule,
         MdErrorDirective,
         ToastyModule,
-        SimdilizedLookupComponent,
+        ApmisLookupComponent,
         InvestigationComponent,
         KeysPipe
         // SurveyComponent, SurveyEditorComponent

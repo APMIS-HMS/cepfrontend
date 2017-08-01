@@ -80,6 +80,10 @@ const MODULEMENU_ROUTES: Routes = [
                {
                 path: 'laboratory',
                 loadChildren: './laboratory/laboratory.module#LaboratoryModule'
+            },
+               {
+                path: 'lab',
+                loadChildren: './lab/lab.module#LabModule'
             }
 
         ],

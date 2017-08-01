@@ -21,6 +21,7 @@ export class DocumentationComponent implements OnInit {
   addVitals_view = false;
 
   selectedFacility: Facility = <Facility>{};
+  selectedMiniFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
@@ -33,6 +34,8 @@ export class DocumentationComponent implements OnInit {
     private facilityService: FacilitiesService) {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
+    console.log(this.selectedMiniFacility);
 
     this.sharedService.submitForm$.subscribe(payload => {
       const doc: PatientDocumentation = <PatientDocumentation>{};
@@ -75,20 +78,24 @@ export class DocumentationComponent implements OnInit {
           console.log(this.patientDocumentation);
         })
       } else {
-        this.documentationService.find({
-          query:
-          {
-            'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-            // $select: ['documentations.documents', 'documentations.facilityId']
-          }
-        }).subscribe((mload: any) => {
-          if (mload.data.length > 0) {
-            this.patientDocumentation = mload.data[0];
-            this.populateDocuments();
-            console.log(this.patientDocumentation);
-            // mload.data[0].documentations[0].documents.push(doct);
-          }
-        })
+        if (payload.data[0].documentations.length === 0) {
+          this.patientDocumentation = payload.data[0];
+        } else {
+          this.documentationService.find({
+            query:
+            {
+              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+              // $select: ['documentations.documents', 'documentations.facilityId']
+            }
+          }).subscribe((mload: any) => {
+            if (mload.data.length > 0) {
+              this.patientDocumentation = mload.data[0];
+              this.populateDocuments();
+              console.log(this.patientDocumentation);
+              // mload.data[0].documentations[0].documents.push(doct);
+            }
+          })
+        }
       }
 
     })
@@ -96,7 +103,7 @@ export class DocumentationComponent implements OnInit {
   populateDocuments() {
     this.documents = [];
     this.patientDocumentation.documentations.forEach(documentation => {
-      if (documentation.document.documentType.isSide === false) {
+      if (documentation.document.documentType.isSide === false || documentation.document.documentType.isSide === undefined) {
         this.documents.push(documentation);
       }
     });

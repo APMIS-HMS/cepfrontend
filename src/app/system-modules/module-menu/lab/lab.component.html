@@ -1,0 +1,21 @@
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+
+    <div class="inner-page-wrap">
+        <div class="inner-menu1-wrap">
+            <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+
+                <!--<li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/workbench-setup']">Setup Workbench</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/investigation-service-setup']">Setup Investigation Service</li> -->
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/laboratory-lists']"> Laboratory List</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/new-laboratory-request']">New Laboratory Request</li>
+                <li (click)="navItemClick()" [routerLink]="['/dashboard/laboratory/laboratory-setup']">Laboratory Setup</li>
+            </ul>
+        </div>
+
+        <div class="inner-page-contentArea">
+            <router-outlet class="menuContent"></router-outlet>
+        </div>
+    </div>
+</div>
