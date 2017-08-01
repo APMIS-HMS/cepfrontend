@@ -13,7 +13,6 @@ import {
   styleUrls: ['./add-person.component.scss']
 })
 export class AddPersonComponent implements OnInit {
-  @Output() newPersonDetails: any = <any>{};
   newPersonForm: FormGroup;
   facility: Facility = <Facility>{};
   user: User = <User>{};
@@ -66,16 +65,16 @@ export class AddPersonComponent implements OnInit {
 
   onClickSavePerson(value: any, valid: boolean) {
     if(valid) {
+      console.log(value);
       this.disableSaveBtn = true;
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
-      this._personService.announcePerson(value);
       // create person and user
       const personModel = <Person>{
         firstName: value.firstName,
         lastName: value.lastName,
         genderId: value.gender,
         homeAddress: <Address>({
-          state: value.address
+          street: value.address
         }),
         phoneNumber: value.phone,
         lgaOfOriginId: value.lga,
@@ -86,12 +85,28 @@ export class AddPersonComponent implements OnInit {
 
       this._personService.create(personModel).then((res) => {
         console.log(res);
-
+        const age = new Date().getFullYear() - new Date(res.dateOfBirth).getFullYear();
+        res.age = age;
+        // Reset form and change button effect.
+        this._resetForm(res);
+        
       })
       .catch(err => { console.log(err); });
     } else {
       this._notification('Info', 'Some fields are empty. Please ensure that you fill in all fields.');
     }
+  }
+
+  private _resetForm(person: Person) {
+    this._personService.announcePerson(person);
+    this.disableSaveBtn = true;
+    this.saveBtnText = "Save";
+    this.newPersonForm.reset('firstName');
+    this.newPersonForm.reset('lastName');
+    this.newPersonForm.reset('phone');
+    this.newPersonForm.reset('gender');
+    this.newPersonForm.reset('address');
+    this.newPersonForm.reset('dob');
   }
 
   private _getCountriesService() {

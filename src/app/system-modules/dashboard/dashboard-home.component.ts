@@ -79,19 +79,31 @@ export class DashboardHomeComponent implements OnInit {
         facilityId: this.facilityObj._id, personId: auth.data.personId, showbasicinfo: true
       }
     }));
-    this.subscription = emp$.mergeMap((emp: any) => Observable.forkJoin(
-      [
-        Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-        Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
-        Observable.fromPromise(this.facilityService
-          .find({
-            query: {
-              '_id': this.facilityObj._id,
-              $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
-            }
-          }))
-      ]))
-      .subscribe((results: any) => {
+    this.subscription = emp$.mergeMap((emp: any) => {
+      if (emp.data.length > 0) {
+        return Observable.forkJoin(
+          [
+            Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+            Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
+            Observable.fromPromise(this.facilityService
+              .find({
+                query: {
+                  '_id': this.facilityObj._id,
+                  $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
+                }
+              }))
+          ])
+      } else {
+        this.loadIndicatorVisible = false;
+        return Observable.of({})
+      }
+
+
+
+    }
+    ).subscribe((results: any) => {
+      console.log(results[0]);
+      if (results[0] !== undefined) {
         this.loginEmployee = results[0];
         this.loginEmployee.workSpaces = results[1].data;
 
@@ -100,8 +112,10 @@ export class DashboardHomeComponent implements OnInit {
         }
 
         this.locker.setObject('loginEmployee', this.loginEmployee);
-        this.loadIndicatorVisible = false;
-      })
+      }
+
+      this.loadIndicatorVisible = false;
+    })
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
