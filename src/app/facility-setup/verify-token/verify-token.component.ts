@@ -38,17 +38,12 @@ export class VerifyTokenComponent implements OnInit {
 
   numberVerifier(valid) {
     if (valid) {
-      console.log('1');
       if (this.InputedToken === '' || this.InputedToken === ' ') {
         this.mainErr = false;
-        console.log('2');
         this.errMsg = 'Kindly key in the code sent to your mobile phone';
       } else if (true) {
-        console.log('3');
         this._facilityService.find({ query: { 'verificationToken': this.InputedToken } }).then((payload) => {
-          console.log('4');
           if (payload.data.length > 0) {
-            console.log('5');
             this.mainErr = true;
             this.errMsg = '';
             this.sg3_show = true;

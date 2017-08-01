@@ -88,8 +88,6 @@ export class DashboardHomeComponent implements OnInit {
         this.loginEmployee = results[0];
         this.loginEmployee.workSpaces = results[1].data;
         this.locker.setObject('loginEmployee', this.loginEmployee);
-        // this.employeeService.announceLoginEmployee(this.loginEmployee);
-        console.log(this.loginEmployee);
         this.loadIndicatorVisible = false;
       })
   }

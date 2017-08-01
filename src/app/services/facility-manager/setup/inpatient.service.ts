@@ -51,7 +51,6 @@ export class InPatientService {
     return this._socket.create(inpatient);
   }
   update(inpatient: any) {
-    console.log(inpatient);
     return this._socket.update(inpatient._id, inpatient);
   }
   remove(id: string, query: any) {
@@ -63,7 +62,6 @@ export class InPatientService {
   }
 
   getAnnounceMission() {
-    console.log(this.inPatientItem);
     return this.inPatientItem;
 
   }

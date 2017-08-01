@@ -81,8 +81,6 @@ export class ClinicScheduleComponent implements OnInit {
     this.clearAllSchedules();
     if (this.selectedManager !== undefined && this.selectedManager.clinicObject !== undefined && force === false) {
       this.selectedManager.schedules.forEach((itemi, i) => {
-        console.log(itemi.startTime);
-        console.log(itemi.endTime);
         const d = new Date(itemi.startTime);
         const hour = d.getHours();
         const min = d.getMinutes();
@@ -171,7 +169,6 @@ export class ClinicScheduleComponent implements OnInit {
           hasReadOnly = true;
         }
       });
-    console.log(hasReadOnly);
     if (this.selectedManager !== undefined && this.selectedManager.clinicObject !== undefined && hasReadOnly) {
       this.selectedManager.schedules = [];
       (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray'])
@@ -185,7 +182,6 @@ export class ClinicScheduleComponent implements OnInit {
           endTime.setHours(itemi.value.endTime.hour);
           endTime.setMinutes(itemi.value.endTime.minute);
           itemi.value.endTime = endTime;
-          console.log(itemi.value)
           this.selectedManager.schedules.push(itemi.value);
         });
       this.schedulerService.update(this.selectedManager).then(payload => {
@@ -209,10 +205,8 @@ export class ClinicScheduleComponent implements OnInit {
           endTime.setHours(itemi.value.endTime.hour);
           endTime.setMinutes(itemi.value.endTime.minute);
           itemi.value.endTime = endTime;
-          console.log(itemi.value)
           manager.schedules.push(itemi.value);
         });
-      console.log(manager);
       this.schedulerService.create(manager).subscribe(payload => {
         this.selectedManager = payload;
         this.loadManagerSchedules(true);
@@ -221,7 +215,6 @@ export class ClinicScheduleComponent implements OnInit {
   }
   closeClinicSchedule(clinic: any, i: any) {
     (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.splice(i, 1);
-    console.log(this.selectedManager);
     this.loadManagerSchedules(false);
   }
 }
