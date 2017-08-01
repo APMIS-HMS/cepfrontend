@@ -1,8 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray,FormControl } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-new-price',
@@ -12,8 +13,6 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 export class NewPriceComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  isPrice = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -29,19 +28,22 @@ export class NewPriceComponent implements OnInit {
 
   ngOnInit() {
     this.addNew();
-    this.facility = <Facility> this._locker.getObject('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getCategories();
 
     this.frmNewprice.controls['serviceCat'].valueChanges.subscribe(value => {
       this.filterServices(value);
       this.selectedCategory = value;
     });
+
   }
   addNew() {
     this.frmNewprice = this.formBuilder.group({
       serviceCat: ['', [<any>Validators.required]],
       service: ['', [<any>Validators.required]],
+     // service: new FormArray ([], <any>Validators.required),
       price: [0.00, [<any>Validators.required]]
+      //price:new FormArray([], <any>Validators.required )
     });
   }
   filterServices(itemj) {
@@ -82,8 +84,6 @@ export class NewPriceComponent implements OnInit {
     this.closeModal.emit(true);
   }
   newPrice(value: any, valid: boolean) {
-    console.log(value);
-    // return;
     const price: FacilityServicePrice = <FacilityServicePrice>{};
     price.categoryId = value.serviceCat._id;
     price.facilityId = this.facility._id;
@@ -98,9 +98,10 @@ export class NewPriceComponent implements OnInit {
       });
     });
   }
-
-  showPrice() {
-    this.isPrice = true;
+  getPrice(service) {
+    Observable.fromPromise(this.servicePriceService
+      .find({ query: { facilityServiceId: service.facilityServiceId, serviceId: service.serviceId } }))
+      .subscribe((payload: any) => {
+      })
   }
-
 }

@@ -7,7 +7,8 @@ import {
     PrescriptionPriorityService, DictionariesService, BillingService,
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed } from '../../../../../models/index';
+import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed }
+ from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 
@@ -26,13 +27,13 @@ export class PatientPrescriptionComponent implements OnInit {
     employeeDetails: any = {};
     user: any = <any>{};
 
-    showCuDropdown: boolean = false;
-    cuDropdownLoading: boolean = false;
-    addPrescriptionShow: boolean = false;
-    currentMedicationShow: boolean = false;
-    pastMedicationShow: boolean = false;
-    mainErr: boolean = true;
-    errMsg: string = 'You have unresolved errors';
+    showCuDropdown = false;
+    cuDropdownLoading = false;
+    addPrescriptionShow = false;
+    currentMedicationShow = false;
+    pastMedicationShow = false;
+    mainErr = true;
+    errMsg = 'You have unresolved errors';
     addPrescriptionForm: FormGroup;
     allPrescriptionsForm: FormGroup;
     facilityId: string;
@@ -45,24 +46,24 @@ export class PatientPrescriptionComponent implements OnInit {
     frequencies: string[] = [];
     durationUnits: any[] = [];
     selectedValue: any;
-    drugId = "";
-    selectedDrugId = "";
-    searchText = "";
-    simdilizeInnerValue = "";
+    drugId = '';
+    selectedDrugId = '';
+    searchText = '';
+    apmisLookupText = '';
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
-    selectedForm: string = '';
+    selectedForm = '';
     selectedIngredients: any = [];
     currentMedications: any[] = [];
     pastMedications: any[] = [];
-    currMedLoading: boolean = false;
-    pastMedLoading: boolean = false;
-    simdilizeQuery = {};
-    simdilizeUrl = "";
-    simdilizeDisplayKey = "";
-    authorizeRx: string = 'Authorize RX';
-    disableAuthorizeRx: boolean = false;
+    currMedLoading = false;
+    pastMedLoading = false;
+    apmisLookupQuery = {};
+    apmisLookupUrl = '';
+    apmisLookupDisplayKey = '';
+    authorizeRx = 'Authorize RX';
+    disableAuthorizeRx = false;
 
     constructor(
         private fb: FormBuilder,
@@ -112,31 +113,23 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
-        this.simdilizeUrl = "drug-generic-list-api";
+        this.apmisLookupUrl = 'drug-generic-list-api';
 
-        this.simdilizeQuery = {
-            "searchtext": "parace",
-            "po": false,
-            "brandonly": false,
-            "genericonly": true
-        };
 
-        this.simdilizeDisplayKey = "details";
-        this.simdilizeInnerValue = "details";
-
+        this.apmisLookupDisplayKey = 'details';
+        
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
-            console.log(value);
-            // this.query = {
-            //     "searchtext": value,
-            //     "po": false,
-            //     "brandonly": false,
-            //     "genericonly": true
-            // }
-        })
+            this.apmisLookupQuery = {
+                'searchtext': value,
+                'po': false,
+                'brandonly': false,
+                'genericonly': true
+            };
+        });
     }
 
-    simdilizeHandleSelectedItem(item) { 
-        this.simdilizeInnerValue = item.details;
+    apmisLookupHandleSelectedItem(item) {
+        this.apmisLookupText = item.details;
         this._drugDetailsApi.find({ query: { 'productId': item.productId } })
             .then(res => {
                 console.log(res);
@@ -144,9 +137,9 @@ export class PatientPrescriptionComponent implements OnInit {
                     this.selectedForm = res.form;
                     this.selectedIngredients = res.ingredients;
                     let drugName: string = res.form + ' ';
-                    let strength: string = '';
-                    let ingredientLength: number = res.ingredients.length;
-                    let index: number = 0;
+                    let strength = '';
+                    const ingredientLength: number = res.ingredients.length;
+                    let index = 0;
                     res.ingredients.forEach(element => {
                         index++;
                         drugName += element.name;
@@ -219,7 +212,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     totalCost: 0,
                     totalQuantity: 0
                 };
-                console.log("trying");
+                console.log('trying');
                 console.log(prescription);
                 this.prescriptionItems = prescription;
                 this.prescriptions = prescription;
@@ -301,26 +294,26 @@ export class PatientPrescriptionComponent implements OnInit {
         }
     }
 
-    keyupSearch() {
-        this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
-            this.searchText = val;
-        });
+    // keyupSearch() {
+    //     this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(val => {
+    //         this.searchText = val;
+    //     });
 
-        if (this.searchText.length > 3) {
-            this.drugs = [];
-            this.cuDropdownLoading = true;
-            this._drugListApi.find({ query: { 'searchtext': this.searchText, 'po': false, 'brandonly': false, 'genericonly': true } })
-                .then(res => {
-                    console.log(res);
-                    this.cuDropdownLoading = false;
-                    this.drugs = res.reverse();
-                })
-                .catch(err => {
-                    this.cuDropdownLoading = false;
-                    console.log(err);
-                });
-        }
-    }
+    //     if (this.searchText.length > 3) {
+    //         this.drugs = [];
+    //         this.cuDropdownLoading = true;
+    //         this._drugListApi.find({ query: { 'searchtext': this.searchText, 'po': false, 'brandonly': false, 'genericonly': true } })
+    //             .then(res => {
+    //                 console.log(res);
+    //                 this.cuDropdownLoading = false;
+    //                 this.drugs = res.reverse();
+    //             })
+    //             .catch(err => {
+    //                 this.cuDropdownLoading = false;
+    //                 console.log(err);
+    //             });
+    //     }
+    // }
 
     // onClickCustomSearchItem(event, drugId) {
     //     this.addPrescriptionForm.controls['drug'].setValue(event.srcElement.innerText);
@@ -356,7 +349,7 @@ export class PatientPrescriptionComponent implements OnInit {
     //         });
     // }
 
-    //Get all medications
+    // Get all medications
     private _getPrescriptionList() {
         this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } })
             .then(res => {

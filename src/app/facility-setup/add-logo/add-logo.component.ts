@@ -50,7 +50,6 @@ export class AddLogoComponent implements OnInit {
 		this.hasBaseDropZoneOver = e;
 	}
 	beforeUpload(uploadingFile): void {
-		console.log(uploadingFile);
 		this.getDataUri(uploadingFile.originalName, function (dataUri) {
 			// Do whatever you'd like with the Data URI!
 		});
@@ -63,13 +62,11 @@ export class AddLogoComponent implements OnInit {
 	imageChange(fileInput: any) {
 		this.previewFile(fileInput.target.files[0]);
 		if (fileInput.target.files && fileInput.target.files[0]) {
-			let reader = new FileReader();
+			const reader = new FileReader();
 
 			reader.onload = function (e: any) {
-				//console.log(e.target.result);
 			};
 			reader.onprogress = function (e: any) {
-				//console.log(e);
 			};
 
 			reader.readAsDataURL(fileInput.target.files[0]);
@@ -77,11 +74,11 @@ export class AddLogoComponent implements OnInit {
 	}
 
 	previewFile(value: File) {
-		let file = value;
-		let reader = new FileReader();
-		let facility = this.inputFacility;
+		const file = value;
+		const reader = new FileReader();
+		const facility = this.inputFacility;
 		reader.addEventListener('load', function () {
-			//facility.logo = reader.result;
+			// facility.logo = reader.result;
 		}, false);
 
 		if (file) {
@@ -93,7 +90,7 @@ export class AddLogoComponent implements OnInit {
 		let image = new Image();
 
 		image.onload = function () {
-			let canvas = document.createElement('canvas');
+			const canvas = document.createElement('canvas');
 			canvas.width = image.width; // or 'width' if you want a special/scaled size
 			canvas.height = image.width; // or 'height' if you want a special/scaled size
 
@@ -110,20 +107,18 @@ export class AddLogoComponent implements OnInit {
 	}
 
 	back_logoUp() {
-    this.f_logo_show = false;
-	this.selectModules_show = false;
-	this.back_selectModules_show = true;
-  }
+		this.f_logo_show = false;
+		this.selectModules_show = false;
+		this.back_selectModules_show = true;
+	}
 
 	f_sg4_show() {
 		this.f_logo_show = false;
 		this.selectModules_show = true;
-		//this.inputFacility.logo = this.response;
-		console.log(this.response);
 		this._facilityService.update(this.inputFacility).then(payload => { });
 		this._facilityService.update(this.inputFacility).then(payload => {
 			if (payload != null && payload != undefined) {
-				
+
 			}
 		});
 	}

@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
     });
   }
   login(valid) {
-    console.log('Login');
     if (valid) {
       this.loadIndicatorVisible = true;
       const query = {
@@ -60,7 +59,6 @@ export class LoginComponent implements OnInit {
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
-        console.log(result);
         this.locker.setObject('auth', result);
         this.userService.isLoggedIn = true;
         this.userService.announceMission('in');
@@ -68,7 +66,6 @@ export class LoginComponent implements OnInit {
         this.loadIndicatorVisible = false;
       },
         error => {
-          console.log(error);
           this.loadIndicatorVisible = false;
           this.mainErr = false;
           this.errMsg = 'wrong login credentials';

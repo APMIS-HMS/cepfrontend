@@ -80,10 +80,6 @@ export class ScheduleFrmComponent implements OnInit {
         private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
 
-        // this.toastyConfig.theme = 'material';
-        // this.toastyService.default('Hi there');
-
-
         appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
             this.appointment = payload;
             this.btnText = 'Update Appointment';
@@ -222,7 +218,12 @@ export class ScheduleFrmComponent implements OnInit {
                 this.getClinics()
             })
     }
-
+    isAppointmentToday() {
+        Observable.fromPromise(this.appointmentService.get(this.appointment._id, {}))
+            .subscribe(payload => {
+                console.log(payload);
+            });
+    }
     announcePatient(value) {
         this.appointmentService.patientAnnounced(value);
         return value.personDetails.lastName;

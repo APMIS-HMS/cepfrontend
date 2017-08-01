@@ -78,7 +78,7 @@
                                     <md-input-container class="example-full-width">
                                         <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="0" type="number" [readOnly]="true" mdInput md-error placeholder="Quantity" [readOnly]="true" formControlName="qty">
                                     </md-input-container>
-                                    <a class="pull-right" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></a>
+                                    <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></div>
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
                                     <md-input-container class="example-full-width">

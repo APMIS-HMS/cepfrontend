@@ -32,11 +32,9 @@ export class StoreCheckInComponent implements OnInit {
 		public locker: CoolSessionStorage
 	) {
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-		console.log(this.loginEmployee);
 	}
 
 	ngOnInit() {
-		console.log(this.loginEmployee);
 		this.loginEmployee.workSpaces.forEach(work => {
 			work.locations.forEach(loc => {
 				this.locations.push(loc.minorLocationId);

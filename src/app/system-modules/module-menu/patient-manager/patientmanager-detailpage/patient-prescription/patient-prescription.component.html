@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <apmis-simdilized-lookup [url]="simdilizeUrl" [query]="simdilizeQuery" [isRest]="false" [displayKey]="simdilizeDisplayKey" (selectedItem)="simdilizeHandleSelectedItem($event)" [innerValue]="simdilizeInnerValue"></apmis-simdilized-lookup> 
+                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup> 
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <md-input-container>

@@ -34,9 +34,6 @@ export class SimdilizedLookupComponent implements OnInit {
         this._rest = this._restService.getService(this.url);
         this._socket = this._socketService.getService(this.url);
         this.form = this.fb.group({ searchtext: [''] });
-        console.log(this.query);
-        console.log(this.url);
-        console.log(this.isRest);
 
         // this.form.controls['searchtext'].valueChanges
         //     .distinctUntilChanged()
@@ -50,7 +47,6 @@ export class SimdilizedLookupComponent implements OnInit {
         //     });
 
         this.form.controls['searchtext'].valueChanges.subscribe(value => {
-            console.log(this.displayKey);
             this.cuDropdownLoading = true;
             this.filter({ query: this.query }, this.isRest).then(filteredValue => {
                 this.cuDropdownLoading = false;
@@ -77,7 +73,6 @@ export class SimdilizedLookupComponent implements OnInit {
     }
 
     onDisplayText() {
-        console.log(this.innerValue);
     }
 
     focusSearch() {
