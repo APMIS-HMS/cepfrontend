@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray,FormControl } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -13,8 +13,6 @@ import { Observable } from 'rxjs/Rx';
 export class NewPriceComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  isPrice = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -37,12 +35,15 @@ export class NewPriceComponent implements OnInit {
       this.filterServices(value);
       this.selectedCategory = value;
     });
+
   }
   addNew() {
     this.frmNewprice = this.formBuilder.group({
       serviceCat: ['', [<any>Validators.required]],
       service: ['', [<any>Validators.required]],
+     // service: new FormArray ([], <any>Validators.required),
       price: [0.00, [<any>Validators.required]]
+      //price:new FormArray([], <any>Validators.required )
     });
   }
   filterServices(itemj) {
@@ -103,9 +104,4 @@ export class NewPriceComponent implements OnInit {
       .subscribe((payload: any) => {
       })
   }
-
-  showPrice() {
-    this.isPrice = true;
-  }
-
 }
