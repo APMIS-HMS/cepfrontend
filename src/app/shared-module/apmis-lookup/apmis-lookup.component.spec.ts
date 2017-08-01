@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SimdilizedLookupComponent } from './simdilized-lookup.component';
+import { ApmisLookupComponent } from './apmis-lookup.component';
 
 describe('SimdilizedLookupComponent', () => {
-  let component: SimdilizedLookupComponent;
-  let fixture: ComponentFixture<SimdilizedLookupComponent>;
+  let component: ApmisLookupComponent;
+  let fixture: ComponentFixture<ApmisLookupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SimdilizedLookupComponent ]
+      declarations: [ ApmisLookupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SimdilizedLookupComponent);
+    fixture = TestBed.createComponent(ApmisLookupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
