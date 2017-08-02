@@ -6,6 +6,7 @@ import { labRoutes } from './lab.routes';
 import { LabRequestsComponent } from './lab-requests/lab-requests.component';
 import {LabComponent } from './lab.component';
 import { WorkbenchComponent } from './workbench/workbench.component';
+import { RequestDetailComponent } from './lab-requests/request-detail/request-detail.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { WorkbenchComponent } from './workbench/workbench.component';
     SharedModule,
     MaterialModule
   ],
-  declarations: [LabRequestsComponent, LabComponent, WorkbenchComponent]
+  declarations: [LabRequestsComponent, LabComponent, WorkbenchComponent, RequestDetailComponent]
 })
 export class LabModule { }

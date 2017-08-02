@@ -1,0 +1,166 @@
+@import "../../patient-manager/patientmanager-detailpage/documentation/documentation.component.scss";
+
+table{
+    width: 100%;
+    position: relative;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+table, td { 
+    border: 0.5px solid $td-border;
+} 
+th {
+    height: 50px;
+    background: $th-background;
+    border: 0.5px solid $th-border;
+}
+td {
+    vertical-align: center;
+    text-align: center;
+    padding: 2px;
+}
+tr:hover {background-color: $tr-hover}
+tr:nth-child(even) {background-color: $tr-stripe}
+
+.searchInputWrap{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.searchInputWrap i{
+    position: absolute;
+    color: #939393;
+    margin-left: 10px;
+}
+.searchInput{
+    border: 1px solid #eee;
+    background: #FAFAFA;
+    border-radius: 7px;
+    padding: 7px;
+    padding-left: 30px;
+    text-align: center;
+    width: 250px;
+}
+
+.tbl-actionRow{
+    position: relative;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+// .tbl-actionRow .tbl-title{
+//     position: absolute; 
+//     left: 10px;
+//     font-size: 14px;
+//     color: #0288D1;
+// }
+// .tbl-actionRow .tbl-search{
+//     position: absolute; 
+//     right: 10px;
+// }
+.td-ctaWrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.td-ctaWrap i{
+    cursor: pointer;
+}
+.td-ctaWrap i:hover, th i:hover{
+    color: #0288D1;
+}
+th i{
+    margin-right: 10px;
+    cursor: pointer;
+}
+td .empWrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+td .empWrap .list-img{
+    margin: 5px;
+}
+
+.list-img img{
+    width: 100%;
+}
+.list-img{
+    width: 30px;
+    height: 30px;
+}
+.page-title {
+    text-align: left;
+    position: absolute;
+}
+// .clinicalNoteWrap {
+//     position: absolute;
+//     right: 9px;
+//     top: -33px;
+// }
+// .actSect{
+//     width: 90%;
+//     margin: 0 auto;
+// }
+.act-wrap{
+    width: 150px;
+    position: relative;
+    padding: 8px;
+    font-size: 12px;
+    text-align: center;
+    color: #bebebe;
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin-bottom: 10px;
+}
+.act-wrap:hover{
+    border: 1px solid #bebebe;
+}
+.benchWrap{
+    position: relative;
+    width: 100%;
+}
+.frm-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.frm-l, .frm-r {
+    width: 48%;
+}
+.doc-contentArea{
+    width: 100%;
+}
+.doc-mainWrap{
+    margin-top:0;
+}
+.frmNoteWrap{
+    background: #fff;
+    padding: 3px 10px;
+    box-sizing: border-box;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+.cta-1 {
+    width: 139px;
+    height: 33px;
+    font-size: 12px;
+    background: #fff;
+    color: #0288D1;
+    border: 1px solid #0288D1;
+    border-right: 0px solid #0288D1;
+}
+.cta-1:hover{
+    background: #0288D1;
+    color: #fff;
+}
+.mat-input-container{
+    width: 100%;
+}
+.doc-mainWrap{
+    min-height: auto;
+}

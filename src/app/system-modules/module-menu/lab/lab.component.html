@@ -1,4 +1,4 @@
-<div (click)="close_onClick($event)" class="inner-wrap-b body-wrap">
+<div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
       <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
@@ -15,19 +15,19 @@
       <div class="lhs inner-page-menuTab">
         <div class="lTab-title">LABORATORY SETUP</div>
         <ul class="nav-group">
-            <li [class.navActive]="homeContentArea" (click)="navFpHome()">Workbench</li>
-            <li [class.navActive]="modulesContentArea" (click)="navFpModules()">Investigation Service</li>
-            <li [class.navActive]="departmentsContentArea" (click)="navFpDepartments()">Investigation Pricing</li>
-            <li [class.navActive]="locationsContentArea" (click)="navFpLocations()">Panel</li>
+            <li [class.navActive]="workbenchContentArea" (click)="navWorkbench()">Workbench</li>
+            <li [class.navActive]="investigationContentArea" (click)="navInvestigation()">Investigation Service</li>
+            <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
+            <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li>
         </ul>
 
         <div class="lTab-title">LABORATORY MANAGER</div>
         <ul class="nav-group">
-            <li [class.navActive]="homeContentArea" (click)="navFpHome()">Lab Requests</li>
+            <li [class.navActive]="requestContentArea" (click)="navRequest()">Lab Requests</li>
         </ul>
       </div>
 
-      <app-workbench (pageInView)="pageInViewLoader($event)" *ngIf="workbenchContentArea" class="rhs inner-page-contentArea"></app-workbench> 
+      <app-lab-requests (pageInView)="pageInViewLoader($event)" *ngIf="requestContentArea" class="rhs inner-page-contentArea"></app-lab-requests> 
       <div class="clear"></div>
     </div> 
 </div>
