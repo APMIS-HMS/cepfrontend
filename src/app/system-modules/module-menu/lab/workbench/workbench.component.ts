@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-lab-requests',
-  templateUrl: './lab-requests.component.html',
-  styleUrls: ['./lab-requests.component.scss']
+  selector: 'app-workbench',
+  templateUrl: './workbench.component.html',
+  styleUrls: ['./workbench.component.scss']
 })
-export class LabRequestsComponent implements OnInit {
+export class WorkbenchComponent implements OnInit {
 
   apmisLookupUrl = "";
   apmisLookupText = "";
@@ -14,7 +14,6 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupDisplayKey ="";
 
   request_view = false;
-  reqDetail_view = false;
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
@@ -26,9 +25,8 @@ export class LabRequestsComponent implements OnInit {
     this.frmNewRequest = this.formBuilder.group({
       patient: ['', [Validators.required]],
       labNo: ['', [Validators.required]],
-      clinicalInfo: ['', [Validators.required]],
-      diagnosis: ['', [Validators.required]],
-      investigation: ['', [Validators.required]]
+      majorLoc: ['', [Validators.required]],
+      minorLoc: ['', [Validators.required]]
     });
   }
 
@@ -37,11 +35,5 @@ export class LabRequestsComponent implements OnInit {
   }
   request_show() {
     this.request_view = !this.request_view;
-  }
-  reqDetail(){
-    this.reqDetail_view = true;
-  }
-  close_onClick(message: boolean): void {
-    this.reqDetail_view = false;
   }
 }
