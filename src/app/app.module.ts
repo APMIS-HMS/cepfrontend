@@ -84,7 +84,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
-    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService
+    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService
 
   ],
   bootstrap: [AppComponent]

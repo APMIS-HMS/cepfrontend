@@ -1,31 +1,31 @@
-    <div class="survery">
+<div class="survery">
     <div class="cover-edit">
-    <form class="form-signin">
-        <div class="container">
-            <div class="row">
-              <div class="col-md-4 col-md-offset-4">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                  <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
-                  <legend class="modal_title">Add Workbench</legend>
-                    <form class="form form-signup" role="form">
-                        <md-select placeholder="Select Lab Name" [(ngModel)]="selectedValue" name="food">
-                          <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                          </md-option>
-                        </md-select>
-                        <md-input-container class="example-full-width">
-                          <input mdInput placeholder="Workbench name">
-                        </md-input-container>
-                        <div class="text-center">
-                          <button class="apmis-blue" md-raised-button>Add</button>
+        <form class="form-signin">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
+                                <legend class="modal_title">Add Workbench</legend>
+                                <form class="form form-signup" [formGroup]="addWorkbench" novalidate>
+                                    <md-select placeholder="Select Lab Name" formControlName="labName">
+                                        <md-option *ngFor="let lab of laboratories" [value]="lab._id">
+                                            {{ lab.viewValue }}
+                                        </md-option>
+                                    </md-select>
+                                    <md-input-container class="example-full-width">
+                                        <input formControlName="workbenchName" mdInput placeholder="Workbench Name">
+                                    </md-input-container>
+                                </form>
+                                <div class="text-center">
+                                    <button class="apmis-blue" md-raised-button (click)="saveWorkbench(addWorkbench.value, addWorkbench.valid);" [disabled]="!addWorkbench.valid || disableWorkbenchBtn" [innerHtml]="workbenchBtnText"></button>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                  </div>      
+                    </div>
                 </div>
-              </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
-  </div>
+</div>
