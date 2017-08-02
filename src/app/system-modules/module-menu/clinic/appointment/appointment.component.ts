@@ -153,6 +153,7 @@ export class AppointmentComponent implements OnInit {
         })
             .subscribe(payload => {
                 this.filteredAppointments = this.appointments = payload.data;
+                console.log(this.filteredAppointments);
             })
     }
 
