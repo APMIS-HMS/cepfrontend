@@ -21,14 +21,14 @@ export class NewPriceComponent implements OnInit {
   services: CustomCategory[] = [];
   facility: Facility = <Facility>{};
   public frmNewprice: FormGroup;
-
+/*
   get service(): FormArray {
     return <FormArray>this.frmNewprice.get('service');
   }
   get price(): FormArray {
     return <FormArray>this.frmNewprice.get('price');
   }
-  
+  */
   constructor(private formBuilder: FormBuilder, private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
     private _locker: CoolSessionStorage, private servicePriceService: ServicePriceService) {
   }
@@ -47,10 +47,10 @@ export class NewPriceComponent implements OnInit {
   addNew() {
     this.frmNewprice = this.formBuilder.group({
       serviceCat: ['', [<any>Validators.required]],
-     // service: ['', [<any>Validators.required]],
-     service: this.formBuilder.array(['service'],<any>Validators.required),
-     price: this.formBuilder.array([],<any>Validators.required)
-     //price: [0.00, [<any>Validators.required]]
+       service: ['', [<any>Validators.required]],
+      //service: this.formBuilder.array(['service'],<any>Validators.required),
+      //price: this.formBuilder.array([],<any>Validators.required)
+      price: [0.00, [<any>Validators.required]]
     });
   }
 
