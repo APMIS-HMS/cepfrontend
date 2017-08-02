@@ -2,9 +2,9 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { Facility, User, Person, Address } from '../../../../../models/index';
+import { Facility, User, Person, Patient, Address } from '../../../../../models/index';
 import { 
-  FacilitiesService, CountriesService, GenderService, PersonService
+  FacilitiesService, CountriesService, GenderService, PersonService, PatientService
  } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -30,7 +30,8 @@ export class AddPersonComponent implements OnInit {
     private _facilityService: FacilitiesService,
     private _countryService: CountriesService,
     private _genderService: GenderService,
-    private _personService: PersonService
+    private _personService: PersonService,
+    private _patientService: PatientService
   ) { }
 
   ngOnInit() {
@@ -61,6 +62,12 @@ export class AddPersonComponent implements OnInit {
       const lgas = this.states.filter(x => x._id === val);
       this.lgas = lgas[0].lgs;
     });
+
+    this._patientService.receivePatient().subscribe((patient: Patient) => {
+      console.log(patient);
+      this._populatePersonForm(patient.personDetails);
+      this._personService.announcePerson(patient.personDetails);
+		});
   }
 
   onClickSavePerson(value: any, valid: boolean) {
@@ -84,12 +91,11 @@ export class AddPersonComponent implements OnInit {
       };
 
       this._personService.create(personModel).then((res) => {
-        console.log(res);
-        const age = new Date().getFullYear() - new Date(res.dateOfBirth).getFullYear();
-        res.age = age;
+        const modifyRes = this._getAge(res);
+        // Emit person as an event
+        this._personService.announcePerson(modifyRes);
         // Reset form and change button effect.
-        this._resetForm(res);
-        
+        this._resetForm();
       })
       .catch(err => { console.log(err); });
     } else {
@@ -97,8 +103,7 @@ export class AddPersonComponent implements OnInit {
     }
   }
 
-  private _resetForm(person: Person) {
-    this._personService.announcePerson(person);
+  private _resetForm() {
     this.disableSaveBtn = true;
     this.saveBtnText = "Save";
     this.newPersonForm.reset('firstName');
@@ -107,6 +112,25 @@ export class AddPersonComponent implements OnInit {
     this.newPersonForm.reset('gender');
     this.newPersonForm.reset('address');
     this.newPersonForm.reset('dob');
+  }
+
+  private _populatePersonForm(person: any): void {
+    this.newPersonForm.controls['firstName'].setValue(person.firstName);
+    this.newPersonForm.controls['lastName'].setValue(person.lastName);
+    this.newPersonForm.controls['phone'].setValue(person.phoneNumber);
+    this.newPersonForm.controls['gender'].setValue(person.genderId);
+    this.newPersonForm.controls['address'].setValue(person.homeAddress.street);
+    this.newPersonForm.controls['dob'].setValue(person.dateOfBirth);
+    this.newPersonForm.controls['nationality'].setValue(person.nationality._id);
+    this.newPersonForm.controls['state'].setValue(person.stateOfOriginId);
+    this.newPersonForm.controls['lga'].setValue(person.lgaOfOriginId);
+    this.disableSaveBtn = true;
+  }
+
+  private _getAge(data) {
+    const age = new Date().getFullYear() - new Date(data.dateOfBirth).getFullYear();
+    data.age = age;
+    return data;
   }
 
   private _getCountriesService() {
