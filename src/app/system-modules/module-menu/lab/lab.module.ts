@@ -5,6 +5,8 @@ import { SharedModule } from '../../../shared-module/shared.module';
 import { labRoutes } from './lab.routes';
 import { LabRequestsComponent } from './lab-requests/lab-requests.component';
 import {LabComponent } from './lab.component';
+import { WorkbenchComponent } from './workbench/workbench.component';
+import { RequestDetailComponent } from './lab-requests/request-detail/request-detail.component';
 
 @NgModule({
   imports: [
@@ -13,6 +15,6 @@ import {LabComponent } from './lab.component';
     SharedModule,
     MaterialModule
   ],
-  declarations: [LabRequestsComponent, LabComponent]
+  declarations: [LabRequestsComponent, LabComponent, WorkbenchComponent, RequestDetailComponent]
 })
 export class LabModule { }

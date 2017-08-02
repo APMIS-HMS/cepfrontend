@@ -17,6 +17,7 @@ th {
 td {
     vertical-align: center;
     text-align: center;
+    padding: 2px;
 }
 tr:hover {background-color: $tr-hover}
 tr:nth-child(even) {background-color: $tr-stripe}

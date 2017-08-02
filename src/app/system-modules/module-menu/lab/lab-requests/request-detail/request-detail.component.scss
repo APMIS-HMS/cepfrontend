@@ -1,4 +1,4 @@
-@import "../documentation.component.scss";
+@import "../../../patient-manager/patientmanager-detailpage/documentation/documentation.component.scss";
 
 .modal-baseWrap {
     position: relative;
@@ -12,7 +12,7 @@
 }
 .cont-wrap{
     width: 100%;
-    height: auto; 
+    height: auto;
     max-height: 95%;
     // overflow-y: auto;
 }
