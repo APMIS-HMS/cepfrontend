@@ -1,6 +1,21 @@
 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
+    <div class="survery">
+        <div class="container" id="container">
+            <div class="completion-meter">
+                <div class="completion-meter_step">
+                    <div class="first-chenck">
+                        <span class="completion-meter_icon completion-meter_icon-first-gradient">
+                            <i class="fa fa-2x fa-check-circle-o"></i>
+                        </span>   
+                    </div>
+                </div>
+                <div class="completion-meter_step completion-meter-moving">
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
         <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">

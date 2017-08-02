@@ -36,7 +36,7 @@
     font-size: 12px;
 }
 .list-div {
-    width: 100%;
+    width: 90%;
     border: 1px solid #eee;
     max-height: 200px;
     min-height: 150px;
@@ -56,4 +56,8 @@
 }
 .border-right {
     border-right: 1px solid #eee;
+}
+.mat-raised-button {
+    color: #fff;
+    padding:0 10px;
 }

@@ -2,3 +2,53 @@
 .text-center {
     text-align: center;
 }
+.completion-meter {
+    background: linear-gradient(90deg,#544bc2,#17afb8,#2f7b15);
+    height: 12px;
+    width: 100%;
+    position: relative;
+    border-radius: 2px;
+    margin:10px 0;
+}
+.completion-meter_step:first-child {
+    border: 0;
+}
+.completion-meter_step {
+    width: 14.28571%;
+    border-left: 2px solid #fff;
+    float: left;
+    z-index: 1;
+    position: relative;
+    height: calc(100% + 2px);
+    top: -1px;
+}
+.completion-meter_icon {
+    margin-bottom: 16px;
+}
+.completion-meter_icon--first-gradient {
+    color: #544bc2;
+    border-color: #544bc2;
+}
+.completion-meter_icon-first-child {
+    left: -1px;
+}
+.completion-meter_icon {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: -14px;
+    left: -4px;
+    border: 6px solid #fff;
+    //border-radius: 50%;
+    color: #7a8b98;
+    background-color: #fff;
+}
+.completion-meter_icon .fa{
+    color: #544bc2;
+    border-color: #544bc2;
+}
+#container {
+    padding-left:0;
+    margin-left:0;
+    width:99.5%;
+}

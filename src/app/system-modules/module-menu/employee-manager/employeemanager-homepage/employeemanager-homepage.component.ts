@@ -54,13 +54,15 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.data.subscribe(data => {
       data['employees'].subscribe((payload) => {
-        this.total = payload.total;
-        this.employees = payload.data;
-        console.log(this.employees);
+        if (payload !== null) {
+          this.total = payload.total;
+          this.employees = payload.data;
+        }
+
       });
     });
     this.pageInView.emit('Employee Manager');
-    this.facility = <Facility> this.locker.getObject('selectedFacility');
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
     // this.getEmployees(this.limit);
   }
   searchEmployees(searchText: string) {
