@@ -53,6 +53,7 @@ export class ScheduleFrmComponent implements OnInit {
     loadIndicatorVisible = false;
     loadingPatients = false;
     loadingProviders = false;
+    canCheckIn = false;
     subscription: Subscription;
     auth: any;
     currentDate: Date = new Date();
@@ -93,16 +94,18 @@ export class ScheduleFrmComponent implements OnInit {
             this.reason.setValue(payload.appointmentReason);
             this.type.setValue(payload.appointmentTypeId);
             this.category.setValue(payload.category);
+            this.status.setValue(payload.orderStatusId);
             if (payload.attendance !== undefined) {
                 this.checkIn.setValue(true);
             } else {
                 this.checkIn.setValue(false);
             }
+            this.isAppointmentToday();
         })
         this.dateCtrl.valueChanges.subscribe(value => {
             this.dateChange(value);
         })
-        this.checkIn = new FormControl(false);
+        this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
 
         this.patient = new FormControl('', [Validators.required]);
         this.filteredPatients = this.patient.valueChanges
@@ -219,10 +222,15 @@ export class ScheduleFrmComponent implements OnInit {
             })
     }
     isAppointmentToday() {
-        Observable.fromPromise(this.appointmentService.get(this.appointment._id, {}))
+        Observable.fromPromise(this.appointmentService
+            .find({ query: { _id: this.appointment._id, isAppointmentToday: true } })
             .subscribe(payload => {
-                console.log(payload);
-            });
+                if (payload.data.length > 0) {
+                    console.log(payload)
+                    this.checkIn.enable();
+                    // this.canCheckIn = true;
+                }
+            }))
     }
     announcePatient(value) {
         this.appointmentService.patientAnnounced(value);
@@ -484,18 +492,18 @@ export class ScheduleFrmComponent implements OnInit {
             const checkIn = this.checkIn.value;
             const date = this.date;
             const reason = this.reason.value;
-            const facility = this.selectedFacility;
+            const facility = this.locker.getObject('miniFacility');
 
-            delete facility.address;
-            delete facility.countryItem;
-            delete facility.departments;
-            delete facility.facilityClassItem;
-            delete facility.facilityItem;
-            delete facility.facilityModules;
-            delete facility.facilitymoduleId;
-            delete facility.logoObject;
-            delete facility.minorLocations;
-            delete facility.invitees;
+            // delete facility.address;
+            // delete facility.countryItem;
+            // delete facility.departments;
+            // delete facility.facilityClassItem;
+            // delete facility.facilityItem;
+            // delete facility.facilityModules;
+            // delete facility.facilitymoduleId;
+            // delete facility.logoObject;
+            // delete facility.minorLocations;
+            // delete facility.invitees;
 
             delete patient.appointments;
             delete patient.encounterRecords;
@@ -603,6 +611,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.checkIn.reset();
         this.date = new Date();
         this.reason.reset();
+        this.status.reset();
     }
 
     clickMe() {
