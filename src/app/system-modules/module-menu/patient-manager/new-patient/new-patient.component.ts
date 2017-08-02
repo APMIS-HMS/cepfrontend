@@ -615,6 +615,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         model.personId = this.selectedPerson._id;
         console.log(model);
         this.patientService.create(model).then(payload => {
+            this.facilityService.announceNotification({
+                type: 'Success',
+                text: this.selectedPerson.personFullName + " added successfully",
+                users: [this.facilityService.getLoginUserId()]
+            })
             this.close_onClick();
         }, error => {
             if (this.shouldMoveFirst !== true) {
@@ -632,7 +637,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     newEmp4(valid, val) {
         this.saveEmployee();
-        }
+    }
 
     onEmpTitleChange(val) { }
     onEmpGenderChange(val) { }

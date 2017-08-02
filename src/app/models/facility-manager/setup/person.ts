@@ -18,4 +18,5 @@ export interface Person {
     nextOfKin: any[];
     dateOfBirth: Date;
     profileImageObject: any;
+    personFullName:any;
 }

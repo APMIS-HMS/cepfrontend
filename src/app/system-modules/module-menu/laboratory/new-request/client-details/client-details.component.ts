@@ -19,7 +19,7 @@ export class ClientDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._personService.receivePerson().subscribe(person => {
+    this._personService.receivePerson().subscribe((person: Person) => {
       this.personDetails = person;
     });
   }
