@@ -17,10 +17,10 @@
                                     <md-input-container class="example-full-width">
                                         <input formControlName="workbenchName" mdInput placeholder="Workbench Name">
                                     </md-input-container>
-                                    <div class="text-center">
-                                        <button class="apmis-blue" md-raised-button>Add Workbench</button>
-                                    </div>
                                 </form>
+                                <div class="text-center">
+                                    <button class="apmis-blue" md-raised-button (click)="saveWorkbench(addWorkbench.value, addWorkbench.valid);" [disabled]="!addWorkbench.valid || disableWorkbenchBtn" [innerHtml]="workbenchBtnText"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
