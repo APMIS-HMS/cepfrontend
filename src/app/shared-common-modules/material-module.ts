@@ -30,6 +30,7 @@ import { ToastyModule } from 'ng2-toasty';
 import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import {KeysPipe } from './keypipe';
+import { PersonAccountComponent } from '../person-account/person-account.component';
 
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
@@ -43,7 +44,8 @@ import {KeysPipe } from './keypipe';
         ImageUpdateComponent,
         ApmisLookupComponent,
         InvestigationComponent,
-        KeysPipe
+        KeysPipe,
+        PersonAccountComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -87,7 +89,8 @@ import {KeysPipe } from './keypipe';
         ToastyModule,
         ApmisLookupComponent,
         InvestigationComponent,
-        KeysPipe
+        KeysPipe,
+        PersonAccountComponent
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
