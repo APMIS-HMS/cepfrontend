@@ -147,6 +147,7 @@ export class AppointmentComponent implements OnInit {
             });
         });
         this.loadIndicatorVisible = false;
+        console.log(clinicIds)
         this.appointmentService.find({
             query:
             { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
