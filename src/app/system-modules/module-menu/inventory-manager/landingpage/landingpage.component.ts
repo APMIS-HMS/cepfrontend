@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { InventoryService, ProductService } from '../../../../services/facility-manager/setup/index';
+import { InventoryService, ProductService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Facility, Inventory, Employee } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
@@ -35,24 +35,23 @@ export class LandingpageComponent implements OnInit {
     private inventoryService: InventoryService,
     private route: ActivatedRoute,
     private productService: ProductService,
-    private locker: CoolSessionStorage
+    private locker: CoolSessionStorage,
+    private employeeService: EmployeeService
   ) { }
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
-    this.loginEmployee = <Employee> this.locker.getObject('loginEmployee');
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
-    this.inventoryService.find({
-      query:
-      { facilityId: this.selectedFacility._id, storeId: this.checkingStore.typeObject.storeId, $limit: 200 }
-    })
-      .subscribe(payload => {
-        this.loading = false;
-        this.inventories = payload.data;
-        console.log(this.inventories);
-      });
+    if (this.checkingStore !== null && this.checkingStore.typeObject !== undefined) {
+      this.getInventories();
+    }
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      this.checkingStore = payload;
+      this.getInventories();
+    });
 
     const subscribeForCategory = this.searchControl.valueChanges
       .debounceTime(200)
@@ -69,7 +68,20 @@ export class LandingpageComponent implements OnInit {
     subscribeForCategory.subscribe((payload: any) => {
     });
   }
+  getInventories() {
+    if (this.checkingStore !== undefined && this.checkingStore.typeObject !== undefined) {
+      this.inventoryService.find({
+        query:
+        { facilityId: this.selectedFacility._id, storeId: this.checkingStore.typeObject.storeId, $limit: 200 }
+      })
+        .subscribe(payload => {
+          this.loading = false;
+          this.inventories = payload.data;
+          console.log(this.inventories);
+        });
+    }
 
+  }
   onSelectProduct(product) {
 
   }

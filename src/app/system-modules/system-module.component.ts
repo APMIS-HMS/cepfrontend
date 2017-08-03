@@ -50,6 +50,7 @@ export class SystemModuleComponent implements OnInit {
       this.selectedPerson = ppayload;
     });
     this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
       this.checkedInObject = payload;
     });
     this.personService.updateListener.subscribe((payload: Person) => {

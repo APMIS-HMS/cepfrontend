@@ -417,11 +417,13 @@ export class NewEmployeeComponent implements OnInit {
 
             this.personService.create(person).then(payload => {
                 this.selectedPerson = payload;
-                this.user.email = payload.email;
-                this.user.personId = payload._id;
+                this.user.email = this.selectedPerson.apmisId;
+                this.user.personId = this.selectedPerson._id;
                 this.user.facilitiesRole = [];
                 this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
-                this.userService.create(this.user).then((upayload) => {});
+                this.userService.create(this.user).then((upayload) => {
+                    console.log("Employee User created");
+                });
                 if (this.skipNok) {
                     this.saveEmployee();
                 }

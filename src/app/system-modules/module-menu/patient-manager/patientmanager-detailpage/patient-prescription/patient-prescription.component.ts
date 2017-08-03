@@ -8,7 +8,7 @@ import {
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed }
- from '../../../../../models/index';
+    from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 
@@ -62,6 +62,7 @@ export class PatientPrescriptionComponent implements OnInit {
     apmisLookupQuery = {};
     apmisLookupUrl = '';
     apmisLookupDisplayKey = '';
+    lookUpPlaceholder = "";
     authorizeRx = 'Authorize RX';
     disableAuthorizeRx = false;
 
@@ -90,7 +91,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this.employeeDetails = this._locker.getObject('loginEmployee');
         // Remove this when you are done
         this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
-
+        this.lookUpPlaceholder = "Drug";
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
         this.selectedValue = DurationUnits[1].name;
@@ -117,7 +118,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
 
         this.apmisLookupDisplayKey = 'details';
-        
+
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
             this.apmisLookupQuery = {
                 'searchtext': value,
