@@ -115,7 +115,9 @@
                                 </div>
                             </div>
                         </div> -->
-                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup> 
+                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" 
+                        [query]="apmisLookupQuery" [isSocket]="false" 
+                        [displayKey]="apmisLookupDisplayKey" [placeholder]="lookUpPlaceholder" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup> 
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <md-input-container>
