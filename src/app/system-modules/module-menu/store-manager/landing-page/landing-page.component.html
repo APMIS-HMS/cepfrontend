@@ -47,7 +47,7 @@
                     <td>{{store.description}}</td>
                     <td class="td-worspace">
                         <div class="workspace-count"> {{store.productTypeId.length}} Product Type(s)</div>
-                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                        <ul *ngIf="store.productTypeId.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
                             <li *ngFor="let storeType of store.productTypeId" class="workspace-listItem">
                                 <ng-container>
                                     <span>{{storeType?.details?.name}}</span>

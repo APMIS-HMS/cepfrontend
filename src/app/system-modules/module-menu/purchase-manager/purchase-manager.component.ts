@@ -37,8 +37,10 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
 
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
+        console.log('is true')
       this.modal_on = true;
     } else {
+      console.log('is false')
       let isOn = false;
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true) {
@@ -48,6 +50,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
           console.log(checkingObject)
+          
           console.log('sent');
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
