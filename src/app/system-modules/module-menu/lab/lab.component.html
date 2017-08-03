@@ -13,6 +13,11 @@
     <div class="inner-page-wrap">
 
       <div class="lhs inner-page-menuTab">
+        <div class="lTab-title">LABORATORY MANAGER</div>
+        <ul class="nav-group">
+            <li [class.navActive]="requestContentArea" (click)="navRequest()">Lab Requests</li>
+        </ul>
+          
         <div class="lTab-title">LABORATORY SETUP</div>
         <ul class="nav-group">
             <li [class.navActive]="workbenchContentArea" (click)="navWorkbench()">Workbench</li>
@@ -20,14 +25,10 @@
             <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
             <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li>
         </ul>
-
-        <div class="lTab-title">LABORATORY MANAGER</div>
-        <ul class="nav-group">
-            <li [class.navActive]="requestContentArea" (click)="navRequest()">Lab Requests</li>
-        </ul>
       </div>
 
       <app-lab-requests (pageInView)="pageInViewLoader($event)" *ngIf="requestContentArea" class="rhs inner-page-contentArea"></app-lab-requests> 
+      <app-workbench (pageInView)="pageInViewLoader($event)" *ngIf="workbenchContentArea" class="rhs inner-page-contentArea"></app-workbench> 
       <div class="clear"></div>
     </div> 
 </div>

@@ -23,8 +23,8 @@
               <div class="frm-l">
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" 
-                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
-                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
+                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient"
+                  isSocket="false" displayKey="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
 
@@ -36,8 +36,8 @@
 
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="investigation" [(ngModel)]="apmisLookupText" 
-                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Add Investigation"
-                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
+                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Add Investigation"
+                  isSocket="false" displayKey="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
               </div>

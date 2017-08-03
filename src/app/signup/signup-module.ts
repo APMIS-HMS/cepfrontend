@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacilitySetupComponent } from '../facility-setup/facility-setup.component';
-import { PersonAccountComponent } from '../person-account/person-account.component';
+// import { PersonAccountComponent } from '../person-account/person-account.component';
 import { CorporateSignupComponent } from '../corporate-signup/corporate-signup.component';
 import { SignupComponent } from '../signup/signup.component';
 import { LoginComponent } from '../login/login.component';
@@ -21,7 +21,7 @@ import { MaterialModule } from '../shared-common-modules/material-module';
     declarations: [
         SignupComponent,
         FacilitySetupComponent,
-        PersonAccountComponent,
+        // PersonAccountComponent,
         CorporateSignupComponent,
         SignupHomeComponent
     ],
