@@ -69,7 +69,6 @@ export class StoreCheckInComponent implements OnInit {
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
 		checkIn.storeId = value.room;
-		console.log(value)
 		checkIn.lastLogin = new Date();
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
@@ -86,23 +85,21 @@ export class StoreCheckInComponent implements OnInit {
 		this.loadIndicatorVisible = true;
 		this.employeeService.update(this.loginEmployee).then(payload => {
 			this.loginEmployee = payload;
-			// this.locker.setObject('loginEmployee', payload);
-			console.log(this.loginEmployee.storeCheckIn)
-			console.log(checkIn)
+			const workspaces = <any>this.locker.getObject('workspaces');
+			this.loginEmployee.workSpaces = workspaces;
+			this.locker.setObject('loginEmployee', payload);
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
 				if (itemi.storeId === checkIn.storeId) {
 					itemi.isOn = true;
 					keepCheckIn = itemi;
-					console.log('is correct')
 				}
 			});
 
 
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.loadIndicatorVisible = false;
-			console.log('sent from store checkin')
 			this.close_onClick();
 		});
 	}
