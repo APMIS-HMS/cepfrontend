@@ -24,3 +24,90 @@
     top: -13px;
     bottom: auto;
 }
+.sect-1 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.patientImg-wrap {
+    width: 29%;
+    border: 0.5px solid #eee;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.patientImg-wrap img{
+    width: 100%;
+}
+.sect1-content{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+.sect-inner{
+    width: 49.5%;
+    margin: 10px auto;
+}
+.txt-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;margin-bottom: 15px;
+}
+.txt-label{
+    font-size: 14px;
+    font-family: "Josefin Sans", sans-serif;
+    color: #8e8e8e;
+    width: 30%;
+}
+.txt-val{
+    font-size: 16px;
+    color: #333;
+    width: 69%;
+}
+.txt-val i{
+    color: #0288D1;
+}
+.lab-btn {
+    font-size: 12px;
+    border: 1px solid #03A9F4;
+    text-align: center;
+    padding: 2px;
+    cursor: pointer;
+}
+.lab-btn:hover {
+    background: #03A9F4;
+    color: #000;
+}
+.lab-btn i{
+    color: #333;
+    padding-right: 10px;
+}
+.pre-sects {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 12px;
+    background: #eee;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.status{
+    color: #ff2500;
+}
+.date {
+    color: #8e8e8e;
+}
+.empWrap{
+    justify-content: flex-start;
+}
+.modal-baseWrap{
+    height: auto;
+}
+.hasBg{
+    background: #f9f9f9;
+    padding: 2px 20px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
