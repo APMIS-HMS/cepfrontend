@@ -84,6 +84,7 @@ export class ScheduleFrmComponent implements OnInit {
     days: any[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     selectedAppointment: Appointment = <Appointment>{};
     btnText = 'Schedule Appointment';
+    clinicErrorMsg = ' Clinic does not hold on the selected date!!!';
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private patientService: PatientService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
@@ -142,10 +143,6 @@ export class ScheduleFrmComponent implements OnInit {
         //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
         this.category = new FormControl('', [Validators.required]);
-        // this.filteredCategoryServices = this.category.valueChanges
-        //     .startWith(null)
-        //     .map((type: any) => type && typeof type === 'object' ? type.name : type)
-        //     .map(val => val ? this.filterCategoryServices(val) : this.categoryServices.slice());
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
         this.primeComponent();
@@ -154,9 +151,6 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     addToast(msg: string) {
-        // Just add default Toast with title only
-
-        // Or create the instance of ToastOptions
         const toastOptions: ToastOptions = {
             title: 'My title',
             msg: msg,
@@ -201,7 +195,6 @@ export class ScheduleFrmComponent implements OnInit {
                     }
                 });
                 this.appointmentTypes = results[1].data;
-                // this.patients = results[2].data;
                 const schedules = results[5].data;
                 this.professions = results[2].data;
                 if (results[4].data.length > 0) {
@@ -214,7 +207,6 @@ export class ScheduleFrmComponent implements OnInit {
                         this.category.setValue(this.appointment.category);
                     }
                 }
-                // this.loginEmployee = results[4].data;
                 this.orderStatuses = results[6].data;
                 if (this.loginEmployee.professionObject.name === 'Doctor') {
                     this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
@@ -235,9 +227,7 @@ export class ScheduleFrmComponent implements OnInit {
             .find({ query: { _id: this.appointment._id, isAppointmentToday: true } })
             .subscribe(payload => {
                 if (payload.data.length > 0) {
-                    console.log(payload)
                     this.checkIn.enable();
-                    // this.canCheckIn = true;
                 }
             }))
     }
@@ -253,9 +243,6 @@ export class ScheduleFrmComponent implements OnInit {
                 this.schedules.push(itemi);
             });
             this.appointmentService.schedulesAnnounced(this.schedules);
-            console.log(clinic)
-            console.log(this.date)
-            // this.dateChange(this.date)
             this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
         }
     }
@@ -318,9 +305,6 @@ export class ScheduleFrmComponent implements OnInit {
             const filteredManangers = this.scheduleManagers.filter(x => x.clinicObject.clinic._id === itemc._id);
             if (filteredManangers.length > 0) {
                 itemc.schedules = filteredManangers[0].schedules;
-                // itemc.schedules.forEach((itemi, i) => {
-                //     // this.schedules.push(itemi);
-                // });
             }
         });
         if (this.appointment._id !== undefined) {
@@ -508,17 +492,6 @@ export class ScheduleFrmComponent implements OnInit {
             const reason = this.reason.value;
             const facility = this.locker.getObject('miniFacility');
 
-            // delete facility.address;
-            // delete facility.countryItem;
-            // delete facility.departments;
-            // delete facility.facilityClassItem;
-            // delete facility.facilityItem;
-            // delete facility.facilityModules;
-            // delete facility.facilitymoduleId;
-            // delete facility.logoObject;
-            // delete facility.minorLocations;
-            // delete facility.invitees;
-
             delete patient.appointments;
             delete patient.encounterRecords;
             delete patient.orders;
@@ -606,7 +579,6 @@ export class ScheduleFrmComponent implements OnInit {
     dateChange(event) {
         const dayNum = getDay(event);
         const day = this.days[dayNum];
-
         const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
         if (scheduleFiltered.length === 0) {
             this.dateCtrl.setErrors({ noValue: true });
@@ -617,15 +589,10 @@ export class ScheduleFrmComponent implements OnInit {
             const schedule: any = scheduleFiltered[0];
             this.date = setHours(this.date, getHours(schedule.startTime));
             this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-            // this.date = setDay(this.date, getDay(this.date));
-
-            console.log(schedule.startTime);
-            console.log(this.date)
         }
-        // console.log(scheduleFiltered)
-
-
-        this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+        if (this.selectedClinic._id !== undefined) {
+            this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+        }
     }
     newSchedule() {
         this.patient.reset();
