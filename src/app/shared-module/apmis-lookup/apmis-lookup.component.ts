@@ -27,6 +27,7 @@ import { Subject } from 'rxjs/Subject';
 export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Validator {
     @Input() displayKey = "";
     @Input() url = "";
+    @Input() placeholder = "";
     @Input() query = {};
     @Input() isSocket = false;
     @Output() selectedItem = new EventEmitter();

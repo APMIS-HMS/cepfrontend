@@ -17,9 +17,9 @@
             <div>
                 <div class="survery">
                     <md-input-container>
-                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'shortDate'" [mdDatepicker]="picker" placeholder="Choose a date" readonly>
+                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'short'" [mdDatepicker]="picker" placeholder="Choose a date" readonly>
                         <md-error *ngIf="dateCtrl.hasError('noValue')">
-                            Clinic does not hold on the selected date!!!
+                           {{clinicErrorMsg}}
                         </md-error>
                         <button mdSuffix [mdDatepickerToggle]="picker"></button>
                     </md-input-container>

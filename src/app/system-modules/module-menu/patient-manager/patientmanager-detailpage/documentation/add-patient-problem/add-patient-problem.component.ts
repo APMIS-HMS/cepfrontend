@@ -26,8 +26,6 @@ export class AddPatientProblemComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
-
-
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};

@@ -15,6 +15,7 @@ export class LabRequestsComponent implements OnInit {
 
   request_view = false;
   reqDetail_view = false;
+  personAcc_view = false;
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
@@ -41,7 +42,11 @@ export class LabRequestsComponent implements OnInit {
   reqDetail(){
     this.reqDetail_view = true;
   }
+  newPerson(){
+    this.personAcc_view = true;
+  }
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
+    this.personAcc_view = false;
   }
 }

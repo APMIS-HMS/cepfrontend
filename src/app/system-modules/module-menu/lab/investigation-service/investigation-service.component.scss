@@ -1,0 +1,28 @@
+@import '../lab-requests/lab-requests.component.scss';
+
+td{
+    padding: 5px;
+}
+.listWrap {
+    border: 1px solid #f8f8f8;
+    padding: 10px;
+    height: 187px;
+    overflow-y: auto;
+}
+.list-title {
+    font-size: 12px;
+    margin: 14px 0;
+}
+.list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.list-label{
+    width: 80%;
+    text-align: left;
+}
+td{
+    padding: 5px;
+}

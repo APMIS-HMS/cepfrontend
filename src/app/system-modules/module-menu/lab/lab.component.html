@@ -13,21 +13,25 @@
     <div class="inner-page-wrap">
 
       <div class="lhs inner-page-menuTab">
-        <div class="lTab-title">LABORATORY SETUP</div>
-        <ul class="nav-group">
-            <li [class.navActive]="workbenchContentArea" (click)="navWorkbench()">Workbench</li>
-            <li [class.navActive]="investigationContentArea" (click)="navInvestigation()">Investigation Service</li>
-            <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
-            <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li>
-        </ul>
-
         <div class="lTab-title">LABORATORY MANAGER</div>
         <ul class="nav-group">
             <li [class.navActive]="requestContentArea" (click)="navRequest()">Lab Requests</li>
         </ul>
+
+        <div class="lTab-title">LABORATORY SETUP</div>
+        <ul class="nav-group">
+            <li [class.navActive]="workbenchContentArea" (click)="navWorkbench()">Workbench</li>
+            <li [class.navActive]="investigationContentArea" (click)="navInvestigation()">Investigation</li>
+            <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
+            <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li>
+        </ul>
       </div>
 
       <app-lab-requests (pageInView)="pageInViewLoader($event)" *ngIf="requestContentArea" class="rhs inner-page-contentArea"></app-lab-requests> 
+      <app-workbench (pageInView)="pageInViewLoader($event)" *ngIf="workbenchContentArea" class="rhs inner-page-contentArea"></app-workbench> 
+      <app-investigation-service (pageInView)="pageInViewLoader($event)" *ngIf="investigationContentArea" class="rhs inner-page-contentArea"></app-investigation-service> 
+      <app-investigation-price (pageInView)="pageInViewLoader($event)" *ngIf="pricingContentArea" class="rhs inner-page-contentArea"></app-investigation-price> 
+      <app-panel (pageInView)="pageInViewLoader($event)" *ngIf="panelContentArea" class="rhs inner-page-contentArea"></app-panel> 
       <div class="clear"></div>
     </div> 
 </div>

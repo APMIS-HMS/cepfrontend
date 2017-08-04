@@ -99,6 +99,7 @@ export class ClinicScheduleComponent implements OnInit {
             readOnly: [true]
           })
         );
+        
       });
     } else {
       this.getClinicSchedules();
