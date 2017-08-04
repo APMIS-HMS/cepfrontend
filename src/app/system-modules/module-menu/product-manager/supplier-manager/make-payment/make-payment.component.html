@@ -11,37 +11,50 @@
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_supplierPayment.controls.amount.valid || frm_supplierPayment.controls.amount.pristine">
-              Kindly enter amount.
-            </small>
+                    <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.amount.valid || frm_supplierPayment.controls.amount.pristine">
+                      Kindly enter amount.
+                    </small>
                     <span class="frm-label">Amount</span>
-                    <input type="text" formControlName="amount" autocomplete="off">
+                    <input type="text" formControlName="amount" autocomplete="off">-->
+                    <md-input-container class="example-full-width">
+                     <input mdInput formControlName="amount" autocomplete="off" placeholder="Amount">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_supplierPayment.controls.payment_type.valid || frm_supplierPayment.controls.payment_type.pristine">
-              Kindly enter payment type.
-            </small>
-                    <span class="frm-label">Payment Type</span>
+                    <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.payment_type.valid || frm_supplierPayment.controls.payment_type.pristine">
+                    Kindly enter payment type.
+                    </small>
+                    <span class="frm-label">Payment Mode</span>
                     <select formControlName="payment_type">
-
-            </select>
+                    </select>-->
+                    <md-select placeholder="Payment Mode" name="food">
+                        <md-option *ngFor="let food of foods" [value]="food.value">
+                            {{food}}
+                        </md-option>
+                    </md-select>
                 </div>
             </div>
             <div class="sec-2">
                 
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
+                   <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
                         Kindly enter cheque.
                     </small>
                     <span class="frm-label">Cheque Number</span>
-                    <input type="text" formControlName="cheque_number">
+                    <input type="text" formControlName="cheque_number">-->
+                    <md-input-container class="example-full-width">
+                     <input mdInput formControlName="cheque_number" placeholder="Cheque Number">
+                    </md-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
+                   <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
                         Kindly enter transfer number.
                     </small>
                     <span class="frm-label">Transfer Number</span>
-                    <input type="text" formControlName="transfer_number">
+                    <input type="text" formControlName="transfer_number">-->
+                    <md-input-container class="example-full-width">
+                     <input mdInput formControlName="transfer_number" placeholder="Transfer Number">
+                    </md-input-container>
                 </div>
 
             </div>
