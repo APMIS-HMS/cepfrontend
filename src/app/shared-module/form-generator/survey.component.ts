@@ -12,6 +12,7 @@ export class SurveyComponent implements OnInit {
     surveyModel: any;
     constructor(private shareService: SharedService, private documentationService: DocumentationService) {
         this.shareService.newFormAnnounced$.subscribe((payload: any) => {
+            console.log(payload);
             this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(payload.json));
             Survey.Survey.cssType = 'bootstrap';
             Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
@@ -23,6 +24,7 @@ export class SurveyComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.json);
         this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
         Survey.Survey.cssType = 'bootstrap';
         Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });

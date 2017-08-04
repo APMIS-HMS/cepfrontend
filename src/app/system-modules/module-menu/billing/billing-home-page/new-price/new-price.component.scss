@@ -5,7 +5,7 @@
     font-size: 14px;
 }
 .modal-baseWrap {
-    width: 540px;
+    width: 625px;
 }
 .suggestionFeeds{
     width: 100%;
@@ -36,7 +36,7 @@
     font-size: 12px;
 }
 .list-div {
-    width: 90%;
+    width: 100%;
     border: 1px solid #eee;
     max-height: 200px;
     min-height: 150px;
@@ -60,4 +60,7 @@
 .mat-raised-button {
     color: #fff;
     padding:0 10px;
+}
+.mat-select{
+    width: 100%;
 }

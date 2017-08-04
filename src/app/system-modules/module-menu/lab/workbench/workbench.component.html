@@ -1,1 +1,144 @@
-workbench
+
+<div class="pg-subtitle">WORKBENCH</div>
+<div>
+  <div class="doc-mainWrap">
+    <div class="doc-contentArea">
+
+      <div class="clinicalNoteWrap">
+        <div class="actSect">
+          <div (click)="workbench_show()" class="act-wrap">
+              <i *ngIf="workbench_view" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="workbench_view" class="fa fa-plus" aria-hidden="true"></i>
+              <span>New Workbench</span>
+          </div>
+
+          <form class="frmNoteWrap" *ngIf="workbench_view" [formGroup]="frmNewWorkbench" novalidate>
+
+            <div class="frm-wrap">
+              <div class="frm-l">
+                <div class="frm-item-wrap">
+                  <apmis-lookup formControlName="minorLocations" [(ngModel)]="apmisLookupText" 
+                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Select Minor Location"
+                  isSocket="false" displayKey="apmisLookupDisplayKey" 
+                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                </div>
+              </div>
+              <div class="frm-r">
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                      <input mdInput placeholder="Bench Name" formControlName="benchName">
+                  </md-input-container>
+                </div>
+              </div>
+            </div>
+
+            <button (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="cta-1">
+              Create Workbench
+            </button>
+          </form>
+        </div>
+
+        <div class="tblWrapa" class="actSect">
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                  <th>
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Bench Name</span>
+                  </th>
+                  <th> 
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Location</span>
+                  </th>
+                  <th>
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Status</span>
+                  </th>
+                  <th>Date Created</th>
+                  <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Southern Workbench</td>
+                <td>Block D </td>
+                <td>Active</td>
+                <td>11th July, 2017.</td>
+                <td class="action-placeholder">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <div (click)="reqDetail()" class="action-item">
+                      <i class="fa fa-edit" aria-hidden="true"></i>
+                      <span>Edit</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                      <span>Delete</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-ban" aria-hidden="true"></i>
+                      <span>Deactivate</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>11th Jan, 2017.</td>
+                <td>
+                  <div class="empWrap">
+                    <div class="list-img">
+                        <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Johnson Wade</div>
+                  </div>
+                </td>
+                <td>Blood Test</td>
+                <td>Pending</td>
+                <td class="action-placeholder">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <div class="action-item">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      <span>View Request</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      <span>Take Sample</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      <span>Take Specimen</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-file-text" aria-hidden="true"></i>
+                      <span>Write Report</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+<div *ngIf="reqDetail_view" class="modal-overlay">
+    <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
+</div>
+ <div *ngIf="personAcc_view" class="modal-overlay">
+    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+</div> 

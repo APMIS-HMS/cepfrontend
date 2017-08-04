@@ -9,7 +9,6 @@ import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
-  // tslint:disable-next-line:use-host-property-decorator
   host: { '(document:click)': 'hostClick($event)' },
   styleUrls: ['./dashboard-home.component.scss']
 })
@@ -97,15 +96,14 @@ export class DashboardHomeComponent implements OnInit {
         this.loadIndicatorVisible = false;
         return Observable.of({})
       }
-
-
-
     }
     ).subscribe((results: any) => {
       console.log(results[0]);
       if (results[0] !== undefined) {
         this.loginEmployee = results[0];
+        console.log(this.loginEmployee)
         this.loginEmployee.workSpaces = results[1].data;
+        this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
 
         if (results[2].data.length > 0) {
           this.locker.setObject('miniFacility', results[2].data[0])

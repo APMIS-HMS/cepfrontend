@@ -15,6 +15,16 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import * as getDay from 'date-fns/get_day';
+import * as setDay from 'date-fns/set_day'
+import * as getHours from 'date-fns/get_hours';
+import * as setHours from 'date-fns/set_hours';
+
+import * as setMinutes from 'date-fns/set_minutes';
+import * as getMinutes from 'date-fns/get_minutes';
+import * as  getYear from 'date-fns/get_year';
+import * as  setYear from 'date-fns/set_year';
+import * as getMonth from 'date-fns/get_month';
+import * as setMonth from 'date-fns/set_month';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
@@ -115,10 +125,9 @@ export class ScheduleFrmComponent implements OnInit {
 
         this.clinic = new FormControl('', [Validators.required]);
         this.status = new FormControl('', [Validators.required]);
-        // this.filteredClinics = this.clinic.valueChanges
-        //     .startWith(null)
-        //     .map(clinic => clinic && typeof clinic === 'object' ? this.getOthers(clinic) : clinic)
-        //     .map(val => val ? this.filterClinics(val) : this.clinics.slice());
+        this.clinic.valueChanges.subscribe(clinic => {
+            this.getOthers(clinic);
+        });
 
         this.provider = new FormControl();
         this.filteredProviders = this.provider.valueChanges
@@ -238,12 +247,17 @@ export class ScheduleFrmComponent implements OnInit {
     }
     getOthers(clinic: any) {
         this.schedules = [];
-        this.selectedClinic = clinic;
-        clinic.schedules.forEach((itemi, i) => {
-            this.schedules.push(itemi);
-        });
-        this.appointmentService.schedulesAnnounced(this.schedules);
-        this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
+        if (clinic !== null) {
+            this.selectedClinic = clinic;
+            clinic.schedules.forEach((itemi, i) => {
+                this.schedules.push(itemi);
+            });
+            this.appointmentService.schedulesAnnounced(this.schedules);
+            console.log(clinic)
+            console.log(this.date)
+            // this.dateChange(this.date)
+            this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
+        }
     }
     getClinicMajorLocation() {
         this.locationService.findAll().then(payload => {
@@ -597,9 +611,20 @@ export class ScheduleFrmComponent implements OnInit {
         if (scheduleFiltered.length === 0) {
             this.dateCtrl.setErrors({ noValue: true });
             this.dateCtrl.markAsTouched();
-        }
+            this.date = event;
+        } else {
+            this.date = event;
+            const schedule: any = scheduleFiltered[0];
+            this.date = setHours(this.date, getHours(schedule.startTime));
+            this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+            // this.date = setDay(this.date, getDay(this.date));
 
-        this.date = event;
+            console.log(schedule.startTime);
+            console.log(this.date)
+        }
+        // console.log(scheduleFiltered)
+
+
         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
     }
     newSchedule() {

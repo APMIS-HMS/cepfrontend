@@ -62,13 +62,15 @@ export class ClinicalNoteComponent implements OnInit {
   }
   getForms() {
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
-    formType$.mergeMap(((formTypes: any) => Observable.
-      fromPromise(this.formService.find({
+    formType$.mergeMap(((formTypes: any) =>
+      Observable.fromPromise(this.formService.find({
         query: {
           $limit: 200, facilityId: this.selectedFacility._id,
-          typeOfDocumentId: formTypes.data[0]._id
+          typeOfDocumentId: formTypes.data[0]._id,
+          isSide: false
         }
-      }))))
+      }))
+    ))
       .subscribe((results: any) => {
         this.forms = results.data;
         console.log(this.forms)
@@ -78,6 +80,9 @@ export class ClinicalNoteComponent implements OnInit {
     this.selectedForm = form;
     this.showDocument = false;
     this.json = form.body;
+    console.log(this.json);
+    console.log(this.selectedForm)
+    console.log(this.forms)
     this.sharedService.announceNewForm({ json: this.json, form: this.selectedForm });
     this.showDocument = true;
   }

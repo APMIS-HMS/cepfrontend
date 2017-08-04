@@ -14,12 +14,17 @@
 
           <form class="frmNoteWrap" *ngIf="request_view" [formGroup]="frmNewRequest" novalidate>
 
+            <div class="labBtn-wrap">
+              <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Generate Apmis ID</div>
+            </div>
+            <div class="clear-r"></div>
+
             <div class="frm-wrap">
               <div class="frm-l">
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" 
-                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
-                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
+                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient"
+                  isSocket="false" displayKey="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
 
@@ -31,8 +36,8 @@
 
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="investigation" [(ngModel)]="apmisLookupText" 
-                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Add Investigation"
-                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
+                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Add Investigation"
+                  isSocket="false" displayKey="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
               </div>
@@ -170,3 +175,6 @@
 <div *ngIf="reqDetail_view" class="modal-overlay">
     <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
 </div>
+ <div *ngIf="personAcc_view" class="modal-overlay">
+    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+</div> 
