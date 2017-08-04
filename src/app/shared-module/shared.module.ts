@@ -12,6 +12,7 @@ import { AddFacilityModuleComponent } from '../facility-setup/add-facility-modul
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { ContactInfoComponent } from '../facility-setup/contact-info/contact-info.component';
 import { FacilitySetupComponent } from '../facility-setup/facility-setup.component';
+import { DragulaModule } from 'ng2-dragula';
 
 import { NgPipesModule } from 'ngx-pipes';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
@@ -62,6 +63,7 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
+        DragulaModule
     ],
     imports: [
         CommonModule,
@@ -74,6 +76,7 @@ import {
         InfiniteScrollModule,
         ImageCropperModule,
         MaterialModule,
+        DragulaModule
     ],
     providers: [StoreService]
 })
