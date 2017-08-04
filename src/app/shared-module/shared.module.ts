@@ -35,7 +35,6 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
 import { BillPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/bill-prescription/bill-prescription.component';
 import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from '../shared-common-modules/material-module';
-
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioButton
