@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./add-workbench.component.scss']
 })
 export class AddWorkbenchComponent implements OnInit {
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   addWorkbench: FormGroup;
   facility: Facility = <Facility>{};
   user: User = <User>{};
@@ -79,6 +80,9 @@ export class AddWorkbenchComponent implements OnInit {
 			type: type,
 			text: text
 		});
+  }
+  
+  onClickClose(e) {
+		 this.closeModal.emit(true);
 	}
-
 }

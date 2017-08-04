@@ -6,7 +6,7 @@
                     <div class="col-md-4 col-md-offset-4">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
+                                <a (click)="onClickClose($event);" aria-hidden="true" class="modal-close-ico">X</a>
                                 <legend class="modal_title">Add Workbench</legend>
                                 <form class="form form-signup" [formGroup]="addWorkbench" novalidate>
                                     <md-select placeholder="Select Lab Name" formControlName="labName">
