@@ -1,39 +1,37 @@
 
-<div class="pg-subtitle">WORKBENCH</div>
+<div class="pg-subtitle">INVESTIGATION PRICING</div>
 <div>
   <div class="doc-mainWrap">
     <div class="doc-contentArea">
 
       <div class="clinicalNoteWrap">
         <div class="actSect">
-          <div (click)="workbench_show()" class="act-wrap">
-              <i *ngIf="workbench_view" class="fa fa-minus" aria-hidden="true"></i>
-              <i [hidden]="workbench_view" class="fa fa-plus" aria-hidden="true"></i>
-              <span>New Workbench</span>
+          <div (click)="pricing_show()" class="act-wrap">
+              <i *ngIf="pricing_view" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="pricing_view" class="fa fa-plus" aria-hidden="true"></i>
+              <span>Set Price</span>
           </div>
 
-          <form class="frmNoteWrap" *ngIf="workbench_view" [formGroup]="frmNewWorkbench" novalidate>
+          <form class="frmNoteWrap" *ngIf="pricing_view" [formGroup]="frmNewPrice" novalidate>
 
             <div class="frm-wrap">
               <div class="frm-l">
                 <div class="frm-item-wrap">
-                  <apmis-lookup formControlName="minorLocations" [(ngModel)]="apmisLookupText" 
-                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Select Minor Location"
+                  <apmis-lookup formControlName="investigation" [(ngModel)]="apmisLookupText" 
+                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Select Investigation"
                   isSocket="false" displayKey="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
               </div>
-              <div class="frm-r">
-                <div class="frm-item-wrap">
-                  <md-input-container>
-                      <input mdInput placeholder="Bench Name" formControlName="benchName">
-                  </md-input-container>
-                </div>
+              <div class="frm-item-wrap">
+                <md-input-container>
+                    <input type="number" mdInput placeholder="Price" formControlName="price">
+                </md-input-container>
               </div>
             </div>
 
-            <button (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="cta-1">
-              Create Workbench
+            <button (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="cta-1">
+              Set Price
             </button>
           </form>
         </div>
@@ -45,12 +43,12 @@
                   <th>
                       <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                       <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Bench Name</span>
+                      <span style="padding-left: 3px;">Investigation</span>
                   </th>
                   <th> 
                       <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                       <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Location</span>
+                      <span style="padding-left: 3px;">Price</span>
                   </th>
                   <th>
                       <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -64,8 +62,8 @@
 
             <tbody>
               <tr>
-                <td>Southern Workbench</td>
-                <td>Block D </td>
+                <td>Siclosiindii Bricolli Level</td>
+                <td>&#x20a6; 2,000</td>
                 <td>Active</td>
                 <td>11th July, 2017.</td>
                 <td class="action-placeholder">
@@ -90,8 +88,8 @@
               </tr>
 
               <tr>
-                <td>Southern Workbench</td>
-                <td>Block D </td>
+                <td>Siclosiindii Bricolli Level</td>
+                <td>&#x20a6; 2,000</td>
                 <td>Active</td>
                 <td>11th July, 2017.</td>
                 <td class="action-placeholder">

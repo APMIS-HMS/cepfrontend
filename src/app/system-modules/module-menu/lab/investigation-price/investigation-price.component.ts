@@ -2,41 +2,42 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-workbench',
-  templateUrl: './workbench.component.html',
-  styleUrls: ['./workbench.component.scss']
+  selector: 'app-investigation-price',
+  templateUrl: './investigation-price.component.html',
+  styleUrls: ['./investigation-price.component.scss']
 })
-export class WorkbenchComponent implements OnInit {
+export class InvestigationPriceComponent implements OnInit {
 
   apmisLookupUrl = "";
   apmisLookupText = "";
   apmisLookupQuery = {};
   apmisLookupDisplayKey ="";
 
-  workbench_view = false;
+  pricing_view = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
-  public frmNewWorkbench: FormGroup;
+  public frmNewPrice: FormGroup;
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.frmNewWorkbench = this.formBuilder.group({
-      minorLocations: ['', [Validators.required]],
-      benchName: ['', [Validators.required]],
+    this.frmNewPrice = this.formBuilder.group({
+      price: ['', [Validators.required]],
+      investigation: ['', [Validators.required]],
     });
   }
 
   apmisLookupHandleSelectedItem(value){
 
   }
-  workbench_show() {
-    this.workbench_view = !this.workbench_view;
+  pricing_show() {
+    this.pricing_view = !this.pricing_view;
   }
   
   close_onClick(message: boolean): void {
     
   }
 }
+
