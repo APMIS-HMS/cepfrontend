@@ -49,7 +49,7 @@ export class DocumentationService {
     return this._socket.create(vital);
   }
   update(document: any) {
-    return this._socket.update(document._id, document);
+    return this._socket.update(document._id, document,{});
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);

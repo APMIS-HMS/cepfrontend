@@ -48,6 +48,7 @@ export class DocumentationComponent implements OnInit {
       doc.patientId = this.patient._id;
       console.log(doc);
       this.patientDocumentation.documentations.push(doc);
+      console.log(this.patientDocumentation);
       this.documentationService.update(this.patientDocumentation).then(pay => {
         console.log(pay);
         this.getPersonDocumentation();
