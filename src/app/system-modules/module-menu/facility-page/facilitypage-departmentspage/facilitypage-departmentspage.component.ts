@@ -56,6 +56,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     private route: ActivatedRoute,
     private locker: CoolSessionStorage) {
     this.facilityService.listner.subscribe(payload => {
+      console.log(payload)
       this.facilityObj = payload;
       this.getCurrentDepartment();
       this.deptsObj = payload.departments;
@@ -142,6 +143,8 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
         this.deptsObj = this.facilityObj.departments;
       });
     });
+
+   
 
     // this.getFacility();
     // this.facilityObj = this.facilityService.getSelectedFacilityId();

@@ -147,12 +147,14 @@ export class ScheduleFrmComponent implements OnInit {
         this.auth = <any>this.locker.getObject('auth');
         this.primeComponent();
 
-        this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+        if (this.selectedClinic._id !== undefined) {
+            this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+        }
     }
 
     addToast(msg: string) {
         const toastOptions: ToastOptions = {
-            title: 'My title',
+            title: 'Apmis',
             msg: msg,
             showClose: true,
             timeout: 5000,
@@ -208,6 +210,11 @@ export class ScheduleFrmComponent implements OnInit {
                     }
                 }
                 this.orderStatuses = results[6].data;
+                this.orderStatuses.forEach((item) => {
+                    if (item.name === 'Scheduled') {
+                        this.status.setValue(item);
+                    }
+                })
                 if (this.loginEmployee.professionObject.name === 'Doctor') {
                     this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
                     this.isDoctor = true;
@@ -243,7 +250,24 @@ export class ScheduleFrmComponent implements OnInit {
                 this.schedules.push(itemi);
             });
             this.appointmentService.schedulesAnnounced(this.schedules);
-            this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
+
+
+
+            const dayNum = getDay(this.date);
+            const day = this.days[dayNum];
+            const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
+            if (scheduleFiltered.length === 0) {
+                this.dateCtrl.setErrors({ noValue: true });
+                this.dateCtrl.markAsTouched();
+            } else {
+                const schedule: any = scheduleFiltered[0];
+                this.date = setHours(this.date, getHours(schedule.startTime));
+                this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+            }
+            if (this.selectedClinic._id !== undefined) {
+                this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
+            }
+
         }
     }
     getClinicMajorLocation() {
