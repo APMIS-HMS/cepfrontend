@@ -9,7 +9,6 @@ import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
-  // tslint:disable-next-line:use-host-property-decorator
   host: { '(document:click)': 'hostClick($event)' },
   styleUrls: ['./dashboard-home.component.scss']
 })
@@ -67,6 +66,9 @@ export class DashboardHomeComponent implements OnInit {
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
     }
+    this.facilityService.listner.subscribe(pay => {
+      this.facilityName = pay.name;
+    })
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     const auth = <any>this.locker.getObject('auth');
     if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
@@ -97,15 +99,14 @@ export class DashboardHomeComponent implements OnInit {
         this.loadIndicatorVisible = false;
         return Observable.of({})
       }
-
-
-
     }
     ).subscribe((results: any) => {
       console.log(results[0]);
       if (results[0] !== undefined) {
         this.loginEmployee = results[0];
+        console.log(this.loginEmployee)
         this.loginEmployee.workSpaces = results[1].data;
+        this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
 
         if (results[2].data.length > 0) {
           this.locker.setObject('miniFacility', results[2].data[0])

@@ -74,12 +74,19 @@ export class ConsultingRoomCheckinComponent implements OnInit {
         itemi.isDefault = false;
       }
     });
-    // this.loginEmployee = this.clinicHelperService.loginEmployee;
     this.loginEmployee.consultingRoomCheckIn.push(checkIn);
     this.employeeService.update(this.loginEmployee).then(payload => {
-      this.loginEmployee = payload;
+      this.loginEmployee.consultingRoomCheckIn = payload.consultingRoomCheckIn;
+      const workspaces = <any>this.locker.getObject('workspaces');
+      this.loginEmployee.workSpaces = workspaces;
       this.locker.setObject('loginEmployee', this.loginEmployee);
-      this.employeeService.announceCheckIn({ typeObject: checkIn, type: 'clinic' });
+      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true) {
+          itemr.isOn = true;
+          itemr.lastLogin = new Date();
+          this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
+        }
+      });
       this.close_onClick();
     });
   }
@@ -94,6 +101,8 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     });
     this.employeeService.update(this.loginEmployee).then(payload => {
       this.loginEmployee = payload;
+      const workspaces = <any>this.locker.getObject('workspaces');
+      this.loginEmployee.workSpaces = workspaces;
       this.locker.setObject('loginEmployee', this.loginEmployee);
       this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'clinic' });
       this.close_onClick();

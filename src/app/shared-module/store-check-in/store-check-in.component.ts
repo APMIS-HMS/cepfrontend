@@ -22,7 +22,7 @@ export class StoreCheckInComponent implements OnInit {
 	selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
 	stores: any[] = [];
 	locations: any[] = [];
-
+	loadIndicatorVisible = false;
 	constructor(public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
 		public facilityService: FacilitiesService,
@@ -35,11 +35,14 @@ export class StoreCheckInComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.loginEmployee.workSpaces.forEach(work => {
-			work.locations.forEach(loc => {
-				this.locations.push(loc.minorLocationId);
+		if (this.loginEmployee.workSpaces !== undefined) {
+			this.loginEmployee.workSpaces.forEach(work => {
+				work.locations.forEach(loc => {
+					this.locations.push(loc.minorLocationId);
+				})
 			})
-		})
+
+		}
 
 		this.storeCheckin = this.formBuilder.group({
 			location: ['', []],
@@ -78,16 +81,17 @@ export class StoreCheckInComponent implements OnInit {
 				itemi.isDefault = false;
 			}
 		});
-		// this.loginEmployee = this.clinicHelperService.loginEmployee;
 		this.loginEmployee.storeCheckIn.push(checkIn);
+		this.loadIndicatorVisible = true;
 		this.employeeService.update(this.loginEmployee).then(payload => {
 			this.loginEmployee = payload;
-
-
+			const workspaces = <any>this.locker.getObject('workspaces');
+			this.loginEmployee.workSpaces = workspaces;
+			this.locker.setObject('loginEmployee', payload);
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
-				if (itemi._id === checkIn._id) {
+				if (itemi.storeId === checkIn.storeId) {
 					itemi.isOn = true;
 					keepCheckIn = itemi;
 				}
@@ -95,7 +99,7 @@ export class StoreCheckInComponent implements OnInit {
 
 
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-
+			this.loadIndicatorVisible = false;
 			this.close_onClick();
 		});
 	}

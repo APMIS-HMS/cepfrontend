@@ -23,7 +23,7 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { SignupComponent } from './signup/signup.component';
 import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/services/clinic-helper.service';
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
-import { PersonAccountComponent } from './person-account/person-account.component';
+// import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
 // tslint:disable-next-line:max-line-length
@@ -49,7 +49,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
     ApmisCheckboxComponent
   ],
   exports: [
-    MaterialModule
+    MaterialModule, 
   ],
   imports: [
     BrowserModule,

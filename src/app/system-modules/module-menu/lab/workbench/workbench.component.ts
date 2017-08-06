@@ -13,27 +13,30 @@ export class WorkbenchComponent implements OnInit {
   apmisLookupQuery = {};
   apmisLookupDisplayKey ="";
 
-  request_view = false;
+  workbench_view = false;
+
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
-  public frmNewRequest: FormGroup;
+  public frmNewWorkbench: FormGroup;
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.frmNewRequest = this.formBuilder.group({
-      patient: ['', [Validators.required]],
-      labNo: ['', [Validators.required]],
-      majorLoc: ['', [Validators.required]],
-      minorLoc: ['', [Validators.required]]
+    this.frmNewWorkbench = this.formBuilder.group({
+      minorLocations: ['', [Validators.required]],
+      benchName: ['', [Validators.required]],
     });
   }
 
   apmisLookupHandleSelectedItem(value){
 
   }
-  request_show() {
-    this.request_view = !this.request_view;
+  workbench_show() {
+    this.workbench_view = !this.workbench_view;
+  }
+  
+  close_onClick(message: boolean): void {
+    
   }
 }

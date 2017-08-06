@@ -39,7 +39,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   selectedProfession: Profession = <Profession>{};
   clinic: Location = <Location>{};
-  patientId: any = <any>{};
+  patient: any = <any>{};
 
   isDoctor = false;
   counter = 0;
@@ -335,9 +335,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
   showVital(appointment) {
-    this.patientId = appointment.patientId;
     this.addVital = true;
     this.selectedCheckedInAppointment = appointment;
+    this.patientService.find({ query: { '_id': appointment.patientId } }).subscribe((payload: any) => {
+      this.patient = payload.data[0];
+    });
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

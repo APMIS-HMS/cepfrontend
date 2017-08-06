@@ -9,6 +9,9 @@ export class RequestDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   showDocument = false;
+  hasNo= false;
+  hasSample = false;
+  hasSpecimen = false;
 
   constructor() { }
 
@@ -17,6 +20,12 @@ export class RequestDetailComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+  }
+  takeSample(){
+    this.hasSample = true;
+  }
+  takeSpecimen(){
+    this.hasSpecimen = true;
   }
 
 }

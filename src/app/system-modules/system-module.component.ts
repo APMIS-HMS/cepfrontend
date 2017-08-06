@@ -50,10 +50,11 @@ export class SystemModuleComponent implements OnInit {
       this.selectedPerson = ppayload;
     });
     this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
       this.checkedInObject = payload;
     });
     this.personService.updateListener.subscribe((payload: Person) => {
-       auth = this.locker.getObject('auth');
+      auth = this.locker.getObject('auth');
       authData = auth.data;
       if (authData.personId === payload._id) {
         this.selectedPerson = payload;
@@ -64,6 +65,12 @@ export class SystemModuleComponent implements OnInit {
   ngOnInit() {
     const auth: any = this.locker.getObject('auth');
     this.authData = auth.data;
+  }
+
+  signOut() {
+    this.userService.logOut();
+    this.userService.announceMission('out');
+    this.userService.isLoggedIn = false;
   }
 
   success(text) {
