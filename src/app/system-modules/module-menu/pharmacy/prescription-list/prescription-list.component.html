@@ -42,10 +42,10 @@
 
                         <tbody>
                             <tr *ngIf="prescriptionLists.length===0 && !loading ">
-                                <td class="table-content " colspan="6 " style="text-align: center "> No data available in table</td>
+                                <td class="table-content " colspan="6" style="text-align: center "> No data available in table</td>
                             </tr>
                             <tr *ngIf="prescriptionLists.length===0 && loading ">
-                                <td class="table-content " colspan="6 " style="text-align: center ">
+                                <td class="table-content " colspan="6" style="text-align: center ">
                                     <md-spinner class="small-spinner"></md-spinner>
                                 </td>
                             </tr>
@@ -56,12 +56,9 @@
                                 <td class="table-content">{{prescription?.priorityObject?.name}}</td>
                                 <td class="table-content">{{prescription?.employeeName}}</td>
                                 <td class="table-content">
-                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Assessed</span>
-                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Dispensed</span>
-                                    <span *ngIf="false" style="color:forestgreen">Completely<br>Paid</span>
-                                    <span *ngIf="true" style="color:forestgreen">Partly<br>Assessed</span>
-                                    <span *ngIf="false" style="color:forestgreen">Partly<br>Dispensed</span>
-                                    <span *ngIf="false" style="color:forestgreen">Partly<br>Paid</span>
+                                    <span *ngIf="prescription.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
+                                    <span *ngIf="prescription.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
+                                    <span *ngIf="prescription.status == 'not'" style="color:crimson">Not<br>Assessed</span>
                                 </td>
                             </tr>
                         </tbody>

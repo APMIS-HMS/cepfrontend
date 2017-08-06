@@ -23,7 +23,7 @@
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();"> Save </button>
+            <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
         </div>
     </div>
     <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
@@ -74,13 +74,23 @@
                     <div class="prod-rowItem item4" style="text-align: right; display: block;">{{ prescription.quantity - prescription.quantityDispensed }}</div>
                     <div class="prod-rowItem item5" style="text-align: right; display: block;">&#x20A6;{{ prescription.cost }}</div>
                     <div class="prod-rowItem item6">
-                        <span *ngIf="prescription.paymentCompleted" style="width:100%; color:#2e7d32">Paid</span>
-                        <span *ngIf="!prescription.paymentCompleted" style="width:100%; color:red">Not paid</span>
+                        <div *ngIf="prescription.isExternal">
+                            <span style="width:100%;">External</span>
+                        </div>
+                        <div *ngIf="!prescription.isExternal">
+                            <span *ngIf="prescription.paymentCompleted" style="width:100%; color:#2e7d32">Paid</span>
+                            <span *ngIf="!prescription.paymentCompleted" style="width:100%; color:red">Not paid</span>
+                        </div>
                     </div>
                     <div class="prod-rowItem item7">
-                        <span *ngIf="prescription.quantity - prescription.quantityDispensed === 0" style="width: 100%; color:#2e7d32">Dispensed</span>
-                        <span *ngIf="(prescription.quantityDispensed >= 1) && (prescription.quantity - prescription.quantityDispensed !== 0)" style="width: 100%; color:mediumblue">Partly Dispensed</span>
-                        <span *ngIf="prescription.quantityDispensed === 0" style="width: 100%; color:red">Not Dispensed</span>
+                        <div *ngIf="prescription.isExternal">
+                            <span style="width:100%;">External</span>
+                        </div>
+                        <div *ngIf="!prescription.isExternal">
+                            <span *ngIf="prescription.quantity - prescription.quantityDispensed === 0" style="width: 100%; color:#2e7d32">Dispensed</span>
+                            <span *ngIf="(prescription.quantityDispensed >= 1) && (prescription.quantity - prescription.quantityDispensed !== 0)" style="width: 100%; color:mediumblue">Partly Dispensed</span>
+                            <span *ngIf="prescription.quantityDispensed === 0" style="width: 100%; color:red">Not Dispensed</span>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="prescription.isOpen===true && (selectedPrescription._id === prescription._id)" class="prodBatch-wrap animated flipInX">
@@ -156,7 +166,7 @@
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" style="padding: 20px 50px !important;"> Save </button>
+            <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
         </div>
     </div>
 </div>
