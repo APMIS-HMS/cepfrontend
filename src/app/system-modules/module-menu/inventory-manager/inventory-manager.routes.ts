@@ -17,7 +17,7 @@ const INVENTORYMODULES_ROUTES: Routes = [
                 // resolve: { loginEmployee: LoginEmployeeResolverService }
             },
             { path: 'stock-taking', component: StockTakingComponent },
-            { path: 'stock-transfer', component: StockTransferComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
+            { path: 'stock-transfer', component: StockTransferComponent },
             { path: 'stock-history', component: StockHistoryComponent },
             { path: 'receive-stock', component: ReceiveStockComponent, resolve: { loginEmployee: LoginEmployeeResolverService } },
             { path: 'requisition', component: RequisitionComponent },

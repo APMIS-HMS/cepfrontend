@@ -1,12 +1,12 @@
 <div class="np-mainwrap">
     <div class="topItemsWrap">
-        <div class="frm-item-wrap" style="width: 100%;">
-            <md-select class="example-full-width" placeholder="Request From" [formControl]="productsControl">
+        <div class="frm-item-wrap" style="width: 50%;">
+            <md-select class="example-full-width" (change)="flyout_toggle($event)" placeholder="Request From" [formControl]="productsControl">
                 <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
             </md-select>
         </div>
 
-        <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
+       <!-- <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>-->
     </div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
