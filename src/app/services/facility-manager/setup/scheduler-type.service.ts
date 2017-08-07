@@ -28,7 +28,7 @@ export class SchedulerTypeService {
   }
 
   findAll() {
-    return this._socket.find();
+    return this._rest.find();
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
