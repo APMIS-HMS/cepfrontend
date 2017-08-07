@@ -75,7 +75,7 @@ export class FacilityPageHomeComponent implements OnInit {
     this.hasMinorLocations = this.selectedFacility.minorLocations.length > 0 ? true : false;
   }
   getEmployees() {
-    this.employeeService.find({ query: { $limit: 1 } }).subscribe(payload => {
+    this.employeeService.find({ query: { $limit: 1 } }).then(payload => {
       if (payload.data.length > 0) {
         this.hasAssignedEmployees = true;
       }

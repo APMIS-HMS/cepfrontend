@@ -35,7 +35,6 @@ export class DocumentationComponent implements OnInit {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
-    console.log(this.selectedMiniFacility);
 
     this.sharedService.submitForm$.subscribe(payload => {
       const doc: PatientDocumentation = <PatientDocumentation>{};
@@ -43,7 +42,26 @@ export class DocumentationComponent implements OnInit {
         documentType: this.selectedForm,
         body: payload,
       };
-      doc.createdBy = this.loginEmployee;
+
+      //limit loginEmployee detail
+      const logEmp: any = this.loginEmployee;
+      delete logEmp.department;
+      delete logEmp.employeeFacilityDetails;
+      delete logEmp.role;
+      delete logEmp.units;
+      delete logEmp.consultingRoomCheckIn;
+      delete logEmp.storeCheckIn;
+      delete logEmp.unitDetails;
+      delete logEmp.professionObject;
+      delete logEmp.employeeDetails.countryItem;
+      delete logEmp.employeeDetails.homeAddress;
+      delete logEmp.employeeDetails.gender;
+      delete logEmp.employeeDetails.maritalStatus;
+      delete logEmp.employeeDetails.nationality;
+      delete logEmp.employeeDetails.nationalityObject;
+      delete logEmp.employeeDetails.nextOfKin;
+
+      doc.createdBy = logEmp;
       doc.facilityId = this.selectedMiniFacility;
       doc.patientId = this.patient._id;
       console.log(doc);
@@ -60,7 +78,6 @@ export class DocumentationComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.patient);
     this.getPersonDocumentation();
   }
   getPersonDocumentation() {
@@ -68,15 +85,8 @@ export class DocumentationComponent implements OnInit {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
-        // const pDocumentation: PatientDocumentation = <PatientDocumentation>{};
-        // pDocumentation.facilityId = this.selectedFacility;
-        // pDocumentation.patientId = this.patient._id;
-
-        // this.patientDocumentation.documentations = [];
-        // this.patientDocumentation.documentations.push(pDocumentation);
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {

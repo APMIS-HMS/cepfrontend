@@ -80,9 +80,6 @@ export class ClinicalNoteComponent implements OnInit {
     this.selectedForm = form;
     this.showDocument = false;
     this.json = form.body;
-    console.log(this.json);
-    console.log(this.selectedForm)
-    console.log(this.forms)
     this.sharedService.announceNewForm({ json: this.json, form: this.selectedForm });
     this.showDocument = true;
   }
