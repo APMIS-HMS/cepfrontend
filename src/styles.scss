@@ -16,6 +16,9 @@ ul {
     margin: 0;
     padding: 0;
 }
+input, select, textarea{
+    font-size: 12px;
+}
 /*
 input,
 select {
@@ -390,6 +393,8 @@ select {
 .mat-select {
     padding: 1.29688em 0;
     width: 90%;
+    font-size: 12px;
+    height: 20px;
 }
 
 .toggle-pass {

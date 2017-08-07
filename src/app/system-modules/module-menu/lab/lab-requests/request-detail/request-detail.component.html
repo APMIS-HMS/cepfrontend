@@ -32,7 +32,7 @@
           <div *ngIf="hasSpecimen" class="txt-val">Blood, Urine, Stool.</div>
           <div [hidden]="hasSpecimen" class="txt-val hasBg">
             <md-input-container>
-                <textarea mdInput placeholder="Specimens"></textarea>
+                <input mdInput>
             </md-input-container>
             <div (click)="takeSpecimen()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Take Specimen</div>
           </div>
@@ -54,11 +54,15 @@
         </div>
       </div>
       <div class="sect-inner">
+
         <div class="txt-wrap">
           <div class="txt-label">Lab Number</div>
-          <div *ngIf="hasNo" class="txt-val">LGF-2211-FG</div>
-          <div [hidden]="hasNo" class="txt-val">
-            <div class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Assign</div>
+          <div *ngIf="hasLabNo" class="txt-val">LGF-2211-FG</div>
+          <div [hidden]="hasLabNo" class="txt-val hasBg">
+            <md-input-container>
+                <input mdInput>
+            </md-input-container>
+            <div (click)="assignLabNo()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Assign</div>
           </div>
         </div>
 
@@ -77,6 +81,16 @@
         <div class="txt-wrap">
           <div class="txt-label">Source</div>
           <div class="txt-val">Continental Hospital - EMT Clinic</div>
+        </div>
+
+        <div class="txt-wrap">
+          <div class="txt-label"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></div>
+          <div class="txt-val">
+            <div (click)="showImageBrowseDlg()" class="action-item">
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+              <span>Upload Result</span>
+            </div>
+            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)" >
         </div>
       </div>
     </div>

@@ -134,6 +134,41 @@
 
             <tbody>
               <tr>
+                <td colspan="8">
+                    <div class="tbl-actionRow">
+                        <!-- <div class="tbl-title">Employee Workspace</div> -->
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                            <md-select placeholder="Status">
+                              <md-option [value]="Active">Active</md-option>
+                              <md-option [value]="Inactive">Inactive</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+
+              <tr>
                 <td>Siclosiindii Bricolli Level</td>
                 <td>Blood, Urine, Stool.</td>
                 <td>80 - 122 </td>

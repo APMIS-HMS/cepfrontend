@@ -34,6 +34,10 @@
     border: 0.5px solid #eee;
     padding: 20px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
 }
 .patientImg-wrap img{
     width: 100%;
@@ -44,7 +48,7 @@
     justify-content: space-between;
 }
 .sect-inner{
-    width: 49.5%;
+    width: 47%;
     margin: 10px auto;
 }
 .txt-wrap {
@@ -60,7 +64,7 @@
     width: 30%;
 }
 .txt-val{
-    font-size: 16px;
+    font-size: 14px;
     color: #333;
     width: 69%;
 }
@@ -73,6 +77,8 @@
     text-align: center;
     padding: 2px;
     cursor: pointer;
+    width: 124px;
+    margin: 0 auto;
 }
 .lab-btn:hover {
     background: #03A9F4;
@@ -105,9 +111,21 @@
     height: auto;
 }
 .hasBg{
-    background: #f9f9f9;
+    border: 1px solid #bebebe;
     padding: 2px 20px;
     padding-bottom: 10px;
     box-sizing: border-box;
     border-radius: 10px;
+}
+button, input{
+    font-size: 12px;
+}
+button{
+    color: #777;
+}
+.action-item{
+    border: 1px solid #777;
+    font-size: 12px;
+    width: 120px;
+    text-align: center;
 }

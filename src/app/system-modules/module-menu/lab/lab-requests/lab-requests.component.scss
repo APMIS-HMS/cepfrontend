@@ -48,6 +48,9 @@ tr:nth-child(even) {background-color: $tr-stripe}
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: #fff;
+    margin: 7px;
+    padding: 2px;
 }
 // .tbl-actionRow .tbl-title{
 //     position: absolute; 
@@ -107,7 +110,7 @@ td .empWrap .list-img{
     width: 150px;
     position: relative;
     padding: 8px;
-    font-size: 12px;
+    // font-size: 12px;
     text-align: center;
     color: #bebebe;
     display: flex;
@@ -119,6 +122,9 @@ td .empWrap .list-img{
 }
 .act-wrap:hover{
     border: 1px solid #bebebe;
+}
+.actSect{
+    width: 99%;
 }
 .benchWrap{
     position: relative;
@@ -136,7 +142,7 @@ td .empWrap .list-img{
     width: 100%;
 }
 .doc-mainWrap{
-    margin-top:0;
+    margin-top:5px;
 }
 .frmNoteWrap{
     position: relative;
@@ -161,6 +167,10 @@ td .empWrap .list-img{
 }
 .mat-input-container{
     width: 100%;
+}
+.mat-select{
+    width: 100%;
+    height: 40px;
 }
 .doc-mainWrap{
     min-height: auto;
@@ -191,4 +201,23 @@ td .empWrap .list-img{
 }
 select, input{
     width: 100%;
+}
+.txt-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 10px;
+}
+.txt-label{
+    font-size: 14px;
+    font-family: "Josefin Sans", sans-serif;
+    color: #8e8e8e;
+    width: 30%;
+}
+.txt-val{
+    font-size: 16px;
+    color: #333;
+    width: 69%;
 }

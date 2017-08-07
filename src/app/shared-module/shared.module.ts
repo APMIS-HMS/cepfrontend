@@ -36,6 +36,8 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
 import { BillPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/bill-prescription/bill-prescription.component';
 import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from '../shared-common-modules/material-module';
+import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
+import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioButton
@@ -47,6 +49,7 @@ import {
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
+        LabRequestsComponent, RequestDetailComponent
     ],
     exports: [
         LogoUpdateComponent,
@@ -63,7 +66,8 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
-        DragulaModule
+        DragulaModule,
+        LabRequestsComponent, RequestDetailComponent
     ],
     imports: [
         CommonModule,

@@ -63,6 +63,35 @@
             </thead>
 
             <tbody>
+
+              <tr>
+                <td colspan="6">
+                    <div class="tbl-actionRow">
+                        <!-- <div class="tbl-title">Employee Workspace</div> -->
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Bench Name"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                            <md-select placeholder="Status">
+                              <md-option [value]="Active">Active</md-option>
+                              <md-option [value]="Inactive">Inactive</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+
               <tr>
                 <td>Southern Workbench</td>
                 <td>Block D </td>

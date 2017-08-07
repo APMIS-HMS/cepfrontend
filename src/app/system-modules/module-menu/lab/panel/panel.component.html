@@ -12,7 +12,12 @@
               <span>Create Panel</span>
           </div>
 
-          <form class="frmNoteWrap" *ngIf="pannel_view" [formGroup]="frmNewInvestigationh" novalidate>
+          <form class="frmNoteWrap" *ngIf="pannel_view" [formGroup]="frmNewPanel" novalidate>
+            <div class="frm-item-wrap lone-input">
+              <md-input-container>
+                  <input mdInput placeholder="Panel Name" formControlName="panelName">
+              </md-input-container>
+            </div>
 
             <div class="frm-wrap">
               <div class="frm-l">
@@ -53,7 +58,7 @@
                       <div class="child-item">Breath Test</div>
                     </div>
                   </div>
-                  
+
                   <div class="panel-wrap">
                     <div class="list-item panel">
                       <div class="list-label">Tuberculosis Test Panel</div>
@@ -84,7 +89,7 @@
             </div>
 
             <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
-              Create Investigation
+              Create Panel
             </button>
           </form>
         </div>
@@ -96,27 +101,12 @@
                   <th>
                       <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                       <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Investigation Name</span>
+                      <span style="padding-left: 3px;">Panel Name</span>
                   </th>
                   <th>
                       <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                       <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Specimens</span>
-                  </th>
-                  <th> 
-                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Reference Value</span>
-                  </th>
-                  <th> 
-                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Unit</span>
-                  </th>
-                  <th> 
-                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Report Type</span>
+                      <span style="padding-left: 3px;">Composite Investigations/Panels</span>
                   </th>
                   <th>
                       <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -130,11 +120,28 @@
 
             <tbody>
               <tr>
+                <td colspan="6">
+                    <div class="tbl-actionRow">
+                        <!-- <div class="tbl-title">Employee Workspace</div> -->
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Panel"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                            <md-select placeholder="Status">
+                              <md-option [value]="Active">Active</md-option>
+                              <md-option [value]="Inactive">Inactive</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+              <tr>
                 <td>Siclosiindii Bricolli Level</td>
                 <td>Blood, Urine, Stool.</td>
-                <td>80 - 122 </td>
-                <td>mm</td>
-                <td>Text</td>
                 <td>Active</td>
                 <td>11th July, 2017.</td>
                 <td class="action-placeholder">
@@ -161,9 +168,6 @@
               <tr>
                 <td>Siclosiindii Bricolli Level</td>
                 <td>Blood, Urine, Stool.</td>
-                <td>80 - 122 </td>
-                <td>mm</td>
-                <td>Text</td>
                 <td>Active</td>
                 <td>11th July, 2017.</td>
                 <td class="action-placeholder">
