@@ -75,6 +75,22 @@ export class PrescriptionListComponent implements OnInit {
 				this.loading = false;
 				res.data.forEach(element => {
 					if(!element.isDispensed) {
+						let isBilledCount = 0;
+						let preItemCount = element.prescriptionItems.length;
+						element.prescriptionItems.forEach(preItem => {
+							if(preItem.isBilled) {
+								++isBilledCount;
+							}
+						});
+
+						if(isBilledCount === preItemCount) {
+							element.status = 'completely';
+						} else if(isBilledCount === 0) {
+							element.status = 'not';
+						} else {
+							element.status = 'partly';
+						}
+
 						this.tempPrescriptionLists.push(element);// temporary variable to search from.
 						this.prescriptionLists.push(element);
 					}

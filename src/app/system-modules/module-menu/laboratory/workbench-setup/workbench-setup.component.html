@@ -1,102 +1,74 @@
 <div class="preTbl-topItems-wrap">
     <ul class="topmenuwrap">
-        <li (click)="close_onClick()">
+        <li (click)="showModal()">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
             <span>Add Workbench</span>
         </li>
     </ul>
 </div>
-  
+
 <div class="">
-      <table class="points_table">
+    <table class="points_table">
         <thead>
-          <tr>
-            <th class="col-xs-4">Lab Name</th>
-            <th class="col-xs-4">Worknbench</th>
-            <th class="col-xs-4">Action</th>
-          </tr>
+            <tr>
+                <th class="col-xs-4">Lab Name</th>
+                <th class="col-xs-4">Worknbench</th>
+                <th class="col-xs-4">Action</th>
+            </tr>
         </thead>
         <tbody class="points_table_scrollbar">
-          <tr>
-              <td colspan="3">
-              <div class="survery">
-                <div class="col-sm-4">
-                  <md-select placeholder="Lab name" [(ngModel)]="selectedValue" name="food">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                        {{food.viewValue}}
-                      </md-option>
-                    </md-select>
-                </div>
-                <div class="col-sm-4">
-                  <md-select placeholder="workbench" [(ngModel)]="selectedValue" name="food">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                      {{food.viewValue}}
-                    </md-option>
-                  </md-select>
-                </div>
-              </div>
-              </td>
-          </tr>
-          <tr>
-            <td class="col-xs-4">
-              <div>lab name</div>
-            </td>
-            <td class="col-xs-4">
-              <div *ngIf="!editworksetup">Workbench name</div>
-              <div *ngIf="isMinorlocationedit">
-                <md-input-container class="example-full-width">
-                <input mdInput placeholder="Edit workbench">
-                </md-input-container>
-              </div>
-            </td>
-            <td class="col-xs-4">
-              <a><i class="fa fa-edit"></i></a>
-            </td>
-          </tr>     
-              <tr>
-            <td class="col-xs-4">
-              <div>Lab name</div>
-            </td>
-            <td class="col-xs-4">
-              <div>Workbench name</div>
-            </td>
-            <td class="col-xs-4">
-              <a><i class="fa fa-edit"></i></a>
-            </td>
-          </tr>           
-        </tbody>
-  </table>
-  </div>
-
-  <!-- add workbench -->
-  <div *ngIf = "openModal" class="survery">
-    <div class="cover-edit">
-    <form class="form-signin">
-        <div class="container">
-            <div class="row">
-              <div class="col-md-4 col-md-offset-4">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                  <a (click)="closeModal()" aria-hidden="true" class="modal-close-ico">X</a>
-                  <legend class="modal_title">Add Workbench</legend>
-                    <form class="form form-signup" role="form">
-                        <md-select placeholder="Select Lab Name" [(ngModel)]="selectedValue" name="food">
-                          <md-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                          </md-option>
-                        </md-select>
-                        <md-input-container class="example-full-width">
-                          <input mdInput placeholder="Workbench name">
-                        </md-input-container>
-                        <div class="text-center">
-                          <button class="apmis-blue" md-raised-button>Add</button>
+            <tr>
+                <td colspan="3">
+                    <div class="survery">
+                        <div class="col-sm-4">
+                            <md-select placeholder="Lab name">
+                                <md-option>
+                                    Lab name
+                                </md-option>
+                            </md-select>
                         </div>
-                    </form>
-                  </div>      
-                </div>
-              </div>
-            </div>
-        </div>
-    </form>
-    </div>
-  </div>
+                        <div class="col-sm-4">
+                            <md-select placeholder="workbench">
+                                <md-option>
+                                    workbench
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">
+                    <div>lab name</div>
+                </td>
+                <td class="col-xs-4">
+                    <div *ngIf="!editworksetup">Workbench name</div>
+                    <div *ngIf="isMinorlocationedit">
+                        <md-input-container class="example-full-width">
+                            <input mdInput placeholder="Edit workbench">
+                        </md-input-container>
+                    </div>
+                </td>
+                <td class="col-xs-4">
+                    <a><i class="fa fa-edit"></i></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">
+                    <div>Lab name</div>
+                </td>
+                <td class="col-xs-4">
+                    <div>Workbench name</div>
+                </td>
+                <td class="col-xs-4">
+                    <a><i class="fa fa-edit"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- add workbench -->
+<div *ngIf="openModal" class="survery">
+    <app-add-workbench (closeModal)="close_onClick($event)"></app-add-workbench>
+</div>

@@ -28,6 +28,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
         this.router.navigate(['/']);
       } else if (auth.data.corporateOrganisationId == null || auth.data.corporateOrganisationId === undefined) {
         const facilities = auth.data.facilitiesRole;
+        console.log(facilities)
         const facilityList = [];
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);

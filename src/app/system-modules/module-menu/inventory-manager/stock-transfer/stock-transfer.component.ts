@@ -52,16 +52,25 @@ export class StockTransferComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
-    this.route.data.subscribe(data => {
-      data['loginEmployee'].subscribe((payload) => {
-        this.loginEmployee = payload.loginEmployee;
-        this.newTransfer.facilityId = this.selectedFacility._id;
-        this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
-        this.newTransfer.inventoryTransferTransactions = [];
-        this.newTransfer.transferBy = this.loginEmployee._id;
-      });
-    });
+    console.log(this.checkingStore)
+
+    this.newTransfer.facilityId = this.selectedFacility._id;
+    this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
+    this.newTransfer.inventoryTransferTransactions = [];
+    this.newTransfer.transferBy = this.loginEmployee._id;
+
+
+    // this.route.data.subscribe(data => {
+    //   data['loginEmployee'].subscribe((payload) => {
+    //     this.loginEmployee = payload.loginEmployee;
+    //     this.newTransfer.facilityId = this.selectedFacility._id;
+    //     this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
+    //     this.newTransfer.inventoryTransferTransactions = [];
+    //     this.newTransfer.transferBy = this.loginEmployee._id;
+    //   });
+    // });
 
     this.addNewProductTables();
     this.getMyInventory();
@@ -84,7 +93,12 @@ export class StockTransferComponent implements OnInit {
         this.selectedInventoryTransactionType = typeResult.data[0];
         this.newTransfer.inventorytransactionTypeId = this.selectedInventoryTransactionType._id;
       }
-      this.stores = storeResult.data;
+      storeResult.data.forEach((store)=>{
+        if(store._id !== this.checkingStore.typeObject.storeId){
+          this.stores.push(store);
+        }
+      })
+      // this.stores = storeResult.data;
     });
   }
   getMyInventory() {

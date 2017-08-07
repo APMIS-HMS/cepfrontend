@@ -7,22 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./workbench-setup.component.scss']
 })
 export class WorkbenchSetupComponent implements OnInit {
-
-  openModal = false;
-
-   foods = [
-    {value: 'male', viewValue: 'name select'},
-    {value: 'female', viewValue: 'name select'},
-  ];
+  openModal: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
   }
-  close_onClick() {
+
+  showModal() {
     this.openModal = true;
   }
-  closeModal()  {
+
+  close_onClick(e) {
     this.openModal = false;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-
+import { CoolSessionStorage } from 'angular2-cool-storage';
+import { EmployeeService } from '../../../services/facility-manager/setup/index';
 @Component({
   selector: 'app-facility-page-home',
   templateUrl: './facility-page-home.component.html',
@@ -19,7 +20,16 @@ export class FacilityPageHomeComponent implements OnInit {
   workspaceContentArea = false;
   professionContentArea = false;
   dashboardContentArea = false;
-  constructor(private router: Router) {
+
+  selectedFacility: any;
+  hasModules = false;
+  hasDepartments = false;
+  hasUnits = false;
+  hasMinorLocations = false;
+  hasAssignedEmployees = false;
+  hasWorkSpaces = false;
+
+  constructor(private router: Router, private locker: CoolSessionStorage, private employeeService: EmployeeService) {
     router.events.subscribe((routerEvent: Event) => {
       this.checkRouterEvent(routerEvent);
     });
@@ -35,8 +45,40 @@ export class FacilityPageHomeComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
+    this.getModules();
+    this.getDepartments();
+    this.getUnits();
+    this.getMinorLocations();
+    this.getEmployees();
   }
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]);
+  }
+  getModules() {
+    this.hasModules = this.selectedFacility.facilitymoduleId.length > 0 ? true : false
+    console.log(this.selectedFacility)
+  }
+  getDepartments() {
+    this.hasDepartments = this.selectedFacility.departments.length > 0 ? true : false;
+  }
+  getUnits() {
+    if (this.selectedFacility.departments !== undefined) {
+      this.selectedFacility.departments.forEach((dept, d) => {
+        if (dept.units !== undefined && dept.units.length > 0) {
+          this.hasUnits = true;
+        }
+      })
+    }
+  }
+  getMinorLocations() {
+    this.hasMinorLocations = this.selectedFacility.minorLocations.length > 0 ? true : false;
+  }
+  getEmployees() {
+    this.employeeService.find({ query: { $limit: 1 } }).then(payload => {
+      if (payload.data.length > 0) {
+        this.hasAssignedEmployees = true;
+      }
+    })
   }
 }
