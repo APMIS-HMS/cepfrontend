@@ -7,6 +7,7 @@ import { PharmacyEmitterService } from '../../../../../services/facility-manager
 import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
 	 InventoryTransactionTypeService, DispenseCollectionDrugService, BillingService, InvoiceService,
 	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'app-noprescription',
@@ -182,6 +183,7 @@ export class NoprescriptionComponent implements OnInit {
 
 				// Empty the form
 				this.price = 0;
+				this.products = [];
 				this.batches = [];
 				this.noPrescriptionForm.controls['product'].setValue('');
 				this.noPrescriptionForm.controls['batchNumber'].setValue('');
@@ -261,14 +263,12 @@ export class NoprescriptionComponent implements OnInit {
 			this._dispenseCollectionDrugs.create(collectionDrugs)
 				.then(res => {
 					console.log(res);
-					// Build your billing service
 					// bill model
 					const billItemArray = [];
 					let totalCost = 0;
 					const clientDetails: any = <any>{};
 					this.prescriptions.forEach((element, i) => {
 						if(i === 0) {
-							
 							switch (element.client.toLowerCase()) {
 								case 'individual':
 									clientDetails.name = element.firstName + ' ' + element.lastName;
@@ -383,20 +383,25 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Search for products in the product service.
 	keyupSearch() {
-		this.noPrescriptionForm.controls['product'].valueChanges.subscribe(val => {
-			this.searchText = val;
-		});
+		this.searchText = this.noPrescriptionForm.controls['product'].value;
 
 		if (this.searchText.length > 2) {
 			this.products = [];
 			this.cuDropdownLoading = true;
-
 			if (this.storeId !== '') {
-				this._inventoryService.find({ query: { facilityId : this.facility._id, storeId: this.storeId.typeObject.storeId }})
-					.then(res => {
+				this.noPrescriptionForm.controls['product'].valueChanges
+					.debounceTime(1000)
+					.switchMap((term) => Observable.fromPromise(
+						this._inventoryService.find(
+							{ query: { 
+								facilityId : this.facility._id, 
+								storeId: this.storeId.typeObject.storeId 
+							}
+					}))).subscribe((res: any) => {
 						console.log(res);
 						// Get all products in the facility, then search for the item you are looing for.
-						const contains = res.data.filter(x => (x.totalQuantity > 0) && x.productObject.name.toLowerCase().includes(this.searchText.toLowerCase()));
+						let contains = res.data.filter(x => (x.totalQuantity > 0) && x.productObject.name.toLowerCase().includes(this.searchText.toLowerCase()));
+						
 						if (contains.length !== 0) {
 							this.products = contains;
 							this.batches = contains[0].transactions;
@@ -406,10 +411,6 @@ export class NoprescriptionComponent implements OnInit {
 							this.batches = [];
 							this.cuDropdownLoading = false;
 						}
-					})
-					.catch(err => {
-						this.cuDropdownLoading = false;
-						console.log(err);
 					});
 			} else {
 				this._facilityService.announceNotification({

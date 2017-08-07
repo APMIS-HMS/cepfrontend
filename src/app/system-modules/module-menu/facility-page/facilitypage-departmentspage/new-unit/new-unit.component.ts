@@ -12,6 +12,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 export class NewUnitComponent implements OnInit {
   @Input() department: Department;
   @Input() unit: any;
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   deptsObj: Department[] = [];
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -22,11 +23,9 @@ export class NewUnitComponent implements OnInit {
   btnText = 'CREATE UNIT';
 
   facilityObj: Facility = <Facility>{};
-
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   public frmNewUnit: FormGroup;
   clinicForm: FormGroup;
+  clinicsToDelele: any[] = [];
   constructor(private formBuilder: FormBuilder,
     private locker: CoolSessionStorage,
     public facilityService: FacilitiesService) { }
@@ -36,7 +35,6 @@ export class NewUnitComponent implements OnInit {
     this.addNew2();
     this.frmNewUnit.controls['unitParent'].valueChanges.subscribe(payload => {
       this.frmNewUnit.controls['isClinic'].valueChanges.subscribe(value => {
-        console.log(value);
         this.isClinic = value;
         if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0 && this.unit._id !== undefined) {
           this.addNew2();
@@ -59,6 +57,7 @@ export class NewUnitComponent implements OnInit {
       this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
       this.frmNewUnit.controls['unitAlias'].setValue(this.unit.shortName);
       this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
+      this.frmNewUnit.controls['_id'].setValue(this.unit._id);
       if (this.unit.clinics.length > 0) {
         this.frmNewUnit.controls['isClinic'].setValue(true);
         this.clinicForm.controls['clinicArray'] = new FormArray([]);
@@ -66,6 +65,8 @@ export class NewUnitComponent implements OnInit {
           (<FormArray>this.clinicForm.controls['clinicArray']).push(
             this.formBuilder.group({
               clinicName: [clinic.clinicName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+              _id: [clinic._id, []],
+              clinicCapacity: [clinic.clinicCapacity, []],
               'readonly': [true]
             })
           );
@@ -74,14 +75,15 @@ export class NewUnitComponent implements OnInit {
     } else {
       this.btnText = 'CREATE UNIT';
     }
+    this.clinicsToDelele = [];
   }
   addNew() {
     this.frmNewUnit = this.formBuilder.group({
       unitName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       unitAlias: ['', [<any>Validators.minLength(2)]],
       unitParent: ['', [<any>Validators.required]],
+      _id: [, []],
       isClinic: [false, []],
-      clinicCapacity: ['', []],
       unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
     });
 
@@ -93,6 +95,7 @@ export class NewUnitComponent implements OnInit {
       'clinicArray': this.formBuilder.array([
         this.formBuilder.group({
           clinicName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+          clinicCapacity: [0, []],
           'readonly': [false],
         })
       ])
@@ -100,6 +103,7 @@ export class NewUnitComponent implements OnInit {
   }
   onRemoveBill(clinic, i) {
     console.log(clinic);
+    this.clinicsToDelele.push(clinic.value);
     console.log(i);
     (<FormArray>this.clinicForm.controls['clinicArray']).controls.splice(i, 1);
     if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
@@ -124,6 +128,7 @@ export class NewUnitComponent implements OnInit {
             .push(
             this.formBuilder.group({
               clinicName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+              clinicCapacity: [0, []],
               'readonly': [false],
             })
             );
@@ -139,7 +144,10 @@ export class NewUnitComponent implements OnInit {
     }
   }
   newUnit(valid, val) {
+    console.log(valid)
+    console.log(val);
     if (valid) {
+      console.log();
       if (val.unitName === '' || val.unitName === ' ' || val.unitAlias === ''
         || val.unitAlias === ' ' || val.unitDesc === '' || val.unitDesc === ' ') {
         this.mainErr = false;
@@ -172,7 +180,70 @@ export class NewUnitComponent implements OnInit {
 
           this.mainErr = true;
         } else {
-          console.log(val);
+          let that = this;
+          const clinicList = [];
+          this.facilityObj.departments.forEach(function (item, i) {
+            if (item._id === val.unitParent) {
+              item.units.forEach((unit, u) => {
+                if (unit._id === val._id) {
+                  unit.name = val.unitName;
+                  unit.shortName = val.unitAlias;
+                  unit.description = val.unitDesc;
+                  console.log(unit);
+
+                  (<FormArray>that.clinicForm.controls['clinicArray'])
+                    .controls.forEach((itemi: any, i) => {
+                      console.log(itemi.value)
+                      let isExisting = false;
+                      unit.clinics.forEach((clinic, c) => {
+                        if (clinic._id === itemi.value._id) {
+                          isExisting = true;
+                          clinic.clinicName = itemi.value.clinicName;
+                          clinic.clinicCapacity = itemi.value.clinicCapacity;
+                          console.log(clinic)
+                        }
+                      });
+                      if (!isExisting) {
+                        console.log(itemi.value)
+                        unit.clinics.push(itemi.value);
+                        console.log(unit.clinics)
+                      }
+                    })
+                  let realClinics: any[] = [];
+                  if (that.clinicsToDelele.length > 0) {
+                    unit.clinics.forEach((clinic, k) => {
+                      let shouldDelete = false;
+                      that.clinicsToDelele.forEach((toDelete) => {
+                        if (clinic._id === toDelete._id) {
+                          shouldDelete = true;
+                        }
+                      })
+                      if (!shouldDelete) {
+                        realClinics.push(clinic)
+                      }
+                    })
+
+                    unit.clinics = realClinics;
+                    console.log(unit.clinics);
+
+                  }
+
+                }
+              })
+            }
+          });
+
+
+          //update here
+          this.facilityService.update(this.facilityObj).then((payload) => {
+            this.facilityObj = payload;
+            this.frmNewUnit.controls['isClinic'].reset(false);
+            this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
+            this.frmNewUnit.reset();
+            this.close_onClick();
+          })
+
+
         }
       }
     } else {

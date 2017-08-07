@@ -2,10 +2,11 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   DocumentationService, VitaLocationService, VitalRythmService, VitalPositionService,
-  EmployeeService
+  EmployeeService, FormsService, FacilitiesService, PatientService
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, Documentation, Employee } from '../../../../models/index';
+import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Rx';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
   styleUrls: ['./add-vitals.component.scss']
 })
 export class AddVitalsComponent implements OnInit {
-  @Input() patientId:  any = <any>{}
+  @Input() patient: any = <any>{};
   mainErr = true;
   errMsg = 'you have unresolved errors';
   vitalRythm: any[] = [];
@@ -31,6 +32,12 @@ export class AddVitalsComponent implements OnInit {
   bmi: number = <number>{};
   isWarning = false;
   bmiWarningMssg = "";
+  disableSaveBtn = false;
+  saveBtnText = "Add Vitals";
+  selectedForm: any = <any>{};
+  loginEmployee: Employee = <Employee>{};
+  selectedDocument: PatientDocumentation = <PatientDocumentation>{};
+  patientDocumentation: Documentation = <Documentation>{};
 
   public frmAddVitals: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -42,11 +49,17 @@ export class AddVitalsComponent implements OnInit {
     private _vitalPositionService: VitalPositionService,
     private _vitalRythmService: VitalRythmService,
     private _locker: CoolSessionStorage,
-    private _employeeService: EmployeeService) { }
+    private _employeeService: EmployeeService,
+    private _FormsService: FormsService,
+    private _PatientService: PatientService) {
+    this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
+  }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
+    this.getPersonDocumentation();
+    this.getForm();
     this._employeeService.find({
       query:
       {
@@ -84,13 +97,13 @@ export class AddVitalsComponent implements OnInit {
       if (this.bmi < 16) {
         this.bmiWarningMssg = "Severe Thinness";
         this.isWarning = true;
-      }else if (this.bmi >= 25 && this.bmi < 30) {
+      } else if (this.bmi >= 25 && this.bmi < 30) {
         this.bmiWarningMssg = "Overweight";
         this.isWarning = true;
-      }else if (this.bmi > 30) {
+      } else if (this.bmi > 30) {
         this.bmiWarningMssg = "Obese Class";
         this.isWarning = true;
-      }else {
+      } else {
         this.isWarning = false;
       }
     });
@@ -117,6 +130,47 @@ export class AddVitalsComponent implements OnInit {
     });
   }
 
+
+  getPersonDocumentation() {
+    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+      console.log(payload);
+      if (payload.data.length === 0) {
+        this.patientDocumentation.personId = this.patient.personDetails;
+        this.patientDocumentation.documentations = [];
+        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
+          this.patientDocumentation = pload;
+          console.log(this.patientDocumentation);
+        })
+      } else {
+        if (payload.data[0].documentations.length === 0) {
+          this.patientDocumentation = payload.data[0];
+        } else {
+          this.documentationService.find({
+            query:
+            {
+              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+            }
+          }).subscribe((mload: any) => {
+            if (mload.data.length > 0) {
+              this.patientDocumentation = mload.data[0];
+              console.log(this.patientDocumentation);
+            }
+          })
+        }
+      }
+
+    })
+  }
+
+  getForm() {
+    Observable.fromPromise(this._FormsService.find({ query: { title: 'Vitals' } }))
+      .subscribe((payload: any) => {
+        if (payload.data.length > 0) {
+          this.selectedForm = payload.data[0];
+        }
+      });
+  }
+
   getVitalPosition() {
     this._vitalPositionService.findAll().then(payload => {
       this.vitalPosition = payload.data;
@@ -140,6 +194,10 @@ export class AddVitalsComponent implements OnInit {
 
   addVitals(valid, value) {
     if (valid) {
+      this.disableSaveBtn = true;
+      this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
+      let isExisting = false;
+      console.log(this.patientDocumentation)
       const vitalValue: any = <any>{};
       this.pulseRate.pulseRateValue = this.frmAddVitals.controls['pulseRate'].value;
       this.pulseRate.location = this.frmAddVitals.controls['pulseLoc'].value;
@@ -160,19 +218,83 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
       console.log(vitalValue);
-      // this.documentation.facilityId = this.selectedFacility._id;
-      // this.documentation.patientId = this.patientId;
-      
-      // this.documentation.createdBy = this.loginedUser._id;
-      // console.log(this.loginedUser._id);
-      // this.documentation.document = vitalValue;
-      
-
-      this.documentationService.create(this.documentation).then(payload => {
-        this.frmAddVitals.reset();
-      }, error => {
-        console.log(error);
+      this.patientDocumentation.documentations.forEach(documentation => {
+        if (documentation.document.documentType._id === this.selectedForm._id) {
+          isExisting = true;
+          documentation.document.body.vitals.push({
+            pulseRate: this.pulseRate,
+            respiratoryRate: this.respiratoryRate,
+            temperature: this.temperature,
+            bodyMass: this.heightWeight,
+            bloodPressure: this.bloodPressure
+          })
+        }
       });
+      if (!isExisting) {
+        const doc: PatientDocumentation = <PatientDocumentation>{};
+        doc.facilityId = this.selectedFacility;
+        doc.createdBy = this.loginEmployee;
+        doc.patientId = this.patient._id;
+        doc.document = {
+          documentType: this.selectedForm,
+          body: {
+            vitals: []
+          }
+        }
+        doc.document.body.vitals.push({
+          pulseRate: this.pulseRate,
+          respiratoryRate: this.respiratoryRate,
+          temperature: this.temperature,
+          bodyMass: this.heightWeight,
+          bloodPressure: this.bloodPressure
+        });
+        this.patientDocumentation.documentations.push(doc);
+      }
+      this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+        this.patientDocumentation = payload;
+        this.frmAddVitals.reset();
+        this.disableSaveBtn = false;
+        this.saveBtnText = "Add Vitals";
+      })
+
     }
   }
+
+  // addVitals(valid, value) {
+  //   if (valid) {
+  //     const vitalValue: any = <any>{};
+  //     this.pulseRate.pulseRateValue = this.frmAddVitals.controls['pulseRate'].value;
+  //     this.pulseRate.location = this.frmAddVitals.controls['pulseLoc'].value;
+  //     this.pulseRate.rythm = this.frmAddVitals.controls['pulseRythm'].value;
+  //     this.respiratoryRate = this.frmAddVitals.controls['respiratoryRate'].value;
+  //     this.temperature = this.frmAddVitals.controls['temp'].value;
+  //     this.heightWeight.height = this.frmAddVitals.controls['height'].value;
+  //     this.heightWeight.weight = this.frmAddVitals.controls['weight'].value;
+  //     this.heightWeight.bmi = this.bmi;
+  //     this.bloodPressure.systolic = this.frmAddVitals.controls['systolicBp1'].value;
+  //     this.bloodPressure.diastolic = this.frmAddVitals.controls['diastolicBp1'].value;
+  //     this.bloodPressure.location = this.frmAddVitals.controls['diastolicBp1Loc'].value;
+  //     this.bloodPressure.position = this.frmAddVitals.controls['diastolicBp1Pos'].value;
+
+  //     vitalValue.pulseRate = this.pulseRate;
+  //     vitalValue.respiratoryRate = this.respiratoryRate;
+  //     vitalValue.temperature = this.temperature;
+  //     vitalValue.heightWeight = this.heightWeight;
+  //     vitalValue.bloodPressure = this.bloodPressure;
+  //     console.log(vitalValue);
+  //     // this.documentation.facilityId = this.selectedFacility._id;
+  //     // this.documentation.patientId = this.patientId;
+
+  //     // this.documentation.createdBy = this.loginedUser._id;
+  //     // console.log(this.loginedUser._id);
+  //     // this.documentation.document = vitalValue;
+
+
+  //     this.documentationService.create(this.documentation).then(payload => {
+  //       this.frmAddVitals.reset();
+  //     }, error => {
+  //       console.log(error);
+  //     });
+  //   }
+  // }
 }

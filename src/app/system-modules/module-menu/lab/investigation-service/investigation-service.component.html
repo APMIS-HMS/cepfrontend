@@ -1,0 +1,208 @@
+
+<div class="pg-subtitle">INVESTIGATION</div>
+<div>
+  <div class="doc-mainWrap">
+    <div class="doc-contentArea">
+
+      <div class="clinicalNoteWrap">
+        <div class="actSect">
+          <div (click)="investigation_show()" class="act-wrap">
+              <i *ngIf="investigation_view" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="investigation_view" class="fa fa-plus" aria-hidden="true"></i>
+              <span>New Investigation</span>
+          </div>
+
+          <form class="frmNoteWrap" *ngIf="investigation_view" [formGroup]="frmNewInvestigationh" novalidate>
+
+            <div class="frm-wrap">
+              <div class="frm-l">
+
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                      <input mdInput placeholder="Investigation Name" formControlName="investigationName">
+                  </md-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                      <input mdInput placeholder="Reference Value" formControlName="ref">
+                  </md-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                  <md-select formControlName="reportType" placeholder="Report Type">
+                    <md-option [value]="Text">Text</md-option>
+                    <md-option [value]="Numeric">Numeric</md-option>
+                  </md-select>
+                </div>
+
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                      <input mdInput placeholder="Unit" formControlName="unit">
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="frm-r">
+                <div class="list-title">SPECIMENS</div>
+                <div class="listWrap">
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Blood</div>
+                  </div>
+
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Urine</div>
+                  </div>
+
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Stool</div>
+                  </div>
+
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Sweat</div>
+                  </div>
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Blood</div>
+                  </div>
+
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Urine</div>
+                  </div>
+
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Stool</div>
+                  </div>
+
+                  <div class="list-item">
+                    <md-checkbox class="check-list"></md-checkbox>
+                    <div class="list-label">Sweat</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
+              Create Investigation
+            </button>
+          </form>
+        </div>
+
+        <div class="tblWrapa" class="actSect">
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                  <th>
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Investigation Name</span>
+                  </th>
+                  <th>
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Specimens</span>
+                  </th>
+                  <th> 
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Reference Value</span>
+                  </th>
+                  <th> 
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Unit</span>
+                  </th>
+                  <th> 
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Report Type</span>
+                  </th>
+                  <th>
+                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                      <span style="padding-left: 3px;">Status</span>
+                  </th>
+                  <th>Date Created</th>
+                  <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Siclosiindii Bricolli Level</td>
+                <td>Blood, Urine, Stool.</td>
+                <td>80 - 122 </td>
+                <td>mm</td>
+                <td>Text</td>
+                <td>Active</td>
+                <td>11th July, 2017.</td>
+                <td class="action-placeholder">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <div (click)="reqDetail()" class="action-item">
+                      <i class="fa fa-edit" aria-hidden="true"></i>
+                      <span>Edit</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                      <span>Delete</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-ban" aria-hidden="true"></i>
+                      <span>Deactivate</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Siclosiindii Bricolli Level</td>
+                <td>Blood, Urine, Stool.</td>
+                <td>80 - 122 </td>
+                <td>mm</td>
+                <td>Text</td>
+                <td>Active</td>
+                <td>11th July, 2017.</td>
+                <td class="action-placeholder">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <div (click)="reqDetail()" class="action-item">
+                      <i class="fa fa-edit" aria-hidden="true"></i>
+                      <span>Edit</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                      <span>Delete</span>
+                    </div>
+
+                    <div class="action-item">
+                      <i class="fa fa-ban" aria-hidden="true"></i>
+                      <span>Deactivate</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+<div *ngIf="reqDetail_view" class="modal-overlay">
+    <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
+</div>
+ <div *ngIf="personAcc_view" class="modal-overlay">
+    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+</div> 

@@ -130,9 +130,7 @@
         </div>
       </div>
 
-      <div (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1">
-        ADD Vitals
-      </div>
+      <button [disabled]="!frmAddVitals.valid || diabledSaveBtn" (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1" [innerHtml]="saveBtnText"></button>
 
     </form>
   </div>
