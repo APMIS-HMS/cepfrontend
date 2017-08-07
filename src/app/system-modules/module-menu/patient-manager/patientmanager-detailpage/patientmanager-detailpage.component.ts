@@ -116,7 +116,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.employeeDetails = this.loginEmployee;
       this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
         this.documentations = payloadPatient.data;
-        this.setGraph();
       }, error => {
       });
       this.getCurrentUser();
@@ -154,12 +153,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
               if (isOnList.length > 0) {
                 const isOn = isOnList[0];
                 const checkingObject = this.locker.getObject('checkingObject');
-                // const minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
-                // if (minorLocationList.length > 0) {
-                //   this.clinicInteraction.locationName = minorLocationList[0].name;
-                //   this.clinicInteraction.startAt = new Date();
-                //   this.clinicInteraction.employee = this.loginEmployee.employeeDetails;
-                // }
               }
             }
           });
@@ -168,125 +161,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       }
 
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // this.route.data.subscribe(data => {
-    //   console.log(data);
-    //   data['patient'].subscribe(payload => {
-    //     this.patient = payload;
-    //     this.patientDetails = payload;
-    //     this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
-    //       this.documentations = payloadPatient.data;
-    //       this.setGraph();
-    //     }, error => {
-    //       console.log(error);
-    //     });
-    //     this.getCurrentUser();
-    //   });
-
-    //   data['loginEmployee'].subscribe(payload => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //     this.minorLocationList = payload.clinicLocations;
-    //     this.employeeDetails = payload.loginEmployee;
-
-    //     if (payload.loginEmployee !== undefined) {
-
-    //       this.route.params.subscribe(payloadk => {
-    //         if (payloadk['checkInId'] !== undefined) {
-    //           console.log(1)
-    //           const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
-    //           if (isOnList.length > 0) {
-    //             console.log(2)
-    //             const isOnObj = isOnList[0];
-    //             isOnObj.isOn = true;
-    //             this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
-    //               this.loginEmployee = payloadu;
-    //               if (data['appointment'] !== null) {
-    //                 console.log(3)
-    //                 data['appointment'].subscribe(payloada => {
-    //                   this.selectedAppointment = payloada;
-    //                   if (this.selectedAppointment !== undefined) {
-    //                     console.log(4)
-    //                     const isOnList = payload.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
-    //                     if (isOnList.length > 0) {
-    //                       console.log(7)
-    //                       const isOn = isOnList[0];
-    //                       const minorLocationList = payload.clinicLocations.filter(x => x._id === isOn.minorLocationId);
-    //                       if (minorLocationList.length > 0) {
-    //                         console.log(8)
-    //                         this.clinicInteraction.locationName = minorLocationList[0].name;
-    //                         this.clinicInteraction.startAt = new Date();
-    //                         this.clinicInteraction.employee = this.loginEmployee.employeeDetails;
-    //                       }
-    //                     }
-    //                   }
-    //                 }, error => {
-    //                   this.router.navigateByUrl(this.previousUrl);
-    //                 });
-    //               }
-    //             });
-    //           }
-
-    //         }
-
-    //       });
-
-
-    //     }
-    //   });
-    // });
   }
-
-  setGraph() {
-    // for (let i = 0; i < this.documentations.length; i++) {
-    //   this.timeVal = this.documentations[i].createdAt;
-    //   const temp = {
-    //     temperature: i,
-    //     0: this.documentations[i].document.temperature
-    //   };
-    //   this.tempChart.push(temp);
-    //   const bp = {
-    //     DiastolicSystolic: i,
-    //     0: this.documentations[i].document.bloodPressure.diastolic,
-    //     1: this.documentations[i].document.bloodPressure.systolic
-    //   };
-    //   this.bpChart.push(bp);
-    //   const wH = {
-    //     WH: i,
-    //     0: this.documentations[i].document.heightWeight.bmi,
-    //     1: this.documentations[i].document.heightWeight.weight,
-    //     2: this.documentations[i].document.heightWeight.height,
-    //   };
-    //   this.wHChart.push(wH);
-    //   const rR = {
-    //     RespiratoryRate: i,
-    //     0: this.documentations[i].document.respiratoryRate
-    //   };
-    //   this.rRChart.push(rR);
-
-    //   const pR = {
-    //     PulseRate: i,
-    //     0: this.documentations[i].document.pulseRate.pulseRateValue
-    //   };
-    //   this.pRChart.push(pR);
-    // }
-  }
-
   getForms() {
     this.formsService.findAll().then(payload => {
       this.json = payload.data[0].body;

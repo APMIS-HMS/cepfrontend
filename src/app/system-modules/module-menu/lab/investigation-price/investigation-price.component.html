@@ -62,6 +62,27 @@
 
             <tbody>
               <tr>
+                <td colspan="6">
+                    <div class="tbl-actionRow">
+                        <!-- <div class="tbl-title">Employee Workspace</div> -->
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                            <md-select placeholder="Status">
+                              <md-option [value]="Active">Active</md-option>
+                              <md-option [value]="Inactive">Inactive</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+
+              <tr>
                 <td>Siclosiindii Bricolli Level</td>
                 <td>&#x20a6; 2,000</td>
                 <td>Active</td>
@@ -121,10 +142,3 @@
 
   
 </div>
-
-<div *ngIf="reqDetail_view" class="modal-overlay">
-    <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
-</div>
- <div *ngIf="personAcc_view" class="modal-overlay">
-    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
-</div> 

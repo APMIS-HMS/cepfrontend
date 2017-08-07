@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer, ElementRef, ViewChild  } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./lab-requests.component.scss']
 })
 export class LabRequestsComponent implements OnInit {
+
+  @ViewChild('fileInput') fileInput:ElementRef;
 
   apmisLookupUrl = "";
   apmisLookupText = "";
@@ -21,7 +23,7 @@ export class LabRequestsComponent implements OnInit {
 
   public frmNewRequest: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private renderer:Renderer) { }
 
   ngOnInit() {
     this.frmNewRequest = this.formBuilder.group({
@@ -31,6 +33,13 @@ export class LabRequestsComponent implements OnInit {
       diagnosis: ['', [Validators.required]],
       investigation: ['', [Validators.required]]
     });
+  }
+
+  showImageBrowseDlg() {
+    this.fileInput.nativeElement.click()
+  }
+  onChange(){
+    //upload file
   }
 
   apmisLookupHandleSelectedItem(value){

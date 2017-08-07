@@ -19,16 +19,13 @@ export class PanelComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
-  public frmNewInvestigationh: FormGroup;
+  public frmNewPanel: FormGroup;
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.frmNewInvestigationh = this.formBuilder.group({
-      investigationName: ['', [Validators.required]],
-      ref: ['', [Validators.required]],
-      reportType: ['', [Validators.required]],
-      unit: ['', [Validators.required]],
+    this.frmNewPanel = this.formBuilder.group({
+      panelName: ['', [Validators.required]]
     });
   }
 

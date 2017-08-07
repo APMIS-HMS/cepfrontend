@@ -47,25 +47,16 @@
                     <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
                     <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                     <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
-                    <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
-                    <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List</div>
-                    <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
-                </div>
-                <div class="menu-sect">
-                    <div (click)="menuImages_click()" [class.active-menuItem]="menuImages" class="menu-item">Images</div>
-                    <div (click)="menuForms_click()" [class.active-menuItem]="menuForms" class="menu-item">Forms</div>
+                    <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Payment</div>
                 </div>
                 <div class="menu-sect">
                     <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
                     <div (click)="menuImaging_click()" [class.active-menuItem]="menuImaging" class="menu-item">Imaging</div>
                 </div>
                 <div class="menu-sect">
-                    <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescriptions</div>
-                    <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Plan</div>
-                </div>
-                <div class="menu-sect">
-                    <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Billing</div>
-                    <div (click)="menuPharmacy_click()" [class.active-menuItem]="menuPharmacy" class="menu-item">Pharmacy</div>
+                    <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
+                    <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List</div>
+                    <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
                 </div>
             </div>
         </div>
@@ -77,7 +68,7 @@
             <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
             <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
-            <app-patient-laboratory *ngIf="menuLab"></app-patient-laboratory>    
+            <app-lab-requests *ngIf="menuLab"></app-lab-requests>    
         </div>
 
         <div *ngIf="addVitalsPop" class="modal-overlay">

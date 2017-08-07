@@ -99,7 +99,7 @@ export class ClinicScheduleComponent implements OnInit {
             readOnly: [true]
           })
         );
-        
+
       });
     } else {
       this.getClinicSchedules();
@@ -123,12 +123,11 @@ export class ClinicScheduleComponent implements OnInit {
     });
   }
   getSchedulerType() {
-    this.schedulerTypeService.findAll().then(payload => {
-      payload.data.forEach((itemi, i) => {
-        if (itemi.name === 'Clinic') {
-          this.selectedSchedulerType = itemi;
-        }
-      });
+    this.schedulerTypeService.find({ query: { name: 'Clinic' } }).then(payload => {
+      console.log(payload)
+      if (payload.data.length > 0) {
+        this.selectedSchedulerType = payload.data[0];
+      }
     });
   }
   getClinicLocation() {
@@ -185,6 +184,7 @@ export class ClinicScheduleComponent implements OnInit {
           itemi.value.endTime = endTime;
           this.selectedManager.schedules.push(itemi.value);
         });
+      console.log(this.selectedManager);
       this.schedulerService.update(this.selectedManager).then(payload => {
         this.selectedManager = payload;
         this.loadManagerSchedules(true);
@@ -208,6 +208,7 @@ export class ClinicScheduleComponent implements OnInit {
           itemi.value.endTime = endTime;
           manager.schedules.push(itemi.value);
         });
+      console.log(manager);
       this.schedulerService.create(manager).subscribe(payload => {
         this.selectedManager = payload;
         this.loadManagerSchedules(true);

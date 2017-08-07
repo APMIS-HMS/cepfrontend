@@ -87,12 +87,12 @@ const appRoutes: Routes = [
                 path: 'pharmacy',
                 loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
             },
+            // {
+            //     path: 'laboratory',
+            //     loadChildren: '../module-menu/laboratory/laboratory.module#LaboratoryModule'
+            // },
             {
                 path: 'laboratory',
-                loadChildren: '../module-menu/laboratory/laboratory.module#LaboratoryModule'
-            },
-            {
-                path: 'lab',
                 loadChildren: '../module-menu/lab/lab.module#LabModule'
             },
             {

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-request-detail',
@@ -8,16 +8,25 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 export class RequestDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('fileInput') fileInput:ElementRef;
+  
   showDocument = false;
   hasNo= false;
   hasSample = false;
   hasSpecimen = false;
+  hasLabNo = false;
 
-  constructor() { }
+  constructor( private renderer:Renderer) { }
 
   ngOnInit() {
   }
 
+  showImageBrowseDlg() {
+    this.fileInput.nativeElement.click()
+  }
+  onChange(){
+    //upload file
+  }
   close_onClick() {
     this.closeModal.emit(true);
   }
@@ -26,6 +35,9 @@ export class RequestDetailComponent implements OnInit {
   }
   takeSpecimen(){
     this.hasSpecimen = true;
+  }
+  assignLabNo(){
+    this.hasLabNo = true;
   }
 
 }
