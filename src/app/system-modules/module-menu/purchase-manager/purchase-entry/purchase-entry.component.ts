@@ -366,6 +366,7 @@ export class PurchaseEntryComponent implements OnInit {
       this.totalCost = this.totalCost + (+productControlValue.costPrice * +productControlValue.qty);
     });
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
+
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -701,5 +702,6 @@ export class PurchaseEntryComponent implements OnInit {
       this.flyout = false;
     }
   }
+  
 
 }

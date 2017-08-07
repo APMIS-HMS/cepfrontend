@@ -156,7 +156,7 @@
                                 <div class="inputWrap-productDetail">
                                     <div (click)="removeProduct(i, schedule)" class="modal-close-ico" aria-hidden="true">X</div>
 
-                                    <div style="width: 45%;" class="frm-item-wrap">
+                                    <div style="width: 35%;" class="frm-item-wrap">
                                         <md-input-container class="example-full-width">
                                             <input mdInput md-error placeholder="Product" formControlName="product">
                                         </md-input-container>
@@ -176,6 +176,12 @@
                                     <div style="width: 10%;" class="frm-item-wrap">
                                         <md-input-container class="example-full-width">
                                             <input type="number" (change)="getCostSummary(schedule)" mdInput md-error placeholder="Quantity" formControlName="qty">
+                                        </md-input-container>
+                                    </div>
+
+                                    <div style="width: 10%;" class="frm-item-wrap">
+                                        <md-input-container class="example-full-width">
+                                            <input type="number"   mdInput md-error placeholder="Total">
                                         </md-input-container>
                                     </div>
 
