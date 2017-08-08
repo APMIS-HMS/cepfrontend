@@ -51,9 +51,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         this._rest = this._restService.getService(this.url);
         this._socket = this._socketService.getService(this.url);
         this.form = this.fb.group({ searchtext: [''] });
-        console.log(this.query);
-        console.log(this.url);
-        console.log(this.isSocket);
         this.form.controls['searchtext'].valueChanges
             .debounceTime(200)
             .distinctUntilChanged()

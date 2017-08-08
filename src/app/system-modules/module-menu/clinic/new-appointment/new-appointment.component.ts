@@ -114,6 +114,7 @@ export class NewAppointmentComponent implements OnInit {
         private route: ActivatedRoute) {
 
         route.params.subscribe(params => {
+            console.log(params);
             if (params.id !== undefined) {
                 this.appointmentService.get(params.id, {}).subscribe(payload => {
                     this.appointmentService.appointmentAnnounced(payload);

@@ -14,7 +14,7 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 export class NewSubLocationComponent implements OnInit {
   @Input() locations: Location[];
   @Input() location: Location = <Location>{};
-  //@Input() subLocation: any = {};
+  @Input() subLocation: MinorLocation = <MinorLocation>{};
   ActionButton: string = 'Submit';
   mainErr = true;
   errMsg = 'You have unresolved errors';
@@ -35,10 +35,17 @@ export class NewSubLocationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.facilityObj = <Facility> this.locker.getObject('selectedFacility');
+    this.facilityObj = <Facility>this.locker.getObject('selectedFacility');
     this.addNew();
     this.frmNewSubLoc.controls['sublocParent'].setValue(this.location._id);
-    //console.log(this.subLocation);
+    console.log(this.subLocation);
+    if (this.subLocation._id !== undefined) {
+      this.ActionButton = 'Update';
+      this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
+      this.frmNewSubLoc.controls['sublocAlias'].setValue(this.subLocation.shortName);
+      this.frmNewSubLoc.controls['sublocDesc'].setValue(this.subLocation.description);
+    }
+
   }
   addNew() {
     this.frmNewSubLoc = this.formBuilder.group({
@@ -52,10 +59,10 @@ export class NewSubLocationComponent implements OnInit {
   newSubLocation(valid, val) {
     if (valid) {
       if (val.sublocName === '' || val.sublocName === ' ' || val.sublocAlias === ''
-      || val.sublocAlias === ' ' || val.sublocDesc === '' || val.sublocDesc === ' ') {
+        || val.sublocAlias === ' ' || val.sublocDesc === '' || val.sublocDesc === ' ') {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
-      } else {
+      } else if (this.subLocation._id === undefined) {
         const model: MinorLocation = <MinorLocation>{
           name: val.sublocName,
           shortName: val.sublocAlias,
@@ -67,6 +74,15 @@ export class NewSubLocationComponent implements OnInit {
           this.addNew();
         });
         this.mainErr = true;
+      } else {
+        this.subLocation.description = val.sublocDesc;
+        this.subLocation.name = val.sublocName;
+        this.subLocation.shortName = val.sublocAlias;
+        const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
+        this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
+        this.facilityService.update(this.facilityObj).then((payload) => {
+          this.addNew();
+        });
       }
     } else {
       this.mainErr = false;
@@ -75,6 +91,7 @@ export class NewSubLocationComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+    this.subLocation = <MinorLocation>{};
   }
 
 }
