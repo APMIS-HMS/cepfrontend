@@ -132,5 +132,5 @@
 </div>
 
 <div *ngIf="newSubLocModal_on" class="modal-overlay">
-    <app-new-sub-location [locations]="locationsObj" [location]="locationObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-sub-location>
+    <app-new-sub-location [locations]="locationsObj" [location]="locationObj" [subLocation]="subLocation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-sub-location>
 </div>
