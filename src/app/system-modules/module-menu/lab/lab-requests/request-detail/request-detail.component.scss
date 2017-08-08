@@ -69,11 +69,13 @@
     color: #8e8e8e;
     width: 30%;
 }
-.txt-val{
+.txt-val, .checka{
     font-size: 12px;
     line-height: 1.5;
     color: #333;
     width: 69%;
+}
+.txt-val{
     max-height: 100px;
     overflow-y: auto;
 }
@@ -86,7 +88,7 @@
     text-align: center;
     padding: 2px;
     cursor: pointer;
-    width: 124px;
+    width: 138px;
     margin: 0 auto;
 }
 .lab-btn:hover {
@@ -166,6 +168,9 @@ button{
     border-bottom: 1px solid #bebebe;
     border-top: 1px solid #bebebe;
     padding: 10px 0;
+    max-height: 125px;
+    overflow: hidden;
+    overflow-y: auto;
 }
 .uploaded {
     font-family: "Josefin Sans", sans-serif;
@@ -175,6 +180,7 @@ button{
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 .uploaded:hover{
     background: #eee;
