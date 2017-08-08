@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<app-schedule-frm></app-schedule-frm>
+<app-schedule-frm [selectedPatient]="selectedPatient"></app-schedule-frm>
 <div class="dr-wrap">
     <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range>
 </div>

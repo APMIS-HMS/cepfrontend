@@ -18,7 +18,11 @@
             <ul class="doc-cardWrap">
 
                 <li class="doc-card shadow" *ngFor="let document of documents">
-                    <div class="modal_title">{{document?.document?.documentType?.title}} @ {{document?.facilityId?.name}}</div>
+                    <div class="modal_title">
+                        {{document?.document?.documentType?.title}}
+                        <div class="doc-subtitle">{{document?.facilityId?.name}}</div>
+                    </div>
+                    
                     <div class="docCard-header">
 
                         <div class="empWrap">

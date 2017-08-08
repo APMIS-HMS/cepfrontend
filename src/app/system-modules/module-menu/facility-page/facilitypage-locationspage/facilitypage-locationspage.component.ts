@@ -163,6 +163,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.modal_on = false;
     this.newSubLocModal_on = false;
     this.newLocationModal_on = false;
+    this.subLocation = <any>{};
   }
   editMinorLoc(value){
     console.log(value);

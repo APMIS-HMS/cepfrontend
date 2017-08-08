@@ -23,8 +23,8 @@
               <div class="frm-l">
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" 
-                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient"
-                  isSocket="false" displayKey="apmisLookupDisplayKey" 
+                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
+                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
 
@@ -35,10 +35,10 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                  <apmis-lookup formControlName="investigation" [(ngModel)]="apmisLookupText" 
+                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisLookupText" 
                   url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Add Investigation"
                   isSocket="false" displayKey="apmisLookupDisplayKey" 
-                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
                 </div>
               </div>
               <div class="frm-r">
@@ -107,8 +107,7 @@
               <tr>
                 <td colspan="6">
                     <div class="tbl-actionRow">
-                        <!-- <div class="tbl-title">Employee Workspace</div> -->
-                        <div class="frm-item-wrap">
+                        <!-- <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
                           isSocket="false" displayKey="apmisLookupDisplayKey" 
@@ -127,7 +126,7 @@
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
+                        </div> -->
                     </div>
                 </td>
               </tr>

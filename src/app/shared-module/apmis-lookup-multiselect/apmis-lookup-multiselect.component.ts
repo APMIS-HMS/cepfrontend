@@ -9,22 +9,22 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-    selector: 'apmis-lookup',
-    templateUrl: './apmis-lookup.component.html',
+  selector: 'apmis-lookup-multiselect',
+  templateUrl: './apmis-lookup-multiselect.component.html',
+  styleUrls: ['./apmis-lookup-multiselect.component.scss'],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => ApmisLookupComponent),
+            useExisting: forwardRef(() => ApmisLookupMultiselectComponent),
             multi: true,
         },
         {
             provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => ApmisLookupComponent),
+            useExisting: forwardRef(() => ApmisLookupMultiselectComponent),
             multi: true,
         }],
-    styleUrls: ['./apmis-lookup.component.scss']
 })
-export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Validator {
+export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAccessor, Validator {
     @Input() displayKey = "";
     @Input() url = "";
     @Input() placeholder = "";
@@ -37,8 +37,8 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     private valueParseError: boolean;
     private data: any;
     searchText = '';
-    showCuDropdown = false;
-    cuDropdownLoading = false;
+    showCuDropdown: boolean = false;
+    cuDropdownLoading: boolean = false;
     form: FormGroup;
     selectedValue: any = {};
 
@@ -51,6 +51,9 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         this._rest = this._restService.getService(this.url);
         this._socket = this._socketService.getService(this.url);
         this.form = this.fb.group({ searchtext: [''] });
+        console.log(this.query);
+        console.log(this.url);
+        console.log(this.isSocket);
         this.form.controls['searchtext'].valueChanges
             .debounceTime(200)
             .distinctUntilChanged()
@@ -63,7 +66,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         // this.form.controls['searchtext'].valueChanges.subscribe(value => {
         //     console.log(this.displayKey);
         //     console.log(this.query);
-        //
+        //     
         //     this.filter({ query: this.query }, this.isRest).then(filteredValue => {
         //         this.cuDropdownLoading = false;
         //         this.results = filteredValue;
@@ -83,17 +86,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
             return this._rest.find(query);
         }
     }
-    getName(item, displayKey: String) {
-        const splitArray = displayKey.split('.');
-        let counter = 0;
-        splitArray.forEach((obj, i) => {
-            item = item[obj];
-            counter++;
-        })
-        if (counter === (splitArray.length)) {
-            return item;
-        }
-    }
+
     onSelectedItem(value) {
         this.selectedItem.emit(value);
     }
@@ -139,7 +132,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     private onChange(event) {
 
         // get value from text area
-        const newValue = event.target.value;
+        let newValue = event.target.value;
 
         try {
             this.data = newValue;

@@ -42,6 +42,7 @@ import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioButton
 } from '@angular/material';
+// import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
     declarations: [
         NewTagComponent,

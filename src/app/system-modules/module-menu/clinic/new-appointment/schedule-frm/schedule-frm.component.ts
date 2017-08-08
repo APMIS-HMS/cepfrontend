@@ -34,7 +34,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 
 export class ScheduleFrmComponent implements OnInit {
-
+    @Input() selectedPatient: any;
     mainErr = true;
     errMsg = 'you have unresolved errors';
     selectedFacility: Facility = <Facility>{};
@@ -176,7 +176,13 @@ export class ScheduleFrmComponent implements OnInit {
             this.loginEmployee = employee;
             this.primeComponent();
         })
+        this.patientService.patientAnnounced$.subscribe(value => {
+            this.selectedPatient = value;
+            console.log(this.selectedPatient);
+            this.patient.setValue(this.selectedPatient);
+        })
         this.getPatients();
+
     }
     primeComponent() {
         const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
@@ -236,7 +242,7 @@ export class ScheduleFrmComponent implements OnInit {
                 if (payload.data.length > 0) {
                     this.canCheckIn = false;
                     this.checkIn.enable();
-                }else{
+                } else {
                     this.canCheckIn = true;
                     this.checkIn.disable();
                 }
