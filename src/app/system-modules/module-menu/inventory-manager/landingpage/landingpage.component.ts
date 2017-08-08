@@ -20,6 +20,12 @@ export class LandingpageComponent implements OnInit {
   physicalQuantity: FormControl = new FormControl();
   comment: FormControl = new FormControl();
 
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   inventories: any[] = [];
 
   selectedFacility: Facility = <Facility>{};
