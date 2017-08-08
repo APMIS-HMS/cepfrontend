@@ -35,10 +35,10 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                  <apmis-lookup formControlName="investigation" [(ngModel)]="apmisLookupText" 
+                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisLookupText" 
                   url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Add Investigation"
                   isSocket="false" displayKey="apmisLookupDisplayKey" 
-                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
                 </div>
               </div>
               <div class="frm-r">
