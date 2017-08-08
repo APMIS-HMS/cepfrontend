@@ -25,22 +25,23 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   @Input() patient: Patient;
   // @Input() vitalDocuments: any;
 
+  lineChartData = [
+            { data: [], label: 'Pulse Rate' },
+            { data: [], label: 'Systolic' },
+            { data: [], label: 'Diastolic' },
+            { data: [], label: 'Temperature' },
+            { data: [], label: 'Respiratory Rate' },
+            { data: [], label: 'Height' },
+            { data: [], label: 'Weight' },
+            { data: [], label: 'BMI' }
+          ];
 
-  // lineChart
-  public lineChartData:Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Pulse Rate'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Blood Pressure'},
-    {data: [18, 48, 77, 9, 100, 27, 40], label: 'Temperature'},
-    {data: [18, 12, 19, 24, 10, 7, 16], label: 'Respiratory Rate'},
-    {data: [20, 21, 27, 29, 29, 29, 29], label: 'Height'},
-    {data: [40, 48, 49, 49, 51, 54, 60], label: 'Weight'},
-    {data: [11, 38, 57, 29, 10, 27, 40], label: 'BMI'}
-  ];
-  public lineChartLabels:Array<any> = ['12th Jan, 17.', '1st Feb, 17.', '11th Mar, 17.', '16th Mar, 17.', '2nd May, 17.', '5th Jun, 17.', '4th Jul, 17.'];
-  public lineChartOptions:any = {
+
+  public lineChartLabels: Array<any> = [''];
+  public lineChartOptions: any = {
     responsive: true
   };
-  public lineChartColors:Array<any> = [
+  public lineChartColors: Array<any> = [
     { // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
@@ -96,10 +97,18 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(229,115,115,0.8)'
+    },
+    { // red
+      backgroundColor: 'rgba(229,	115,	115,0.2)',
+      borderColor: 'rgba(229,115,115,1)',
+      pointBackgroundColor: 'rgba(229,115,115,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(229,115,115,0.8)'
     }
   ];
-  public lineChartLegend:boolean = true;
-  public lineChartType:string = 'line';
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
 
 
 
@@ -151,8 +160,16 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   minorLocationList: MinorLocation[] = [];
   selectedAppointment: Appointment = <Appointment>{};
   json: any = {};
-
-
+  vitalsObjArray = [];
+  vitalsPulse = [];
+  vitalsRespiratoryRate = [];
+  vitalsBMI = [];
+  vitalsHeight = [];
+  vitalsWeight = [];
+  vitalsSystolic = [];
+  vitalsDiastolic = [];
+  vitalsTemp=[];
+  vitalChartData = [];
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
@@ -162,7 +179,8 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private formsService: FormsService,
     private router: Router, private route: ActivatedRoute,
-    private locker: CoolSessionStorage) {
+    private locker: CoolSessionStorage,
+    private _DocumentationService: DocumentationService) {
 
     this.router.events
       .filter(e => e.constructor.name === 'RoutesRecognized')
@@ -183,8 +201,44 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (this.patient !== undefined) {
       this.getCurrentUser();
+      this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+        if (payload.data.length != 0) {
+          payload.data[0].documentations.forEach(documentItem => {
+            if (documentItem.document.documentType.title == "Vitals") {
+              this.vitalsObjArray = documentItem.document.body.vitals;
+            }
+          });
+          this.vitalsObjArray.forEach(item => {
+            this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
+            this.lineChartData[1].data.push(item.respiratoryRate);
+            this.lineChartData[2].data.push(item.bodyMass.bmi);
+            this.lineChartData[3].data.push(item.bodyMass.height);
+            this.lineChartData[4].data.push(item.bodyMass.Weight);
+            this.lineChartData[5].data.push(item.temperature);
+            this.lineChartData[6].data.push(item.bloodPressure.diastolic);
+            this.lineChartData[7].data.push(item.bloodPressure.systolic);
+            var d = new Date(item.updatedAt);
+            this.lineChartLabels.push(d.toDateString());
+          })
+
+          // lineChart
+          // this.lineChartData = [
+          //   { data: this.vitalsPulse, label: 'Pulse Rate' },
+          //   { data: this.vitalsSystolic, label: 'Systolic' },
+          //   { data: this.vitalsDiastolic, label: 'Diastolic' },
+          //   { data: this.vitalsTemp, label: 'Temperature' },
+          //   { data: this.vitalsRespiratoryRate, label: 'Respiratory Rate' },
+          //   { data: this.vitalsHeight, label: 'Height' },
+          //   { data: this.vitalsWeight, label: 'Weight' },
+          //   { data: this.vitalsBMI, label: 'BMI' }
+          // ];
+          // console.log(this.lineChartData);
+          //this.lineChartDataDD = this.lineChartData;
+        }
+      })
     }
-    
+
+
   }
   getForms() {
     this.formsService.findAll().then(payload => {
@@ -527,7 +581,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
 
 
-    
+
   // public randomize():void {
   //   let _lineChartData:Array<any> = new Array(this.lineChartData.length);
   //   for (let i = 0; i < this.lineChartData.length; i++) {
@@ -538,13 +592,13 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   //   }
   //   this.lineChartData = _lineChartData;
   // }
- 
+
   // events
-  public chartClicked(e:any):void {
+  public chartClicked(e: any): void {
     console.log(e);
   }
- 
-  public chartHovered(e:any):void {
+
+  public chartHovered(e: any): void {
     console.log(e);
   }
 
