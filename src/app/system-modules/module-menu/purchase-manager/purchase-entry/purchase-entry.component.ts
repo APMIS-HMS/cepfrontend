@@ -207,6 +207,7 @@ export class PurchaseEntryComponent implements OnInit {
               items.forEach((itemg, g) => {
                 if (itemg._id === item.productId) {
                   itemg.checked = true;
+                  let total = item.quantity * item.costPrice;
                   (<FormArray>this.productTableForm.controls['productTableArray'])
                     .push(
                     this.formBuilder.group({
@@ -215,6 +216,7 @@ export class PurchaseEntryComponent implements OnInit {
                       costPrice: [item.costPrice, [<any>Validators.required]],
                       qty: [item.quantity, [<any>Validators.required]],
                       expiryDate: [item.expiryDate, [<any>Validators.required]],
+                      total: [{value: total, disabled:true}],
                       readOnly: [false],
                       id: [item.productId],
                       existingInventory: [existingInventory],
@@ -360,6 +362,7 @@ export class PurchaseEntryComponent implements OnInit {
     }
   }
   getCostSummary(value) {
+    console.log(value);
     this.totalCost = 0;
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
       const productControlValue: any = item.value;
@@ -368,6 +371,10 @@ export class PurchaseEntryComponent implements OnInit {
     });
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
 
+    // Set totalcost for each item
+    let total = "₦ " + (value.value.qty * value.value.costPrice);
+    console.log(total);
+    value.controls['total'].setValue(total);
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -395,6 +402,7 @@ export class PurchaseEntryComponent implements OnInit {
           product: ['', [<any>Validators.required]],
           batchNo: ['', [<any>Validators.required]],
           costPrice: ['', [<any>Validators.required]],
+          total: [{value: "₦ 0", disabled:true}],
           qty: ['', [<any>Validators.required]],
           expiryDate: ['', [<any>Validators.required]],
           readOnly: [false],
@@ -426,6 +434,7 @@ export class PurchaseEntryComponent implements OnInit {
                 costPrice: [0.00, [<any>Validators.required]],
                 qty: [0, [<any>Validators.required]],
                 expiryDate: [this.now, [<any>Validators.required]],
+                total: [{value: "₦ 0", disabled:true}],
                 readOnly: [false],
                 existingInventory: [existingInventory],
                 productObject: [value.product],
@@ -697,6 +706,10 @@ export class PurchaseEntryComponent implements OnInit {
     this.frm_purchaseOrder.controls['supplier'].setValue('');
     this.frm_purchaseOrder.controls['desc'].setValue('');
     this.frm_purchaseOrder.controls['orderId'].reset();
+    this.superGroups[0].forEach((item, i) => {
+      item.checked = false;
+    });
+    this.selectedOrder = <PurchaseOrder>{};
   }
 
   flyout_toggle(e) {
