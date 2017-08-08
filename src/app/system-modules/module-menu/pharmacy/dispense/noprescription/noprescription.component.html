@@ -48,17 +48,17 @@
             <div *ngIf="internalShow">
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Department" formControlName="dept" class="example-full-width">
-                        <md-option *ngFor="let dept of departments" [(value)]="dept._id">{{ dept.name }}</md-option>
+                        <md-option *ngFor="let dept of departments" [(value)]="dept">{{ dept.name }}</md-option>
                     </md-select>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Unit" formControlName="unit" class="example-full-width">
-                        <md-option *ngFor="let unit of units" [(value)]="unit._id">{{ unit.name }}</md-option>
+                        <md-option *ngFor="let unit of units" [(value)]="unit">{{ unit.name }}</md-option>
                     </md-select>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
-                        <md-option *ngFor="let location of minorLocations" [(value)]="location._id">{{ location.name }}</md-option>
+                        <md-option *ngFor="let location of minorLocations" [(value)]="location">{{ location.name }}</md-option>
                     </md-select>
                 </div>
             </div>

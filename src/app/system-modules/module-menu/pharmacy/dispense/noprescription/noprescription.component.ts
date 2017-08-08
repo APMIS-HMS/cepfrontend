@@ -130,6 +130,7 @@ export class NoprescriptionComponent implements OnInit {
 		} else {
 			this.dispenseAllBtn = false;
 		}
+		console.log(this.employeeDetails);
 	}
 
 	// Add items to the prescriptions array.
@@ -211,19 +212,37 @@ export class NoprescriptionComponent implements OnInit {
 						prescription['firstName'] = element.firstName;
 						prescription['fullname'] = element.firstName + ' ' + element.lastName;
 						prescription['phoneNumber'] = element.phoneNumber;
+						prescription['client'] = {
+							clientType: element.client,
+							name: element.firstName + ' ' + element.lastName,
+							phone: element.phoneNumber
+						};
 						break;
 					case 'Corporate':
 						prescription['companyName'] = element.companyName;
 						prescription['fullname'] = element.companyName;
 						prescription['companyPhone'] = element.companyPhone;
+						prescription['client'] = {
+							clientType: element.client,
+							name: element.companyName,
+							phone: element.companyPhone
+						};
 						break;
 					case 'Internal':
 						prescription['departmentId'] = element.dept;
 						prescription['unitId'] = element.unit;
 						prescription['locationId'] = element.minorLocation;
+						prescription['client'] = {
+							clientType: element.client,
+							name: element.dept,
+							phone: element.client
+						};
 						break;
 				}
-				product['productId'] = element.productId;
+				product['product'] = {
+					id: element.productId,
+					name: element.productName
+				};
 				product['batchNumber'] = element.batchNumber;
 				product['batchNumberId'] = element.batchNumberId;
 				product['productId'] = element.productId;
@@ -233,11 +252,9 @@ export class NoprescriptionComponent implements OnInit {
 				product['inventoryId'] = element.inventoryId;
 				product['referenceId'] = '';
 				product['employeeId'] = this.employeeDetails.employeeDetails._id;
-				product['employeeName'] = this.employeeDetails.employeeDetails.employeeName;
+				product['employeeName'] = this.employeeDetails.employeeDetails.personFullName;
 				product['referenceService'] = 'NoPrescriptionService';
 				product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
-				prescription['client'] = element.client;
-				prescription['client'] = element.client;
 				prescription['employeeId'] = this.employeeDetails.employeeDetails._id;
 				prescription['totalQuantity'] = this.totalQuantity;
 				prescription['totalCost'] = this.totalPrice;
