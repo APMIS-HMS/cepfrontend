@@ -210,6 +210,12 @@ select, input{
     padding: 20px 0;
     margin-top: 10px;
 }
+.txt-innerWrap{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .txt-label{
     font-size: 14px;
     font-family: "Josefin Sans", sans-serif;
@@ -220,4 +226,26 @@ select, input{
     font-size: 16px;
     color: #333;
     width: 69%;
+}
+.isSample{
+    background: #4CAF50;
+}
+.notSample{
+    background: #ff2500;
+}
+.status-wrap {
+    text-align: left;
+    font-size: 10px;
+    padding: 0 5px;
+}
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+}
+.status-val {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
 }

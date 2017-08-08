@@ -15,7 +15,7 @@
           <form class="frmNoteWrap" *ngIf="request_view" [formGroup]="frmNewRequest" novalidate>
 
             <div class="labBtn-wrap">
-              <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Generate Apmis ID</div>
+              <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Register Patient</div>
             </div>
             <div class="clear-r"></div>
 
@@ -55,9 +55,18 @@
                 </div>
 
                 <div class="txt-wrap">
-                  <div class="txt-label">External</div>
-                  <div class="txt-val">
-                    <md-checkbox></md-checkbox>
+                  <div class="txt-innerWrap">
+                    <div class="txt-label">External</div>
+                    <div class="txt-val">
+                      <md-checkbox></md-checkbox>
+                    </div>
+                  </div>
+
+                  <div class="txt-innerWrap">
+                    <div class="txt-label">Urgent</div>
+                    <div class="txt-val">
+                      <md-checkbox></md-checkbox>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -107,14 +116,6 @@
                         </div>
 
                         <div class="frm-item-wrap">
-                          <md-input-container>
-                                <input mdInput [mdDatepicker]="picker" placeholder="Date">
-                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                            </md-input-container>
-                            <md-datepicker #picker></md-datepicker>
-                        </div>
-
-                        <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
@@ -127,19 +128,12 @@
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
-
-                        <div class="frm-item-wrap">
-                            <md-select placeholder="Status">
-                              <md-option [value]="Active">Active</md-option>
-                              <md-option [value]="Inactive">Inactive</md-option>
-                            </md-select>
-                        </div>
                     </div>
                 </td>
               </tr>
 
               <tr>
-                <td>11th Jan, 2017.</td>
+                <td>11th Jan, 2017. 09:00AM</td>
                 <td>
                   <div class="empWrap">
                     <div class="list-img">
@@ -149,7 +143,22 @@
                   </div>
                 </td>
                 <td>Blood Test</td>
-                <td>Pending</td>
+                <td>
+                  <div class="status-wrap">
+                    <div class="status-item">
+                      <div class="status-label">Payment Made</div>
+                      <div [class.isSample]="paymentStatus" [class.notSample]="!paymentStatus" class="status-val"></div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-label">Sample Taken</div>
+                      <div [class.isSample]="sampleStatus" [class.notSample]="!sampleStatus" class="status-val"></div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-label">Result Available</div>
+                      <div  [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div>
+                    </div>
+                  </div>
+                </td>
                 <td class="action-placeholder">
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                   <div class="action-container shadow-RB">

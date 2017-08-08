@@ -26,6 +26,7 @@ export class InvestigationPriceComponent implements OnInit {
     this.frmNewPrice = this.formBuilder.group({
       price: ['', [Validators.required]],
       investigation: ['', [Validators.required]],
+      workbench: ['', [Validators.required]]
     });
   }
 

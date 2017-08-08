@@ -19,6 +19,10 @@ export class LabRequestsComponent implements OnInit {
   reqDetail_view = false;
   personAcc_view = false;
   mainErr = true;
+  paymentStatus = false;
+  sampleStatus = true;
+  resultStatus = false;
+
   errMsg = 'you have unresolved errors';
 
   public frmNewRequest: FormGroup;
