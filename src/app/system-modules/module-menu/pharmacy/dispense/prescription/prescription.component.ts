@@ -39,7 +39,7 @@ export class PrescriptionComponent implements OnInit {
 	disablePaymentBtn: boolean = false;
 	disableSaveBtn: boolean = false;
 	paymentStatusText: string = '<i class="fa fa-refresh"></i> Refresh Payment Status';
-	dispenseAllBtnText: string = 'Dispense';
+	dispenseAllBtnText: string = 'Save';
 	saveBtn: string = 'Save';
 
 	constructor(
@@ -249,7 +249,7 @@ export class PrescriptionComponent implements OnInit {
 	onClickDispense() {
 		if(this.prescriptions.length > 0) {
 			this.disableDispenseAllBtn = true;
-			this.dispenseAllBtnText = 'Dispensing... <i class="fa fa-spinner fa-spin"></i>';
+			this.dispenseAllBtnText = 'Saving... <i class="fa fa-spinner fa-spin"></i>';
 			const dispenseArray = [];
 			const externalDrug = [];
 
@@ -308,7 +308,7 @@ export class PrescriptionComponent implements OnInit {
 						.then(res => {
 							console.log(res);
 							this.disableDispenseAllBtn = true;
-							this.dispenseAllBtnText = 'Dispensed';
+							this.dispenseAllBtnText = 'Saved';
 							this._notification('Success', 'Drugs has been sent.');
 						})
 						.catch(err => { console.log(err); });
@@ -347,7 +347,7 @@ export class PrescriptionComponent implements OnInit {
 
 				if(this.prescriptionItems.isDispensed) {
 					this.disableDispenseAllBtn = true;
-					this.dispenseAllBtnText = 'Dispensed';
+					this.dispenseAllBtnText = 'Saved';
 				}
 
 				// Reset all the prescriptionItem.transactions to an empty array.

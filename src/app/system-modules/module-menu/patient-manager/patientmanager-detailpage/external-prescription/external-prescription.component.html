@@ -1,18 +1,19 @@
+<div class="pg-subtitle">PRESCRIBED DRUGS</div>
 <section class="external-prescription">
     <div class="survey">
-        <table class="table table-bordered" id="table">
+        <table class="table table-bordered fly-out" id="table">
             <thead>
                 <tr>
-                    <th class="t-data drug" style="padding: 0;">Drugs</th>
-                    <th class="t-data" style="padding: 0;">Status</th>
-                    <th class="t-data" style="padding: 0;">Dispense</th>
+                    <th class="t-data drug" style="padding: 0 0 0 10px;">Drugs</th>
+                    <th class="t-data" style="padding: 0 0 0 10px;">Status</th>
+                    <th class="t-data" style="padding: 0 0 0 10px;">Dispense</th>
                 </tr>
             </thead>
             <tbody *ngFor="let prescription of prescriptions">
                 <tr>
-                    <td class="text-center" style="padding: 10px;" colspan="3">{{ prescription.createdAt }}</td>
+                    <td class="text-center" style="padding: 10px;" colspan="3">{{ prescription.createdAt | date }}</td>
                 </tr>
-                <tr *ngFor="let prescriptionItem of prescription.prescriptionItems">
+                <tr *ngFor="let prescriptionItem of prescription.prescriptionItems" style="text-align: left;">
                     <td class="t-data drug">
                         {{ prescriptionItem.genericName }} - {{ prescriptionItem.frequency }} for {{ prescriptionItem.duration }}, {{ prescriptionItem.routeName }}<br>
                     </td>
