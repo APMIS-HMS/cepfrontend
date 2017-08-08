@@ -98,3 +98,11 @@
 a:hover {
     text-decoration: none;
 }
+.backBtn {
+    position: absolute;
+    right: 0;
+    z-index: 12;
+}
+.fa-arrow-circle-o-right {
+    margin-left: 5px;
+}
