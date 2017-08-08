@@ -6,7 +6,7 @@
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 99999;
+    z-index: 10;
     left: 0;
     top: 0;
     background-color: rgb(0, 0, 0);
@@ -20,7 +20,7 @@
 
 .overlay-content {
     position: relative;
-    top: 25%;
+    top: 5%;
     width: 100%;
     margin-top: 30px;
 }
@@ -32,9 +32,7 @@
     padding: 10px;
 }
 
-.survery .form-inline .form-control {
-    width: 187px;
-}
+
 
 .margin-top-28px {
     margin-top: 28px;
@@ -207,15 +205,6 @@ textarea {
     width: 245px;
 }
 
-.survery .row {
-    margin-right: auto;
-    margin-left: auto;
-    position: absolute;
-    top: -55px;
-    right: 23px;
-    width: 100%;
-    display: block;
-}
 
 .workspace-count {
     padding: 0 0 20px 0;
@@ -247,4 +236,24 @@ textarea {
     .pointer-wrap {
         margin-left: -49px;
     }
+}
+
+.container-box {
+        width: 50%;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 350px;
+    max-height: 600px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.closebtn {
+    top: 8px;
+    right: 8px;
+    background-color: #ff2500;
+    color: #fff !important;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
 }

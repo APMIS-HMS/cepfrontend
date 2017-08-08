@@ -1,44 +1,16 @@
 <div class="survery">
     <div class="">
         <div class="row">
-            <div class="col-sm-4 col-md-4 col-xs-12">
-                <!--<dx-select-box  placeholder="Choose" [showClearButton]="true">
-                </dx-select-box>-->
-            </div>
             <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
                 <input class="top-tab-search" type="search" placeholder="Search inventory" [formControl]="searchControl">
             </div>
+            <br><br>
         </div>
-        <!--<table class="table table-striped text-center">
-            <thead>
-                <tr>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Product</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Quantity</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngIf="inventories.length === 0">
-                    <td colspan="6"> No data available in table</td>
-                </tr>
-                <tr *ngFor="let inventory of inventories">
-                    <td>{{inventory.productObject.name}}</td>
-                    <td>{{inventory.totalQuantity}}</td>
-                    <td>
-                        <a class="action-btn" (click)="slideInventoryDetailsToggle({}, $event)"><i class="fa fa-eye"></i></a>
-                        <a class="action-btn" (click)="onSelectProduct(product)"><i class="fa fa-pencil"></i></a>
-                        <a class="action-btn"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>-->
-
         <div class="product-parentWrap">
             <div class="prod-row prodParent-header">
                 <div class="prod-rowItem item1">Product</div>
                 <div class="prod-rowItem item2">Batches</div>
                 <div class="prod-rowItem item3">Quantity</div>
-                <!-- <div class="prod-rowItem item3">Actions</div> -->
             </div>
 
             <div class="prodParent-content">
@@ -59,11 +31,6 @@
                         <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
                             <div style="width: 100%;text-align: center;">{{inventory.totalQuantity}}</div>
                         </div>
-                        <!-- <div class="prod-rowItem item3">
-                            <a class="action-btn" (click)="slideInventoryDetailsToggle(inventory)"><i class="fa fa-eye"></i></a>
-                            <a class="action-btn" (click)="onSelectProduct(product)"><i class="fa fa-pencil"></i></a>
-                            <a class="action-btn"><i class="fa fa-trash"></i></a>
-                        </div> -->
                     </div>
                     <div *ngIf="inventory.isOpen===true && (selectedInventory._id === inventory._id)" class="prodBatch-wrap animated flipInX">
                         <div class="prodBatch-row batchHeader">
@@ -152,57 +119,80 @@
         </div>
     </div>
 
-    <div *ngIf="adjustStock" class="adjust-overlay">
-        <div class="container" id="container-width">
-            <a (click)="closeAdjustStock()" class="closebtn pull-right">&times;</a>
-            <h4 class="text-center h2-margin-top"> ADJUST STOCK {{selectedInventory.productObject.name}} | {{selectedTransaction.batchNumber}} </h4>
+    <div *ngIf="adjustStock" class="adjust-overlay">            
             <div class="overlay-content">
-                <form class="form-inline">
-                    <div class="row">
-                        <div class="form-group">
-                                <div class=" col-sm-6 ">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">System Quantity</label>
-                                        <input [formControl]="systemQuantity" type="number" min="0" class="form-control" id="textInput" placeholder="123">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 ">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Unit</label>
-                                        <select class="form-control"> 
-                                            <option>Packs</option>
-                                            <option>Big Packs</option>
-                                            <option>Small Packs</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Physical Quantity</label>
-                                        <input [formControl]="physicalQuantity" type="number" min="0" class="form-control" id="textInput" placeholder="123">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Unit</label>
-                                        <select class="form-control"> 
-                                        <option>Packs</option>
-                                        <option>Big Packs</option>
-                                        <option>Small Packs</option>
-                                    </select>
-                                    </div>
-                                </div>
-                            <div class="col-sm-12">
-                                <label for="exampleInputEmail1">Comment</label>
-                                <textarea [formControl]="comment" type="text"> </textarea>
-                            </div>
+                <div class="row">
+                    <form>
+                        <div class="container-box">
+                            <a (click)="closeAdjustStock()" class="closebtn pull-right">&times;</a>
+                    <h4 class="text-center h2-margin-top"> Adjust Stock {{selectedInventory.productObject.name}} | {{selectedTransaction.batchNumber}} </h4>
+                        <div class="col-sm-12">
+                               <div class="col-sm-6 ">
+                            <!--<div class="form-group">
+                                <label for="exampleInputEmail1">System Quantity</label>
+                                <input [formControl]="systemQuantity" type="number" min="0" class="form-control" id="textInput" placeholder="123">
+                            </div>-->
+                            <md-input-container class="example-full-width">
+                            <input mdInput [formControl]="systemQuantity"  type="number" min="0" placeholder="System Quantity">
+                            </md-input-container>
                         </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 text-center margin-top-28px">
-                        <button (click)="auditProduct()" class="btn btn-primary adjust-btn">Adjust Stock</button>
-                    </div>
-                </form>
+                        <div class="col-sm-6 ">
+                            <!--<div class="form-group">
+                                <label for="exampleInputEmail1">Unit</label>
+                                <select class="form-control"> 
+                                    <option>Packs</option>
+                                    <option>Big Packs</option>
+                                    <option>Small Packs</option>
+                                </select>
+                            </div>-->
+                            <md-select placeholder="Unit" name="food">
+                                <md-option *ngFor="let food of foods" [value]="food.value">
+                                {{food.viewValue}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        </div>
+                        
+                        <div class="col-sm-12">
+                               <div class="col-sm-6">
+                            <!--<div class="form-group">
+                                <label for="exampleInputEmail1">Physical Quantity</label>
+                                <input [formControl]="physicalQuantity" type="number" min="0" class="form-control" id="textInput" placeholder="123">
+                            </div>-->
+                            <md-input-container class="example-full-width">
+                            <input mdInput [formControl]="physicalQuantity"  type="number" min="0" placeholder="Physical Quantity">
+                            </md-input-container>
+                        </div>
+                        <div class="col-sm-6">
+                            <!--<div class="form-group">
+                                <label for="exampleInputEmail1">Unit</label>
+                                <select class="form-control"> 
+                                <option>Packs</option>
+                                <option>Big Packs</option>
+                                <option>Small Packs</option>
+                            </select>
+                            </div>-->
+                            <md-select placeholder="Units" name="food">
+                                <md-option *ngFor="let food of foods" [value]="food.value">
+                                {{food.viewValue}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        </div>
+                            <div class="col-sm-12">
+                            <div class="col-sm-12">
+                            <!--<label for="exampleInputEmail1">Comment</label>
+                            <textarea [formControl]="comment" type="text"> </textarea>-->
+                             <md-input-container class="example-full-width">
+                            <textarea mdInput placeholder="Comment"></textarea>
+                            </md-input-container>
+                        </div>
+                        </div>
+                         <div class="col-md-12 col-sm-12 col-xs-12 text-center margin-top-28px">
+                            <button (click)="auditProduct()" class="btn btn-primary adjust-btn">Adjust Stock</button>
+                        </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
     </div>
-</div>

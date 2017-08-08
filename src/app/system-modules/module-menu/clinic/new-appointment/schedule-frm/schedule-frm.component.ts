@@ -63,7 +63,7 @@ export class ScheduleFrmComponent implements OnInit {
     loadIndicatorVisible = false;
     loadingPatients = false;
     loadingProviders = false;
-    canCheckIn = false;
+    canCheckIn = true;
     subscription: Subscription;
     auth: any;
     currentDate: Date = new Date();
@@ -107,9 +107,9 @@ export class ScheduleFrmComponent implements OnInit {
             this.category.setValue(payload.category);
             this.status.setValue(payload.orderStatusId);
             if (payload.attendance !== undefined) {
-                this.checkIn.setValue(true);
+                this.checkIn.enable();
             } else {
-                this.checkIn.setValue(false);
+                this.checkIn.disable()
             }
             this.isAppointmentToday();
         })
@@ -234,7 +234,11 @@ export class ScheduleFrmComponent implements OnInit {
             .find({ query: { _id: this.appointment._id, isAppointmentToday: true } })
             .subscribe(payload => {
                 if (payload.data.length > 0) {
+                    this.canCheckIn = false;
                     this.checkIn.enable();
+                }else{
+                    this.canCheckIn = true;
+                    this.checkIn.disable();
                 }
             }))
     }
