@@ -194,21 +194,21 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
                         </div>
-
-
                     </div>
                 </div>
             </form>
 
         </div>
+    </form>
+    <div class="" style="width: 100%;height: 50px; text-align: center;">
+        <button md-raised-button (click)="cancelAll();">Reset</button>
+        <button md-raised-button class="mat-lg-btn" (click)="create(frm_purchaseOrder.valid, frm_purchaseOrder.value)" style="line-height: 1;">Done</button>
+        <!-- <div (click)="cancelAll();" class="cta-1" st>
+            Cancel
+        </div>
         <div (click)="create(frm_purchaseOrder.valid, frm_purchaseOrder.value)" class="cta-1">
             Done
-        </div>
-
-    </form>
+        </div> -->
+    </div>
 </div>

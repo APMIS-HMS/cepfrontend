@@ -140,6 +140,7 @@ export class PurchaseEntryComponent implements OnInit {
       if (value !== undefined && value !== null) {
         this.purchaseOrderService.get(value, {}).subscribe(payload => {
           this.selectedOrder = payload;
+          console.log(this.selectedOrder);
         });
       }
     });
@@ -691,11 +692,19 @@ export class PurchaseEntryComponent implements OnInit {
     }
   }
 
+  cancelAll() {
+    this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+    this.frm_purchaseOrder.controls['supplier'].setValue('');
+    this.frm_purchaseOrder.controls['desc'].setValue('');
+    this.frm_purchaseOrder.controls['orderId'].reset();
+  }
+
   flyout_toggle(e) {
+    console.log(this.selectedOrder);
     if (this.selectedOrder === undefined || this.selectedOrder._id === undefined) {
       this.flyout = !this.flyout;
     }
-    e.stopPropagation();
+    //e.stopPropagation();
   }
   flyout_close(e) {
     if (this.flyout === true) {

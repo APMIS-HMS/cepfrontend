@@ -95,3 +95,14 @@
     font-weight: normal;
     padding: 0 5px;
 }
+.completion-meter_icon_step {
+    position: absolute;
+     width: 26px;
+    height: 32px; 
+    top: -10px; 
+    left: -16px;
+    border: 0px solid #e1e9ee;
+    border-radius: 50%;
+    color: #544bc2;
+    background-color: #fff;
+}
