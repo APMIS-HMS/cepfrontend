@@ -70,9 +70,12 @@
     width: 30%;
 }
 .txt-val{
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 1.5;
     color: #333;
     width: 69%;
+    max-height: 100px;
+    overflow-y: auto;
 }
 .txt-val i{
     color: #0288D1;
