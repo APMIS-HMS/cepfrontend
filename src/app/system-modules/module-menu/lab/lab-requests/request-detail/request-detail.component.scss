@@ -70,9 +70,12 @@
     width: 30%;
 }
 .txt-val{
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 1.5;
     color: #333;
     width: 69%;
+    max-height: 100px;
+    overflow-y: auto;
 }
 .txt-val i{
     color: #0288D1;
@@ -134,6 +137,7 @@ button{
     font-size: 12px;
     width: 120px;
     text-align: center;
+    margin: 0 auto;
 }
 .input-tag {
     position: absolute;
@@ -156,15 +160,30 @@ button{
 .uploadeds {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #bebebe;
+    border-top: 1px solid #bebebe;
+    padding: 10px 0;
 }
 .uploaded {
+    font-family: "Josefin Sans", sans-serif;
     text-align: center;
-    color: #777;
-    border: 1px solid #8e8e8e;
+    color: #8e8e8e;
+    border: 1px solid #bebebe;
     padding: 5px;
     border-radius: 5px;
+    cursor: pointer;
+}
+.uploaded:hover{
+    background: #eee;
+    color: #333;
 }
 .uploaded i{
     font-size: 28px;
+}
+.upload-label{
+    font-size: 12px;
+    margin-top: 10px;
 }

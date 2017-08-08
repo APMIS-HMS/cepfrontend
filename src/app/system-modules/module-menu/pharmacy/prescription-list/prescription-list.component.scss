@@ -98,3 +98,17 @@
 a:hover {
     text-decoration: none;
 }
+.backBtn {
+    position: absolute;
+    right: 9px;
+    z-index: 12;
+    font-size: 12px;
+    top: 23px;
+    color: #0288D1;
+}
+.backBtn:hover{
+    text-decoration: underline;
+}
+.fa-arrow-circle-o-right {
+    margin-left: 5px;
+}
