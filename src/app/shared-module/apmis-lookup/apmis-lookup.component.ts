@@ -3,6 +3,7 @@ import {
     FormGroup, FormControl, FormBuilder,
     Validators, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator
 } from '@angular/forms';
+import { FacilitiesService } from './../../services/facility-manager/setup/index';
 import { SocketService, RestService } from './../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +30,9 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     @Input() url = "";
     @Input() placeholder = "";
     @Input() query = {};
+    @Input() imgObj = "";
     @Input() isSocket = false;
+    @Input() displayImage = false;
     @Output() selectedItem = new EventEmitter();
     public _socket;
     private _rest;
@@ -41,15 +44,18 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     cuDropdownLoading = false;
     form: FormGroup;
     selectedValue: any = {};
-
+    baseUrl: any;
+    imgError = false;
     results = [];
     constructor(private fb: FormBuilder,
         private _socketService: SocketService,
-        private _restService: RestService) { }
+        private _restService: RestService,
+        private facilitiesService: FacilitiesService) { }
 
     ngOnInit() {
         this._rest = this._restService.getService(this.url);
         this._socket = this._socketService.getService(this.url);
+        this.baseUrl = this._restService.HOST;
         this.form = this.fb.group({ searchtext: [''] });
         this.form.controls['searchtext'].valueChanges
             .debounceTime(200)
@@ -59,20 +65,34 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
                 this.cuDropdownLoading = false;
                 this.results = payload;
             });
-
-        // this.form.controls['searchtext'].valueChanges.subscribe(value => {
-        //     console.log(this.displayKey);
-        //     console.log(this.query);
-        //
-        //     this.filter({ query: this.query }, this.isRest).then(filteredValue => {
-        //         this.cuDropdownLoading = false;
-        //         this.results = filteredValue;
-        //     })
-        //         .catch(err => {
-        //             this.cuDropdownLoading = false;
-        //             console.log(err);
-        //         });
-        // });
+            
+    }
+    getImgUrl(item) {
+        console.log("inside img");
+        const splitArray = this.imgObj.split('.');
+        let counter = 0;
+        splitArray.forEach((obj, i) => {
+            if (item[obj] != undefined) {
+                item = item[obj];
+            } else {
+                item = "undefined";
+            }
+            counter++;
+        })
+        if (counter == splitArray.length) {
+            console.log(item);
+            if (item == "undefined") {
+                //this.imgError = true;
+                let imgUri = undefined;
+                return imgUri;
+            }
+            else {
+                let imgUri = this.baseUrl + "/" + item;
+                //this.imgError = false;
+                return imgUri;
+            }
+            
+        }
     }
 
     filter(query: any, isSocket: boolean) {

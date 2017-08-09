@@ -21,7 +21,7 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupQuery: any = {
   };
   apmisLookupDisplayKey = 'personDetails.personFullName';
-
+  apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   request_view = false;
   reqDetail_view = false;
   personAcc_view = false;

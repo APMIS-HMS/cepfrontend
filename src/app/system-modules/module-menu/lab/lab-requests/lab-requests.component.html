@@ -24,7 +24,8 @@
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" 
                   [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
-                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
+                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true"
+                  [imgObj]="apmisLookupImgKey"
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
 
