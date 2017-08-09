@@ -1,7 +1,10 @@
 <div class="modal-baseWrap animated pulse">
 
   <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <div class="modal_title">{{document?.document?.documentType?.title}} @ {{document?.facilityId?.name}}</div> 
+  <div class="modal_title">
+      {{document?.document?.documentType?.title}}
+      <div class="doc-subtitle">{{document?.facilityId?.name}}</div>
+  </div>
 
   <div class="docCard-header">
         
