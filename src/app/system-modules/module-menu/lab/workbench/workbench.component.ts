@@ -35,12 +35,11 @@ export class WorkbenchComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     console.log(this.selectedFacility)
     this.frmNewWorkbench = this.formBuilder.group({
-      minorLocation: ['', [Validators.required]],
-      benchName: ['', [Validators.required]],
-      isActive: [true, [Validators.required]]
-    });
-    this.getLaboratoryMajorLocation();
+      minorLocations: ['', [Validators.required]],
+      benchName: ['', [Validators.required]]
+    })
   }
+
 
   getLaboratoryMajorLocation() {
     this.locationService.find({ query: { name: 'Laboratory' } }).then(payload => {
