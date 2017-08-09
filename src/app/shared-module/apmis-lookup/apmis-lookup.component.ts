@@ -37,8 +37,8 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     private valueParseError: boolean;
     private data: any;
     searchText = '';
-    showCuDropdown: boolean = false;
-    cuDropdownLoading: boolean = false;
+    showCuDropdown = false;
+    cuDropdownLoading = false;
     form: FormGroup;
     selectedValue: any = {};
 
@@ -63,7 +63,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         // this.form.controls['searchtext'].valueChanges.subscribe(value => {
         //     console.log(this.displayKey);
         //     console.log(this.query);
-        //     
+        //
         //     this.filter({ query: this.query }, this.isRest).then(filteredValue => {
         //         this.cuDropdownLoading = false;
         //         this.results = filteredValue;
@@ -83,7 +83,17 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
             return this._rest.find(query);
         }
     }
-
+    getName(item, displayKey: String) {
+        const splitArray = displayKey.split('.');
+        let counter = 0;
+        splitArray.forEach((obj, i) => {
+            item = item[obj];
+            counter++;
+        })
+        if (counter === (splitArray.length)) {
+            return item;
+        }
+    }
     onSelectedItem(value) {
         this.selectedItem.emit(value);
     }
@@ -129,7 +139,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     private onChange(event) {
 
         // get value from text area
-        let newValue = event.target.value;
+        const newValue = event.target.value;
 
         try {
             this.data = newValue;

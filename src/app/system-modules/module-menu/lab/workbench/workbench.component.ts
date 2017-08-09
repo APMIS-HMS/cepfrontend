@@ -5,6 +5,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { WorkbenchService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-workbench',
@@ -21,35 +22,41 @@ export class WorkbenchComponent implements OnInit {
   selectedMajorLocation: Location = <Location>{};
 
   minorLocations: MinorLocation[] = [];
+  workbenches: any[] = []
+  selectedWorkBench: any = <any>{};
 
   workbench_view = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  btnText = 'Create Workbench';
 
   public frmNewWorkbench: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage, private locationService: LocationService) { }
+  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage, private locationService: LocationService,
+    private workBenchService: WorkbenchService) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility)
     this.frmNewWorkbench = this.formBuilder.group({
       minorLocation: ['', [Validators.required]],
       benchName: ['', [Validators.required]],
       isActive: [true, [Validators.required]]
     });
     this.getLaboratoryMajorLocation();
+    this.getWorkBenches();
   }
-
+  getWorkBenches() {
+    this.workBenchService.find({ query: { 'facilityId._id': this.selectedFacility._id, $limit: 100 } }).then(payload => {
+      this.workbenches = payload.data;
+    })
+  }
   getLaboratoryMajorLocation() {
     this.locationService.find({ query: { name: 'Laboratory' } }).then(payload => {
-      console.log(payload);
       if (payload.data.length > 0) {
         this.selectedMajorLocation = payload.data[0];
         this.minorLocations = this.selectedFacility.minorLocations.
           filter(x => x.locationId === this.selectedMajorLocation._id);
-        console.log(this.minorLocations);
       }
     })
   }
@@ -66,7 +73,63 @@ export class WorkbenchComponent implements OnInit {
 
   }
   createWorkbench(valid, value) {
-    console.log(valid);
-    console.log(value);
+    console.log(valid)
+    console.log(value)
+    if (valid) {
+      if (this.selectedWorkBench._id === undefined) {
+        const workBench = {
+          name: value.benchName,
+          facilityId: this.locker.getObject('miniFacility'),
+          laboratoryId: value.minorLocation
+        }
+        console.log(workBench)
+        this.workBenchService.create(workBench).then(payload => {
+          console.log(payload);
+          this.workbenches.push(payload);
+          this.frmNewWorkbench.reset();
+          this.frmNewWorkbench.controls['isActive'].setValue(true);
+          this.selectedWorkBench = <any>{};
+        }, error => {
+          console.log(error);
+        })
+      } else {
+        this.selectedWorkBench.name = this.frmNewWorkbench.controls['benchName'].value;
+        this.selectedWorkBench.laboratoryId = this.frmNewWorkbench.controls['minorLocation'].value;
+        this.selectedWorkBench.isActive = this.frmNewWorkbench.controls['isActive'].value;
+        console.log(this.selectedWorkBench);
+        this.workBenchService.update(this.selectedWorkBench).then(payload => {
+          this.workbench_view = false;
+          this.btnText = 'Create Workbench';
+          this.selectedWorkBench = <any>{};
+          this.frmNewWorkbench.reset();
+          this.frmNewWorkbench.controls['isActive'].setValue(true);
+          const index = this.workbenches.findIndex((obj => obj._id === payload._id));
+          this.workbenches.splice(index, 1, payload);
+          // const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
+          // this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
+        }, error => {
+          this.btnText = 'Create Workbench';
+          this.frmNewWorkbench.reset();
+          this.frmNewWorkbench.controls['isActive'].setValue(true);
+        })
+      }
+    }
+  }
+
+  editWorkBench(bench) {
+    this.selectedWorkBench = bench;
+    this.frmNewWorkbench.controls['benchName'].setValue(this.selectedWorkBench.name);
+    this.frmNewWorkbench.controls['minorLocation'].setValue(this.selectedWorkBench.laboratoryId);
+    this.frmNewWorkbench.controls['isActive'].setValue(this.selectedWorkBench.isActive);
+    this.btnText = 'Update Workbench';
+    this.workbench_view = true;
+  }
+  toggleActivate(bench) {
+    bench.isActive = !bench.isActive;
+    this.selectedWorkBench = bench;
+    this.frmNewWorkbench.controls['benchName'].setValue(bench.name);
+    this.frmNewWorkbench.controls['minorLocation'].setValue(bench.laboratoryId);
+    this.frmNewWorkbench.controls['isActive'].setValue(bench.isActive);
+    this.createWorkbench(this.frmNewWorkbench.valid, bench);
   }
 }

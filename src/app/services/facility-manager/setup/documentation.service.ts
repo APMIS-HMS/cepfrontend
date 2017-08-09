@@ -1,5 +1,6 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 // import { DomSanitizer } from '@angular/platform-browser';
 
@@ -7,6 +8,8 @@ import { Subject } from 'rxjs/Subject';
 export class DocumentationService {
   public _socket;
   private _rest;
+  public listenerCreate;
+  public listenerUpdate;
 
   private announceDocumentationSource = new Subject<any>();
   announceDocumentation$ = this.announceDocumentationSource.asObservable();
@@ -24,6 +27,8 @@ export class DocumentationService {
     this._socket.timeout = 50000;
     this._socket.on('created', function (documentation) {
     });
+    this.listenerCreate = Observable.fromEvent(this._socket, 'created');
+    this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
   }
   transform(url) {
     url = this._restService.getHost() + '/' + url + '?' + new Date().getTime();

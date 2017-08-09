@@ -110,7 +110,13 @@ export class AddPatientProblemComponent implements OnInit {
     let isExisting = false;
     console.log(this.patientDocumentation)
     this.patientDocumentation.documentations.forEach(documentation => {
-      if (documentation.document.documentType._id === this.selectedForm._id) {
+      if(documentation.document == undefined){
+          documentation.document={
+            documentType : {}
+          }
+        }
+        if (documentation.document.documentType._id != undefined &&
+           documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
         documentation.document.body.problems.push({
           problem: this.problemFormCtrl.value,

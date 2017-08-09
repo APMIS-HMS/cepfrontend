@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, PrescriptionService, DispenseService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Prescription, PrescriptionItem } from '../../../../models/index';
 import { PharmacyEmitterService } from '../../../../services/facility-manager/pharmacy-emitter.service';
 
@@ -26,6 +26,7 @@ export class PrescriptionListComponent implements OnInit {
 		private _locker: CoolSessionStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
+		private _dispenseService: DispenseService
 	) {
 
 	}
@@ -34,6 +35,7 @@ export class PrescriptionListComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription List');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.getAllPrescriptions();
+		this.getDispenses();
 
 		this.searchFormGroup = this._fb.group({
 			search: ['', [<any>Validators]]
@@ -99,6 +101,18 @@ export class PrescriptionListComponent implements OnInit {
 			.catch(err => {
 				console.log(err);
 			});
+	}
+
+	getDispenses() {
+		this._dispenseService.find({ query: {facilityId: this.facility._id, isPrescription: false }}).then(res => {
+			console.log(res);
+			this.noPresLoading = false;
+			if(res.data.length > 0) {
+				this.noPrescriptionLists = res.data;
+			} else {
+				this.noPrescriptionLists = [];
+			}
+		}).catch(err => { console.log(err); });
 	}
 
 }

@@ -4,7 +4,8 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
 import {
-    FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService, WorkSpaceService
+    FacilitiesService, SchedulerService, AppointmentService, PatientService, AppointmentTypeService, ProfessionService,
+    EmployeeService, WorkSpaceService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, ScheduleRecordModel } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -110,7 +111,7 @@ export class NewAppointmentComponent implements OnInit {
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private facilityService: FacilitiesService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
-        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
+        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private patientService: PatientService,
         private route: ActivatedRoute) {
 
         route.params.subscribe(params => {
@@ -119,6 +120,14 @@ export class NewAppointmentComponent implements OnInit {
                 this.appointmentService.get(params.id, {}).subscribe(payload => {
                     this.appointmentService.appointmentAnnounced(payload);
                 })
+            } else if (params.patientId !== undefined && params.doctorId !== undefined) {
+                console.log(params);
+                this.patientService.get(params.patientId, {}).then(inPayload => {
+                    console.log(inPayload);
+                    this.patientService.announcePatient(inPayload);
+                    this.selectedPatient = inPayload;
+                })
+
             }
         });
 
