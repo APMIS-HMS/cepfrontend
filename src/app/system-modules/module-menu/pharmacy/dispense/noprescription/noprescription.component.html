@@ -45,20 +45,27 @@
             </div>
             <!--end corporate-->
             <!-- begin Internal -->
-            <div *ngIf="internalShow">
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-select placeholder="Department" formControlName="dept" class="example-full-width">
-                        <md-option *ngFor="let dept of departments" [(value)]="dept">{{ dept.name }}</md-option>
+            <div *ngIf="internalShow" class="col-xs-12 no-padding" style="height: 100px;margin-bottom: 15px;">
+                <div class="col-xs-12" style="padding: 10px 0;">
+                    <label class="example-margin">Internal Type:</label>
+                    <md-radio-group [(ngModel)]="internalType"  [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
+                        <md-radio-button class="example-margin" value="Department">Department/Unit</md-radio-button>
+                        <md-radio-button class="example-margin" value="Location">Location</md-radio-button>
+                    </md-radio-group>
+                </div>
+                <div class="col-sm-4 col-md-4 col-xs-12"  *ngIf="deptLocationShow">
+                    <md-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
+                        <md-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</md-option>
                     </md-select>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
+                <div class="col-sm-4 col-md-4 col-xs-12" *ngIf="deptLocationShow">
                     <md-select placeholder="Unit" formControlName="unit" class="example-full-width">
-                        <md-option *ngFor="let unit of units" [(value)]="unit">{{ unit.name }}</md-option>
+                        <md-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</md-option>
                     </md-select>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
+                <div class="col-sm-4 col-md-4 col-xs-12" *ngIf="!deptLocationShow">
                     <md-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
-                        <md-option *ngFor="let location of minorLocations" [(value)]="location">{{ location.name }}</md-option>
+                        <md-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</md-option>
                     </md-select>
                 </div>
             </div>
@@ -86,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: -5px;">
+            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top:2px;">
                 <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
                     <md-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
                     </md-option>
@@ -159,53 +166,6 @@
             </tr>
         </tbody>
     </table>
-
-
-
-
-
-
-
-
-
-    <!-- <div class="table-head">
-        <div class="table-head-inner-content drugs">
-            <p>Drugs</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Qty</p>
-        </div>
-        <div class="table-head-inner-content batch">
-            <p>Batch</p>
-        </div>
-        <div class="table-head-inner-content unit-price">
-            <p>Unit Price</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Action</p>
-        </div>
-    </div>
-    <div class="table-inner" *ngFor="let prescription of prescriptions; let i = index;">
-        <div class="table-data drugs">
-            <p>{{ prescription.productName }}</p>
-        </div>
-        <div class="table-data">
-            <p> {{ prescription.qty }}</p>
-        </div>
-        <div class="table-data batch">
-            <p> {{ prescription.batchNumber }}</p>
-        </div>
-        <div class="table-data unit-price">
-            <p><b>&#x20A6;{{ prescription.unitPrice }}</b></p>
-        </div>
-        <div class="table-data">
-            <p> <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></p>
-            <button md-raised-button [disabled]="prescription.isDispensed" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(prescription)" [innerHtml]="qtyDispenseBtn"> </button>
-        </div>
-    </div>
-    <div class="table-inner" *ngIf="prescriptions.length === 0" style="font-size: 13px; padding: 10px;">
-        <p class="text-center" style="width: 100%;">No data to display in table</p>
-    </div> -->
 </div>
 <div class="row" style="padding-right: 20px;">
     <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Quantity: {{ totalQuantity }}</b></p>

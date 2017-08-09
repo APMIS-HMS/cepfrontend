@@ -112,7 +112,7 @@ export class PrescriptionListComponent implements OnInit {
 			} else {
 				this.noPrescriptionLists = [];
 			}
-		}).catch(err => console.error(err) );
+		}).catch(err => { console.log(err); });
 	}
 
 }
