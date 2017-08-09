@@ -187,6 +187,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   onChangeCheckedIn() {
     this.modal_on = true;
     this.closeWhenClick = false;
+    this.contentSecMenuShow = false;
   }
   onClickInvoicesNavMenu() {
     this.purchaseHistoryNavMenu = true;

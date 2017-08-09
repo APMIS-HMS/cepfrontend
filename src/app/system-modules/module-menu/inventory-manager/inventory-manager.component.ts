@@ -24,6 +24,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   purchaseManagerNavMenu = false;
   modal_on = false;
 
+
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
@@ -150,8 +151,10 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   close_onClick(message: boolean): void {
     this.modal_on = false;
   }
-  onChangeCheckedIn() {
+  onChangeCheckedIn(hide) {
     this.modal_on = true;
+    this.contentSecMenuShow = false;
+  
   }
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
