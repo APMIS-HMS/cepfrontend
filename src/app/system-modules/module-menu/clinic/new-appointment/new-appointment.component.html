@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<app-schedule-frm></app-schedule-frm>
+<app-schedule-frm [selectedPatient]="selectedPatient"></app-schedule-frm>
 <div class="dr-wrap">
     <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range>
 </div>
@@ -207,7 +207,9 @@
             <td>
                 <div class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <!-- <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png"> -->
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
                     <div>{{appointment?.doctorId?.employeeDetails?.personFullName}}</div>

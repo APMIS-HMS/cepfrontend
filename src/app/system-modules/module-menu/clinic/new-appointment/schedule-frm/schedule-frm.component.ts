@@ -34,7 +34,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 
 export class ScheduleFrmComponent implements OnInit {
-
+    @Input() selectedPatient: any;
     mainErr = true;
     errMsg = 'you have unresolved errors';
     selectedFacility: Facility = <Facility>{};
@@ -63,7 +63,7 @@ export class ScheduleFrmComponent implements OnInit {
     loadIndicatorVisible = false;
     loadingPatients = false;
     loadingProviders = false;
-    canCheckIn = false;
+    canCheckIn = true;
     subscription: Subscription;
     auth: any;
     currentDate: Date = new Date();
@@ -107,9 +107,9 @@ export class ScheduleFrmComponent implements OnInit {
             this.category.setValue(payload.category);
             this.status.setValue(payload.orderStatusId);
             if (payload.attendance !== undefined) {
-                this.checkIn.setValue(true);
+                this.checkIn.enable();
             } else {
-                this.checkIn.setValue(false);
+                this.checkIn.disable()
             }
             this.isAppointmentToday();
         })
@@ -176,7 +176,13 @@ export class ScheduleFrmComponent implements OnInit {
             this.loginEmployee = employee;
             this.primeComponent();
         })
+        this.patientService.patientAnnounced$.subscribe(value => {
+            this.selectedPatient = value;
+            console.log(this.selectedPatient);
+            this.patient.setValue(this.selectedPatient);
+        })
         this.getPatients();
+
     }
     primeComponent() {
         const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
@@ -234,7 +240,11 @@ export class ScheduleFrmComponent implements OnInit {
             .find({ query: { _id: this.appointment._id, isAppointmentToday: true } })
             .subscribe(payload => {
                 if (payload.data.length > 0) {
+                    this.canCheckIn = false;
                     this.checkIn.enable();
+                } else {
+                    this.canCheckIn = true;
+                    this.checkIn.disable();
                 }
             }))
     }

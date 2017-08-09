@@ -22,6 +22,7 @@ import { BillPrescriptionComponent } from '../system-modules/module-menu/patient
 import { PatientPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
 import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup.component';
+import { ApmisLookupMultiselectComponent } from '../shared-module/apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
@@ -42,7 +43,7 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         ImageUpdateComponent,
-        ApmisLookupComponent,
+        ApmisLookupComponent, ApmisLookupMultiselectComponent,
         InvestigationComponent,
         KeysPipe,
         PersonAccountComponent
@@ -87,7 +88,7 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         CoolStorageModule,
         MdErrorDirective,
         ToastyModule,
-        ApmisLookupComponent,
+        ApmisLookupComponent, ApmisLookupMultiselectComponent,
         InvestigationComponent,
         KeysPipe,
         PersonAccountComponent

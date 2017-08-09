@@ -3,10 +3,10 @@
         <div class="table-container">
             <div class="row">
                  <div class="col-sm-4">
-                            <select [formControl]="selProductType" class="form-control">
-                                <option value="" disabled selected>Select by type</option>
-                                <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
-                            </select>
+                    <select [formControl]="selProductType" class="form-control">
+                        <option value="" disabled selected>Select by type</option>
+                        <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
+                    </select>
                 </div>
                 <div class="col-sm-4 pull-right">
                     <input [formControl]="searchControl" type="search" placeholder="Search..." class="searchInput" />

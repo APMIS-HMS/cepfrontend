@@ -13,10 +13,15 @@
         <ul class="cu-dropdown">
             <li><a class="header">Select item</a></li>
             <li *ngIf="results.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
-            <li *ngIf="results.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
+            <li *ngIf="results.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li> 
+            <!-- <li *ngFor="let item of results" (click)="onSelectedItem(item)"><a>{{item[displayKey]}}</a></li> -->
             <li *ngFor="let item of results" (click)="onSelectedItem(item)">
-                <a>{{getName(item,displayKey)}}</a>
-                <!-- <a>{{item[displayKey]}}</a> -->
+              <a>
+                <div class="txt-val">
+                  <md-checkbox></md-checkbox>
+                </div>
+                <div class="txt-label">{{item[displayKey]}}</div>
+              </a>
             </li>
         </ul>
         <div class="cu-footer">

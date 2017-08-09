@@ -125,12 +125,17 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.locker.setObject('patient', patient);
     })
   }
+  setAppointment() {
+    if (this.patient !== undefined && this.loginEmployee !== undefined) {
+      this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
+    }
 
+  }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
-    }else{
+    } else {
       this.router.navigate(['/dashboard/patient-manager']);
     }
     this.getForms();

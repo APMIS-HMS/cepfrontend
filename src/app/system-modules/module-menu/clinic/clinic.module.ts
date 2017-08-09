@@ -20,6 +20,7 @@ import { NewAppointmentComponent } from './new-appointment/new-appointment.compo
 import { ScheduleFrmComponent } from './new-appointment/schedule-frm/schedule-frm.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { DateRangePickerModule } from 'ng-pick-daterange';
+import { FormsService } from '../../../services/facility-manager/setup/index';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { DateRangePickerModule } from 'ng-pick-daterange';
         ProfessionsResolverService,
         AppointmentTypeResolverService,
         LoginEmployeeResolverService,
-        LoginEmployeeWorkspaceResolverService
+        LoginEmployeeWorkspaceResolverService,
+        FormsService
     ]
 })
 export class ClinicModule { }

@@ -1,5 +1,10 @@
-import { Component, OnInit, Renderer, ElementRef, ViewChild  } from '@angular/core';
+import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { LocationService } from '../../../../services/module-manager/setup/index';
+import { Location } from '../../../../models/index'
+import { Facility, MinorLocation } from '../../../../models/index';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-lab-requests',
@@ -8,24 +13,31 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class LabRequestsComponent implements OnInit {
 
-  @ViewChild('fileInput') fileInput:ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
-  apmisLookupUrl = "";
-  apmisLookupText = "";
-  apmisLookupQuery = {};
-  apmisLookupDisplayKey ="";
+  selelctedFacility: Facility = <Facility>{};
+  apmisLookupUrl = 'patient';
+  apmisLookupText = '';
+  apmisLookupQuery: any = {
+  };
+  apmisLookupDisplayKey = 'personDetails.personFullName';
 
   request_view = false;
   reqDetail_view = false;
   personAcc_view = false;
   mainErr = true;
+  paymentStatus = false;
+  sampleStatus = true;
+  resultStatus = false;
+
   errMsg = 'you have unresolved errors';
 
   public frmNewRequest: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private renderer:Renderer) { }
+  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage) { }
 
   ngOnInit() {
+    this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
       patient: ['', [Validators.required]],
       labNo: ['', [Validators.required]],
@@ -33,25 +45,36 @@ export class LabRequestsComponent implements OnInit {
       diagnosis: ['', [Validators.required]],
       investigation: ['', [Validators.required]]
     });
+
+    this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {
+      console.log(value);
+      this.apmisLookupQuery = {
+        'facilityid': this.selelctedFacility._id,
+        'searchtext': value
+      };
+      // this.apmisLookupQuery.facilityId = this.selelctedFacility._id;
+      // this.apmisLookupQuery.searchtext = value;
+    })
   }
 
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
-  onChange(){
+  onChange() {
     //upload file
   }
 
-  apmisLookupHandleSelectedItem(value){
-
+  apmisLookupHandleSelectedItem(value) {
+    this.apmisLookupText = value.personDetails.personFullName;
+    console.log(value);
   }
   request_show() {
     this.request_view = !this.request_view;
   }
-  reqDetail(){
+  reqDetail() {
     this.reqDetail_view = true;
   }
-  newPerson(){
+  newPerson() {
     this.personAcc_view = true;
   }
   close_onClick(message: boolean): void {
