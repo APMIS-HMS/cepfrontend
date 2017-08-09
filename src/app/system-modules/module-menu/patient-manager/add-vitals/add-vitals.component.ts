@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   DocumentationService, VitaLocationService, VitalRythmService, VitalPositionService,
-  EmployeeService, FormsService, FacilitiesService, PatientService
+  EmployeeService, FormsService, FacilitiesService, PatientService, ServerDateService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -38,6 +38,7 @@ export class AddVitalsComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
+  serverDate: Date = <Date>{};
 
   public frmAddVitals: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -51,13 +52,17 @@ export class AddVitalsComponent implements OnInit {
     private _locker: CoolSessionStorage,
     private _employeeService: EmployeeService,
     private _FormsService: FormsService,
-    private _PatientService: PatientService) {
+    private _PatientService: PatientService,
+    private _ServerDateService: ServerDateService) {
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
   }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
+    this.getVitalLocation();
+    this.getVitalPosition();
+    this.getVitalRythm();
     this.getPersonDocumentation();
     this.getForm();
     this._employeeService.find({
@@ -86,9 +91,7 @@ export class AddVitalsComponent implements OnInit {
       weight: ['', []]
       //bmi: ['', []]
     });
-    this.getVitalLocation();
-    this.getVitalPosition();
-    this.getVitalRythm();
+
 
     this.frmAddVitals.controls['height'].valueChanges.subscribe(value => {
       const heightSquare = (+this.frmAddVitals.controls['height'].value) * (+this.frmAddVitals.controls['height'].value);
@@ -218,44 +221,59 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
       console.log(vitalValue);
-      this.patientDocumentation.documentations.forEach(documentation => {
-        if (documentation.document.documentType._id === this.selectedForm._id) {
-          isExisting = true;
-          documentation.document.body.vitals.push({
+      this._ServerDateService.find({ query: {} }).then(datePayload => {
+        this.serverDate = new Date(datePayload);
+
+        this.patientDocumentation.documentations.forEach(documentation => {
+          if (documentation.document == undefined) {
+            documentation.document = {
+              documentType: {}
+            }
+          }
+          if (documentation.document.documentType._id != undefined &&
+            documentation.document.documentType._id === this.selectedForm._id) {
+            isExisting = true;
+            documentation.document.body.vitals.push({
+              pulseRate: this.pulseRate,
+              respiratoryRate: this.respiratoryRate,
+              temperature: this.temperature,
+              bodyMass: this.heightWeight,
+              bloodPressure: this.bloodPressure,
+              updatedAt: this.serverDate
+            })
+          }
+        });
+        if (!isExisting) {
+          const doc: PatientDocumentation = <PatientDocumentation>{};
+          doc.facilityId = this.selectedFacility;
+          doc.createdBy = this.loginEmployee;
+          doc.patientId = this.patient._id;
+          doc.document = {
+            documentType: this.selectedForm,
+            body: {
+              vitals: []
+            }
+          }
+          doc.document.body.vitals.push({
             pulseRate: this.pulseRate,
             respiratoryRate: this.respiratoryRate,
             temperature: this.temperature,
             bodyMass: this.heightWeight,
-            bloodPressure: this.bloodPressure
-          })
+            bloodPressure: this.bloodPressure,
+            updatedAt: this.serverDate
+          });
+          this.patientDocumentation.documentations.push(doc);
         }
-      });
-      if (!isExisting) {
-        const doc: PatientDocumentation = <PatientDocumentation>{};
-        doc.facilityId = this.selectedFacility;
-        doc.createdBy = this.loginEmployee;
-        doc.patientId = this.patient._id;
-        doc.document = {
-          documentType: this.selectedForm,
-          body: {
-            vitals: []
-          }
-        }
-        doc.document.body.vitals.push({
-          pulseRate: this.pulseRate,
-          respiratoryRate: this.respiratoryRate,
-          temperature: this.temperature,
-          bodyMass: this.heightWeight,
-          bloodPressure: this.bloodPressure
-        });
-        this.patientDocumentation.documentations.push(doc);
-      }
-      this.documentationService.update(this.patientDocumentation).subscribe(payload => {
-        this.patientDocumentation = payload;
-        this.frmAddVitals.reset();
-        this.disableSaveBtn = false;
-        this.saveBtnText = "Add Vitals";
+
+        this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+          this.patientDocumentation = payload;
+          this.frmAddVitals.reset();
+          this.disableSaveBtn = false;
+          this.saveBtnText = "Add Vitals";
+        })
       })
+
+
 
     }
   }
