@@ -29,6 +29,7 @@ export class LabRequestsComponent implements OnInit {
   paymentStatus = false;
   sampleStatus = true;
   resultStatus = false;
+  apmisLookupOtherKeys = ['personDetails.email','personDetails.dateOfBirth'];
 
   errMsg = 'you have unresolved errors';
 

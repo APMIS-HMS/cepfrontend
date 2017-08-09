@@ -31,7 +31,9 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     @Input() placeholder = "";
     @Input() query = {};
     @Input() imgObj = "";
+    @Input() otherKeys = [];
     @Input() isSocket = false;
+    @Input() multipleKeys = false;
     @Input() displayImage = false;
     @Output() selectedItem = new EventEmitter();
     public _socket;
@@ -65,10 +67,9 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
                 this.cuDropdownLoading = false;
                 this.results = payload;
             });
-            
+
     }
     getImgUrl(item) {
-        console.log("inside img");
         const splitArray = this.imgObj.split('.');
         let counter = 0;
         splitArray.forEach((obj, i) => {
@@ -91,7 +92,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
                 //this.imgError = false;
                 return imgUri;
             }
-            
+
         }
     }
 
@@ -112,6 +113,41 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         })
         if (counter === (splitArray.length)) {
             return item;
+        }
+    }
+    getOtherKeyValues(item) {
+        var otherValues = [];
+        let mainCounter = 0;
+        let objItem = item;
+        console.log(this.otherKeys);
+        this.otherKeys.forEach((key, i) => {
+            var splitArray = key.split('.');
+            let counter = 0;
+            mainCounter++;
+            splitArray.forEach((obj, i) => {
+                console.log(objItem[obj]);
+                if (objItem[obj] != undefined) {
+                    objItem = objItem[obj];
+                } else {
+                    objItem = "";
+                }
+                counter++;
+            })
+            if (counter == (splitArray.length)) {
+                var checkDate =new Date(objItem);
+                let NaN = "" +checkDate.getDate().toString() +"";
+                if (NaN == "NaN") {
+                    otherValues.push(objItem);
+                } else {
+                    let d = new Date(objItem);
+                    otherValues.push(d.toDateString());
+                }
+                objItem = item;
+            }
+        })
+        if (mainCounter == this.otherKeys.length) {
+            console.log(otherValues)
+            return otherValues;
         }
     }
     onSelectedItem(value) {
