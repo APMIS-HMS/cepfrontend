@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { Facility } from '../../../../models/index';
 
 @Component({
   selector: 'app-workbench',
@@ -11,7 +13,9 @@ export class WorkbenchComponent implements OnInit {
   apmisLookupUrl = "";
   apmisLookupText = "";
   apmisLookupQuery = {};
-  apmisLookupDisplayKey ="";
+  apmisLookupDisplayKey = "";
+
+  selectedFacility: Facility = <Facility>{};
 
   workbench_view = false;
 
@@ -25,18 +29,18 @@ export class WorkbenchComponent implements OnInit {
   ngOnInit() {
     this.frmNewWorkbench = this.formBuilder.group({
       minorLocations: ['', [Validators.required]],
-      benchName: ['', [Validators.required]],
-    });
+      benchName: ['', [Validators.required]]
+    })
   }
 
-  apmisLookupHandleSelectedItem(value){
+  apmisLookupHandleSelectedItem(value) {
 
   }
   workbench_show() {
     this.workbench_view = !this.workbench_view;
   }
-  
+
   close_onClick(message: boolean): void {
-    
+
   }
 }
