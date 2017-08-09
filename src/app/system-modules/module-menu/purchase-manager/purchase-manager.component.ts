@@ -22,6 +22,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   purchaseEntryNavMenu = false;
   supplierNavMenu = false;
   modal_on = false;
+  closeWhenClick = true;
 
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
@@ -185,6 +186,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   }
   onChangeCheckedIn() {
     this.modal_on = true;
+    this.closeWhenClick = false;
   }
   onClickInvoicesNavMenu() {
     this.purchaseHistoryNavMenu = true;
