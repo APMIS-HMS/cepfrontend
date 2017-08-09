@@ -35,7 +35,7 @@ export class AdmitPatientComponent implements OnInit {
 		private router: Router,
 		private _facilitiesService: FacilitiesService,
 		private _inPatientService: InPatientService,
-		private _inPatientListService: InPatientListService,
+		private _inPatientListService: InPatientListService
 	) {
 		this._wardAdmissionService.listenerCreate.subscribe(payload => {
 			this.getwardRoomLocationItems();

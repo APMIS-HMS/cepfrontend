@@ -26,15 +26,15 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   // @Input() vitalDocuments: any;
 
   lineChartData = [
-            { data: [], label: 'Pulse Rate' },
-            { data: [], label: 'Systolic' },
-            { data: [], label: 'Diastolic' },
-            { data: [], label: 'Temperature' },
-            { data: [], label: 'Respiratory Rate' },
-            { data: [], label: 'Height' },
-            { data: [], label: 'Weight' },
-            { data: [], label: 'BMI' }
-          ];
+    { data: [], label: 'Pulse Rate' },
+    { data: [], label: 'Systolic' },
+    { data: [], label: 'Diastolic' },
+    { data: [], label: 'Temperature' },
+    { data: [], label: 'Respiratory Rate' },
+    { data: [], label: 'Height' },
+    { data: [], label: 'Weight' },
+    { data: [], label: 'BMI' }
+  ];
 
 
   public lineChartLabels: Array<any> = [''];
@@ -168,7 +168,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   vitalsWeight = [];
   vitalsSystolic = [];
   vitalsDiastolic = [];
-  vitalsTemp=[];
+  vitalsTemp = [];
   vitalChartData = [];
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
@@ -201,45 +201,42 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (this.patient !== undefined) {
       this.getCurrentUser();
-      this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
-        if (payload.data.length != 0) {
-          payload.data[0].documentations.forEach(documentItem => {
-            if (documentItem.document.documentType.title == "Vitals") {
-              this.vitalsObjArray = documentItem.document.body.vitals;
-            }
-          });
-          this.vitalsObjArray.forEach(item => {
-            this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
-            this.lineChartData[1].data.push(item.respiratoryRate);
-            this.lineChartData[2].data.push(item.bodyMass.bmi);
-            this.lineChartData[3].data.push(item.bodyMass.height);
-            this.lineChartData[4].data.push(item.bodyMass.Weight);
-            this.lineChartData[5].data.push(item.temperature);
-            this.lineChartData[6].data.push(item.bloodPressure.diastolic);
-            this.lineChartData[7].data.push(item.bloodPressure.systolic);
-            var d = new Date(item.updatedAt);
-            this.lineChartLabels.push(d);
-          });
-
-          // lineChart
-          // this.lineChartData = [
-          //   { data: this.vitalsPulse, label: 'Pulse Rate' },
-          //   { data: this.vitalsSystolic, label: 'Systolic' },
-          //   { data: this.vitalsDiastolic, label: 'Diastolic' },
-          //   { data: this.vitalsTemp, label: 'Temperature' },
-          //   { data: this.vitalsRespiratoryRate, label: 'Respiratory Rate' },
-          //   { data: this.vitalsHeight, label: 'Height' },
-          //   { data: this.vitalsWeight, label: 'Weight' },
-          //   { data: this.vitalsBMI, label: 'BMI' }
-          // ];
-          // console.log(this.lineChartData);
-          //this.lineChartDataDD = this.lineChartData;
-        }
-      })
+      this.bindVitalsDataToChart();
     }
 
+    this._DocumentationService.listenerCreate.subscribe(payload => {
+      this.bindVitalsDataToChart();
+    });
 
+    this._DocumentationService.listenerUpdate.subscribe(payload => {
+      this.bindVitalsDataToChart();
+    });
   }
+
+  bindVitalsDataToChart() {
+    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+      if (payload.data.length != 0) {
+        payload.data[0].documentations.forEach(documentItem => {
+          if (documentItem.document.documentType.title == "Vitals") {
+            this.vitalsObjArray = documentItem.document.body.vitals;
+          }
+        });
+        this.vitalsObjArray.forEach(item => {
+          this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
+          this.lineChartData[1].data.push(item.respiratoryRate);
+          this.lineChartData[2].data.push(item.bodyMass.bmi);
+          this.lineChartData[3].data.push(item.bodyMass.height);
+          this.lineChartData[4].data.push(item.bodyMass.Weight);
+          this.lineChartData[5].data.push(item.temperature);
+          this.lineChartData[6].data.push(item.bloodPressure.diastolic);
+          this.lineChartData[7].data.push(item.bloodPressure.systolic);
+          var d = new Date(item.updatedAt);
+          this.lineChartLabels.push(d);
+        });
+      }
+    })
+  }
+
   getForms() {
     this.formsService.findAll().then(payload => {
       this.json = payload.data[0].body;
