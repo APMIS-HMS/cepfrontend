@@ -81,7 +81,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
             counter++;
         })
         if (counter == splitArray.length) {
-            console.log(item);
             if (item == "undefined") {
                 //this.imgError = true;
                 let imgUri = undefined;
@@ -119,13 +118,11 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         var otherValues = [];
         let mainCounter = 0;
         let objItem = item;
-        console.log(this.otherKeys);
         this.otherKeys.forEach((key, i) => {
             var splitArray = key.split('.');
             let counter = 0;
             mainCounter++;
             splitArray.forEach((obj, i) => {
-                console.log(objItem[obj]);
                 if (objItem[obj] != undefined) {
                     objItem = objItem[obj];
                 } else {
@@ -146,7 +143,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
             }
         })
         if (mainCounter == this.otherKeys.length) {
-            console.log(otherValues)
             return otherValues;
         }
     }
