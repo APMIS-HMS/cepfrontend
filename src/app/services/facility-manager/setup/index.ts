@@ -76,3 +76,4 @@ export * from './investigation.service';
 export * from './investigation-report-type.service';
 export * from './investigation-specimen.service';
 export * from './workbench.service';
+export * from './get-server-date.service';
