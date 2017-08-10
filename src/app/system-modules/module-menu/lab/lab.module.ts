@@ -11,6 +11,7 @@ import { InvestigationServiceComponent } from './investigation-service/investiga
 import { InvestigationPriceComponent } from './investigation-price/investigation-price.component';
 import { PanelComponent } from './panel/panel.component';
 import { WorkbenchService } from '../../../services/facility-manager/setup/index';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { WorkbenchService } from '../../../services/facility-manager/setup/index
     SharedModule,
     MaterialModule
   ],
-  declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent],
+  declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent],
   providers:[WorkbenchService]
 })
 export class LabModule { }
