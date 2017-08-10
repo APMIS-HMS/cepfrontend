@@ -17,6 +17,8 @@ import { PrescriptionComponent } from './dispense/prescription/prescription.comp
 import { NoprescriptionComponent } from './dispense/noprescription/noprescription.component';
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { WalkInDetailsComponent } from './prescription-list/walk-in-details/walk-in-details.component';
+import { ExternalPrescriptionComponent } from './external-prescription/external-prescription.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +28,8 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
         DispenseComponent,
         PrescriptionComponent,
         NoprescriptionComponent,
+        WalkInDetailsComponent,
+        ExternalPrescriptionComponent,
     ],
 
     exports: [

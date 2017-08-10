@@ -48,12 +48,12 @@
             <div *ngIf="internalShow" class="col-xs-12 no-padding" style="height: 100px;margin-bottom: 15px;">
                 <div class="col-xs-12" style="padding: 10px 0;">
                     <label class="example-margin">Internal Type:</label>
-                    <md-radio-group [(ngModel)]="internalType"  [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
+                    <md-radio-group [(ngModel)]="internalType" [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
                         <md-radio-button class="example-margin" value="Department">Department/Unit</md-radio-button>
                         <md-radio-button class="example-margin" value="Location">Location</md-radio-button>
                     </md-radio-group>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12"  *ngIf="deptLocationShow">
+                <div class="col-sm-4 col-md-4 col-xs-12" *ngIf="deptLocationShow">
                     <md-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
                         <md-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</md-option>
                     </md-select>
@@ -157,8 +157,7 @@
                 <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
                 <td class="table-content">&#x20A6;{{ prescription.qty * prescription.unitPrice }}</td>
                 <td class="table-content">
-                    <a *ngIf="!prescription.isBilled" style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
-                    <!-- <button md-raised-button [disabled]="prescription.isBilled" style="color:#000!important; background:#ccc!important; padding: 6px 12px;" (click)="onClickBillProduct(prescription)" [innerHtml]="qtyDispenseBtn"> </button> -->
+                    <a style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
                 </td>
             </tr>
             <tr *ngIf="prescriptions.length === 0">
@@ -173,6 +172,6 @@
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="mat-lg-btn" [disabled]="dispenseAllBtn" (click)="onClickDispense();" md-raised-button>Dispense</button>
+        <button class="mat-lg-btn" [disabled]="disableDispenseBtn" (click)="onClickDispense();" md-raised-button [innerHtml]="dispenseBtnText"></button>
     </div>
 </div>

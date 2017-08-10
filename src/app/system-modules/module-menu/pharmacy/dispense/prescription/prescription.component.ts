@@ -17,6 +17,7 @@ import { FacilitiesService, PrescriptionService, InventoryTransactionTypeService
 })
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
+	@Output() isExternalPrescription: boolean = false;
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	user: User = <User>{};
@@ -57,7 +58,12 @@ export class PrescriptionComponent implements OnInit {
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
 		private _externalPrescriptionService: ExternalPrescriptionService
 	) {
-
+		let url = window.location.href;
+		if(url.includes('pharmacy/external-prescriptions')) {
+			this.isExternalPrescription = true;
+		} else {
+			this.isExternalPrescription = false;
+		}
 	}
 
 	ngOnInit() {
@@ -338,45 +344,55 @@ export class PrescriptionComponent implements OnInit {
 			.then(res => {
 				console.log(res);
 				this.loading = false;
-				this.prescriptionItems = res;
-				const notBilled = this.prescriptionItems.prescriptionItems.filter(x => (!x.paymentCompleted && !x.isExternal));
-		
-				if(notBilled.length > 0) {
-					this.disableDispenseAllBtn = true;
-				}
+				
+				// Check if the page is for prescription or external prescription
+				if(!this.isExternalPrescription) {
+					this.prescriptionItems = res;
 
-				if(this.prescriptionItems.isDispensed) {
-					this.disableDispenseAllBtn = true;
-					this.dispenseAllBtnText = 'Saved';
-				}
-
-				// Reset all the prescriptionItem.transactions to an empty array.
-				this.prescriptionItems.prescriptionItems.forEach(element => {
-					// Billed items
-					if(element.isBilled || element.isExternal) {
-						if(element.quantity !== undefined && element.totalCost !== undefined) {
-							this.totalQuantity += element.quantity;
-							this.totalCost += element.totalCost;
-						}
-
-						if(element.isExternal) {
-							element.quantity = 0;
-							element.quantityDispensed = 0;
-						}
-						// Add the payment status on the fly
-						element.paymentCompleted = false;
-						this.prescriptions.push(element);
+					const notBilled = this.prescriptionItems.prescriptionItems.filter(x => (!x.paymentCompleted && !x.isExternal));
+					console.log(notBilled);
+					if(notBilled.length > 0) {
+						this.disableDispenseAllBtn = true;
 					}
 
-					// Unbilled items
-					if(!element.isBilled) {
-						this.unBilledArray.push(element);
+					if(this.prescriptionItems.isDispensed) {
+						this.disableDispenseAllBtn = true;
+						this.dispenseAllBtnText = 'Saved';
 					}
-					element.transactions = [];
-				});
 
-				if(this.prescriptions.length > 0) {
-					this._getPaymentStatus();
+					// Reset all the prescriptionItem.transactions to an empty array.
+					this.prescriptionItems.prescriptionItems.forEach(element => {
+						// Billed items
+						if(element.isBilled || element.isExternal) {
+							if(element.quantity !== undefined && element.totalCost !== undefined) {
+								this.totalQuantity += element.quantity;
+								this.totalCost += element.totalCost;
+							}
+
+							if(element.isExternal) {
+								element.quantity = 0;
+								element.quantityDispensed = 0;
+							}
+							// Add the payment status on the fly
+							element.paymentCompleted = false;
+							this.prescriptions.push(element);
+						}
+
+						// Unbilled items
+						if(!element.isBilled) {
+							this.unBilledArray.push(element);
+						}
+						element.transactions = [];
+					});
+
+					if(this.prescriptions.length > 0) {
+						this._getPaymentStatus();
+					}
+				} else {
+					// Filter the external prescriptions only
+					const external = res.prescriptionItems.filter(x => x.isExternal);
+					res.prescriptionItems = external;
+					this.prescriptionItems = res;
 				}
 			})
 			.catch(err => {
