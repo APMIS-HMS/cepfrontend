@@ -9,9 +9,9 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-  selector: 'apmis-lookup-multiselect',
-  templateUrl: './apmis-lookup-multiselect.component.html',
-  styleUrls: ['./apmis-lookup-multiselect.component.scss'],
+    selector: 'apmis-lookup-multiselect',
+    templateUrl: './apmis-lookup-multiselect.component.html',
+    styleUrls: ['./apmis-lookup-multiselect.component.scss'],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -51,31 +51,18 @@ export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAcce
         this._rest = this._restService.getService(this.url);
         this._socket = this._socketService.getService(this.url);
         this.form = this.fb.group({ searchtext: [''] });
-        console.log(this.query);
-        console.log(this.url);
-        console.log(this.isSocket);
         this.form.controls['searchtext'].valueChanges
-            .debounceTime(200)
+            .debounceTime(400)
             .distinctUntilChanged()
             .switchMap(value => this.filter({ query: this.query }, this.isSocket))
             .subscribe((payload: any) => {
                 this.cuDropdownLoading = false;
-                this.results = payload;
+                if (payload !== undefined && payload.data !== undefined) {
+                    this.results = payload.data;
+                } else {
+                    this.results = payload;
+                }
             });
-
-        // this.form.controls['searchtext'].valueChanges.subscribe(value => {
-        //     console.log(this.displayKey);
-        //     console.log(this.query);
-        //     
-        //     this.filter({ query: this.query }, this.isRest).then(filteredValue => {
-        //         this.cuDropdownLoading = false;
-        //         this.results = filteredValue;
-        //     })
-        //         .catch(err => {
-        //             this.cuDropdownLoading = false;
-        //             console.log(err);
-        //         });
-        // });
     }
 
     filter(query: any, isSocket: boolean) {
@@ -87,8 +74,8 @@ export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAcce
         }
     }
 
-    onSelectedItem(value) {
-        this.selectedItem.emit(value);
+    onSelectedItem(value, $event) {
+        this.selectedItem.emit({ object: value, checked: $event.checked, clear: false });
     }
 
     focusSearch() {
@@ -99,6 +86,18 @@ export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAcce
         setTimeout(() => {
             this.showCuDropdown = !this.showCuDropdown;
         }, 300);
+    }
+    cancel() {
+        this.results = [];
+        this.showCuDropdown = !this.showCuDropdown;
+        this.selectedItem.emit({ object: undefined, checked: false, clear: true, action: 'cancel' });
+        this.form.controls['searchtext'].reset();
+    }
+    ok() {
+        this.results = [];
+        this.showCuDropdown = !this.showCuDropdown;
+        this.selectedItem.emit({ object: undefined, checked: false, clear: true, action: 'ok' });
+        this.form.controls['searchtext'].reset();
     }
 
     // this is the initial value set to the component
