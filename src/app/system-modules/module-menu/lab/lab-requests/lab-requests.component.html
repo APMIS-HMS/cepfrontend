@@ -1,5 +1,5 @@
-
-<div class="pg-subtitle">LABORATORY REQUESTS</div>
+<div class="pg-subtitle">
+  LABORATORY REQUESTS</div>
 <div>
   <div class="doc-mainWrap">
     <div class="doc-contentArea">
@@ -7,9 +7,9 @@
       <div class="clinicalNoteWrap">
         <div class="actSect">
           <div (click)="request_show()" class="act-wrap">
-              <i *ngIf="request_view" class="fa fa-minus" aria-hidden="true"></i>
-              <i [hidden]="request_view" class="fa fa-plus" aria-hidden="true"></i>
-              <span>New Request</span>
+            <i *ngIf="request_view" class="fa fa-minus" aria-hidden="true"></i>
+            <i [hidden]="request_view" class="fa fa-plus" aria-hidden="true"></i>
+            <span>New Request</span>
           </div>
 
           <form class="frmNoteWrap" *ngIf="request_view" [formGroup]="frmNewRequest" novalidate>
@@ -22,35 +22,32 @@
             <div class="frm-wrap">
               <div class="frm-l">
                 <div class="frm-item-wrap">
-                  <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" 
-                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
-                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
-                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                  <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
+                    [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                    [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
 
                 <div class="frm-item-wrap">
                   <md-input-container>
-                      <textarea mdInput formControlName="clinicalInfo" placeholder="Clinical Information"></textarea>
+                    <textarea mdInput formControlName="clinicalInfo" placeholder="Clinical Information"></textarea>
                   </md-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
-                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisLookupText" 
-                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Add Investigation"
-                  isSocket="false" displayKey="apmisLookupDisplayKey" 
-                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
+                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery"
+                    placeholder="Add Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
                 </div>
               </div>
               <div class="frm-r">
                 <div class="frm-item-wrap">
                   <md-input-container>
-                      <input mdInput placeholder="Lab Number" formControlName="labNo">
+                    <input mdInput placeholder="Lab Number" formControlName="labNo">
                   </md-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
                   <md-input-container>
-                      <textarea mdInput formControlName="diagnosis" placeholder="Diagnosis"></textarea>
+                    <textarea mdInput formControlName="diagnosis" placeholder="Diagnosis"></textarea>
                   </md-input-container>
                 </div>
 
@@ -72,7 +69,8 @@
               </div>
             </div>
 
-            <button [disabled]="!frmNewRequest.valid || !isAnyChecked()" (click)="setWorkspace(frmNewRequest.valid, frmNewEmp1.value)" class="cta-1">
+            <button [disabled]="!frmNewRequest.valid || !isAnyChecked()" (click)="setWorkspace(frmNewRequest.valid, frmNewEmp1.value)"
+              class="cta-1">
               Make Request
             </button>
           </form>
@@ -81,33 +79,33 @@
         <div class="tblWrapa" class="actSect">
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
-                <tr>
-                  <th>
-                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Date</span>
-                  </th>
-                  <th> 
-                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Patient</span>
-                  </th>
-                  <th>
-                      <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                      <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                      <span style="padding-left: 3px;">Investigation</span>
-                  </th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
+              <tr>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Date</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Patient</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Investigation</span>
+                </th>
+                <th>Status</th>
+                <th></th>
+              </tr>
             </thead>
 
             <tbody>
 
               <tr>
                 <td colspan="6">
-                    <div class="tbl-actionRow">
-                        <!-- <div class="frm-item-wrap">
+                  <div class="tbl-actionRow">
+                    <!-- <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
                           isSocket="false" displayKey="apmisLookupDisplayKey" 
@@ -127,7 +125,7 @@
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div> -->
-                    </div>
+                  </div>
                 </td>
               </tr>
 
@@ -136,7 +134,7 @@
                 <td>
                   <div class="empWrap">
                     <div class="list-img">
-                        <img src="assets/images/users/default.png">
+                      <img src="assets/images/users/default.png">
                     </div>
                     <div>Johnson Wade</div>
                   </div>
@@ -154,7 +152,7 @@
                     </div>
                     <div class="status-item">
                       <div class="status-label">Result Available</div>
-                      <div  [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div>
+                      <div [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div>
                     </div>
                   </div>
                 </td>
@@ -175,7 +173,7 @@
                       <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                       <span>Upload Result</span>
                     </div>
-                    <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)" >
+                    <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
                   </div>
                 </td>
               </tr>
@@ -186,12 +184,12 @@
     </div>
   </div>
 
-  
+
 </div>
 
 <div *ngIf="reqDetail_view" class="modal-overlay">
-    <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
+  <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
 </div>
- <div *ngIf="personAcc_view" class="modal-overlay">
-    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
-</div> 
+<div *ngIf="personAcc_view" class="modal-overlay">
+  <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+</div>

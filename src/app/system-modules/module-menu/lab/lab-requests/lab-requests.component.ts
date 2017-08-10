@@ -21,7 +21,7 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupQuery: any = {
   };
   apmisLookupDisplayKey = 'personDetails.personFullName';
-
+  apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   request_view = false;
   reqDetail_view = false;
   personAcc_view = false;
@@ -29,6 +29,7 @@ export class LabRequestsComponent implements OnInit {
   paymentStatus = false;
   sampleStatus = true;
   resultStatus = false;
+  apmisLookupOtherKeys = ['personDetails.email','personDetails.dateOfBirth'];
 
   errMsg = 'you have unresolved errors';
 

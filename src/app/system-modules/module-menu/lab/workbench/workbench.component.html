@@ -39,7 +39,7 @@
                         </div>
 
                         <button (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="cta-1">
-              Create Workbench
+              {{btnText}}
             </button>
                     </form>
                 </div>
@@ -75,11 +75,13 @@
                                     <div class="tbl-actionRow">
                                         <!-- <div class="tbl-title">Employee Workspace</div> -->
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Bench Name" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Bench Name" isSocket="false"
+                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location" isSocket="false"
+                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
@@ -92,41 +94,18 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>Block D </td>
-                                <td>Southern Workbench</td>
-                                <td>Active</td>
-                                <td>11th July, 2017.</td>
-                                <td class="action-placeholder">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="reqDetail()" class="action-item">
-                                            <i class="fa fa-edit" aria-hidden="true"></i>
-                                            <span>Edit</span>
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                            <span>Delete</span>
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-ban" aria-hidden="true"></i>
-                                            <span>Deactivate</span>
-                                        </div>
-                                    </div>
+                            <tr *ngFor="let bench of workbenches">
+                                <td>{{bench.laboratoryId.name}} </td>
+                                <td>{{bench.name}}</td>
+                                <td>
+                                    <span *ngIf="bench.isActive">Active</span>
+                                    <span *ngIf="!bench.isActive">Disabled</span>
                                 </td>
-                            </tr>
-
-                            <tr>
-                                <td>Block D </td>
-                                <td>Southern Workbench</td>
-                                <td>Active</td>
-                                <td>11th July, 2017.</td>
+                                <td>{{bench.createdAt|date:'short'}}</td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="reqDetail()" class="action-item">
+                                        <div (click)="editWorkBench(bench)" class="action-item">
                                             <i class="fa fa-edit" aria-hidden="true"></i>
                                             <span>Edit</span>
                                         </div>
@@ -136,9 +115,10 @@
                                             <span>Delete</span>
                                         </div>
 
-                                        <div class="action-item">
+                                        <div class="action-item" (click)="toggleActivate(bench)">
                                             <i class="fa fa-ban" aria-hidden="true"></i>
-                                            <span>Deactivate</span>
+                                            <span *ngIf="bench.isActive">Deactivate</span>
+                                            <span *ngIf="!bench.isActive">Activate</span>
                                         </div>
                                     </div>
                                 </td>
