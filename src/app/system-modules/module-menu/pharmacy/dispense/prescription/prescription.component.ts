@@ -34,7 +34,7 @@ export class PrescriptionComponent implements OnInit {
 	loading = true;
 	batchLoading: boolean = true;
 	disableDispenseBtn: Boolean = false;
-	disableDispenseAllBtn: Boolean = false;
+	disableDispenseAllBtn: Boolean = true;
 	qtyDispenseBtn: string = 'Dispense';
 	inventoryTransactionTypeId: string = '';
 	disablePaymentBtn: boolean = false;
@@ -102,11 +102,13 @@ export class PrescriptionComponent implements OnInit {
 			}
 		});
 
+		console.log(tempArray);
 		if(tempArray.length > 0) {
 			this.disableSaveBtn = true;
 			this.saveBtn = "Saving... <i class='fa fa-spinner fa-spin'></i>";
+			
 			// this has been billed before.
-			if(this.prescriptionItems.billId !== undefined) {
+			if(!!this.prescriptionItems.billId && this.prescriptionItems.hasOwnProperty('billId')) {
 				// Call the billing service
 				this._billingService.get(this.prescriptionItems.billId, {})
 					.then(res => {
@@ -157,16 +159,11 @@ export class PrescriptionComponent implements OnInit {
 											if(res._id !== undefined) {
 												this.disableSaveBtn = false;
 												this.saveBtn = "Save";
-												//this._getPrescriptionDetails();
-												// this.unBilledArray.forEach((element, i) => {
-												// 	if(element.isBilled) {
-												// 		// Remove items that has been billed
-												// 		this.unBilledArray.splice(i, 1);
-												// 		// Push the element to the view
-												// 		//this.prescriptions.push(element);
-												// 		this._getPrescriptionDetails();
-												// 	}
-												// });
+												// clear prescriptions then call the getPrescriptionsDetails again.
+												this.prescriptions = [];
+												this.totalCost = 0;
+												this.totalQuantity = 0;
+												this._getPrescriptionDetails();
 											}
 										})
 										.catch(err => { console.log(err); });
@@ -350,9 +347,10 @@ export class PrescriptionComponent implements OnInit {
 					this.prescriptionItems = res;
 
 					const notBilled = this.prescriptionItems.prescriptionItems.filter(x => (!x.paymentCompleted && !x.isExternal));
-					console.log(notBilled);
 					if(notBilled.length > 0) {
 						this.disableDispenseAllBtn = true;
+					} else {
+						this.disableDispenseAllBtn = false;
 					}
 
 					if(this.prescriptionItems.isDispensed) {
@@ -403,7 +401,8 @@ export class PrescriptionComponent implements OnInit {
 	onClickEachPrescription(index, prescription) {
 		if(prescription.isBilled) {
 			if(prescription.paymentCompleted) {
-
+				console.log(prescription);
+				console.log(this.storeId.typeObject.storeId);
 				this.selectedPrescription = prescription;
 				this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
 				const productId = prescription.productId;
@@ -418,6 +417,7 @@ export class PrescriptionComponent implements OnInit {
 						}})
 						.then(res => {
 							console.log(res);
+							this.batchLoading = false;
 							if(res.data.length > 0) {
 								this.transactions = res.data[0];
 								const tempArray = [];
@@ -434,6 +434,8 @@ export class PrescriptionComponent implements OnInit {
 								} else {
 									this.viewTransactions = [];
 								}
+							} else {
+								this.viewTransactions = [];
 							}
 						})
 						.catch(err => {
@@ -583,6 +585,16 @@ export class PrescriptionComponent implements OnInit {
 								}
 							});
 						});
+						console.log(this.prescriptions);
+						setTimeout(e => {
+							const notBilled = this.prescriptions.filter(x => (!x.paymentCompleted && !x.isExternal));
+							console.log(notBilled);
+							if(notBilled.length > 0) {
+								this.disableDispenseAllBtn = true;
+							} else {
+								this.disableDispenseAllBtn = false;
+							}
+						}, 5000);
 					}
 				})
 				.catch(err => { console.log(err); });

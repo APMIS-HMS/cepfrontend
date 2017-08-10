@@ -43,7 +43,7 @@ export class ExternalPrescriptionComponent implements OnInit {
 				console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
-					if(!element.isDispensed) {
+					if(element.isDispensed) {
 						let isBilledCount = 0;
 						let isExternalCount = 0;
 						let preItemCount = element.prescriptionItems.length;

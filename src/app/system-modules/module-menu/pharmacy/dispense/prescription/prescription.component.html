@@ -89,7 +89,7 @@
                             <span style="width:100%;">External</span>
                         </div>
                         <div *ngIf="!prescription.isExternal">
-                            <span *ngIf="prescription.quantity - prescription.quantityDispensed === 0" style="width: 100%; color:#2e7d32">Dispensed</span>
+                            <span *ngIf="prescription.quantity - prescription.quantityDispensed === 0 && prescription.isBilled" style="width: 100%; color:#2e7d32">Dispensed</span>
                             <span *ngIf="(prescription.quantityDispensed >= 1) && (prescription.quantity - prescription.quantityDispensed !== 0)" style="width: 100%; color:mediumblue">Partly Dispensed</span>
                             <span *ngIf="prescription.quantityDispensed === 0" style="width: 100%; color:red">Not Dispensed</span>
                         </div>
