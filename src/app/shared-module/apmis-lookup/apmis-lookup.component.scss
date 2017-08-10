@@ -389,3 +389,67 @@ label:hover {
 .fa {
     margin: 0 6px !important;
 }
+
+.lookupListing{
+    display: flex;
+    align-items: center;
+}
+.lookupListing img{
+    width: 30px;
+    border-radius: 100%;
+    border: 2px solid #03A9F4;
+    margin-right: 5px;
+}
+.lookupControl {
+    position: absolute;
+    top: -21px;
+    border: 1px solid #03A9F4;
+    border-bottom: 0;
+    background: #E3F2FD;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: -1px;
+    color: #424242;
+    cursor: pointer;
+}
+.lookupControl:hover{
+    color: #03A9F4;
+}
+li.lookupListing {
+    background: #BBDEFB;
+    margin: 10px 0;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+li.lookupListing:hover{
+    background: #64B5F6;
+    .listingName{
+        color: #212121;
+    }
+    .listingOthers{
+        color: #fff;
+    }
+}
+.activeListing{
+    background: #64B5F6;
+    .listingName{
+        color: #212121;
+    }
+    .listingOthers{
+        color: #fff;
+    }
+}
+.listingName {
+    font-size: 12px;
+    color: #424242;
+    border-bottom: 1px solid #424242;
+}
+.listingOthers {
+    font-size: 9px;
+    line-height: 14px;
+    color: #757575;
+    // margin-left: 10px;
+}

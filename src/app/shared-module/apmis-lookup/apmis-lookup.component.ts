@@ -3,6 +3,7 @@ import {
     FormGroup, FormControl, FormBuilder,
     Validators, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator
 } from '@angular/forms';
+import { FacilitiesService } from './../../services/facility-manager/setup/index';
 import { SocketService, RestService } from './../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +30,11 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     @Input() url = "";
     @Input() placeholder = "";
     @Input() query = {};
+    @Input() imgObj = "";
+    @Input() otherKeys = [];
     @Input() isSocket = false;
+    @Input() multipleKeys = false;
+    @Input() displayImage = false;
     @Output() selectedItem = new EventEmitter();
     public _socket;
     private _rest;
@@ -41,15 +46,18 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     cuDropdownLoading = false;
     form: FormGroup;
     selectedValue: any = {};
-
+    baseUrl: any;
+    imgError = false;
     results = [];
     constructor(private fb: FormBuilder,
         private _socketService: SocketService,
-        private _restService: RestService) { }
+        private _restService: RestService,
+        private facilitiesService: FacilitiesService) { }
 
     ngOnInit() {
         this._rest = this._restService.getService(this.url);
         this._socket = this._socketService.getService(this.url);
+        this.baseUrl = this._restService.HOST;
         this.form = this.fb.group({ searchtext: [''] });
         this.form.controls['searchtext'].valueChanges
             .debounceTime(200)
@@ -60,19 +68,32 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
                 this.results = payload;
             });
 
-        // this.form.controls['searchtext'].valueChanges.subscribe(value => {
-        //     console.log(this.displayKey);
-        //     console.log(this.query);
-        //
-        //     this.filter({ query: this.query }, this.isRest).then(filteredValue => {
-        //         this.cuDropdownLoading = false;
-        //         this.results = filteredValue;
-        //     })
-        //         .catch(err => {
-        //             this.cuDropdownLoading = false;
-        //             console.log(err);
-        //         });
-        // });
+    }
+    getImgUrl(item) {
+        const splitArray = this.imgObj.split('.');
+        let counter = 0;
+        splitArray.forEach((obj, i) => {
+            if (item[obj] != undefined) {
+                item = item[obj];
+            } else {
+                item = "undefined";
+            }
+            counter++;
+        })
+        if (counter == splitArray.length) {
+            console.log(item);
+            if (item == "undefined") {
+                //this.imgError = true;
+                let imgUri = undefined;
+                return imgUri;
+            }
+            else {
+                let imgUri = this.baseUrl + "/" + item;
+                //this.imgError = false;
+                return imgUri;
+            }
+
+        }
     }
 
     filter(query: any, isSocket: boolean) {
@@ -92,6 +113,41 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         })
         if (counter === (splitArray.length)) {
             return item;
+        }
+    }
+    getOtherKeyValues(item) {
+        var otherValues = [];
+        let mainCounter = 0;
+        let objItem = item;
+        console.log(this.otherKeys);
+        this.otherKeys.forEach((key, i) => {
+            var splitArray = key.split('.');
+            let counter = 0;
+            mainCounter++;
+            splitArray.forEach((obj, i) => {
+                console.log(objItem[obj]);
+                if (objItem[obj] != undefined) {
+                    objItem = objItem[obj];
+                } else {
+                    objItem = "";
+                }
+                counter++;
+            })
+            if (counter == (splitArray.length)) {
+                var checkDate =new Date(objItem);
+                let NaN = "" +checkDate.getDate().toString() +"";
+                if (NaN == "NaN") {
+                    otherValues.push(objItem);
+                } else {
+                    let d = new Date(objItem);
+                    otherValues.push(d.toDateString());
+                }
+                objItem = item;
+            }
+        })
+        if (mainCounter == this.otherKeys.length) {
+            console.log(otherValues)
+            return otherValues;
         }
     }
     onSelectedItem(value) {

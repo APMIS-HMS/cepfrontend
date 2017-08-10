@@ -73,8 +73,6 @@ export class WorkbenchComponent implements OnInit {
 
   }
   createWorkbench(valid, value) {
-    console.log(valid)
-    console.log(value)
     if (valid) {
       if (this.selectedWorkBench._id === undefined) {
         const workBench = {
@@ -82,21 +80,17 @@ export class WorkbenchComponent implements OnInit {
           facilityId: this.locker.getObject('miniFacility'),
           laboratoryId: value.minorLocation
         }
-        console.log(workBench)
         this.workBenchService.create(workBench).then(payload => {
-          console.log(payload);
           this.workbenches.push(payload);
           this.frmNewWorkbench.reset();
           this.frmNewWorkbench.controls['isActive'].setValue(true);
           this.selectedWorkBench = <any>{};
         }, error => {
-          console.log(error);
         })
       } else {
         this.selectedWorkBench.name = this.frmNewWorkbench.controls['benchName'].value;
         this.selectedWorkBench.laboratoryId = this.frmNewWorkbench.controls['minorLocation'].value;
         this.selectedWorkBench.isActive = this.frmNewWorkbench.controls['isActive'].value;
-        console.log(this.selectedWorkBench);
         this.workBenchService.update(this.selectedWorkBench).then(payload => {
           this.workbench_view = false;
           this.btnText = 'Create Workbench';
@@ -105,8 +99,6 @@ export class WorkbenchComponent implements OnInit {
           this.frmNewWorkbench.controls['isActive'].setValue(true);
           const index = this.workbenches.findIndex((obj => obj._id === payload._id));
           this.workbenches.splice(index, 1, payload);
-          // const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
-          // this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
         }, error => {
           this.btnText = 'Create Workbench';
           this.frmNewWorkbench.reset();

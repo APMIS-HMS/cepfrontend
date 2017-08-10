@@ -231,7 +231,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
           this.lineChartData[6].data.push(item.bloodPressure.diastolic);
           this.lineChartData[7].data.push(item.bloodPressure.systolic);
           var d = new Date(item.updatedAt);
-          this.lineChartLabels.push(d);
+          this.lineChartLabels.push(d.toDateString());
         });
       }
     })
