@@ -90,35 +90,75 @@
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div class="list-title">PANELS AND INVESTIGATIONS LIST</div>
-                                <div class="listWrap" [dragula]='"first-bag"' [dragulaModel]='bindInvestigations'>
-                                    <div class="list-item investigation panel-wrap" *ngFor="let investigation of bindInvestigations">
-                                        <div class="list-label">{{investigation.name}}</div>
-                                        <div class="panel-wrap">
-                                            <div *ngFor="let panel of investigation.panel" class="list-item investigation">
-                                                <div class="list-label child-list">{{panel.name}}</div>
-                                            </div>
+                                <div class="listWrap" [dragula]='"first-bag"'>
+                                    <div class="panel-wrap">
+                                        <div class="list-item panel">
+                                            <div class="list-label">Tuberculosis Test Panel</div>
+                                            <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                                         </div>
 
+                                        <div class="child-list">
+                                            <div class="child-item">Saliva Test</div>
+                                            <div class="child-item">Breath Test</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="list-item investigation">
+                                        <div class="list-label">Urine</div>
+                                    </div>
+
+                                    <div class="list-item investigation">
+                                        <div class="list-label">Stool</div>
+                                    </div>
+
+                                    <div class="list-item investigation">
+                                        <div class="list-label">Sweat</div>
+                                    </div>
+
+                                    <div class="panel-wrap">
+                                        <div class="list-item panel">
+                                            <div class="list-label">Tuberculosis Test Panel</div>
+                                            <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                                        </div>
+
+                                        <div class="child-list">
+                                            <div class="child-item">Saliva Test</div>
+                                            <div class="child-item">Breath Test</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-wrap">
+                                        <div class="list-item panel">
+                                            <div class="list-label">Tuberculosis Test Panel</div>
+                                            <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                                        </div>
+
+                                        <div class="child-list">
+                                            <div class="child-item">Saliva Test</div>
+                                            <div class="child-item">Breath Test</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-item investigation">
+                                        <div class="list-label">Stool</div>
+                                    </div>
+
+                                    <div class="list-item investigation">
+                                        <div class="list-label">Sweat</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="frm-r">
                                 <div class="list-title">NEW PANNEL DROP ZONE</div>
-                                <div class="listWrap" [dragula]='"first-bag"' [dragulaModel]='movedInvestigations'>
-                                    <div class="list-item investigation  panel-wrap" *ngFor="let investigation of movedInvestigations">
-                                        <div class="list-label">{{investigation.name}}</div>
-                                        <div *ngFor="let panel of investigation.panel" class="list-item investigation">
-                                            <div class="list-label child-list">{{panel.name}}</div>
-                                        </div>
-                                    </div>
+                                <div class="listWrap" [dragula]='"first-bag"'>
 
                                 </div>
                             </div>
                         </div>
 
-                        <button (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="cta-1">
-                            {{panelBtnText}}
-                        </button>
+                        <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
+              Create Panel
+            </button>
                     </form>
                 </div>
 
@@ -166,18 +206,15 @@
                                     <div class="tbl-actionRow">
                                         <!-- <div class="tbl-title">Employee Workspace</div> -->
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
                                     </div>
                                 </td>
@@ -185,10 +222,10 @@
 
                             <tr *ngFor="let investigation of investigations">
                                 <td>{{investigation.name}}</td>
-                                <td>{{investigation.specimen?.name}}</td>
-                                <td>{{getRefrenceValues(investigation?.reportType)}} </td>
+                                <td>{{investigation.specimen.name}}</td>
+                                <td>{{getRefrenceValues(investigation.reportType)}} </td>
                                 <td>{{investigation.unit}}</td>
-                                <td>{{investigation.reportType?.name}}</td>
+                                <td>{{investigation.reportType.name}}</td>
                                 <td>Blood, Urine, Stool.</td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
