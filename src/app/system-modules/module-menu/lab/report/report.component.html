@@ -22,218 +22,282 @@
                                     [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 
+                                <div class="selected-patient-wrap">
+                                    <div class="sel-patient-img">
+                                        <img src="assets/images/users/default.png">
+                                    </div>
+                                    <div class="sel-patient-name">Jonathan Nelson</div>
+                                    <div class="sel-patient-detaills">
+                                        <div>AD-22100-BE</div>
+                                        <div>22 years</div>
+                                        <div>Male</div>
+                                        <div>08099009988</div>
+                                        <div>jonathan.nelson@gmail.com</div>
+                                    </div>
+                                </div>
+
+                                <div class="pending-req-wrap">
+                                    <div class="tab-title">Pending Requests</div>
+                                    <table cellpadding="0" cellspacing="0" border="0.5">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <span style="padding-left: 3px; text-align:center;">Patient</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px;">Pending Investigation</span>
+                                                </th>
+                                                
+                                                <th>
+                                                    <span style="padding-left: 3px;">Date</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <!-- <tr>
+                                                <td colspan="8">
+                                                    <div class="tbl-actionRow">
+                                                        <div class="frm-item-wrap">
+                                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient" isSocket="false"
+                                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                                        </div>
+
+                                                        <div class="frm-item-wrap">
+                                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for nvestigation" isSocket="false"
+                                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr> -->
+
+                                            <tr>
+                                                <td>
+                                                    <div class="empWrap">
+                                                        <div class="list-img">
+                                                        <img src="assets/images/users/default.png">
+                                                        </div>
+                                                        <div>Johnson Wade</div>
+                                                    </div>
+                                                </td>
+                                                <td>Blood Test</td>
+                                                <td>11th Jan, 2017.</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="empWrap">
+                                                        <div class="list-img">
+                                                        <img src="assets/images/users/default.png">
+                                                        </div>
+                                                        <div>Johnson Wade</div>
+                                                    </div>
+                                                </td>
+                                                <td>Blood Test</td>
+                                                <td>11th Jan, 2017.</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="empWrap">
+                                                        <div class="list-img">
+                                                        <img src="assets/images/users/default.png">
+                                                        </div>
+                                                        <div>Johnson Wade</div>
+                                                    </div>
+                                                </td>
+                                                <td>Blood Test</td>
+                                                <td>11th Jan, 2017.</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="empWrap">
+                                                        <div class="list-img">
+                                                        <img src="assets/images/users/default.png">
+                                                        </div>
+                                                        <div>Johnson Wade</div>
+                                                    </div>
+                                                </td>
+                                                <td>Blood Test</td>
+                                                <td>11th Jan, 2017.</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
+                            
                             <div class="frm-r">
-                              <table cellpadding="0" cellspacing="0" border="0.5">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <span style="padding-left: 3px;">Investigation</span>
-                                        </th>
-                                        <th>
-                                            <span style="padding-left: 3px;">Reference</span>
-                                        </th>
-                                        <th>
-                                            <span style="padding-left: 3px;">Result</span>
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                                <table cellpadding="0" cellspacing="0" border="0.5">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <span style="padding-left: 3px;">Investigation</span>
+                                            </th>
+                                            <th>
+                                                <span style="padding-left: 3px;">Reference</span>
+                                            </th>
+                                            <th>
+                                                <span style="padding-left: 3px;">Result</span>
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
 
-                                <tbody>
-                                    <!-- <tr>
-                                        <td colspan="8">
-                                            <div class="tbl-actionRow">
-                                                <div class="frm-item-wrap">
-                                                    <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
-                                                        displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                    <tbody>
+                                        <!-- <tr>
+                                            <td colspan="8">
+                                                <div class="tbl-actionRow">
+                                                    <div class="frm-item-wrap">
+                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
+                                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                                    </div>
+
+                                                    <md-autocomplete>
+                                                        <md-option [value]="Normal">Normal</md-option>
+                                                        <md-option [value]="Low">Low</md-option>
+                                                        <md-option [value]="High">High</md-option>
+                                                    </md-autocomplete> 
                                                 </div>
+                                            </td>
+                                        </tr> -->
 
-                                                <md-autocomplete>
-                                                    <md-option [value]="Normal">Normal</md-option>
-                                                    <md-option [value]="Low">Low</md-option>
-                                                    <md-option [value]="High">High</md-option>
-                                                </md-autocomplete> 
+                                        <tr>
+                                        <td>Kidney Examination</td>
+                                        <td>1 - 43(cm)</td>
+                                        <td>
+                                            <div class="frm-item-wrap">
+                                                <md-input-container>
+                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
+                                                </md-input-container>
                                             </div>
                                         </td>
-                                    </tr> -->
-
-                                    <tr>
-                                      <td>Kidney Examination</td>
-                                      <td>1 - 43(cm)</td>
-                                      <td>
-                                        <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                            </md-input-container>
-                                        </div>
-                                      </td>
-                                      <td><span>High</span> </td>
-                                    </tr>
-                                    <tr>
-                                      <ng-template class="tbl-panel">
+                                        <td><span>High</span> </td>
+                                        </tr>
                                         <tr>
-                                          <td>Kidney Examination</td>
-                                          <td>1 - 43(cm)</td>
-                                          <td>
+                                        <ng-template class="tbl-panel">
+                                            <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>1 - 43(cm)</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Supply Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td><span>High</span> </td>
+                                            </tr>
+
+                                            <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>1 - 43(cm)</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Supply Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td><span>High</span> </td>
+                                            </tr>
+
+                                            <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>1 - 43(cm)</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Supply Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td><span>High</span> </td>
+                                            </tr>
+                                        </ng-template>
+                                        </tr>
+
+                                        <tr>
+                                        <td>Kidney Examination</td>
+                                        <td>1 - 43(cm)</td>
+                                        <td>
                                             <div class="frm-item-wrap">
                                                 <md-input-container>
                                                     <input type="number" mdInput placeholder="Supply Result" formControlName="result">
                                                 </md-input-container>
                                             </div>
-                                          </td>
-                                          <td><span>High</span> </td>
+                                        </td>
+                                        <td><span>High</span> </td>
                                         </tr>
 
                                         <tr>
-                                          <td>Kidney Examination</td>
-                                          <td>1 - 43(cm)</td>
-                                          <td>
+                                        <td>Kidney Examination</td>
+                                        <td>1 - 43(cm)</td>
+                                        <td>
                                             <div class="frm-item-wrap">
                                                 <md-input-container>
                                                     <input type="number" mdInput placeholder="Supply Result" formControlName="result">
                                                 </md-input-container>
                                             </div>
-                                          </td>
-                                          <td><span>High</span> </td>
+                                        </td>
+                                        <td><span>High</span> </td>
                                         </tr>
+                                    </tbody> 
 
+                                    <tbody class="tbl-panel">
+                                        <tr class="panel-label"><td colspan="10">Elaborate - PANEL</td> </tr>
                                         <tr>
-                                          <td>Kidney Examination</td>
-                                          <td>1 - 43(cm)</td>
-                                          <td>
+                                            <td>Kidney Examination</td>
+                                            <td>1 - 43(cm)</td>
+                                            <td>
                                             <div class="frm-item-wrap">
                                                 <md-input-container>
                                                     <input type="number" mdInput placeholder="Supply Result" formControlName="result">
                                                 </md-input-container>
                                             </div>
-                                          </td>
-                                          <td><span>High</span> </td>
+                                            </td>
+                                            <td><span>High</span> </td>
                                         </tr>
-                                      </ng-template>
-                                    </tr>
 
-                                    <tr>
-                                      <td>Kidney Examination</td>
-                                      <td>1 - 43(cm)</td>
-                                      <td>
-                                        <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                            </md-input-container>
-                                        </div>
-                                      </td>
-                                      <td><span>High</span> </td>
-                                    </tr>
+                                        <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>1 - 43(cm)</td>
+                                            <td>
+                                            <div class="frm-item-wrap">
+                                                <md-input-container>
+                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
+                                                </md-input-container>
+                                            </div>
+                                            </td>
+                                            <td><span>High</span> </td>
+                                        </tr>
 
-                                    <tr>
-                                      <td>Kidney Examination</td>
-                                      <td>1 - 43(cm)</td>
-                                      <td>
-                                        <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                            </md-input-container>
-                                        </div>
-                                      </td>
-                                      <td><span>High</span> </td>
-                                    </tr>
-                                </tbody> 
-                            </table>
+                                        <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>1 - 43(cm)</td>
+                                            <td>
+                                            <div class="frm-item-wrap">
+                                                <md-input-container>
+                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
+                                                </md-input-container>
+                                            </div>
+                                            </td>
+                                            <td><span>High</span> </td>
+                                        </tr>
+                                        <tr class="panel-foot"><td colspan="10">PANEL</td> </tr>
+                                    </tbody> 
+                                </table>
+
+                                <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
+                                    SAVE REPORT
+                                </button>
+                            </div>
                                 
                         </div>
-                    </div>
-
-                    <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
-                        {{btnText}}
-                    </button>
-                </form>
-            </div>
-
-            <div class="tblWrapa" class="actSect">
-                <table cellpadding="0" cellspacing="0" border="0.5">
-                    <thead>
-                        <tr>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                <span style="padding-left: 3px;">Investigation Name</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                <span style="padding-left: 3px;">Specimens</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                <span style="padding-left: 3px;">Reference Value</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                <span style="padding-left: 3px;">Unit</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                <span style="padding-left: 3px;">Report Type</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                <span style="padding-left: 3px;">Composite Investigations</span>
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <!-- <tbody>
-                        <tr>
-                            <td colspan="8">
-                                <div class="tbl-actionRow">
-                                    <div class="frm-item-wrap">
-                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
-                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                    </div>
-
-                                    <div class="frm-item-wrap">
-                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type" isSocket="false"
-                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                    </div>
-
-                                    <div class="frm-item-wrap">
-                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen" isSocket="false"
-                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr *ngFor="let investigation of investigations">
-                            <td>{{investigation.name}}</td>
-                            <td>{{investigation.specimen?.name}}</td>
-                            <td>{{getRefrenceValues(investigation?.reportType)}} </td>
-                            <td>{{investigation.unit}}</td>
-                            <td>{{investigation.reportType?.name}}</td>
-                            <td>Blood, Urine, Stool.</td>
-                            <td class="action-placeholder">
-                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                <div class="action-container shadow-RB">
-                                    <div (click)="editInvestigation(investigation)" class="action-item">
-                                        <i class="fa fa-edit" aria-hidden="true"></i>
-                                        <span>Edit</span>
-                                    </div>
-
-                                    <div class="action-item">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        <span>Delete</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody> -->
-                </table>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
