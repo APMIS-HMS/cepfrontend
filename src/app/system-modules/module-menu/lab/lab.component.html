@@ -24,6 +24,7 @@
             <li [class.navActive]="investigationContentArea" (click)="navInvestigation()">Investigation</li>
             <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
             <!-- <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li> -->
+            <li [class.navActive]="reportContentArea" (click)="navReport()">Report</li>
         </ul>
       </div>
 
@@ -31,7 +32,8 @@
       <app-workbench (pageInView)="pageInViewLoader($event)" *ngIf="workbenchContentArea" class="rhs inner-page-contentArea"></app-workbench> 
       <app-investigation-service (pageInView)="pageInViewLoader($event)" *ngIf="investigationContentArea" class="rhs inner-page-contentArea"></app-investigation-service> 
       <app-investigation-price (pageInView)="pageInViewLoader($event)" *ngIf="pricingContentArea" class="rhs inner-page-contentArea"></app-investigation-price> 
-      <app-panel (pageInView)="pageInViewLoader($event)" *ngIf="panelContentArea" class="rhs inner-page-contentArea"></app-panel> 
+      <app-panel (pageInView)="pageInViewLoader($event)" *ngIf="panelContentArea" class="rhs inner-page-contentArea"></app-panel>
+      <app-report (pageInView)="pageInViewLoader($event)" *ngIf="reportContentArea" class="rhs inner-page-contentArea"></app-report> 
       <div class="clear"></div>
     </div> 
 </div>

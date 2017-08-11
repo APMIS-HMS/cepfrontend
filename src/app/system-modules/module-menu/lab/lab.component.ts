@@ -16,6 +16,7 @@ export class LabComponent implements OnInit {
   investigationContentArea = false;
   pricingContentArea = false;
   panelContentArea = false;
+  reportContentArea = false;
 
   constructor() { }
 
@@ -44,6 +45,7 @@ export class LabComponent implements OnInit {
     this.investigationContentArea = false;
     this.pricingContentArea = false;
     this.panelContentArea = false;
+    this.reportContentArea = false;
   }
   navWorkbench(){
     this.requestContentArea = false;
@@ -51,6 +53,7 @@ export class LabComponent implements OnInit {
     this.investigationContentArea = false;
     this.pricingContentArea = false;
     this.panelContentArea = false;
+    this.reportContentArea = false;
   }
   navInvestigation(){
     this.requestContentArea = false;
@@ -58,6 +61,7 @@ export class LabComponent implements OnInit {
     this.investigationContentArea = true;
     this.pricingContentArea = false;
     this.panelContentArea = false;
+    this.reportContentArea = false;
   }
   navPricing(){
     this.requestContentArea = false;
@@ -65,6 +69,7 @@ export class LabComponent implements OnInit {
     this.investigationContentArea = false;
     this.pricingContentArea = true;
     this.panelContentArea = false;
+    this.reportContentArea = false;
   }
   navPanel(){
     this.requestContentArea = false;
@@ -72,6 +77,15 @@ export class LabComponent implements OnInit {
     this.investigationContentArea = false;
     this.pricingContentArea = false;
     this.panelContentArea = true;
+    this.reportContentArea = false;
+  }
+  navReport(){
+    this.requestContentArea = false;
+    this.workbenchContentArea = false;
+    this.investigationContentArea = false;
+    this.pricingContentArea = false;
+    this.panelContentArea = false;
+    this.reportContentArea = true;
   }
 
 }
