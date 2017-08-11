@@ -47,8 +47,7 @@ export class NoprescriptionComponent implements OnInit {
 	totalQuantity = 0;
 	selectedBatch: string = '';
 	disableDispenseBtn: boolean = false;
-	dispenseAllBtn: boolean = true;
-	qtyDispenseBtn: string = 'Bill';
+	dispenseBtnText: string = 'Dispense';
 	inventoryTransactionTypeId: string = '';
 	selectedIventoryId: string = '';
 	selectedFsId: string = '';
@@ -117,9 +116,9 @@ export class NoprescriptionComponent implements OnInit {
 
 		// Disable dispense button if there are no items in the prescription array.
 		if(this.prescriptions.length === 0) {
-			this.dispenseAllBtn = true;
+			this.disableDispenseBtn = true;
 		} else {
-			this.dispenseAllBtn = false;
+			this.disableDispenseBtn = false;
 		}
 	}
 
@@ -146,12 +145,24 @@ export class NoprescriptionComponent implements OnInit {
 							prescription['companyPhone'] = value.companyPhone;
 							break;
 						case 'Internal':
-							prescription['departmentId'] = value.dept;
-							prescription['unitId'] = value.unit;
-							prescription['locationId'] = value.minorLocation;
+							if(this.internalType.toLowerCase() === 'department') {
+								prescription['department'] = {
+									id: value.dept._id,
+									name: value.dept.name
+								};
+								prescription['unit'] = {
+									id: value.unit._id,
+									name: value.unit.name
+								};
+							} else {
+								prescription['location'] = {
+									id: value.minorLocation._id,
+									name: value.minorLocation.name
+								};
+							}
 							break;
 					}
-					this.dispenseAllBtn = false;
+					this.disableDispenseBtn = false;
 					this.totalPrice = Number(this.totalPrice) + (Number(this.price) * Number(value.qty));
 					this.totalQuantity = Number(this.totalQuantity) + Number(value.qty);
 					prescription['productName'] = value.product;
@@ -197,202 +208,247 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
-		if (this.storeId !== '') {
-			const prescription = {};
-			const drugs = [];
+		console.log(this.prescriptions);
+		if(this.prescriptions.length > 0) {
+			if (this.storeId !== '') {
+				const prescription = {};
+				const drugs = [];
+				this.dispenseBtnText = "Dispensing... <i class='fa fa-spinner fa-spin'></i>";
+				this.disableDispenseBtn = true;
 
-			this.prescriptions.forEach(element => {
-				const product = {};
-				switch (element.client) {
-					case 'Individual':
-						prescription['lastName'] = element.lastName;
-						prescription['firstName'] = element.firstName;
-						prescription['fullname'] = element.firstName + ' ' + element.lastName;
-						prescription['phoneNumber'] = element.phoneNumber;
-						prescription['client'] = {
-							clientType: element.client,
-							name: element.firstName + ' ' + element.lastName,
-							phone: element.phoneNumber
-						};
-						break;
-					case 'Corporate':
-						prescription['companyName'] = element.companyName;
-						prescription['fullname'] = element.companyName;
-						prescription['companyPhone'] = element.companyPhone;
-						prescription['client'] = {
-							clientType: element.client,
-							name: element.companyName,
-							phone: element.companyPhone
-						};
-						break;
-					case 'Internal':
-						prescription['departmentId'] = element.dept;
-						prescription['unitId'] = element.unit;
-						prescription['locationId'] = element.minorLocation;
-						prescription['client'] = {
-							clientType: element.client,
-							name: element.dept,
-							phone: element.client
-						};
-						break;
-				}
-				product['product'] = {
-					id: element.productId,
-					name: element.productName
-				};
-				product['batchNumber'] = element.batchNumber;
-				product['batchNumberId'] = element.batchNumberId;
-				product['productId'] = element.productId;
-				product['productName'] = element.productName;
-				product['cost'] = element.unitPrice;
-				product['quantity'] = element.qty;
-				product['inventoryId'] = element.inventoryId;
-				product['referenceId'] = '';
-				product['employeeId'] = this.employeeDetails.employeeDetails._id;
-				product['employeeName'] = this.employeeDetails.employeeDetails.personFullName;
-				product['referenceService'] = 'NoPrescriptionService';
-				product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
-				prescription['employee'] = {
-					employeeId: this.employeeDetails.employeeDetails._id,
-					employeeName: this.employeeDetails.employeeDetails.employeeName
-				};
-				prescription['employee'] = this.employeeDetails.employeeDetails._id;
-				prescription['totalQuantity'] = this.totalQuantity;
-				prescription['totalCost'] = this.totalPrice;
-				drugs.push(product);
-			});
-			prescription['drugs'] = drugs;
-
-			const payload = {
-				facilityId: this.facility._id,
-				nonPrescription: prescription,
-				isPrescription: false,
-				storeId: this.storeId
-			}
-
-			console.log(payload);
-
-			const collectionDrugs = {
-				drugs: drugs,
-			};
-			console.log(collectionDrugs);
-
-			// Call a service to 
-			this._dispenseCollectionDrugs.create(collectionDrugs)
-				.then(res => {
-					console.log(res);
-					// bill model
-					const billItemArray = [];
-					let totalCost = 0;
-					const clientDetails: any = <any>{};
-					this.prescriptions.forEach((element, i) => {
-						if(i === 0) {
-							switch (element.client.toLowerCase()) {
-								case 'individual':
-									clientDetails.name = element.firstName + ' ' + element.lastName;
-									clientDetails.phone = element.phoneNumber;
-									break;
-								case 'corporate':
-									clientDetails.name = element.companyName;
-									clientDetails.phone = element.companyPhone;
-									break;
-								case 'internal':
-									clientDetails.dept = element.dept;
-									clientDetails.unit = element.unit;
-									clientDetails.location = element.minorLocation;
-									break;
+				this.prescriptions.forEach(element => {
+					const product = {};
+					switch (element.client) {
+						case 'Individual':
+							prescription['lastName'] = element.lastName;
+							prescription['firstName'] = element.firstName;
+							prescription['fullname'] = element.firstName + ' ' + element.lastName;
+							prescription['phoneNumber'] = element.phoneNumber;
+							prescription['client'] = {
+								clientType: element.client,
+								name: element.firstName + ' ' + element.lastName,
+								phone: element.phoneNumber
+							};
+							break;
+						case 'Corporate':
+							prescription['companyName'] = element.companyName;
+							prescription['fullname'] = element.companyName;
+							prescription['companyPhone'] = element.companyPhone;
+							prescription['client'] = {
+								clientType: element.client,
+								name: element.companyName,
+								phone: element.companyPhone
+							};
+							break;
+						case 'Internal':
+							if(this.internalType.toLowerCase() === 'department') {
+								prescription['department'] = {
+									id: element.department.id,
+									name: element.department.name
+								};
+								prescription['unit'] = {
+									id: element.unit.id,
+									name: element.unit.name
+								};
+								prescription['client'] = {
+									clientType: element.client,
+									internalType: this.internalType.toLowerCase(),
+									department: {
+										id: element.department.id,
+										name: element.department.name
+									},
+									unit: {
+										id: element.unit.id,
+										name: element.unit.name
+									}
+								};
+							} else {
+								prescription['location'] = {
+									id: element.minorLocation.id,
+									name: element.minorLocation.name
+								};
+								prescription['client'] = {
+									clientType: element.client,
+									internalType: this.internalType.toLowerCase(),
+									id: element.location.id,
+									name: element.location.name
+								};
 							}
-						}
-						
-						const billItem = <BillItem> {
-							facilityServiceId: element.facilityServiceId,
-							serviceId: element.serviceId,
-							facilityId: this.facility._id,
-							description: element.productName,
-							quantity: element.qty,
-							totalPrice: element.cost * element.qty,
-							unitPrice: element.cost,
-							unitDiscountedAmount: 0,
-							totalDiscoutedAmount: 0,
-						};
-
-						totalCost += element.totalCost;
-						billItemArray.push(billItem);
-					});
-
-					const bill = <BillIGroup> {
-						facilityId: this.facility._id,
-						walkInClientDetails: clientDetails,
-    					isWalkIn: true,
-						billItems: billItemArray,
-						discount: 0,
-						subTotal: totalCost,
-						grandTotal: totalCost,
-					}
-					// Create a bill.
-					this._billingService.create(bill)
-						.then(res => {
-							console.log(res);
-							const billingIds = [];
-							// Get all the billing items
-							// res.drugs.forEach(element => {
-							// 	const ids = {
-							// 		productId: element._id,
-							// 		productName: element.productName
-							// 	}
-							// 	billingIds.push(ids);
-							// });
-							
-							// const invoice = {
-							// 	facilityId: this.facility._id,
-							// 	walkInClientDetails: clientDetails,
-							// 	isWalkIn: true,
-							// 	billingIds: billingIds,
-							// 	payments: billingIds, // Don't know what to insert in this.
-							// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
-							// 	paymentCompleted: true,
-							// 	invoiceNo: { type: String, require: false },
-							// 	totalDiscount: { type: Number, require: false },
-							// 	totalPrice: { type: Number, require: false },
+							// prescription['departmentId'] = element.dept;
+							// prescription['unitId'] = element.unit;
+							// prescription['locationId'] = element.minorLocation;
+							// prescription['client'] = {
+							// 	clientType: element.client,
+							// 	name: element.dept,
+							// 	phone: element.client
 							// };
-							// // call the invoice service.
-							// this._invoiceService.create(invoice)
-							// 	.then(res => {
-							// 		console.log(res);
-							// 	})
-							// 	.catch(err => { console.log(err); });
-						})
-						.catch(err => { console.log(err); });
-				})
-				.catch(err => { console.log(err); });
-
-			// Call the dispense service.
-			this._dispenseService.create(payload)
-				.then(res => {
-					console.log(res);
-					this.selectedProducts = [];
-					this.prescriptions = [];
-					this.prescription = {};
-					this.totalPrice = 0;
-					this.totalQuantity = 0;
-					this.price = 0;
-					this.noPrescriptionForm.reset();
-					this.noPrescriptionForm.controls['qty'].reset(0);
-					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
-					this._facilityService.announceNotification({
-						users: [this.user._id],
-						type: 'Success',
-						text: 'Prescription has been sent!'
-					});
-				})
-				.catch(err => {
-					console.log(err);
+							break;
+					}
+					product['product'] = {
+						id: element.productId,
+						name: element.productName
+					};
+					product['batchNumber'] = element.batchNumber;
+					product['batchNumberId'] = element.batchNumberId;
+					product['productId'] = element.productId;
+					product['productName'] = element.productName;
+					product['cost'] = element.unitPrice;
+					product['quantity'] = element.qty;
+					product['inventoryId'] = element.inventoryId;
+					product['referenceId'] = '';
+					product['employeeId'] = this.employeeDetails.employeeDetails._id;
+					product['employeeName'] = this.employeeDetails.employeeDetails.personFullName;
+					product['referenceService'] = 'NoPrescriptionService';
+					product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
+					prescription['employee'] = {
+						id: this.employeeDetails.employeeDetails._id,
+						name: this.employeeDetails.employeeDetails.personFullName
+					};
+					prescription['totalQuantity'] = this.totalQuantity;
+					prescription['totalCost'] = this.totalPrice;
+					drugs.push(product);
 				});
+				prescription['drugs'] = drugs;
+
+				const payload = {
+					facilityId: this.facility._id,
+					nonPrescription: prescription,
+					isPrescription: false,
+					storeId: this.storeId
+				}
+
+				console.log(payload);
+
+				const collectionDrugs = {
+					drugs: drugs,
+				};
+				console.log(collectionDrugs);
+
+				// Call a service to 
+				this._dispenseCollectionDrugs.create(collectionDrugs)
+					.then(res => {
+						console.log(res);
+						// bill model
+						const billItemArray = [];
+						let totalCost = 0;
+						const clientDetails: any = <any>{};
+						this.prescriptions.forEach((element, i) => {
+							if(i === 0) {
+								switch (element.client.toLowerCase()) {
+									case 'individual':
+										clientDetails.name = element.firstName + ' ' + element.lastName;
+										clientDetails.phone = element.phoneNumber;
+										break;
+									case 'corporate':
+										clientDetails.name = element.companyName;
+										clientDetails.phone = element.companyPhone;
+										break;
+									case 'internal':
+										clientDetails.dept = element.dept;
+										clientDetails.unit = element.unit;
+										clientDetails.location = element.minorLocation;
+										break;
+								}
+							}
+							
+							const billItem = <BillItem> {
+								facilityServiceId: element.facilityServiceId,
+								serviceId: element.serviceId,
+								facilityId: this.facility._id,
+								description: element.productName,
+								quantity: element.qty,
+								totalPrice: element.cost * element.qty,
+								unitPrice: element.cost,
+								unitDiscountedAmount: 0,
+								totalDiscoutedAmount: 0,
+							};
+
+							totalCost += element.totalCost;
+							billItemArray.push(billItem);
+						});
+
+						const bill = <BillIGroup> {
+							facilityId: this.facility._id,
+							walkInClientDetails: clientDetails,
+							isWalkIn: true,
+							billItems: billItemArray,
+							discount: 0,
+							subTotal: totalCost,
+							grandTotal: totalCost,
+						}
+						// Create a bill.
+						this._billingService.create(bill)
+							.then(res => {
+								console.log(res);
+								const billingIds = [];
+								// Get all the billing items
+								// res.drugs.forEach(element => {
+								// 	const ids = {
+								// 		productId: element._id,
+								// 		productName: element.productName
+								// 	}
+								// 	billingIds.push(ids);
+								// });
+								
+								// const invoice = {
+								// 	facilityId: this.facility._id,
+								// 	walkInClientDetails: clientDetails,
+								// 	isWalkIn: true,
+								// 	billingIds: billingIds,
+								// 	payments: billingIds, // Don't know what to insert in this.
+								// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
+								// 	paymentCompleted: true,
+								// 	invoiceNo: { type: String, require: false },
+								// 	totalDiscount: { type: Number, require: false },
+								// 	totalPrice: { type: Number, require: false },
+								// };
+								// // call the invoice service.
+								// this._invoiceService.create(invoice)
+								// 	.then(res => {
+								// 		console.log(res);
+								// 	})
+								// 	.catch(err => { console.log(err); });
+							})
+							.catch(err => { console.log(err); });
+					})
+					.catch(err => { console.log(err); });
+
+				// Call the dispense service.
+				this._dispenseService.create(payload)
+					.then(res => {
+						console.log(res);
+						this.dispenseBtnText = "Dispense";
+						this.disableDispenseBtn = true;
+						this.selectedProducts = [];
+						this.prescriptions = [];
+						this.prescription = {};
+						this.totalPrice = 0;
+						this.totalQuantity = 0;
+						this.price = 0;
+						this.noPrescriptionForm.reset();
+						this.noPrescriptionForm.controls['qty'].reset(0);
+						this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
+						this._facilityService.announceNotification({
+							users: [this.user._id],
+							type: 'Success',
+							text: 'Prescription has been sent!'
+						});
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			} else {
+				this._facilityService.announceNotification({
+					users: [this.user._id],
+					type: 'Error',
+					text: 'You need to check into store.'
+				});
+			}
 		} else {
 			this._facilityService.announceNotification({
 				users: [this.user._id],
 				type: 'Error',
-				text: 'You need to check into store.'
+				text: 'Please use to "Save" button above to add drugs.'
 			});
 		}
 	}

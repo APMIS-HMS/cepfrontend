@@ -2,11 +2,26 @@
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
     <div *ngIf="isStoreAvailable" class="small-header">{{storeTitle}}</div>
     <div class="inner-page-wrap">
+        <!-- <div class="lhs inner-page-menuTab">
+            <div class="lTab-title">Prescription List</div>
+            <ul class="nav-group">
+                <li [class.navActive]="productNavMenu" routerLink="/dashboard/pharmacy/prescriptions">Prescriptions</li>
+                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/external-prescriptions">External Prescriptions</li>
+            </ul>
+
+            <div class="lTab-title">Dispense</div>
+            <ul class="nav-group">
+                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/dispense">Walk in</li>
+            </ul>
+        </div> -->
+
+
+
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
                 <li [class.navActive]="productNavMenu" routerLink="/dashboard/pharmacy/prescriptions">Prescriptions</li>
+                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/external-prescriptions">External Prescriptions</li>
                 <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/dispense">Walk in</li>
-                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/dispense">External Prescriptions</li>
             </ul>
         </div>
         <div class="rhs inner-page-contentArea c-page-wrapper">
