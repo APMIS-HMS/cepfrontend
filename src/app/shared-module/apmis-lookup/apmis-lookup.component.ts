@@ -82,7 +82,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         })
         if (counter == splitArray.length) {
             if (item == "undefined") {
-                //this.imgError = true;
                 let imgUri = undefined;
                 return imgUri;
             }
