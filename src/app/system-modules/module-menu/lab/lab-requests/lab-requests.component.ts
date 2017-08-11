@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, InvestigationService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation } from '../../../../models/index';
@@ -22,6 +22,14 @@ export class LabRequestsComponent implements OnInit {
   };
   apmisLookupDisplayKey = 'personDetails.personFullName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+
+  apmisInvestigationLookupUrl = 'investigations';
+  apmisInvestigationLookupText = '';
+  apmisInvestigationLookupQuery: any = {
+  };
+  apmisInvestigationLookupDisplayKey = 'name';
+  apmisInvestigationLookupImgKey = '';
+
   request_view = false;
   reqDetail_view = false;
   personAcc_view = false;
@@ -29,13 +37,16 @@ export class LabRequestsComponent implements OnInit {
   paymentStatus = false;
   sampleStatus = true;
   resultStatus = false;
-  apmisLookupOtherKeys = ['personDetails.email','personDetails.dateOfBirth'];
+  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
+
+  checkedValues: any[] = [];
 
   errMsg = 'you have unresolved errors';
 
   public frmNewRequest: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage) { }
+  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
+    private investigationService: InvestigationService) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -48,16 +59,30 @@ export class LabRequestsComponent implements OnInit {
     });
 
     this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {
-      console.log(value);
       this.apmisLookupQuery = {
         'facilityid': this.selelctedFacility._id,
         'searchtext': value
       };
-      // this.apmisLookupQuery.facilityId = this.selelctedFacility._id;
-      // this.apmisLookupQuery.searchtext = value;
+    });
+    this.frmNewRequest.controls['investigation'].valueChanges.subscribe(value => {
+      if (value !== null && value.length === 0) {
+        this.apmisInvestigationLookupQuery = {
+          'facilityId._id': this.selelctedFacility._id,
+          name: { $regex: -1, '$options': 'i' },
+        }
+      } else {
+        this.apmisInvestigationLookupQuery = {
+          'facilityId._id': this.selelctedFacility._id,
+          name: { $regex: value, '$options': 'i' },
+        }
+      }
     })
   }
+  getInvestigation() {
+    this.investigationService.find({ query: { 'facilityId._id': this.selelctedFacility._id } }).then(payload => {
 
+    })
+  }
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
@@ -67,7 +92,31 @@ export class LabRequestsComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
-    console.log(value);
+  }
+  apmisInvestigationLookupHandleSelectedItem(value) {
+    if (value.action !== undefined) {
+      if (value.action === 'cancel' && value.clear === true) {
+        this.checkedValues = [];
+        this.apmisInvestigationLookupText = '';
+        this.frmNewRequest.controls['investigation'].setValue('');
+      } else if (value.action === 'ok') {
+        this.apmisInvestigationLookupText = '';
+         this.frmNewRequest.controls['investigation'].setValue('');
+      }
+    } else {
+      if (value.checked === true) {
+        if (this.checkedValues.filter((item => item.name === value.object.name)).length === 0) {
+          this.checkedValues.push(value.object);
+        }
+      } else {
+        if (this.checkedValues.filter((item => item.name === value.object.name)).length > 0) {
+          const index = this.checkedValues.findIndex((item => item.name === value.object.name));
+          this.checkedValues.splice(index, 1);
+        }
+      }
+      this.apmisInvestigationLookupText = value.object.name;
+    }
+
   }
   request_show() {
     this.request_view = !this.request_view;

@@ -34,8 +34,15 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery"
-                    placeholder="Add Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
+                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery"
+                    placeholder="Add Investigation"  [isSocket]="true" [displayKey]="apmisInvestigationLookupDisplayKey" (selectedItem)="apmisInvestigationLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
+                    <div>
+                      <ul>
+                        <li *ngFor="let small of checkedValues">
+                          <i>{{small.name}}</i>
+                        </li>
+                      </ul>
+                    </div>
                 </div>
               </div>
               <div class="frm-r">

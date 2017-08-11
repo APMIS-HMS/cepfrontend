@@ -12,8 +12,8 @@ import { PharmacyEmitterService } from '../../../../services/facility-manager/ph
 })
 export class PrescriptionListComponent implements OnInit {
 	facility: Facility = <Facility>{};
-	searchFormGroup: FormGroup;
-	searchNonePrescriptionFormGroup: FormGroup;
+	prescriptionFormGroup: FormGroup;
+	walkinFormGroup: FormGroup;
 	status: string[];
 	prescriptionLists: any[] = [];
 	noPrescriptionLists: any[] = [];
@@ -37,15 +37,23 @@ export class PrescriptionListComponent implements OnInit {
 		this.getAllPrescriptions();
 		this.getDispenses();
 
-		this.searchFormGroup = this._fb.group({
-			search: ['', [<any>Validators]]
+		this.prescriptionFormGroup = this._fb.group({
+			search: [''],
+			category: [''],
+			date: [Date.now()]
 		});
 
-		this.searchNonePrescriptionFormGroup = this._fb.group({
-			search: ['', [<any>Validators]]
+		// this.searchNonePrescriptionFormGroup = this._fb.group({
+		// 	search: ['', [<any>Validators]]
+		// });
+
+		this.walkinFormGroup = this._fb.group({
+			search: [''],
+			category: [''],
+			date: [Date.now()]
 		});
 
-		this.searchFormGroup.controls['search'].valueChanges.subscribe(val => {
+		this.prescriptionFormGroup.controls['search'].valueChanges.subscribe(val => {
 			let searchText = val;
 			const tempArray = [];
 
@@ -67,6 +75,10 @@ export class PrescriptionListComponent implements OnInit {
 				this.prescriptionLists = this.tempPrescriptionLists;
 			}
 		});
+	}
+
+	onChangeCategory(value: any) {
+		console.log(value);
 	}
 
 	// Get all drugs from generic

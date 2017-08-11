@@ -10,9 +10,9 @@ import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 
-  // const HOST = 'http://40.68.100.29:3030'; // Online
-  //  const HOST = 'http://192.168.20.101:3030'; // Sunday
-   //const HOST = 'http://localhost:3030'; // Local Server
+// const HOST = 'http://40.68.100.29:3030'; // Online
+//const HOST = 'http://192.168.20.101:3030'; // Sunday 
+const HOST = 'http://localhost:3030'; // Local Server
 
 
 
@@ -22,7 +22,7 @@ export class SocketService {
   public HOST;
   private _app: any;
   constructor(public locker: CoolSessionStorage) {
-    this.HOST = 'http://localhost:3030';
+    this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
       .configure(socketio(this.socket))
@@ -55,7 +55,7 @@ export class RestService {
     this.locker.clear();
   }
   constructor(private locker: CoolSessionStorage) {
-    this.HOST = 'http://localhost:3030';
+    this.HOST = HOST;
     if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
       const auth: any = this.locker.getObject('auth')
       this._app = feathers()
