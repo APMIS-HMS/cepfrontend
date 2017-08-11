@@ -130,7 +130,12 @@
                             </div>
                             
                             <div class="frm-r">
-                                <table cellpadding="0" cellspacing="0" border="0.5">
+                                <div class="inner-tab-wrap">
+                                    <div [class.tab-item-active]="numericReport" (click)="numeric_report()" class="tab-item">Numeric</div>
+                                    <div [class.tab-item-active]="textReport" (click)="text_report()" class="tab-item">Text</div>
+                                </div>
+
+                                <table *ngIf="numericReport" cellpadding="0" cellspacing="0" border="0.5">
                                     <thead>
                                         <tr>
                                             <th>
@@ -288,6 +293,107 @@
                                         </tr>
                                         <tr class="panel-foot"><td colspan="10">PANEL</td> </tr>
                                     </tbody> 
+                                </table>
+
+                                <table *ngIf="textReport" cellpadding="0" cellspacing="0" border="0.5">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <span style="padding-left: 3px;">Investigation</span>
+                                            </th>
+                                            <th>
+                                                <span style="padding-left: 3px;">Result</span>
+                                            </th>
+                                            <th>
+                                                <span style="padding-left: 3px;">Outcome</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <!-- <tr>
+                                            <td colspan="8">
+                                                <div class="tbl-actionRow">
+                                                    <div class="frm-item-wrap">
+                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
+                                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr> -->
+
+                                        <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <textarea mdInput placeholder="Result"></textarea>
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <md-select placeholder="Outcome">
+                                                    <md-option>Normal</md-option>
+                                                    <md-option>Abnormal</md-option>
+                                                </md-select>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <textarea mdInput placeholder="Result"></textarea>
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <md-select placeholder="Outcome">
+                                                    <md-option>Normal</md-option>
+                                                    <md-option>Abnormal</md-option>
+                                                </md-select>
+                                            </td>
+                                        </tr>
+                                    </tbody> 
+
+                                    <tbody class="tbl-panel">
+                                        <tr class="panel-label"><td colspan="10">Elaborate - PANEL</td> </tr>
+                                        <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <textarea mdInput placeholder="Result"></textarea>
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <md-select placeholder="Outcome">
+                                                    <md-option>Normal</md-option>
+                                                    <md-option>Abnormal</md-option>
+                                                </md-select>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Kidney Examination</td>
+                                            <td>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <textarea mdInput placeholder="Result"></textarea>
+                                                    </md-input-container>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <md-select placeholder="Outcome">
+                                                    <md-option>Normal</md-option>
+                                                    <md-option>Abnormal</md-option>
+                                                </md-select>
+                                            </td>
+                                        </tr>
+                                        <tr class="panel-foot"><td colspan="10">PANEL</td> </tr>
+                                    </tbody>
                                 </table>
 
                                 <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">

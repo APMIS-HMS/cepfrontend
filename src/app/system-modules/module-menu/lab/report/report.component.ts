@@ -17,6 +17,9 @@ export class ReportComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
+  numericReport = true;
+  textReport = false;
+
   public frmNewReport: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {}
@@ -32,6 +35,14 @@ export class ReportComponent implements OnInit {
   }
   report_show() {
     this.report_view = !this.report_view;
+  }
+  numeric_report(){
+    this.numericReport = true;
+    this.textReport = false;
+  }
+  text_report(){
+    this.numericReport = false;
+    this.textReport = true;
   }
   close_onClick(message: boolean): void {
   }
