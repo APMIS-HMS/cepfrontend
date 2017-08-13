@@ -131,34 +131,30 @@ export class PatientPrescriptionComponent implements OnInit {
 
     apmisLookupHandleSelectedItem(item) {
         this.apmisLookupText = item.details;
-        this._drugDetailsApi.find({ query: { 'productId': item.productId } })
-            .then(res => {
-                console.log(res);
-                if (res.ingredients.length > 0) {
-                    this.selectedForm = res.form;
-                    this.selectedIngredients = res.ingredients;
-                    let drugName: string = res.form + ' ';
-                    let strength = '';
-                    const ingredientLength: number = res.ingredients.length;
-                    let index = 0;
-                    res.ingredients.forEach(element => {
-                        index++;
-                        drugName += element.name;
-                        strength += element.strength + element.strengthUnit;
+        this._drugDetailsApi.find({ query: { 'productId': item.productId } }).then(res => {
+            console.log(res);
+            if (res.ingredients.length > 0) {
+                this.selectedForm = res.form;
+                this.selectedIngredients = res.ingredients;
+                let drugName: string = res.form + ' ';
+                let strength = '';
+                const ingredientLength: number = res.ingredients.length;
+                let index = 0;
+                res.ingredients.forEach(element => {
+                    index++;
+                    drugName += element.name;
+                    strength += element.strength + element.strengthUnit;
 
-                        if (index !== ingredientLength) {
-                            drugName += '/';
-                            strength += '/';
-                        }
-                    });
-                    this.addPrescriptionForm.controls['drug'].setValue(drugName);
-                    this.addPrescriptionForm.controls['strength'].setValue(strength);
-                    this.addPrescriptionForm.controls['route'].setValue(res.route);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+                    if (index !== ingredientLength) {
+                        drugName += '/';
+                        strength += '/';
+                    }
+                });
+                this.addPrescriptionForm.controls['drug'].setValue(drugName);
+                this.addPrescriptionForm.controls['strength'].setValue(strength);
+                this.addPrescriptionForm.controls['route'].setValue(res.route);
+            }
+        }).catch(err => console.error(err));
     }
 
     onClickAddPrescription(value: any, valid: boolean) {
@@ -187,6 +183,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     isExternal: false,
                     initiateBill: false,
                     isBilled: false,
+                    isDispensed: false,
                     dispensed: dispensed
                 };
 
@@ -213,8 +210,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     totalCost: 0,
                     totalQuantity: 0
                 };
-                console.log('trying');
-                console.log(prescription);
+                
                 this.prescriptionItems = prescription;
                 this.prescriptions = prescription;
                 this.addPrescriptionForm.reset();
@@ -271,27 +267,23 @@ export class PatientPrescriptionComponent implements OnInit {
                 // If any item was billed, then call the billing service
                 if (billItemArray.length > 0) {
                     // send the billed items to the billing service
-                    this._billingService.create(bill)
-                        .then(res => {
-                            console.log(res);
-                            if (res._id !== undefined) {
-                                this.prescriptions.billId = res._id;
-                                // if this is true, send the prescribed drugs to the prescription service
-                                this._sendPrescription(this.prescriptions);
-                            } else {
-                                this._notification('Error', 'There was an error generating bill. Please try again later.');
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
+                    this._billingService.create(bill).then(res => {
+                        console.log(res);
+                        if (res._id !== undefined) {
+                            this.prescriptions.billId = res._id;
+                            // if this is true, send the prescribed drugs to the prescription service
+                            this._sendPrescription(this.prescriptions);
+                        } else {
+                            this._notification('Error', 'There was an error generating bill. Please try again later.');
+                        }
+                    }).catch(err => console.error(err));
                 } else {
                     // Else, if no item was billed, just save to the prescription table.
                     this._sendPrescription(this.prescriptions);
                 }
             }
         } else {
-            this._notification('Info', 'Please select priority for these prescriptions!');
+            this._notification('Info', 'Please use the "Add" button above to add prescription!');
         }
     }
 
@@ -352,32 +344,27 @@ export class PatientPrescriptionComponent implements OnInit {
 
     // Get all medications
     private _getPrescriptionList() {
-        this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } })
-            .then(res => {
-                this.currMedLoading = false;
-                this.pastMedLoading = false;
-                // Bind to current medication list
-                const currentMedications = res.data.filter(x => {
-                    const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-                    if (lastSevenDays < new Date(x.updatedAt)) {
-                        return x;
-                    }
-                });
-                this.currentMedications = currentMedications.splice(0, 3);
-
-                // Bind to past medication list
-                const pastMedications = res.data.filter(x => {
-                    const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-                    if (lastSevenDays > new Date(x.updatedAt)) {
-                        return x;
-                    }
-                });
-                console.log(pastMedications);
-                this.pastMedications = pastMedications.splice(0, 3);
-            })
-            .catch(err => {
-                console.log(err);
+        this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } }).then(res => {
+            this.currMedLoading = false;
+            this.pastMedLoading = false;
+            // Bind to current medication list
+            const currentMedications = res.data.filter(x => {
+                const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+                if (lastSevenDays < new Date(x.updatedAt)) {
+                    return x;
+                }
             });
+            this.currentMedications = currentMedications.splice(0, 3);
+
+            // Bind to past medication list
+            const pastMedications = res.data.filter(x => {
+                const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+                if (lastSevenDays > new Date(x.updatedAt)) {
+                    return x;
+                }
+            });
+            this.pastMedications = pastMedications.splice(0, 3);
+        }).catch(err => console.error(err));
     }
 
     onClickReset() {
@@ -385,35 +372,23 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     private _getAllPriorities() {
-        this._priorityService.findAll()
-            .then(res => {
-                this.priorities = res.data;
-                const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
-                this.allPrescriptionsForm.controls['priority'].setValue(priority[0]._id);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        this._priorityService.findAll().then(res => {
+            this.priorities = res.data;
+            const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
+            this.allPrescriptionsForm.controls['priority'].setValue(priority[0]._id);
+        }).catch(err =>  console.error(err));
     }
 
     private _getAllRoutes() {
-        this._routeService.findAll()
-            .then(res => {
-                this.routes = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        this._routeService.findAll().then(res => {
+            this.routes = res.data;
+        }).catch(err => console.error(err));
     }
 
     private _getAllFrequencies() {
-        this._frequencyService.findAll()
-            .then(res => {
-                this.frequencies = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        this._frequencyService.findAll().then(res => {
+            this.frequencies = res.data;
+        }).catch(err => console.error(err));
     }
 
     focusSearch() {
@@ -448,25 +423,23 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     private _sendPrescription(data: Prescription): void {
-        this._prescriptionService.create(data)
-            .then(res => {
-                this._notification('Success', 'Prescription has been sent!');
-                this.isDispensed.next(true);
-                this.prescriptionItems = <Prescription>{};
-                this.prescriptionItems.prescriptionItems = [];
-                this.prescriptionArray = [];
-                this.addPrescriptionForm.reset();
-                this.addPrescriptionForm.controls['refillCount'].reset(0);
-                this.addPrescriptionForm.controls['duration'].reset(0);
-                this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                this.disableAuthorizeRx = true;
-                this.authorizeRx = 'Authorize Rx';
-            })
-            .catch(err => {
-                this._notification('Error', 'There was an error creating prescription. Please try again later.');
-                console.log(err);
-            });
+        this._prescriptionService.create(data).then(res => {
+            this._notification('Success', 'Prescription has been sent!');
+            this.isDispensed.next(true);
+            this.prescriptionItems = <Prescription>{};
+            this.prescriptionItems.prescriptionItems = [];
+            this.prescriptionArray = [];
+            this.addPrescriptionForm.reset();
+            this.addPrescriptionForm.controls['refillCount'].reset(0);
+            this.addPrescriptionForm.controls['duration'].reset(0);
+            this.addPrescriptionForm.controls['startDate'].reset(new Date());
+            this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+            this.disableAuthorizeRx = true;
+            this.authorizeRx = 'Authorize Rx';
+        }).catch(err => {
+            this._notification('Error', 'There was an error creating prescription. Please try again later.');
+            console.error(err);
+        });
     }
 
     private _notification(type: string, text: string): void {

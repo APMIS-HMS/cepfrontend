@@ -2,7 +2,10 @@
     <table cellpadding="0" cellspacing="0" border="0.5">
         <thead style="text-align: left">
             <tr class="table-header">
-                <th class="table-header-data" style="width: 60%;">
+                <th class="table-header-data" style="width: 5%;">
+                    <span style="padding-left: 3px;">S/N</span>
+                </th>
+                <th class="table-header-data" style="width: 55%;">
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                     <span style="padding-left: 3px;">Prescription</span>
                 </th>
@@ -19,15 +22,16 @@
 
         <tbody>
             <tr *ngIf="prescriptionItems.prescriptionItems.length === 0 && !loading">
-                <td class="table-content" colspan="6" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                <td class="table-content" colspan="4" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
             </tr>
             <tr *ngIf="prescriptionItems.prescriptionItems.length === 0 && loading">
-                <td class="table-content" colspan="6" style="text-align: center !important; padding: 10px !important;">
+                <td class="table-content" colspan="4" style="text-align: center !important; padding: 10px !important;">
                     <md-spinner class="small-spinner"></md-spinner>
                 </td>
             </tr>
             <tr *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;" style="text-align: left">
-                <td class="table-content" style="width: 60%;">
+                <td class="table-content" style="width: 5%;">{{ i+1 }}</td>
+                <td class="table-content" style="width: 55%;">
                     {{ prescription.genericName }} {{ prescription.strength }} - {{ prescription.frequency }} for {{ prescription.duration }}, {{ prescription.routeName }} ({{ prescription.refillCount }}) <br>
                     <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
                         Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.totalCost }}
@@ -36,7 +40,7 @@
                 <td class="table-content" style="width: 15%;">{{ prescription.patientInstruction }}</td>
                 <td class="table-content" style="width: 25%; padding: 5px !important;">
                     <div *ngIf="isPrescriptionPage" class="pres-data action-long">
-                        <a class="trash-box" (click)="onClickDeleteItem(i);"><i class="fa fa-trash"></i></a>
+                        <a class="trash-box" (click)="onClickDeleteItem(i, prescription);"><i class="fa fa-trash"></i></a>
                         <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</md-checkbox>
                         <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
                             <span *ngIf="!prescription.isBilled">Bill</span>
