@@ -98,6 +98,9 @@ td .empWrap .list-img{
     text-align: left;
     position: absolute;
 }
+.pg-subtitle{
+    margin-top: -18px;
+}
 // .clinicalNoteWrap {
 //     position: absolute;
 //     right: 9px;
@@ -139,18 +142,21 @@ td .empWrap .list-img{
 .frm-l, .frm-r {
     width: 48%;
 }
+.frm-l{
+    margin-top: 5px;
+}
 .doc-contentArea{
     width: 100%;
+    padding: 0;
 }
 .doc-mainWrap{
-    margin-top:5px;
+    margin-top:0px;
 }
 .frmNoteWrap{
     position: relative;
     background: #fff;
-    padding: 3px 10px;
+    padding: 0px 10px;
     box-sizing: border-box;
-    margin-top: -10px;
     margin-bottom: 10px;
 }
 .cta-1 {

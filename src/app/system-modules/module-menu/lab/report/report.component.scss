@@ -96,9 +96,6 @@
     margin: 10px 0;
     border-radius: 10px;
 }
-.frm-wrap {
-    margin-top: 8px;
-}
 .frm-l{
     width: 38%;
     padding: 0;
@@ -169,32 +166,6 @@
     margin-top: 20px;
     width: 90%;
 }
-.inner-tab-wrap {
-    border-bottom: 1px solid #bebebe;
-    display: flex;
-    justify-content: flex-start;
-    font-size: 14px;
-    color: #333;
-    padding-left: 40px;
-}
-.tab-item {
-    border-left: 1px solid #bebebe;
-    border-top: 1px solid #bebebe;
-    border-right: 1px solid #bebebe;
-    padding: 5px;
-    margin-right: 15px;
-    text-align: center;
-    width: 100px;
-    margin-bottom: -1px;
-    background: #fff;
-    cursor: pointer;
-}
-.tab-item:hover{
-    background: #f8f8f8;
-}
-.tab-item-active{
-    background: #f8f8f8;
-}
 .tab-title {
     color: #ff2500;
     border-bottom: 1px solid #ff2500;
@@ -203,4 +174,56 @@
 }
 td .mat-select{
     height: 23px;
+}
+.doc-mainWrap{
+    padding: 0;
+    background: transparent;
+}
+.initial-contenet{
+    margin-bottom: 10px;
+    background: #f8f8f8;
+    padding: 5px 20px;
+}
+.lettering-wrap {
+    margin-top: 20px;
+}
+.report-title{
+    display: flex;
+    justify-content: space-between;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 18px;
+    color: #0288D1;
+    border-bottom: 1px solid #bebebe;
+    margin-bottom: 5px;
+}
+.report-title .action{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8px;
+    color: #bebebe;
+    cursor: pointer;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+}
+.report-title .action:hover{
+    border: 1px solid #bebebe;
+    color: #000;
+}
+.invstn-vals {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #000;
+}
+.invstn-vals .frm-item-wrap{
+    min-width: 240px;
+}
+.initial-val {
+    color: #000;
+    font-size: 12px;
+    line-height: 1.5;
+    padding-left: 20px;
+    margin-bottom: 20px;
 }
