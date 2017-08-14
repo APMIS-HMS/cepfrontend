@@ -5,6 +5,7 @@ table{
     position: relative;
     border-collapse: collapse;
     font-size: 12px;
+    background: #fff;
 }
 table, td { 
     border: 0.5px solid $td-border;
@@ -16,7 +17,7 @@ th {
 }
 td {
     vertical-align: center;
-    text-align: center;
+    text-align: left;
     padding: 2px;
 }
 tr:hover {background-color: $tr-hover}

@@ -1,5 +1,6 @@
 export interface PrescriptionItem {
     _id?: string;
+    facilityId?: string;
     productName?: string;
     productId?: string;
     genericName: string;
@@ -21,7 +22,7 @@ export interface PrescriptionItem {
     refillCount: number;
     initiateBill: boolean;
     isBilled: boolean;
-    isDispensed?: boolean;
+    isDispensed: boolean;
     isOpen?: boolean;
     transactions?: any[];
     serviceId?: string;
