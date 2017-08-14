@@ -52,13 +52,6 @@ export class BillPrescriptionComponent implements OnInit {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.user = this._locker.getObject('auth');
 
-		// if(this.employeeDetails.storeCheckIn !== undefined) {
-		// 	this.storeId = this.employeeDetails.storeCheckIn[0].storeId;
-		// }
-
-		// Remove this when you are done.
-		//this.storeId = '591d71d971108943a0499665';
-
 		this.getProductsForGeneric();
 
 		this.addBillForm = this._fb.group({
@@ -95,6 +88,7 @@ export class BillPrescriptionComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
 				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
+				this.prescriptionData.prescriptionItems[index].facilityId = this.facility._id;
 				this.prescriptionData.totalCost += this.totalCost;
 				this.prescriptionData.totalQuantity += this.totalQuantity;
 
@@ -118,20 +112,16 @@ export class BillPrescriptionComponent implements OnInit {
 
 		// Get the list of products from a facility, and then search if the generic
 		// that was entered by the doctor in contained in the list of products
-		this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }})
-			.then(res => {
-				console.log(res);
-				this.loading = false;
-				if(res.length > 0) {
-					this.stores = res[0].availability;
-					this.drugs = res;
-				} else {
-					this.drugs = [];
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }}).then(res => {
+			console.log(res);
+			this.loading = false;
+			if(res.length > 0) {
+				this.stores = res[0].availability;
+				this.drugs = res;
+			} else {
+				this.drugs = [];
+			}
+		}).catch(err => console.error(err));
 	}
 
 	onClickCustomSearchItem(event, drugId) {

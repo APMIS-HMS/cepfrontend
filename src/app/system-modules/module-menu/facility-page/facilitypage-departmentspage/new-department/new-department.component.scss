@@ -24,14 +24,13 @@ input, select{
 
 @media screen and (max-width: $break-small) {
     .modal-baseWrap {
-    width: 278px;
-    min-width: 250px;
+   
 }
 }
 
 .mat-raised-button {
     max-width: 200px;
     text-align: center;
-    background: #153d70;
+    background: #03A9F4;
     color: #fff;
 }
