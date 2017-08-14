@@ -26,6 +26,10 @@
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="multipleKeys==false">
+                        <a>{{getName(item,displayKey)}}</a>
+                        <!-- <a>{{item[displayKey]}}</a> -->
+                    </div>
                 </li>
             </ul>
             <div class="cu-footer">

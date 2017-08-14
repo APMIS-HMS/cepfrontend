@@ -45,11 +45,11 @@
                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Care Giver</span>
                 </th>
-                <th>
+                <!-- <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Location</span>
-                </th>
+                    <!-- <span style="padding-left: 3px;">Location</span>
+                </th> --> 
                 <th>
                     <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
                     <!--<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>-->
@@ -78,11 +78,10 @@
                     <div>{{appointment.doctorId?.employeeDetails?.lastName}} {{appointment.doctorId?.employeeDetails?.firstName}}</div>
                     <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
                 </td>
-                <td>
-                    <!-- <span>{{appointment.clinicLocationDetails.name}}</span> -->
+                <!-- <td>
                     Get Location
                     <div class="loc-timeSpent">12<span class="timeLabel">mins,</span>25<span class="timeLabel">secs.</span></div>
-                </td>
+                </td> -->
                 <td>{{appointment?.attendance.dateCheckIn | date:'shortTime'}}</td>
                 <td><span class="timeLabel">{{appointment?.attendance.dateCheckIn | amTimeAgo}}</span></td>
                 <td>

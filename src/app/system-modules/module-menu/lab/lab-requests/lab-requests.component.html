@@ -76,8 +76,7 @@
               </div>
             </div>
 
-            <button [disabled]="!frmNewRequest.valid || !isAnyChecked()" (click)="setWorkspace(frmNewRequest.valid, frmNewEmp1.value)"
-              class="cta-1">
+            <button (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="cta-1">
               Make Request
             </button>
           </form>
