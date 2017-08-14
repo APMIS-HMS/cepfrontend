@@ -40,7 +40,7 @@ input, select {
 .mat-raised-button {
     max-width: 200px;
     text-align: center;
-    background: #153d70;
+    background: #0288D1;
     color: #fff;
 }
 #example-full-width{
@@ -50,3 +50,9 @@ input, select {
     overflow: auto;
     max-height: 300px;
 }
+
+.modal-baseWrap{
+    max-height: 500px;
+    overflow-y: scroll;
+}
+   

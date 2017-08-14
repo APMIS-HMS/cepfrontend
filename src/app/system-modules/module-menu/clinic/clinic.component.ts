@@ -164,6 +164,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 	changeRoom() {
 		this.modal_on = true;
+		this.contentSecMenuShow = false;
 	}
 	pageInViewLoader(title) {
 		this.pageInView = title;
