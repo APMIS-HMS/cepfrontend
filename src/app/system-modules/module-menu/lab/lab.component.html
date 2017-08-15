@@ -16,6 +16,7 @@
         <div class="lTab-title">LABORATORY MANAGER</div>
         <ul class="nav-group">
             <li [class.navActive]="requestContentArea" (click)="navRequest()">Laboratory Requests</li>
+            <li [class.navActive]="reportContentArea" (click)="navReport()">Report</li>
         </ul>
 
         <div class="lTab-title">LABORATORY SETUP</div>
@@ -24,7 +25,6 @@
             <li [class.navActive]="investigationContentArea" (click)="navInvestigation()">Investigation</li>
             <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
             <!-- <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li> -->
-            <li [class.navActive]="reportContentArea" (click)="navReport()">Report</li>
         </ul>
       </div>
 

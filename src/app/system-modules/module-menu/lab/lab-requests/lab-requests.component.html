@@ -158,6 +158,10 @@
                       <div [class.isSample]="sampleStatus" [class.notSample]="!sampleStatus" class="status-val"></div>
                     </div>
                     <div class="status-item">
+                      <div class="status-label">Sample Recieved</div>
+                      <div [class.isSample]="recievedStatus" [class.notSample]="!recievedStatus" class="status-val"></div>
+                    </div>
+                    <div class="status-item">
                       <div class="status-label">Result Available</div>
                       <div [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div>
                     </div>
@@ -168,7 +172,7 @@
                   <div class="action-container shadow-RB">
                     <div (click)="reqDetail()" class="action-item">
                       <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                      <span>View Request</span>
+                      <span>View Investigation</span>
                     </div>
 
                     <div class="action-item">
@@ -178,7 +182,7 @@
 
                     <div (click)="showImageBrowseDlg()" class="action-item">
                       <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                      <span>Upload Result</span>
+                      <span>Upload File</span>
                     </div>
                     <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
                   </div>

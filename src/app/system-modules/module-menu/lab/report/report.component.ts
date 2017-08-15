@@ -20,6 +20,8 @@ export class ReportComponent implements OnInit {
   textReport = false;
   docAction = true;
   diagnosisAction = true;
+  report_view = false;
+  repDetail_view = false;
 
   public frmNewReport: FormGroup;
 
@@ -49,5 +51,12 @@ export class ReportComponent implements OnInit {
     this.diagnosisAction = !this.diagnosisAction;
   }
   close_onClick(message: boolean): void {
+    this.repDetail_view = false;
+  }
+  report_show(){
+    this.report_view = !this.report_view;
+  }
+  repDetail() {
+    this.repDetail_view = true;
   }
 }
