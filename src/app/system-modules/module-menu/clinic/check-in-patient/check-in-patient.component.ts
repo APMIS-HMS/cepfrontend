@@ -122,9 +122,10 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
 
   }
   getAppointments() {
-    this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true } })
+    this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, $limit: 200 } })
       .subscribe(payload => {
         this.checkedInAppointments = payload.data;
+        console.log(this.checkedInAppointments);
       })
   }
   getClinics() {

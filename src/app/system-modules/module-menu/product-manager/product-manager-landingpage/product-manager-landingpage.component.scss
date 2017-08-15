@@ -152,12 +152,22 @@
 }
 
 .table-container {
-    display: flex;
+    /*display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: center;*/
+    margin-right: auto;
+    margin-left: auto;
+    position: absolute;
+    top: -60px;
+    display: block;
+    width: 100%;
 }
 td{
     padding: 5px;
     font-size: 10px;
     line-height: 2;
 }
+.mat-select {
+     height: auto;
+}
+    

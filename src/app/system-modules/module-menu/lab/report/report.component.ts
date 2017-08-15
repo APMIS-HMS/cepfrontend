@@ -13,12 +13,15 @@ export class ReportComponent implements OnInit {
   apmisLookupQuery = {};
   apmisLookupDisplayKey = '';
 
-  report_view = true;
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
   numericReport = true;
   textReport = false;
+  docAction = true;
+  diagnosisAction = true;
+  report_view = false;
+  repDetail_view = false;
 
   public frmNewReport: FormGroup;
 
@@ -33,9 +36,6 @@ export class ReportComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
 
   }
-  report_show() {
-    this.report_view = !this.report_view;
-  }
   numeric_report(){
     this.numericReport = true;
     this.textReport = false;
@@ -44,6 +44,19 @@ export class ReportComponent implements OnInit {
     this.numericReport = false;
     this.textReport = true;
   }
+  showDoc_toggle(){
+    this.docAction = !this.docAction;
+  }
+  showDiagnosis_toggle(){
+    this.diagnosisAction = !this.diagnosisAction;
+  }
   close_onClick(message: boolean): void {
+    this.repDetail_view = false;
+  }
+  report_show(){
+    this.report_view = !this.report_view;
+  }
+  repDetail() {
+    this.repDetail_view = true;
   }
 }

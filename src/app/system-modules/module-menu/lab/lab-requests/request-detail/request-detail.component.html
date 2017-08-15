@@ -1,7 +1,7 @@
 <div class="modal-baseWrap animated pulse">
 
   <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <div class="modal_title">Lab Request</div> 
+  <div class="modal_title">Pregnancy Test Lab Request</div> 
 
   <div class="pre-sects">
     <div class="status">Pending</div>
@@ -58,23 +58,11 @@
             <div (click)="assignLabNo()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Assign</div>
           </div>
         </div>
-
-        <div class="txt-wrap">
-          <div class="txt-label">External</div>
-          <div class="checka" style="overflow:hidden;">
-            <md-checkbox></md-checkbox>
-          </div>
-        </div>
-
-        <div class="action-item">
-          <i class="fa fa-file-text" aria-hidden="true"></i>
-          <span>Write Report</span>
-        </div>
       </div>
       <div class="sect-inner">
 
         <div class="txt-wrap">
-          <div class="txt-label">Practitioner</div>
+          <div class="txt-label">Physician</div>
           <div class="txt-val">
             <div class="empWrap">
               <div class="list-img">
@@ -104,43 +92,16 @@
           </div>
         </div>
 
-        <div class="upload-wrap">
-          <div class="uploadeds">
-            <div class="uploaded">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              <div class="upload-label">HIV AIDs Test</div>
-            </div>
-
-            <div class="uploaded">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              <div class="upload-label">HIV AIDs Test</div>
-            </div>
-
-            <div class="uploaded">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              <div class="upload-label">HIV AIDs Test</div>
-            </div>
-            <div class="uploaded">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              <div class="upload-label">HIV AIDs Test</div>
-            </div>
-
-            <div class="uploaded">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              <div class="upload-label">HIV AIDs Test</div>
-            </div>
-
-            <div class="uploaded">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
-              <div class="upload-label">HIV AIDs Test</div>
-            </div>
+        <div class="txt-wrap">
+          <div class="txt-label">External</div>
+          <div class="checka">
+            <md-checkbox></md-checkbox>
           </div>
+        </div>
 
-          <div (click)="showImageBrowseDlg()" class="action-item">
-            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-            <span>Upload Result</span>
-          </div>
-          <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)" >
+        <div class="action-item">
+          <i class="fa fa-file-text" aria-hidden="true"></i>
+          <span>Write Report</span>
         </div>
       </div>
     </div>

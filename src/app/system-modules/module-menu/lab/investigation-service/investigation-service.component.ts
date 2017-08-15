@@ -39,23 +39,12 @@ export class InvestigationServiceComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private specimenService: InvestigationSpecimenService,
     private locker: CoolSessionStorage, private investigationService: InvestigationService, private dragulaService: DragulaService) {
     dragulaService.drag.subscribe((value) => {
-      console.log(value)
-      // console.log(`drag: ${value[0]}`);
       this.onDrag(value.slice(1));
     });
     dragulaService.drop.subscribe((value) => {
       console.log(value)
-      // console.log(`drop: ${value[0]}`);
       this.onDrop(value.slice(1));
     });
-    // dragulaService.over.subscribe((value) => {
-    //   console.log(`over: ${value[0]}`);
-    //   this.onOver(value.slice(1));
-    // });
-    // dragulaService.out.subscribe((value) => {
-    //   console.log(`out: ${value[0]}`);
-    //   this.onOut(value.slice(1));
-    // });
   }
   private onDrag(args) {
     let [e, el] = args;
@@ -132,9 +121,18 @@ export class InvestigationServiceComponent implements OnInit {
 
       this.btnText = 'Update Investigation';
       this.investigation_view = true;
+      this.pannel_view = false;
     } else {
-      console.log('not panel')
+       this.selectedInvestigation = investigation;
       this.movedInvestigations = investigation.panel;
+      let filteredArray = [];
+      this.bindInvestigations.forEach((inv => {
+        let filter = this.movedInvestigations.filter(x => x._id === inv._id).length > 0
+        if (!filter && inv._id !== investigation._id) {
+          filteredArray.push(inv);
+        }
+      }))
+      this.bindInvestigations = filteredArray;
       this.frmNewPanel.controls['panelName'].setValue(investigation.name);
       this.panelBtnText = 'Update Panel';
       this.investigation_view = false;
@@ -146,7 +144,6 @@ export class InvestigationServiceComponent implements OnInit {
   getSpecimens() {
     this.specimenService.findAll().then(payload => {
       this.specimens = payload.data;
-      console.log(this.specimens)
     });
   }
 
@@ -176,8 +173,6 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   createInvestigation(valid, value) {
-    console.log(valid);
-    console.log(value);
     if (valid) {
       if (this.selectedInvestigation._id === undefined) {
         let investigation: any = {
@@ -199,9 +194,7 @@ export class InvestigationServiceComponent implements OnInit {
           }
           investigation.reportType = reportType;
         }
-        console.log(investigation)
         this.investigationService.create(investigation).then(payload => {
-          console.log(payload);
           this.frmNewInvestigationh.reset();
           this.frmNewInvestigationh.controls['isPanel'].setValue(false);
           this.investigations.push(payload);
@@ -241,42 +234,39 @@ export class InvestigationServiceComponent implements OnInit {
     }
   }
   createPanel(valid, value) {
-    console.log(valid);
-    console.log(value);
-    console.log(this.movedInvestigations);
     if (valid) {
       if (this.selectedInvestigation._id === undefined) {
         let investigation: any = {
           facilityId: this.locker.getObject('miniFacility'),
-          isPanel:true,
+          isPanel: true,
           name: value.panelName,
           panel: this.movedInvestigations
         }
-        console.log(investigation)
         this.investigationService.create(investigation).then(payload => {
-          console.log(payload);
           this.frmNewPanel.reset();
           this.frmNewPanel.controls['isPanel'].setValue(true);
           this.investigations.push(payload);
         })
       } else {
-        this.selectedInvestigation.name = this.frmNewInvestigationh.controls['panelName'].value;
-        this.selectedInvestigation.isPanel = this.frmNewInvestigationh.controls['isPanel'].value;
+        this.selectedInvestigation.name = this.frmNewPanel.controls['panelName'].value;
+        this.selectedInvestigation.isPanel = this.frmNewPanel.controls['isPanel'].value;
         this.selectedInvestigation.panel = this.movedInvestigations;
-       
+        console.log(this.selectedInvestigation);
         this.investigationService.update(this.selectedInvestigation).then(payload => {
-          this.investigation_view = false;
-          this.btnText = 'Create Investigation';
+          this.pannel_view= false;
+          this.btnText = 'Create Panel';
           this.selectedInvestigation = <any>{};
-          this.frmNewInvestigationh.reset();
-          this.frmNewInvestigationh.controls['isPanel'].setValue(false);
+          this.frmNewPanel.reset();
+          this.frmNewPanel.controls['isPanel'].setValue(false);
           const index = this.investigations.findIndex((obj => obj._id === payload._id));
           this.investigations.splice(index, 1, payload);
         }, error => {
-          this.btnText = 'Create Investigation';
-          this.frmNewInvestigationh.reset();
-          this.frmNewInvestigationh.controls['isPanel'].setValue(false);
+          this.btnText = 'Create Panel';
+          this.frmNewPanel.reset();
+          this.frmNewPanel.controls['isPanel'].setValue(false);
         })
+
+
       }
     }
   }

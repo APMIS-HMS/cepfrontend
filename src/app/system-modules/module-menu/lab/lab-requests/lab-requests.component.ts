@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, InvestigationService, LaboratoryRequestService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation } from '../../../../models/index';
@@ -36,17 +36,20 @@ export class LabRequestsComponent implements OnInit {
   mainErr = true;
   paymentStatus = false;
   sampleStatus = true;
+  recievedStatus = true;
   resultStatus = false;
   apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   checkedValues: any[] = [];
+  requests: any[] = [];
 
+  selectedPatient: any = <any>{};
   errMsg = 'you have unresolved errors';
 
   public frmNewRequest: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
-    private investigationService: InvestigationService) { }
+    private investigationService: InvestigationService, private requestService: LaboratoryRequestService) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -55,7 +58,7 @@ export class LabRequestsComponent implements OnInit {
       labNo: ['', [Validators.required]],
       clinicalInfo: ['', [Validators.required]],
       diagnosis: ['', [Validators.required]],
-      investigation: ['', [Validators.required]]
+      investigation: ['']
     });
 
     this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {
@@ -77,10 +80,11 @@ export class LabRequestsComponent implements OnInit {
         }
       }
     })
+    this.getLaboratoryRequest();
   }
-  getInvestigation() {
-    this.investigationService.find({ query: { 'facilityId._id': this.selelctedFacility._id } }).then(payload => {
-
+  getLaboratoryRequest() {
+    this.requestService.find({ query: { 'facilityId._id': this.selelctedFacility._id } }).then(payload => {
+      this.requests = payload.data;
     })
   }
   showImageBrowseDlg() {
@@ -92,6 +96,8 @@ export class LabRequestsComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
+    this.selectedPatient = value;
+    console.log(value)
   }
   apmisInvestigationLookupHandleSelectedItem(value) {
     if (value.action !== undefined) {
@@ -101,7 +107,7 @@ export class LabRequestsComponent implements OnInit {
         this.frmNewRequest.controls['investigation'].setValue('');
       } else if (value.action === 'ok') {
         this.apmisInvestigationLookupText = '';
-         this.frmNewRequest.controls['investigation'].setValue('');
+        this.frmNewRequest.controls['investigation'].setValue('');
       }
     } else {
       if (value.checked === true) {
@@ -130,5 +136,20 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
+  }
+  save(valid, value) {
+    console.log(this.frmNewRequest.valid);
+    console.log(this.frmNewRequest.value);
+    delete this.selectedPatient.appointments;
+    delete this.selectedPatient.encounterRecords;
+    delete this.selectedPatient.orders;
+    delete this.selectedPatient.tags;
+    delete this.selectedPatient.personDetails.addressObj;
+    delete this.selectedPatient.personDetails.countryItem;
+    delete this.selectedPatient.personDetails.homeAddress;
+    delete this.selectedPatient.personDetails.maritalStatus;
+    delete this.selectedPatient.personDetails.nationality;
+    delete this.selectedPatient.personDetails.nationalityObject;
+    delete this.selectedPatient.personDetails.nextOfKin;
   }
 }

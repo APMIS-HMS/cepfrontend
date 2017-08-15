@@ -240,10 +240,12 @@ export class ScheduleFrmComponent implements OnInit {
             .find({ query: { _id: this.appointment._id, isAppointmentToday: true } })
             .subscribe(payload => {
                 if (payload.data.length > 0) {
-                    this.canCheckIn = false;
+                    console.log(1)
+                    this.canCheckIn = true;
                     this.checkIn.enable();
                 } else {
-                    this.canCheckIn = true;
+                     console.log(2)
+                    this.canCheckIn = false;
                     this.checkIn.disable();
                 }
             }))
@@ -256,9 +258,11 @@ export class ScheduleFrmComponent implements OnInit {
         this.schedules = [];
         if (clinic !== null) {
             this.selectedClinic = clinic;
-            clinic.schedules.forEach((itemi, i) => {
-                this.schedules.push(itemi);
-            });
+            if (clinic.schedules !== undefined) {
+                clinic.schedules.forEach((itemi, i) => {
+                    this.schedules.push(itemi);
+                });
+            }
             this.appointmentService.schedulesAnnounced(this.schedules);
 
 
@@ -269,10 +273,14 @@ export class ScheduleFrmComponent implements OnInit {
             if (scheduleFiltered.length === 0) {
                 this.dateCtrl.setErrors({ noValue: true });
                 this.dateCtrl.markAsTouched();
+                this.checkIn.disable();
             } else {
                 const schedule: any = scheduleFiltered[0];
                 this.date = setHours(this.date, getHours(schedule.startTime));
                 this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+                this.checkIn.enable();
+                this.dateCtrl.setErrors(null)//({ noValue: false });
+                this.dateCtrl.markAsUntouched();
             }
             if (this.selectedClinic._id !== undefined) {
                 this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
@@ -513,6 +521,11 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     scheduleAppointment() {
+        console.log(this.dateCtrl.valid)
+        console.log(this.patient.valid)
+        console.log(this.type.valid)
+        console.log(this.category.valid)
+        console.log(this.clinic.valid)
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
             this.loadIndicatorVisible = true;
             const patient = this.patient.value;

@@ -18,15 +18,15 @@
               <div class="frm-l">
                 <div class="frm-item-wrap">
                   <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" 
-                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Select Workbench"
-                  isSocket="false" displayKey="apmisLookupDisplayKey" 
+                  [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench"
+                  [isSocket]="false" [displayKey]="apmisLookupDisplayKey" 
                   (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
                 <div class="frm-item-wrap">
-                  <apmis-lookup formControlName="investigation" [(ngModel)]="apmisLookupText" 
-                  url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Select Investigation"
-                  isSocket="false" displayKey="apmisLookupDisplayKey" 
-                  (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                  <apmis-lookup formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" 
+                  [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Select Investigation"
+                  [isSocket]="false" [displayKey]="apmisInvestigationLookupDisplayKey" 
+                  (selectedItem)="apmisInvestigationLookupHandleSelectedItem($event)"></apmis-lookup>
                 </div>
               </div>
               <div class="frm-r">
