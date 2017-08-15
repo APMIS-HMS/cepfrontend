@@ -47,15 +47,13 @@ a:hover {
     text-decoration: none;
 }
 .modal-close-ico {
+   cursor: pointer;
     position: absolute;
-    top: 8px;
-    right: 27px;
-    background-color: #ff2500;
-    color: #fff;
-    padding: 3px 7px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
+    z-index: 1;
+    top: 30px;
+    right: 30px;
+    font-size: 16px;
+    color: #8492a6;
 }
 #example-full-width {
     margin-bottom: 10px;
@@ -72,4 +70,8 @@ a:hover {
 }
 textarea.mat-input-element {
     height: 23px;
+}
+
+.survery .panel-body{
+    padding: 50px;
 }
