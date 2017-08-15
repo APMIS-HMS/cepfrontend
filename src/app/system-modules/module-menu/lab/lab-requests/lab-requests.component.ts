@@ -137,8 +137,8 @@ export class LabRequestsComponent implements OnInit {
     this.personAcc_view = false;
   }
   save(valid, value) {
-    console.log(this.frmNewRequest.valid);
-    console.log(this.frmNewRequest.value);
+    console.log(valid);
+    console.log(value);
     delete this.selectedPatient.appointments;
     delete this.selectedPatient.encounterRecords;
     delete this.selectedPatient.orders;

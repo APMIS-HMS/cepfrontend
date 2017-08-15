@@ -13,9 +13,9 @@ import { ReportComponent } from './report/report.component';
 
 @NgModule({
   imports: [
-    CommonModule,
+    // CommonModule,
     labRoutes,
-    SharedModule,
+    // SharedModule,
     MaterialModule
   ],
   declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent],

@@ -20,4 +20,5 @@ export interface Appointment {
     clinicInteractions: ClinicInteraction[];
     category: any;
     orderStatusId: any;
+    zoom: any;
 }
