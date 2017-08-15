@@ -1,14 +1,7 @@
 @import "../../../patient-manager/patientmanager-detailpage/documentation/documentation.component.scss";
 
 .modal-baseWrap {
-    position: relative;
     width: 80%;
-    height: 90%;
-    box-sizing: border-box;
-    background: #fff;
-    overflow: hidden;
-    padding: 50px;
-    border-radius: 7px;
 }
 .cont-wrap{
     width: 100%;
@@ -118,9 +111,6 @@
 .empWrap{
     justify-content: flex-start;
 }
-.modal-baseWrap{
-    height: auto;
-}
 .hasBg{
     border: 1px solid #eee;
     padding: 2px 20px;
@@ -139,7 +129,7 @@ button{
     font-size: 12px;
     width: 120px;
     text-align: center;
-    margin: 0 auto;
+    // margin: 0 auto;
 }
 .input-tag {
     position: absolute;
@@ -180,7 +170,7 @@ button{
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin: 5px;
 }
 .uploaded:hover{
     background: #eee;

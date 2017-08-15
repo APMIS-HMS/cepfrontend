@@ -20,6 +20,9 @@
 .frm-l td, .frm-r td{
     padding: 5px;
 }
+.doc-mainWrap{
+    margin-bottom: 100px;
+}
 .listWrap {
     background: #f8f8f8;
     padding: 10px;
@@ -175,10 +178,6 @@
 td .mat-select{
     height: 23px;
 }
-.doc-mainWrap{
-    padding: 0;
-    background: transparent;
-}
 .initial-contenet{
     margin-bottom: 10px;
     background: #f8f8f8;
@@ -226,4 +225,28 @@ td .mat-select{
     line-height: 1.5;
     padding-left: 20px;
     margin-bottom: 20px;
+}
+.invstn-wrap{
+    padding: 2px 10px;
+    border: 1px solid #bebebe;
+}
+.frmNoteWrap{
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+.act-actions-wrap{
+    display: flex;
+    justify-content: space-between;
+}
+.act-right-actions {
+    display: flex;
+    font-size: 12px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.act-right-actions .action-item{
+    margin-left: 10px;
+}
+.act-right-actions .action-item:hover{
+    background: #fff;
 }

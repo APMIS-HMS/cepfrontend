@@ -36,6 +36,7 @@ export class LabRequestsComponent implements OnInit {
   mainErr = true;
   paymentStatus = false;
   sampleStatus = true;
+  recievedStatus = true;
   resultStatus = false;
   apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
