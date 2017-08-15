@@ -1,6 +1,6 @@
 <div class="">
     <div class="survery table-container">
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <!--<select [formControl]="selProductType" class="form-control">
                 <option value="" disabled selected>Select by type</option>
                 <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
@@ -12,13 +12,17 @@
                 </md-option>
             </md-select>
         </div>
-        <div class="col-sm-4 pull-right">
+        <div class="col-sm-5">
            <!-- <input [formControl]="searchControl" type="search" placeholder="Search..." class="searchInput" />-->
            <md-input-container class="example-full-width">
             <input mdInput placeholder="Search..." [formControl]="searchControl">
             </md-input-container>
         </div>
-        <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
+        <div class="col-sm-2">
+           <div style="margin-top:20px">
+                <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
+           </div>
+        </div>
     </div>
 
     <table cellpadding="0" cellspacing="0" border="0.5"> 
