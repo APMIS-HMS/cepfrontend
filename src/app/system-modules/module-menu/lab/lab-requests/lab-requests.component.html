@@ -1,5 +1,6 @@
 <div class="pg-subtitle">
-  LABORATORY REQUESTS</div>
+  LABORATORY REQUESTS
+</div>
 <div>
   <div class="doc-mainWrap">
     <div class="doc-contentArea">
@@ -76,8 +77,7 @@
               </div>
             </div>
 
-            <button [disabled]="!frmNewRequest.valid || !isAnyChecked()" (click)="setWorkspace(frmNewRequest.valid, frmNewEmp1.value)"
-              class="cta-1">
+            <button (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="cta-1">
               Make Request
             </button>
           </form>
@@ -190,8 +190,6 @@
       </div>
     </div>
   </div>
-
-
 </div>
 
 <div *ngIf="reqDetail_view" class="modal-overlay">

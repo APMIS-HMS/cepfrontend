@@ -4,308 +4,45 @@
         <div class="doc-contentArea">
 
             <div class="clinicalNoteWrap">
-                <div class="actSect">
-                    <div [class.actWrap-active]="report_view" (click)="report_show()" class="act-wrap">
-                        <i *ngIf="report_view" class="fa fa-minus" aria-hidden="true"></i>
-                        <i [hidden]="report_view" class="fa fa-plus" aria-hidden="true"></i>
-                        <span>Write Report</span>
-                    </div>
+                <form class="frmNoteWrap" [formGroup]="frmNewReport" novalidate>
 
-                    <form class="frmNoteWrap" *ngIf="report_view" [formGroup]="frmNewReport" novalidate>
+                    <div class="frm-wrap">
+                        <div class="frm-l">
 
-                        <div class="frm-wrap">
-                            <div class="frm-l">
-
-                                <div class="frm-item-wrap">
-                                  <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="select patient"
-                                    [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
-                                    [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                </div>
-
-                                <div class="selected-patient-wrap">
-                                    <div class="sel-patient-img">
-                                        <img src="assets/images/users/default.png">
-                                    </div>
-                                    <div class="sel-patient-name">Jonathan Nelson</div>
-                                    <div class="sel-patient-detaills">
-                                        <div>AD-22100-BE</div>
-                                        <div>22 years</div>
-                                        <div>Male</div>
-                                        <div>08099009988</div>
-                                        <div>jonathan.nelson@gmail.com</div>
-                                    </div>
-                                </div>
-
-                                <div class="pending-req-wrap">
-                                    <div class="tab-title">Pending Requests</div>
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <span style="padding-left: 3px; text-align:center;">Patient</span>
-                                                </th>
-                                                <th>
-                                                    <span style="padding-left: 3px;">Pending Investigation</span>
-                                                </th>
-                                                
-                                                <th>
-                                                    <span style="padding-left: 3px;">Date</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <!-- <tr>
-                                                <td colspan="8">
-                                                    <div class="tbl-actionRow">
-                                                        <div class="frm-item-wrap">
-                                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient" isSocket="false"
-                                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                                        </div>
-
-                                                        <div class="frm-item-wrap">
-                                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for nvestigation" isSocket="false"
-                                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr> -->
-
-                                            <tr>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div class="list-img">
-                                                        <img src="assets/images/users/default.png">
-                                                        </div>
-                                                        <div>Johnson Wade</div>
-                                                    </div>
-                                                </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div class="list-img">
-                                                        <img src="assets/images/users/default.png">
-                                                        </div>
-                                                        <div>Johnson Wade</div>
-                                                    </div>
-                                                </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div class="list-img">
-                                                        <img src="assets/images/users/default.png">
-                                                        </div>
-                                                        <div>Johnson Wade</div>
-                                                    </div>
-                                                </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div class="list-img">
-                                                        <img src="assets/images/users/default.png">
-                                                        </div>
-                                                        <div>Johnson Wade</div>
-                                                    </div>
-                                                </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
+                            <div class="frm-item-wrap">
+                                <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="select patient"
+                                [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                             </div>
-                            
-                            <div class="frm-r">
-                                <div class="inner-tab-wrap">
-                                    <div [class.tab-item-active]="numericReport" (click)="numeric_report()" class="tab-item">Numeric</div>
-                                    <div [class.tab-item-active]="textReport" (click)="text_report()" class="tab-item">Text</div>
+
+                            <div class="selected-patient-wrap">
+                                <div class="sel-patient-img">
+                                    <img src="assets/images/users/default.png">
                                 </div>
+                                <div class="sel-patient-name">Jonathan Nelson</div>
+                                <div class="sel-patient-detaills">
+                                    <div>AD-22100-BE</div>
+                                    <div>22 years</div>
+                                    <div>Male</div>
+                                    <div>08099009988</div>
+                                    <div>jonathan.nelson@gmail.com</div>
+                                </div>
+                            </div>
 
-                                <table *ngIf="numericReport" cellpadding="0" cellspacing="0" border="0.5">
+                            <div class="tab-title">Pending Requests</div>
+                            <div class="pending-req-wrap">
+                                <table cellpadding="0" cellspacing="0" border="0.5">
                                     <thead>
                                         <tr>
                                             <th>
-                                                <span style="padding-left: 3px;">Investigation</span>
+                                                <span style="padding-left: 3px; text-align:center;">Patient</span>
                                             </th>
                                             <th>
-                                                <span style="padding-left: 3px;">Reference</span>
+                                                <span style="padding-left: 3px;">Pending Investigation</span>
                                             </th>
+                                            
                                             <th>
-                                                <span style="padding-left: 3px;">Result</span>
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <!-- <tr>
-                                            <td colspan="8">
-                                                <div class="tbl-actionRow">
-                                                    <div class="frm-item-wrap">
-                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
-                                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                                    </div>
-
-                                                    <md-autocomplete>
-                                                        <md-option [value]="Normal">Normal</md-option>
-                                                        <md-option [value]="Low">Low</md-option>
-                                                        <md-option [value]="High">High</md-option>
-                                                    </md-autocomplete> 
-                                                </div>
-                                            </td>
-                                        </tr> -->
-
-                                        <tr>
-                                        <td>Kidney Examination</td>
-                                        <td>1 - 43(cm)</td>
-                                        <td>
-                                            <div class="frm-item-wrap">
-                                                <md-input-container>
-                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                </md-input-container>
-                                            </div>
-                                        </td>
-                                        <td><span>High</span> </td>
-                                        </tr>
-                                        <tr>
-                                        <ng-template class="tbl-panel">
-                                            <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>1 - 43(cm)</td>
-                                            <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </td>
-                                            <td><span>High</span> </td>
-                                            </tr>
-
-                                            <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>1 - 43(cm)</td>
-                                            <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </td>
-                                            <td><span>High</span> </td>
-                                            </tr>
-
-                                            <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>1 - 43(cm)</td>
-                                            <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </td>
-                                            <td><span>High</span> </td>
-                                            </tr>
-                                        </ng-template>
-                                        </tr>
-
-                                        <tr>
-                                        <td>Kidney Examination</td>
-                                        <td>1 - 43(cm)</td>
-                                        <td>
-                                            <div class="frm-item-wrap">
-                                                <md-input-container>
-                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                </md-input-container>
-                                            </div>
-                                        </td>
-                                        <td><span>High</span> </td>
-                                        </tr>
-
-                                        <tr>
-                                        <td>Kidney Examination</td>
-                                        <td>1 - 43(cm)</td>
-                                        <td>
-                                            <div class="frm-item-wrap">
-                                                <md-input-container>
-                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                </md-input-container>
-                                            </div>
-                                        </td>
-                                        <td><span>High</span> </td>
-                                        </tr>
-                                    </tbody> 
-
-                                    <tbody class="tbl-panel">
-                                        <tr class="panel-label"><td colspan="10">Elaborate - PANEL</td> </tr>
-                                        <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>1 - 43(cm)</td>
-                                            <td>
-                                            <div class="frm-item-wrap">
-                                                <md-input-container>
-                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                </md-input-container>
-                                            </div>
-                                            </td>
-                                            <td><span>High</span> </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>1 - 43(cm)</td>
-                                            <td>
-                                            <div class="frm-item-wrap">
-                                                <md-input-container>
-                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                </md-input-container>
-                                            </div>
-                                            </td>
-                                            <td><span>High</span> </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>1 - 43(cm)</td>
-                                            <td>
-                                            <div class="frm-item-wrap">
-                                                <md-input-container>
-                                                    <input type="number" mdInput placeholder="Supply Result" formControlName="result">
-                                                </md-input-container>
-                                            </div>
-                                            </td>
-                                            <td><span>High</span> </td>
-                                        </tr>
-                                        <tr class="panel-foot"><td colspan="10">PANEL</td> </tr>
-                                    </tbody> 
-                                </table>
-
-                                <table *ngIf="textReport" cellpadding="0" cellspacing="0" border="0.5">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <span style="padding-left: 3px;">Investigation</span>
-                                            </th>
-                                            <th>
-                                                <span style="padding-left: 3px;">Result</span>
-                                            </th>
-                                            <th>
-                                                <span style="padding-left: 3px;">Outcome</span>
+                                                <span style="padding-left: 3px;">Date</span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -315,7 +52,12 @@
                                             <td colspan="8">
                                                 <div class="tbl-actionRow">
                                                     <div class="frm-item-wrap">
-                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
+                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient" isSocket="false"
+                                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                                    </div>
+
+                                                    <div class="frm-item-wrap">
+                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for nvestigation" isSocket="false"
                                                             displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                                     </div>
                                                 </div>
@@ -323,87 +65,231 @@
                                         </tr> -->
 
                                         <tr>
-                                            <td>Kidney Examination</td>
                                             <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <textarea mdInput placeholder="Result"></textarea>
-                                                    </md-input-container>
+                                                <div class="empWrap">
+                                                    <div class="list-img">
+                                                    <img src="assets/images/users/default.png">
+                                                    </div>
+                                                    <div>Johnson Wade</div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <md-select placeholder="Outcome">
-                                                    <md-option>Normal</md-option>
-                                                    <md-option>Abnormal</md-option>
-                                                </md-select>
-                                            </td>
+                                            <td>Blood Test</td>
+                                            <td>11th Jan, 2017.</td>
                                         </tr>
 
                                         <tr>
-                                            <td>Kidney Examination</td>
                                             <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <textarea mdInput placeholder="Result"></textarea>
-                                                    </md-input-container>
+                                                <div class="empWrap">
+                                                    <div class="list-img">
+                                                    <img src="assets/images/users/default.png">
+                                                    </div>
+                                                    <div>Johnson Wade</div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <md-select placeholder="Outcome">
-                                                    <md-option>Normal</md-option>
-                                                    <md-option>Abnormal</md-option>
-                                                </md-select>
-                                            </td>
-                                        </tr>
-                                    </tbody> 
-
-                                    <tbody class="tbl-panel">
-                                        <tr class="panel-label"><td colspan="10">Elaborate - PANEL</td> </tr>
-                                        <tr>
-                                            <td>Kidney Examination</td>
-                                            <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <textarea mdInput placeholder="Result"></textarea>
-                                                    </md-input-container>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <md-select placeholder="Outcome">
-                                                    <md-option>Normal</md-option>
-                                                    <md-option>Abnormal</md-option>
-                                                </md-select>
-                                            </td>
+                                            <td>Blood Test</td>
+                                            <td>11th Jan, 2017.</td>
                                         </tr>
 
                                         <tr>
-                                            <td>Kidney Examination</td>
                                             <td>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <textarea mdInput placeholder="Result"></textarea>
-                                                    </md-input-container>
+                                                <div class="empWrap">
+                                                    <div class="list-img">
+                                                    <img src="assets/images/users/default.png">
+                                                    </div>
+                                                    <div>Johnson Wade</div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <md-select placeholder="Outcome">
-                                                    <md-option>Normal</md-option>
-                                                    <md-option>Abnormal</md-option>
-                                                </md-select>
-                                            </td>
+                                            <td>Blood Test</td>
+                                            <td>11th Jan, 2017.</td>
                                         </tr>
-                                        <tr class="panel-foot"><td colspan="10">PANEL</td> </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div class="empWrap">
+                                                    <div class="list-img">
+                                                    <img src="assets/images/users/default.png">
+                                                    </div>
+                                                    <div>Johnson Wade</div>
+                                                </div>
+                                            </td>
+                                            <td>Blood Test</td>
+                                            <td>11th Jan, 2017.</td>
+                                        </tr>
+
                                     </tbody>
                                 </table>
+                            </div>
+
+                        </div>
+                        
+                        <div class="frm-r">
+
+                            <form [formGroup]="frmNewReport" novalidate>
+                                <div *ngIf="numericReport" >
+                                    <div>
+                                        <div class="initial-contenet invstn-val">
+                                            <div class="report-title">
+                                                Clinincal Documentation 
+                                                <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
+                                                <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
+                                            </div>
+                                            <div *ngIf="docAction" class="initial-val">
+                                                when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
+                                            </div>
+                                        </div>
+                                        <div class="initial-contenet invstn-val">
+                                            <div class="report-title">
+                                                Diagnosis
+                                                <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
+                                                <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
+                                            </div>
+                                            <div *ngIf="diagnosisAction" class="initial-val">
+                                                when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="lettering-wrap">
+                                            <div class="report-title">Bilateral Test</div>
+                                            <div class="invstn-vals">
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Reference:</div>
+                                                    <div class="val-val">1 - 7(cm)</div>
+                                                </div>
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Sample NO:</div>
+                                                    <div class="val-val">1220</div>
+                                                </div>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="lettering-wrap">
+                                            <div class="report-title">Pregnancy Test</div>
+                                            <div class="invstn-vals">
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Reference:</div>
+                                                    <div class="val-val">1 - 7(cm)</div>
+                                                </div>
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Sample NO:</div>
+                                                    <div class="val-val">1220</div>
+                                                </div>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="frm-item-wrap">
+                                        <md-autocomplete>
+                                            <md-option [value]="Normal">Normal</md-option>
+                                            <md-option [value]="Low">Low</md-option>
+                                            <md-option [value]="High">High</md-option>
+                                        </md-autocomplete> 
+                                    </div> -->
+                                    <div class="frm-item-wrap">
+                                        <md-input-container>
+                                            <textarea mdInput placeholder="Conclusion"></textarea>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="frm-item-wrap">
+                                        <md-input-container>
+                                            <textarea mdInput placeholder="Recomendation"></textarea>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="textReport" >
+                                    <div>
+                                        <div class="initial-contenet invstn-val">
+                                            <div class="report-title">
+                                                Clinincal Documentation 
+                                                <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
+                                                <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
+                                            </div>
+                                            <div *ngIf="docAction" class="initial-val">
+                                                when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
+                                            </div>
+                                        </div>
+                                        <div class="initial-contenet invstn-val">
+                                            <div class="report-title">
+                                                Diagnosis
+                                                <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
+                                                <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
+                                            </div>
+                                            <div *ngIf="diagnosisAction" class="initial-val">
+                                                when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="lettering-wrap">
+                                            <div class="report-title">Bilateral Test</div>
+                                            <div class="invstn-vals">
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Sample NO:</div>
+                                                    <div class="val-val">1220</div>
+                                                </div>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="lettering-wrap">
+                                            <div class="report-title">Pregnancy Test</div>
+                                            <div class="invstn-vals">
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Reference:</div>
+                                                    <div class="val-val">1 - 7(cm)</div>
+                                                </div>
+                                                <div class="invstn-val">
+                                                    <div class="val-label">Sample NO:</div>
+                                                    <div class="val-val">1220</div>
+                                                </div>
+                                                <div class="frm-item-wrap">
+                                                    <md-input-container>
+                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                                    </md-input-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="frm-item-wrap">
+                                        <md-autocomplete>
+                                            <md-option [value]="Normal">Normal</md-option>
+                                            <md-option [value]="Low">Low</md-option>
+                                            <md-option [value]="High">High</md-option>
+                                        </md-autocomplete> 
+                                    </div> -->
+                                    <div class="frm-item-wrap">
+                                        <md-input-container>
+                                            <textarea mdInput placeholder="Conclusion"></textarea>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="frm-item-wrap">
+                                        <md-input-container>
+                                            <textarea mdInput placeholder="Recomendation"></textarea>
+                                        </md-input-container>
+                                    </div>
+                                </div>
 
                                 <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
                                     SAVE REPORT
                                 </button>
-                            </div>
-                                
+                            </form>
+                            
                         </div>
-                    </form>
-                </div>
+                            
+                    </div>
+                </form>
             </div>
         </div>
     </div>
