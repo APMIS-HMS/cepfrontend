@@ -32,6 +32,7 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import {KeysPipe } from './keypipe';
 import { PersonAccountComponent } from '../person-account/person-account.component';
+import { TimezonePickerModule } from 'ng2-timezone-selector';
 
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
@@ -91,7 +92,8 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         InvestigationComponent,
         KeysPipe,
-        PersonAccountComponent
+        PersonAccountComponent,
+        TimezonePickerModule
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
@@ -121,7 +123,8 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         ImageCropperModule,
         NgUploaderModule,
         CurrencyMaskModule,
-        ToastyModule.forRoot()
+        ToastyModule.forRoot(),
+        TimezonePickerModule
     ],
     providers: [OrderStatusService, SeverityService]
 })

@@ -76,6 +76,7 @@ export class ScheduleFrmComponent implements OnInit {
     status: FormControl;
     category: FormControl;
     checkIn: FormControl;
+    teleMed: FormControl;
     date = new Date(); // FormControl = new FormControl();
     dateCtrl: FormControl = new FormControl(new Date(), [Validators.required]);
     reason: FormControl = new FormControl();
@@ -85,6 +86,10 @@ export class ScheduleFrmComponent implements OnInit {
     selectedAppointment: Appointment = <Appointment>{};
     btnText = 'Schedule Appointment';
     clinicErrorMsg = ' Clinic does not hold on the selected date!!!';
+
+    user = {};
+    placeholderString = 'Select timezone';
+
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private patientService: PatientService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
@@ -653,7 +658,8 @@ export class ScheduleFrmComponent implements OnInit {
         this.status.reset();
     }
 
-    clickMe() {
+    changeTimezone(timezone) {
+        // this.user.timezone = timezone;
     }
 
 }
