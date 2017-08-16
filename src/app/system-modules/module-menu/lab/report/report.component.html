@@ -20,7 +20,7 @@
                 </div>
                 <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
                     <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                    <span>Upload</span>
+                    <span>Upload File</span>
                 </div>
             </div>
           </div>
@@ -168,6 +168,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="resultSect-title">Investigation Result</div>
                             <div class="invstn-wrap">
                                 <div class="lettering-wrap">
                                     <div class="report-title">Bilateral Test</div>
@@ -301,9 +302,14 @@
                             </div>
                         </div>
 
-                        <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
-                            SAVE REPORT
-                        </button>
+                        <div class="btns">
+                            <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="button btn-orange">
+                                SAVE AS DRAFT
+                            </button>
+                            <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="button btn-blue">
+                                SAVE AND UPLOAD
+                            </button>
+                        </div>
                     </form>
                     
                 </div>
@@ -331,6 +337,16 @@
                   <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                   <span style="padding-left: 3px;">Investigation</span>
                 </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Source</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Requesting Physician</span>
+                </th>
                 <th>Status</th>
                 <th></th>
               </tr>
@@ -339,7 +355,7 @@
             <tbody>
 
               <tr>
-                <td colspan="6">
+                <td colspan="10">
                   <div class="tbl-actionRow">
                     <!-- <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
@@ -376,6 +392,15 @@
                   </div>
                 </td>
                 <td>Blood Test</td>
+                <td>EMT Clinic</td>
+                <td>
+                  <div class="empWrap">
+                    <div class="list-img">
+                      <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Solomon Jim</div>
+                  </div>
+                </td>
                 <td>Uploaded</td>
                 <td class="action-placeholder">
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>

@@ -82,6 +82,10 @@
                 <md-checkbox [formControl]="checkIn">Check In</md-checkbox>
             </div>
 
+            <div class="tr-act-btn3">
+                <md-checkbox  [formControl]="teleMed">Tele Medicine Consultation</md-checkbox>
+            </div>
+
         </div>
 
         <div class="sect-wrap">
@@ -114,6 +118,12 @@
                     <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
                 </md-input-container>
             </div>
+
+            <ng2-timezone-picker 
+                [timezone]="user.timezone"
+                (change)="changeTimezone($event)"
+                placeholder="Select timezone">
+            </ng2-timezone-picker>
 
         </div>
     </div>
