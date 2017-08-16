@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
+const request = require('superagent');
 
 @Injectable()
 export class AppointmentService {
@@ -88,5 +89,13 @@ export class AppointmentService {
 
   patch(_id: any, data: any, param: any) {
     return this._socket.patch(_id, data, param);
+  }
+
+  setMeeting(topic: string, startTime: Date) {
+    const host = this._restService.getHost();
+    const path = host + '/zoom-meeting';
+    return request
+      .post(path)
+      .send({ topic: topic, startTime: startTime }); // query string 
   }
 }

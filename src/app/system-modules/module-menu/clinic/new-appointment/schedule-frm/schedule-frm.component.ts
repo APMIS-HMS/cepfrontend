@@ -78,6 +78,8 @@ export class ScheduleFrmComponent implements OnInit {
     checkIn: FormControl;
     teleMed: FormControl;
     date = new Date(); // FormControl = new FormControl();
+    endDate = new Date();
+    startDate = new Date();
     dateCtrl: FormControl = new FormControl(new Date(), [Validators.required]);
     reason: FormControl = new FormControl();
     appointment: Appointment = <Appointment>{};
@@ -245,11 +247,9 @@ export class ScheduleFrmComponent implements OnInit {
             .find({ query: { _id: this.appointment._id, isAppointmentToday: true } })
             .subscribe(payload => {
                 if (payload.data.length > 0) {
-                    console.log(1)
                     this.canCheckIn = true;
                     this.checkIn.enable();
                 } else {
-                     console.log(2)
                     this.canCheckIn = false;
                     this.checkIn.disable();
                 }
@@ -259,40 +259,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.appointmentService.patientAnnounced(value);
         return value.personDetails.lastName;
     }
-    getOthers(clinic: any) {
-        this.schedules = [];
-        if (clinic !== null) {
-            this.selectedClinic = clinic;
-            if (clinic.schedules !== undefined) {
-                clinic.schedules.forEach((itemi, i) => {
-                    this.schedules.push(itemi);
-                });
-            }
-            this.appointmentService.schedulesAnnounced(this.schedules);
 
-
-
-            const dayNum = getDay(this.date);
-            const day = this.days[dayNum];
-            const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
-            if (scheduleFiltered.length === 0) {
-                this.dateCtrl.setErrors({ noValue: true });
-                this.dateCtrl.markAsTouched();
-                this.checkIn.disable();
-            } else {
-                const schedule: any = scheduleFiltered[0];
-                this.date = setHours(this.date, getHours(schedule.startTime));
-                this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-                this.checkIn.enable();
-                this.dateCtrl.setErrors(null)//({ noValue: false });
-                this.dateCtrl.markAsUntouched();
-            }
-            if (this.selectedClinic._id !== undefined) {
-                this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
-            }
-
-        }
-    }
     getClinicMajorLocation() {
         this.locationService.findAll().then(payload => {
             payload.data.forEach((itemi, i) => {
@@ -526,11 +493,6 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     scheduleAppointment() {
-        console.log(this.dateCtrl.valid)
-        console.log(this.patient.valid)
-        console.log(this.type.valid)
-        console.log(this.category.valid)
-        console.log(this.clinic.valid)
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
             this.loadIndicatorVisible = true;
             const patient = this.patient.value;
@@ -603,6 +565,15 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.orderStatusId = orderStatus;
             if (this.appointment._id !== undefined) {
                 this.appointmentService.update(this.appointment).subscribe(payload => {
+                    // let topic = "Appointment with " + patient.personDetails.apmisId;
+                    // this.appointmentService.setMeeting(topic, this.appointment.startDate).then(meeting => {
+                    //     console.log(meeting)
+                    //     this.appointmentService.patientAnnounced(this.patient);
+                    //     this.loadIndicatorVisible = false;
+                    //     this.newSchedule();
+                    //     this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                    //     this.addToast('Appointment updated successfully');
+                    // })
                     this.appointmentService.patientAnnounced(this.patient);
                     this.loadIndicatorVisible = false;
                     this.newSchedule();
@@ -628,6 +599,46 @@ export class ScheduleFrmComponent implements OnInit {
 
 
     }
+    getOthers(clinic: any) {
+        this.schedules = [];
+        if (clinic !== null) {
+            this.selectedClinic = clinic;
+            if (clinic.schedules !== undefined) {
+                clinic.schedules.forEach((itemi, i) => {
+                    this.schedules.push(itemi);
+                });
+            }
+            this.appointmentService.schedulesAnnounced(this.schedules);
+
+
+
+            const dayNum = getDay(this.date);
+            const day = this.days[dayNum];
+            const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
+            if (scheduleFiltered.length === 0) {
+                this.dateCtrl.setErrors({ noValue: true });
+                this.dateCtrl.markAsTouched();
+                this.checkIn.disable();
+                this.checkIn.setValue(false);
+            } else {
+                const schedule: any = scheduleFiltered[0];
+                this.date = setHours(this.date, getHours(schedule.startTime));
+                this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+                this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+                this.startDate = setMinutes(this.startDate, getMinutes(schedule.startTime));
+                // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
+                // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
+                // this.dateCtrl.setValue(this.date);
+                this.checkIn.enable();
+                this.dateCtrl.setErrors(null)//({ noValue: false });
+                this.dateCtrl.markAsUntouched();
+            }
+            if (this.selectedClinic._id !== undefined) {
+                this.appointmentService.clinicAnnounced({ clinicId: clinic, startDate: this.date });
+            }
+
+        }
+    }
     dateChange(event) {
         const dayNum = getDay(event);
         const day = this.days[dayNum];
@@ -636,11 +647,28 @@ export class ScheduleFrmComponent implements OnInit {
             this.dateCtrl.setErrors({ noValue: true });
             this.dateCtrl.markAsTouched();
             this.date = event;
+            this.startDate = event;
+            this.endDate = event;
+            // this.dateCtrl.setValue(this.date);
+            this.checkIn.disable();
+            this.checkIn.setValue(false);
+            this.startDate = setHours(this.startDate, getHours(this.startDate));
+            this.startDate = setMinutes(this.startDate, getMinutes(this.startDate));
         } else {
             this.date = event;
             const schedule: any = scheduleFiltered[0];
-            this.date = setHours(this.date, getHours(schedule.startTime));
-            this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+            // this.date = setHours(this.date, getHours(schedule.startTime));
+            // this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+            this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+            this.startDate = setMinutes(this.startDate, getMinutes(schedule.startTime));
+            // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
+            // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
+            // this.dateCtrl.setValue(this.date);
+            this.checkIn.enable();
+            this.dateCtrl.setErrors(null)//({ noValue: false });
+            this.dateCtrl.markAsUntouched();
+            console.log(this.date);
+            console.log(this.dateCtrl.value)
         }
         if (this.selectedClinic._id !== undefined) {
             this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });

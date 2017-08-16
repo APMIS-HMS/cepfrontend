@@ -16,20 +16,26 @@
 
             <div>
                 <div class="survery">
-                    <md-input-container>
-                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'short'" [mdDatepicker]="picker" placeholder="Choose a date" readonly>
+                    <!-- <md-input-container>
+                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'short'" [mdDatepicker]="picker" placeholder="Choose a date"
+                            readonly>
                         <md-error *ngIf="dateCtrl.hasError('noValue')">
-                           {{clinicErrorMsg}}
+                            {{clinicErrorMsg}}
                         </md-error>
                         <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    </md-input-container> -->
+                    <!-- <md-datepicker #picker></md-datepicker> -->
+                    <md-input-container>
+                        <input [formControl]="dateCtrl" [hourTime]="'12'"  mdInput [value]="date | date: 'short'"  dateTimePicker />
+                        <md-error *ngIf="dateCtrl.hasError('noValue')">
+                            {{clinicErrorMsg}}
+                        </md-error>
                     </md-input-container>
-                    <md-datepicker #picker></md-datepicker>
-
                 </div>
             </div>
 
             <div>
-                <md-input-container> 
+                <md-input-container>
                     <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="type">
                 </md-input-container>
 
@@ -73,7 +79,7 @@
             </div>
 
             <div class="tr-act-btn2">
-                <md-checkbox  [formControl]="checkIn">Check In</md-checkbox>
+                <md-checkbox [formControl]="checkIn">Check In</md-checkbox>
             </div>
 
             <div class="tr-act-btn3">
