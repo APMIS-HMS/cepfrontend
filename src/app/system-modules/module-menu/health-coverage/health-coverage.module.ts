@@ -13,6 +13,7 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AddPrincipalComponent } from './add-principal/add-principal.component';
 import { HmoCoverComponent } from './hmo-cover/hmo-cover.component';
 import { StaffCoverComponent } from './staff-cover/staff-cover.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -27,7 +28,8 @@ import { StaffCoverComponent } from './staff-cover/staff-cover.component';
     exports: [
     ],
     imports: [
-        SharedModule,
+        MaterialModule,
+        // SharedModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,

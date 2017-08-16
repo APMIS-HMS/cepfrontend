@@ -59,7 +59,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
     BrowserAnimationsModule,
     // ToastModule.forRoot(),
     // CoolStorageModule,
-    MaterialModule,
+    // MaterialModule,
     SingUpAccountsSharedModule
   ],
   providers: [

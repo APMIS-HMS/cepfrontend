@@ -1321,3 +1321,46 @@ ul.topmenuwrap li:hover {
     justify-content: space-between;
     align-items: center;
 }
+.btns{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.btns .button {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    font-size: 12px;
+    padding: 5px 20px;
+    cursor: pointer;
+    margin: 10px auto;
+    border: 0;
+    outline: 0;
+    border-radius: 30px;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+}
+.btns .btn-orange{
+    border: 1px solid #FB8C00;
+    color: #FB8C00;
+    background: transparent;
+}
+.btns .btn-orange:hover{
+    background: #FB8C00;
+    color: #fff;
+}
+.btns .btn-blue{
+    border: 1px solid #0288D1;
+    color: #0288D1;
+    background: transparent;
+}
+.btns .btn-blue:hover{
+    background: #0288D1;
+    color: #fff;
+}

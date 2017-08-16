@@ -30,9 +30,14 @@ import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
 import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
-import {KeysPipe } from './keypipe';
+import { KeysPipe } from './keypipe';
 import { PersonAccountComponent } from '../person-account/person-account.component';
+import { TimezonePickerModule } from 'ng2-timezone-selector';
 
+import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
+import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
+import { DragulaModule } from 'ng2-dragula';
+import { NgPipesModule } from 'ngx-pipes';
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
         LogoUpdateComponent,
@@ -46,7 +51,8 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         InvestigationComponent,
         KeysPipe,
-        PersonAccountComponent
+        PersonAccountComponent,
+        LabRequestsComponent, RequestDetailComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -91,7 +97,11 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         InvestigationComponent,
         KeysPipe,
-        PersonAccountComponent
+        PersonAccountComponent,
+        TimezonePickerModule,
+        LabRequestsComponent, RequestDetailComponent,
+        DragulaModule,
+        NgPipesModule
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
@@ -121,7 +131,10 @@ import { PersonAccountComponent } from '../person-account/person-account.compone
         ImageCropperModule,
         NgUploaderModule,
         CurrencyMaskModule,
-        ToastyModule.forRoot()
+        ToastyModule.forRoot(),
+        TimezonePickerModule,
+        DragulaModule,
+        NgPipesModule
     ],
     providers: [OrderStatusService, SeverityService]
 })

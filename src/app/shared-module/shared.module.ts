@@ -50,7 +50,7 @@ import {
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
-        LabRequestsComponent, RequestDetailComponent
+        // LabRequestsComponent, RequestDetailComponent
     ],
     exports: [
         LogoUpdateComponent,
@@ -67,8 +67,8 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
-        DragulaModule,
-        LabRequestsComponent, RequestDetailComponent
+        // DragulaModule,
+        // LabRequestsComponent, RequestDetailComponent
     ],
     imports: [
         CommonModule,
@@ -81,7 +81,7 @@ import {
         InfiniteScrollModule,
         ImageCropperModule,
         MaterialModule,
-        DragulaModule
+        // DragulaModule
     ],
     providers: [StoreService]
 })
