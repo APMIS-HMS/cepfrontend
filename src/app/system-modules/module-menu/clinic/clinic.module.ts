@@ -20,6 +20,7 @@ import { NewAppointmentComponent } from './new-appointment/new-appointment.compo
 import { ScheduleFrmComponent } from './new-appointment/schedule-frm/schedule-frm.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { DateRangePickerModule } from 'ng-pick-daterange';
+import { DateTimePickerModule } from 'ng-pick-datetime';
 import { FormsService } from '../../../services/facility-manager/setup/index';
 
 @NgModule({
@@ -39,7 +40,8 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
         DatePickerModule,
         clinicRoutes,
         MaterialModule,
-        DateRangePickerModule
+        DateRangePickerModule,
+        DateTimePickerModule
     ],
     providers: [
         Service,

@@ -36,6 +36,7 @@ export class LabRequestsComponent implements OnInit {
   mainErr = true;
   paymentStatus = false;
   sampleStatus = true;
+  recievedStatus = true;
   resultStatus = false;
   apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
@@ -137,8 +138,8 @@ export class LabRequestsComponent implements OnInit {
     this.personAcc_view = false;
   }
   save(valid, value) {
-    console.log(this.frmNewRequest.valid);
-    console.log(this.frmNewRequest.value);
+    console.log(valid);
+    console.log(value);
     delete this.selectedPatient.appointments;
     delete this.selectedPatient.encounterRecords;
     delete this.selectedPatient.orders;

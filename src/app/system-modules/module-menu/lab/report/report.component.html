@@ -1,296 +1,411 @@
 <div class="pg-subtitle">REPORT</div>
+
 <div>
-    <div class="doc-mainWrap">
-        <div class="doc-contentArea">
+  <div class="doc-mainWrap">
+    <div class="doc-contentArea">
 
-            <div class="clinicalNoteWrap">
-                <form class="frmNoteWrap" [formGroup]="frmNewReport" novalidate>
-
-                    <div class="frm-wrap">
-                        <div class="frm-l">
-
-                            <div class="frm-item-wrap">
-                                <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="select patient"
-                                [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
-                                [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                            </div>
-
-                            <div class="selected-patient-wrap">
-                                <div class="sel-patient-img">
-                                    <img src="assets/images/users/default.png">
-                                </div>
-                                <div class="sel-patient-name">Jonathan Nelson</div>
-                                <div class="sel-patient-detaills">
-                                    <div>AD-22100-BE</div>
-                                    <div>22 years</div>
-                                    <div>Male</div>
-                                    <div>08099009988</div>
-                                    <div>jonathan.nelson@gmail.com</div>
-                                </div>
-                            </div>
-
-                            <div class="tab-title">Pending Requests</div>
-                            <div class="pending-req-wrap">
-                                <table cellpadding="0" cellspacing="0" border="0.5">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <span style="padding-left: 3px; text-align:center;">Patient</span>
-                                            </th>
-                                            <th>
-                                                <span style="padding-left: 3px;">Pending Investigation</span>
-                                            </th>
-                                            
-                                            <th>
-                                                <span style="padding-left: 3px;">Date</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <!-- <tr>
-                                            <td colspan="8">
-                                                <div class="tbl-actionRow">
-                                                    <div class="frm-item-wrap">
-                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient" isSocket="false"
-                                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                                    </div>
-
-                                                    <div class="frm-item-wrap">
-                                                        <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for nvestigation" isSocket="false"
-                                                            displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr> -->
-
-                                        <tr>
-                                            <td>
-                                                <div class="empWrap">
-                                                    <div class="list-img">
-                                                    <img src="assets/images/users/default.png">
-                                                    </div>
-                                                    <div>Johnson Wade</div>
-                                                </div>
-                                            </td>
-                                            <td>Blood Test</td>
-                                            <td>11th Jan, 2017.</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <div class="empWrap">
-                                                    <div class="list-img">
-                                                    <img src="assets/images/users/default.png">
-                                                    </div>
-                                                    <div>Johnson Wade</div>
-                                                </div>
-                                            </td>
-                                            <td>Blood Test</td>
-                                            <td>11th Jan, 2017.</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <div class="empWrap">
-                                                    <div class="list-img">
-                                                    <img src="assets/images/users/default.png">
-                                                    </div>
-                                                    <div>Johnson Wade</div>
-                                                </div>
-                                            </td>
-                                            <td>Blood Test</td>
-                                            <td>11th Jan, 2017.</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <div class="empWrap">
-                                                    <div class="list-img">
-                                                    <img src="assets/images/users/default.png">
-                                                    </div>
-                                                    <div>Johnson Wade</div>
-                                                </div>
-                                            </td>
-                                            <td>Blood Test</td>
-                                            <td>11th Jan, 2017.</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                        
-                        <div class="frm-r">
-
-                            <form [formGroup]="frmNewReport" novalidate>
-                                <div *ngIf="numericReport" >
-                                    <div>
-                                        <div class="initial-contenet invstn-val">
-                                            <div class="report-title">
-                                                Clinincal Documentation 
-                                                <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
-                                                <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
-                                            </div>
-                                            <div *ngIf="docAction" class="initial-val">
-                                                when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
-                                            </div>
-                                        </div>
-                                        <div class="initial-contenet invstn-val">
-                                            <div class="report-title">
-                                                Diagnosis
-                                                <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
-                                                <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
-                                            </div>
-                                            <div *ngIf="diagnosisAction" class="initial-val">
-                                                when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="lettering-wrap">
-                                            <div class="report-title">Bilateral Test</div>
-                                            <div class="invstn-vals">
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Reference:</div>
-                                                    <div class="val-val">1 - 7(cm)</div>
-                                                </div>
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Sample NO:</div>
-                                                    <div class="val-val">1220</div>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="lettering-wrap">
-                                            <div class="report-title">Pregnancy Test</div>
-                                            <div class="invstn-vals">
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Reference:</div>
-                                                    <div class="val-val">1 - 7(cm)</div>
-                                                </div>
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Sample NO:</div>
-                                                    <div class="val-val">1220</div>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="frm-item-wrap">
-                                        <md-autocomplete>
-                                            <md-option [value]="Normal">Normal</md-option>
-                                            <md-option [value]="Low">Low</md-option>
-                                            <md-option [value]="High">High</md-option>
-                                        </md-autocomplete> 
-                                    </div> -->
-                                    <div class="frm-item-wrap">
-                                        <md-input-container>
-                                            <textarea mdInput placeholder="Conclusion"></textarea>
-                                        </md-input-container>
-                                    </div>
-                                    <div class="frm-item-wrap">
-                                        <md-input-container>
-                                            <textarea mdInput placeholder="Recomendation"></textarea>
-                                        </md-input-container>
-                                    </div>
-                                </div>
-
-                                <div *ngIf="textReport" >
-                                    <div>
-                                        <div class="initial-contenet invstn-val">
-                                            <div class="report-title">
-                                                Clinincal Documentation 
-                                                <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
-                                                <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
-                                            </div>
-                                            <div *ngIf="docAction" class="initial-val">
-                                                when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
-                                            </div>
-                                        </div>
-                                        <div class="initial-contenet invstn-val">
-                                            <div class="report-title">
-                                                Diagnosis
-                                                <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
-                                                <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
-                                            </div>
-                                            <div *ngIf="diagnosisAction" class="initial-val">
-                                                when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="lettering-wrap">
-                                            <div class="report-title">Bilateral Test</div>
-                                            <div class="invstn-vals">
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Sample NO:</div>
-                                                    <div class="val-val">1220</div>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="lettering-wrap">
-                                            <div class="report-title">Pregnancy Test</div>
-                                            <div class="invstn-vals">
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Reference:</div>
-                                                    <div class="val-val">1 - 7(cm)</div>
-                                                </div>
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Sample NO:</div>
-                                                    <div class="val-val">1220</div>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                    </md-input-container>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="frm-item-wrap">
-                                        <md-autocomplete>
-                                            <md-option [value]="Normal">Normal</md-option>
-                                            <md-option [value]="Low">Low</md-option>
-                                            <md-option [value]="High">High</md-option>
-                                        </md-autocomplete> 
-                                    </div> -->
-                                    <div class="frm-item-wrap">
-                                        <md-input-container>
-                                            <textarea mdInput placeholder="Conclusion"></textarea>
-                                        </md-input-container>
-                                    </div>
-                                    <div class="frm-item-wrap">
-                                        <md-input-container>
-                                            <textarea mdInput placeholder="Recomendation"></textarea>
-                                        </md-input-container>
-                                    </div>
-                                </div>
-
-                                <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
-                                    SAVE REPORT
-                                </button>
-                            </form>
-                            
-                        </div>
-                            
-                    </div>
-                </form>
+      <div class="clinicalNoteWrap">
+        <div class="actSect">
+          <div class="act-actions-wrap">
+            <div (click)="report_show()" class="act-wrap">
+                <i *ngIf="report_view" class="fa fa-minus" aria-hidden="true"></i>
+                <i [hidden]="report_view" class="fa fa-plus" aria-hidden="true"></i>
+                <span>New Report</span>
             </div>
+
+            <div *ngIf="report_view" class="act-right-actions">
+                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    <span>Save</span>
+                </div>
+                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                    <span>Upload</span>
+                </div>
+            </div>
+          </div>
+
+          <form *ngIf="report_view" class="frmNoteWrap" [formGroup]="frmNewReport" novalidate>
+            <div class="frm-wrap">
+                <div class="frm-l">
+
+                    <div class="frm-item-wrap">
+                        <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="select patient"
+                        [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                        [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                    </div>
+
+                    <div class="selected-patient-wrap">
+                        <div class="sel-patient-img">
+                            <img src="assets/images/users/default.png">
+                        </div>
+                        <div class="sel-patient-name">Jonathan Nelson</div>
+                        <div class="sel-patient-detaills">
+                            <div>AD-22100-BE</div>
+                            <div>22 years</div>
+                            <div>Male</div>
+                            <div>08099009988</div>
+                            <div>jonathan.nelson@gmail.com</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-title">Pending Requests</div>
+                    <div class="pending-req-wrap">
+                        <table cellpadding="0" cellspacing="0" border="0.5">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span style="padding-left: 3px; text-align:center;">Patient</span>
+                                    </th>
+                                    <th>
+                                        <span style="padding-left: 3px;">Pending Investigation</span>
+                                    </th>
+                                    
+                                    <th>
+                                        <span style="padding-left: 3px;">Date</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <!-- <tr>
+                                    <td colspan="8">
+                                        <div class="tbl-actionRow">
+                                            <div class="frm-item-wrap">
+                                                <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient" isSocket="false"
+                                                    displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            </div>
+
+                                            <div class="frm-item-wrap">
+                                                <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for nvestigation" isSocket="false"
+                                                    displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr> -->
+
+                                <tr>
+                                    <td>
+                                        <div class="empWrap">
+                                            <div class="list-img">
+                                            <img src="assets/images/users/default.png">
+                                            </div>
+                                            <div>Johnson Wade</div>
+                                        </div>
+                                    </td>
+                                    <td>Blood Test</td>
+                                    <td>11th Jan, 2017.</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="empWrap">
+                                            <div class="list-img">
+                                            <img src="assets/images/users/default.png">
+                                            </div>
+                                            <div>Johnson Wade</div>
+                                        </div>
+                                    </td>
+                                    <td>Blood Test</td>
+                                    <td>11th Jan, 2017.</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="empWrap">
+                                            <div class="list-img">
+                                            <img src="assets/images/users/default.png">
+                                            </div>
+                                            <div>Johnson Wade</div>
+                                        </div>
+                                    </td>
+                                    <td>Blood Test</td>
+                                    <td>11th Jan, 2017.</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="empWrap">
+                                            <div class="list-img">
+                                            <img src="assets/images/users/default.png">
+                                            </div>
+                                            <div>Johnson Wade</div>
+                                        </div>
+                                    </td>
+                                    <td>Blood Test</td>
+                                    <td>11th Jan, 2017.</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                
+                <div class="frm-r">
+
+                    <form [formGroup]="frmNewReport" novalidate>
+                        <div *ngIf="numericReport" >
+                            <div>
+                                <div class="initial-contenet invstn-val">
+                                    <div class="report-title">
+                                        Clinincal Documentation 
+                                        <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
+                                        <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
+                                    </div>
+                                    <div *ngIf="docAction" class="initial-val">
+                                        when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
+                                    </div>
+                                </div>
+                                <div class="initial-contenet invstn-val">
+                                    <div class="report-title">
+                                        Diagnosis
+                                        <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
+                                        <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
+                                    </div>
+                                    <div *ngIf="diagnosisAction" class="initial-val">
+                                        when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invstn-wrap">
+                                <div class="lettering-wrap">
+                                    <div class="report-title">Bilateral Test</div>
+                                    <div class="invstn-vals">
+                                        <div class="invstn-val">
+                                            <div class="val-label">Reference:</div>
+                                            <div class="val-val">1 - 7(cm)</div>
+                                        </div>
+                                        <div class="invstn-val">
+                                            <div class="val-label">Sample NO:</div>
+                                            <div class="val-val">1220</div>
+                                        </div>
+                                        <div class="frm-item-wrap">
+                                            <md-input-container>
+                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lettering-wrap">
+                                    <div class="report-title">Pregnancy Test</div>
+                                    <div class="invstn-vals">
+                                        <div class="invstn-val">
+                                            <div class="val-label">Reference:</div>
+                                            <div class="val-val">1 - 7(cm)</div>
+                                        </div>
+                                        <div class="invstn-val">
+                                            <div class="val-label">Sample NO:</div>
+                                            <div class="val-val">1220</div>
+                                        </div>
+                                        <div class="frm-item-wrap">
+                                            <md-input-container>
+                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="frm-item-wrap">
+                                <md-autocomplete>
+                                    <md-option [value]="Normal">Normal</md-option>
+                                    <md-option [value]="Low">Low</md-option>
+                                    <md-option [value]="High">High</md-option>
+                                </md-autocomplete> 
+                            </div> -->
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <textarea mdInput placeholder="Conclusion"></textarea>
+                                </md-input-container>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <textarea mdInput placeholder="Recomendation"></textarea>
+                                </md-input-container>
+                            </div>
+                        </div>
+
+                        <div *ngIf="textReport" >
+                            <div>
+                                <div class="initial-contenet invstn-val">
+                                    <div class="report-title">
+                                        Clinincal Documentation 
+                                        <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
+                                        <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
+                                    </div>
+                                    <div *ngIf="docAction" class="initial-val">
+                                        when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
+                                    </div>
+                                </div>
+                                <div class="initial-contenet invstn-val">
+                                    <div class="report-title">
+                                        Diagnosis
+                                        <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
+                                        <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
+                                    </div>
+                                    <div *ngIf="diagnosisAction" class="initial-val">
+                                        when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="lettering-wrap">
+                                    <div class="report-title">Bilateral Test</div>
+                                    <div class="invstn-vals">
+                                        <div class="invstn-val">
+                                            <div class="val-label">Sample NO:</div>
+                                            <div class="val-val">1220</div>
+                                        </div>
+                                        <div class="frm-item-wrap">
+                                            <md-input-container>
+                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lettering-wrap">
+                                    <div class="report-title">Pregnancy Test</div>
+                                    <div class="invstn-vals">
+                                        <div class="invstn-val">
+                                            <div class="val-label">Reference:</div>
+                                            <div class="val-val">1 - 7(cm)</div>
+                                        </div>
+                                        <div class="invstn-val">
+                                            <div class="val-label">Sample NO:</div>
+                                            <div class="val-val">1220</div>
+                                        </div>
+                                        <div class="frm-item-wrap">
+                                            <md-input-container>
+                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="frm-item-wrap">
+                                <md-autocomplete>
+                                    <md-option [value]="Normal">Normal</md-option>
+                                    <md-option [value]="Low">Low</md-option>
+                                    <md-option [value]="High">High</md-option>
+                                </md-autocomplete> 
+                            </div> -->
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <textarea mdInput placeholder="Conclusion"></textarea>
+                                </md-input-container>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <textarea mdInput placeholder="Recomendation"></textarea>
+                                </md-input-container>
+                            </div>
+                        </div>
+
+                        <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
+                            SAVE REPORT
+                        </button>
+                    </form>
+                    
+                </div>
+                    
+            </div>
+          </form>
         </div>
+
+        <div class="tblWrapa" class="actSect">
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Date</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Patient</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Investigation</span>
+                </th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td colspan="6">
+                  <div class="tbl-actionRow">
+                    <!-- <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div> -->
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>11th Jan, 2017. 09:00AM</td>
+                <td>
+                  <div class="empWrap">
+                    <div class="list-img">
+                      <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Johnson Wade</div>
+                  </div>
+                </td>
+                <td>Blood Test</td>
+                <td>Uploaded</td>
+                <td class="action-placeholder">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <div (click)="repDetail()" class="action-item">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      <span>View Report</span>
+                    </div>
+
+                    <div (click)="showImageBrowseDlg()" class="action-item">
+                      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                      <span>Upload File</span>
+                    </div>
+
+                    <div (click)="showImageBrowseDlg()" class="action-item">
+                      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                      <span>Upload Report</span>
+                    </div>
+                    <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="repDetail_view" class="modal-overlay">
+  <app-report-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-report-detail>
 </div>
