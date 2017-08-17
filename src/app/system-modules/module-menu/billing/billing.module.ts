@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { BillingHomeComponent } from './billing-home/billing-home.component';
 import { BillingComponent } from './billing.component';
@@ -31,11 +30,6 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
     ],
     imports: [
         SharedModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        //MaterialModule,
-        DatePickerModule,
         billingRoutes
     ],
     providers: []

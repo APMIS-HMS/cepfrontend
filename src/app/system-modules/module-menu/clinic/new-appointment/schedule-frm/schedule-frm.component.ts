@@ -1,10 +1,11 @@
 import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {
     FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService,
-    WorkSpaceService, PatientService, FacilitiesServiceCategoryService
+    WorkSpaceService, PatientService, FacilitiesServiceCategoryService, TimezoneService
 } from '../../../../../services/facility-manager/setup/index';
 import { LocationService, OrderStatusService } from '../../../../../services/module-manager/setup/index';
 import {
@@ -34,6 +35,8 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 
 export class ScheduleFrmComponent implements OnInit {
+    appointmentIsToday: boolean = false;
+    showTimeZone: boolean;
     @Input() selectedPatient: any;
     mainErr = true;
     errMsg = 'you have unresolved errors';
@@ -56,6 +59,7 @@ export class ScheduleFrmComponent implements OnInit {
     scheduleManagers: ScheduleRecordModel[] = [];
     professions: Profession[] = [];
     categoryServices: any[] = [];
+    timezones: any[] = [];
     appointments: any[] = [];
     orderStatuses: any[] = [];
     selectedClinic: any = <any>{};
@@ -77,6 +81,7 @@ export class ScheduleFrmComponent implements OnInit {
     category: FormControl;
     checkIn: FormControl;
     teleMed: FormControl;
+    timezone: FormControl;
     date = new Date(); // FormControl = new FormControl();
     endDate = new Date();
     startDate = new Date();
@@ -93,9 +98,9 @@ export class ScheduleFrmComponent implements OnInit {
     placeholderString = 'Select timezone';
 
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
-        private appointmentService: AppointmentService, private patientService: PatientService,
+        private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
-        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
+        private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
         private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
 
@@ -118,12 +123,18 @@ export class ScheduleFrmComponent implements OnInit {
             } else {
                 this.checkIn.disable()
             }
+            if(payload.zoom !== undefined){
+                console.log(payload.zoom)
+                this.teleMed.setValue(true);
+                this.timezone.setValue(payload.zoom.timezone);
+            }
             this.isAppointmentToday();
         })
         this.dateCtrl.valueChanges.subscribe(value => {
             this.dateChange(value);
         })
         this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
+        this.teleMed = new FormControl();
 
         this.patient = new FormControl('', [Validators.required]);
         this.filteredPatients = this.patient.valueChanges
@@ -150,6 +161,7 @@ export class ScheduleFrmComponent implements OnInit {
         //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
         this.category = new FormControl('', [Validators.required]);
+        this.timezone = new FormControl('', []);
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
         this.primeComponent();
@@ -157,6 +169,13 @@ export class ScheduleFrmComponent implements OnInit {
         if (this.selectedClinic._id !== undefined) {
             this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
         }
+        this.teleMed.valueChanges.subscribe(value => {
+            if (value) {
+                this.showTimeZone = true;
+            } else {
+                this.showTimeZone = false;
+            }
+        })
     }
 
     addToast(msg: string) {
@@ -189,7 +208,12 @@ export class ScheduleFrmComponent implements OnInit {
             this.patient.setValue(this.selectedPatient);
         })
         this.getPatients();
-
+        this.getTimezones();
+    }
+    getTimezones() {
+        this.timeZoneService.findAll().then(payload => {
+            this.timezones = payload.data;
+        })
     }
     primeComponent() {
         const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
@@ -249,9 +273,11 @@ export class ScheduleFrmComponent implements OnInit {
                 if (payload.data.length > 0) {
                     this.canCheckIn = true;
                     this.checkIn.enable();
+                    this.appointmentIsToday = true;
                 } else {
                     this.canCheckIn = false;
                     this.checkIn.disable();
+                    this.appointmentIsToday = false;
                 }
             }))
     }
@@ -488,6 +514,10 @@ export class ScheduleFrmComponent implements OnInit {
         return category ? category.name : category;
     }
 
+    timezoneDisplayFn(timezone: any) {
+        return timezone ? timezone.name : timezone;
+    }
+
     orderStatusDisplayFn(order: any) {
         return order ? order.name : order;
     }
@@ -549,6 +579,7 @@ export class ScheduleFrmComponent implements OnInit {
                 delete logEmp.storeCheckIn;
                 delete logEmp.unitDetails;
                 delete logEmp.professionObject;
+                delete logEmp.workSpaces;
                 delete logEmp.employeeDetails.countryItem;
                 delete logEmp.employeeDetails.homeAddress;
                 delete logEmp.employeeDetails.gender;
@@ -563,32 +594,67 @@ export class ScheduleFrmComponent implements OnInit {
             }
             this.appointment.category = category;
             this.appointment.orderStatusId = orderStatus;
+            if (this.appointmentIsToday && this.checkIn.value === true) {
+                console.log(this.appointment);
+                let activeFilter = this.orderStatuses.filter(x => x.name = "Active");
+                if (activeFilter.length > 0) {
+                    let active = activeFilter[0];
+                    this.appointment.orderStatusId = active;
+                }
+            }
             if (this.appointment._id !== undefined) {
                 this.appointmentService.update(this.appointment).then(payload => {
-                    let topic = "Appointment with " + patient.personDetails.apmisId;
-                    this.appointmentService.setMeeting(topic, this.appointment.startDate, this.appointment._id).then(meeting => {
-                        console.log(meeting)
+                    if (this.teleMed.value === true) {
+                        let topic = "Appointment with " + patient.personDetails.apmisId;
+                        this.appointmentService.setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value).then(meeting => {
+                            console.log(meeting)
+                            // this.appointmentService.patientAnnounced(this.patient);
+                            // this.loadIndicatorVisible = false;
+                            // this.newSchedule();
+                            // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                            this.addToast('Appointment updated successfully');
+                            this.router.navigate(['/dashboard/clinic/appointment']);
+                        })
+                    } else {
                         this.appointmentService.patientAnnounced(this.patient);
                         this.loadIndicatorVisible = false;
                         this.newSchedule();
                         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
                         this.addToast('Appointment updated successfully');
-                    })
-                    // this.appointmentService.patientAnnounced(this.patient);
-                    // this.loadIndicatorVisible = false;
-                    // this.newSchedule();
-                    // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                    // this.addToast('Appointment updated successfully');
+                        this.router.navigate(['/dashboard/clinic/appointment']);
+                    }
+
+
                 }, error => {
                     this.loadIndicatorVisible = false;
                 })
             } else {
+                // this.router.navigate(['/dashboard/clinic/appointment']);
+                // return;
                 this.appointmentService.create(this.appointment).then(payload => {
-                    this.appointmentService.patientAnnounced(this.patient);
-                    this.loadIndicatorVisible = false;
-                    this.newSchedule();
-                    this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                    this.addToast('Appointment scheduled successfully');
+                    if (this.teleMed.value === true) {
+                        let topic = "Appointment with " + patient.personDetails.apmisId;
+                        this.appointmentService.setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value).then(meeting => {
+                            this.addToast('Appointment updated successfully');
+                            this.router.navigate(['/dashboard/clinic/appointment']);
+                            console.log(meeting)
+                            this.appointmentService.patientAnnounced(this.patient);
+                            this.loadIndicatorVisible = false;
+                            this.newSchedule();
+                            this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+
+
+                        })
+                    } else {
+                        this.addToast('Appointment scheduled successfully');
+                        this.router.navigate(['/dashboard/clinic/appointment']);
+                        this.appointmentService.patientAnnounced(this.patient);
+                        this.loadIndicatorVisible = false;
+                        this.newSchedule();
+                        this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+
+
+                    }
                 }, error => {
                     this.loadIndicatorVisible = false;
                 })
@@ -667,8 +733,6 @@ export class ScheduleFrmComponent implements OnInit {
             this.checkIn.enable();
             this.dateCtrl.setErrors(null)//({ noValue: false });
             this.dateCtrl.markAsUntouched();
-            console.log(this.date);
-            console.log(this.dateCtrl.value)
         }
         if (this.selectedClinic._id !== undefined) {
             this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
@@ -681,6 +745,8 @@ export class ScheduleFrmComponent implements OnInit {
         this.type.reset();
         this.category.reset();
         this.checkIn.reset();
+        this.teleMed.reset();
+        this.timezone.reset();
         this.date = new Date();
         this.reason.reset();
         this.status.reset();
