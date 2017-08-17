@@ -16,8 +16,8 @@ export class ReportComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
-  numericReport = true;
-  textReport = false;
+  numericReport = false;
+  textReport = true;
   docAction = true;
   diagnosisAction = true;
   report_view = false;
@@ -29,7 +29,10 @@ export class ReportComponent implements OnInit {
   ngOnInit() {
     this.frmNewReport = this.formBuilder.group({
       patient: ['', [Validators.required]],
-      result: ['', [Validators.required]]
+      result: ['', [Validators.required]],
+      outcome: ['', [Validators.required]],
+      conclusion: ['', [Validators.required]],
+      recomendation: ['', [Validators.required]]
     });
   }
 

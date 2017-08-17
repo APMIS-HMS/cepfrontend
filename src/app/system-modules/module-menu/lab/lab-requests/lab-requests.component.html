@@ -34,17 +34,6 @@
                   </md-input-container>
                 </div>
 
-                <div class="frm-item-wrap">
-                  <apmis-lookup-multiselect formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery"
-                    placeholder="Add Investigation"  [isSocket]="true" [displayKey]="apmisInvestigationLookupDisplayKey" (selectedItem)="apmisInvestigationLookupHandleSelectedItem($event)"></apmis-lookup-multiselect>
-                    <div>
-                      <ul>
-                        <li *ngFor="let small of checkedValues">
-                          <i>{{small.name}}</i>
-                        </li>
-                      </ul>
-                    </div>
-                </div>
               </div>
               <div class="frm-r">
                 <div class="frm-item-wrap">
@@ -59,21 +48,134 @@
                   </md-input-container>
                 </div>
 
-                <div class="txt-wrap">
-                  <div class="txt-innerWrap">
-                    <div class="txt-label">External</div>
-                    <div class="txt-val">
-                      <md-checkbox></md-checkbox>
-                    </div>
-                  </div>
+              </div>
+            </div>
 
-                  <div class="txt-innerWrap">
-                    <div class="txt-label">Urgent</div>
-                    <div class="txt-val">
-                      <md-checkbox></md-checkbox>
+            <div class="investigation-sect">
+               
+              <div class="investigation-list">
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                    <input mdInput formControl="searchInvestigation" placeholder="search for Investigation">
+                  </md-input-container>
+                </div>
+                <!-- <div class="sect-listItem">
+                  <md-checkbox></md-checkbox>
+                  <div class="listItem-tag invstn">Investigation</div>
+                  <div class="sect-listLabel">Bilateral Test</div>
+                </div>
+
+                <div class="sect-listItem">
+                  <md-checkbox></md-checkbox>
+                  <div class="listItem-tag panel">Panel</div>
+                  <div class="sect-listLabel">Pregnancy Test</div>
+                </div> -->
+
+                <div class="panel-wrap">
+                    <div class="list-item panel">
+                        <div class="txt-innerWrap">
+                          <md-checkbox></md-checkbox>
+                          <div class="txt-label list-label">Bilateral Test</div>
+                        </div>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                     </div>
+
+                    <div class="child-list">
+                      <div class="txt-innerWrap">
+                        <md-checkbox></md-checkbox>
+                        <div class="txt-label child-item">Pregnancy Test</div>
+                      </div>
+                    </div>
+                    
+                    <div class="child-list">
+                      <div class="txt-innerWrap">
+                        <md-checkbox></md-checkbox>
+                        <div class="txt-label child-item">HIV Test</div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="list-item investigation">
+                  <div class="txt-innerWrap">
+                    <md-checkbox></md-checkbox>
+                    <div class="list-label">Pregnancy Test</div>
                   </div>
                 </div>
+
+                <div class="list-item investigation">
+                  <div class="txt-innerWrap">
+                    <md-checkbox></md-checkbox>
+                    <div class="list-label">HIV Test</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="selected-list">
+                <div class="sel-list-title">SELECTED INVESTIGATIONS</div>
+
+                  <div class="panel-wrap">
+                    <div class="panel-inner">
+                      <div class="list-item panel">
+                          <div class="txt-innerWrap">
+                            <div class="txt-label list-label">Bilateral Test</div>
+                          </div>
+                          <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                      </div>
+
+                      <div class="txt-wrap actions-wrapa">
+                        <div class="txt-innerWrap">
+                          <div class="txt-label">External</div>
+                          <div class="txt-val">
+                            <md-checkbox></md-checkbox>
+                          </div>
+                        </div>
+
+                        <div class="txt-innerWrap">
+                          <div class="txt-label">Urgent</div>
+                          <div class="txt-val">
+                            <md-checkbox></md-checkbox>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <div class="panel-inner child-list">
+                      <div class="">
+                        <div class="txt-innerWrap">
+                          <div class="txt-label child-item">Pregnancy Test</div>
+                        </div>
+                      </div>
+
+                      <div class="txt-wrap actions-wrapa">
+                        <div class="txt-innerWrap">
+                          <div class="txt-label">External</div>
+                          <div class="txt-val">
+                            <md-checkbox></md-checkbox>
+                          </div>
+                        </div>
+
+                        <div class="txt-innerWrap">
+                          <div class="txt-label">Urgent</div>
+                          <div class="txt-val">
+                            <md-checkbox></md-checkbox>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                      
+                      <div class="child-list">
+                        <div class="txt-innerWrap">
+                          <div class="txt-label child-item">HIV Test</div>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="list-item investigation">
+                      <div class="list-label">Pregnancy Test</div>
+                  </div>
+
+                  <div class="list-item investigation">
+                      <div class="list-label">HIV Test</div>
+                  </div>
               </div>
             </div>
 
