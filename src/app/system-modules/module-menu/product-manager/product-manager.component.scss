@@ -51,5 +51,8 @@
     margin-top: 55px !important;
 }
 .navActive {
-    border: 0.5px solid #fff;
+    border: 1.5px solid #fff;
+}
+navActive.active {
+   border: 1.5px solid #fff;  
 }

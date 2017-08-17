@@ -86,6 +86,12 @@
         }
     }
 }
+.navActive {
+    border: 1.5px solid #fff;
+}
+navActive.active {
+   border: 1px solid #fff;  
+}
 
 .nav-group {
     .treeview {
