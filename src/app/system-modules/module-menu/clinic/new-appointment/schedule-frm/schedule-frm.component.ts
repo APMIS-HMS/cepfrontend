@@ -564,26 +564,26 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.category = category;
             this.appointment.orderStatusId = orderStatus;
             if (this.appointment._id !== undefined) {
-                this.appointmentService.update(this.appointment).subscribe(payload => {
-                    // let topic = "Appointment with " + patient.personDetails.apmisId;
-                    // this.appointmentService.setMeeting(topic, this.appointment.startDate).then(meeting => {
-                    //     console.log(meeting)
-                    //     this.appointmentService.patientAnnounced(this.patient);
-                    //     this.loadIndicatorVisible = false;
-                    //     this.newSchedule();
-                    //     this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                    //     this.addToast('Appointment updated successfully');
-                    // })
-                    this.appointmentService.patientAnnounced(this.patient);
-                    this.loadIndicatorVisible = false;
-                    this.newSchedule();
-                    this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                    this.addToast('Appointment updated successfully');
+                this.appointmentService.update(this.appointment).then(payload => {
+                    let topic = "Appointment with " + patient.personDetails.apmisId;
+                    this.appointmentService.setMeeting(topic, this.appointment.startDate, this.appointment._id).then(meeting => {
+                        console.log(meeting)
+                        this.appointmentService.patientAnnounced(this.patient);
+                        this.loadIndicatorVisible = false;
+                        this.newSchedule();
+                        this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                        this.addToast('Appointment updated successfully');
+                    })
+                    // this.appointmentService.patientAnnounced(this.patient);
+                    // this.loadIndicatorVisible = false;
+                    // this.newSchedule();
+                    // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                    // this.addToast('Appointment updated successfully');
                 }, error => {
                     this.loadIndicatorVisible = false;
                 })
             } else {
-                this.appointmentService.create(this.appointment).subscribe(payload => {
+                this.appointmentService.create(this.appointment).then(payload => {
                     this.appointmentService.patientAnnounced(this.patient);
                     this.loadIndicatorVisible = false;
                     this.newSchedule();
