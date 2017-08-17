@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { ClinicHomeComponent } from './clinic-home/clinic-home.component';
 import { ClinicComponent } from './clinic.component';
@@ -21,7 +20,7 @@ import { ScheduleFrmComponent } from './new-appointment/schedule-frm/schedule-fr
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { DateRangePickerModule } from 'ng-pick-daterange';
 import { DateTimePickerModule } from 'ng-pick-datetime';
-import { FormsService } from '../../../services/facility-manager/setup/index';
+import { FormsService, TimezoneService } from '../../../services/facility-manager/setup/index';
 
 @NgModule({
     declarations: [
@@ -37,7 +36,6 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
     exports: [
     ],
     imports: [
-        DatePickerModule,
         clinicRoutes,
         MaterialModule,
         DateRangePickerModule,
@@ -51,7 +49,7 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
         AppointmentTypeResolverService,
         LoginEmployeeResolverService,
         LoginEmployeeWorkspaceResolverService,
-        FormsService
+        FormsService, TimezoneService
     ]
 })
 export class ClinicModule { }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { AccessManagerComponent } from './access-manager.component';
 
 import { CreateAccessComponent } from './create-access/create-access.component';
@@ -22,13 +21,8 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     exports: [
     ],
     imports: [
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
         MaterialModule,
-        DatePickerModule,
-        accessManagerRoutes,
-        // SharedModule
+        accessManagerRoutes
     ],
     providers: []
 })

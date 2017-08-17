@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { EmployeeManagerComponent } from './employee-manager.component';
 import { employeeManagerRoutes } from './employee-manager.routes';
 import { EmployeeManagerHomeComponent } from './employee-manager-home.component';

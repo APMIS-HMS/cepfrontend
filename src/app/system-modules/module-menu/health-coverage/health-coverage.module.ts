@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { healthCoverRoutes } from './health-coverage.routes';
 
@@ -29,11 +28,6 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     ],
     imports: [
         MaterialModule,
-        // SharedModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        // DatePickerModule,
         healthCoverRoutes
     ],
     providers: []

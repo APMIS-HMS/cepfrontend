@@ -91,11 +91,11 @@ export class AppointmentService {
     return this._socket.patch(_id, data, param);
   }
 
-  setMeeting(topic: string, startTime: Date) {
+  setMeeting(topic: string, startTime: Date, appointmentId, timezone) {
     const host = this._restService.getHost();
     const path = host + '/zoom-meeting';
     return request
       .post(path)
-      .send({ topic: topic, startTime: startTime }); // query string 
+      .send({ topic: topic, startTime: startTime, appointmentId: appointmentId, timezone: timezone }); // query string 
   }
 }
