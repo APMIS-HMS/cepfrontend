@@ -46,7 +46,7 @@
     text-align: center;
     width: 200px;
     height: 200px;
-    margin: 10px;
+    margin: 10px 0 !important;
     cursor: pointer;
     box-sizing: border-box;
     padding-top: 15px;
@@ -108,6 +108,7 @@
 .logoutLink:hover{
     text-decoration: underline;
 }
+
 @media only screen and (max-width: 530px){
     .acc-listing{
         width: auto;
