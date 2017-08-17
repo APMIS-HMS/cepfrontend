@@ -90,7 +90,7 @@ export class RightTabComponent implements OnInit {
     getProblems() {
         this.problems = [];
         this.patientDocumentation.documentations.forEach(documentation => {
-            if (documentation.document.documentType.title === 'Problems') {
+            if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
                     this.problems.push(problem);
                 })
@@ -100,7 +100,7 @@ export class RightTabComponent implements OnInit {
     getAllergies() {
         this.allergies = [];
         this.patientDocumentation.documentations.forEach(documentation => {
-            if (documentation.document.documentType.title === 'Allergies') {
+            if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Allergies') {
                 documentation.document.body.allergies.forEach(allergy => {
                     this.allergies.push(allergy);
                 })
@@ -117,9 +117,11 @@ export class RightTabComponent implements OnInit {
     }
     getFutureAppointments() {
         this.futureAppointments = [];
+        console.log('am in future');
         Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isFuture: true } }))
             .subscribe((payload: any) => {
                 this.futureAppointments = payload.data;
+                console.log(this.futureAppointments);
             })
     }
     addProblem_show() {

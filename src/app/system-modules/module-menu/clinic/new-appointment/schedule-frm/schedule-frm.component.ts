@@ -35,7 +35,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 
 export class ScheduleFrmComponent implements OnInit {
-    appointmentIsToday: boolean = false;
+    appointmentIsToday = false;
     showTimeZone: boolean;
     @Input() selectedPatient: any;
     mainErr = true;
@@ -123,7 +123,7 @@ export class ScheduleFrmComponent implements OnInit {
             } else {
                 this.checkIn.disable()
             }
-            if(payload.zoom !== undefined){
+            if (payload.zoom !== undefined) {
                 console.log(payload.zoom)
                 this.teleMed.setValue(true);
                 this.timezone.setValue(payload.zoom.timezone);
@@ -213,6 +213,10 @@ export class ScheduleFrmComponent implements OnInit {
     getTimezones() {
         this.timeZoneService.findAll().then(payload => {
             this.timezones = payload.data;
+            if (this.appointment._id && this.appointment.zoom !== undefined) {
+                const index = this.timezones.findIndex(x => x.value === this.appointment.zoom.timezone);
+                this.timezone.setValue(this.timezones[index]);
+            }
         })
     }
     primeComponent() {
@@ -595,26 +599,27 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.category = category;
             this.appointment.orderStatusId = orderStatus;
             if (this.appointmentIsToday && this.checkIn.value === true) {
-                console.log(this.appointment);
-                let activeFilter = this.orderStatuses.filter(x => x.name = "Active");
+                const activeFilter = this.orderStatuses.filter(x => x.name = 'Active');
                 if (activeFilter.length > 0) {
-                    let active = activeFilter[0];
+                    const active = activeFilter[0];
                     this.appointment.orderStatusId = active;
                 }
             }
             if (this.appointment._id !== undefined) {
                 this.appointmentService.update(this.appointment).then(payload => {
                     if (this.teleMed.value === true) {
-                        let topic = "Appointment with " + patient.personDetails.apmisId;
-                        this.appointmentService.setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value).then(meeting => {
-                            console.log(meeting)
-                            // this.appointmentService.patientAnnounced(this.patient);
-                            // this.loadIndicatorVisible = false;
-                            // this.newSchedule();
-                            // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                            this.addToast('Appointment updated successfully');
-                            this.router.navigate(['/dashboard/clinic/appointment']);
-                        })
+                        const topic = 'Appointment with ' + patient.personDetails.apmisId;
+                        this.appointmentService.
+                        setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value.value)
+                            .then(meeting => {
+                                console.log(meeting)
+                                // this.appointmentService.patientAnnounced(this.patient);
+                                // this.loadIndicatorVisible = false;
+                                // this.newSchedule();
+                                // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                                this.addToast('Appointment updated successfully');
+                                this.router.navigate(['/dashboard/clinic/appointment']);
+                            })
                     } else {
                         this.appointmentService.patientAnnounced(this.patient);
                         this.loadIndicatorVisible = false;
@@ -629,29 +634,28 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                 })
             } else {
-                // this.router.navigate(['/dashboard/clinic/appointment']);
-                // return;
                 this.appointmentService.create(this.appointment).then(payload => {
                     if (this.teleMed.value === true) {
-                        let topic = "Appointment with " + patient.personDetails.apmisId;
-                        this.appointmentService.setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value).then(meeting => {
-                            this.addToast('Appointment updated successfully');
-                            this.router.navigate(['/dashboard/clinic/appointment']);
-                            console.log(meeting)
-                            this.appointmentService.patientAnnounced(this.patient);
-                            this.loadIndicatorVisible = false;
-                            this.newSchedule();
-                            this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                        const topic = 'Appointment with ' + patient.personDetails.apmisId;
+                        this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
+                            .then(meeting => {
+                                this.addToast('Appointment updated successfully');
+                                this.router.navigate(['/dashboard/clinic/appointment']);
+                                // console.log(meeting)
+                                // this.appointmentService.patientAnnounced(this.patient);
+                                // this.loadIndicatorVisible = false;
+                                // this.newSchedule();
+                                // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
 
 
-                        })
+                            })
                     } else {
                         this.addToast('Appointment scheduled successfully');
                         this.router.navigate(['/dashboard/clinic/appointment']);
-                        this.appointmentService.patientAnnounced(this.patient);
-                        this.loadIndicatorVisible = false;
-                        this.newSchedule();
-                        this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                        // this.appointmentService.patientAnnounced(this.patient);
+                        // this.loadIndicatorVisible = false;
+                        // this.newSchedule();
+                        // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
 
 
                     }
@@ -696,7 +700,7 @@ export class ScheduleFrmComponent implements OnInit {
                 // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
                 // this.dateCtrl.setValue(this.date);
                 this.checkIn.enable();
-                this.dateCtrl.setErrors(null)//({ noValue: false });
+                this.dateCtrl.setErrors(null)// ({ noValue: false });
                 this.dateCtrl.markAsUntouched();
             }
             if (this.selectedClinic._id !== undefined) {
@@ -731,7 +735,7 @@ export class ScheduleFrmComponent implements OnInit {
             // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
             // this.dateCtrl.setValue(this.date);
             this.checkIn.enable();
-            this.dateCtrl.setErrors(null)//({ noValue: false });
+            this.dateCtrl.setErrors(null)// ({ noValue: false });
             this.dateCtrl.markAsUntouched();
         }
         if (this.selectedClinic._id !== undefined) {
