@@ -37,8 +37,8 @@
     <div class="row">
         <div class="col-md-4">
             <div class="frm-item-wrap">
-                <md-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Stock" [formControl]="frmDestinationStore">
-                    <md-option  *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
+                <md-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
+                    <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
                 </md-select>
             </div><br>
         </div>
@@ -60,7 +60,7 @@
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
                                     <md-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers" [formControl]="frmDestinationStore">
-                                        <md-option  *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</md-option>
+                                        <md-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</md-option>
                                     </md-select>
                                 </div>
                                 <div style="width: 10%;" class="frm-item-wrap">
