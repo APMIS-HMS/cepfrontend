@@ -60,10 +60,6 @@ export class AppointmentComponent implements OnInit {
         this.clinicCtrl.valueChanges.subscribe(val => {
             this.filterClinics(val);
         })
-        // this.filteredClinics = this.clinicCtrl.valueChanges
-        //     .startWith(null)
-        //     .map(clinic => clinic && typeof clinic === 'object' ? clinic.clinicName : clinic)
-        //     .map(val => val ? this.filterClinics(val) : this.clinics.slice());
 
         this.providerCtrl = new FormControl();
         this.filteredProviders = this.providerCtrl.valueChanges
@@ -72,24 +68,13 @@ export class AppointmentComponent implements OnInit {
             .map(val => val ? this.filterProviders(val) : this.providers.slice());
 
         this.typeCtrl = new FormControl();
-        // this.filteredAppointmentTypes = this.typeCtrl.valueChanges
-        //     .startWith(null)
-        //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
-        //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
 
         this.statusCtrl = new FormControl();
-        // this.filteredStates = this.statusCtrl.valueChanges
-        //     .startWith(null)
-        //     .map(name => this.filterStates(name));
 
         this.todayCtrl = new FormControl();
-        // this.filteredStates = this.statusCtrl.valueChanges
-        //     .startWith(null)
-        //     .map(name => this.filterStates(name));
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
-        // this.prime();
     }
 
     ngOnInit() {
@@ -161,6 +146,7 @@ export class AppointmentComponent implements OnInit {
     prime() {
         if (this.loginEmployee._id !== undefined) {
             this.loadIndicatorVisible = true;
+            this.getClinics();
             this.subscription = Observable.forkJoin(
                 [
                     Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
@@ -182,7 +168,7 @@ export class AppointmentComponent implements OnInit {
                         if (this.loginEmployee.professionObject.name === 'Doctor') {
                             this.isDoctor = true;
                         }
-                        this.getClinics();
+                        // this.getClinics();
                         this.getEmployees();
                     }
                 });
@@ -239,16 +225,13 @@ export class AppointmentComponent implements OnInit {
         })
     }
     filterClinics(val: any) {
-        // tslint:disable-next-line:max-line-length
-        console.log(val);
-        this.filteredAppointments = val ? this.appointments.filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
-        // return val ? this.clinics.filter(s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0)
-        //     : this.clinics;
-
+        this.filteredAppointments = val ? this.appointments
+        .filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
     }
     filterProviders(val: any) {
-        // tslint:disable-next-line:max-line-length
-        this.filteredAppointments = val ? this.appointments.filter(s => s.doctorId !== undefined ? s.doctorId : s.doctorId.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
+        this.filteredAppointments = val ? this.appointments
+        .filter(s => s.doctorId !== undefined ? s.doctorId : s.doctorId.employeeDetails.lastName.toLowerCase()
+        .indexOf(val.toLowerCase()) === 0
             || s.doctorId.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
         return val ? this.providers.filter(s => s.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)

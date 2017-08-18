@@ -20,7 +20,7 @@
             </div>
             <div class="col-sm-3">
                 <md-input-container class="example-full-width">
-                            <input mdInput placeholder="Search Checked in Patient">
+                    <input mdInput placeholder="Search Checked in Patient">
                 </md-input-container>
                 <i class="fa fa-search" aria-hidden="true"></i>
             </div>
@@ -48,8 +48,8 @@
                 <!-- <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <!-- <span style="padding-left: 3px;">Location</span>
-                </th> --> 
+                <!-- <span style="padding-left: 3px;">Location</span>
+                </th> -->
                 <th>
                     <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
                     <!--<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>-->
@@ -98,6 +98,10 @@
                             <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
                             <span>Timeline</span>
                         </div>
+                        <div *ngIf="appointment.zoom !== undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
+                            <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                            <span>TeleMedicine</span>
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -117,7 +121,8 @@
 
     <div class="timeline-headwrap">
         <div class="timelinehead-contentWrap">
-            <div class="timelinePatient-imgWrap"><img [src]="facilityService.transform(selectedCheckedInAppointment?.patientId.personDetails?.profileImageObject?.detailthumbnail)"></div>
+            <div class="timelinePatient-imgWrap" *ngIf="selectedCheckedInAppointment?.patientId.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+            <div class="timelinePatient-imgWrap" *ngIf="selectedCheckedInAppointment?.patientId.personDetails?.profileImageObject !== undefined"><img [src]="facilityService.transform(selectedCheckedInAppointment?.patientId.personDetails?.profileImageObject?.detailthumbnail)"></div>
             <div class="patientLabelGroup">
                 <div class="patientName">{{selectedCheckedInAppointment?.patientId.personDetails.lastName}} {{selectedCheckedInAppointment?.patientId.personDetails.firstName}}</div>
                 <div class="label">(Clinical Activity Timeline)</div>
@@ -155,5 +160,5 @@
 </div>
 
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-        <md-spinner></md-spinner>
+    <md-spinner></md-spinner>
 </div>

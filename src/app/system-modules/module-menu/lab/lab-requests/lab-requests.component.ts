@@ -47,11 +47,15 @@ export class LabRequestsComponent implements OnInit {
   errMsg = 'you have unresolved errors';
 
   public frmNewRequest: FormGroup;
+  searchInvestigation: FormControl;
 
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
-    private investigationService: InvestigationService, private requestService: LaboratoryRequestService) { }
+    private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
+
+  }
 
   ngOnInit() {
+    this.searchInvestigation = new FormControl('', []);
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
       patient: ['', [Validators.required]],

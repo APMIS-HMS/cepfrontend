@@ -15,7 +15,6 @@ const RxJS = require('rxjs/Rx');
  const HOST = 'http://localhost:3030'; // Local Server
 
 
-
 @Injectable()
 export class SocketService {
   public socket: any;

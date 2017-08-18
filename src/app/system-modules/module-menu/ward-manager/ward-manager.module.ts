@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { wardManagerRoutes } from './ward-manager.routes';
 import { WardManagerAdmissionpageComponent } from './ward-manager-admissionpage/ward-manager-admissionpage.component';
@@ -40,13 +39,8 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
     exports: [
     ],
     imports: [
-        // SharedModule,
         MaterialModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        wardManagerRoutes,
-        // DatePickerModule
+        wardManagerRoutes
     ],
     providers: [WardEmitterService]
 })

@@ -43,7 +43,7 @@ export class DocumentationComponent implements OnInit {
         body: payload,
       };
 
-      //limit loginEmployee detail
+      // limit loginEmployee detail
       const logEmp: any = this.loginEmployee;
       delete logEmp.department;
       delete logEmp.employeeFacilityDetails;
@@ -114,7 +114,8 @@ export class DocumentationComponent implements OnInit {
   populateDocuments() {
     this.documents = [];
     this.patientDocumentation.documentations.forEach(documentation => {
-      if (documentation.document.documentType.isSide === false || documentation.document.documentType.isSide === undefined) {
+      if ((documentation.document.documentType && documentation.document.documentType.isSide === false)
+        || (documentation.document.documentType && documentation.document.documentType.isSide === undefined)) {
         this.documents.push(documentation);
       }
     });

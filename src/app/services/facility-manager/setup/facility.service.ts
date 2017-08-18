@@ -41,7 +41,7 @@ export class FacilitiesService {
     this.notificationAnnouncedSource.next(notification);
   }
   transform(url) {
-    url = this._restService.getHost() + '/' + url + '?' + new Date().getTime();
+    url = this._restService.getHost() + '/' + url + '?';// + new Date().getTime();
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
   find(query: any) {
