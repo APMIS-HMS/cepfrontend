@@ -20,6 +20,10 @@ export class SurveyComponent implements OnInit {
             this.surveyModel.onComplete.add(() => {
                 this.surveyResult();
             });
+            this.surveyModel.onValueChanged.add((a, b) => {
+                console.log(a);
+                console.log(b);
+            });
         })
     }
 
@@ -32,11 +36,17 @@ export class SurveyComponent implements OnInit {
         this.surveyModel.onComplete.add(() => {
             this.surveyResult();
         });
+        this.surveyModel.onValueChanged.add((a, b) => {
+            console.log(a);
+            console.log(b);
+        });
+
     }
     surveyResult() {
         document.getElementById('surveyElement').innerHTML = 'Document saved successfully!';
         const resultAsString = JSON.stringify(this.surveyModel.data);
-        this.shareService.submitForm(this.surveyModel.data)
+        this.shareService.submitForm(this.surveyModel.data);
+        this.json = null;
     }
     sendDataToServer(survey) {
         // document.getElementById('surveyElement').style.display = 'none';

@@ -53,6 +53,7 @@ export class AddVitalsComponent implements OnInit {
     private _employeeService: EmployeeService,
     private _FormsService: FormsService,
     private _PatientService: PatientService,
+    private _facilityService: FacilitiesService,
     private _ServerDateService: ServerDateService) {
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
   }
@@ -170,6 +171,7 @@ export class AddVitalsComponent implements OnInit {
       .subscribe((payload: any) => {
         if (payload.data.length > 0) {
           this.selectedForm = payload.data[0];
+          console.log(this.selectedForm)
         }
       });
   }
@@ -227,9 +229,10 @@ export class AddVitalsComponent implements OnInit {
         this.patientDocumentation.documentations.forEach(documentation => {
           if (documentation.document == undefined) {
             documentation.document = {
-              documentType: {}
+              documentType: this.selectedForm
             }
           }
+          console.log(documentation)
           if (documentation.document.documentType._id != undefined &&
             documentation.document.documentType._id === this.selectedForm._id) {
             isExisting = true;
@@ -245,8 +248,8 @@ export class AddVitalsComponent implements OnInit {
         });
         if (!isExisting) {
           const doc: PatientDocumentation = <PatientDocumentation>{};
-          doc.facilityId = this.selectedFacility;
-          doc.createdBy = this.loginEmployee;
+          doc.facilityId = this._locker.getObject('miniFacility');
+          doc.createdBy = this._facilityService.trimEmployee(this.loginEmployee);
           doc.patientId = this.patient._id;
           doc.document = {
             documentType: this.selectedForm,
