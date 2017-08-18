@@ -75,5 +75,24 @@ export class FacilitiesService {
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
-
+  trimEmployee(loginEmployee) {
+    const logEmp: any = loginEmployee;
+    delete logEmp.department;
+    delete logEmp.employeeFacilityDetails;
+    delete logEmp.role;
+    delete logEmp.units;
+    delete logEmp.consultingRoomCheckIn;
+    delete logEmp.storeCheckIn;
+    delete logEmp.unitDetails;
+    delete logEmp.professionObject;
+    delete logEmp.workSpaces;
+    delete logEmp.employeeDetails.countryItem;
+    delete logEmp.employeeDetails.homeAddress;
+    delete logEmp.employeeDetails.gender;
+    delete logEmp.employeeDetails.maritalStatus;
+    delete logEmp.employeeDetails.nationality;
+    delete logEmp.employeeDetails.nationalityObject;
+    delete logEmp.employeeDetails.nextOfKin;
+    return logEmp;
+  }
 }
