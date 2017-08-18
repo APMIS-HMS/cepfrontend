@@ -308,7 +308,8 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.slideTimeline = false;
   }
   goToPatientPage(appointment, append) {
-
+    console.log(appointment);
+    console.log(append);
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
@@ -323,6 +324,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
           appointment.patientId.personDetails._id, { appId: appointment._id }]);
       }
     } else {
+      this.locker.setObject('patient', appointment.patientId);
       this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
         appointment.patientId.personDetails._id]);
     }
@@ -344,5 +346,8 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+  onNavigate(appointment) {
+    window.open(appointment.zoom.join_url, '_blank');
   }
 }

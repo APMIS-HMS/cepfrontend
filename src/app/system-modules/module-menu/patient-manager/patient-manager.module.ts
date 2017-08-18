@@ -33,7 +33,7 @@ import {InvestigationComponent} from '../laboratory/new-request/investigation/in
 import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
 import { ChartsModule } from 'ng2-charts';
-
+import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -65,7 +65,7 @@ import { ChartsModule } from 'ng2-charts';
         ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
-        FormsService, FormTypeService, SharedService]
+        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService]
 })
 export class PatientManagerModule { }
 
