@@ -280,6 +280,9 @@ select, input{
     padding: 10px;
     box-sizing: border-box;
 }
+.selected-list .list-item{
+    width: 100%;
+}
 .sect-listItem {
     position: relative;
     display: flex;
@@ -345,6 +348,10 @@ select, input{
     display: none;
     margin-left: 20px;
 }
+.selected-list .child-list{
+    display: block;
+    margin-left: 20px;
+}
 .child-item {
     font-size: 12px;
     margin: 5px;
@@ -365,18 +372,18 @@ select, input{
     display: flex;
     justify-content: space-between;
 }
-.selected-list .panel, .selected-list .actions-wrapa{
+.item-bi-sect{
     width: 50%;
 }
-.panel-inner .txt-innerWrap{
+.panel-inner .txt-innerWrap, .investigation .txt-innerWrap{
     justify-content: space-around;
     align-items: center;
 }
-.panel-inner .txt-wrap{
+.panel-inner .txt-wrap, .selected-list .txt-wrap{
     padding: 0;
     margin-top: 0;
 }
-.panel-inner .txt-val{
+.panel-inner .txt-val, .selected-list .txt-val{
     width: auto;
 }
 .actions-wrapa .txt-label{
