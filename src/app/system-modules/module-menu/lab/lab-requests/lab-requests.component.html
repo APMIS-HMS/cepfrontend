@@ -81,7 +81,7 @@
                                             </div>
                                             <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
                                                 <div class="txt-innerWrap">
-                                                    <md-checkbox (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
+                                                    <md-checkbox  [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
                                                     <div class="txt-label child-item">{{panel.investigation.name}}</div>
                                                 </div>
                                             </div>
@@ -128,7 +128,7 @@
                                         <div *ngFor="let panel of investigation.investigation.panel" class="panel-inner child-list">
                                             <div class="list-item">
                                                 <div class="txt-innerWrap  item-bi-sect">
-                                                    <div class="txt-label child-item">{{panel.name}}</div>
+                                                    <div class="txt-label child-item">{{panel.investigation.name}}</div>
                                                 </div>
 
                                                 <div class="txt-wrap actions-wrapa item-bi-sect">

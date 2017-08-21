@@ -101,6 +101,7 @@ export class LabRequestsComponent implements OnInit {
         investigation.investigation = item;
         investigation.isExternal = false;
         investigation.isUrgent = false;
+        investigation.isChecked = false;
         const listItems: any[] = [];
         if (item.isPanel) {
           item.panel.forEach(inItem => {
@@ -108,6 +109,7 @@ export class LabRequestsComponent implements OnInit {
             innerChild.investigation = inItem;
             innerChild.isExternal = false;
             innerChild.isUrgent = false;
+            innerChild.isChecked = false;
             listItems.push(innerChild);
             // investigation.investigation.panel.push(innerChild);
           });
@@ -179,19 +181,26 @@ export class LabRequestsComponent implements OnInit {
     this.personAcc_view = false;
   }
   investigationChanged($event, investigation: InvestigationModel,
-    childInvestigation?: Investigation, isChild = false) {
+    childInvestigation?: InvestigationModel, isChild = false) {
     console.log($event);
     console.log(investigation);
+
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         if (childInvestigation !== undefined) {
+          childInvestigation.isChecked = true;
           console.log(childInvestigation);
-          const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-          if (index > -1) {
-            let selectedBind = this.bindInvestigations[index];
-            
+          let found = false;
+          const childIndex = investigation.investigation.panel.findIndex(x => x.investigation._id === childInvestigation.investigation._id);
+          console.log(childIndex);
+          // const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          if (childIndex > -1) {
+            let selectedBind = investigation.investigation.panel[childIndex];
+            selectedBind.isChecked = true;
+            this.bindInvestigations.push(investigation);
           }
         } else {
+          investigation.isChecked = true;
           this.bindInvestigations.push(investigation);
         }
 
