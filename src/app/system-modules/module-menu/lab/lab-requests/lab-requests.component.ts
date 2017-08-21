@@ -59,7 +59,7 @@ export class LabRequestsComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
     this.searchInvestigation = new FormControl('', []);
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');

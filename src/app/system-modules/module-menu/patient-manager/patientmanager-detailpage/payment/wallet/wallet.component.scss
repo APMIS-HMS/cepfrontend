@@ -1,7 +1,36 @@
+.content table, .content table{
+    border-collapse: collapse;
+}
+.content table, .content td, .contenttable, .content td { 
+    border: 0px solid transparent;
+} 
+.content td, .content td  {
+    vertical-align: center;
+    text-align: left;
+    padding: 2px;
+}
+.content th, .content th {
+    height: 50px;
+    background: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px solid #b3b3b3;
+    text-align: left;
+}
+.content td, .content td{
+    padding: 5px;
+}
+
 .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 20px 0;
+}
+.wallet-summary {
+    background: #0288D1;
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 7px;
 }
 .summary-item {
     display: flex;
@@ -10,6 +39,34 @@
 }
 .item-label{
     margin-right: 10px;
-    color: #a6a6a6;
     font-size: 12px;
+}
+.item-val {
+    font-size: 14px;
+    margin-left: 20px;
+}
+.available-bal{
+    font-weight: bold;
+    font-size: 18px;
+}
+.pg-subtitle{
+    text-align: left;
+    color: #0288D1;
+    font-size: 14px;
+    margin-top: 20px;
+}
+.head-others ul.topmenuwrap{
+    position: static;
+    top: auto;
+    right: auto;
+}
+.tbl-header{
+    display: flex;
+    justify-content: space-between;
+}
+.tbl-header .frm-item-wrap{
+    width: 50%;
+}
+.tbl-header .frm-item-wrap .mat-input-container{
+    width: 100%;
 }
