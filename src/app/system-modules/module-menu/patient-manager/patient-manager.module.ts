@@ -29,11 +29,15 @@ import { FormTypeService } from '../../../services/module-manager/setup/index';
 import { SurveyComponent } from '../../../shared-module/form-generator/survey.component';
 import { SurveyEditorComponent } from '../../../shared-module/form-generator/survey.editor.component';
 import { SharedService } from '../../../shared-module/shared.service';
-import {InvestigationComponent} from '../laboratory/new-request/investigation/investigation.component';
 import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
 import { ChartsModule } from 'ng2-charts';
 import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
+import { PaymentComponent } from './patientmanager-detailpage/payment/payment.component';
+import { WalletComponent } from './patientmanager-detailpage/payment/wallet/wallet.component';
+import { InsuranceComponent } from './patientmanager-detailpage/payment/insurance/insurance.component';
+import { CompanyComponent } from './patientmanager-detailpage/payment/company/company.component';
+import { FamilyComponent } from './patientmanager-detailpage/payment/family/family.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -54,7 +58,12 @@ import { WorkbenchService, LaboratoryRequestService } from '../../../services/fa
         AddAllergyComponent,
         AddHistoryComponent,
         TimelineComponent,
-        RightTabComponent
+        RightTabComponent,
+        PaymentComponent,
+        WalletComponent,
+        InsuranceComponent,
+        CompanyComponent,
+        FamilyComponent
     ],
     exports: [
     ],
