@@ -238,25 +238,38 @@ export class LabRequestsComponent implements OnInit {
     }
   }
   save(valid, value) {
-    // console.log(valid);
-    // console.log(value);
-    delete this.selectedPatient.appointments;
-    delete this.selectedPatient.encounterRecords;
-    delete this.selectedPatient.orders;
-    delete this.selectedPatient.tags;
-    delete this.selectedPatient.personDetails.addressObj;
-    delete this.selectedPatient.personDetails.countryItem;
-    delete this.selectedPatient.personDetails.homeAddress;
-    delete this.selectedPatient.personDetails.maritalStatus;
-    delete this.selectedPatient.personDetails.nationality;
-    delete this.selectedPatient.personDetails.nationalityObject;
-    delete this.selectedPatient.personDetails.nextOfKin;
+    // delete this.selectedPatient.appointments;
+    // delete this.selectedPatient.encounterRecords;
+    // delete this.selectedPatient.orders;
+    // delete this.selectedPatient.tags;
+    // delete this.selectedPatient.personDetails.addressObj;
+    // delete this.selectedPatient.personDetails.countryItem;
+    // delete this.selectedPatient.personDetails.homeAddress;
+    // delete this.selectedPatient.personDetails.maritalStatus;
+    // delete this.selectedPatient.personDetails.nationality;
+    // delete this.selectedPatient.personDetails.nationalityObject;
+    // delete this.selectedPatient.personDetails.nextOfKin;
 
-    const selectedFacility = this.locker.getObject('miniFacility');
+    // const selectedFacility = this.locker.getObject('miniFacility');
 
-    console.log(this.selectedPatient);
-    console.log(selectedFacility)
-    console.log(this.frmNewRequest.value);
-    console.log(this.frmNewRequest.valid);
+
+    // let request:any = {
+    //   facilityId:selectedFacility,
+    //   patientId:this.selectedPatient,
+    //   labNumber: this.frmNewRequest.controls['labNo'],
+    //   clinicalInformation: this.frmNewRequest.controls['clinicalInfo'],
+    //   diagnosis:this.frmNewRequest.controls['diagnosis'],
+    //   investigations: this.bindInvestigations
+    // }
+    // console.log(request);
+
+    console.log(this.bindInvestigations);
+  }
+  externalChanged($event, investigation){
+    console.log(investigation)
+    investigation.isExternal = $event.checked;
+  }
+  urgentChanged($event, investigation){
+    investigation.isUrgent = $event.checked;
   }
 }
