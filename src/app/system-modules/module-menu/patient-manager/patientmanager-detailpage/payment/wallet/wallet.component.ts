@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-wallet',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WalletComponent implements OnInit {
 
+  search: FormControl;
+
   constructor() { }
 
   ngOnInit() {
+    this.search = new FormControl('', []);
   }
 
 }
