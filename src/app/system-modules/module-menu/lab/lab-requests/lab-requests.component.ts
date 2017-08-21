@@ -95,7 +95,6 @@ export class LabRequestsComponent implements OnInit {
   }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
-      // console.log(payload);
       payload.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
         investigation.investigation = item;
@@ -111,18 +110,14 @@ export class LabRequestsComponent implements OnInit {
             innerChild.isUrgent = false;
             innerChild.isChecked = false;
             listItems.push(innerChild);
-            // investigation.investigation.panel.push(innerChild);
           });
           investigation.investigation.panel = listItems;
           this.investigations.push(investigation);
-
         } else {
           this.investigations.push(investigation);
         }
 
-      })
-      // this.investigations = payload.data;
-      console.log(this.investigations);
+      });
     })
   }
   getLaboratoryRequest() {
@@ -140,7 +135,6 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
-    console.log(value)
   }
   apmisInvestigationLookupHandleSelectedItem(value) {
     if (value.action !== undefined) {
@@ -182,22 +176,45 @@ export class LabRequestsComponent implements OnInit {
   }
   investigationChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-    console.log($event);
-    console.log(investigation);
-
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         if (childInvestigation !== undefined) {
           childInvestigation.isChecked = true;
-          console.log(childInvestigation);
           let found = false;
           const childIndex = investigation.investigation.panel.findIndex(x => x.investigation._id === childInvestigation.investigation._id);
-          console.log(childIndex);
-          // const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
           if (childIndex > -1) {
-            let selectedBind = investigation.investigation.panel[childIndex];
-            selectedBind.isChecked = true;
-            this.bindInvestigations.push(investigation);
+            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            investigation.investigation.panel.forEach((item, i) => {
+              if (i !== childIndex) {
+                copyInvestigation.investigation.panel.splice(i, 1);
+              }
+
+            });
+            const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
+            if (isInBind > -1) {
+              if ($event.checked) {
+                if (this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x._id === copyInvestigation.investigation.panel[0]._id) >= 0) {
+                  this.bindInvestigations[isInBind].investigation.panel.push(copyInvestigation.investigation.panel[0]);
+                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                    investigation.isChecked = true;
+                  } else {
+                    investigation.isChecked = false;
+                  }
+                }
+              } else {
+                const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
+                this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
+                if (this.bindInvestigations[isInBind].investigation.panel.length === 0) {
+                  this.bindInvestigations.splice(0, 1)
+                }
+              }
+
+            } else {
+              this.bindInvestigations.push(copyInvestigation);
+            }
+
           }
         } else {
           investigation.isChecked = true;
@@ -205,12 +222,21 @@ export class LabRequestsComponent implements OnInit {
         }
 
       } else {
-        this.bindInvestigations.push(investigation);
+        if ($event.checked) {
+          this.bindInvestigations.push(investigation);
+        } else {
+          const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          this.bindInvestigations.splice(indexToRemove, 1)
+        }
       }
 
     } else {
-      const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-      this.bindInvestigations.splice(index, 1);
+      if ($event.checked) {
+        this.bindInvestigations.push(investigation);
+      } else {
+        const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
     }
   }
   save(valid, value) {
