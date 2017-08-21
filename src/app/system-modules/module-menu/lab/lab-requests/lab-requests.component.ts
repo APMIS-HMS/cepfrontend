@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { FacilitiesService, InvestigationService, LaboratoryRequestService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation } from '../../../../models/index';
+import { Facility, MinorLocation, Investigation, InvestigationModel } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -49,12 +49,18 @@ export class LabRequestsComponent implements OnInit {
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
 
+  selectedFacility: Facility = <Facility>{};
+
+  investigations: InvestigationModel[] = [];
+  bindInvestigations: InvestigationModel[] = [];
+  movedInvestigations: any[] = [];
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
   }
 
   ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
     this.searchInvestigation = new FormControl('', []);
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
@@ -85,6 +91,37 @@ export class LabRequestsComponent implements OnInit {
       }
     })
     this.getLaboratoryRequest();
+    this.getInvestigations();
+  }
+  getInvestigations() {
+    this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+      // console.log(payload);
+      payload.data.forEach(item => {
+        const investigation: InvestigationModel = <InvestigationModel>{};
+        investigation.investigation = item;
+        investigation.isExternal = false;
+        investigation.isUrgent = false;
+        const listItems: any[] = [];
+        if (item.isPanel) {
+          item.panel.forEach(inItem => {
+            const innerChild = <InvestigationModel>{};
+            innerChild.investigation = inItem;
+            innerChild.isExternal = false;
+            innerChild.isUrgent = false;
+            listItems.push(innerChild);
+            // investigation.investigation.panel.push(innerChild);
+          });
+          investigation.investigation.panel = listItems;
+          this.investigations.push(investigation);
+
+        } else {
+          this.investigations.push(investigation);
+        }
+
+      })
+      // this.investigations = payload.data;
+      console.log(this.investigations);
+    })
   }
   getLaboratoryRequest() {
     this.requestService.find({ query: { 'facilityId._id': this.selelctedFacility._id } }).then(payload => {
@@ -140,6 +177,32 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
+  }
+  investigationChanged($event, investigation: InvestigationModel,
+    childInvestigation?: Investigation, isChild = false) {
+    console.log($event);
+    console.log(investigation);
+    if ($event.checked || childInvestigation !== undefined) {
+      if (investigation.investigation.isPanel) {
+        if (childInvestigation !== undefined) {
+          console.log(childInvestigation);
+          const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          if (index > -1) {
+            let selectedBind = this.bindInvestigations[index];
+            
+          }
+        } else {
+          this.bindInvestigations.push(investigation);
+        }
+
+      } else {
+        this.bindInvestigations.push(investigation);
+      }
+
+    } else {
+      const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      this.bindInvestigations.splice(index, 1);
+    }
   }
   save(valid, value) {
     console.log(valid);
