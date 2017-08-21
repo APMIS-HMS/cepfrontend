@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { FacilitiesService, InvestigationService, LaboratoryRequestService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation } from '../../../../models/index';
+import { Facility, MinorLocation, Investigation, InvestigationModel } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -47,12 +47,18 @@ export class LabRequestsComponent implements OnInit {
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
 
+  selectedFacility: Facility = <Facility>{};
+
+  investigations: InvestigationModel[] = [];
+  bindInvestigations: InvestigationModel[] = [];
+  movedInvestigations: any[] = [];
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
   }
 
   ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
     this.searchInvestigation = new FormControl('', []);
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
@@ -83,6 +89,34 @@ export class LabRequestsComponent implements OnInit {
       }
     })
     this.getLaboratoryRequest();
+    this.getInvestigations();
+  }
+  getInvestigations() {
+    this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+      payload.data.forEach(item => {
+        const investigation: InvestigationModel = <InvestigationModel>{};
+        investigation.investigation = item;
+        investigation.isExternal = false;
+        investigation.isUrgent = false;
+        investigation.isChecked = false;
+        const listItems: any[] = [];
+        if (item.isPanel) {
+          item.panel.forEach(inItem => {
+            const innerChild = <InvestigationModel>{};
+            innerChild.investigation = inItem;
+            innerChild.isExternal = false;
+            innerChild.isUrgent = false;
+            innerChild.isChecked = false;
+            listItems.push(innerChild);
+          });
+          investigation.investigation.panel = listItems;
+          this.investigations.push(investigation);
+        } else {
+          this.investigations.push(investigation);
+        }
+
+      });
+    })
   }
   getLaboratoryRequest() {
     this.requestService.find({ query: { 'facilityId._id': this.selelctedFacility._id } }).then(payload => {
@@ -99,7 +133,6 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
-    console.log(value)
   }
   apmisInvestigationLookupHandleSelectedItem(value) {
     if (value.action !== undefined) {
@@ -138,6 +171,71 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
+  }
+  investigationChanged($event, investigation: InvestigationModel,
+    childInvestigation?: InvestigationModel, isChild = false) {
+    if ($event.checked || childInvestigation !== undefined) {
+      if (investigation.investigation.isPanel) {
+        if (childInvestigation !== undefined) {
+          childInvestigation.isChecked = true;
+          let found = false;
+          const childIndex = investigation.investigation.panel.findIndex(x => x.investigation._id === childInvestigation.investigation._id);
+          if (childIndex > -1) {
+            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            investigation.investigation.panel.forEach((item, i) => {
+              if (i !== childIndex) {
+                copyInvestigation.investigation.panel.splice(i, 1);
+              }
+
+            });
+            const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
+            if (isInBind > -1) {
+              if ($event.checked) {
+                if (this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x._id === copyInvestigation.investigation.panel[0]._id) >= 0) {
+                  this.bindInvestigations[isInBind].investigation.panel.push(copyInvestigation.investigation.panel[0]);
+                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                    investigation.isChecked = true;
+                  } else {
+                    investigation.isChecked = false;
+                  }
+                }
+              } else {
+                const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
+                this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
+                if (this.bindInvestigations[isInBind].investigation.panel.length === 0) {
+                  this.bindInvestigations.splice(0, 1)
+                }
+              }
+
+            } else {
+              this.bindInvestigations.push(copyInvestigation);
+            }
+
+          }
+        } else {
+          investigation.isChecked = true;
+          this.bindInvestigations.push(investigation);
+        }
+
+      } else {
+        if ($event.checked) {
+          this.bindInvestigations.push(investigation);
+        } else {
+          const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          this.bindInvestigations.splice(indexToRemove, 1)
+        }
+      }
+
+    } else {
+      if ($event.checked) {
+        this.bindInvestigations.push(investigation);
+      } else {
+        const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
+    }
   }
   save(valid, value) {
     console.log(valid);

@@ -51,6 +51,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuTimeline = false;
   menuFinance = false;
   menuPrescriptions = false;
+  menuPayment = false;
 
   contentSecMenuShow = false;
   modal_on = false;
@@ -269,6 +270,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuPharmacy_click() {
     this.menuSummary = false;
@@ -286,6 +288,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuBilling_click() {
     this.menuSummary = false;
@@ -303,6 +306,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuTreatmentPlan_click() {
     this.menuSummary = false;
@@ -320,6 +324,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuMedicationHistory_click() {
     this.menuSummary = false;
@@ -337,6 +342,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = true;
+    this.menuPayment = false;
   }
   menuImaging_click() {
     this.menuSummary = false;
@@ -354,6 +360,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuLab_click() {
     this.menuSummary = false;
@@ -371,6 +378,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuForms_click() {
     this.menuSummary = false;
@@ -388,6 +396,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuDocs_click() {
     this.menuSummary = false;
@@ -405,6 +414,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuImages_click() {
     this.menuSummary = false;
@@ -422,6 +432,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuLists_click() {
     this.menuSummary = false;
@@ -439,6 +450,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuTimeline_click() {
     this.menuSummary = false;
@@ -456,6 +468,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
   menuPrescriptions_click() {
     this.menuSummary = false;
@@ -473,6 +486,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this. menuPayment = false;
   }
   menuExternalPrescriptions_click() {
     this.menuSummary = false;
@@ -490,8 +504,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = true;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = false;
   }
-  menuFinance_click() {
+  menuPayment_click() {
     this.menuSummary = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
@@ -505,8 +520,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
-    this.menuFinance = true;
+    this.menuFinance = false;
     this.menuMedicationHistory = false;
+    this.menuPayment = true;
   }
 
   subsect_biodata_click() {

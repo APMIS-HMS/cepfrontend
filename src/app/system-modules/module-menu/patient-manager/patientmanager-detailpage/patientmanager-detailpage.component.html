@@ -47,7 +47,7 @@
                     <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
                     <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                     <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
-                    <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Payment</div>
+                    <div (click)="menuPayment_click()" [class.active-menuItem]="menuPayment" class="menu-item">Payment</div>
                 </div>
                 <div class="menu-sect">
                     <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
@@ -69,6 +69,7 @@
             <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
             <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
             <app-lab-requests *ngIf="menuLab"></app-lab-requests>
+            <app-payment *ngIf="menuPayment"></app-payment>
         </div>
 
         <div *ngIf="addVitalsPop" class="modal-overlay">

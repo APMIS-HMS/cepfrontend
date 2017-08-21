@@ -1,0 +1,15 @@
+.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.item-label{
+    margin-right: 10px;
+    color: #a6a6a6;
+    font-size: 12px;
+}
