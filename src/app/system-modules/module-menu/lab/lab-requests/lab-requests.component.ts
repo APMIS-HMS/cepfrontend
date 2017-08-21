@@ -18,17 +18,16 @@ export class LabRequestsComponent implements OnInit {
   selelctedFacility: Facility = <Facility>{};
   apmisLookupUrl = 'patient';
   apmisLookupText = '';
-  apmisLookupQuery: any = {
-  };
+  apmisLookupQuery: any = {};
   apmisLookupDisplayKey = 'personDetails.personFullName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
 
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
-  apmisInvestigationLookupQuery: any = {
-  };
+  apmisInvestigationLookupQuery: any = {};
   apmisInvestigationLookupDisplayKey = 'name';
   apmisInvestigationLookupImgKey = '';
+  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   request_view = false;
   reqDetail_view = false;
@@ -38,13 +37,12 @@ export class LabRequestsComponent implements OnInit {
   sampleStatus = true;
   recievedStatus = true;
   resultStatus = false;
-  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   checkedValues: any[] = [];
   requests: any[] = [];
 
   selectedPatient: any = <any>{};
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
 
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
@@ -240,8 +238,8 @@ export class LabRequestsComponent implements OnInit {
     }
   }
   save(valid, value) {
-    console.log(valid);
-    console.log(value);
+    // console.log(valid);
+    // console.log(value);
     delete this.selectedPatient.appointments;
     delete this.selectedPatient.encounterRecords;
     delete this.selectedPatient.orders;
@@ -253,5 +251,12 @@ export class LabRequestsComponent implements OnInit {
     delete this.selectedPatient.personDetails.nationality;
     delete this.selectedPatient.personDetails.nationalityObject;
     delete this.selectedPatient.personDetails.nextOfKin;
+
+    const selectedFacility = this.locker.getObject('miniFacility');
+
+    console.log(this.selectedPatient);
+    console.log(selectedFacility)
+    console.log(this.frmNewRequest.value);
+    console.log(this.frmNewRequest.valid);
   }
 }

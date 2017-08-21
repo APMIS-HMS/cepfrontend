@@ -127,4 +127,9 @@ export class PrescriptionListComponent implements OnInit {
 		}).catch(err => { console.log(err); });
 	}
 
+	// Call Api to search
+	private searchApi() {
+		console.log("name");
+	}
+
 }

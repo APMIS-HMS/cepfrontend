@@ -25,7 +25,7 @@ export class WardManagerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		let page: string = this._router.url;
+		const page: string = this._router.url;
 		this.checkPageUrl(page);
 		this._wardEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
