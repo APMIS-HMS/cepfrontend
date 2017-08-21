@@ -1,5 +1,28 @@
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
+    <div class="first-menu">
+    <nav>
+        <a href="#">Store</a>
+        <a href="#">Product</a>
+        <a href="#">Purchase</a>
+        <a href="#">Inventory</a>
+        <div class="animation start-home"></div>
+    </nav>
+    </div>
+    <div  class="second-menu">
+        <a href="#" class="btning">Store</a>
+        <a href="#" class="btning">Product</a>
+        <a href="#" class="btning">Purchase</a>
+        <a href="#" class="btning">Inventory</a>
+    </div>
+    <div class="third" style="margin-top:40px;">
+        <ul class="snip1189">
+        <li class="current"><a href="#">Store</a></li>
+        <li><a href="#">Product</a></li>
+        <li><a href="#">Purcase</a></li>
+        <li><a href="#">Inventory</a></li>
+        </ul>
+    </div>
 
     <div class="inner-page-wrap">
         <div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap">
