@@ -88,9 +88,9 @@ export class PatientPrescriptionComponent implements OnInit {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
         this.user = this._locker.getObject('auth');
         this.employeeDetails = this._locker.getObject('loginEmployee');
-        console.log(this.employeeDetails);
+        console.log(this.patientDetails);
         // Remove this when you are done
-        this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
+        //this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
@@ -131,6 +131,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     apmisLookupHandleSelectedItem(item) {
         this.apmisLookupText = item.details;
+        console.log(this.apmisLookupText);
         this._drugDetailsApi.find({ query: { 'productId': item.productId } }).then(res => {
             console.log(res);
             if (res.ingredients.length > 0) {
@@ -200,10 +201,13 @@ export class PatientPrescriptionComponent implements OnInit {
 
                 const prescription = <Prescription>{
                     facilityId: this.facility._id,
-                    employeeId: this.employeeDetails._id,
+                    employeeId: this.employeeDetails.employeeDetails._id,
+                    employeeObject: this.employeeDetails.employeeDetails,
                     clinicId: this.selectedAppointment.clinicId,
                     priorityId: '',
+                    priorityObject: '',
                     patientId: this.patientDetails._id,
+                    patientObject: this.patientDetails,
                     personId: this.patientDetails.personId,
                     prescriptionItems: this.prescriptionArray,
                     isAuthorised: true,
@@ -230,6 +234,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.disableAuthorizeRx = true;
                 this.authorizeRx = 'Authorizing Rx... <i class="fa fa-spinner fa-spin"></i>';
                 this.prescriptions.priorityId = value.priority;
+                this.prescriptions.priorityObject = { id: value.priority, name: value.priority  };
                 this.prescriptions.totalCost = value.totalCost;
                 this.prescriptions.totalQuantity = value.totalQuantity;
 

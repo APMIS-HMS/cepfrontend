@@ -1,39 +1,34 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
-      <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
-        aria-hidden="true"></i>
-      <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-        <li (click)="navFpHome()"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-        <li (click)="navFpModules()"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
-        <li (click)="navFpDepartments()"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
-        <li (click)="navFpLocations()"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
-      </ul>
+        <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+        <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+            <li (click)="navFpHome()"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
+            <li (click)="navFpModules()"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
+            <li (click)="navFpDepartments()"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
+            <li (click)="navFpLocations()"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
+        </ul>
     </div>
     <div class="inner-page-wrap">
+        <div class="lhs inner-page-menuTab">
+            <div class="lTab-title">LABORATORY MANAGER</div>
+            <ul class="nav-group">
+                <li [class.navActive]="requestContentArea" (click)="checkPageUrl('request');" routerLink="/dashboard/laboratory/requests">Laboratory Requests</li>
+                <li [class.navActive]="reportContentArea" (click)="checkPageUrl('report');" routerLink="/dashboard/laboratory/reports">Report</li>
+            </ul>
 
-      <div class="lhs inner-page-menuTab">
-        <div class="lTab-title">LABORATORY MANAGER</div>
-        <ul class="nav-group">
-            <li [class.navActive]="requestContentArea" (click)="navRequest()">Laboratory Requests</li>
-            <li [class.navActive]="reportContentArea" (click)="navReport()">Report</li>
-        </ul>
+            <div class="lTab-title">LABORATORY SETUP</div>
+            <ul class="nav-group">
+                <li [class.navActive]="workbenchContentArea" (click)="checkPageUrl('workbenches');" routerLink="/dashboard/laboratory/workbenches">Workbench</li>
+                <li [class.navActive]="investigationContentArea" (click)="checkPageUrl('investigation');" routerLink="/dashboard/laboratory/investigations">Investigation</li>
+                <li [class.navActive]="pricingContentArea" (click)="checkPageUrl('investigation-pricing');" routerLink="/dashboard/laboratory/investigation-pricing">Investigation Pricing</li>
+                <!-- <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li> -->
+            </ul>
+        </div>
 
-        <div class="lTab-title">LABORATORY SETUP</div>
-        <ul class="nav-group">
-            <li [class.navActive]="workbenchContentArea" (click)="navWorkbench()">Workbench</li>
-            <li [class.navActive]="investigationContentArea" (click)="navInvestigation()">Investigation</li>
-            <li [class.navActive]="pricingContentArea" (click)="navPricing()">Investigation Pricing</li>
-            <!-- <li [class.navActive]="panelContentArea" (click)="navPanel()">Panel</li> -->
-        </ul>
-      </div>
-
-      <app-lab-requests (pageInView)="pageInViewLoader($event)" *ngIf="requestContentArea" class="rhs inner-page-contentArea"></app-lab-requests> 
-      <app-workbench (pageInView)="pageInViewLoader($event)" *ngIf="workbenchContentArea" class="rhs inner-page-contentArea"></app-workbench> 
-      <app-investigation-service (pageInView)="pageInViewLoader($event)" *ngIf="investigationContentArea" class="rhs inner-page-contentArea"></app-investigation-service> 
-      <app-investigation-price (pageInView)="pageInViewLoader($event)" *ngIf="pricingContentArea" class="rhs inner-page-contentArea"></app-investigation-price> 
-      <app-panel (pageInView)="pageInViewLoader($event)" *ngIf="panelContentArea" class="rhs inner-page-contentArea"></app-panel>
-      <app-report (pageInView)="pageInViewLoader($event)" *ngIf="reportContentArea" class="rhs inner-page-contentArea"></app-report> 
-      <div class="clear"></div>
-    </div> 
+        <div class="rhs inner-page-contentArea c-page-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="clear"></div>
+    </div>
 </div>

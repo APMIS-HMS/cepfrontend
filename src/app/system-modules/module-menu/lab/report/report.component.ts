@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FacilitiesService, InvestigationService, LaboratoryRequestService } from '../../../../services/facility-manager/setup/index';
+import { LocationService } from '../../../../services/module-manager/setup/index';
+import { Location } from '../../../../models/index'
+import { Facility, MinorLocation } from '../../../../models/index';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-report',
@@ -8,13 +13,29 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class ReportComponent implements OnInit {
 
-  apmisLookupUrl = '';
+  selelctedFacility: Facility = <Facility>{};
+  apmisLookupUrl = 'patient';
   apmisLookupText = '';
-  apmisLookupQuery = {};
-  apmisLookupDisplayKey = '';
+  apmisLookupQuery: any = {};
+  apmisLookupDisplayKey = 'personDetails.personFullName';
+  apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+
+  apmisInvestigationLookupUrl = 'investigations';
+  apmisInvestigationLookupText = '';
+  apmisInvestigationLookupQuery: any = {};
+  apmisInvestigationLookupDisplayKey = 'name';
+  apmisInvestigationLookupImgKey = '';
+  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
+  selectedPatient: any = <any>{};
+  patientSelected: boolean = false;
+  loading: boolean = true;
+  reportLoading: boolean = true;
+  pendingRequests: any[] = [];
+  reports: any[] = [];
+  hasRequest: boolean = false;
 
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
 
   numericReport = false;
   textReport = true;
@@ -25,8 +46,14 @@ export class ReportComponent implements OnInit {
 
   public frmNewReport: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private _locker: CoolSessionStorage
+  ) {}
+
   ngOnInit() {
+    this.selelctedFacility = <Facility>this._locker.getObject('selectedFacility');
+
     this.frmNewReport = this.formBuilder.group({
       patient: ['', [Validators.required]],
       result: ['', [Validators.required]],
@@ -34,11 +61,42 @@ export class ReportComponent implements OnInit {
       conclusion: ['', [Validators.required]],
       recomendation: ['', [Validators.required]]
     });
+
+    this.frmNewReport.controls['patient'].valueChanges.subscribe(value => {
+      console.log(value);
+      if(value.length > 2) {
+        this.apmisLookupQuery = {
+          'facilityid': this.selelctedFacility._id,
+          'searchtext': value
+        };
+      } else {
+        this.patientSelected = false;
+      }
+    });
+
+    this.CheckIfSelectedPatient();
+  }
+
+  createInvestigation(valid: boolean, value: any) {
+    console.log(valid);
+    console.log(value);
   }
 
   apmisLookupHandleSelectedItem(value) {
-
+    this.apmisLookupText = value.personDetails.personFullName;
+    this.selectedPatient = value;
+    this.CheckIfSelectedPatient();
+    console.log(value);
   }
+
+  private CheckIfSelectedPatient() {
+    if(!!this.selectedPatient && this.selectedPatient.hasOwnProperty('_id')) {
+      this.patientSelected = true;
+    } else {
+      this.patientSelected = false;
+    }
+  }
+
   numeric_report(){
     this.numericReport = true;
     this.textReport = false;
