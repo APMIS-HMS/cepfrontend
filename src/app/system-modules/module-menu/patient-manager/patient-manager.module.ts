@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { PatientManagerComponent } from './patient-manager.component';
 import { patientManagerRoutes } from './patient-manager.routes';
 import { PatientManagerHomeComponent } from './patient-manager-home.component';
@@ -30,14 +29,11 @@ import { FormTypeService } from '../../../services/module-manager/setup/index';
 import { SurveyComponent } from '../../../shared-module/form-generator/survey.component';
 import { SurveyEditorComponent } from '../../../shared-module/form-generator/survey.editor.component';
 import { SharedService } from '../../../shared-module/shared.service';
-// import { LabRequestsComponent } from '../lab/lab-requests/lab-requests.component';
-// import { RequestDetailComponent } from '../lab/lab-requests/request-detail/request-detail.component';
-// import { PatientLaboratoryComponent } from './patientmanager-detailpage/patient-laboratory/patient-laboratory.component';
 import {InvestigationComponent} from '../laboratory/new-request/investigation/investigation.component';
 import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
 import { ChartsModule } from 'ng2-charts';
-
+import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -48,9 +44,6 @@ import { ChartsModule } from 'ng2-charts';
         CheckoutPatientComponent,
         AddTagsComponent,
         PatientSummaryComponent,
-        // LabRequestsComponent,
-        // RequestDetailComponent,
-        // PatientPrescriptionComponent,
         MedicationHistoryComponent,
         UpdateImgComponent,
         ExternalPrescriptionComponent,
@@ -60,30 +53,19 @@ import { ChartsModule } from 'ng2-charts';
         AddPatientProblemComponent,
         AddAllergyComponent,
         AddHistoryComponent,
-        // PatientLaboratoryComponent,
         TimelineComponent,
-        RightTabComponent,
-        // InvestigationComponent
-        // InvestigationComponent
-        // SurveyComponent,
-        // SurveyEditorComponent
-        // BillPrescriptionComponent,
-        // AddPrescriptionComponent
+        RightTabComponent
     ],
     exports: [
     ],
     imports: [
         SharedModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        // DatePickerModule,
         patientManagerRoutes,
         MaterialModule,
         ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
-        FormsService, FormTypeService, SharedService]
+        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService]
 })
 export class PatientManagerModule { }
 

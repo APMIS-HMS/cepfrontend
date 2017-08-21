@@ -215,10 +215,12 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   bindVitalsDataToChart() {
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
-      if (payload.data.length != 0) {
+      if (payload.data.length !== 0) {
+        console.log(payload.data)
         payload.data[0].documentations.forEach(documentItem => {
-          if (documentItem.document.documentType.title == "Vitals") {
+          if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
             this.vitalsObjArray = documentItem.document.body.vitals;
+            console.log(this.vitalsObjArray);
           }
         });
         this.vitalsObjArray.forEach(item => {
@@ -230,7 +232,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
           this.lineChartData[5].data.push(item.temperature);
           this.lineChartData[6].data.push(item.bloodPressure.diastolic);
           this.lineChartData[7].data.push(item.bloodPressure.systolic);
-          var d = new Date(item.updatedAt);
+          const d = new Date(item.updatedAt);
           this.lineChartLabels.push(d.toDateString());
         });
       }
@@ -568,7 +570,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
         this.selectedAppointment.clinicInteractions = [];
       }
       this.clinicInteraction.endAt = new Date();
-      this.clinicInteraction.title = "Doctor's Encounter";
+      this.clinicInteraction.title = 'Doctor\'s Encounter';
       this.selectedAppointment.clinicInteractions.push(this.clinicInteraction);
       this.appointmentService.update(this.selectedAppointment).then(payload => {
 

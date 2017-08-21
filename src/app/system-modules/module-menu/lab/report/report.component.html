@@ -145,7 +145,7 @@
                 <div class="frm-r">
 
                     <form [formGroup]="frmNewReport" novalidate>
-                        <div *ngIf="numericReport" >
+                        <div>
                             <div>
                                 <div class="initial-contenet invstn-val">
                                     <div class="report-title">
@@ -170,7 +170,7 @@
                             </div>
                             <div class="resultSect-title">Investigation Result</div>
                             <div class="invstn-wrap">
-                                <div class="lettering-wrap">
+                                <div *ngIf="numericReport" class="lettering-wrap">
                                     <div class="report-title">Bilateral Test</div>
                                     <div class="invstn-vals">
                                         <div class="invstn-val">
@@ -188,69 +188,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="lettering-wrap">
-                                    <div class="report-title">Pregnancy Test</div>
-                                    <div class="invstn-vals">
-                                        <div class="invstn-val">
-                                            <div class="val-label">Reference:</div>
-                                            <div class="val-val">1 - 7(cm)</div>
-                                        </div>
-                                        <div class="invstn-val">
-                                            <div class="val-label">Sample NO:</div>
-                                            <div class="val-val">1220</div>
-                                        </div>
-                                        <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                            </md-input-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <div class="frm-item-wrap">
-                                <md-autocomplete>
-                                    <md-option [value]="Normal">Normal</md-option>
-                                    <md-option [value]="Low">Low</md-option>
-                                    <md-option [value]="High">High</md-option>
-                                </md-autocomplete> 
-                            </div> -->
-                            <div class="frm-item-wrap">
-                                <md-input-container>
-                                    <textarea mdInput placeholder="Conclusion"></textarea>
-                                </md-input-container>
-                            </div>
-                            <div class="frm-item-wrap">
-                                <md-input-container>
-                                    <textarea mdInput placeholder="Recomendation"></textarea>
-                                </md-input-container>
-                            </div>
-                        </div>
 
-                        <div *ngIf="textReport" >
-                            <div>
-                                <div class="initial-contenet invstn-val">
-                                    <div class="report-title">
-                                        Clinincal Documentation 
-                                        <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
-                                        <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
-                                    </div>
-                                    <div *ngIf="docAction" class="initial-val">
-                                        when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
-                                    </div>
-                                </div>
-                                <div class="initial-contenet invstn-val">
-                                    <div class="report-title">
-                                        Diagnosis
-                                        <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
-                                        <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
-                                    </div>
-                                    <div *ngIf="diagnosisAction" class="initial-val">
-                                        when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="lettering-wrap">
+                                <div *ngIf="textReport" class="lettering-wrap">
                                     <div class="report-title">Bilateral Test</div>
                                     <div class="invstn-vals">
                                         <div class="invstn-val">
@@ -259,45 +198,27 @@
                                         </div>
                                         <div class="frm-item-wrap">
                                             <md-input-container>
-                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                            </md-input-container>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="lettering-wrap">
-                                    <div class="report-title">Pregnancy Test</div>
-                                    <div class="invstn-vals">
-                                        <div class="invstn-val">
-                                            <div class="val-label">Reference:</div>
-                                            <div class="val-val">1 - 7(cm)</div>
-                                        </div>
-                                        <div class="invstn-val">
-                                            <div class="val-label">Sample NO:</div>
-                                            <div class="val-val">1220</div>
-                                        </div>
-                                        <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                                <textarea formControlName="result" mdInput placeholder="Enter Result"></textarea>
                                             </md-input-container>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="frm-item-wrap">
-                                <md-autocomplete>
+                             <div class="frm-item-wrap"> 
+                                <md-select placeholder="Investigation Outcome" formControlName="outcome">
                                     <md-option [value]="Normal">Normal</md-option>
                                     <md-option [value]="Low">Low</md-option>
                                     <md-option [value]="High">High</md-option>
-                                </md-autocomplete> 
-                            </div> -->
+                                </md-select>
+                            </div> 
                             <div class="frm-item-wrap">
                                 <md-input-container>
-                                    <textarea mdInput placeholder="Conclusion"></textarea>
+                                    <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
                                 </md-input-container>
                             </div>
                             <div class="frm-item-wrap">
                                 <md-input-container>
-                                    <textarea mdInput placeholder="Recomendation"></textarea>
+                                    <textarea formControlName="recomendation" mdInput placeholder="Recomendation"></textarea>
                                 </md-input-container>
                             </div>
                         </div>

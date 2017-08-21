@@ -3,9 +3,9 @@ export interface Investigation {
     name: string;
     specimen: InvestigationSpecimen;
     reportType: InvestigationReportType;
-    refNoFrom: number;
-    refNoTo: number;
-    unit: string;
+    facilityId: any;
+    isPanel: boolean;
+    panel: any;
     isActive: boolean,
 }
 
@@ -17,4 +17,11 @@ export interface InvestigationSpecimen {
 export interface InvestigationReportType {
     _id: string;
     name: string;
+}
+
+export interface InvestigationModel {
+    investigation: Investigation;
+    isExternal: boolean;
+    isUrgent: boolean;
+    isChecked: boolean;
 }

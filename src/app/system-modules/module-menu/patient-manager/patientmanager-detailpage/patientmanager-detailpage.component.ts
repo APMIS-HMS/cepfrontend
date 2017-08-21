@@ -96,12 +96,12 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     private locker: CoolSessionStorage,
     private _documentationService: DocumentationService) {
 
-    this.router.events
-      .filter(e => e.constructor.name === 'RoutesRecognized')
-      .pairwise()
-      .subscribe((e: any[]) => {
-        this.previousUrl = e[0].urlAfterRedirects;
-      });
+    // this.router.events
+    //   .filter(e => e.constructor.name === 'RoutesRecognized')
+    //   .pairwise()
+    //   .subscribe((e: any[]) => {
+    //     this.previousUrl = e[0].urlAfterRedirects;
+    //   });
 
     this.personService.updateListener.subscribe(payload => {
       this.patient.personDetails = payload;

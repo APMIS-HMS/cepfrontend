@@ -447,7 +447,7 @@
                                 <td>{{appointment.startDate | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
-                                        <div class="list-img">
+                                        <div class="list-img" *ngIf="appointment?.doctorId !== null">
                                             <img *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                                             <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)"></div>
                                         </div>
@@ -497,7 +497,7 @@
                                 <td>{{appointment.startDate | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
-                                        <div class="list-img">
+                                        <div class="list-img" *ngIf="appointment?.doctorId !== null">
                                             <img *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                                             <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)"></div>
                                         </div>

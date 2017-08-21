@@ -32,7 +32,6 @@ import { InvestigationComponent } from '../system-modules/module-menu/laboratory
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import { KeysPipe } from './keypipe';
 import { PersonAccountComponent } from '../person-account/person-account.component';
-import { TimezonePickerModule } from 'ng2-timezone-selector';
 
 import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
@@ -98,7 +97,6 @@ import { NgPipesModule } from 'ngx-pipes';
         InvestigationComponent,
         KeysPipe,
         PersonAccountComponent,
-        TimezonePickerModule,
         LabRequestsComponent, RequestDetailComponent,
         DragulaModule,
         NgPipesModule
@@ -132,7 +130,6 @@ import { NgPipesModule } from 'ngx-pipes';
         NgUploaderModule,
         CurrencyMaskModule,
         ToastyModule.forRoot(),
-        TimezonePickerModule,
         DragulaModule,
         NgPipesModule
     ],
