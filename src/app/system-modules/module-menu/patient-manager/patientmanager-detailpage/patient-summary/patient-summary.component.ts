@@ -216,6 +216,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   bindVitalsDataToChart() {
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length !== 0) {
+        console.log(payload.data)
         payload.data[0].documentations.forEach(documentItem => {
           if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
             this.vitalsObjArray = documentItem.document.body.vitals;
