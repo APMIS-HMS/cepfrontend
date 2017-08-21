@@ -312,6 +312,7 @@ select, input{
     align-items: center;
     justify-content: space-between;
     padding: 5px;
+    box-sizing: border-box;
 }
 .list-label{
     width: 80%;
@@ -388,4 +389,8 @@ select, input{
 }
 .actions-wrapa .txt-label{
     font-size: 12px;
+}
+.selected-list, .investigation-list{
+    max-height: 345px;
+    overflow-y: auto;
 }
