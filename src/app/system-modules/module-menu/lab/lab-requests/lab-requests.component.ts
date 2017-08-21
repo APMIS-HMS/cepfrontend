@@ -240,8 +240,8 @@ export class LabRequestsComponent implements OnInit {
     }
   }
   save(valid, value) {
-    console.log(valid);
-    console.log(value);
+    // console.log(valid);
+    // console.log(value);
     delete this.selectedPatient.appointments;
     delete this.selectedPatient.encounterRecords;
     delete this.selectedPatient.orders;
@@ -253,5 +253,12 @@ export class LabRequestsComponent implements OnInit {
     delete this.selectedPatient.personDetails.nationality;
     delete this.selectedPatient.personDetails.nationalityObject;
     delete this.selectedPatient.personDetails.nextOfKin;
+
+    const selectedFacility = this.locker.getObject('miniFacility');
+
+    console.log(this.selectedPatient);
+    console.log(selectedFacility)
+    console.log(this.frmNewRequest.value);
+    console.log(this.frmNewRequest.valid);
   }
 }
