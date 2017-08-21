@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { InventoryService, ProductService, EmployeeService } from '../../../../services/facility-manager/setup/index';
+import { InventoryService, ProductService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { Facility, Inventory, Employee } from '../../../../models/index';
+import { Facility, Inventory, Employee, User } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -30,6 +30,7 @@ export class LandingpageComponent implements OnInit {
 
   selectedFacility: Facility = <Facility>{};
   selectedInventory: Inventory = <Inventory>{};
+  user: User = <User>{};
   selectedTransaction: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   selectedProduct: any = <any>{};
@@ -38,6 +39,7 @@ export class LandingpageComponent implements OnInit {
 
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
+    private _facilityService: FacilitiesService,
     private inventoryService: InventoryService,
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -50,6 +52,7 @@ export class LandingpageComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.user = <User>this.locker.getObject('auth');
 
     if (this.checkingStore !== null && this.checkingStore.typeObject !== undefined) {
       this.getInventories();
@@ -68,7 +71,8 @@ export class LandingpageComponent implements OnInit {
       }).
         then(payload => {
           this.loading = false;
-          this.inventories = payload.data;
+          this.inventories = payload.data.filter(x => x.totalQuantity > 0);
+          //this.inventories = payload.data;
         }));
 
     subscribeForCategory.subscribe((payload: any) => {
@@ -80,10 +84,9 @@ export class LandingpageComponent implements OnInit {
         query:
         { facilityId: this.selectedFacility._id, storeId: this.checkingStore.typeObject.storeId, $limit: 200 }
       })
-        .subscribe(payload => {
+        .then(payload => {
           this.loading = false;
-          this.inventories = payload.data;
-          console.log(this.inventories);
+          this.inventories = payload.data.filter(x => x.totalQuantity > 0);
         });
     }
 
@@ -101,8 +104,6 @@ export class LandingpageComponent implements OnInit {
     }
   }
   onAdjustStock(inventory, transaction) {
-    console.log(inventory);
-    console.log(transaction)
     this.selectedInventory = inventory;
     this.selectedTransaction = transaction;
     this.systemQuantity.setValue(this.selectedTransaction.quantity);
@@ -143,11 +144,22 @@ export class LandingpageComponent implements OnInit {
       this.selectedInventory.totalQuantity = this.selectedInventory.totalQuantity + difference;
     }
 
-    this.inventoryService.update(this.selectedInventory).subscribe(result => {
+    this.inventoryService.update(this.selectedInventory).then(result => {
       this.physicalQuantity.setValue(0);
       this.systemQuantity.setValue(0);
       this.comment.reset();
       this.closeAdjustStock();
+      const message = 'Batch number "' + this.selectedTransaction.batchNumber + '" has been adjusted';
+      this._notification('Success', message);
     });
   }
+
+  // Notification
+	private _notification(type: string, text: string): void {
+		this._facilityService.announceNotification({
+			users: [this.user._id],
+			type: type,
+			text: text
+		});
+	}
 }

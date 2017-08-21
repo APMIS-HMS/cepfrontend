@@ -1,32 +1,39 @@
 @import "../../../../globals/variables.scss";
-
 .page-title {
     text-align: left;
     position: absolute;
 }
+
 .inner-page-contentArea {
     padding: 0;
     padding-left: 5px;
 }
+
 .inner-menu1-wrap {
     top: 0;
     text-align: right;
 }
-.inner-menu1-wrap .innerMenu-ul{
+
+.inner-menu1-wrap .innerMenu-ul {
     text-align: left;
 }
-.responsive_nav-group{
+
+.responsive_nav-group {
     display: none;
 }
-.content-sec-ico:hover, .content-sec-icoActive{
+
+.content-sec-ico:hover,
+.content-sec-icoActive {
     background: #F5F5F5;
     color: #4bb8ef;
 }
-.inner-page-menuTab{
+
+.inner-page-menuTab {
     display: block;
     text-align: left;
     padding: 20px 0;
 }
+
 .lTab-title {
     background: #0288D1;
     padding: 5px 20px;
@@ -34,13 +41,16 @@
     font-family: "Josefin Sans", sans-serif;
     color: #000;
 }
-.inner-page-menuTab ul{
+
+.inner-page-menuTab ul {
     padding: 0 10px;
     text-align: left;
 }
-.inner-page-menuTab ul li{
+
+.inner-page-menuTab ul li {
     padding: 5px;
 }
+
 .navActive {
-    border: 0.5px solid #fff;
+    border: 0.5px solid #fff !important;
 }
