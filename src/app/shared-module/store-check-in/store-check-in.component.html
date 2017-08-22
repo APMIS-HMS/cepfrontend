@@ -37,14 +37,9 @@
                 </div>
 
                 <div class="btn-group">
-                    <div (click)="checkIn(storeCheckin.valid, storeCheckin.value)" class="btn-1 btn-blue">
-                        <i class="fa fa-check-circle" aria-hidden="true"></i> Check In
-                    </div>
-                    <div (click)="close_onClick()" class="btn-1 btn-red" aria-hidden="true">
-                        <i class="fa fa-times-circle" aria-hidden="true"></i> Cancel
-                    </div>
+                    <button md-raised-button [disabled]="!storeCheckin.valid" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText"> </button>
+                    <button md-raised-button (click)="close_onClick();" style="color: #fff; background-color: #B71C1C;">Cancel</button>
                 </div>
-                <span *ngIf="loadIndicatorVisible"><span class="fa fa-spinner fa-spin"></span> Please wait updating your record!</span>
             </form>
         </div>
 

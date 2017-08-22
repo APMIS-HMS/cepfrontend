@@ -16,9 +16,14 @@ ul {
     margin: 0;
     padding: 0;
 }
-input, select, textarea{
+
+input,
+select,
+textarea {
     font-size: 12px;
 }
+
+
 /*
 input,
 select {
@@ -507,6 +512,7 @@ select {
     right: 30px;
     font-size: 16px;
     color: #8492a6;
+    padding: 5px;
 }
 
 .modal_title {
@@ -771,6 +777,7 @@ select {
 .del-ico {
     color: #ff2500;
 }
+
 .edit-ico-color {
     color: #0277BD;
 }
@@ -1273,24 +1280,29 @@ ul.topmenuwrap li:hover {
     width: 35px !important;
 }
 
-.mat-list .mat-list-item .mat-list-item-content, .mat-nav-list .mat-list-item .mat-list-item-content {
+.mat-list .mat-list-item .mat-list-item-content,
+.mat-nav-list .mat-list-item .mat-list-item-content {
     height: 35px !important;
     cursor: pointer;
 }
+
 .mat-list:hover {
     background-color: #eee;
 }
+
 .action-placeholder {
     position: relative;
     font-size: 16px;
     color: #0288D1;
     cursor: pointer;
 }
-.action-placeholder:hover{
-    .action-container{
+
+.action-placeholder:hover {
+    .action-container {
         display: block;
     }
 }
+
 .action-container {
     position: absolute;
     display: none;
@@ -1305,27 +1317,33 @@ ul.topmenuwrap li:hover {
     border: 1px solid #bebebe;
     z-index: 2;
 }
+
 .action-item {
     padding: 4px 10px;
     cursor: pointer;
     margin: 5px 0;
 }
-.action-item:hover{
+
+.action-item:hover {
     background: #f1f1f1;
 }
-.action-item i{
+
+.action-item i {
     padding-right: 10px;
 }
-.flex-btw{
+
+.flex-btw {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.btns{
+
+.btns {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
+
 .btns .button {
     display: -webkit-box;
     display: -moz-box;
@@ -1346,21 +1364,25 @@ ul.topmenuwrap li:hover {
     -moz-border-radius: 30px;
     -webkit-border-radius: 30px;
 }
-.btns .btn-orange{
+
+.btns .btn-orange {
     border: 1px solid #FB8C00;
     color: #FB8C00;
     background: transparent;
 }
-.btns .btn-orange:hover{
+
+.btns .btn-orange:hover {
     background: #FB8C00;
     color: #fff;
 }
-.btns .btn-blue{
+
+.btns .btn-blue {
     border: 1px solid #0288D1;
     color: #0288D1;
     background: transparent;
 }
-.btns .btn-blue:hover{
+
+.btns .btn-blue:hover {
     background: #0288D1;
     color: #fff;
 }

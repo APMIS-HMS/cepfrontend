@@ -18,7 +18,6 @@ export class LabCheckInComponent implements OnInit {
 	errMsg = 'You have unresolved errors';
 	workbenches: any[] = [];
 	locations: any[] = [];
-  loadIndicatorVisible = false;
   checkInBtnText: string = '<i class="fa fa-check-circle"></i> Check In';
 
   constructor(
@@ -31,7 +30,6 @@ export class LabCheckInComponent implements OnInit {
 
   ngOnInit() {
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
-    console.log(this.loginEmployee);
     this.labCheckin = this._fb.group({
       location: ['', [<any>Validators.required]],
       workbench: ['', [<any>Validators.required]],
@@ -40,7 +38,6 @@ export class LabCheckInComponent implements OnInit {
 
     if (!!this.loginEmployee.workSpaces) {
 			this.loginEmployee.workSpaces.forEach(workspace => {
-        console.log(workspace);
         if(workspace.isActive && workspace.locations.length > 0) {
           workspace.locations.forEach(x => {
             if(x.isActive && new RegExp('laboratory', "i").test(x.majorLocationId.name)) {
@@ -86,7 +83,6 @@ export class LabCheckInComponent implements OnInit {
     }
     
     this.loginEmployee.workbenchCheckIn.push(checkIn);
-    this.loadIndicatorVisible = true;
     this._employeeService.update(this.loginEmployee).then(res => {
       this.loginEmployee = res;
       const workspaces = <any>this._locker.getObject('workspaces');
@@ -102,7 +98,6 @@ export class LabCheckInComponent implements OnInit {
       });
 
       this._employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'workbench' });
-      this.loadIndicatorVisible = false;
       this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
       this.close_onClick();
     });
@@ -112,20 +107,20 @@ export class LabCheckInComponent implements OnInit {
 		this.closeModal.emit(true);
 	}
   
-	// changeRoom(checkIn: any) {
-	// 	let keepCheckIn;
-	// 	this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-	// 		itemi.isOn = false;
-	// 		if (itemi._id === checkIn._id) {
-	// 			itemi.isOn = true;
-	// 			keepCheckIn = itemi;
-	// 		}
-	// 	});
-	// 	this._employeeService.update(this.loginEmployee).then(payload => {
-	// 		this.loginEmployee = payload;
-	// 		this._employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-	// 		this.close_onClick();
-	// 	});
-	// }
+	changeRoom(checkIn: any) {
+		let keepCheckIn;
+		this.loginEmployee.workbenchCheckIn.forEach((item, i) => {
+			item.isOn = false;
+			if (item._id === checkIn._id) {
+				item.isOn = true;
+				keepCheckIn = item;
+			}
+		});
+		this._employeeService.update(this.loginEmployee).then(res => {
+			this.loginEmployee = res;
+			this._employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'workbench' });
+			this.close_onClick();
+		});
+	}
 
 }

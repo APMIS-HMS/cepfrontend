@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService, StoreService } from '../../services/facility-manager/setup/index';
 import { ConsultingRoomModel, Employee } from '../../models/index';
 import { ClinicHelperService } from '../../system-modules/module-menu/clinic/services/clinic-helper.service';
@@ -22,7 +22,8 @@ export class StoreCheckInComponent implements OnInit {
 	selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
 	stores: any[] = [];
 	locations: any[] = [];
-	loadIndicatorVisible = false;
+	//loadIndicatorVisible = false;
+	checkInBtnText: string = '<i class="fa fa-check-circle"></i> Check In';
 	constructor(
 		public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
@@ -46,14 +47,14 @@ export class StoreCheckInComponent implements OnInit {
 		}
 
 		this.storeCheckin = this.formBuilder.group({
-			location: ['', []],
-			room: ['', []],
-			isDefault: [false, []]
+			location: ['', [<any>Validators.required]],
+			room: ['', [<any>Validators.required]],
+			isDefault: [false, [<any>Validators.required]]
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
-			this.storeService.find({ query: { minorLocationId: value } }).then(payload => {
-				if (payload.data.length > 0) {
-					this.stores = payload.data;
+			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
+				if (res.data.length > 0) {
+					this.stores = res.data;
 				} else {
 					this.stores = [];
 				}
@@ -67,6 +68,7 @@ export class StoreCheckInComponent implements OnInit {
 		this.closeModal.emit(true);
 	}
 	checkIn(valid, value) {
+		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
 		checkIn.storeId = value.room;
@@ -83,7 +85,7 @@ export class StoreCheckInComponent implements OnInit {
 			}
 		});
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		this.loadIndicatorVisible = true;
+		//this.loadIndicatorVisible = true;
 		this.employeeService.update(this.loginEmployee).then(payload => {
 			this.loginEmployee = payload;
 			const workspaces = <any>this.locker.getObject('workspaces');
@@ -100,7 +102,7 @@ export class StoreCheckInComponent implements OnInit {
 
 
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-			this.loadIndicatorVisible = false;
+			this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
 			this.close_onClick();
 		});
 	}
