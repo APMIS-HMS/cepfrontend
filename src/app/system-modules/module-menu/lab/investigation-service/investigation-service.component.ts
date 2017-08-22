@@ -111,7 +111,7 @@ export class InvestigationServiceComponent implements OnInit {
       if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
-        const index = this.categories.findIndex(x =>x.name==='Laboratory');
+        const index = this.categories.findIndex(x => x.name === 'Laboratory');
         this.selectedServiceCategory = this.categories[index];
         console.log(this.categories);
         console.log(this.selectedServiceCategory);
@@ -213,6 +213,38 @@ export class InvestigationServiceComponent implements OnInit {
           investigation.reportType = reportType;
         }
         this.investigationService.create(investigation).then(payload => {
+
+
+          //
+          const service: any = <any>{};
+          service.name = value.name;
+          this.selectedFacilityService.categories.forEach((item, i) => {
+            if (item._id === value.categoryId) {
+              item.services.push(service);
+            }
+          });
+          this.facilityServiceCategoryService.update(this.selectedFacilityService).subscribe((payResult: FacilityService) => {
+            payResult.categories.forEach((itemi, i) => {
+              if (itemi._id === value.categoryId) {
+                itemi.services.forEach((items, s) => {
+                  if (items.name === service.name) {
+                    payload.serviceId = items._id;
+                    payload.facilityServiceId = this.selectedFacilityService._id;
+                    // this.productService.update(payload).then(result => {
+                    //   console.log(result);
+                    // });
+                  }
+                });
+              }
+            });
+          });
+
+          //
+
+
+
+
+
           this.frmNewInvestigationh.reset();
           this.frmNewInvestigationh.controls['isPanel'].setValue(false);
           this.investigations.push(payload);
