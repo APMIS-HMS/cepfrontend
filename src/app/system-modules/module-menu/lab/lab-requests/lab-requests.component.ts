@@ -18,17 +18,16 @@ export class LabRequestsComponent implements OnInit {
   selelctedFacility: Facility = <Facility>{};
   apmisLookupUrl = 'patient';
   apmisLookupText = '';
-  apmisLookupQuery: any = {
-  };
+  apmisLookupQuery: any = {};
   apmisLookupDisplayKey = 'personDetails.personFullName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
 
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
-  apmisInvestigationLookupQuery: any = {
-  };
+  apmisInvestigationLookupQuery: any = {};
   apmisInvestigationLookupDisplayKey = 'name';
   apmisInvestigationLookupImgKey = '';
+  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   request_view = false;
   reqDetail_view = false;
@@ -38,13 +37,12 @@ export class LabRequestsComponent implements OnInit {
   sampleStatus = true;
   recievedStatus = true;
   resultStatus = false;
-  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   checkedValues: any[] = [];
   requests: any[] = [];
 
   selectedPatient: any = <any>{};
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
 
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
@@ -59,7 +57,7 @@ export class LabRequestsComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
     this.searchInvestigation = new FormControl('', []);
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -95,7 +93,6 @@ export class LabRequestsComponent implements OnInit {
   }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
-      // console.log(payload);
       payload.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
         investigation.investigation = item;
@@ -111,18 +108,14 @@ export class LabRequestsComponent implements OnInit {
             innerChild.isUrgent = false;
             innerChild.isChecked = false;
             listItems.push(innerChild);
-            // investigation.investigation.panel.push(innerChild);
           });
           investigation.investigation.panel = listItems;
           this.investigations.push(investigation);
-
         } else {
           this.investigations.push(investigation);
         }
 
-      })
-      // this.investigations = payload.data;
-      console.log(this.investigations);
+      });
     })
   }
   getLaboratoryRequest() {
@@ -140,7 +133,6 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
-    console.log(value)
   }
   apmisInvestigationLookupHandleSelectedItem(value) {
     if (value.action !== undefined) {
@@ -182,22 +174,45 @@ export class LabRequestsComponent implements OnInit {
   }
   investigationChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-    console.log($event);
-    console.log(investigation);
-
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         if (childInvestigation !== undefined) {
           childInvestigation.isChecked = true;
-          console.log(childInvestigation);
           let found = false;
           const childIndex = investigation.investigation.panel.findIndex(x => x.investigation._id === childInvestigation.investigation._id);
-          console.log(childIndex);
-          // const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
           if (childIndex > -1) {
-            let selectedBind = investigation.investigation.panel[childIndex];
-            selectedBind.isChecked = true;
-            this.bindInvestigations.push(investigation);
+            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            investigation.investigation.panel.forEach((item, i) => {
+              if (i !== childIndex) {
+                copyInvestigation.investigation.panel.splice(i, 1);
+              }
+
+            });
+            const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
+            if (isInBind > -1) {
+              if ($event.checked) {
+                if (this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x._id === copyInvestigation.investigation.panel[0]._id) >= 0) {
+                  this.bindInvestigations[isInBind].investigation.panel.push(copyInvestigation.investigation.panel[0]);
+                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                    investigation.isChecked = true;
+                  } else {
+                    investigation.isChecked = false;
+                  }
+                }
+              } else {
+                const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
+                this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
+                if (this.bindInvestigations[isInBind].investigation.panel.length === 0) {
+                  this.bindInvestigations.splice(0, 1)
+                }
+              }
+
+            } else {
+              this.bindInvestigations.push(copyInvestigation);
+            }
+
           }
         } else {
           investigation.isChecked = true;
@@ -205,27 +220,56 @@ export class LabRequestsComponent implements OnInit {
         }
 
       } else {
-        this.bindInvestigations.push(investigation);
+        if ($event.checked) {
+          this.bindInvestigations.push(investigation);
+        } else {
+          const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          this.bindInvestigations.splice(indexToRemove, 1)
+        }
       }
 
     } else {
-      const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-      this.bindInvestigations.splice(index, 1);
+      if ($event.checked) {
+        this.bindInvestigations.push(investigation);
+      } else {
+        const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
     }
   }
   save(valid, value) {
-    console.log(valid);
-    console.log(value);
-    delete this.selectedPatient.appointments;
-    delete this.selectedPatient.encounterRecords;
-    delete this.selectedPatient.orders;
-    delete this.selectedPatient.tags;
-    delete this.selectedPatient.personDetails.addressObj;
-    delete this.selectedPatient.personDetails.countryItem;
-    delete this.selectedPatient.personDetails.homeAddress;
-    delete this.selectedPatient.personDetails.maritalStatus;
-    delete this.selectedPatient.personDetails.nationality;
-    delete this.selectedPatient.personDetails.nationalityObject;
-    delete this.selectedPatient.personDetails.nextOfKin;
+    // delete this.selectedPatient.appointments;
+    // delete this.selectedPatient.encounterRecords;
+    // delete this.selectedPatient.orders;
+    // delete this.selectedPatient.tags;
+    // delete this.selectedPatient.personDetails.addressObj;
+    // delete this.selectedPatient.personDetails.countryItem;
+    // delete this.selectedPatient.personDetails.homeAddress;
+    // delete this.selectedPatient.personDetails.maritalStatus;
+    // delete this.selectedPatient.personDetails.nationality;
+    // delete this.selectedPatient.personDetails.nationalityObject;
+    // delete this.selectedPatient.personDetails.nextOfKin;
+
+    // const selectedFacility = this.locker.getObject('miniFacility');
+
+
+    // let request:any = {
+    //   facilityId:selectedFacility,
+    //   patientId:this.selectedPatient,
+    //   labNumber: this.frmNewRequest.controls['labNo'],
+    //   clinicalInformation: this.frmNewRequest.controls['clinicalInfo'],
+    //   diagnosis:this.frmNewRequest.controls['diagnosis'],
+    //   investigations: this.bindInvestigations
+    // }
+    // console.log(request);
+
+    console.log(this.bindInvestigations);
+  }
+  externalChanged($event, investigation){
+    console.log(investigation)
+    investigation.isExternal = $event.checked;
+  }
+  urgentChanged($event, investigation){
+    investigation.isUrgent = $event.checked;
   }
 }

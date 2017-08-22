@@ -12,11 +12,11 @@ const LABMODULES_ROUTES: Routes = [
         path: '', component: LabComponent, children: [
             { path: '', redirectTo: 'requests' },
             { path: 'requests', component: LabRequestsComponent },
-            { path: 'workbench', component: WorkbenchComponent },
-            { path: 'investigation', component: InvestigationServiceComponent },
+            { path: 'workbenches', component: WorkbenchComponent },
+            { path: 'investigations', component: InvestigationServiceComponent },
             { path: 'investigation-pricing', component: InvestigationPriceComponent },
-            { path: 'panel', component: PanelComponent },
-            { path: 'report', component: ReportComponent }
+            { path: 'panels', component: PanelComponent },
+            { path: 'reports', component: ReportComponent }
         ]
     }
 ];

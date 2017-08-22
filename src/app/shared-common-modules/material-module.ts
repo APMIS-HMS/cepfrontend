@@ -28,7 +28,6 @@ import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
-import { InvestigationComponent } from '../system-modules/module-menu/laboratory/new-request/investigation/investigation.component';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import { KeysPipe } from './keypipe';
 import { PersonAccountComponent } from '../person-account/person-account.component';
@@ -48,7 +47,6 @@ import { NgPipesModule } from 'ngx-pipes';
         StoreCheckInComponent,
         ImageUpdateComponent,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
-        InvestigationComponent,
         KeysPipe,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent
@@ -94,7 +92,6 @@ import { NgPipesModule } from 'ngx-pipes';
         MdErrorDirective,
         ToastyModule,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
-        InvestigationComponent,
         KeysPipe,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,

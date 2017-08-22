@@ -23,7 +23,8 @@
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient"
+                                        [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 
@@ -58,17 +59,7 @@
                                         <input mdInput [formControl]="searchInvestigation" placeholder="search for Investigation">
                                     </md-input-container>
                                 </div>
-                                <!-- <div class="sect-listItem">
-                  <md-checkbox></md-checkbox>
-                  <div class="listItem-tag invstn">Investigation</div>
-                  <div class="sect-listLabel">Bilateral Test</div>
-                </div>
 
-                <div class="sect-listItem">
-                  <md-checkbox></md-checkbox>
-                  <div class="listItem-tag panel">Panel</div>
-                  <div class="sect-listLabel">Pregnancy Test</div>
-                </div> -->
                                 <div *ngFor="let investigation of investigations">
                                     <div *ngIf="investigation.investigation.isPanel">
                                         <div class="panel-wrap">
@@ -81,7 +72,7 @@
                                             </div>
                                             <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
                                                 <div class="txt-innerWrap">
-                                                    <md-checkbox  [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
+                                                    <md-checkbox [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
                                                     <div class="txt-label child-item">{{panel.investigation.name}}</div>
                                                 </div>
                                             </div>
@@ -111,14 +102,14 @@
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox></md-checkbox>
+                                                            <md-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></md-checkbox>
                                                         </div>
                                                     </div>
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox></md-checkbox>
+                                                            <md-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></md-checkbox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -135,14 +126,14 @@
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox></md-checkbox>
+                                                            <md-checkbox (change)="externalChanged($event, panel)" [checked]="investigation.isExternal"></md-checkbox>
                                                         </div>
                                                     </div>
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox></md-checkbox>
+                                                            <md-checkbox (change)="urgentChanged($event, panel)" [checked]="investigation.isUrgent"></md-checkbox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -159,14 +150,14 @@
                                             <div class="txt-innerWrap">
                                                 <div class="txt-label">External</div>
                                                 <div class="txt-val">
-                                                    <md-checkbox></md-checkbox>
+                                                    <md-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></md-checkbox>
                                                 </div>
                                             </div>
 
                                             <div class="txt-innerWrap">
                                                 <div class="txt-label">Urgent</div>
                                                 <div class="txt-val">
-                                                    <md-checkbox></md-checkbox>
+                                                    <md-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></md-checkbox>
                                                 </div>
                                             </div>
                                         </div>
