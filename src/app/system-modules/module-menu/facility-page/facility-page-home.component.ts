@@ -57,7 +57,7 @@ export class FacilityPageHomeComponent implements OnInit {
   }
   getModules() {
     this.hasModules = this.selectedFacility.facilitymoduleId.length > 0 ? true : false
-    console.log(this.selectedFacility)
+    console.log(this.selectedFacility);
   }
   getDepartments() {
     this.hasDepartments = this.selectedFacility.departments.length > 0 ? true : false;
@@ -81,4 +81,5 @@ export class FacilityPageHomeComponent implements OnInit {
       }
     })
   }
+ 
 }
