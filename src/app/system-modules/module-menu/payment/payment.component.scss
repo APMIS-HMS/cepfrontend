@@ -372,3 +372,6 @@ select.form-control:not([size]):not([multiple]) {
     color: #000;
     font-size: 12px;
 }
+td:hover {
+    cursor: pointer;
+}
