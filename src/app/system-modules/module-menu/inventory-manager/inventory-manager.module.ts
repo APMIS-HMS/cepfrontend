@@ -14,9 +14,10 @@ import { ReceiveStockDetailsComponent } from './receive-stock/receive-stock-deta
 import { StockHistoryComponent } from './stock-history/stock-history.component';
 import {
     ProductService, InventoryService, InventoryTransferService, InventoryTransferStatusService,
-    InventoryTransactionTypeService, StrengthService, ProductRequisitionService
+    InventoryTransactionTypeService, StrengthService, ProductRequisitionService,StoreService
 } from '../../../services/facility-manager/setup/index';
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 @NgModule({
     declarations: [
@@ -34,13 +35,14 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
     exports: [
     ],
     imports: [
-        SharedModule,
+        // SharedModule,
+        MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
         inventoryManagerRoutes
     ],
     providers: [InventoryEmitterService, ProductService, InventoryService, LoginEmployeeResolverService, ProductRequisitionService,
-        InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StrengthService]
+        InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StrengthService, StoreService]
 })
 export class InventoryManagerModule { }

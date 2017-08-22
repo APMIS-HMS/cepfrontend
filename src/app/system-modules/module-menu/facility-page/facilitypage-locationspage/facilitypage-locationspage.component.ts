@@ -104,7 +104,6 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationHomeContentArea = false;
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
-    console.log(model);
     if(model.name !== undefined && model.name.toLowerCase() == 'ward') {
       this.isWardSelected = true;
     } else {
