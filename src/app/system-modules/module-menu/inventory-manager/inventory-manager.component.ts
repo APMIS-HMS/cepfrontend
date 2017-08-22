@@ -179,8 +179,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   }
 
   onClickStockTakingNavMenu() {
+     this.stockTakingNavMenu = true;
     this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = true;
     this.stockHistoryNavMenu = false;
     this.stockTransferNavMenu = false;
     this.receiveStockNavMenu = false;
@@ -191,10 +191,10 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   }
 
   onClickStockTransferNavMenu() {
+    this.stockTransferNavMenu = true;
     this.inventoryNavMenu = false;
     this.stockTakingNavMenu = false;
     this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = true;
     this.receiveStockNavMenu = false;
     this.requisitionNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
@@ -202,10 +202,10 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     });
   }
   onClickStockHistoryNavMenu() {
+     this.stockHistoryNavMenu = true;
     this.inventoryNavMenu = false;
     this.stockTakingNavMenu = false;
     this.stockTransferNavMenu = false;
-    this.stockHistoryNavMenu = true;
     this.receiveStockNavMenu = false;
     this.requisitionNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
@@ -214,10 +214,11 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   }
 
   onClickReceiveStockNavMenu() {
+    this.receiveStockNavMenu = true;
+    this.stockHistoryNavMenu = false;
     this.inventoryNavMenu = false;
     this.stockTakingNavMenu = false;
     this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = true;
     this.requisitionNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
@@ -225,11 +226,12 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   }
 
   onClickRequisitionNavMenu() {
+    this.requisitionNavMenu = true;
+    this.stockHistoryNavMenu = false;
     this.inventoryNavMenu = false;
     this.stockTakingNavMenu = false;
     this.stockTransferNavMenu = false;
     this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = true;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
