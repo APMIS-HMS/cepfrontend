@@ -70,18 +70,76 @@
                                                 </div>
                                                 <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                                             </div>
+
+                                            <div class="panel-loc">
+                                                <div class="inner-radio">
+                                                    <md-radio-group>
+                                                        <md-radio-button class="opt" value="1">
+                                                            <div class="opt-inner">
+                                                                <div>Legacy Lab</div>
+                                                                <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                            </div>
+                                                        </md-radio-button>
+                                                        <md-radio-button value="2">
+                                                            <div class="opt-inner">
+                                                                <div>Legacy Lab</div>
+                                                                <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                            </div>
+                                                        </md-radio-button>
+                                                    </md-radio-group>
+                                                </div>
+                                            </div>
+
                                             <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
                                                 <div class="txt-innerWrap">
-                                                    <md-checkbox [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
-                                                    <div class="txt-label child-item">{{panel.investigation.name}}</div>
+                                                    <div class="chkbox-wrap">
+                                                        <md-checkbox [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
+                                                        <div class="txt-label child-item">{{panel.investigation.name}}</div>
+                                                    </div>
+
+                                                    <div class="inner-radio">
+                                                        <md-radio-group>
+                                                            <md-radio-button class="opt" value="1">
+                                                                <div class="opt-inner">
+                                                                    <div>Legacy Lab</div>
+                                                                    <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                                </div>
+                                                            </md-radio-button>
+                                                            <md-radio-button value="2">
+                                                                <div class="opt-inner">
+                                                                    <div>Legacy Lab</div>
+                                                                    <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                                </div>
+                                                            </md-radio-button>
+                                                        </md-radio-group>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div *ngIf="!investigation.investigation.isPanel" class="list-item investigation">
                                         <div class="txt-innerWrap">
-                                            <md-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></md-checkbox>
-                                            <div class="list-label">{{investigation.investigation.name}}</div>
+                                            <div class="chkbox-wrap">
+                                                <md-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></md-checkbox>
+                                                <div class="list-label">{{investigation.investigation.name}}</div>
+                                            </div>
+
+                                            <div class="inner-radio">
+                                                <md-radio-group>
+                                                    <md-radio-button class="opt" value="1">
+                                                        <div class="opt-inner">
+                                                            <div>Legacy Lab</div>
+                                                            <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                        </div>
+                                                    </md-radio-button>
+                                                    <md-radio-button value="2">
+                                                        <div class="opt-inner">
+                                                            <div>Legacy Lab</div>
+                                                            <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                        </div>
+                                                    </md-radio-button>
+                                                </md-radio-group>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

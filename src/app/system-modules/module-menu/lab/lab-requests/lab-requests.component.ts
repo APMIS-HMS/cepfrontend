@@ -57,7 +57,7 @@ export class LabRequestsComponent implements OnInit {
 
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
     this.searchInvestigation = new FormControl('', []);
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -176,7 +176,9 @@ export class LabRequestsComponent implements OnInit {
     childInvestigation?: InvestigationModel, isChild = false) {
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
+        // isPanel
         if (childInvestigation !== undefined) {
+          //also send child investigation
           childInvestigation.isChecked = true;
           let found = false;
           const childIndex = investigation.investigation.panel.findIndex(x => x.investigation._id === childInvestigation.investigation._id);
@@ -201,11 +203,18 @@ export class LabRequestsComponent implements OnInit {
                   }
                 }
               } else {
+                console.log('slice 3')
                 const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
                   .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
                 this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
-                if (this.bindInvestigations[isInBind].investigation.panel.length === 0) {
-                  this.bindInvestigations.splice(0, 1)
+                childInvestigation.isChecked = false;
+
+                if (this.bindInvestigations[isInBind].investigation.panel.length === 0 || investigation.isChecked) {
+                  if (!investigation.isChecked) {
+                    this.bindInvestigations.splice(0, 1);
+                  }
+
+                  investigation.isChecked = false;
                 }
               }
 
@@ -215,61 +224,124 @@ export class LabRequestsComponent implements OnInit {
 
           }
         } else {
-          investigation.isChecked = true;
-          this.bindInvestigations.push(investigation);
+          console.log('first in')
+          // without child investigation
+          let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+          const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
+          if (isInBind > -1) {
+            if ($event.checked) {
+              // investigation.isChecked = true;
+              console.log('in')
+              console.log(this.bindInvestigations[isInBind].investigation.panel)
+              console.log(copyInvestigation.investigation.panel)
+              investigation.investigation.panel.forEach((child, k) => {
+                if (this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x.investigation._id === child.investigation._id) < 0) {
+                  console.log('ininin')
+                  child.isChecked = true;
+                  console.log(child)
+                  this.bindInvestigations[isInBind].investigation.panel.push(child);
+                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                    investigation.isChecked = true;
+                  } else {
+                    investigation.isChecked = false;
+                  }
+                }
+              })
+
+
+
+            } else {
+
+            }
+          } else {
+            investigation.isChecked = true;
+            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            this.bindInvestigations.push(copyInvestigation);
+            // check all children
+            console.log('check all children')
+            if (investigation.investigation.isPanel) {
+              investigation.investigation.panel.forEach((child, k) => {
+                console.log(child);
+                child.isChecked = true;
+              });
+            }
+          }
+
         }
 
       } else {
         if ($event.checked) {
           this.bindInvestigations.push(investigation);
         } else {
+          console.log('slice 1')
           const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
           this.bindInvestigations.splice(indexToRemove, 1)
         }
       }
-
     } else {
-      if ($event.checked) {
-        this.bindInvestigations.push(investigation);
-      } else {
-        const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-        this.bindInvestigations.splice(indexToRemove, 1)
+      console.log('slice 2')
+      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      this.bindInvestigations.splice(indexToRemove, 1);
+      // unchecked panel and uncheched all children
+      console.log('uncheck panel')
+      if (investigation.investigation.isPanel) {
+        investigation.investigation.panel.forEach((child, k) => {
+          child.isChecked = false;
+        });
       }
+
     }
   }
   save(valid, value) {
-    // delete this.selectedPatient.appointments;
-    // delete this.selectedPatient.encounterRecords;
-    // delete this.selectedPatient.orders;
-    // delete this.selectedPatient.tags;
-    // delete this.selectedPatient.personDetails.addressObj;
-    // delete this.selectedPatient.personDetails.countryItem;
-    // delete this.selectedPatient.personDetails.homeAddress;
-    // delete this.selectedPatient.personDetails.maritalStatus;
-    // delete this.selectedPatient.personDetails.nationality;
-    // delete this.selectedPatient.personDetails.nationalityObject;
-    // delete this.selectedPatient.personDetails.nextOfKin;
+    delete this.selectedPatient.appointments;
+    delete this.selectedPatient.encounterRecords;
+    delete this.selectedPatient.orders;
+    delete this.selectedPatient.tags;
+    delete this.selectedPatient.personDetails.addressObj;
+    delete this.selectedPatient.personDetails.countryItem;
+    delete this.selectedPatient.personDetails.homeAddress;
+    delete this.selectedPatient.personDetails.maritalStatus;
+    delete this.selectedPatient.personDetails.nationality;
+    delete this.selectedPatient.personDetails.nationalityObject;
+    delete this.selectedPatient.personDetails.nextOfKin;
 
-    // const selectedFacility = this.locker.getObject('miniFacility');
+    const selectedFacility = this.locker.getObject('miniFacility');
 
 
-    // let request:any = {
-    //   facilityId:selectedFacility,
-    //   patientId:this.selectedPatient,
-    //   labNumber: this.frmNewRequest.controls['labNo'],
-    //   clinicalInformation: this.frmNewRequest.controls['clinicalInfo'],
-    //   diagnosis:this.frmNewRequest.controls['diagnosis'],
-    //   investigations: this.bindInvestigations
-    // }
-    // console.log(request);
 
+    let copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
+    copyBindInvestigation.forEach((item, i) => {
+      if (item.investigation.isPanel) {
+        delete item.isChecked;
+        item.investigation.panel.forEach((panel, j) => {
+          delete panel.isChecked;
+        })
+      } else {
+        delete item.isChecked;
+      }
+    })
+
+    console.log(copyBindInvestigation);
     console.log(this.bindInvestigations);
+    let request: any = {
+      facilityId: selectedFacility,
+      patientId: this.selectedPatient,
+      labNumber: this.frmNewRequest.controls['labNo'].value,
+      clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
+      diagnosis: this.frmNewRequest.controls['diagnosis'].value,
+      investigations: copyBindInvestigation
+    }
+    console.log(request);
+    this.requestService.create(request).then(payload => {
+      console.log(payload)
+    })
   }
-  externalChanged($event, investigation){
+  externalChanged($event, investigation) {
     console.log(investigation)
     investigation.isExternal = $event.checked;
   }
-  urgentChanged($event, investigation){
+  urgentChanged($event, investigation) {
     investigation.isUrgent = $event.checked;
   }
 }

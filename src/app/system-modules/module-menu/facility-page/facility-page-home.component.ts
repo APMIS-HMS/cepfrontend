@@ -56,8 +56,12 @@ export class FacilityPageHomeComponent implements OnInit {
     this.router.navigate(['/dashboard/facility/' + value]);
   }
   getModules() {
+<<<<<<< HEAD
     this.hasModules = this.selectedFacility.facilitymoduleId.length > 0 ? true : false
     console.log(this.selectedFacility);
+=======
+    this.hasModules = this.selectedFacility.facilitymoduleId.length > 0 ? true : false;
+>>>>>>> fad29ed14e8af0758f5395cacb85fcf8e7b7ef77
   }
   getDepartments() {
     this.hasDepartments = this.selectedFacility.departments.length > 0 ? true : false;

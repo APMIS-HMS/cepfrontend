@@ -1,9 +1,9 @@
 import { Component, OnInit, NgZone, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
-import { FacilitiesService, FacilityModuleService } from '../../../../../services/facility-manager/setup/index';
+import { FacilitiesService, FacilityModuleService, TagService } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
-import { FacilityModule, Facility, Location, MinorLocation } from '../../../../../models/index';
+import { FacilityModule, Facility, Location, MinorLocation, Tag } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -24,9 +24,12 @@ export class NewSubLocationComponent implements OnInit {
   facilityObj: Facility = <Facility>{};
   public frmNewSubLoc: FormGroup;
 
+  tags: Tag[] = [];
+
   constructor(private formBuilder: FormBuilder,
     private locker: CoolSessionStorage,
     private locationService: LocationService,
+    private tagService: TagService,
     public facilityService: FacilitiesService) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
@@ -38,14 +41,13 @@ export class NewSubLocationComponent implements OnInit {
     this.facilityObj = <Facility>this.locker.getObject('selectedFacility');
     this.addNew();
     this.frmNewSubLoc.controls['sublocParent'].setValue(this.location._id);
-    console.log(this.subLocation);
     if (this.subLocation._id !== undefined) {
       this.ActionButton = 'Update';
       this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
       this.frmNewSubLoc.controls['sublocAlias'].setValue(this.subLocation.shortName);
       this.frmNewSubLoc.controls['sublocDesc'].setValue(this.subLocation.description);
     }
-
+    this.getTags();
   }
   addNew() {
     this.frmNewSubLoc = this.formBuilder.group({
@@ -56,6 +58,12 @@ export class NewSubLocationComponent implements OnInit {
       sublocDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
     });
   }
+  getTags() {
+    this.tagService.find({ query: { tagType: 'Laboratory Location' } }).then(payload => {
+      this.tags = payload.data;
+    })
+  }
+
   newSubLocation(valid, val) {
     if (valid) {
       if (val.sublocName === '' || val.sublocName === ' ' || val.sublocAlias === ''
@@ -75,14 +83,45 @@ export class NewSubLocationComponent implements OnInit {
         });
         this.mainErr = true;
       } else {
-        this.subLocation.description = val.sublocDesc;
-        this.subLocation.name = val.sublocName;
-        this.subLocation.shortName = val.sublocAlias;
-        const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
-        this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
-        this.facilityService.update(this.facilityObj).then((payload) => {
-          this.addNew();
-        });
+        const tags = this.tags.filter(x =>x.name === this.subLocation.name)
+        if (tags.length == 0) {
+          let tag: Tag = <Tag>{};
+          tag.facilityId = this.facilityObj._id;
+          tag.name = val.sublocName;
+          tag.tagType = "Laboratory Location";
+
+          const authObj: any = this.locker.getObject('auth')
+          const auth: any = authObj.data;
+          tag.createdBy = auth._id;
+
+          this.subLocation.description = val.sublocDesc;
+          this.subLocation.name = val.sublocName;
+          this.subLocation.shortName = val.sublocAlias;
+          const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
+          this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
+          this.facilityService.update(this.facilityObj).then((payload) => {
+            this.tagService.create(tag).then(pay => {
+              this.addNew();
+            })
+
+          });
+
+        } else {
+          const tagIndex = this.tags.findIndex(x => x.name === this.subLocation.name);
+          this.subLocation.description = val.sublocDesc;
+          this.subLocation.name = val.sublocName;
+          this.subLocation.shortName = val.sublocAlias;
+          const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
+          this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
+          this.facilityService.update(this.facilityObj).then((payload) => {
+            let tag = this.tags[tagIndex];
+            tag.name = this.subLocation.name;
+            this.tagService.update(tag).then(pay => {
+              this.addNew();
+            })
+
+          });
+        }
       }
     } else {
       this.mainErr = false;
