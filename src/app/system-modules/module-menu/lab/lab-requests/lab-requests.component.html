@@ -72,7 +72,7 @@
                                             </div>
                                             <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
                                                 <div class="txt-innerWrap">
-                                                    <md-checkbox [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
+                                                    <md-checkbox [checked]="panel.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
                                                     <div class="txt-label child-item">{{panel.investigation.name}}</div>
                                                 </div>
                                             </div>
@@ -80,7 +80,7 @@
                                     </div>
                                     <div *ngIf="!investigation.investigation.isPanel" class="list-item investigation">
                                         <div class="txt-innerWrap">
-                                            <md-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></md-checkbox>
+                                            <md-checkbox (change)="investigationChanged($event, investigation)" [(checked)]="investigation.isChecked"></md-checkbox>
                                             <div class="list-label">{{investigation.investigation.name}}</div>
                                         </div>
                                     </div>
