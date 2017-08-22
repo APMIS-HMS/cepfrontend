@@ -42,6 +42,7 @@ import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioButton
 } from '@angular/material';
+import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import {
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
+        LabCheckInComponent,
         // LabRequestsComponent, RequestDetailComponent
     ],
     exports: [

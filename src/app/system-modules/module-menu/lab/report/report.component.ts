@@ -1,6 +1,8 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationService, LaboratoryRequestService } from '../../../../services/facility-manager/setup/index';
+import { 
+  FacilitiesService, InvestigationService, LaboratoryRequestService, LaboratoryReportService
+ } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation } from '../../../../models/index';
@@ -14,6 +16,8 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 export class ReportComponent implements OnInit {
 
   selelctedFacility: Facility = <Facility>{};
+  selectedLab: any = {};
+  selectedWorkbench: any = {};
   apmisLookupUrl = 'patient';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
@@ -30,6 +34,8 @@ export class ReportComponent implements OnInit {
   patientSelected: boolean = false;
   loading: boolean = true;
   reportLoading: boolean = true;
+  pendingReLoading: boolean = true;
+  requests: any[] = [];
   pendingRequests: any[] = [];
   reports: any[] = [];
   hasRequest: boolean = false;
@@ -48,7 +54,9 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private _locker: CoolSessionStorage
+    private _locker: CoolSessionStorage,
+    private _laboratoryRequestService: LaboratoryRequestService,
+    private _laboratoryReportService: LaboratoryReportService
   ) {}
 
   ngOnInit() {
@@ -75,6 +83,9 @@ export class ReportComponent implements OnInit {
     });
 
     this.CheckIfSelectedPatient();
+    this._getAllReports();
+    this._getAllPendingRequests();
+    this.hasRequest = true;
   }
 
   createInvestigation(valid: boolean, value: any) {
@@ -87,6 +98,28 @@ export class ReportComponent implements OnInit {
     this.selectedPatient = value;
     this.CheckIfSelectedPatient();
     console.log(value);
+  }
+
+  private _getAllPendingRequests() {
+    this._laboratoryRequestService.find({
+      query: { 
+        facilityId: this.selelctedFacility._id, 
+        'lab.id': this.selectedLab.Id, 
+        'workbench.id': this.selectedWorkbench.id 
+      }
+    }).then(res => {
+      this.loading = false;
+      console.log(res);
+      this.pendingRequests = res.data;
+    }).catch(err =>  console.error(err));
+  }
+  
+  private _getAllReports() {
+    this._laboratoryReportService.findAll().then(res => {
+      this.reportLoading = false;
+      console.log(res);
+      this.reports = res.data;
+    }).catch(err =>  console.error(err));
   }
 
   private CheckIfSelectedPatient() {

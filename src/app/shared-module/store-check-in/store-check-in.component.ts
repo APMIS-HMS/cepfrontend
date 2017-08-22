@@ -23,7 +23,8 @@ export class StoreCheckInComponent implements OnInit {
 	stores: any[] = [];
 	locations: any[] = [];
 	loadIndicatorVisible = false;
-	constructor(public formBuilder: FormBuilder,
+	constructor(
+		public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
 		public facilityService: FacilitiesService,
 		public consultingRoomService: ConsultingRoomService,

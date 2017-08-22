@@ -17,6 +17,7 @@ export interface Employee {
     professionObject: any;
     consultingRoomCheckIn: any[];
     storeCheckIn: any[];
+    workbenchCheckIn: any[];
     workSpaces: any[];
     unitDetails:any[];
 }
