@@ -218,11 +218,25 @@ select, input{
     padding: 20px 0;
     margin-top: 10px;
 }
-.txt-innerWrap{
+.selected-list .txt-innerWrap{
     width: 50%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.list-item .txt-innerWrap{
+    display: block;
+}
+.panel-wrap .list-item .txt-innerWrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chkbox-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
 }
 .txt-label{
     font-size: 14px;
@@ -394,4 +408,15 @@ select, input{
 .selected-list, .investigation-list{
     max-height: 345px;
     overflow-y: auto;
+}
+.inner-radio{
+    margin-left: 40px;
+    font-size: 12px;
+}
+.opt{
+    margin: 10px;
+}
+.opt-price{
+    color: #ff2500;
+    margin-top: 5px;
 }
