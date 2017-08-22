@@ -23,6 +23,7 @@ import { MakePaymentComponent } from './supplier-manager/make-payment/make-payme
 import { PaymentHistoryComponent } from './supplier-manager/payment-history/payment-history.component';
 import { TransactionHistoryComponent } from './supplier-manager/transaction-history/transaction-history.component';
 import { StrengthManagerComponent } from './strength-manager/strength-manager.component';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { StrengthManagerComponent } from './strength-manager/strength-manager.co
     exports: [
     ],
     imports: [
-        SharedModule,
+        // SharedModule,
+        MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,

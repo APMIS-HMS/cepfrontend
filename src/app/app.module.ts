@@ -49,17 +49,17 @@ import { MaterialModule } from './shared-common-modules/material-module';
     ApmisCheckboxComponent
   ],
   exports: [
-    MaterialModule, 
+    // MaterialModule, 
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    // FormsModule,
     Routing,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     BrowserAnimationsModule,
     // ToastModule.forRoot(),
     // CoolStorageModule,
-    // MaterialModule,
+    MaterialModule,
     SingUpAccountsSharedModule
   ],
   providers: [

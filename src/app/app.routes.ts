@@ -41,4 +41,5 @@ const appRoutes: Routes = [
 ];
 
 // export default RouterModule.forRoot(appRoutes);
-export const Routing = RouterModule.forRoot(appRoutes, { useHash: true, preloadingStrategy: CustomPreloading });
+// export const Routing = RouterModule.forRoot(appRoutes, { useHash: true, preloadingStrategy: CustomPreloading });
+export const Routing = RouterModule.forRoot(appRoutes, { useHash: true});
