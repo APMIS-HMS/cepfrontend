@@ -508,8 +508,8 @@ select {
     cursor: pointer;
     position: absolute;
     z-index: 1;
-    top: 30px;
-    right: 30px;
+    top: 9px;
+    right: 9px;
     font-size: 16px;
     color: #8492a6;
     padding: 5px;
@@ -1385,4 +1385,42 @@ ul.topmenuwrap li:hover {
 .btns .btn-blue:hover {
     background: #0288D1;
     color: #fff;
+}
+
+/* secondary menu */
+
+
+/* second menu */
+* {
+	-webkit-transition-property: all;
+	-webkit-transition-duration: .2s;
+  -moz-transition-timing-function: cubic-bezier(100,50,21,6);
+	-moz-transition-property: all;
+  -moz-transition-timing-function: cubic-bezier(100,50,21,6);
+}
+
+
+.btning{
+    color: #0288d1;
+    background: transparent;
+    padding: 10px 20px;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.second-menu {
+    margin: 27px auto 0;
+    width: 700px;
+    text-align: center;
+}
+.btning:hover{
+  background:rgba(0, 0, 0, 0.4);
+  background:#fff;
+  padding:10px 20px;
+  color:#1b1b1b;
+  border: 1px solid #0288d1; 
+  cursor: pointer;
+  transition: ease-out;
+  transition-delay: .3s;
 }

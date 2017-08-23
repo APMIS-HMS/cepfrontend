@@ -1,7 +1,14 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
     <div class="facility-subTitle" (pageInView)="pageInViewLoader($event)">{{pageInView_subTitle}}</div>
-    <div class="inner-menu1-wrap responsive_nav-group">
+    <div  class="second-menu">
+        <a [routerLink]="['/dashboard/store/home']" class="btning">Store</a>
+        <a [routerLink]="['/dashboard/product-manager/products']" class="btning">Product</a>
+        <a [routerLink]="['/dashboard/purchase-manager/orders']" class="btning">Purchase</a>
+        <a [routerLink]="['/dashboard/inventory-manager/inventory']" class="btning">Inventory</a>
+        <a (click)="onChangeCheckedIn()" class="btning">CheckedIn</a>
+    </div>
+   <!-- <div class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
         <ul #closeWhenClick style="z-index: 7;" (focusout)="contentSecMenuToggle()" id="innerMenu-ul" *ngIf="contentSecMenuShow===true" class="innerMenu-ul shadow">
             <li [routerLink]="['/dashboard/store/home']">Manage Store</li>
@@ -10,7 +17,7 @@
             <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
             <li (click)="onChangeCheckedIn()">Change CheckedIn Store</li>
         </ul>
-    </div>
+    </div>-->
     <div class="inner-page-wrap">
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
