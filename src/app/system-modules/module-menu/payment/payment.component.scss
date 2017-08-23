@@ -375,3 +375,19 @@ select.form-control:not([size]):not([multiple]) {
 td:hover {
     cursor: pointer;
 }
+.graphs-wrap{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+}
+.graph-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24%;
+    height: auto;
+    padding: 10px;
+    border: 1px solid #f8f8f8;
+    box-sizing: border-box;
+}

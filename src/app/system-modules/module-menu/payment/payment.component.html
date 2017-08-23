@@ -1,5 +1,5 @@
 
-<div class="survery">
+<!-- <div class="survery">
     <div class="col-sm-3">
         1 - something here
     </div>
@@ -52,5 +52,56 @@
     </div>
     <div class="col-sm-3">
         3-something here
+    </div>
+</div> -->
+
+<div class="graphs-wrap">
+    <div class="graph-item">
+        <div style="display: block">
+            <canvas baseChart
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+        </div>
+    </div> 
+
+    <div class="graph-item">
+        <div style="display: block">
+            <canvas baseChart
+                    [data]="polarAreaChartData"
+                    [labels]="polarAreaChartLabels"
+                    [legend]="polarAreaLegend"
+                    [chartType]="polarAreaChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+        </div>
+    </div>
+
+    <div class="graph-item">
+        <div class="col-md-6">
+ 
+            <canvas baseChart
+                        [data]="lineChartData"
+                        [labels]="lineChartLabels"
+                        [options]="lineChartOptions"
+                        [chartType]="lineChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+        </div>
+    </div>
+
+    <div class="graph-item">
+        <div class="col-md-6">
+            <canvas baseChart
+                        [data]="pieChartData"
+                        [labels]="pieChartLabels"
+                        [chartType]="pieChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+        </div>
     </div>
 </div>
