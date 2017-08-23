@@ -1,6 +1,5 @@
 @import "../../../../../globals/variables.scss";
-
-.page-title{
+.page-title {
     text-align: center;
     position: relative;
     top: -20px;
@@ -23,9 +22,11 @@
     display: flex;
     align-items: center;
     margin: 0 auto;
-  }
+}
+
 
 /* end */
+
 .modal_title {
     font-family: "Josefin Sans", sans-serif;
     margin: 0px auto;
@@ -35,19 +36,23 @@
     text-align: center;
     margin-bottom: 10px;
 }
+
 form {
     margin: 0 auto;
 }
+
 .apmis-blue {
     color: #fff;
     background: #0288D1;
-    padding:7px;
+    padding: 7px;
 }
+
 a:hover {
     text-decoration: none;
 }
+
 .modal-close-ico {
-   cursor: pointer;
+    cursor: pointer;
     position: absolute;
     z-index: 1;
     top: 30px;
@@ -55,23 +60,77 @@ a:hover {
     font-size: 16px;
     color: #8492a6;
 }
+
 #example-full-width {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
-.tr-act-btn{
+
+.tr-act-btn {
     width: 48px;
     margin: 0 5px;
 }
+
 .padding-0 {
-    padding:0;
+    padding: 0;
 }
+
 .margin-top {
     margin-top: 20px;
 }
+
 textarea.mat-input-element {
     height: 23px;
 }
 
-.survery .panel-body{
-    padding: 50px;
+.survery .panel-body {
+    padding: 10px;
+}
+
+.mat-tab-group {
+    padding: 10px;
+    .mat-tab-body-wrapper {
+        padding: 10px;
+    }
+    .mat-tab-body-content {
+        padding: 10px;
+    }
+}
+
+.next-of-kin {
+    .mat-input-container {
+        width: 49%;
+        float: left;
+    }
+    .mat-select {
+        width: 100%;
+    }
+}
+
+.patient-detail-wrapper {
+    .mat-input-container {
+        width: 100%;
+        float: left;
+    }
+    .mat-select {
+        width: 100%;
+    }
+}
+
+.next-of-kin-body-wrapper,
+.patient-detail-wrapper {
+    margin-right: 1px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+    height: 350px;
+}
+
+.add-next-of-kin-box {
+    width: 100%;
+    text-align: right;
+    a {
+        cursor: pointer;
+        text-align: right;
+        font-size: 12px;
+    }
 }
