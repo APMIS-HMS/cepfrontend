@@ -172,26 +172,6 @@
 .billContentSect .tblBg td{
     border-bottom: 0.1px solid #F5F5F5;
 }
-thead{
-    font-size: 16px;
-    border-bottom: 2px solid #BDBDBD;
-}
-thead .col1{
-    font-weight: normal;
-}
-thead .col2, thead .col3, thead .col4, thead .col4-5, thead .col5{
-    font-weight: bold;
-}
-.col2, .col3, .col4, .col4-5, .col5{
-    text-align: center;
-}
-.col2, .col3, .col4, .col4-5, .col1{
-    cursor: pointer;
-}
-thead .col4, tbody .col4{
-    color: #fff;
-    background: #03A9F4;
-}
 .billContentSect tbody tr:hover{
     border-left: 5px solid #03A9F4
 }
@@ -375,19 +355,28 @@ select.form-control:not([size]):not([multiple]) {
 td:hover {
     cursor: pointer;
 }
-.graphs-wrap{
+.pg-wrap{
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    background: #f8f8f8;
     padding: 10px;
+}
+.content-wrap{
+    width: 67%;
+    height: 500px;
+    background: #fff;
+    margin-right: 10px;
+}
+.graphs-wrap{
+    width: 35%;
+    background: #fff;
 }
 .graph-item{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 24%;
-    height: auto;
     padding: 10px;
     border: 1px solid #f8f8f8;
     box-sizing: border-box;
+    margin-bottom: 10px;
 }
