@@ -18,7 +18,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	pageInView = 'Clinic Manager';
 	contentSecMenuShow = false;
 	modal_on = false;
-
+	pageInViewSmall = "Appointment";
 
 	clinicLocations: MinorLocation[] = [];
 	professions: Profession[] = [];
