@@ -1,5 +1,5 @@
 
-<div class="survery">
+<!-- <div class="survery">
     <div class="col-sm-3">
         1 - something here
     </div>
@@ -52,5 +52,315 @@
     </div>
     <div class="col-sm-3">
         3-something here
+    </div>
+</div> -->
+<div class="facility-title">Bills/Payment</div>
+<div class="pg-wrap">
+    <div class="content-wrap">
+        <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                    <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Date</span>
+                    </th>
+                    <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Patient</span>
+                    </th>
+                    <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Investigation</span>
+                    </th>
+                    <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Source</span>
+                    </th>
+                    <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Physician</span>
+                    </th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td colspan="10">
+                        <div class="tbl-actionRow">
+                            <!-- <div class="frm-item-wrap">
+                <apmis-lookup [(ngModel)]="apmisLookupText" 
+                url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
+                isSocket="false" displayKey="apmisLookupDisplayKey" 
+                (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            </div>
+
+            <div class="frm-item-wrap">
+                <apmis-lookup [(ngModel)]="apmisLookupText" 
+                    url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
+                    isSocket="false" displayKey="apmisLookupDisplayKey" 
+                    (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            </div>
+
+            <div class="frm-item-wrap">
+                <apmis-lookup [(ngModel)]="apmisLookupText" 
+                    url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
+                    isSocket="false" displayKey="apmisLookupDisplayKey" 
+                    (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            </div> -->
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11th Jan, 2017. 09:00AM</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Johnson Wade</div>
+                        </div>
+                    </td>
+                    <td>Blood Test</td>
+                    <td>EMT Clinic</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Solomon Jim</div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                            <div (click)="reqDetail()" class="action-item">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                <span>View Investigation</span>
+                            </div>
+
+                            <div class="action-item">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                <span>Write Report</span>
+                            </div>
+
+                            <div (click)="showImageBrowseDlg()" class="action-item">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload File</span>
+                            </div>
+                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11th Jan, 2017. 09:00AM</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Johnson Wade</div>
+                        </div>
+                    </td>
+                    <td>Blood Test</td>
+                    <td>EMT Clinic</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Solomon Jim</div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                            <div (click)="reqDetail()" class="action-item">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                <span>View Investigation</span>
+                            </div>
+
+                            <div class="action-item">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                <span>Write Report</span>
+                            </div>
+
+                            <div (click)="showImageBrowseDlg()" class="action-item">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload File</span>
+                            </div>
+                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11th Jan, 2017. 09:00AM</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Johnson Wade</div>
+                        </div>
+                    </td>
+                    <td>Blood Test</td>
+                    <td>EMT Clinic</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Solomon Jim</div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                            <div (click)="reqDetail()" class="action-item">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                <span>View Investigation</span>
+                            </div>
+
+                            <div class="action-item">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                <span>Write Report</span>
+                            </div>
+
+                            <div (click)="showImageBrowseDlg()" class="action-item">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload File</span>
+                            </div>
+                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11th Jan, 2017. 09:00AM</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Johnson Wade</div>
+                        </div>
+                    </td>
+                    <td>Blood Test</td>
+                    <td>EMT Clinic</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Solomon Jim</div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                            <div (click)="reqDetail()" class="action-item">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                <span>View Investigation</span>
+                            </div>
+
+                            <div class="action-item">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                <span>Write Report</span>
+                            </div>
+
+                            <div (click)="showImageBrowseDlg()" class="action-item">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload File</span>
+                            </div>
+                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11th Jan, 2017. 09:00AM</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Johnson Wade</div>
+                        </div>
+                    </td>
+                    <td>Blood Test</td>
+                    <td>EMT Clinic</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Solomon Jim</div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                            <div (click)="reqDetail()" class="action-item">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                <span>View Investigation</span>
+                            </div>
+
+                            <div class="action-item">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                <span>Write Report</span>
+                            </div>
+
+                            <div (click)="showImageBrowseDlg()" class="action-item">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload File</span>
+                            </div>
+                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="graphs-wrap">
+        <div class="graph-item">
+            <div style="display: block">
+                <canvas baseChart
+                        [datasets]="barChartData"
+                        [labels]="barChartLabels"
+                        [options]="barChartOptions"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+            </div>
+        </div> 
+
+        <div class="graph-item">
+            <div style="display: block">
+                <canvas baseChart
+                        [data]="polarAreaChartData"
+                        [labels]="polarAreaChartLabels"
+                        [legend]="polarAreaLegend"
+                        [chartType]="polarAreaChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+            </div>
+        </div>
     </div>
 </div>
