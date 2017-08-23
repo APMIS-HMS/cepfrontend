@@ -23,6 +23,7 @@ export class NewModefierComponent implements OnInit {
   selectedTag: Tag = <Tag>{};
   public frmNewmodefier: FormGroup;
 
+  
   constructor(private formBuilder: FormBuilder,
     private _tagService: TagService,
     private servicePriceService: ServicePriceService,
