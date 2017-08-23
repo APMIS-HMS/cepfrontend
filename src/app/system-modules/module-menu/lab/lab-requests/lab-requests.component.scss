@@ -292,6 +292,7 @@ select, input{
     box-sizing: border-box;
 }
 .selected-list {
+    position: relative;
     width: 39.5%;
     background: #f8f8f8;
     padding: 10px;
@@ -452,4 +453,11 @@ select, input{
     color: #777;
     font-size: 10px;
     cursor: pointer;
+}
+.sel-total {
+    width: 100%;
+    text-align: right;
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #ff2500;
 }
