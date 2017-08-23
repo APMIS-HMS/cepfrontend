@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { labRoutes } from './lab.routes';

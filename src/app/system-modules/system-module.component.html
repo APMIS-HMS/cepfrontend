@@ -47,9 +47,15 @@
         <span  class="roomLabel">Checked Into:</span>
         <span class="roomName">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</span>
     </div>
-    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'" class="inRoom">
+    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'"
+        class="inRoom">
         <span class="roomLabel">Checked Into:</span>
         <span class="roomName">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.storeObject?.name}}</span>
+    </div>
+    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'"
+        class="inRoom">
+        <span class="roomLabel">Checked Into:</span>
+        <span class="roomName">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.workbenchObject?.name}}</span>
     </div>
     </span>
 </div>

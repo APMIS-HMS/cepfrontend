@@ -24,6 +24,7 @@ import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lo
 import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup.component';
 import { ApmisLookupMultiselectComponent } from '../shared-module/apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
+import { LabCheckInComponent } from '../shared-module/lab-check-in/lab-check-in.component';
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
@@ -45,6 +46,7 @@ import { NgPipesModule } from 'ngx-pipes';
         PatientPrescriptionComponent,
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
+        LabCheckInComponent,
         ImageUpdateComponent,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
@@ -86,6 +88,7 @@ import { NgPipesModule } from 'ngx-pipes';
         CurrencyMaskModule,
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
+        LabCheckInComponent,
         MomentModule,
         ToastModule,
         CoolStorageModule,

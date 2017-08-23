@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationSpecimenService, InvestigationService } from '../../../../services/facility-manager/setup/index';
-import { Facility, MinorLocation } from '../../../../models/index';
+import { FacilitiesService, InvestigationSpecimenService, InvestigationService, FacilitiesServiceCategoryService } from '../../../../services/facility-manager/setup/index';
+import { Facility, MinorLocation, FacilityService } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
@@ -26,18 +26,22 @@ export class InvestigationServiceComponent implements OnInit {
   isNumeric = false;
   selectedFacility: Facility = <Facility>{};
   selectedInvestigation: any = <any>{};
+  selectedFacilityService: FacilityService = <FacilityService>{};
+  selectedServiceCategory: any = <any>{};
 
   reportTypes: any[] = ['Numeric', 'Text'];
   specimens: any[] = [];
   investigations: any[] = [];
   bindInvestigations: any[] = [];
   movedInvestigations: any[] = [];
+  categories: any[] = [];
 
   public frmNewInvestigationh: FormGroup;
   public frmNewPanel: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private specimenService: InvestigationSpecimenService,
-    private locker: CoolSessionStorage, private investigationService: InvestigationService, private dragulaService: DragulaService) {
+    private locker: CoolSessionStorage, private investigationService: InvestigationService, private dragulaService: DragulaService,
+    private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
     dragulaService.drag.subscribe((value) => {
       this.onDrag(value.slice(1));
     });
@@ -91,6 +95,7 @@ export class InvestigationServiceComponent implements OnInit {
     });
     this.getSpecimens();
     this.getInvestigations();
+    this.getServiceCategories();
   }
 
   getInvestigations() {
@@ -99,6 +104,19 @@ export class InvestigationServiceComponent implements OnInit {
       this.investigations = payload.data;
       this.bindInvestigations = payload.data;
     })
+  }
+  getServiceCategories() {
+    this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+      console.log(payload);
+      if (payload.data.length > 0) {
+        this.selectedFacilityService = payload.data[0];
+        this.categories = payload.data[0].categories;
+        const index = this.categories.findIndex(x => x.name === 'Laboratory');
+        this.selectedServiceCategory = this.categories[index];
+        console.log(this.categories);
+        console.log(this.selectedServiceCategory);
+      }
+    });
   }
   editInvestigation(investigation) {
     console.log(investigation)
@@ -123,7 +141,7 @@ export class InvestigationServiceComponent implements OnInit {
       this.investigation_view = true;
       this.pannel_view = false;
     } else {
-       this.selectedInvestigation = investigation;
+      this.selectedInvestigation = investigation;
       this.movedInvestigations = investigation.panel;
       let filteredArray = [];
       this.bindInvestigations.forEach((inv => {
@@ -195,6 +213,38 @@ export class InvestigationServiceComponent implements OnInit {
           investigation.reportType = reportType;
         }
         this.investigationService.create(investigation).then(payload => {
+
+
+          //
+          const service: any = <any>{};
+          service.name = value.name;
+          this.selectedFacilityService.categories.forEach((item, i) => {
+            if (item._id === value.categoryId) {
+              item.services.push(service);
+            }
+          });
+          this.facilityServiceCategoryService.update(this.selectedFacilityService).subscribe((payResult: FacilityService) => {
+            payResult.categories.forEach((itemi, i) => {
+              if (itemi._id === value.categoryId) {
+                itemi.services.forEach((items, s) => {
+                  if (items.name === service.name) {
+                    payload.serviceId = items._id;
+                    payload.facilityServiceId = this.selectedFacilityService._id;
+                    // this.productService.update(payload).then(result => {
+                    //   console.log(result);
+                    // });
+                  }
+                });
+              }
+            });
+          });
+
+          //
+
+
+
+
+
           this.frmNewInvestigationh.reset();
           this.frmNewInvestigationh.controls['isPanel'].setValue(false);
           this.investigations.push(payload);
@@ -253,7 +303,7 @@ export class InvestigationServiceComponent implements OnInit {
         this.selectedInvestigation.panel = this.movedInvestigations;
         console.log(this.selectedInvestigation);
         this.investigationService.update(this.selectedInvestigation).then(payload => {
-          this.pannel_view= false;
+          this.pannel_view = false;
           this.btnText = 'Create Panel';
           this.selectedInvestigation = <any>{};
           this.frmNewPanel.reset();

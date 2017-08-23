@@ -4,7 +4,6 @@
 <div>
     <div class="doc-mainWrap">
         <div class="doc-contentArea">
-
             <div class="clinicalNoteWrap">
                 <div class="actSect">
                     <div (click)="request_show()" class="act-wrap">
@@ -14,7 +13,6 @@
                     </div>
 
                     <form class="frmNoteWrap" *ngIf="request_view" [formGroup]="frmNewRequest" novalidate>
-
                         <div class="labBtn-wrap">
                             <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Register Patient</div>
                         </div>
@@ -143,12 +141,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="selected-list">
                                 <div class="sel-list-title">SELECTED INVESTIGATIONS</div>
-
                                 <div *ngFor="let investigation of bindInvestigations">
                                     <div *ngIf="investigation.investigation.isPanel" class="panel-wrap">
                                         <div class="panel-inner">
@@ -225,7 +221,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <button (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="cta-1">Make Request</button>
                     </form>
                 </div>

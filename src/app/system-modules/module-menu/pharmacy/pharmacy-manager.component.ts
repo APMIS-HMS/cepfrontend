@@ -17,27 +17,8 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 	storeTitle: String = '';
 	modal_on: boolean = false;
 	isStoreAvailable: boolean = false;
-	// pharmacyNavMenu = false;
-	// categoryNavMenu = false;
-	supplierNavMenu: boolean = false;
-	// manufacturerNavMenu = false;
-	// routeNavMenu = false;
-	// genericNavMenu = false;
-	// presentationNavMenu = false;
-	// strengthNavMenu = false;
-	// contentSecMenuShow = false;
-
-	// pharmacys page
-	// addPharmacy = false;
-	// pharmacyCat = false;
-	// generic = false;
-	// pharmacyRoute = false;
-	// manufacturer = false;
-	// presentation = false;
-	// strength = false;
-	// productCat = false;
-	productNavMenu = false;
-	// productRoute = false;
+	//supplierNavMenu: boolean = false;
+	//productNavMenu = false;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
 
@@ -47,19 +28,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		public facilityService: FacilitiesService,
 		private _employeeService: EmployeeService
-	) {
-		// this.facilityService.sliderAnnounced$.subscribe(value => {
-		// 	if (value === false) {
-		// 		this.addPharmacy = false;
-		// 		this.pharmacyCat = false;
-		// 		this.generic = false;
-		// 		this.pharmacyRoute = false;
-		// 		this.manufacturer = false;
-		// 		this.presentation = false;
-		// 	}
-
-		// })
-	}
+	) {}
 
 	ngOnInit() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
@@ -72,7 +41,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		} else {
 			let isOn = false;
 			this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-				if (itemr.isDefault === true) {
+				if (itemr.isDefault) {
 					itemr.isOn = true;
 					itemr.lastLogin = new Date();
 					isOn = true;
@@ -89,7 +58,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 					});
 				}
 			});
-			if (isOn === false) {
+			if (!isOn) {
 				this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
 					if (r === 0) {
 						itemr.isOn = true;
@@ -113,11 +82,14 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
-
 	}
 
 	close_onClick(message: boolean): void {
 		this.modal_on = false;
+	}
+
+	pageInViewLoader(title) {
+		this.pageInView = title;
 	}
 
 	ngOnDestroy() {
@@ -134,205 +106,4 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		this._employeeService.announceCheckIn(undefined);
 		this._locker.setObject('checkingObject', {});
 	}
-
-	// contentSecMenuToggle() {
-	// 	this.contentSecMenuShow = !this.contentSecMenuShow;
-	// }
-
-	// closeActivate(e) {
-	// 	if (e.srcElement.id !== 'contentSecMenuToggle') {
-	// 		this.contentSecMenuShow = false;
-	// 	}
-	// }
-
-	// onClickPharmacyNavMenu() {
-	// 	this.facilityService.announceSlider(false);
-	// 	this.pharmacyNavMenu = true;
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickCategoryNavMenu() {
-	// 	this.pharmacyNavMenu = false;
-	// 	this.categoryNavMenu = true;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickSupplierNavMenu() {
-	// 	// this.facilityService.announceSlider(false);
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = true;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickManufacturerNavMenu() {
-	// 	this.pharmacyNavMenu = false;
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = true;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickRouteNavMenu() {
-	// 	this.pharmacyNavMenu = false;
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = true;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickGenericNavMenu() {
-	// 	this.pharmacyNavMenu = false;
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = true;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickPresentationNavMenu() {
-	// 	this.pharmacyNavMenu = false;
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = true;
-	// 	this.strengthNavMenu = false;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	// onClickStrengthNavMenu() {
-	// 	this.pharmacyNavMenu = false;
-	// 	this.categoryNavMenu = false;
-	// 	this.supplierNavMenu = false;
-	// 	this.manufacturerNavMenu = false;
-	// 	this.routeNavMenu = false;
-	// 	this.genericNavMenu = false;
-	// 	this.presentationNavMenu = false;
-	// 	this.strengthNavMenu = true;
-	// 	this._pharmacyEventEmitter.announcedUrl.subscribe(url => {
-	// 		this.pageInView = url;
-	// 	});
-	// }
-
-	pageInViewLoader(title) {
-		this.pageInView = title;
-	}
-
-	// private checkPageUrl(param: string) {
-	// 	if (param.includes('pharmacys')) {
-	// 		this.pharmacyNavMenu = true;
-	// 	} else if (param.includes('categories')) {
-	// 		this.categoryNavMenu = true;
-	// 	} else if (param.includes('suppliers')) {
-	// 		this.supplierNavMenu = true;
-	// 	} else if (param.includes('manufacturers')) {
-	// 		this.manufacturerNavMenu = true;
-	// 	} else if (param.includes('routes')) {
-	// 		this.routeNavMenu = true;
-	// 	} else if (param.includes('generics')) {
-	// 		this.genericNavMenu = true;
-	// 	} else if (param.includes('presentations')) {
-	// 		this.presentationNavMenu = true;
-	// 	}
-	// }
-	// pharmacyCatSlide() {
-	// 	this.addPharmacy = false;
-	// 	this.pharmacyCat = true;
-	// 	this.generic = false;
-	// 	this.pharmacyRoute = false;
-	// 	this.manufacturer = false;
-	// 	this.presentation = false;
-	// 	this.strength = false;
-	// }
-	// genericSlide() {
-	// 	this.addPharmacy = false;
-	// 	this.pharmacyCat = false;
-	// 	this.generic = true;
-	// 	this.pharmacyRoute = false;
-	// 	this.manufacturer = false;
-	// 	this.presentation = false;
-	// 	this.strength = false;
-	// }
-	// presentationSlide() {
-	// 	this.addPharmacy = false;
-	// 	this.pharmacyCat = false;
-	// 	this.generic = false;
-	// 	this.pharmacyRoute = false;
-	// 	this.manufacturer = false;
-	// 	this.presentation = true;
-	// 	this.strength = false;
-	// }
-	// routeSlide() {
-	// 	this.addPharmacy = false;
-	// 	this.pharmacyCat = false;
-	// 	this.generic = false;
-	// 	this.pharmacyRoute = true;
-	// 	this.manufacturer = false;
-	// 	this.presentation = false;
-	// 	this.strength = false;
-	// }
-	// manufacturerSlide() {
-	// 	this.addPharmacy = false;
-	// 	this.pharmacyCat = false;
-	// 	this.generic = false;
-	// 	this.pharmacyRoute = false;
-	// 	this.manufacturer = true;
-	// 	this.presentation = false;
-	// 	this.strength = false;
-	// }
-
-	// strengthSlide() {
-	// 	this.addPharmacy = false;
-	// 	this.pharmacyCat = false;
-	// 	this.generic = false;
-	// 	this.pharmacyRoute = false;
-	// 	this.manufacturer = false;
-	// 	this.presentation = false;
-	// 	this.strength = true;
-	// }
-
 }

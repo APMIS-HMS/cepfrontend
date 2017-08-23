@@ -70,6 +70,14 @@
                                         </thead>
 
                                         <tbody>
+                                            <tr *ngIf="pendingRequests.length === 0 && !pendingReLoading">
+                                                <td class="table-content" colspan="7" style="text-align: center"> No data available in table</td>
+                                            </tr>
+                                            <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
+                                                <td class="table-content" colspan="7" style="text-align: center">
+                                                    <md-spinner class='small-spinner'></md-spinner>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td>
                                                     <div class="empWrap">
@@ -128,10 +136,10 @@
 
                             <div class="frm-r" [class.frm-container-r]="!patientSelected">
                                 <div *ngIf="!hasRequest" class="text-center" style="min-height: 300px;margin-top: 200px;">
-                                    <div *ngIf="pendingRequests.length === 0 && !loading">
+                                    <div *ngIf="requests.length === 0 && !loading">
                                         <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.personDetails?.personFullName }}</span>
                                     </div>
-                                    <div *ngIf="pendingRequests.length === 0 && loading">
+                                    <div *ngIf="requests.length === 0 && loading">
                                         <span class="table-content" colspan="5" style="text-align: center">
                                                 <md-spinner class='small-spinner'></md-spinner>
                                             </span>
