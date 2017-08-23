@@ -41,11 +41,13 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     const away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
-
-      .switchMap((term: Employee[]) => this.employeeService.searchEmployee(this.facility._id, this.searchControl.value, false));
+      .switchMap((term: Employee[]) => this.employeeService.searchEmployee(this.facility._id, this.searchControl.value, true));
 
 
     away.subscribe((payload: any) => {
+      console.log(this.searchControl.value);
+      console.log(this.facility._id);
+      console.log(payload);
       this.employees = payload.body;
     });
 

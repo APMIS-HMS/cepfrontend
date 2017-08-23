@@ -18,7 +18,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	pageInView = 'Clinic Manager';
 	contentSecMenuShow = false;
 	modal_on = false;
-
+	pageInViewSmall = "Appointment";
 
 	clinicLocations: MinorLocation[] = [];
 	professions: Profession[] = [];
@@ -53,7 +53,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-		this.clinicHelperService.getClinicMajorLocation();
+		// this.clinicHelperService.getClinicMajorLocation();
 		if (this.loginEmployee.professionObject !== undefined) {
 			if (this.loginEmployee.professionObject.name === 'Doctor'
 				&& (this.loginEmployee.consultingRoomCheckIn === undefined

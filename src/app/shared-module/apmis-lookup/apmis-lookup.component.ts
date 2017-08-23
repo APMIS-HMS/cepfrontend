@@ -121,7 +121,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
         var otherValues = [];
         let mainCounter = 0;
         let objItem = item;
-        console.log(this.otherKeys);
         this.otherKeys.forEach((key, i) => {
             var splitArray = key.split('.');
             let counter = 0;

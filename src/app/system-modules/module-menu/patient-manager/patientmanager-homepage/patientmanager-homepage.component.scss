@@ -67,6 +67,10 @@ a:hover {
 
 .tr-act-btn {
     width: 48px;
+}
+
+.tr-act-btn {
+    width: inherit;
     margin: 0 5px;
 }
 
@@ -133,4 +137,12 @@ textarea.mat-input-element {
         text-align: right;
         font-size: 12px;
     }
+}
+
+.survery .panel-body {
+    padding: 50px;
+}
+
+.wrapButton {
+    display: flex;
 }

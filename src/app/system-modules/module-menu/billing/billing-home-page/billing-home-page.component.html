@@ -24,9 +24,9 @@
             </thead>
             <tbody>
                 <tr *ngFor="let price of prices">
-                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.service.name}}</td>
-                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.category}}</td>
-                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price.price}}</td>
+                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price?.service?.name}}</td>
+                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price?.category}}</td>
+                    <td style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price?.price}}</td>
                     <td>
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i class="fa fa-trash" aria-hidden="true"></i>

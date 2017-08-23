@@ -1,31 +1,13 @@
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
-    <div class="first-menu">
-    <nav>
-        <a>Store</a>
-        <a>Product</a>
-        <a>Purchase</a>
-        <a>Inventory</a>
-        <div class="animation start-home"></div>
-    </nav>
-    </div>
     <div  class="second-menu">
-        <a class="btning">Store</a>
-        <a class="btning">Product</a>
-        <a class="btning">Purchase</a>
-        <a class="btning">Inventory</a>
+        <a [routerLink]="['/dashboard/store/home']" class="btning">Store</a>
+        <a [routerLink]="['/dashboard/product-manager/products']" class="btning">Product</a>
+        <a [routerLink]="['/dashboard/purchase-manager/orders']" class="btning">Purchase</a>
+        <a [routerLink]="['/dashboard/inventory-manager/inventory']" class="btning">Inventory</a>
     </div>
-    <div class="third" style="margin-top:40px;">
-        <ul class="snip1189">
-        <li class="current"><a>Store</a></li>
-        <li><a>Product</a></li>
-        <li><a>Purcase</a></li>
-        <li><a>Inventory</a></li>
-        </ul>
-    </div>
-
     <div class="inner-page-wrap">
-        <div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap">
+        <!--<div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap">
             <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
                 <li [routerLink]="['/dashboard/store/home']">Manage Store</li>
@@ -33,7 +15,7 @@
                 <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
                 <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
             </ul>
-        </div>
+        </div>-->
 
         <div class="inner-page-contentArea">
             <router-outlet class="menuContent"></router-outlet>

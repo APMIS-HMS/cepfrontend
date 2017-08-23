@@ -32,7 +32,11 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private route: ActivatedRoute, private employeeService: EmployeeService,
     private locker: CoolSessionStorage) { }
   ngAfterViewInit() {
-    this.searchControl.valueChanges.subscribe(searchText => {
+    this.searchControl.valueChanges
+    .debounceTime(400)
+    .distinctUntilChanged()
+    .subscribe(searchText => {
+      console.log(searchText);
       this.employeeManagerComponent.searchEmployees(searchText);
     });
   }

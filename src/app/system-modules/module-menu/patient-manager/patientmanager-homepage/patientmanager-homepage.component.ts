@@ -1,9 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 // tslint:disable-next-line:max-line-length
-import { 
-  PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService
- } from '../../../../services/facility-manager/setup/index';
-import { Facility, Patient, Gender, Relationship, Person, User } from '../../../../models/index';
+import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
+import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -25,6 +23,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
   facility: Facility = <Facility>{};
   user: User = <User>{};
+  loginEmployee: Employee = <Employee>{};
   patients: Patient[] = [];
   genders: Gender[] = [];
   relationships: Relationship[] = [];
@@ -79,12 +78,20 @@ export class PatientmanagerHomepageComponent implements OnInit {
       this.relationships = payload.data;
     })
   }
+  setAppointment(patient) {
+    if (patient !== undefined && this.loginEmployee !== undefined) {
+      this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
+    }
+
+  }
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.getGender();
     this.getRelationships();
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.getPatients(this.limit);
     this._getAllCountries();
     this._getAllTitles();

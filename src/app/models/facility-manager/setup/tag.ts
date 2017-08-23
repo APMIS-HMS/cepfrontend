@@ -4,4 +4,5 @@ export interface Tag {
     facilityId: string;
     createdBy: string;
     tagType: string;
+    tagDetails:any;
 }
