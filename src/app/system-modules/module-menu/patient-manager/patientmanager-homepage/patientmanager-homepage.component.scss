@@ -59,7 +59,7 @@ a:hover {
     margin-bottom: 10px;
 }
 .tr-act-btn{
-    width: 48px;
+    width: inherit;
     margin: 0 5px;
 }
 .padding-0 {
@@ -74,4 +74,7 @@ textarea.mat-input-element {
 
 .survery .panel-body{
     padding: 50px;
+}
+.wrapButton{
+    display: flex;
 }
