@@ -20,10 +20,11 @@
     align-items: center;
 }
 .frmArrayclinicWrap {
-    width: 354px;
+    width: 330px;
     border: 1px solid transparent;
     padding: 3px;
     margin-bottom: 12px;
+    overflow-x: hidden;
 }
 input, select {
     border: none;
