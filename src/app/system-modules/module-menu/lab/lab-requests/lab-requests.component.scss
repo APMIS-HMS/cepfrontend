@@ -219,13 +219,16 @@ select, input{
     margin-top: 10px;
 }
 .selected-list .txt-innerWrap{
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 .list-item .txt-innerWrap{
     display: block;
+}
+.selected-list .list-item .txt-innerWrap{
+    display: flex;
 }
 .panel-wrap .list-item .txt-innerWrap{
     display: flex;
@@ -234,7 +237,7 @@ select, input{
 }
 .chkbox-wrap{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     font-size: 12px;
 }
@@ -283,13 +286,13 @@ select, input{
     box-sizing: border-box;
 }
 .investigation-list {
-    width: 39.5%;
+    width: 59.5%;
     background: #f8f8f8;
     padding: 10px;
     box-sizing: border-box;
 }
 .selected-list {
-    width: 59.5%;
+    width: 39.5%;
     background: #f8f8f8;
     padding: 10px;
     box-sizing: border-box;
@@ -339,6 +342,10 @@ select, input{
     border: 1px solid transparent;
     margin-bottom: 10px;
 }
+.selected-list .investigation{
+    padding-right: 20px;
+    position: relative;
+}
 .investigation:hover{
     border: 1px solid #eee;
 }
@@ -356,6 +363,8 @@ select, input{
     background: #eee;
     cursor: pointer;
     border: 1px solid transparent;
+    padding-right: 20px;
+    position: relative;
 }
 .panel:hover{
     border: 1px solid #fff;
@@ -367,6 +376,10 @@ select, input{
 .selected-list .child-list{
     display: block;
     margin-left: 20px;
+    padding-right: 20px;
+}
+.chkbox-wrap .child-item{
+    color: #000;
 }
 .child-item {
     font-size: 12px;
@@ -422,4 +435,21 @@ select, input{
 }
 .panel-loc{
     background: #f8f8f8;
+}
+.child-list .opt-inner{
+    font-size: 12px;
+    display: flex;
+    align-items: center
+}
+.child-list .opt-price{
+    margin-top: 0;
+    margin-left: 10px;
+}
+.close{
+    position: absolute;
+    right: 4px; 
+    top: 4px;
+    color: #777;
+    font-size: 10px;
+    cursor: pointer;
 }

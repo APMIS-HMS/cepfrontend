@@ -84,6 +84,11 @@
                                                                 <div class="opt-price"><span>&#x20a6;</span>30,000</div>
                                                             </div>
                                                         </md-radio-button>
+                                                        <md-radio-button class="opt" value="1">
+                                                            <div class="opt-inner">
+                                                                <div>External</div>
+                                                            </div>
+                                                        </md-radio-button>
                                                     </md-radio-group>
                                                 </div>
                                             </div>
@@ -92,24 +97,14 @@
                                                 <div class="txt-innerWrap">
                                                     <div class="chkbox-wrap">
                                                         <md-checkbox [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
-                                                        <div class="txt-label child-item">{{panel.investigation.name}}</div>
+                                                        <div class="child-item">{{panel.investigation.name}}</div>
                                                     </div>
 
                                                     <div class="inner-radio">
-                                                        <md-radio-group>
-                                                            <md-radio-button class="opt" value="1">
-                                                                <div class="opt-inner">
-                                                                    <div>Legacy Lab</div>
-                                                                    <div class="opt-price"><span>&#x20a6;</span>30,000</div>
-                                                                </div>
-                                                            </md-radio-button>
-                                                            <md-radio-button value="2">
-                                                                <div class="opt-inner">
-                                                                    <div>Legacy Lab</div>
-                                                                    <div class="opt-price"><span>&#x20a6;</span>30,000</div>
-                                                                </div>
-                                                            </md-radio-button>
-                                                        </md-radio-group>
+                                                        <div class="opt-inner">
+                                                            <div>Legacy Lab</div>
+                                                            <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,6 +131,11 @@
                                                             <div class="opt-price"><span>&#x20a6;</span>30,000</div>
                                                         </div>
                                                     </md-radio-button>
+                                                    <md-radio-button class="opt" value="1">
+                                                        <div class="opt-inner">
+                                                            <div>External</div>
+                                                        </div>
+                                                    </md-radio-button>
                                                 </md-radio-group>
                                             </div>
                                         </div>
@@ -152,13 +152,13 @@
                                                 <div class="txt-innerWrap item-bi-sect">
                                                     <div class="txt-label list-label">{{investigation.investigation.name}}</div>
                                                 </div>
-                                                <div class="txt-wrap actions-wrapa item-bi-sect">
-                                                    <div class="txt-innerWrap">
+                                                 <div class="txt-wrap actions-wrapa item-bi-sect">
+                                                    <!-- <div class="txt-innerWrap">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
                                                             <md-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></md-checkbox>
                                                         </div>
-                                                    </div>
+                                                    </div>  -->
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
@@ -167,6 +167,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="close">X</div>
                                             </div>
 
                                         </div>
@@ -177,12 +178,12 @@
                                                 </div>
 
                                                 <div class="txt-wrap actions-wrapa item-bi-sect">
-                                                    <div class="txt-innerWrap">
+                                                    <!-- <div class="txt-innerWrap">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
                                                             <md-checkbox (change)="externalChanged($event, panel)" [checked]="investigation.isExternal"></md-checkbox>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
@@ -201,12 +202,12 @@
                                         </div>
 
                                         <div class="txt-wrap actions-wrapa item-bi-sect">
-                                            <div class="txt-innerWrap">
+                                            <!-- <div class="txt-innerWrap">
                                                 <div class="txt-label">External</div>
                                                 <div class="txt-val">
                                                     <md-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></md-checkbox>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="txt-innerWrap">
                                                 <div class="txt-label">Urgent</div>
@@ -215,6 +216,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="close">X</div>
                                     </div>
                                 </div>
                             </div>

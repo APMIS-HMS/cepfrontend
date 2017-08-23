@@ -14,6 +14,7 @@ import { BillLookupComponent } from './bill-lookup/bill-lookup.component';
 import { BillGroupComponent } from './bill-lookup/bill-group/bill-group.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { MakePaymentComponent } from './make-payment/make-payment.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { MakePaymentComponent } from './make-payment/make-payment.component';
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
-        paymentRoutes
+        paymentRoutes,
+        ChartsModule
     ],
     providers: []
 })

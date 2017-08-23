@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-family',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FamilyComponent implements OnInit {
 
+  search: FormControl;
+  selectHmo: FormControl;
+
   constructor() { }
 
   ngOnInit() {
+    this.search = new FormControl('', []);
+    this.selectHmo = new FormControl('', []);
   }
 
 }
