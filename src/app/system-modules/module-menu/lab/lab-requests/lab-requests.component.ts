@@ -228,48 +228,48 @@ export class LabRequestsComponent implements OnInit {
           }
         } else {
           // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
-          
+
           // });
-            // console.log(pay);
-            console.log('first in')
-            // without child investigation
-            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
-            const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
-            if (isInBind > -1) {
-              if ($event.checked) {
-                // investigation.isChecked = true;
-                console.log('in')
-                console.log(this.bindInvestigations[isInBind].investigation.panel)
-                console.log(copyInvestigation.investigation.panel)
-                investigation.investigation.panel.forEach((child, k) => {
-                  if (this.bindInvestigations[isInBind].investigation.panel
-                    .findIndex(x => x.investigation._id === child.investigation._id) < 0) {
-                    console.log('ininin')
-                    child.isChecked = true;
-                    console.log(child)
-                    // this.bindInvestigations[isInBind].investigation.panel.push(child);
-                    if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
-                      investigation.isChecked = true;
-                    } else {
-                      investigation.isChecked = false;
-                    }
-                  }
-                })
-              }
-            } else {
-              investigation.isChecked = true;
-              let copyInvestigation = JSON.parse(JSON.stringify(investigation));
-              // this.bindInvestigations.push(copyInvestigation);
-              // check all children
-              console.log('check all children')
-              if (investigation.investigation.isPanel) {
-                investigation.investigation.panel.forEach((child, k) => {
-                  console.log(child);
+          // console.log(pay);
+          console.log('first in')
+          // without child investigation
+          let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+          const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
+          if (isInBind > -1) {
+            if ($event.checked) {
+              // investigation.isChecked = true;
+              console.log('in')
+              console.log(this.bindInvestigations[isInBind].investigation.panel)
+              console.log(copyInvestigation.investigation.panel)
+              investigation.investigation.panel.forEach((child, k) => {
+                if (this.bindInvestigations[isInBind].investigation.panel
+                  .findIndex(x => x.investigation._id === child.investigation._id) < 0) {
+                  console.log('ininin')
                   child.isChecked = true;
-                });
-              }
+                  console.log(child)
+                  // this.bindInvestigations[isInBind].investigation.panel.push(child);
+                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                    investigation.isChecked = true;
+                  } else {
+                    investigation.isChecked = false;
+                  }
+                }
+              })
             }
-            // investigation.LaboratoryWorkbenches = pay.LaboratoryWorkbenches;
+          } else {
+            investigation.isChecked = true;
+            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            // this.bindInvestigations.push(copyInvestigation);
+            // check all children
+            console.log('check all children')
+            if (investigation.investigation.isPanel) {
+              investigation.investigation.panel.forEach((child, k) => {
+                console.log(child);
+                child.isChecked = true;
+              });
+            }
+          }
+          // investigation.LaboratoryWorkbenches = pay.LaboratoryWorkbenches;
 
 
         }
@@ -317,10 +317,12 @@ export class LabRequestsComponent implements OnInit {
   }
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
+    console.log('in')
+    console.log($event)
     if ($event.checked) {
       if (investigation.investigation.isPanel) {
         // isPanel
-
+        console.log('is my')
       } else {
         // checked without panel
         // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
@@ -346,9 +348,12 @@ export class LabRequestsComponent implements OnInit {
       // console.log('uncheck panel')
       if (investigation.investigation.isPanel) {
         investigation.investigation.panel.forEach((child, k) => {
-          child.isChecked = false;
+          child.isChecked = true;
         });
-        investigation.isChecked = false;
+        // investigation.isChecked = false;
+        investigation.location = location;
+        console.log(location)
+        this.bindInvestigations.push(investigation);
       } else {
         console.log('move');
 
@@ -376,6 +381,24 @@ export class LabRequestsComponent implements OnInit {
     }))
     return retVal;
   }
+  IsParentChecked(investigation, panel) {
+    return this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id) > -1;
+
+  }
+  getParentLocation(investigation) {
+    const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    if(index > -1){
+      return this.bindInvestigations[index].location.laboratoryId.name;
+    }
+    return '';
+  }
+  getChildPriceBasedOnParentLocation(investigation, panel){
+    const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    if(index > -1){
+     let parentLocation = this.bindInvestigations[index].location.laboratoryId;
+     console.log(parentLocation)
+    }
+  }
   removeBindingInvestigation(investigation: InvestigationModel) {
     investigation.isChecked = false;
     const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -393,7 +416,10 @@ export class LabRequestsComponent implements OnInit {
       }
 
       investigation.isExternal = true;
-      this.bindInvestigations.push(investigation);
+      let copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+      delete copyBindInvestigation.LaboratoryWorkbenches;
+      delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
+      this.bindInvestigations.push(copyBindInvestigation);
     } else {
       const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
       console.log(indexToRemove);
@@ -429,7 +455,8 @@ export class LabRequestsComponent implements OnInit {
 
 
     let copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
-    copyBindInvestigation.forEach((item, i) => {
+    let readyCollection:any [] = [];
+    copyBindInvestigation.forEach((item: InvestigationModel, i) => {
       if (item.investigation.isPanel) {
         delete item.isChecked;
         item.investigation.panel.forEach((panel, j) => {
@@ -437,10 +464,14 @@ export class LabRequestsComponent implements OnInit {
         })
       } else {
         delete item.isChecked;
+        delete item.LaboratoryWorkbenches;
+        delete item.location;
+       readyCollection.push(item.investigation);
       }
     })
 
     console.log(copyBindInvestigation);
+    console.log(readyCollection);
     console.log(this.bindInvestigations);
     let request: any = {
       facilityId: selectedFacility,
@@ -448,7 +479,7 @@ export class LabRequestsComponent implements OnInit {
       labNumber: this.frmNewRequest.controls['labNo'].value,
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
       diagnosis: this.frmNewRequest.controls['diagnosis'].value,
-      investigations: copyBindInvestigation
+      investigations: readyCollection
     }
     console.log(request);
     this.requestService.create(request).then(payload => {

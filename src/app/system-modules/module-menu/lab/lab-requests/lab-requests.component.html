@@ -71,24 +71,22 @@
 
                                             <div class="panel-loc" *ngIf="investigation.isChecked">
                                                 <div class="inner-radio">
-                                                    <md-radio-group>
-                                                        <md-radio-button class="opt" value="1" *ngFor="let location of investigation.LaboratoryWorkbenches">
+
+                                                    <md-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</md-checkbox>
+                                                    <md-radio-group *ngIf="!investigation.isExternal">
+                                                        <md-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
+                                                            value="location" [checked]="false">
                                                             <div class="opt-inner">
                                                                 <div>{{location.laboratoryId.name}}</div>
                                                                 <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
                                                             </div>
                                                         </md-radio-button>
                                                     </md-radio-group>
-                                                    <md-radio-button class="opt" value="1">
-                                                        <div class="opt-inner">
-                                                            <div>External</div>
-                                                        </div>
-                                                    </md-radio-button>
                                                 </div>
                                             </div>
 
                                             <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
-                                                <div class="txt-innerWrap">
+                                                <div class="txt-innerWrap" *ngIf="IsParentChecked(investigation, panel)">
                                                     <div class="chkbox-wrap">
                                                         <md-checkbox [checked]="panel.investigation.isChecked" (change)="investigationChanged($event, investigation, panel,true)"></md-checkbox>
                                                         <div class="child-item">{{panel.investigation.name}}</div>
@@ -96,8 +94,8 @@
 
                                                     <div class="inner-radio">
                                                         <div class="opt-inner">
-                                                            <div>Legacy Lab</div>
-                                                            <div class="opt-price"><span>&#x20a6;</span>30,000</div>
+                                                            <div>{{getParentLocation(investigation)}}</div>
+                                                            <div class="opt-price"><span>&#x20a6;</span>{{getChildPriceBasedOnParentLocation(investigation, panel)}}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,8 +110,7 @@
                                             </div>
 
                                             <div class="inner-radio" *ngIf="investigation.isChecked">
-                                                <md-checkbox  (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</md-checkbox>
-                                                <!-- <div class="list-label"></div> -->
+                                                <md-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</md-checkbox>
                                                 <md-radio-group *ngIf="!investigation.isExternal">
                                                     <md-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
                                                         value="location" [checked]="false">
