@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
   templateUrl: './make-payment.component.html',
   styleUrls: ['./make-payment.component.scss']
 })
+
 export class MakePaymentComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
