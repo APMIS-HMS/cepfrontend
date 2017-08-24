@@ -6,16 +6,15 @@
     justify-content: space-between;
 }
 .scrollable{
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .feedsWrap{
     width: 330px;
-    background: #eee;
 }
 .feedbox{
-    background: #F4F6F7;
     width: 100%;
     margin-bottom: 10px;
+    border: 1px solid #777;
 }
 .feedbox_x1{
     min-height: 200px;
@@ -362,7 +361,7 @@ td:hover {
     padding: 10px;
 }
 .content-wrap{
-    width: 67%;
+    width: 100%;
     height: 500px;
     background: #fff;
     margin-right: 10px;
@@ -379,4 +378,10 @@ td:hover {
     border: 1px solid #f8f8f8;
     box-sizing: border-box;
     margin-bottom: 10px;
+}
+.frm-item-wrap{
+    width: 40%;
+}
+.tbl-actionRow{
+    height: 45px;
 }

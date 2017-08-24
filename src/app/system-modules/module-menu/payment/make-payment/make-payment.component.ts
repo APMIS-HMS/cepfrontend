@@ -16,16 +16,12 @@ export class MakePaymentComponent implements OnInit {
   success = false;
   public frmMakePayment: FormGroup;
 
+  channel = new FormControl('', []);
+  amount = new FormControl('', []);
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.addNew();
-  }
-
-  addNew() {
-    this.frmMakePayment = this.formBuilder.group({
-      amountInput: ['', [<any>Validators.required]]
-    });
   }
 
   close_onClick() {
