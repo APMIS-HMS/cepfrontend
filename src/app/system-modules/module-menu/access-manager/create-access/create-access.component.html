@@ -1,14 +1,18 @@
 <div (click)="innerMenuHide($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">User Access Manager</div>
-
-    <div class="inner-menu1-wrap">
+    <div class="second-menu">
+            <a [routerLink]="['/dashboard/access-manager/access-manager']" class="btning"> Users</a>
+            <a [routerLink]="['/dashboard/access-manager/access']" class="btning"> Access Definations</a>
+            <a [routerLink]="['/dashboard/access-manager/new-access']" class="btning"> Create Access</a>
+    </div>
+    <!--<div class="inner-menu1-wrap">
         <i id="submenu_ico" (click)="innerMenuToggle()" class="innerMenu-icon fa fa-bars" aria-hidden="true"></i>
         <ul *ngIf="innerMenuShow" class="innerMenu-ul shadow">
             <li [routerLink]="['/dashboard/access-manager/access-manager']"><i class="fa fa-users" aria-hidden="true"></i> Users</li>
             <li [routerLink]="['/dashboard/access-manager/access']"><i class="fa fa-eye" aria-hidden="true"></i> Access Definations</li>
             <li [routerLink]="['/dashboard/access-manager/new-access']"><i class="fa fa-plus" aria-hidden="true"></i> Create Access</li>
         </ul>
-    </div>
+    </div>-->
 
     <div class="inner-page-wrap">
         <div>

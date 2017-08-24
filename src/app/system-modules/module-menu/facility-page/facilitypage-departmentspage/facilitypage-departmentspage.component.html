@@ -1,14 +1,16 @@
  <div class="page-title">Departments</div>
+ <div class="second-menu-c">
+        <a (click)="newDeptModal_show()" class="btning">New Department</a>
+       <!-- <a (click)="deptHomeContentArea_show()" class="btning">View Departments</a>-->
+</div>
 <div (click)="innerMenuHide($event)">
-    <div class="inner-menu1-wrap">
-        <i id="submenu_ico" (click)="innerMenuToggle()" class="innerMenu-icon fa fa-bars" aria-hidden="true"></i>
+    <!--  <div class="inner-menu1-wrap">
+       <i id="submenu_ico" (click)="innerMenuToggle()" class="innerMenu-icon fa fa-bars" aria-hidden="true"></i>
         <ul *ngIf="innerMenuShow" class="innerMenu-ul shadow">
-            <!--<li>View Units</li>
-          <li>New Unit</li> -->
             <li (click)="newDeptModal_show()">New Department</li>
             <li (click)="deptHomeContentArea_show()">View Departments</li>
         </ul>
-    </div> 
+    </div> -->
     
     <ul *ngIf="deptHomeContentArea">
         <li *ngFor="let depts of deptsObj; let i = even; let k = odd"> 
