@@ -26,10 +26,14 @@ export class WorkbenchComponent implements OnInit {
   selectedWorkBench: any = <any>{};
 
   workbench_view = false;
+  Active = true;
+  Inactive = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
   btnText = 'Create Workbench';
+  reqDetail_view = false;
+  personAcc_view = false
 
   public frmNewWorkbench: FormGroup;
 

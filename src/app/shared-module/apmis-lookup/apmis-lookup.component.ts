@@ -37,10 +37,10 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     @Input() displayImage = false;
     @Output() selectedItem = new EventEmitter();
     public _socket;
-    private _rest;
-    private valueString = "";
-    private valueParseError: boolean;
-    private data: any;
+    public _rest;
+    public valueString = "";
+    public valueParseError: boolean;
+    public data: any;
     searchText = '';
     showCuDropdown = false;
     cuDropdownLoading = false;
@@ -65,6 +65,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
             .switchMap(value => this.filter({ query: this.query }, this.isSocket))
             .subscribe((payload: any) => {
                 this.cuDropdownLoading = false;
+                console.log(payload);
                  if (payload !== undefined && payload.data !== undefined) {
                     this.results = payload.data;
                 } else {
@@ -191,7 +192,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     public registerOnTouched() { }
 
     // change events from the textarea
-    private onChange(event) {
+    public onChange(event) {
 
         // get value from text area
         const newValue = event.target.value;
@@ -209,6 +210,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
     }
 
     // the method set in registerOnChange to emit changes back to the form
-    private propagateChange = (_: any) => { };
+    public propagateChange = (_: any) => { };
 
 }

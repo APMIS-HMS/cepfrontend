@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
   templateUrl: './make-payment.component.html',
   styleUrls: ['./make-payment.component.scss']
 })
+
 export class MakePaymentComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -13,19 +14,15 @@ export class MakePaymentComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
   InvoiceTotal = 5000;
-
+  success = false;
   public frmMakePayment: FormGroup;
+
+  channel = new FormControl('', []);
+  amount = new FormControl('', []);
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.addNew();
-  }
-
-  addNew() {
-    this.frmMakePayment = this.formBuilder.group({
-      amountInput: ['', [<any>Validators.required]]
-    });
   }
 
   close_onClick() {

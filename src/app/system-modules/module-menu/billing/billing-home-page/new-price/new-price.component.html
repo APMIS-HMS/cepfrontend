@@ -33,8 +33,9 @@
                     Add price to list
                 </button>
             </div> -->
-            <form [formGroup]="frmNewprice2" class="form-horizontal list-div" (ngSubmit)="onSubmit()">
+            <form [formGroup]="frmNewprice2" class="form-horizontal list-div">
                 <div formArrayName="priceArray" class="frmArrayWrap">
+                        <!-- *ngFor="let schedule of clinicScheduleForm.controls['clinicScheduleArray'].controls -->
                     <div class="frmArray" *ngFor="let schedule of frmNewprice2.controls['priceArray'].controls; let i = index;">
                         <!-- <div (click)="closeClinicSchedule(schedule, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div> -->
                         <div formGroupName="{{i}}">

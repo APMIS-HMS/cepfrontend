@@ -3,7 +3,7 @@
     <div class="lhsInnerFrm">
         <div class="sect-title">Add Clinic Schedule</div>
         <div class="dx-fieldset">
-            <form action="/Login" method="post">
+            <form>
                 <div class="frmitemwrap">
                     <md-select placeholder="Clinic" [formControl]="locationTypeControl">
                         <md-option *ngFor="let clinic of clinics" [value]="clinic">{{ clinic.clinicName }}</md-option>

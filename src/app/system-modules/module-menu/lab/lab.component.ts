@@ -25,6 +25,7 @@ export class LabComponent implements OnInit, OnDestroy {
   panelContentArea = false;
   reportContentArea = false;
   externalContentArea = false;
+  checkedInObject:any;
 
   constructor(
     private _router: Router,
@@ -50,6 +51,7 @@ export class LabComponent implements OnInit, OnDestroy {
           x.lastLogin = new Date();
           isOn = true;
           let checkingObject = { typeObject: x, type: 'workbench' };
+          this.checkedInObject = checkingObject;
           this._employeeService.announceCheckIn(checkingObject);
           // Set page title
           this.isWorkbenchAvailable = true;
@@ -57,6 +59,7 @@ export class LabComponent implements OnInit, OnDestroy {
           this._employeeService.update(this.loginEmployee).then(res => {
             this.loginEmployee = res;
             checkingObject = { typeObject: x, type: 'workbench' };
+            this.checkedInObject = checkingObject;
             this._employeeService.announceCheckIn(checkingObject);
             this._locker.setObject('workbenchCheckingObject', checkingObject);
           });
@@ -74,6 +77,7 @@ export class LabComponent implements OnInit, OnDestroy {
             this._employeeService.update(this.loginEmployee).then(payload => {
               this.loginEmployee = payload;
               const checkingObject = { typeObject: x, type: 'store' };
+              this.checkedInObject = checkingObject;
               this._employeeService.announceCheckIn(checkingObject);
               this._locker.setObject('workbenchCheckingObject', checkingObject);
             });
@@ -157,6 +161,7 @@ export class LabComponent implements OnInit, OnDestroy {
   
   ngOnDestroy() {
 		this._employeeService.announceCheckIn(undefined);
-		this._locker.setObject('workbenchCheckingObject', {});
+    this._locker.setObject('workbenchCheckingObject', {});
+    this.checkedInObject = {};
 	}
 }

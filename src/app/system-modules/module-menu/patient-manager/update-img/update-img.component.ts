@@ -13,7 +13,10 @@ import { NgUploaderOptions } from 'ngx-uploader';
 export class UpdateImgComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  cropperSettings: any;
+  data: any;
+  uploadEvents: any;
+  options:any;
   constructor() { }
 
   ngOnInit() {
@@ -22,5 +25,19 @@ export class UpdateImgComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+  handleUpload(e) {
 
+  }
+  fileChangeListener(e) {
+
+  }
+  cropped($event) {
+
+  }
+  uploadButton() {
+
+  }
+  beforeUpload(e) {
+
+  }
 }

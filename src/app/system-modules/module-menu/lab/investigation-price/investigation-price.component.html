@@ -94,45 +94,17 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>Smithy Laboratory</td>
-                                <td>B1 Workbench</td>
-                                <td>Siclosiindii Bricolli Level</td>
-                                <td>&#x20a6; 2,000</td>
+                            <tr *ngFor="let price of investigations">
+                                <td>{{getLaboratoryFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>{{getWorkbenchFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>{{price.name}}</td>
+                                <td>&#x20a6; {{gePriceFromInvestigation(price.LaboratoryWorkbenches)}}</td>
                                 <td>Active</td>
                                 <td>11th July, 2017.</td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="reqDetail()" class="action-item">
-                                            <i class="fa fa-edit" aria-hidden="true"></i>
-                                            <span>Edit</span>
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                            <span>Delete</span>
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-ban" aria-hidden="true"></i>
-                                            <span>Deactivate</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Smithy Laboratory</td>
-                                <td>B1 Workbench</td>
-                                <td>Siclosiindii Bricolli Level</td>
-                                <td>&#x20a6; 2,000</td>
-                                <td>Active</td>
-                                <td>11th July, 2017.</td>
-                                <td class="action-placeholder">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="reqDetail()" class="action-item">
+                                        <div (click)="reqDetail(price)" class="action-item">
                                             <i class="fa fa-edit" aria-hidden="true"></i>
                                             <span>Edit</span>
                                         </div>
