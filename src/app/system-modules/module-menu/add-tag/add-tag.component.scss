@@ -1,15 +1,16 @@
 @import "../billing/billing-home-page/billing-home-page.component.scss";
-
 .mat-raised-button {
     max-width: 200px;
-    text-align: center;
+    text-align: right;
     background: #153d70;
     color: #fff;
 }
-#example-full-width[_ngcontent-c7] {
-    text-align: left;
-    margin-left: 10px;
+
+.example-full-width {
+    text-align: right;
+    margin-right: -10px;
 }
+
 i.fa.fa-search {
     padding: 3px;
     margin-left: -2px;
@@ -17,4 +18,8 @@ i.fa.fa-search {
     border: none;
     margin-left: -17px;
     color: rgba(0, 0, 0, 0.5);
+}
+
+.mat-input-container {
+    margin-bottom: -15px;
 }
