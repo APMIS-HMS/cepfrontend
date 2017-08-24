@@ -14,7 +14,10 @@ import { Router } from '@angular/router';
 })
 export class AccessManagerComponent implements OnInit {
 
+  accessUsers = true;
+
   searchControl = new FormControl();
+
 
   innerMenuShow = false;
   selectedFacility: Facility = <Facility>{};
@@ -54,6 +57,9 @@ export class AccessManagerComponent implements OnInit {
     if (e.srcElement.id !== 'submenu_ico') {
       this.innerMenuShow = false;
     }
+  }
+  styleUsers() {
+    this.accessUsers = true;
   }
 
   // onScroll() {

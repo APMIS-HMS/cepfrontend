@@ -2,7 +2,7 @@
   <div class="facility-title">User Access Manager</div>
     
   <div class="second-menu">
-      <a [routerLink]="['/dashboard/access-manager/access-manager']" class="btning"> Users</a>
+      <a (click)="styleUsers()" [class.menuActive]="accessUsers" [routerLink]="['/dashboard/access-manager/access-manager']" class="btning"> Users</a>
       <a [routerLink]="['/dashboard/access-manager/access']" class="btning"> Access Definations</a>
       <a [routerLink]="['/dashboard/access-manager/new-access']" class="btning"> Create Access</a>
   </div>
