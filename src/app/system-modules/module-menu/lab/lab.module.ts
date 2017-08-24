@@ -12,15 +12,16 @@ import { PanelComponent } from './panel/panel.component';
 import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
 import { ReportComponent } from './report/report.component';
 import { ReportDetailComponent } from './report/report-detail/report-detail.component';
+import { ExternalInvestigationsComponent } from './external-investigations/external-investigations.component';
 
 @NgModule({
   imports: [
-    // CommonModule,
+    //CommonModule,
     labRoutes,
     // SharedModule,
     MaterialModule
   ],
-  declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent],
+  declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent, ExternalInvestigationsComponent],
   providers:[WorkbenchService, LaboratoryRequestService]
 })
 export class LabModule { }
