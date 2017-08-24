@@ -98,86 +98,118 @@
             <form class="form-signin">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6 col-md-offset-3">
+                        <div class="col-md-8 col-md-offset-2">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
                                     <legend class="modal_title">Edit Patient</legend>
-                                    <form class="form form-signup" role="form">
-                                        <md-tab-group>
-                                            <md-tab label="Patient">
-                                                <!--<input type="text" class="form-control" placeholder="Full Name" />-->
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-input-container class="example-full-width">
-                                                        <input mdInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="selectedPatient.firstName">
-                                                    </md-input-container>
+                                    <form class="form form-signup" role="form" [formGroup]="patientEditForm">
+                                        <md-tab-group style="padding: 10px;">
+                                            <md-tab label="Patient" style="padding: 10px;">
+                                                <div class="patient-detail-wrapper">
+                                                    <div class="col-sm-6">
+                                                        <md-select formControlName="title" placeholder="Title">
+                                                            <md-option *ngFor="let title of titles" [value]="title">
+                                                                {{title.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <md-input-container>
+                                                            <input mdInput formControlName="firstName" placeholder="First Name" name="firstName" [(ngModel)]="selectedPatient.firstName">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <md-input-container>
+                                                            <input mdInput formControlName="lastName" placeholder="Last Name" name="lastName" [(ngModel)]="selectedPatient.lastName">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <md-input-container>
+                                                            <input mdInput type="email" formControlName="email" placeholder="Email" name="email" [(ngModel)]="selectedPatient.email">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <md-input-container>
+                                                            <input mdInput type="number" formControlName="phoneNumber" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <md-select formControlName="gender" placeholder="Gender">
+                                                            <md-option *ngFor="let gender of genders" [value]="gender">
+                                                                {{gender.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </div>
+                                                    <div class="col-sm-6" style="margin-top: 20px;">
+                                                        <md-select placeholder="Country" formControlName="country">
+                                                            <md-option *ngFor="let country of countries" [value]="country">
+                                                                {{country.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </div>
+                                                    <div class="col-sm-6" style="margin-top: -40px;">
+                                                        <md-select placeholder="State" formControlName="state">
+                                                            <md-option *ngFor="let state of states" [value]="state">
+                                                                {{state.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </div>
+                                                    <div class="col-sm-6" style="margin-top: 20px;">
+                                                        <md-select placeholder="City" formControlName="city">
+                                                            <md-option *ngFor="let city of cities" [value]="city">
+                                                                {{city.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </div>
+                                                    <div class="col-sm-6" style="margin-top: 20px;">
+                                                        <md-select placeholder="L.G.A" formControlName="lga">
+                                                            <md-option *ngFor="let lga of lgas" [value]="lga">
+                                                                {{lga.name}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </div>
+                                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                                        <md-input-container style="width: 100%;">
+                                                            <textarea mdInput placeholder="Street" formControlName="street"></textarea>
+                                                        </md-input-container>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-input-container class="example-full-width">
-                                                        <input mdInput placeholder="Last Name" name="lastName" [(ngModel)]="selectedPatient.lastName">
-                                                    </md-input-container>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-input-container class="example-full-width">
-                                                        <input mdInput type="email" placeholder="Email" name="email" [(ngModel)]="selectedPatient.email">
-                                                    </md-input-container>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-input-container class="example-full-width">
-                                                        <input mdInput type="number" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
-                                                    </md-input-container>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-select placeholder="Gender" [(ngModel)]="selectedPatient.genderId" name="gender">
-                                                        <md-option *ngFor="let gender of genders" [value]="gender._id">
-                                                            {{gender.name}}
-                                                        </md-option>
-                                                    </md-select>
-                                                </div>
-
-                                                <!--<md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Age">
-                                                </md-input-container>-->
-                                                <!--<md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Address" name="fullAddress" [(ngModel)]="selectedPatient.fullAddress">
-                                                </md-input-container>-->
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-select placeholder="Country" [(ngModel)]="selectedValue" name="food">
-                                                        <md-option *ngFor="let food of foods" [value]="food.value">
-                                                            {{food.viewValue}}
-                                                        </md-option>
-                                                    </md-select>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-select placeholder="State" [(ngModel)]="selectedValue" name="food">
-                                                        <md-option *ngFor="let food of foods" [value]="food.value">
-                                                            {{food.viewValue}}
-                                                        </md-option>
-                                                    </md-select>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-select placeholder="City" [(ngModel)]="selectedValue" name="food">
-                                                        <md-option *ngFor="let food of foods" [value]="food.value">
-                                                            {{food.viewValue}}
-                                                        </md-option>
-                                                    </md-select>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-select placeholder="LGA" [(ngModel)]="selectedValue" name="food">
-                                                        <md-option *ngFor="let food of foods" [value]="food.value">
-                                                            {{food.viewValue}}
-                                                        </md-option>
-                                                    </md-select>
-                                                </div>
-                                                <div class="col-sm-6 padding-0">
-                                                    <md-input-container class="example-full-width">
-                                                        <textarea mdInput placeholder="Street"></textarea>
-                                                    </md-input-container>
-                                                </div>
-
                                             </md-tab>
                                             <md-tab label="Next Of Kin">
-                                                <div *ngFor="let next of selectedPatient.nextOfKin">
+                                                <div class="next-of-kin-body-wrapper">
+                                                    <div formArrayName="nextOfKin">
+                                                        <div *ngFor="let nextOfKin of patientEditForm.controls.nextOfKin.controls; let i=index" class="next-of-kin panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <span>Next Of Kin {{i + 1}}</span>
+                                                                <span *ngIf="patientEditForm.controls.nextOfKin.controls.length > 1" (click)="removeNextOfKin(i)" style="float: right;">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </span>
+                                                            </div>
+                                                            <div class="panel-body" [formGroupName]="i">
+                                                                <md-input-container class="example-full-width">
+                                                                    <input mdInput type="text" formControlName="fullName" placeholder="Full Name">
+                                                                </md-input-container>
+                                                                <md-input-container class="example-full-width" style="margin-left: 5px;">
+                                                                    <input mdInput placeholder="Address" formControlName="address">
+                                                                </md-input-container>
+                                                                <md-input-container class="example-full-width">
+                                                                    <input mdInput type="number" placeholder="Mobile Number" formControlName="phoneNumber">
+                                                                </md-input-container>
+                                                                <md-input-container class="example-full-width" style="margin-left: 5px;">
+                                                                    <input mdInput type="email" placeholder="Email" formControlName="email">
+                                                                </md-input-container>
+                                                                <md-select placeholder="Relationship" formControlName="relationship">
+                                                                    <md-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                                                        {{relationship.name}}
+                                                                    </md-option>
+                                                                </md-select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div *ngFor="let next of selectedPatient.nextOfKin">
                                                     <md-input-container class="example-full-width">
                                                         <input mdInput type="text" [(ngModel)]="next.fullName" name="fullName" placeholder="Full Name">
                                                     </md-input-container>
@@ -216,15 +248,16 @@
                                                             </md-option>
                                                         </md-select>
                                                     </form>
-
+                                                </div> -->
+                                                <div class="add-next-of-kin-box">
+                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin <i class="fa fa-plus"></i></a>
                                                 </div>
                                             </md-tab>
                                         </md-tab-group>
-
                                     </form>
                                 </div>
                                 <div class="example-full-width" id="example-full-width">
-                                    <button (click)="updatePatient()" class="apmis-blue" md-raised-button> Save </button>
+                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" md-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
                             </div>
                         </div>

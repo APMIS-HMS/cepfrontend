@@ -38,10 +38,14 @@ export class StoreCheckInComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.loginEmployee.workSpaces !== undefined) {
-			this.loginEmployee.workSpaces.forEach(work => {
-				work.locations.forEach(loc => {
-					this.locations.push(loc.minorLocationId);
-				})
+			this.loginEmployee.workSpaces.forEach(workspace => {
+				if(workspace.isActive && workspace.locations.length > 0) {
+					workspace.locations.forEach(x => {
+					  if(x.isActive) {
+						this.locations.push(x.minorLocationId);
+					  }
+					});
+				  }
 			})
 
 		}
