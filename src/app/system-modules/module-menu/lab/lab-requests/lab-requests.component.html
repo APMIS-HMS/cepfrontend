@@ -251,6 +251,7 @@
                                     <span style="padding-left: 3px;">Source</span>
                                 </th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
 
@@ -311,6 +312,26 @@
                                 <td>Payment for pregnancy test</td>
                                 <td>Jilad Lab</td>
                                 <td>Paid</td>
+                                <td class="action-placeholder" style="text-align:center;">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    <div class="action-container shadow-RB">
+                                        <div (click)="reqDetail()" class="action-item">
+                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                            <span>View Investigation</span>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                            <span>Write Report</span>
+                                        </div>
+
+                                        <div (click)="showImageBrowseDlg()" class="action-item">
+                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                            <span>Upload File</span>
+                                        </div>
+                                        <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                                    </div>
+                                </td>
                             </tr>
 
                             <tr>
@@ -341,6 +362,26 @@
                                 <td>Payment for pregnancy test</td>
                                 <td>Jilad Lab</td>
                                 <td>Paid</td>
+                                <td class="action-placeholder" style="text-align:center;">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    <div class="action-container shadow-RB">
+                                        <div (click)="reqDetail()" class="action-item">
+                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                            <span>View Investigation</span>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                            <span>Write Report</span>
+                                        </div>
+
+                                        <div (click)="showImageBrowseDlg()" class="action-item">
+                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                            <span>Upload File</span>
+                                        </div>
+                                        <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
