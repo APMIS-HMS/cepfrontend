@@ -18,6 +18,11 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	pageInView = 'Clinic Manager';
 	contentSecMenuShow = false;
 	modal_on = false;
+	clinicApppointment = true;
+	clinicCheckin = false;
+	clinicSchedule= false;
+	clinicConsulting = false;
+	clinicRoom = false;
 
 	clinicLocations: MinorLocation[] = [];
 	professions: Profession[] = [];
@@ -191,6 +196,41 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	}
 	close_onClick(message: boolean): void {
 		this.modal_on = false;
+	}
+	appointmentStyle() {
+		this.clinicApppointment = true;
+		this.clinicCheckin = false;
+		this.clinicSchedule= false;
+		this.clinicConsulting = false;
+		this.clinicRoom = false;
+	}
+	checkedinStyle(){
+		this.clinicApppointment = false;
+		this.clinicCheckin = true;
+		this.clinicSchedule= false;
+		this.clinicConsulting = false;
+		this.clinicRoom = false;
+	}
+	scheduleStyle(){
+		this.clinicApppointment = false;
+		this.clinicCheckin = false;
+		this.clinicSchedule= true;
+		this.clinicConsulting = false;
+		this.clinicRoom = false;
+	}
+	consultingStyle(){
+		this.clinicApppointment = false;
+		this.clinicCheckin = false;
+		this.clinicSchedule= false;
+		this.clinicConsulting = true;
+		this.clinicRoom = false;
+	}
+	roomStyle() {
+		this.clinicApppointment = false;
+		this.clinicCheckin = false;
+		this.clinicSchedule= false;
+		this.clinicConsulting = false;
+		this.clinicRoom = true;
 	}
 	ngOnDestroy() {
 		if (this.clinicHelperService.loginEmployee.consultingRoomCheckIn !== undefined) {
