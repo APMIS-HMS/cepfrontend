@@ -17,8 +17,8 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 	storeTitle: String = '';
 	modal_on: boolean = false;
 	isStoreAvailable: boolean = false;
-	//supplierNavMenu: boolean = false;
-	//productNavMenu = false;
+	supplierNavMenu: boolean = false;
+	productNavMenu = false;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
 

@@ -75,6 +75,13 @@ export class PaymentComponent implements OnInit {
          * assign it;
          */
     }
-    
+    reqDetail(){
 
+    }
+    showImageBrowseDlg(){
+
+    }
+    onChange(e){
+
+    }
 }

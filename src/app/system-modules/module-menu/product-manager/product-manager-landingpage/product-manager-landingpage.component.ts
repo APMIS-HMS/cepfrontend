@@ -24,7 +24,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   slideProductDetails = false;
   selectedProduct: any = <any>{};
-
+  selectedValue: any = <any>{};
 
   productTypes: any[] = [];
   products: any[] = [];
@@ -44,7 +44,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
   ngOnInit() {
     this._productEventEmitter.setRouteUrl('Product Manager');
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getProducts();
     this.getProductTypes();
 

@@ -19,6 +19,7 @@ export class AccessManagerComponent implements OnInit {
   innerMenuShow = false;
   selectedFacility: Facility = <Facility>{};
   users: any[] = [];
+  patients: any[] = [];
 
   pageSize = 1;
   limit = 100;

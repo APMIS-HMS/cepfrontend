@@ -10,7 +10,7 @@ import { FormsService, FacilitiesService, DocumentationService } from '../../../
 export class DocumentationDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() document: Document = <Document>{};
+  @Input() document: any = <any>{};
 
   constructor(private facilityService: FacilitiesService) { }
 

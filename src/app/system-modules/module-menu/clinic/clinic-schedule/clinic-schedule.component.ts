@@ -133,6 +133,7 @@ export class ClinicScheduleComponent implements OnInit {
   getClinicLocation() {
     this.clinicLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);
   }
+  
   addNewClinicSchedule() {
     this.clinicScheduleForm = this.formBuilder.group({
       'clinicScheduleArray': this.formBuilder.array([

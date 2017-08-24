@@ -288,7 +288,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   addHistory_show(e) {
     this.addHistory_view = true;
   }
-  addVitals_show(e) {
+  addVitals_show() {
     this.addVitals_view = true;
   }
   close_onClick(message: boolean): void {

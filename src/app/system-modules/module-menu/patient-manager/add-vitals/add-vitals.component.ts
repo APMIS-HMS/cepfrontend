@@ -39,6 +39,7 @@ export class AddVitalsComponent implements OnInit {
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
   serverDate: Date = <Date>{};
+  diabledSaveBtn = false;
 
   public frmAddVitals: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();

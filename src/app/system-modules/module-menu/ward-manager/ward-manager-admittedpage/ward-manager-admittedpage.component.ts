@@ -26,7 +26,7 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	wardVal = new FormControl();
 	roomVal = new FormControl();
 	searchControl = new FormControl();
-
+	loadIndicatorVisible = false;
 	public frmNewAdmit: FormGroup;
 
 	constructor(private fb: FormBuilder,

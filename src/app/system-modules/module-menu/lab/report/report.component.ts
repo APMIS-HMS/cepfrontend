@@ -99,7 +99,12 @@ export class ReportComponent implements OnInit {
     this.CheckIfSelectedPatient();
     console.log(value);
   }
+  showImageBrowseDlg(){
 
+  }
+  onChange(e){
+
+  }
   private _getAllPendingRequests() {
     this._laboratoryRequestService.find({
       query: { 

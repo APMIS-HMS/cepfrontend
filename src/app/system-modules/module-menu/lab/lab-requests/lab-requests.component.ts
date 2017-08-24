@@ -52,6 +52,8 @@ export class LabRequestsComponent implements OnInit {
   investigations: InvestigationModel[] = [];
   bindInvestigations: InvestigationModel[] = [];
   movedInvestigations: any[] = [];
+
+  totalPrice: Number = 0;
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
@@ -96,6 +98,7 @@ export class LabRequestsComponent implements OnInit {
       payload.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
         investigation.investigation = item;
+        investigation.LaboratoryWorkbenches = item.LaboratoryWorkbenches;
         investigation.isExternal = false;
         investigation.isUrgent = false;
         investigation.isChecked = false;
@@ -224,60 +227,69 @@ export class LabRequestsComponent implements OnInit {
 
           }
         } else {
-          console.log('first in')
-          // without child investigation
-          let copyInvestigation = JSON.parse(JSON.stringify(investigation));
-          const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
-          if (isInBind > -1) {
-            if ($event.checked) {
-              // investigation.isChecked = true;
-              console.log('in')
-              console.log(this.bindInvestigations[isInBind].investigation.panel)
-              console.log(copyInvestigation.investigation.panel)
-              investigation.investigation.panel.forEach((child, k) => {
-                if (this.bindInvestigations[isInBind].investigation.panel
-                  .findIndex(x => x.investigation._id === child.investigation._id) < 0) {
-                  console.log('ininin')
-                  child.isChecked = true;
-                  console.log(child)
-                  this.bindInvestigations[isInBind].investigation.panel.push(child);
-                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
-                    investigation.isChecked = true;
-                  } else {
-                    investigation.isChecked = false;
-                  }
-                }
-              })
-
-
-
-            } else {
-
-            }
-          } else {
-            investigation.isChecked = true;
+          // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
+          
+          // });
+            // console.log(pay);
+            console.log('first in')
+            // without child investigation
             let copyInvestigation = JSON.parse(JSON.stringify(investigation));
-            this.bindInvestigations.push(copyInvestigation);
-            // check all children
-            console.log('check all children')
-            if (investigation.investigation.isPanel) {
-              investigation.investigation.panel.forEach((child, k) => {
-                console.log(child);
-                child.isChecked = true;
-              });
+            const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
+            if (isInBind > -1) {
+              if ($event.checked) {
+                // investigation.isChecked = true;
+                console.log('in')
+                console.log(this.bindInvestigations[isInBind].investigation.panel)
+                console.log(copyInvestigation.investigation.panel)
+                investigation.investigation.panel.forEach((child, k) => {
+                  if (this.bindInvestigations[isInBind].investigation.panel
+                    .findIndex(x => x.investigation._id === child.investigation._id) < 0) {
+                    console.log('ininin')
+                    child.isChecked = true;
+                    console.log(child)
+                    // this.bindInvestigations[isInBind].investigation.panel.push(child);
+                    if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                      investigation.isChecked = true;
+                    } else {
+                      investigation.isChecked = false;
+                    }
+                  }
+                })
+              }
+            } else {
+              investigation.isChecked = true;
+              let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+              // this.bindInvestigations.push(copyInvestigation);
+              // check all children
+              console.log('check all children')
+              if (investigation.investigation.isPanel) {
+                investigation.investigation.panel.forEach((child, k) => {
+                  console.log(child);
+                  child.isChecked = true;
+                });
+              }
             }
-          }
+            // investigation.LaboratoryWorkbenches = pay.LaboratoryWorkbenches;
+
 
         }
 
       } else {
+        // checked without panel
+        console.log(investigation);
+        // console.log(pay);
         if ($event.checked) {
-          this.bindInvestigations.push(investigation);
+          // this.bindInvestigations.push(investigation);
+          investigation.isChecked = true;
+          investigation.LaboratoryWorkbenches = investigation.LaboratoryWorkbenches;
         } else {
           console.log('slice 1')
           const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
           this.bindInvestigations.splice(indexToRemove, 1)
         }
+        // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
+
+        // })
       }
     } else {
       console.log('slice 2')
@@ -289,9 +301,115 @@ export class LabRequestsComponent implements OnInit {
         investigation.investigation.panel.forEach((child, k) => {
           child.isChecked = false;
         });
+        investigation.isChecked = false;
+        investigation.isExternal = false;
+        investigation.isUrgent = false;
+      } else {
+        investigation.isChecked = false;
+        investigation.isExternal = false;
+        investigation.isUrgent = false;
+        // investigation.LaboratoryWorkbenches = [];
+        // investigation.LaboratoryWorkbenches = [];
       }
 
+
     }
+  }
+
+  locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
+    if ($event.checked) {
+      if (investigation.investigation.isPanel) {
+        // isPanel
+
+      } else {
+        // checked without panel
+        // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
+
+        // })
+        // console.log(pay);
+        if ($event.checked) {
+          console.log(location)
+          this.bindInvestigations.push(investigation);
+          investigation.isChecked = true;
+          investigation.LaboratoryWorkbenches = LaboratoryWorkbenches;
+        } else {
+          console.log('slice 1')
+          const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          this.bindInvestigations.splice(indexToRemove, 1)
+        }
+      }
+    } else {
+      // console.log('slice 2')
+      // const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      // this.bindInvestigations.splice(indexToRemove, 1);
+      // unchecked panel and uncheched all children
+      // console.log('uncheck panel')
+      if (investigation.investigation.isPanel) {
+        investigation.investigation.panel.forEach((child, k) => {
+          child.isChecked = false;
+        });
+        investigation.isChecked = false;
+      } else {
+        console.log('move');
+
+        investigation.location = location;
+        console.log(location)
+        this.bindInvestigations.push(investigation);
+        // investigation.isChecked = false;
+        // investigation.LaboratoryWorkbenches = [];
+        // investigation.LaboratoryWorkbenches = [];
+      }
+
+
+    }
+  }
+  getTotalPrice() {
+    let retVal = 0;
+    this.bindInvestigations.forEach((bind => {
+      if (!bind.isExternal) {
+        bind.LaboratoryWorkbenches.forEach((lab => {
+          if (lab.workbenches.length > 0) {
+            retVal = retVal + lab.workbenches[0].price;
+          }
+        }))
+      }
+    }))
+    return retVal;
+  }
+  removeBindingInvestigation(investigation: InvestigationModel) {
+    investigation.isChecked = false;
+    const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    this.bindInvestigations.splice(indexToRemove, 1)
+  }
+  markExternal(event, investigation: InvestigationModel) {
+    if (event.checked) {
+      // investigation.LaboratoryWorkbenches = [];
+      delete investigation.location;
+      console.log(investigation);
+      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      console.log(indexToRemove);
+      if (indexToRemove > -1) {
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
+
+      investigation.isExternal = true;
+      this.bindInvestigations.push(investigation);
+    } else {
+      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      console.log(indexToRemove);
+      if (indexToRemove > -1) {
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
+      // investigation.LaboratoryWorkbenches = [];
+      investigation.isExternal = false;
+      this.investigationChanged({ checked: true }, investigation);
+    }
+  }
+  getValue(investigation) {
+    return false;
+  }
+  getPrice(workbenches) {
+    return workbenches[0].price;
   }
   save(valid, value) {
     delete this.selectedPatient.appointments;

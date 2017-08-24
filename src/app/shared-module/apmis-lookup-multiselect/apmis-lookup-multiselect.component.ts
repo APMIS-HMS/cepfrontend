@@ -32,10 +32,10 @@ export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAcce
     @Input() isSocket = false;
     @Output() selectedItem = new EventEmitter();
     public _socket;
-    private _rest;
-    private valueString = "";
-    private valueParseError: boolean;
-    private data: any;
+    public _rest;
+    public valueString = "";
+    public valueParseError: boolean;
+    public data: any;
     searchText = '';
     showCuDropdown: boolean = false;
     cuDropdownLoading: boolean = false;
@@ -128,7 +128,7 @@ export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAcce
     public registerOnTouched() { }
 
     // change events from the textarea
-    private onChange(event) {
+    public onChange(event) {
 
         // get value from text area
         let newValue = event.target.value;
@@ -146,6 +146,6 @@ export class ApmisLookupMultiselectComponent implements OnInit, ControlValueAcce
     }
 
     // the method set in registerOnChange to emit changes back to the form
-    private propagateChange = (_: any) => { };
+    public propagateChange = (_: any) => { };
 
 }
