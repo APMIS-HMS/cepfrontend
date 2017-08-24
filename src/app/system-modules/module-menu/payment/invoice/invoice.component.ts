@@ -28,6 +28,9 @@ export class InvoiceComponent implements OnInit {
     itemAmount = '20,000.00';
     itemQty = 2;
 
+    searchPendingInvoice = new FormControl('', []);
+    searchPendingBill = new FormControl('', []);
+
     selectedPatient: Patient = <Patient>{};
     selectedFacility: Facility = <Facility>{};
     selectedBillItem: BillItem = <BillItem>{};

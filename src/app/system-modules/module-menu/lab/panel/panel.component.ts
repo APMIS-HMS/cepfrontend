@@ -18,6 +18,10 @@ export class PanelComponent implements OnInit {
   // personAcc_view = false;
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  Inactive= false;
+  Active = false;
+  reqDetail_view = false;
+  personAcc_view = false;
 
   public frmNewPanel: FormGroup;
 
@@ -37,6 +41,9 @@ export class PanelComponent implements OnInit {
   }
   
   close_onClick(message: boolean): void {
+  }
+  reqDetail(){
+
   }
 }
 

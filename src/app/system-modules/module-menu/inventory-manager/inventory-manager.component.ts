@@ -151,7 +151,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   close_onClick(message: boolean): void {
     this.modal_on = false;
   }
-  onChangeCheckedIn(hide) {
+  onChangeCheckedIn() {
     this.modal_on = true;
     this.contentSecMenuShow = false;
   

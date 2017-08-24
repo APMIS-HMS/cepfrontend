@@ -15,5 +15,7 @@ export class WalletComponent implements OnInit {
   ngOnInit() {
     this.search = new FormControl('', []);
   }
-
+  fundWallet(){
+    
+  }
 }

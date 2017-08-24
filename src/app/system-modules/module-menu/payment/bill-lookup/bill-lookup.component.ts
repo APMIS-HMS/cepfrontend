@@ -21,8 +21,10 @@ export class BillLookupComponent implements OnInit {
   select1 = new FormControl('', []);
   select2 = new FormControl('', []);
   select3 = new FormControl('', []);
+  searchPending = new FormControl('', []);
 
   addItem = false;
+  makePayment = false;
   addModefierPopup = false;
   addLineModefierPopup = false;
   priceItemDetailPopup = false;
@@ -394,10 +396,14 @@ export class BillLookupComponent implements OnInit {
     this.selectedServiceBill = bill;
     this.priceItemDetailPopup = true;
   }
+  makePayment_onclick(){
+    this.makePayment = true;
+  }
   close_onClick(e) {
     this.addModefierPopup = false;
     this.addLineModefierPopup = false;
     this.addItem = false;
     this.priceItemDetailPopup = false;
+    this.makePayment = false;
   }
 }

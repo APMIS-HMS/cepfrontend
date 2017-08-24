@@ -52,6 +52,7 @@ export class NewPriceComponent implements OnInit {
     });
   }
 
+  
   addNew2() {
     this.frmNewprice2 = this.formBuilder.group({
       'priceArray': this.formBuilder.array([
