@@ -57,7 +57,7 @@ export class ReportComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private _locker: CoolSessionStorage,
-    private _facilityService: FacilitiesService,
+    public facilityService: FacilitiesService,
     private _laboratoryRequestService: LaboratoryRequestService,
     private _laboratoryReportService: LaboratoryReportService,
     private _documentationService: DocumentationService
@@ -206,9 +206,9 @@ export class ReportComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
+    this.pendingReLoading = true;
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
-    this.CheckIfSelectedPatient();
     console.log(value);
     this._laboratoryRequestService.find({
       query: { 
@@ -216,7 +216,20 @@ export class ReportComponent implements OnInit {
         'patientId._id': value._id,
       }
     }).then(res => {
-
+      this.pendingReLoading = false;
+      console.log(res);
+      if(res.data.length > 0) {
+        const pendingRequests = this._modelPendingRequests(res.data);
+        console.log(pendingRequests);
+        if(pendingRequests.length > 0) {
+          this.pendingRequests = pendingRequests;
+          this.CheckIfSelectedPatient();
+        } else {
+          this.pendingRequests = [];
+        }
+      } else {
+        this.pendingRequests = [];
+      }
     }).catch(err => this._notification('Error', 'There was a problem getting patient details!'));
   }
   showImageBrowseDlg(){
@@ -228,64 +241,29 @@ export class ReportComponent implements OnInit {
   private _getAllPendingRequests() {
     this._laboratoryRequestService.find({
       query: { 
-        'facilityId._id': this.facility._id, 
-        //'lab.id': this.selectedLab.Id, 
-        //'workbench.id': this.selectedWorkbench.id 
+        'facilityId._id': this.facility._id,
       }
     }).then(res => {
       console.log(res);
-      this.loading = false;
-      const labId = this.selectedLab.typeObject.minorLocationId;
-      // Filter investigations based on the laboratory Id
-      res.data.forEach(labRequest => {
-        console.log(labRequest);
-        labRequest.investigations.forEach(investigation => {
-          console.log(investigation);
-          console.log(investigation.isSaved);
-          console.log(investigation.isUploaded);
-          if(
-            (investigation.isSaved === undefined || !investigation.isSaved) || 
-            (investigation.isUploaded === undefined || !investigation.isUploaded) && 
-            labId === investigation.location.laboratoryId._id
-          ) {
-            const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-            console.log(investigation);
-            if(!investigation.isSaved || !investigation.isUploaded) {
-              pendingLabReq.report = investigation.report;
-              pendingLabReq.isSaved = investigation.isSaved;
-              pendingLabReq.isUploaded = investigation.isUploaded;
-            }
-            pendingLabReq.labRequestId = labRequest._id;
-            pendingLabReq.facility = labRequest.facilityId;
-            pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
-            pendingLabReq.diagnosis = labRequest.diagnosis;
-            pendingLabReq.labNumber = labRequest.labNumber;
-            pendingLabReq.patient = labRequest.patientId;
-            pendingLabReq.isExternal = investigation.isExternal;
-            pendingLabReq.isUrgent = investigation.isUrgent;
-            pendingLabReq.minorLocation = investigation.location.laboratoryId;
-            pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
-            pendingLabReq.isPanel = investigation.investigation.isPanel;
-            pendingLabReq.name = investigation.investigation.name;
-            pendingLabReq.reportType = investigation.investigation.reportType;
-            pendingLabReq.specimen = investigation.investigation.specimen;
-            pendingLabReq.service = investigation.investigation.serviceId;
-            pendingLabReq.price = investigation.investigation.unit;
-            pendingLabReq.investigationId = investigation.investigation._id;
-            pendingLabReq.createdAt = investigation.investigation.createdAt;
-            pendingLabReq.updatedAt = investigation.investigation.updatedAt;
-            
-            this.pendingRequests.push(pendingLabReq);
-          }
-        });
-      });
-      console.log(this.pendingRequests);
+      this.pendingReLoading = false;
+      if(res.data.length > 0) {
+        const pendingRequests = this._modelPendingRequests(res.data);
+        console.log(pendingRequests);
+        if(pendingRequests.length > 0) {
+          this.pendingRequests = pendingRequests;
+        } else {
+          this.pendingRequests = [];
+        }
+      } else {
+        this.pendingRequests = [];
+      }
     }).catch(err =>  console.error(err));
   }
 
   onClickInvestigation(investigation: PendingLaboratoryRequest) {
     console.log(investigation);
     this.selectedPatient = investigation.patient;
+    console.log(this.selectedPatient);
     this.selectedInvestigation = investigation;
     this.apmisLookupText = investigation.patient.personDetails.personFullName;
     this.CheckIfSelectedPatient();
@@ -319,9 +297,56 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  private _modelPendingRequests(data: any): PendingLaboratoryRequest[] {
+    const pendingRequests = [];
+    const labId = this.selectedLab.typeObject.minorLocationId;
+    // Filter investigations based on the laboratory Id
+    data.forEach(labRequest => {
+      console.log(labRequest);
+      labRequest.investigations.forEach(investigation => {
+        if(
+          (investigation.isSaved === undefined || !investigation.isSaved) || 
+          (investigation.isUploaded === undefined || !investigation.isUploaded) && 
+          labId === investigation.location.laboratoryId._id
+        ) {
+          const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+          if(!investigation.isSaved || !investigation.isUploaded) {
+            pendingLabReq.report = investigation.report;
+            pendingLabReq.isSaved = investigation.isSaved;
+            pendingLabReq.isUploaded = investigation.isUploaded;
+          }
+          pendingLabReq.labRequestId = labRequest._id;
+          pendingLabReq.facility = labRequest.facilityId;
+          pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
+          pendingLabReq.diagnosis = labRequest.diagnosis;
+          pendingLabReq.labNumber = labRequest.labNumber;
+          pendingLabReq.patient = labRequest.patientId;
+          pendingLabReq.isExternal = investigation.isExternal;
+          pendingLabReq.isUrgent = investigation.isUrgent;
+          pendingLabReq.minorLocation = investigation.location.laboratoryId;
+          pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
+          pendingLabReq.isPanel = investigation.investigation.isPanel;
+          pendingLabReq.name = investigation.investigation.name;
+          pendingLabReq.reportType = investigation.investigation.reportType;
+          pendingLabReq.specimen = investigation.investigation.specimen;
+          pendingLabReq.service = investigation.investigation.serviceId;
+          pendingLabReq.price = investigation.investigation.unit;
+          pendingLabReq.investigationId = investigation.investigation._id;
+          pendingLabReq.createdAt = investigation.investigation.createdAt;
+          pendingLabReq.updatedAt = investigation.investigation.updatedAt;
+          
+          pendingRequests.push(pendingLabReq);
+          //this.pendingRequests.push(pendingLabReq);
+        }
+      });
+    });
+
+    return pendingRequests;
+  }
+
   // Notification
 	private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
+		this.facilityService.announceNotification({
 			users: [this.user._id],
 			type: type,
 			text: text

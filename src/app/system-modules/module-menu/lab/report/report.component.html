@@ -34,15 +34,16 @@
                                 </div>
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
                                     <div class="sel-patient-img">
-                                        <img src="assets/images/users/default.png">
+                                        <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                        <img class="shadow" *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div class="sel-patient-details">
-                                        <div>{{ selectedPatient?.personDetails?.personFullName }}</div>
+                                        <div style="font-size: 14px;"><b>{{ selectedPatient?.personDetails?.personFullName }}</b></div>
+                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.apmisId }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.age }} year(s)</div>
+                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.phoneNumber }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.gender?.name }}</div>
                                         <div>{{ selectedPatient?.personDetails?.email }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.apmisId }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.age }} year(s)</div>
-                                        <div>{{ selectedPatient?.personDetails?.gender?.name }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.phoneNumber }}</div>
                                     </div>
                                     <!-- <div class="sel-patient-img">
                                         <img src="assets/images/users/default.png">
@@ -57,11 +58,11 @@
                                     </div> -->
                                 </div>
 
-                                <div class="no-selected-patient-wrap" *ngIf="!patientSelected">
+                                <!-- <div class="no-selected-patient-wrap" *ngIf="!patientSelected">
                                     <span class="text-center">Please use the search input above to search for a patient 
                                         <br> or <br> select an investigation from the list below
                                     </span>
-                                </div>
+                                </div> -->
 
                                 <div class="tab-title">Pending Requests</div>
                                 <div class="pending-req-wrap">
@@ -95,12 +96,13 @@
                                                     <md-spinner class='small-spinner'></md-spinner>
                                                 </td>
                                             </tr>
-                                            <tr *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
+                                            <tr class="hover" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
                                                 <td> {{ i+1 }} </td>
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img src="assets/images/users/default.png">
+                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                                         </div>
                                                         <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
                                                     </div>
@@ -143,12 +145,13 @@
                                                     <md-spinner class='small-spinner'></md-spinner>
                                                 </td>
                                             </tr>
-                                            <tr *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
+                                            <tr class="hover" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
                                                 <td> {{ i+1 }} </td>
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img src="assets/images/users/default.png">
+                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                                         </div>
                                                         <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
                                                     </div>
