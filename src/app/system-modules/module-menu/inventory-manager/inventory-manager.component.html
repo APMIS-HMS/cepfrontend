@@ -20,6 +20,7 @@
     <div class="inner-page-wrap">
         <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
+                <li [class.navActive]="initializeNavMenu" (click)="onInitialiseNavMenu()" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
                 <li [class.navActive]="inventoryNavMenu" (click)="onClickInventoryNavMenu()" routerLink="/dashboard/inventory-manager/inventory">My Inventory</li>
                 <!-- <li [class.navActive]="stockTakingNavMenu" (click)="onClickStockTakingNavMenu()" routerLink="/dashboard/inventory-manager/stock-taking">Stock Auditing</li> -->
                 <li routerLink="/dashboard/inventory-manager/stock-transfer" [class.navActive]="stockTransferNavMenu" (click)="onClickStockTransferNavMenu()">Transfer Stock</li>
