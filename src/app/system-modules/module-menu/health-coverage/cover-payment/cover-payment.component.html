@@ -1,3 +1,22 @@
-<div class="doc-mainWrap">
+<!-- <div class="doc-mainWrap">
   <app-cover-bill></app-cover-bill>
+</div>
+<div class="pg-subtitle">PAYMENT</div> -->
+<div class="doc-mainWrap">
+  <div class="tab-wrap">
+    <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
+    <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+    <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+  </div>
+
+  <div class="tab-content">
+    <div *ngIf="tabInsurance">
+      <app-cover-bill *ngIf="hmo_bill"></app-cover-bill>
+      <app-cover-list (hmolist)="toggler()" *ngIf="hmo_list"></app-cover-list>
+    </div>
+    <!-- <app-wallet *ngIf="tabWallet"></app-wallet>
+    <app-insurance *ngIf="tabInsurance"></app-insurance>
+    <app-company *ngIf="tabCompany"></app-company>
+    <app-family *ngIf="tabFamily"></app-family> -->
+  </div>
 </div>

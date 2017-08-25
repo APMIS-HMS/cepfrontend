@@ -4,7 +4,8 @@ import { FacilitiesService, InvestigationSpecimenService, InvestigationService, 
 import { Facility, MinorLocation, FacilityService, FacilityServicePrice } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
   selector: 'app-investigation-service',
@@ -41,6 +42,7 @@ export class InvestigationServiceComponent implements OnInit {
   public frmNewPanel: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private specimenService: InvestigationSpecimenService,
+    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private locker: CoolSessionStorage, private investigationService: InvestigationService, private dragulaService: DragulaService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private servicePriceService: ServicePriceService) {
     dragulaService.drag.subscribe((value) => {
@@ -98,7 +100,17 @@ export class InvestigationServiceComponent implements OnInit {
     this.getInvestigations();
     this.getServiceCategories();
   }
+  addToast(msg: string) {
+    const toastOptions: ToastOptions = {
+      title: 'Apmis',
+      msg: msg,
+      showClose: true,
+      timeout: 5000,
+      theme: 'default',
+    };
 
+    this.toastyService.info(toastOptions);
+  }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
       console.log(payload);
@@ -247,6 +259,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
+                      this.addToast("Investigation created successfully")
                     })
                   }
                 });
@@ -333,6 +346,7 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
+                        this.addToast("Investigation updated successfully")
                       })
 
 

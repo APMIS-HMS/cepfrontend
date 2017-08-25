@@ -5,6 +5,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Investigation, InvestigationModel } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
   selector: 'app-lab-requests',
@@ -55,6 +56,7 @@ export class LabRequestsComponent implements OnInit {
 
   totalPrice: Number = 0;
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
+    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
   }
@@ -62,6 +64,77 @@ export class LabRequestsComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
     this.searchInvestigation = new FormControl('', []);
+    this.searchInvestigation.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        if (value !== null && value.length === 0) {
+          this.investigationService.find({
+            query: {
+              'facilityId._id': this.selelctedFacility._id,
+              name: { $regex: -1, '$options': 'i' }
+            }
+          }).subscribe(payload => {
+            this.investigations = [];
+            payload.data.forEach(item => {
+              const investigation: InvestigationModel = <InvestigationModel>{};
+              investigation.investigation = item;
+              investigation.LaboratoryWorkbenches = item.LaboratoryWorkbenches;
+              investigation.isExternal = false;
+              investigation.isUrgent = false;
+              investigation.isChecked = false;
+              const listItems: any[] = [];
+              if (item.isPanel) {
+                item.panel.forEach(inItem => {
+                  const innerChild = <InvestigationModel>{};
+                  innerChild.investigation = inItem;
+                  innerChild.isExternal = false;
+                  innerChild.isUrgent = false;
+                  innerChild.isChecked = false;
+                  listItems.push(innerChild);
+                });
+                investigation.investigation.panel = listItems;
+                this.investigations.push(investigation);
+              } else {
+                this.investigations.push(investigation);
+              }
+            })
+          })
+        } else {
+          this.investigationService.find({
+            query: {
+              'facilityId._id': this.selelctedFacility._id,
+              name: { $regex: value, '$options': 'i' }
+            }
+          }).subscribe(payload => {
+            this.investigations = [];
+            payload.data.forEach(item => {
+              const investigation: InvestigationModel = <InvestigationModel>{};
+              investigation.investigation = item;
+              investigation.LaboratoryWorkbenches = item.LaboratoryWorkbenches;
+              investigation.isExternal = false;
+              investigation.isUrgent = false;
+              investigation.isChecked = false;
+              const listItems: any[] = [];
+              if (item.isPanel) {
+                item.panel.forEach(inItem => {
+                  const innerChild = <InvestigationModel>{};
+                  innerChild.investigation = inItem;
+                  innerChild.isExternal = false;
+                  innerChild.isUrgent = false;
+                  innerChild.isChecked = false;
+                  listItems.push(innerChild);
+                });
+                investigation.investigation.panel = listItems;
+                this.investigations.push(investigation);
+              } else {
+                this.investigations.push(investigation);
+              }
+            })
+          })
+        }
+
+      })
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
       patient: ['', [Validators.required]],
@@ -91,7 +164,24 @@ export class LabRequestsComponent implements OnInit {
       }
     })
     this.getLaboratoryRequest();
-    this.getInvestigations();
+    // this.getInvestigations();
+  }
+  addToast(msg: string) {
+    const toastOptions: ToastOptions = {
+      title: 'Apmis',
+      msg: msg,
+      showClose: true,
+      timeout: 5000,
+      theme: 'default',
+      onAdd: (toast: ToastData) => {
+        console.log('Toast ' + toast.id + ' has been added!');
+      },
+      onRemove: function (toast: ToastData) {
+        console.log('Toast ' + toast.id + ' has been removed!');
+      }
+    };
+
+    this.toastyService.info(toastOptions);
   }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
@@ -435,7 +525,7 @@ export class LabRequestsComponent implements OnInit {
       investigation.temporaryInvestigationList.forEach((item) => {
         if (item.laboratoryId._id === parentLocation._id && item.investigationId === panel.investigation._id) {
           if (item.workbenches.length > 0) {
-            panel.location= investigation.location
+            panel.location = investigation.location
             panel.location.workbenches = item.workbenches;
             // console.log(panel.location)
             retVal = item.workbenches[0].price;
@@ -550,7 +640,14 @@ export class LabRequestsComponent implements OnInit {
       diagnosis: this.frmNewRequest.controls['diagnosis'].value,
       investigations: readyCollection
     }
+
     this.requestService.create(request).then(payload => {
+      this.frmNewRequest.reset();
+      this.bindInvestigations = [];
+      this.investigations = [];
+      this.apmisLookupText = '';
+      this.selectedPatient = undefined;
+      this.addToast('Request sent successfully');
     })
   }
   externalChanged($event, investigation) {

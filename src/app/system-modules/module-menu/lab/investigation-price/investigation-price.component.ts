@@ -6,6 +6,7 @@ import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
   selector: 'app-investigation-price',
@@ -50,6 +51,7 @@ export class InvestigationPriceComponent implements OnInit {
   foundPrice = false;
   constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
+    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService
   ) { }
 
@@ -107,6 +109,17 @@ export class InvestigationPriceComponent implements OnInit {
     this.getWorkBenches();
     this.getTags();
     this.getInvestigations();
+  }
+  addToast(msg: string) {
+    const toastOptions: ToastOptions = {
+      title: 'Apmis',
+      msg: msg,
+      showClose: true,
+      timeout: 5000,
+      theme: 'default',
+    };
+
+    this.toastyService.info(toastOptions);
   }
   getInvestigations() {
     console.log(this.checkingObject.typeObject.minorLocationObject._id);
@@ -272,10 +285,8 @@ export class InvestigationPriceComponent implements OnInit {
       this.frmNewPrice.reset();
       this.frmNewPrice.controls['investigation'].reset();
       this.frmNewPrice.controls['workbench'].reset();
-      // this.apmisInvestigationLookupHandleSelectedItem({name:''});
-      // this.apmisLookupHandleSelectedItem({name:''})
-      console.log(result);
       this.getInvestigations();
+      this.addToast('Price set/updated successfully');
     })
 
     // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
