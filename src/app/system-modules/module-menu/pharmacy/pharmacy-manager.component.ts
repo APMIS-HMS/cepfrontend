@@ -49,7 +49,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 					this._employeeService.announceCheckIn(checkingObject);
 					// Set page title
 					this.isStoreAvailable = true;
-					this.storeTitle = itemr.storeObject.name;
+					this.storeTitle = itemr.minorLocationObject.name;
 					this._employeeService.update(this.loginEmployee).then(payload => {
 						this.loginEmployee = payload;
 						checkingObject = { typeObject: itemr, type: 'store' };

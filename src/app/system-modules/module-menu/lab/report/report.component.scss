@@ -167,45 +167,60 @@
 
 .selected-patient-wrap {
     width: 100%;
+    height: auto;
+    min-height: 100px;
 }
 
+// .sel-patient-img {
+//     width: 40%;
+//     margin: 10px auto;
+// }
 .sel-patient-img {
-    width: 40%;
-    margin: 10px auto;
+    width: 25%;
+    padding: 5px;
+    float: left;
 }
 
 .sel-patient-img img {
     width: 100%;
 }
 
-.sel-patient-name {
-    font-family: "Josefin Sans", sans-serif;
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-    font-size: 22px;
-    color: #5f5f5f;
-}
-
-.sel-patient-detaills {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px auto;
-    width: 100%;
-    flex-wrap: wrap;
+// .sel-patient-name {
+//     font-family: "Josefin Sans", sans-serif;
+//     width: 80%;
+//     margin: 0 auto;
+//     text-align: center;
+//     font-size: 22px;
+//     color: #5f5f5f;
+// }
+// .sel-patient-details {
+//     // display: flex;
+//     // justify-content: space-between;
+//     margin: 10px auto;
+//     width: 75%;
+//     flex-wrap: wrap;
+//     font-size: 12px;
+//     color: #000;
+//     background: #FFE0B2;
+//     padding: 10px;
+//     box-sizing: border-box;
+// }
+.sel-patient-details {
+    // display: flex;
+    // justify-content: space-between;
+    // margin: 10px auto;
+    // width: 75%;
+    // flex-wrap: wrap;
     font-size: 12px;
     color: #000;
     background: #FFE0B2;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
-.sel-patient-detaills div {
-    width: 40%;
-    margin: 2px;
-    margin-right: 5px;
-}
-
+// .sel-patient-details div {
+//     width: 40%;
+//     margin: 2px;
+//     margin-right: 5px;
+// }
 .pending-req-wrap {
     max-height: 230px;
     overflow-y: auto;

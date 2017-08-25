@@ -78,8 +78,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-
     // const emp$ = Observable.fromPromise(this.employeeService.find({
     //   query: {
     //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
@@ -142,6 +140,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
 
 
     const page: string = this._router.url;
+    console.log(page);
     this.checkPageUrl(page);
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
