@@ -2,21 +2,37 @@
 
 //.......................///
 
-table, td { 
-    border: 0.5px solid $td-border;
+// table, td { 
+//     border: 0.5px solid $td-border;
+// }
+// th {
+//     height: 50px;
+//     background: transparent;
+//     border: 0.5px solid $td-border;
+// }
+
+// .billSummarySect table, td { 
+//     border: 0;
+// }
+// .billSummarySect tr:hover {background-color: #bebebe}
+// .billSummarySect tr:nth-child(even) {background-color: #bebebe}
+
+//.................................////
+table, td {
+    border: 0px solid transparent;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 18px;
+    color: #5f5f5f;
 }
 th {
     height: 50px;
-    background: transparent;
-    border: 0.5px solid $td-border;
+    background: #f8f8f8;
+    border: 0px solid transparent;
+    color: #000;
+    font-size: 16px;
 }
-
-.billSummarySect table, td { 
-    border: 0;
-}
-.billSummarySect tr:hover {background-color: transparent}
-.billSummarySect tr:nth-child(even) {background-color: transparent}
-//.................................////
+.billSummarySect tr:hover {background-color: #f1f1f1}
+.billSummarySect tr:nth-child(even) {background-color: #f8f8f8}
 .billContentSect{
     position: relative;
     min-height: 300px;
@@ -25,16 +41,16 @@ th {
     box-sizing: border-box;
     margin: 0;
 }
-table{
-    color: #9E9E9E;
-}
-th{
-    color: #795548;
-}
+// table{
+//     color: #9E9E9E;
+// }
+// th{
+//     color: #795548;
+// }
 td{
     text-align: center;
     font-weight: normal;
-    font-size: 12px;
+    font-size: 14px;
 }
 td input{
     width: 80%;
@@ -121,16 +137,13 @@ td .cta-1:hover{
 .tdCategories:hover{
     background: #eee;
 }
-.tdMasterCategories{
+.tdMasterCategories td{
     cursor: pointer;
-    background-color: rgb(66, 163, 217);
-    font-size: 20px;
-    font-weight: 600;
-    padding: 8px;
-    color: #fff;
-}
-.tdMasterCategories:hover{
-    background: #9db2bc;
+    font-size: 18px;
+    font-family: "Josefin Sans", sans-serif;
+    color: #0288D1;
+    line-height: 2;
+    border-bottom: 1px solid #777;
 }
 .billContentSect tbody tr{
     border-left: 5px solid #fff;
@@ -198,9 +211,11 @@ td .cta-1:hover{
     max-height: 350px;
     overflow-y: auto;
 }
+.pending-bills li:hover {background-color: #eee}
+.pending-bills li:nth-child(even) {background-color: #f8f8f8}
 .empWrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     padding: 5px;
@@ -208,8 +223,8 @@ td .cta-1:hover{
     margin-bottom: 5px;
     cursor: pointer;
 }
-.empWrap:hover{
-    background: #f8f8f8;
+.list-img{
+    margin-right: 10px;
 }
 .pending-name{
     font-family: "Josefin Sans", sans-serif;

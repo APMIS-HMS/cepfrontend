@@ -1,16 +1,16 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
-import { Patient, Facility, BillItem, Invoice, BillModel } from '../../../../models/index';
+import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../../services/facility-manager/setup/index';
+import { Patient, Facility, BillItem, Invoice, BillModel } from '../../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
-  selector: 'app-bill-lookup',
-  templateUrl: './bill-lookup.component.html',
-  styleUrls: ['./bill-lookup.component.scss']
+  selector: 'app-cover-bill',
+  templateUrl: './cover-bill.component.html',
+  styleUrls: ['./cover-bill.component.scss']
 })
-export class BillLookupComponent implements OnInit {
+export class CoverBillComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 

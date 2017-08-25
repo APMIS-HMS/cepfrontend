@@ -799,7 +799,7 @@ select {
 }
 
 .navActive {
-    border: 0.5px solid #fff;
+    border: 0.5px solid #fff !important;
 }
 
 .moduleNav {
@@ -1425,4 +1425,7 @@ ul.topmenuwrap li:hover {
   cursor: pointer;
   transition: ease-out;
   transition-delay: .3s;
+}
+.menuActive {
+    border: 1px solid #0288d1;
 }

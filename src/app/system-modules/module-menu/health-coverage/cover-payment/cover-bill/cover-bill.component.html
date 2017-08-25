@@ -1,8 +1,8 @@
-<div class="inner-wrap-b body-wrap">
+<div class="">
   <div class="facility-title">Patient Bills</div>
   <div class="inner-page-wrap">
     <div class="megaPgWrap">
-      <div class="feedsWrap leftCol">
+      <!-- <div class="feedsWrap leftCol">
         <div class="feedbox">
           <div class="pending-wrap">
             <div class="pending-header">
@@ -186,7 +186,7 @@
             </div>
           </div>   
         </div> 
-      </div>
+      </div> -->
 
       <div class="contentCol" *ngIf="selectedPatient._id != undefined">
         <div class="billTopSect">
@@ -304,133 +304,13 @@
       <div class="contentCol emptySet" *ngIf="selectedPatient._id === undefined">
         <span>Kindly select a patient from the lookup below</span>
       </div>
-
-      <!-- <div class="feedsWrap rightCol">
-         <div class="feedbox">
-          <div class="pending-wrap">
-            <div class="pending-header">
-              <div class="pending-title">Invoices</div>
-              <div class="search-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
-                </md-input-container>
-              </div>
-            </div>
-            <div class="pending-bills">
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>   
-        </div> 
-      </div> -->
     </div>
   </div>
 </div>
 
-<app-global-patient-lookup></app-global-patient-lookup>
+ <app-global-patient-lookup></app-global-patient-lookup>
 
-<div *ngIf="addItem" class="modal-overlay">
+<!-- <div *ngIf="addItem" class="modal-overlay">
   <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>
 </div>
 
@@ -448,4 +328,4 @@
 
 <div *ngIf="priceItemDetailPopup" class="modal-overlay">
   <app-item-detail [selectedBillItem]="selectedServiceBill" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
-</div>
+</div>  -->

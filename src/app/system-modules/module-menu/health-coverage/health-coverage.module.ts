@@ -13,6 +13,10 @@ import { AddPrincipalComponent } from './add-principal/add-principal.component';
 import { HmoCoverComponent } from './hmo-cover/hmo-cover.component';
 import { StaffCoverComponent } from './staff-cover/staff-cover.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { HmoListComponent } from './hmo-cover/hmo-list/hmo-list.component';
+import { BeneficiaryListComponent } from './hmo-cover/beneficiary-list/beneficiary-list.component';
+import { CoverPaymentComponent } from './cover-payment/cover-payment.component';
+import { CoverBillComponent } from './cover-payment/cover-bill/cover-bill.component';
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -22,7 +26,11 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
         AddEmployeeComponent,
         AddPrincipalComponent,
         HmoCoverComponent,
-        StaffCoverComponent
+        StaffCoverComponent,
+        HmoListComponent,
+        BeneficiaryListComponent,
+        CoverPaymentComponent,
+        CoverBillComponent
     ],
     exports: [
     ],
