@@ -23,16 +23,28 @@
                             </div>
                         </div>
                     </div>
-
-                    <form *ngIf="report_view" class="frmNoteWrap" [formGroup]="frmNewReport" novalidate>
+                    <div *ngIf="report_view" class="frmNoteWrap">
                         <div class="frm-wrap">
                             <div class="frm-l" [class.frm-container-l]="!patientSelected">
                                 <div class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
-                                        [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                    <form [formGroup]="patientFormGroup" novalidate>
+                                        <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                            [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                    </form>
                                 </div>
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
                                     <div class="sel-patient-img">
+                                        <img src="assets/images/users/default.png">
+                                    </div>
+                                    <div class="sel-patient-details">
+                                        <div>{{ selectedPatient?.personDetails?.personFullName }}</div>
+                                        <div>{{ selectedPatient?.personDetails?.email }}</div>
+                                        <div>{{ selectedPatient?.personDetails?.apmisId }}</div>
+                                        <div>{{ selectedPatient?.personDetails?.age }} year(s)</div>
+                                        <div>{{ selectedPatient?.personDetails?.gender?.name }}</div>
+                                        <div>{{ selectedPatient?.personDetails?.phoneNumber }}</div>
+                                    </div>
+                                    <!-- <div class="sel-patient-img">
                                         <img src="assets/images/users/default.png">
                                     </div>
                                     <div class="sel-patient-name">{{ selectedPatient?.personDetails?.personFullName }}</div>
@@ -42,7 +54,7 @@
                                         <div>{{ selectedPatient?.personDetails?.gender?.name }}</div>
                                         <div>{{ selectedPatient?.personDetails?.phoneNumber }}</div>
                                         <div>{{ selectedPatient?.personDetails?.email }}</div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="no-selected-patient-wrap" *ngIf="!patientSelected">
@@ -53,81 +65,98 @@
 
                                 <div class="tab-title">Pending Requests</div>
                                 <div class="pending-req-wrap">
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
+                                    <table *ngIf="patientSelected" cellpadding="0" cellspacing="0" border="0.5">
                                         <thead>
                                             <tr>
+                                                <th>
+                                                    <span style="padding-left: 3px; text-align:center;">S/N</span>
+                                                </th>
                                                 <th>
                                                     <span style="padding-left: 3px; text-align:center;">Patient</span>
                                                 </th>
                                                 <th>
-                                                    <span style="padding-left: 3px;">Pending Investigation</span>
+                                                    <span style="padding-left: 3px;">Investigation</span>
                                                 </th>
-
                                                 <th>
                                                     <span style="padding-left: 3px;">Date</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px;">Status</span>
                                                 </th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
                                             <tr *ngIf="pendingRequests.length === 0 && !pendingReLoading">
-                                                <td class="table-content" colspan="7" style="text-align: center"> No data available in table</td>
+                                                <td class="table-content" colspan="5" style="text-align: center"> No data available in table</td>
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
-                                                <td class="table-content" colspan="7" style="text-align: center">
+                                                <td class="table-content" colspan="5" style="text-align: center">
                                                     <md-spinner class='small-spinner'></md-spinner>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <tr *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
+                                                <td> {{ i+1 }} </td>
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
                                                             <img src="assets/images/users/default.png">
                                                         </div>
-                                                        <div>Johnson Wade</div>
+                                                        <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
                                                     </div>
                                                 </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
+                                                <td>{{ pendingRequest?.name}}</td>
+                                                <td>{{ pendingRequest?.createdAt | date }}</td>
+                                                <td> Not paid </td>
                                             </tr>
-
+                                        </tbody>
+                                    </table>
+                                    <table *ngIf="!patientSelected" cellpadding="0" cellspacing="0" border="0.5">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div class="list-img">
-                                                            <img src="assets/images/users/default.png">
-                                                        </div>
-                                                        <div>Johnson Wade</div>
-                                                    </div>
-                                                </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
+                                                <th>
+                                                    <span style="padding-left: 3px; text-align:center;">S/N</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px; text-align:center;">Patient</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px;">Investigation</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px;">Lab Number</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px;">Date</span>
+                                                </th>
+                                                <th>
+                                                    <span style="padding-left: 3px;">Status</span>
+                                                </th>
                                             </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div class="list-img">
-                                                            <img src="assets/images/users/default.png">
-                                                        </div>
-                                                        <div>Johnson Wade</div>
-                                                    </div>
-                                                </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf="pendingRequests.length === 0 && !pendingReLoading">
+                                                <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
                                             </tr>
-
-                                            <tr>
+                                            <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
+                                                <td class="table-content" colspan="6" style="text-align: center">
+                                                    <md-spinner class='small-spinner'></md-spinner>
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
+                                                <td> {{ i+1 }} </td>
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
                                                             <img src="assets/images/users/default.png">
                                                         </div>
-                                                        <div>Johnson Wade</div>
+                                                        <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
                                                     </div>
                                                 </td>
-                                                <td>Blood Test</td>
-                                                <td>11th Jan, 2017.</td>
+                                                <td>{{ pendingRequest?.name}}</td>
+                                                <td>{{ pendingRequest?.labNumber}}</td>
+                                                <td>{{ pendingRequest?.createdAt | date }}</td>
+                                                <td> Not paid </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -153,10 +182,7 @@
                                                 <span *ngIf="docAction" (click)="showDoc_toggle()" class="action">HIDE</span>
                                                 <span *ngIf="!docAction" (click)="showDoc_toggle()" class="action">SHOW</span>
                                             </div>
-                                            <div *ngIf="docAction" class="initial-val">
-                                                when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do
-                                                we use it?
-                                            </div>
+                                            <div *ngIf="docAction" class="initial-val">{{ selectedInvestigation?.clinicalInformation }}</div>
                                         </div>
                                         <div class="initial-contenet invstn-val">
                                             <div class="report-title">
@@ -164,77 +190,73 @@
                                                 <span *ngIf="diagnosisAction" (click)="showDiagnosis_toggle()" class="action">HIDE</span>
                                                 <span *ngIf="!diagnosisAction" (click)="showDiagnosis_toggle()" class="action">SHOW</span>
                                             </div>
-                                            <div *ngIf="diagnosisAction" class="initial-val">
-                                                when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
-                                            </div>
+                                            <div *ngIf="diagnosisAction" class="initial-val">{{ selectedInvestigation?.diagnosis }}</div>
                                         </div>
                                     </div>
-                                    <div class="resultSect-title">Investigation Result</div>
-                                    <div class="invstn-wrap">
-                                        <div *ngIf="numericReport" class="lettering-wrap">
-                                            <div class="report-title">Bilateral Test</div>
-                                            <div class="invstn-vals">
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Reference:</div>
-                                                    <div class="val-val">1 - 7(cm)</div>
-                                                </div>
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Sample NO:</div>
-                                                    <div class="val-val">1220</div>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                    </md-input-container>
+                                    <form [formGroup]="reportFormGroup" novalidate>
+                                        <div class="resultSect-title">Investigation Result</div>
+                                        <div class="invstn-wrap">
+                                            <div *ngIf="numericReport" class="lettering-wrap">
+                                                <div class="report-title">Bilateral Test</div>
+                                                <div class="invstn-vals">
+                                                    <div class="invstn-val">
+                                                        <div class="val-label">Reference:</div>
+                                                        <div class="val-val">1 - 7(cm)</div>
+                                                    </div>
+                                                    <div class="invstn-val">
+                                                        <div class="val-label">Sample NO:</div>
+                                                        <div class="val-val">1220</div>
+                                                    </div>
+                                                    <div class="frm-item-wrap">
+                                                        <md-input-container>
+                                                            <input type="number" mdInput placeholder="Enter Result" formControlName="result">
+                                                        </md-input-container>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div *ngIf="textReport" class="lettering-wrap">
-                                            <div class="report-title">Bilateral Test</div>
-                                            <div class="invstn-vals">
-                                                <div class="invstn-val">
-                                                    <div class="val-label">Sample NO:</div>
-                                                    <div class="val-val">1220</div>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <md-input-container>
-                                                        <textarea formControlName="result" mdInput placeholder="Enter Result"></textarea>
-                                                    </md-input-container>
+                                            <div *ngIf="textReport" class="lettering-wrap">
+                                                <div class="report-title">Bilateral Test</div>
+                                                <div class="invstn-vals">
+                                                    <div class="invstn-val">
+                                                        <div class="val-label">Sample NO:</div>
+                                                        <div class="val-val">1220</div>
+                                                    </div>
+                                                    <div class="frm-item-wrap">
+                                                        <md-input-container>
+                                                            <textarea formControlName="result" mdInput placeholder="Enter Result"></textarea>
+                                                        </md-input-container>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="frm-item-wrap">
-                                        <md-select placeholder="Investigation Outcome" formControlName="outcome">
-                                            <md-option [value]="Normal">Normal</md-option>
-                                            <md-option [value]="Low">Low</md-option>
-                                            <md-option [value]="High">High</md-option>
-                                        </md-select>
-                                    </div>
-                                    <div class="frm-item-wrap">
-                                        <md-input-container>
-                                            <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
-                                        </md-input-container>
-                                    </div>
-                                    <div class="frm-item-wrap">
-                                        <md-input-container>
-                                            <textarea formControlName="recomendation" mdInput placeholder="Recomendation"></textarea>
-                                        </md-input-container>
-                                    </div>
+                                        <div class="frm-item-wrap">
+                                            <md-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                <md-option [value]="'Normal'">Normal</md-option>
+                                                <md-option [value]="'Low'">Low</md-option>
+                                                <md-option [value]="'High'">High</md-option>
+                                            </md-select>
+                                        </div>
+                                        <div class="frm-item-wrap">
+                                            <md-input-container>
+                                                <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
+                                            </md-input-container>
+                                        </div>
+                                        <div class="frm-item-wrap">
+                                            <md-input-container>
+                                                <textarea formControlName="recommendation" mdInput placeholder="Recomendation"></textarea>
+                                            </md-input-container>
+                                        </div>
+                                    </form>
                                 </div>
 
                                 <div class="btns" *ngIf="hasRequest">
-                                    <button (click)="createInvestigation(frmNewReport.valid, frmNewReport.value)" class="button btn-orange">
-                                        SAVE AS DRAFT
-                                    </button>
-                                    <button (click)="createInvestigation(frmNewReport.valid, frmNewReport.value)" class="button btn-blue">
-                                        SAVE AND UPLOAD
-                                    </button>
+                                    <button (click)="createReport(reportFormGroup.valid, reportFormGroup.value, 'save')" class="button btn-orange" [innerHtml]="saveToDraftBtnText"></button>
+                                    <button (click)="createReport(reportFormGroup.valid, reportFormGroup.value, 'upload')" class="button btn-blue" [innerHtml]="saveAndUploadBtnText"></button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="tblWrapa" class="actSect">
