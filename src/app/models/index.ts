@@ -84,3 +84,4 @@ export * from './facility-manager/setup/patient-documentation';
 export * from './facility-manager/setup/document';
 export * from './facility-manager/setup/investigation';
 export * from './module-manager/setup/orderstatus';
+export * from './facility-manager/setup/pending-laboratory-request';

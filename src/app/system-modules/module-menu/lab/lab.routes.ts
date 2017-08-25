@@ -6,6 +6,7 @@ import { InvestigationServiceComponent } from './investigation-service/investiga
 import { InvestigationPriceComponent } from './investigation-price/investigation-price.component';
 import { PanelComponent } from './panel/panel.component';
 import { ReportComponent } from './report/report.component';
+import { ExternalInvestigationsComponent } from './external-investigations/external-investigations.component';
 
 const LABMODULES_ROUTES: Routes = [
     {
@@ -16,6 +17,7 @@ const LABMODULES_ROUTES: Routes = [
             { path: 'investigations', component: InvestigationServiceComponent },
             { path: 'investigation-pricing', component: InvestigationPriceComponent },
             { path: 'panels', component: PanelComponent },
+            { path: 'external-requests', component: ExternalInvestigationsComponent },
             { path: 'reports', component: ReportComponent }
         ]
     }

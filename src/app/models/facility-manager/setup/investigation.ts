@@ -23,6 +23,7 @@ export interface InvestigationModel {
     investigation: Investigation;
     LaboratoryWorkbenches:any[];
     location:any;
+    temporaryInvestigationList:any[];
     isExternal: boolean;
     isUrgent: boolean;
     isChecked: boolean;

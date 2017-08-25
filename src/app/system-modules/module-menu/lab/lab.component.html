@@ -15,6 +15,7 @@
             <div class="lTab-title">LABORATORY MANAGER</div>
             <ul class="nav-group">
                 <li [class.navActive]="requestContentArea" (click)="checkPageUrl('request');" routerLink="/dashboard/laboratory/requests">Laboratory Requests</li>
+                <li [class.navActive]="externalContentArea" (click)="checkPageUrl('external');" routerLink="/dashboard/laboratory/external-requests">External Requests</li>
                 <li [class.navActive]="reportContentArea" (click)="checkPageUrl('report');" routerLink="/dashboard/laboratory/reports">Report</li>
             </ul>
 
