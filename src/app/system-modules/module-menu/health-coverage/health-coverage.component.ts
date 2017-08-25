@@ -10,11 +10,12 @@ export class HealthCoverageComponent implements OnInit {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  pageInView = 'Company Retainership';
+  pageInView = 'Health Insurance';
 
-  companyCover = true;
+  companyCover = false;
   familyCover = false;
-  hmoCover = false;
+  payment = false;
+  hmoCover = true;
   staffCover = false;
   currentPath = '';
 
@@ -26,63 +27,41 @@ export class HealthCoverageComponent implements OnInit {
 
   ngOnInit() {
   }
-  getActivePath(value: string) {
-    if (value === 'companyCover') {
-      if (this.currentPath.endsWith('company-cover')) {
-        return 'companyCover';
-      } else {
-        return '';
-      }
-    } else if (value === 'familyCover') {
-      if (this.currentPath.endsWith('family-cover')) {
-        return 'familyCover';
-      } else {
-        return '';
-      }
-    } else if (value === 'hmoCover') {
-      if (this.currentPath.endsWith('hmo-cover')) {
-        return 'hmoCover';
-      } else {
-        return '';
-      }
-    } else if (value === 'staffCover') {
-      if (this.currentPath.endsWith('staff-cover')) {
-        return 'staffCover';
-      } else {
-        return '';
-      }
-    }
-  }
+
   pageInViewLoader(title) {
     this.pageInView = title;
   }
   companyCover_show() {
     this.companyCover = true;
     this.familyCover = false;
+    this.payment = false;
     this.hmoCover = false;
-    this.staffCover = false;
+    this.pageInView = "Company Retainership";
     this.router.navigate(['/dashboard/health-coverage/company-cover']);
   }
   familyCover_show() {
     this.companyCover = false;
     this.familyCover = true;
+    this.payment = false;
     this.hmoCover = false;
-    this.staffCover = false;
+    this.pageInView = "Family Cover";
     this.router.navigate(['/dashboard/health-coverage/family-cover']);
   }
   hmoCover_show() {
     this.companyCover = false;
     this.familyCover = false;
+    this.payment = false;
     this.hmoCover = true;
-    this.staffCover = false;
+    this.pageInView = "Health Insurance";
     this.router.navigate(['/dashboard/health-coverage/hmo-cover']);
   }
-  staffCover_show() {
+  payment_show() {
     this.companyCover = false;
     this.familyCover = false;
+    this.payment = true;
     this.hmoCover = false;
-    this.staffCover = true;
-    this.router.navigate(['/dashboard/health-coverage/staff-cover']);
+    this.pageInView = "Payment";
+    this.router.navigate(['/dashboard/health-coverage/payment']);
   }
 
 }
