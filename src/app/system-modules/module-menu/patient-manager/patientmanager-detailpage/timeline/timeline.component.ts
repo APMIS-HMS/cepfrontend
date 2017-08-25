@@ -11,7 +11,7 @@ export class TimelineComponent implements OnInit {
   addAllergy_view = false;
   addHistory_view = false;
   addVitals_view = false;
-
+  docDetail_view = false;
 
   constructor() { }
 

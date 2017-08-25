@@ -11,6 +11,8 @@ export class BillingComponent implements OnInit {
   services = true;
   pricelist = false;
   contentSecMenuShow = false;
+  serviceStyle = true;
+  pricelistStyle= false;
 
   constructor() { }
 
@@ -34,10 +36,14 @@ export class BillingComponent implements OnInit {
   servicesShow() {
     this.pricelist = false;
     this.services = true;
+    this.serviceStyle = true;
+    this.pricelistStyle = false;
   }
   pricelistShow() {
     this.pricelist = true;
     this.services = false;
+    this.pricelistStyle = true;
+    this.serviceStyle = false;
   }
 
 }

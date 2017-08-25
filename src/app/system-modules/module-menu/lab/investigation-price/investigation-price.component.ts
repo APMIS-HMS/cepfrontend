@@ -28,7 +28,8 @@ export class InvestigationPriceComponent implements OnInit {
   apmisInvestigationLookupImgKey = '';
 
   pricing_view = false;
-
+  Inactive = false;
+  Active = false;
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
@@ -76,12 +77,14 @@ export class InvestigationPriceComponent implements OnInit {
     })
 
     this.frmNewPrice.controls['workbench'].valueChanges.subscribe(value => {
+     
       if (value !== null && value.length === 0) {
         this.apmisLookupQuery = {
           'facilityId._id': this.selelctedFacility._id,
           name: { $regex: -1, '$options': 'i' },
         }
       } else {
+         console.log(value)
         this.apmisLookupQuery = {
           'facilityId._id': this.selelctedFacility._id,
           'laboratoryId._id': { $in: this.locationIds },
@@ -114,7 +117,7 @@ export class InvestigationPriceComponent implements OnInit {
         'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id
         // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id } }
       },
-      
+
 
     }).then(payload => {
       this.investigations = payload.data;
@@ -137,6 +140,43 @@ export class InvestigationPriceComponent implements OnInit {
       });
     }
 
+  }
+  getLaboratoryFromInvestigation(labworkBenches) {
+    let retVal = '';
+    const labIndex = labworkBenches.forEach(item => {
+      if (item.laboratoryId._id === this.checkingObject.typeObject.minorLocationObject._id) {
+        retVal = item.laboratoryId.name
+      }
+    });
+    return retVal;
+  }
+  getWorkbenchFromInvestigation(labworkBenches) {
+    let retVal = '';
+    const labIndex = labworkBenches.forEach(item => {
+      const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+      retVal = item.workbenches[0].workBench.name
+    });
+    return retVal;
+  }
+  gePriceFromInvestigation(labworkBenches) {
+    let retVal = '';
+    const labIndex = labworkBenches.forEach(item => {
+      const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+      retVal = item.workbenches[0].price;
+    });
+    return retVal;
+  }
+  reqDetail(investigationPrice) {
+    this.pricing_view = true;
+    console.log(investigationPrice);
+    let retVal;
+    const labIndex = investigationPrice.LaboratoryWorkbenches.forEach(item => {
+      const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+      retVal = item.workbenches[0].workBench;
+    });
+    // this.selectedWorkBench = retVal;
+    this.frmNewPrice.controls['workbench'].setValue(retVal.name)
+    console.log(retVal);
   }
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
@@ -207,15 +247,16 @@ export class InvestigationPriceComponent implements OnInit {
       //create a new collection object;
       labCollectionObject = {
         laboratoryId: this.checkingObject.typeObject.minorLocationObject,
-        workbenches: [this.selectedWorkBench],
-        price: this.frmNewPrice.controls['price'].value
+        workbenches: [{ workBench: this.selectedWorkBench, price: this.frmNewPrice.controls['price'].value }],
       }
       this.selectedInvestigation.LaboratoryWorkbenches.push(labCollectionObject);
 
     } else {
       // is existing
       labCollectionObject = this.selectedInvestigation.LaboratoryWorkbenches[labIndex];
-      labCollectionObject.price = this.frmNewPrice.controls['price'].value;
+      let index = labCollectionObject.workbenches.findIndex(x => x.workBench.id === this.selectedWorkBench._id);
+      labCollectionObject.workbenches[index].price = this.frmNewPrice.controls['price'].value;
+      // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
       this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
     }
     console.log(this.selectedFacilityServicePrice);
@@ -234,6 +275,7 @@ export class InvestigationPriceComponent implements OnInit {
       // this.apmisInvestigationLookupHandleSelectedItem({name:''});
       // this.apmisLookupHandleSelectedItem({name:''})
       console.log(result);
+      this.getInvestigations();
     })
 
     // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {

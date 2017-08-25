@@ -52,6 +52,8 @@ export class LabRequestsComponent implements OnInit {
   investigations: InvestigationModel[] = [];
   bindInvestigations: InvestigationModel[] = [];
   movedInvestigations: any[] = [];
+
+  totalPrice: Number = 0;
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
@@ -96,6 +98,7 @@ export class LabRequestsComponent implements OnInit {
       payload.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
         investigation.investigation = item;
+        investigation.LaboratoryWorkbenches = item.LaboratoryWorkbenches;
         investigation.isExternal = false;
         investigation.isUrgent = false;
         investigation.isChecked = false;
@@ -224,6 +227,10 @@ export class LabRequestsComponent implements OnInit {
 
           }
         } else {
+          // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
+
+          // });
+          // console.log(pay);
           console.log('first in')
           // without child investigation
           let copyInvestigation = JSON.parse(JSON.stringify(investigation));
@@ -240,7 +247,7 @@ export class LabRequestsComponent implements OnInit {
                   console.log('ininin')
                   child.isChecked = true;
                   console.log(child)
-                  this.bindInvestigations[isInBind].investigation.panel.push(child);
+                  // this.bindInvestigations[isInBind].investigation.panel.push(child);
                   if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
                     investigation.isChecked = true;
                   } else {
@@ -248,16 +255,11 @@ export class LabRequestsComponent implements OnInit {
                   }
                 }
               })
-
-
-
-            } else {
-
             }
           } else {
             investigation.isChecked = true;
             let copyInvestigation = JSON.parse(JSON.stringify(investigation));
-            this.bindInvestigations.push(copyInvestigation);
+            // this.bindInvestigations.push(copyInvestigation);
             // check all children
             console.log('check all children')
             if (investigation.investigation.isPanel) {
@@ -267,17 +269,27 @@ export class LabRequestsComponent implements OnInit {
               });
             }
           }
+          // investigation.LaboratoryWorkbenches = pay.LaboratoryWorkbenches;
+
 
         }
 
       } else {
+        // checked without panel
+        console.log(investigation);
+        // console.log(pay);
         if ($event.checked) {
-          this.bindInvestigations.push(investigation);
+          // this.bindInvestigations.push(investigation);
+          investigation.isChecked = true;
+          investigation.LaboratoryWorkbenches = investigation.LaboratoryWorkbenches;
         } else {
           console.log('slice 1')
           const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
           this.bindInvestigations.splice(indexToRemove, 1)
         }
+        // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
+
+        // })
       }
     } else {
       console.log('slice 2')
@@ -289,9 +301,141 @@ export class LabRequestsComponent implements OnInit {
         investigation.investigation.panel.forEach((child, k) => {
           child.isChecked = false;
         });
+        investigation.isChecked = false;
+        investigation.isExternal = false;
+        investigation.isUrgent = false;
+      } else {
+        investigation.isChecked = false;
+        investigation.isExternal = false;
+        investigation.isUrgent = false;
+        // investigation.LaboratoryWorkbenches = [];
+        // investigation.LaboratoryWorkbenches = [];
       }
 
+
     }
+  }
+
+  locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
+    console.log('in')
+    console.log($event)
+    if ($event.checked) {
+      if (investigation.investigation.isPanel) {
+        // isPanel
+        console.log('is my')
+      } else {
+        // checked without panel
+        // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
+
+        // })
+        // console.log(pay);
+        if ($event.checked) {
+          console.log(location)
+          this.bindInvestigations.push(investigation);
+          investigation.isChecked = true;
+          investigation.LaboratoryWorkbenches = LaboratoryWorkbenches;
+        } else {
+          console.log('slice 1')
+          const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+          this.bindInvestigations.splice(indexToRemove, 1)
+        }
+      }
+    } else {
+      // console.log('slice 2')
+      // const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      // this.bindInvestigations.splice(indexToRemove, 1);
+      // unchecked panel and uncheched all children
+      // console.log('uncheck panel')
+      if (investigation.investigation.isPanel) {
+        investigation.investigation.panel.forEach((child, k) => {
+          child.isChecked = true;
+        });
+        // investigation.isChecked = false;
+        investigation.location = location;
+        console.log(location)
+        this.bindInvestigations.push(investigation);
+      } else {
+        console.log('move');
+
+        investigation.location = location;
+        console.log(location)
+        this.bindInvestigations.push(investigation);
+        // investigation.isChecked = false;
+        // investigation.LaboratoryWorkbenches = [];
+        // investigation.LaboratoryWorkbenches = [];
+      }
+
+
+    }
+  }
+  getTotalPrice() {
+    let retVal = 0;
+    this.bindInvestigations.forEach((bind => {
+      if (!bind.isExternal) {
+        bind.LaboratoryWorkbenches.forEach((lab => {
+          if (lab.workbenches.length > 0) {
+            retVal = retVal + lab.workbenches[0].price;
+          }
+        }))
+      }
+    }))
+    return retVal;
+  }
+  IsParentChecked(investigation, panel) {
+    return this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id) > -1;
+
+  }
+  getParentLocation(investigation) {
+    const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    if(index > -1){
+      return this.bindInvestigations[index].location.laboratoryId.name;
+    }
+    return '';
+  }
+  getChildPriceBasedOnParentLocation(investigation, panel){
+    const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    if(index > -1){
+     let parentLocation = this.bindInvestigations[index].location.laboratoryId;
+     console.log(parentLocation)
+    }
+  }
+  removeBindingInvestigation(investigation: InvestigationModel) {
+    investigation.isChecked = false;
+    const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    this.bindInvestigations.splice(indexToRemove, 1)
+  }
+  markExternal(event, investigation: InvestigationModel) {
+    if (event.checked) {
+      // investigation.LaboratoryWorkbenches = [];
+      delete investigation.location;
+      console.log(investigation);
+      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      console.log(indexToRemove);
+      if (indexToRemove > -1) {
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
+
+      investigation.isExternal = true;
+      let copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+      delete copyBindInvestigation.LaboratoryWorkbenches;
+      delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
+      this.bindInvestigations.push(copyBindInvestigation);
+    } else {
+      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      console.log(indexToRemove);
+      if (indexToRemove > -1) {
+        this.bindInvestigations.splice(indexToRemove, 1)
+      }
+      // investigation.LaboratoryWorkbenches = [];
+      investigation.isExternal = false;
+      this.investigationChanged({ checked: true }, investigation);
+    }
+  }
+  getValue(investigation) {
+    return false;
+  }
+  getPrice(workbenches) {
+    return workbenches[0].price;
   }
   save(valid, value) {
     delete this.selectedPatient.appointments;
@@ -311,7 +455,8 @@ export class LabRequestsComponent implements OnInit {
 
 
     let copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
-    copyBindInvestigation.forEach((item, i) => {
+    let readyCollection:any [] = [];
+    copyBindInvestigation.forEach((item: InvestigationModel, i) => {
       if (item.investigation.isPanel) {
         delete item.isChecked;
         item.investigation.panel.forEach((panel, j) => {
@@ -319,10 +464,14 @@ export class LabRequestsComponent implements OnInit {
         })
       } else {
         delete item.isChecked;
+        delete item.LaboratoryWorkbenches;
+        delete item.location;
+       readyCollection.push(item.investigation);
       }
     })
 
     console.log(copyBindInvestigation);
+    console.log(readyCollection);
     console.log(this.bindInvestigations);
     let request: any = {
       facilityId: selectedFacility,
@@ -330,7 +479,7 @@ export class LabRequestsComponent implements OnInit {
       labNumber: this.frmNewRequest.controls['labNo'].value,
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
       diagnosis: this.frmNewRequest.controls['diagnosis'].value,
-      investigations: copyBindInvestigation
+      investigations: readyCollection
     }
     console.log(request);
     this.requestService.create(request).then(payload => {
