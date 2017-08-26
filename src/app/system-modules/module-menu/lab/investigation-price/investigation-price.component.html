@@ -1,0 +1,130 @@
+<div class="pg-subtitle">
+  <ng2-toasty [position]="'top-right'"></ng2-toasty>
+  INVESTIGATION PRICING</div>
+<div>
+    <div class="doc-mainWrap">
+        <div class="doc-contentArea">
+
+            <div class="clinicalNoteWrap">
+                <div class="actSect">
+                    <div (click)="pricing_show()" class="act-wrap">
+                        <i *ngIf="pricing_view" class="fa fa-minus" aria-hidden="true"></i>
+                        <i [hidden]="pricing_view" class="fa fa-plus" aria-hidden="true"></i>
+                        <span>Set Price</span>
+                    </div>
+
+                    <form class="frmNoteWrap" *ngIf="pricing_view" [formGroup]="frmNewPrice" novalidate>
+
+                        <div class="frm-wrap">
+                            <div class="frm-l">
+                                <div class="frm-item-wrap">
+                                    <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                                        [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+                                </div>
+                                <div class="frm-item-wrap">
+                                    <apmis-lookup formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Select Investigation" [isSocket]="false" [displayKey]="apmisInvestigationLookupDisplayKey"
+                                        (selectedItem)="apmisInvestigationLookupHandleSelectedItem($event)"></apmis-lookup>
+                                </div>
+                            </div>
+                            <div class="frm-r">
+                                <div class="frm-item-wrap">
+                                    <md-input-container>
+                                        <input type="number" mdInput placeholder="Price" formControlName="price">
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="cta-1">
+              Set Price
+            </button>
+                    </form>
+                </div>
+
+                <div class="tblWrapa" class="actSect">
+                    <table cellpadding="0" cellspacing="0" border="0.5">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Laboratory</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Workbench</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Investigation</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Price</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Status</span>
+                                </th>
+                                <th>Date Created</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="tbl-actionRow">
+                                        <!-- <div class="tbl-title">Employee Workspace</div> -->
+                                        <div class="frm-item-wrap">
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                        </div>
+
+                                        <div class="frm-item-wrap">
+                                            <md-select placeholder="Status">
+                                                <md-option [value]="Active">Active</md-option>
+                                                <md-option [value]="Inactive">Inactive</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngFor="let price of investigations">
+                                <td>{{getLaboratoryFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>{{getWorkbenchFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>{{price.name}}</td>
+                                <td>&#x20a6; {{gePriceFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>Active</td>
+                                <td>11th July, 2017.</td>
+                                <td class="action-placeholder">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    <div class="action-container shadow-RB">
+                                        <div (click)="reqDetail(price)" class="action-item">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                            <span>Edit</span>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                            <span>Delete</span>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <i class="fa fa-ban" aria-hidden="true"></i>
+                                            <span>Deactivate</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
