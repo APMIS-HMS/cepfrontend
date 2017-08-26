@@ -93,19 +93,19 @@ export class ReportComponent implements OnInit {
       }
     });
 
-    this.patientFormGroup.controls['result'].valueChanges.subscribe(val => {
-      if(this.numericReport) {
-        if(this.selectedInvestigation.reportType.name.toLowerCase() === 'numeric'.toLowerCase()) {
-          if(this.selectedInvestigation.reportType.ref.min > val) {
-            this.referenceValue = 'Low';
-          } else if(this.selectedInvestigation.reportType.ref.min < val && this.selectedInvestigation.reportType.ref.max > val ) {
-            this.referenceValue = 'Normal';
-          } else {
-            this.referenceValue = 'High';
-          }
-        }
-      }
-    });
+    // this.patientFormGroup.controls['result'].valueChanges.subscribe(val => {
+    //   if(this.numericReport) {
+    //     if(this.selectedInvestigation.reportType.name.toLowerCase() === 'numeric'.toLowerCase()) {
+    //       if(this.selectedInvestigation.reportType.ref.min > val) {
+    //         this.referenceValue = 'Low';
+    //       } else if(this.selectedInvestigation.reportType.ref.min < val && this.selectedInvestigation.reportType.ref.max > val ) {
+    //         this.referenceValue = 'Normal';
+    //       } else {
+    //         this.referenceValue = 'High';
+    //       }
+    //     }
+    //   }
+    // });
 
     this.CheckIfSelectedPatient();
     this._getAllReports();
