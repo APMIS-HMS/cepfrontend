@@ -1,7 +1,8 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, InvestigationService, LaboratoryRequestService, LaboratoryReportService, DocumentationService
+  FacilitiesService, InvestigationService, LaboratoryRequestService, 
+  LaboratoryReportService, DocumentationService, FormsService
 } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
@@ -17,6 +18,7 @@ export class ReportComponent implements OnInit {
   reportFormGroup: FormGroup;
   patientFormGroup: FormGroup;
   facility: Facility = <Facility>{};
+  selectedForm: any = <any>{};
   user: User = <User>{};
   employeeDetails: any = <any>{};
   selectedInvestigation: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
@@ -59,6 +61,7 @@ export class ReportComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _locker: CoolSessionStorage,
     public facilityService: FacilitiesService,
+    private _formService: FormsService,
     private _laboratoryRequestService: LaboratoryRequestService,
     private _laboratoryReportService: LaboratoryReportService,
     private _documentationService: DocumentationService
@@ -110,6 +113,7 @@ export class ReportComponent implements OnInit {
     this.CheckIfSelectedPatient();
     this._getAllReports();
     this._getAllPendingRequests();
+    this._getDocumentationForm();
     this.hasRequest = true;
   }
 
@@ -135,12 +139,12 @@ export class ReportComponent implements OnInit {
           'facilityId._id': this.facility._id,
           '_id': this.selectedInvestigation.labRequestId,
         }
-      }).then(res => {
-        console.log(res);
+      }).then(labRequest => {
+        console.log(labRequest);
         // Check the action that the user wants to carry out.
         if (action === 'save') {
-          if (res.data.length > 0) {
-            res.data[0].investigations.forEach(investigation => {
+          if (labRequest.data.length > 0) {
+            labRequest.data[0].investigations.forEach(investigation => {
               if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
                 console.log(investigation);
                 investigation.report = report;
@@ -148,8 +152,8 @@ export class ReportComponent implements OnInit {
                 investigation.isSaved = isSaved;
               }
             });
-            console.log(res);
-            this._laboratoryRequestService.update(res.data[0]).then(res => {
+            console.log(labRequest);
+            this._laboratoryRequestService.update(labRequest.data[0]).then(res => {
               console.log(res);
               this.saveToDraftBtnText = "SAVE AS DRAFT";
               this._notification('Success', 'Report has been saved successfully!');
@@ -158,8 +162,13 @@ export class ReportComponent implements OnInit {
             this._notification('Error', 'There was an error saving report. Please try again later!');
           }
         } else if (action === 'upload') {
-          if (res.data.length > 0) {
-            res.data[0].investigations.forEach(investigation => {
+          if (labRequest.data.length > 0) {
+            const saveDocument = {
+              documentType: this.selectedForm,
+              body: {}
+            };
+
+            labRequest.data[0].investigations.forEach(investigation => {
               if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
                 console.log(investigation);
                 investigation.report = report;
@@ -167,31 +176,26 @@ export class ReportComponent implements OnInit {
                 investigation.isSaved = !isSaved;
 
                 // Build document to save in documentation
-                const document = {
-                  documentType: {
-                    facilityId: this.facility,
-                    title: "Laboratory Request"
-                  },
-                  body: {
-                    clinicalInformation: investigation.clinicalInformation,
-                    diagnosis: investigation.diagnosis,
-                    labNumber: investigation.labNumber,
-                    name: investigation.name,
-                    report: investigation.report,
-                    reportType: investigation.reportType,
-                    specimen: investigation.specimen
-                  }
-                };
+                saveDocument.body = {
+                  clinicalInformation: labRequest.data[0].clinicalInformation,
+                  diagnosis: labRequest.data[0].diagnosis,
+                  labNumber: labRequest.data[0].labNumber,
+                  name: investigation.investigation.name,
+                  report: investigation.report,
+                  reportType: investigation.investigation.reportType,
+                  specimen: investigation.investigation.specimen
+                }
               }
             });
-            console.log(res.data[0]);
+            console.log(labRequest.data[0]);
+            console.log(saveDocument);
 
-            this._laboratoryRequestService.update(res.data[0]).then(res => {
+            this._laboratoryRequestService.update(labRequest.data[0]).then(res => {
               if(res) {
                 console.log(res);
                 //Build documentation model
                 const patientDocumentation = {
-                  document: document,
+                  document: saveDocument,
                   createdBy: this.employeeDetails,
                   facilityId: this.facility,
                   patientId: this.selectedPatient,
@@ -365,6 +369,12 @@ export class ReportComponent implements OnInit {
     });
 
     return pendingRequests;
+  }
+
+  private _getDocumentationForm() {
+    this._formService.findAll().then(res => {
+      this.selectedForm = res.data.filter(x => new RegExp('laboratory', "i").test(x.title))[0];
+    }).catch(err => console.error(err));
   }
 
   // Notification
