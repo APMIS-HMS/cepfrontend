@@ -14,6 +14,8 @@ export class CoverBillComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() toList: EventEmitter<boolean> = new EventEmitter<boolean>();
+  authorizn = false;
+  copay = true; 
 
   public frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
@@ -24,6 +26,9 @@ export class CoverBillComponent implements OnInit {
   select3 = new FormControl('', []);
   searchPendingInvoices = new FormControl('', []);
   searchPendingBill = new FormControl('', []);
+  coverTypeFormControl = new FormControl('', []);
+  authFormControl = new FormControl('', [Validators.required]);
+  authCommentFormControl = new FormControl('', []);
 
   addItem = false;
   makePayment = false;
