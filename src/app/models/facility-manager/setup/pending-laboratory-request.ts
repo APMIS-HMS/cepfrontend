@@ -6,6 +6,7 @@ export interface PendingLaboratoryRequest {
     patient: any;
     specimen: any;
     price: number;
+    unit: number;
     service: any;
     reportType: any;
     report: any;

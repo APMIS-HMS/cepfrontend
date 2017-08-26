@@ -50,6 +50,7 @@ export class ReportComponent implements OnInit {
   diagnosisAction = true;
   report_view = false;
   repDetail_view = false;
+  referenceValue: string = '';
   saveAndUploadBtnText: string = "SAVE AND UPLOAD";
   saveToDraftBtnText: string = "SAVE AS DRAFT";
 
@@ -89,6 +90,20 @@ export class ReportComponent implements OnInit {
         };
       } else {
         this.patientSelected = false;
+      }
+    });
+
+    this.patientFormGroup.controls['result'].valueChanges.subscribe(val => {
+      if(this.numericReport) {
+        if(this.selectedInvestigation.reportType.name.toLowerCase() === 'numeric'.toLowerCase()) {
+          if(this.selectedInvestigation.reportType.ref.min > val) {
+            this.referenceValue = 'Low';
+          } else if(this.selectedInvestigation.reportType.ref.min < val && this.selectedInvestigation.reportType.ref.max > val ) {
+            this.referenceValue = 'Normal';
+          } else {
+            this.referenceValue = 'High';
+          }
+        }
       }
     });
 
@@ -153,7 +168,10 @@ export class ReportComponent implements OnInit {
 
                 // Build document to save in documentation
                 const document = {
-                  documentType: "Clinical Documentation",
+                  documentType: {
+                    facilityId: this.facility,
+                    title: "Laboratory Request"
+                  },
                   body: {
                     clinicalInformation: investigation.clinicalInformation,
                     diagnosis: investigation.diagnosis,
@@ -170,27 +188,26 @@ export class ReportComponent implements OnInit {
 
             this._laboratoryRequestService.update(res.data[0]).then(res => {
               if(res) {
-                // console.log(res);
-                // const docArray = [];
-                // //Build documentation model
-                // const patientDocumentation = {
-                //   document: document,
-                //   createdBy: this.employeeDetails,
-                //   facilityId: this.facility,
-                //   patientId: this.selectedPatient,
-                // }
+                console.log(res);
+                //Build documentation model
+                const patientDocumentation = {
+                  document: document,
+                  createdBy: this.employeeDetails,
+                  facilityId: this.facility,
+                  patientId: this.selectedPatient,
+                };
 
-                // docArray.push(patientDocumentation);
-                // const documentation = {
-                //   personId: this.selectedPatient,
-                //   documentations: docArray,
-                // };
+                const documentation = {
+                  personId: this.selectedPatient.personDetails,
+                  documentations: patientDocumentation,
+                };
 
-                // // Save into documentation
-                // this._documentationService.create(documentation).then(res => {
-                //   console.log(res);
-                //   this.saveAndUploadBtnText = "SAVE AND UPLOAD";
-                // });
+                // Save into documentation
+                this._documentationService.create(documentation).then(res => {
+                  console.log(res);
+                  this.saveAndUploadBtnText = "SAVE AND UPLOAD";
+                  
+                });
                 this._notification('Success', 'Report has been saved successfully!');
               }
             }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
@@ -266,6 +283,13 @@ export class ReportComponent implements OnInit {
     console.log(this.selectedPatient);
     this.selectedInvestigation = investigation;
     this.apmisLookupText = investigation.patient.personDetails.personFullName;
+    if(this.selectedInvestigation.reportType.name.toLowerCase() === 'text'.toLowerCase()) {
+      this.textReport = true;
+      this.numericReport = false;
+    } else {
+      this.numericReport = true;
+      this.textReport = false;
+    }
     this.CheckIfSelectedPatient();
 
     if(investigation.report === undefined) {
@@ -330,13 +354,12 @@ export class ReportComponent implements OnInit {
           pendingLabReq.reportType = investigation.investigation.reportType;
           pendingLabReq.specimen = investigation.investigation.specimen;
           pendingLabReq.service = investigation.investigation.serviceId;
-          pendingLabReq.price = investigation.investigation.unit;
+          pendingLabReq.unit = investigation.investigation.unit;
           pendingLabReq.investigationId = investigation.investigation._id;
           pendingLabReq.createdAt = investigation.investigation.createdAt;
           pendingLabReq.updatedAt = investigation.investigation.updatedAt;
           
           pendingRequests.push(pendingLabReq);
-          //this.pendingRequests.push(pendingLabReq);
         }
       });
     });

@@ -371,3 +371,34 @@ td .mat-select {
 .hover {
     cursor: pointer;
 }
+
+.isSample {
+    color: #4CAF50;
+}
+
+.notSample {
+    color: #ff2500;
+}
+
+.isDraft {
+    color: #FFEB3B;
+}
+
+.status-wrap {
+    text-align: left;
+    font-size: 10px;
+    padding: 0 5px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.status-val {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+}
