@@ -223,9 +223,8 @@
                   <th>Date</th>
                   <th>Item</th>
                   <th>Unit Price</th>
-                  <th>Qty</th>
+                  <th>Quantity</th>
                   <th>Total Price</th>
-                   <th>Cover Type</th> 
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -233,7 +232,7 @@
               <tbody *ngFor="let group of billGroups">
                 <tr class="tdMasterCategories">
                   <td colspan="1"><input type="checkbox" (change)="checkGroup($event,group)" [checked]="group.isChecked" [formControl]="select1"></td>
-                  <td (click)="toggleCurrentCategory(group)" colspan="6">{{group.category}}</td>
+                  <td (click)="toggleCurrentCategory(group)" colspan="5">{{group.category}}</td>
                   <td (click)="toggleCurrentCategory(group)" colspan="1" class="data">{{group.total | currency:'NGN':true:'4.2-2'}}</td>
                 </tr>
                 <ng-container *ngIf="isCurrentCategory(group)">
@@ -254,15 +253,6 @@
                     </td>
                     <td>
                       <div class="topTotal"><span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
-                    </td>
-                    <td>
-                      <div class="type-wrap">
-                        <md-select placeholder="Select Type">
-                          <md-option [value]="Capitation">Capitation</md-option>
-                          <md-option [value]="Authorization">Authorization Required</md-option>
-                          <md-option [value]="Capitation">Fee For Service</md-option>
-                        </md-select>
-                      </div>
                     </td>
                     <td>
                       <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o" aria-hidden="true"></i>

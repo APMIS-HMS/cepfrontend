@@ -6,13 +6,13 @@ import { Patient, Facility, BillItem, Invoice, BillModel } from '../../../../../
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
-  selector: 'app-cover-bill',
-  templateUrl: './cover-bill.component.html',
-  styleUrls: ['./cover-bill.component.scss']
+  selector: 'app-company-bill',
+  templateUrl: './company-bill.component.html',
+  styleUrls: ['./company-bill.component.scss']
 })
-export class CoverBillComponent implements OnInit {
+export class CompanyBillComponent implements OnInit {
 
-  @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() toList: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public frmBillLookup: FormGroup;

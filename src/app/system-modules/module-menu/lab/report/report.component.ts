@@ -1,8 +1,8 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { 
+import {
   FacilitiesService, InvestigationService, LaboratoryRequestService, LaboratoryReportService, DocumentationService
- } from '../../../../services/facility-manager/setup/index';
+} from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
@@ -62,7 +62,7 @@ export class ReportComponent implements OnInit {
     private _laboratoryRequestService: LaboratoryRequestService,
     private _laboratoryReportService: LaboratoryReportService,
     private _documentationService: DocumentationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
@@ -83,7 +83,7 @@ export class ReportComponent implements OnInit {
 
     this.patientFormGroup.controls['patient'].valueChanges.subscribe(value => {
       console.log(value);
-      if(value.length > 2) {
+      if (value.length > 2) {
         this.apmisLookupQuery = {
           'facilityid': this.facility._id,
           'searchtext': value
@@ -114,10 +114,10 @@ export class ReportComponent implements OnInit {
   }
 
   createReport(valid: boolean, value: any, action: string) {
-    if(valid) {
-      if(action === 'save') {
+    if (valid) {
+      if (action === 'save') {
         this.saveToDraftBtnText = "SAVING...";
-      } else if(action === 'upload') {
+      } else if (action === 'upload') {
         this.saveAndUploadBtnText = "UPLOADING...";
       }
       const isUploaded: boolean = false;
@@ -128,20 +128,20 @@ export class ReportComponent implements OnInit {
         recommendation: value.recommendation,
         result: value.result
       };
-      
+
       // Call the request service and update the investigation.
       this._laboratoryRequestService.find({
-        query: { 
-          'facilityId._id': this.facility._id, 
+        query: {
+          'facilityId._id': this.facility._id,
           '_id': this.selectedInvestigation.labRequestId,
         }
       }).then(res => {
         console.log(res);
         // Check the action that the user wants to carry out.
-        if(action === 'save') {
-          if(res.data.length > 0) {
+        if (action === 'save') {
+          if (res.data.length > 0) {
             res.data[0].investigations.forEach(investigation => {
-              if(investigation.investigation._id === this.selectedInvestigation.investigationId) {
+              if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
                 console.log(investigation);
                 investigation.report = report;
                 investigation.isUploaded = isUploaded;
@@ -157,10 +157,10 @@ export class ReportComponent implements OnInit {
           } else {
             this._notification('Error', 'There was an error saving report. Please try again later!');
           }
-        } else if(action === 'upload') {
-          if(res.data.length > 0) {
+        } else if (action === 'upload') {
+          if (res.data.length > 0) {
             res.data[0].investigations.forEach(investigation => {
-              if(investigation.investigation._id === this.selectedInvestigation.investigationId) {
+              if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
                 console.log(investigation);
                 investigation.report = report;
                 investigation.isUploaded = !isUploaded;
@@ -216,7 +216,7 @@ export class ReportComponent implements OnInit {
           }
         }
       }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
-     
+
     } else {
       this._notification('Error', 'Some fields are empty. Please fill in the required fields!');
     }
@@ -228,8 +228,8 @@ export class ReportComponent implements OnInit {
     this.selectedPatient = value;
     console.log(value);
     this._laboratoryRequestService.find({
-      query: { 
-        'facilityId._id': this.facility._id, 
+      query: {
+        'facilityId._id': this.facility._id,
         'patientId._id': value._id,
       }
     }).then(res => {
@@ -249,10 +249,10 @@ export class ReportComponent implements OnInit {
       }
     }).catch(err => this._notification('Error', 'There was a problem getting patient details!'));
   }
-  showImageBrowseDlg(){
+  showImageBrowseDlg() {
 
   }
-  onChange(e){
+  onChange(e) {
 
   }
   private _getAllPendingRequests() {
@@ -292,29 +292,29 @@ export class ReportComponent implements OnInit {
     }
     this.CheckIfSelectedPatient();
 
-    if(investigation.report === undefined) {
+    if (investigation.report === undefined) {
       this.reportFormGroup.controls['result'].reset();
       this.reportFormGroup.controls['outcome'].reset();
       this.reportFormGroup.controls['recommendation'].reset();
       this.reportFormGroup.controls['conclusion'].reset();
-    } else if(!investigation.isSaved || !investigation.isUploaded) {
+    } else if (!investigation.isSaved || !investigation.isUploaded) {
       this.reportFormGroup.controls['result'].setValue(this.selectedInvestigation.report.result);
       this.reportFormGroup.controls['outcome'].setValue(this.selectedInvestigation.report.outcome);
       this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
       this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
     }
   }
-  
+
   private _getAllReports() {
     this._laboratoryReportService.findAll().then(res => {
       console.log(res);
       this.reportLoading = false;
       this.reports = res.data;
-    }).catch(err =>  console.error(err));
+    }).catch(err => console.error(err));
   }
 
   private CheckIfSelectedPatient() {
-    if(!!this.selectedPatient && this.selectedPatient.hasOwnProperty('_id')) {
+    if (!!this.selectedPatient && this.selectedPatient.hasOwnProperty('_id')) {
       this.patientSelected = true;
     } else {
       this.patientSelected = false;
@@ -376,24 +376,24 @@ export class ReportComponent implements OnInit {
 		});
 	}
 
-  numeric_report(){
+  numeric_report() {
     this.numericReport = true;
     this.textReport = false;
   }
-  text_report(){
+  text_report() {
     this.numericReport = false;
     this.textReport = true;
   }
-  showDoc_toggle(){
+  showDoc_toggle() {
     this.docAction = !this.docAction;
   }
-  showDiagnosis_toggle(){
+  showDiagnosis_toggle() {
     this.diagnosisAction = !this.diagnosisAction;
   }
   close_onClick(message: boolean): void {
     this.repDetail_view = false;
   }
-  report_show(){
+  report_show() {
     this.report_view = !this.report_view;
   }
   repDetail() {

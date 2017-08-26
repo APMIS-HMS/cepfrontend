@@ -1,4 +1,5 @@
-import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild, Input } from '@angular/core';
+import { FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-request-detail',
@@ -8,15 +9,16 @@ import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChil
 export class RequestDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @ViewChild('fileInput') fileInput:ElementRef;
-  
+  @Input() investigation: any;
+  @ViewChild('fileInput') fileInput: ElementRef;
+
   showDocument = false;
-  hasNo= false;
+  hasNo = false;
   hasSample = false;
   hasSpecimen = false;
   hasLabNo = false;
 
-  constructor( private renderer:Renderer) { }
+  constructor(private renderer: Renderer, private facilityService: FacilitiesService) { }
 
   ngOnInit() {
   }
@@ -24,19 +26,19 @@ export class RequestDetailComponent implements OnInit {
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
-  onChange(){
+  onChange() {
     //upload file
   }
   close_onClick() {
     this.closeModal.emit(true);
   }
-  takeSample(){
+  takeSample() {
     this.hasSample = true;
   }
-  takeSpecimen(){
+  takeSpecimen() {
     this.hasSpecimen = true;
   }
-  assignLabNo(){
+  assignLabNo() {
     this.hasLabNo = true;
   }
 
