@@ -14,14 +14,28 @@ export class CoverPaymentComponent implements OnInit {
   hmo_list = true;
   hmo_bill = false;
 
+  company_list = true;
+  company_bill = false;
+
+  family_list = true;
+  family_bill = false;
+
   constructor() { }
 
   ngOnInit() {
   }
 
-  toggler(){ console.log('vamal');
+  toggler(){ 
     this.hmo_bill = !this.hmo_bill;
     this.hmo_list = !this.hmo_list;
+  }
+  toggler2(){ 
+    this.company_bill = !this.company_bill;
+    this.company_list = !this.company_list;
+  }
+  toggler3(){
+    this.family_bill = !this.family_bill;
+    this.family_list = !this.family_list;
   }
   tabCompany_click(){
     this.tabCompany = true;

@@ -18,6 +18,10 @@ import { BeneficiaryListComponent } from './hmo-cover/beneficiary-list/beneficia
 import { CoverPaymentComponent } from './cover-payment/cover-payment.component';
 import { CoverBillComponent } from './cover-payment/cover-bill/cover-bill.component';
 import { CoverListComponent } from './cover-payment/cover-list/cover-list.component';
+import { CompanyListComponent } from './cover-payment/company-list/company-list.component';
+import { CompanyBillComponent } from './cover-payment/company-bill/company-bill.component';
+import { FamilyBillComponent } from './cover-payment/family-bill/family-bill.component';
+import { FamilyListComponent } from './cover-payment/family-list/family-list.component';
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -32,7 +36,11 @@ import { CoverListComponent } from './cover-payment/cover-list/cover-list.compon
         BeneficiaryListComponent,
         CoverPaymentComponent,
         CoverBillComponent,
-        CoverListComponent
+        CoverListComponent,
+        CompanyListComponent,
+        CompanyBillComponent,
+        FamilyBillComponent,
+        FamilyListComponent
     ],
     exports: [
     ],

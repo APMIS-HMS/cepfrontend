@@ -1,11 +1,11 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-cover-list',
-  templateUrl: './cover-list.component.html',
-  styleUrls: ['./cover-list.component.scss']
+  selector: 'app-family-list',
+  templateUrl: './family-list.component.html',
+  styleUrls: ['./family-list.component.scss']
 })
-export class CoverListComponent implements OnInit {
+export class FamilyListComponent implements OnInit {
 
   @Output() toBill: EventEmitter<boolean> = new EventEmitter<boolean>();
 
