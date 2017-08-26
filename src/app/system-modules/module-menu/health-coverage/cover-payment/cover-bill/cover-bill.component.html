@@ -237,7 +237,7 @@
                   <td (click)="toggleCurrentCategory(group)" colspan="1" class="data">{{group.total | currency:'NGN':true:'4.2-2'}}</td>
                 </tr>
                 <ng-container *ngIf="isCurrentCategory(group)">
-                  <tr *ngFor="let bill of group.bills">
+                  <tr *ngFor="let bill of group.bills; let i = index;">
                     <td>
                       <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
                     </td>
@@ -257,13 +257,15 @@
                     </td>
                     <td>
                       <div class="type-wrap">
-                        <md-select placeholder="Select Type"  [formControl]="coverTypeFormControl">
+                        <!-- <md-select placeholder="Select Type"  [formControl]="coverTypeFormControl">
                           <md-option class="captn" [value]="Capitation">Capitation</md-option>
                           <md-option [value]="Authorization">Authorization Required</md-option>
-                          <md-option [value]="Capitation">Fee For Service</md-option>
+                          <md-option [value]="CoPay">Fee For Service</md-option>
+                        </md-select> -->
+                        <md-select  (change)="setSeletedBill(bill)" [formControl]="coverTypeFormControl">
+                            <md-option *ngFor="let cover of coverTypes" value="{{cover.value}}">{{ cover.text }}</md-option>
                         </md-select>
-
-                        <div *ngIf="authorizn" class="floating-action authorizn shadow-RB">
+                        <div *ngIf="selectedCoverType==='Authorization' && isSelectedBill(bill)" class="floating-action authorizn shadow-RB">
                           <form>
                             <md-input-container  class="full-width">
                               <input mdInput placeholder="Authorization Code" [formControl]="authFormControl">
@@ -279,12 +281,12 @@
 
                             <div class="btn-wrap">
                               <button md-button>Done</button>
-                              <button md-button>Cancel</button>
+                              <button (click)="cancelSelectedCover()" md-button>Cancel</button>
                             </div>
                           </form>
                         </div>
 
-                        <div *ngIf="copay" class="floating-action copay shadow-RB">
+                        <div *ngIf="selectedCoverType==='CoPay' && isSelectedBill(bill)" class="floating-action copay shadow-RB">
                           <form>
                             <div class="input-x2">
                               <md-input-container class="half-width" style="padding-top:5px;">
@@ -307,7 +309,7 @@
 
                             <div class="btn-wrap">
                               <button md-button>Done</button>
-                              <button md-button>Cancel</button>
+                              <button (click)="cancelSelectedCover()" md-button>Cancel</button>
                             </div>
                           </form>
                         </div>
