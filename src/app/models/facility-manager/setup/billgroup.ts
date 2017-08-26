@@ -5,7 +5,7 @@ export interface BillIGroup {
     walkInClientDetails: any;
     isWalkIn: boolean;
     userId: string;
-    billItems: [BillItem];
+    billItems: any[];
     facilityItem: any;
     patientItem: any;
     discount: number;

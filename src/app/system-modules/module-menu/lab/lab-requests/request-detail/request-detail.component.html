@@ -1,31 +1,34 @@
 <div class="modal-baseWrap animated pulse">
 
   <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <div class="modal_title">Pregnancy Test Lab Request</div> 
+  <div class="modal_title">{{investigation?.name}} Lab Request</div> 
 
   <div class="pre-sects">
     <div class="status">Pending</div>
     <div class="payment">Paid</div>
-    <div class="date">11th July, 2017.</div>
+    <div class="date">{{investigation?.createdAt | date:'short'}}</div>
   </div>
 
   <div class="sect-1">
-    <div class="patientImg-wrap"><img src="assets/images/users/default.png"></div>
+    <div class="patientImg-wrap">
+      <div *ngIf="investigation?.patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+      <img *ngIf="investigation?.patient?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(investigation?.patient?.personDetails?.profileImageObject?.detailthumbnail)">
+    </div>
     <div class="sect1-content">
       <div class="sect-inner">
         <div class="txt-wrap">
           <div class="txt-label">Full Name</div>
-          <div class="txt-val">Philia Julia</div>
+          <div class="txt-val">{{investigation?.patient.personDetails.personFullName}}</div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Gender</div>
-          <div class="txt-val">Female</div>
+          <div class="txt-val">{{investigation?.patient.personDetails.gender.name}}</div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Investigation</div>
-          <div class="txt-val">HIV Test</div>
+          <div class="txt-val">{{investigation?.name}}</div>
         </div>
 
         <div class="txt-wrap">
@@ -66,36 +69,37 @@
           <div class="txt-val">
             <div class="empWrap">
               <div class="list-img">
-                  <img src="assets/images/users/default.png">
+                  <div *ngIf="investigation?.createdBy?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                  <img *ngIf="investigation?.createdBy?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(investigation?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
               </div>
-              <div>Johnson Wade</div>
+              <div>{{investigation?.createdBy?.employeeDetails?.personFullName}}</div>
             </div>
           </div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Source</div>
-          <div class="txt-val">Continental Hospital - EMT Clinic</div>
+          <div class="txt-val">{{investigation?.facility.name}} - (EMT Clinic-Get Location)</div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Diagnosis</div>
           <div class="txt-val">
-            industry. Lorem Ipsum has been the industry's standard dumm
+            {{investigation?.diagnosis}}
           </div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Clinical Information</div>
           <div class="txt-val">
-            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five
+            {{investigation?.clinicalInformation}}
           </div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">External</div>
           <div class="checka">
-            <md-checkbox></md-checkbox>
+            <md-checkbox [checked]="investigation?.isExternal"></md-checkbox>
           </div>
         </div>
 

@@ -24,4 +24,6 @@ export interface PendingLaboratoryRequest {
     isPanel: boolean;
     updatedAt: Date;
     createdAt: Date;
+    createdBy: any;
+    personId:string;
 }
