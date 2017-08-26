@@ -18,6 +18,7 @@ export class ReportComponent implements OnInit {
   reportFormGroup: FormGroup;
   patientFormGroup: FormGroup;
   facility: Facility = <Facility>{};
+  miniFacility: Facility = <Facility>{};
   selectedForm: any = <any>{};
   user: User = <User>{};
   employeeDetails: any = <any>{};
@@ -69,6 +70,7 @@ export class ReportComponent implements OnInit {
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
+    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
     this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <Facility>this._locker.getObject('workbenchCheckingObject');
@@ -177,27 +179,33 @@ export class ReportComponent implements OnInit {
 
                 // Build document to save in documentation
                 saveDocument.body = {
-                  clinicalInformation: labRequest.data[0].clinicalInformation,
-                  diagnosis: labRequest.data[0].diagnosis,
-                  labNumber: labRequest.data[0].labNumber,
-                  name: investigation.investigation.name,
-                  report: investigation.report,
-                  reportType: investigation.investigation.reportType,
-                  specimen: investigation.investigation.specimen
+                  "Conclusion": investigation.report.conclusion,
+                  "Recommendation": investigation.report.outcome,
+                  "Outcome": investigation.report.outcome,
+                  "Result": investigation.report.result,
+                  "Specimen": investigation.investigation.specimen.name,
+                  "Diagnosis": labRequest.data[0].diagnosis,
+                  "Clinical Information": labRequest.data[0].clinicalInformation,
+                  "Laboratory Number": labRequest.data[0].labNumber,
+                  "Test Name": investigation.investigation.name,
                 }
               }
             });
             console.log(labRequest.data[0]);
-            console.log(saveDocument);
 
             this._laboratoryRequestService.update(labRequest.data[0]).then(res => {
               if(res) {
                 console.log(res);
+                // Delete irrelevant data from employee
+                delete this.employeeDetails.employeeDetails.countryItem;
+                delete this.employeeDetails.employeeDetails.nationalityObject;
+                delete this.employeeDetails.employeeDetails.nationality;
+
                 //Build documentation model
                 const patientDocumentation = {
                   document: saveDocument,
-                  createdBy: this.employeeDetails,
-                  facilityId: this.facility,
+                  createdBy: this.employeeDetails.employeeDetails,
+                  facilityId: this.miniFacility,
                   patientId: this.selectedPatient,
                 };
 
@@ -206,11 +214,15 @@ export class ReportComponent implements OnInit {
                   documentations: patientDocumentation,
                 };
 
+
+                // this._documentationService.find({ 'personId._id': this.selectedPatient.personDetails._id }).then(res => {
+                //   console.log(res);
+                // });
+
                 // Save into documentation
                 this._documentationService.create(documentation).then(res => {
                   console.log(res);
                   this.saveAndUploadBtnText = "SAVE AND UPLOAD";
-                  
                 });
                 this._notification('Success', 'Report has been saved successfully!');
               }
@@ -252,6 +264,11 @@ export class ReportComponent implements OnInit {
         this.pendingRequests = [];
       }
     }).catch(err => this._notification('Error', 'There was a problem getting patient details!'));
+
+    this._documentationService.find({ 'personId._id': this.selectedPatient.personDetails._id }).then(res => {
+      console.log(res);
+    });
+
   }
   showImageBrowseDlg() {
 
@@ -335,7 +352,7 @@ export class ReportComponent implements OnInit {
         if(
           (investigation.isSaved === undefined || !investigation.isSaved) || 
           (investigation.isUploaded === undefined || !investigation.isUploaded) && 
-          labId === investigation.location.laboratoryId._id
+          labId === investigation.LaboratoryWorkbenches[0].laboratoryId.locationId
         ) {
           const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
           if(!investigation.isSaved || !investigation.isUploaded) {
@@ -351,7 +368,7 @@ export class ReportComponent implements OnInit {
           pendingLabReq.patient = labRequest.patientId;
           pendingLabReq.isExternal = investigation.isExternal;
           pendingLabReq.isUrgent = investigation.isUrgent;
-          pendingLabReq.minorLocation = investigation.location.laboratoryId;
+          pendingLabReq.minorLocation = investigation.investigation.LaboratoryWorkbenches[0].laboratoryId.locationId;
           pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
           pendingLabReq.isPanel = investigation.investigation.isPanel;
           pendingLabReq.name = investigation.investigation.name;
