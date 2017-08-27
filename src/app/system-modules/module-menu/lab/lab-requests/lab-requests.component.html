@@ -12,17 +12,7 @@
                         <i [hidden]="request_view" class="fa fa-plus" aria-hidden="true"></i>
                         <span>New Request</span>
                     </div>
-                    <div (click)="extList_show()" class="lab-btn ext-list"><i class="fa fa-plus" aria-hidden="true"></i>External Requests</div>
-
-                    <!-- <div class="ext-list">
-                        <div class="ext-title">External Investigations</div>
-                        <div class="ext-items">
-                            <div class="ext-item">
-                                <div class="ext-item-date">10th Jan, 2017.</div>
-                                <div class="ext-item-name">Clinical Cycosis</div>
-                            </div>
-                        </div>
-                    </div> -->
+                    <div (click)="extList_show()" class="lab-btn ext-listBtn"><i class="fa fa-plus" aria-hidden="true"></i>External Requests</div>
 
                     <div *ngIf="extList" class="ext-list shadow-RB">
                         <div (click)="extList_close()" class="x">x</div>
