@@ -402,3 +402,17 @@ td .mat-select {
     height: 10px;
     border-radius: 100%;
 }
+
+.activeInvestigation {
+    //background-color: #d0edfc !important;
+    background-color: #e6dfdf !important;
+}
+
+.table-background-color {
+    background-color: #4bb8ef !important;
+    tr {
+        &:hover {
+            background-color: #4bb8ef;
+        }
+    }
+}
