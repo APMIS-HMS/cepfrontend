@@ -54,6 +54,7 @@ export class ReportComponent implements OnInit {
   diagnosisAction = true;
   report_view = false;
   repDetail_view = false;
+  activeInvestigationNo: number = -1;
   referenceValue: string = '';
   saveAndUploadBtnText: string = "SAVE AND UPLOAD";
   saveToDraftBtnText: string = "SAVE AS DRAFT";
@@ -74,8 +75,7 @@ export class ReportComponent implements OnInit {
     this.miniFacility = <Facility>this._locker.getObject('miniFacility');
     this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
-    this.selectedLab = <Facility>this._locker.getObject('workbenchCheckingObject');
-    console.log(this.selectedLab);
+    this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
 
     this.patientFormGroup = this.formBuilder.group({
       patient: ['', [Validators.required]],
@@ -89,13 +89,13 @@ export class ReportComponent implements OnInit {
     });
 
     this.patientFormGroup.controls['patient'].valueChanges.subscribe(value => {
-      console.log(value);
       if (value.length > 2) {
         this.apmisLookupQuery = {
           'facilityid': this.facility._id,
           'searchtext': value
         };
       } else {
+        this.activeInvestigationNo = -1;
         this.patientSelected = false;
       }
     });
@@ -122,7 +122,6 @@ export class ReportComponent implements OnInit {
   }
 
   createReport(valid: boolean, value: any, action: string) {
-    console.log(valid);
     if (valid) {
       if (action === 'save') {
         this.saveToDraftBtnText = "SAVING...";
@@ -153,13 +152,12 @@ export class ReportComponent implements OnInit {
 
             labRequest.investigations.forEach(investigation => {
               if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
-                console.log(investigation);
                 investigation.report = report;
                 investigation.isUploaded = isUploaded;
                 investigation.isSaved = !isSaved;
               }
             });
-            console.log(labRequest);
+            
             this._laboratoryRequestService.update(labRequest).then(res => {
               console.log(res);
               this._getAllReports();
@@ -176,12 +174,9 @@ export class ReportComponent implements OnInit {
               documentType: this.selectedForm,
               body: {}
             };
-            console.log(labRequest);
 
             labRequest.investigations.forEach(investigation => {
-              console.log(investigation);
               if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
-                console.log(investigation);
                 investigation.report = report;
                 investigation.isUploaded = !isUploaded;
                 investigation.isSaved = !isSaved;
@@ -200,7 +195,6 @@ export class ReportComponent implements OnInit {
                 }
               }
             });
-            console.log(labRequest);
 
             this._laboratoryRequestService.update(labRequest).then(res => {
               if(res) {
@@ -226,7 +220,7 @@ export class ReportComponent implements OnInit {
                 // Check if documentation has been created for the user
                 this._documentationService.find({ query: {
                     'personId._id': this.selectedPatient.personDetails._id
-                }}).then(res => {
+                  }}).then(res => {
                   console.log(res);
                   // Update the lists
                   this._getAllReports();
@@ -238,14 +232,12 @@ export class ReportComponent implements OnInit {
                     res.data[0].documentations.push(patientDocumentation);
                     // Update the existing documentation
                     this._documentationService.update(res.data[0]).then(res => {
-                      console.log(this.pendingRequests);
                       this.saveAndUploadBtnText = "SAVE AND UPLOAD";
                       this._notification('Success', 'Report has been saved successfully!');
                     });
                   } else {
                     // Save into documentation
                     this._documentationService.create(documentation).then(res => {
-                      console.log(this.pendingRequests);
                       this.saveAndUploadBtnText = "SAVE AND UPLOAD";
                       this._notification('Success', 'Report has been saved and uploaded successfully!');
                     });
@@ -278,7 +270,7 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if(pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
-          this.CheckIfSelectedPatient();
+          //this.CheckIfSelectedPatient();
         } else {
           this.pendingRequests = [];
         }
@@ -304,7 +296,6 @@ export class ReportComponent implements OnInit {
       this.pendingReLoading = false;
       if(res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
-        console.log(pendingRequests);
         if(pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
         } else {
@@ -313,10 +304,12 @@ export class ReportComponent implements OnInit {
       } else {
         this.pendingRequests = [];
       }
-    }).catch(err =>  console.error(err));
+    }).catch(err =>  this._notification('Error', 'There was a problem getting pending requests!'));
   }
 
-  onClickInvestigation(investigation: PendingLaboratoryRequest) {
+  onClickInvestigation(investigation: PendingLaboratoryRequest, index) {
+    console.log(index);
+    this.activeInvestigationNo = index;
     this.selectedPatient = investigation.patient;
     this.selectedInvestigation = investigation;
     this.apmisLookupText = investigation.patient.personDetails.personFullName;
@@ -340,13 +333,6 @@ export class ReportComponent implements OnInit {
       this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
       this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
     }
-    // console.log(this.selectedPatient);
-    // this._documentationService.find({
-    //   query: {
-    //     'personId._id': this.selectedPatient.personDetails._id
-    //   }}).then(res => {
-    //   console.log(res);
-    // });
   }
 
   private _getAllReports() {
@@ -359,7 +345,7 @@ export class ReportComponent implements OnInit {
       this.reportLoading = false;
       if(res.data.length > 0) {
         const reports = this._modelPendingRequests(res.data);
-        console.log(reports);
+        
         if(reports.length > 0) {
           this.reports = reports.filter(x => x.isUploaded || x.isSaved);
         } else {
@@ -388,7 +374,6 @@ export class ReportComponent implements OnInit {
       labRequest.investigations.forEach(investigation => {
         console.log(investigation);
         if(labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id) {
-          console.log(investigation);
           const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
           if(investigation.isSaved || investigation.isUploaded) {
             pendingLabReq.report = investigation.report;
@@ -427,7 +412,7 @@ export class ReportComponent implements OnInit {
   private _getDocumentationForm() {
     this._formService.findAll().then(res => {
       this.selectedForm = res.data.filter(x => new RegExp('laboratory', "i").test(x.title))[0];
-    }).catch(err => console.error(err));
+    }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
   }
 
   // Notification
