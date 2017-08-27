@@ -34,29 +34,29 @@
         <div class="txt-wrap">
           <div class="txt-label">Sample</div>
           <div *ngIf="hasSample" class="txt-val"><i class="fa fa-check" aria-hidden="true"></i></div>
-          <div [hidden]="hasSample" class="txt-val flex-btw">
+          <div *ngIf="!hasSample" class="txt-val flex-btw">
             <span class="sampleNotTaken">Not Taken</span> <div (click)="takeSample()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Take Sample</div>
           </div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Specimen</div>
-          <div *ngIf="hasSpecimen" class="txt-val">Blood, Urine, Stool.</div>
+          <div *ngIf="hasSpecimen" class="txt-val">{{localInvestigation?.investigation?.specimen?.name}} - {{localInvestigation?.specimenNumber}}</div>
           <div [hidden]="hasSpecimen" class="txt-val hasBg">
             <md-input-container style="position:relative;">
-                <input mdInput>
-                <span class="input-tag">Blood</span>
+                <input [formControl]="specimenNumber" mdInput>
+                <span class="input-tag">{{localInvestigation?.investigation?.specimen?.name}}</span>
             </md-input-container>
-            <div (click)="takeSpecimen()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Recieve Specimen</div>
+            <div (click)="receiveSpecimen()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Receive Specimen</div>
           </div>
         </div>
 
         <div class="txt-wrap">
           <div class="txt-label">Lab Number</div>
-          <div *ngIf="hasLabNo" class="txt-val">LGF-2211-FG</div>
+          <div *ngIf="hasLabNo" class="txt-val">{{client.clientNumber}}</div>
           <div [hidden]="hasLabNo" class="txt-val hasBg">
             <md-input-container>
-                <input mdInput>
+                <input [formControl]="labNumber" mdInput>
             </md-input-container>
             <div (click)="assignLabNo()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Assign</div>
           </div>

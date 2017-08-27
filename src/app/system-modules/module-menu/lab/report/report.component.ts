@@ -76,6 +76,7 @@ export class ReportComponent implements OnInit {
     this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
+    console.log(this.selectedLab);
 
     this.patientFormGroup = this.formBuilder.group({
       patient: ['', [Validators.required]],

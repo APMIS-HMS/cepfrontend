@@ -44,6 +44,7 @@ export class LabRequestsComponent implements OnInit {
   resultStatus = false;
   loading = true;
   extList = false;
+  isExternal = false;
 
   checkedValues: any[] = [];
   requests: any[] = [];
@@ -71,6 +72,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.requests = [];
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
     this.selectedLab = <Facility>this.locker.getObject('workbenchCheckingObject');
     this.searchInvestigation = new FormControl('', []);
@@ -176,6 +178,7 @@ export class LabRequestsComponent implements OnInit {
 
     this.route.params.subscribe((params: any) => {
       if (params.id !== undefined && this.isLaboratory) {
+        this.isExternal = true;
         this.requestService.find({ query: { 'patientId.personDetails._id': params.id } }).then(payload => {
           if (payload.data.length > 0) {
             this.frmNewRequest.controls['labNo'].setValue(payload.data[0].labNumber);
@@ -188,7 +191,7 @@ export class LabRequestsComponent implements OnInit {
           this.request_view = true;
         })
       } else {
-        this.getLaboratoryRequest();
+        // this.getLaboratoryRequest();
       }
 
     });
@@ -247,6 +250,7 @@ export class LabRequestsComponent implements OnInit {
     })
   }
   getLaboratoryRequest() {
+    this.requests = [];
     this.requestService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
       this.requests = payload.data;
     })
@@ -300,6 +304,7 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
+    this._getAllPendingRequests();
   }
   childChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
@@ -754,7 +759,9 @@ export class LabRequestsComponent implements OnInit {
     investigation.isUrgent = $event.checked;
   }
   private _getAllPendingRequests() {
+    this.pendingRequests = [];
     if (this.patientId !== undefined && this.patientId.length > 0) {
+      console.log('have patient')
       this.request_view = true;
       this.requestService.find({
         query: {
@@ -805,11 +812,18 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.reportType = investigation.investigation.reportType;
               pendingLabReq.specimen = investigation.investigation.specimen;
               pendingLabReq.service = investigation.investigation.serviceId;
-              pendingLabReq.price = investigation.investigation.unit;
+              pendingLabReq.unit = investigation.investigation.unit;
               pendingLabReq.investigationId = investigation.investigation._id;
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
               pendingLabReq.createdBy = labRequest.createdBy;
+              
+              if(investigation.specimenReceived !== undefined){
+                pendingLabReq.specimenReceived = investigation.specimenReceived;
+              }
+              if(investigation.specimenNumber !== undefined){
+                pendingLabReq.specimenNumber = investigation.specimenNumber;
+              }
 
               this.pendingRequests.push(pendingLabReq);
             }
@@ -869,11 +883,24 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.reportType = investigation.investigation.reportType;
               pendingLabReq.specimen = investigation.investigation.specimen;
               pendingLabReq.service = investigation.investigation.serviceId;
-              pendingLabReq.price = investigation.investigation.unit;
+              pendingLabReq.unit = investigation.investigation.unit;
               pendingLabReq.investigationId = investigation.investigation._id;
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
               pendingLabReq.createdBy = labRequest.createdBy;
+              if(investigation.specimenReceived !== undefined){
+                pendingLabReq.specimenReceived = investigation.specimenReceived;
+              }
+              if(investigation.specimenNumber !== undefined){
+                pendingLabReq.specimenNumber = investigation.specimenNumber;
+              }
+
+              if(investigation.sampleTaken !== undefined){
+                pendingLabReq.sampleTaken = investigation.sampleTaken;
+              }
+              if(investigation.sampleTakenBy !== undefined){
+                pendingLabReq.sampleTakenBy = investigation.sampleTakenBy;
+              }
 
               this.pendingRequests.push(pendingLabReq);
             }
