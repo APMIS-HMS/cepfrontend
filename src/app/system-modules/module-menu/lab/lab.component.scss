@@ -1,4 +1,8 @@
 @import "../../../../globals/variables.scss";
+.modal-overlay {
+    position: fixed;
+}
+
 .page-title {
     text-align: left;
     position: absolute;
@@ -50,6 +54,7 @@
 .inner-page-menuTab ul li {
     padding: 5px;
 }
+
 .title2 {
     width: 100%;
     text-align: center;

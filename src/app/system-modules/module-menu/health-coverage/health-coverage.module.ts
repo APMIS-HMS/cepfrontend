@@ -22,6 +22,7 @@ import { CompanyListComponent } from './cover-payment/company-list/company-list.
 import { CompanyBillComponent } from './cover-payment/company-bill/company-bill.component';
 import { FamilyBillComponent } from './cover-payment/family-bill/family-bill.component';
 import { FamilyListComponent } from './cover-payment/family-list/family-list.component';
+import { HmoService } from './../../../services/facility-manager/setup/index';
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -48,7 +49,7 @@ import { FamilyListComponent } from './cover-payment/family-list/family-list.com
         MaterialModule,
         healthCoverRoutes
     ],
-    providers: []
+    providers: [HmoService]
 })
 export class HealthCoverageModule { }
 

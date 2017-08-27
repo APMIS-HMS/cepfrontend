@@ -12,7 +12,7 @@
                             <span>New Report</span>
                         </div>
 
-                        <div *ngIf="report_view" class="act-right-actions">
+                        <!-- <div *ngIf="report_view" class="act-right-actions">
                             <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
                                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
                                 <span>Save</span>
@@ -21,7 +21,7 @@
                                 <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                 <span>Upload File</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div *ngIf="report_view" class="frmNoteWrap">
                         <div class="frm-wrap">
@@ -210,7 +210,7 @@
                                         <div class="resultSect-title">Investigation Result</div>
                                         <div class="invstn-wrap">
                                             <div *ngIf="numericReport" class="lettering-wrap">
-                                                <div class="report-title">Bilateral Test</div>
+                                                <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                 <div class="invstn-vals">
                                                     <div class="invstn-val">
                                                         <div class="val-label">Reference:</div>
@@ -226,13 +226,15 @@
                                                         <md-input-container>
                                                             <input type="number" mdInput placeholder="Enter Result" formControlName="result">
                                                         </md-input-container>
-                                                        <small>{{ referenceValue }}</small>
+                                                        <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                            <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div *ngIf="textReport" class="lettering-wrap">
-                                                <div class="report-title">Bilateral Test</div>
+                                                <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                 <div class="invstn-vals">
                                                     <div class="invstn-val">
                                                         <div class="val-label">Reference:</div>
@@ -283,6 +285,10 @@
                     <table cellpadding="0" cellspacing="0" border="0.5">
                         <thead>
                             <tr>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <span style="padding-left: 3px;">S/N</span>
+                                </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
@@ -342,39 +348,45 @@
                                 </td>
                             </tr>
                             <tr *ngIf="reports.length === 0 && !reportLoading">
-                                <td class="table-content" colspan="7" style="text-align: center"> No data available in table</td>
+                                <td class="table-content" colspan="8" style="text-align: center"> No data available in table</td>
                             </tr>
                             <tr *ngIf="reports.length === 0 && reportLoading">
-                                <td class="table-content" colspan="7" style="text-align: center">
+                                <td class="table-content" colspan="8" style="text-align: center">
                                     <md-spinner class='small-spinner'></md-spinner>
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>11th Jan, 2017. 09:00AM</td>
+                            <tr *ngFor="let report of reports; let i = index;">
+                                <td>{{ i+1 }}</td>
+                                <td>{{ report?.updatedAt | date }}</td>
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img src="assets/images/users/default.png">
+                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>Johnson Wade</div>
+                                        <div>{{ report?.patient?.personDetails.personFullName }}</div>
                                     </div>
                                 </td>
-                                <td>Blood Test</td>
-                                <td>EMT Clinic</td>
+                                <td>{{ report.name }}</td>
+                                <td>{{ selectedLab.typeObject.name }}</td>
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img src="assets/images/users/default.png">
+                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.createdBy?.employeeDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>Solomon Jim</div>
+                                        <div>{{ report?.createdBy?.employeeDetails?.personFullName}}</div>
                                     </div>
                                 </td>
-                                <td>Uploaded</td>
+                                <td>
+                                    <div *ngIf="report.isUploaded" style="color: green">Uploaded</div>
+                                    <div *ngIf="report.isSaved" style="color:blue">Not Uploaded</div>
+                                </td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="repDetail()" class="action-item">
+                                        <div (click)="repDetail(report)" class="action-item">
                                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             <span>View Report</span>
                                         </div>
@@ -401,5 +413,5 @@
 </div>
 
 <div *ngIf="repDetail_view" class="modal-overlay">
-    <app-report-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-report-detail>
+    <app-report-detail (closeModal)="close_onClick($event)" [selectedInvestigationData]="selectedInvestigationData" id="form-modal" class="form-modal center-center"></app-report-detail>
 </div>
