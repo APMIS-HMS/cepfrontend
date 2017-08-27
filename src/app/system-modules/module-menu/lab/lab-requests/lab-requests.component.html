@@ -12,7 +12,7 @@
                         <i [hidden]="request_view" class="fa fa-plus" aria-hidden="true"></i>
                         <span>New Request</span>
                     </div>
-                    <div (click)="extList_show()" class="lab-btn ext-listBtn"><i class="fa fa-plus" aria-hidden="true"></i>External Requests</div>
+                    <div *ngIf="isExternal===true" (click)="extList_show()" class="lab-btn ext-listBtn"><i class="fa fa-plus" aria-hidden="true"></i>External Requests</div>
 
                     <div *ngIf="extList" class="ext-list shadow-RB">
                         <div (click)="extList_close()" class="x">x</div>
@@ -324,20 +324,20 @@
                                         <div class="status-item">
                                             <div class="status-label">Sample Taken</div>
                                             <!-- <div [class.isSample]="sampleStatus" [class.notSample]="!sampleStatus" class="status-val"></div> -->
-                                            <i *ngIf="sampleStatus" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!sampleStatus" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <i *ngIf="request?.sampleTaken===true" class="fa fa-check isSample" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.sampleTaken===true" class="fa fa-minus notSample" aria-hidden="true"></i>
                                         </div>
                                         <div class="status-item">
-                                            <div class="status-label">Sample Recieved</div>
+                                            <div class="status-label">Specimen Recieved</div>
                                             <!-- <div [class.isSample]="recievedStatus" [class.notSample]="!recievedStatus" class="status-val"></div> -->
-                                            <i *ngIf="recievedStatus" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!recievedStatus" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <i *ngIf="request?.specimenReceived" class="fa fa-check isSample" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.specimenReceived" class="fa fa-minus notSample" aria-hidden="true"></i>
                                         </div>
                                         <div class="status-item">
                                             <div class="status-label">Result Available</div>
                                             <!-- <div [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div> -->
-                                            <i *ngIf="resultStatus" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!resultStatus" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <i *ngIf="request?.isUploaded" class="fa fa-check isSample" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.isUploaded" class="fa fa-minus notSample" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </td>

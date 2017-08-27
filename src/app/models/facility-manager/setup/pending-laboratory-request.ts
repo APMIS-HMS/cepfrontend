@@ -26,5 +26,9 @@ export interface PendingLaboratoryRequest {
     updatedAt: Date;
     createdAt: Date;
     createdBy: any;
-    personId:string;
+    personId: string;
+    specimenReceived: boolean;
+    specimenNumber: string;
+    sampleTaken:boolean;
+    sampleTakenBy:any;
 }

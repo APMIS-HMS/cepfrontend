@@ -235,7 +235,7 @@ export class BillLookupComponent implements OnInit {
     this.billGroups = [];
     this.masterBillGroups = [];
     this.txtSelectAll.setValue(false);
-    this.billingService.find({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: true } })
+    this.billingService.find({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then((payload) => {
         this.masterBillGroups = [];
         this.billGroups = [];
