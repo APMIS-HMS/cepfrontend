@@ -403,6 +403,10 @@ export class ReportComponent implements OnInit {
           pendingLabReq.isExternal = investigation.isExternal;
           pendingLabReq.isUrgent = investigation.isUrgent;
           pendingLabReq.minorLocation = investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id;
+          if(investigation.location !== undefined){
+            pendingLabReq.minorLocation = investigation.location.laboratoryId;
+          }
+          
           pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
           pendingLabReq.isPanel = investigation.investigation.isPanel;
           pendingLabReq.name = investigation.investigation.name;

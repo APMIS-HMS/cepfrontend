@@ -820,7 +820,7 @@ export class LabRequestsComponent implements OnInit {
         console.log(res);
         this.loading = false;
         let labId = '';
-        if (this.selectedLab !== undefined && this.selectedLab.typeObject !== undefined) {
+        if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
           labId = this.selectedLab.typeObject.minorLocationId;
         }
 

@@ -4,53 +4,64 @@
             <div class="clinicalNoteWrap">
                 <div class="actSect">
                     <div class="actSect-header">
-                      <div (click)="newHmo_show()" class="act-wrap">
-                          <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
-                          <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i>
-                          <span>New HMO</span>
-                      </div>
+                        <div (click)="newHmo_show()" class="act-wrap">
+                            <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
+                            <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i>
+                            <span>New HMO</span>
+                        </div>
                     </div>
 
                     <form class="frmNoteWrap" *ngIf="newHmo" [formGroup]="frmNewHmo" novalidate>
-                      <div class="frm-title">NEW HMO</div>
+                        <div class="frm-title">NEW HMO</div>
 
-                      <div class="frm-x2">
-                        <div class="frm-item-wrap">
-                            <md-input-container>
-                                <input mdInput placeholder="HMO Name" formControlName="name">
-                            </md-input-container>
+                        <div class="frm-x2">
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <input mdInput placeholder="HMO Name" formControlName="name">
+                                </md-input-container>
+                            </div>
+
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <input mdInput placeholder="Address" formControlName="address">
+                                </md-input-container>
+                            </div>
+
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input type="email" mdInput md-error placeholder="Email Address" formControlName="email">
+                                </md-input-container>
+                            </div>
+
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
+                                </md-input-container>
+                            </div>
+
                         </div>
 
-                        <div class="frm-item-wrap">
-                            <md-input-container>
-                                <input mdInput placeholder="Address" formControlName="address">
-                            </md-input-container>
+
+                    </form>
+                    <form *ngIf="newHmo" [formGroup]="frmNewPlan">
+                        <div class="frmNoteWrap">
+                            <div formArrayName="planArray">
+                                <div  class="frm-x2">
+                                    <div class="frmArray" *ngFor="let plan of frmNewPlan.controls['planArray'].controls; let i = index;">
+                                        <div formGroupName="{{i}}" class="frm-item-wrap" style="width:100%">
+                                            <md-input-container>
+                                                <input [readonly]="plan.readOnly" mdInput placeholder="Plans" formControlName="plans">
+                                            </md-input-container>
+                                            <div *ngIf="!plan.readOnly" (click)="pushNewPlan(plan, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </form>
 
-                        <div class="frm-item-wrap">
-                            <md-input-container class="example-full-width">
-                                <input type="email" mdInput md-error placeholder="Email Address" formControlName="email">
-                            </md-input-container>
-                        </div>
-
-                        <div class="frm-item-wrap">
-                            <md-input-container class="example-full-width">
-                                <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
-                            </md-input-container>
-                        </div>
-
-                        <div class="frm-item-wrap">
-                            <md-input-container>
-                                <input mdInput placeholder="Plans" formControlName="plans">
-                            </md-input-container>
-
-                            <div class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
-                        </div>
-                      </div>
-
-                      <button (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
-                    </form>  
-                </div> 
+                    <button [disabled]="!frmNewHmo.valid" *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
+                </div>
 
                 <!-- <div class="pg-subtitle">HMO List</div>  -->
                 <div class="tblWrapa" class="actSect">
