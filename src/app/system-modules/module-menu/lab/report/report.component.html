@@ -381,7 +381,7 @@
                                 </td>
                                 <td>
                                     <div *ngIf="report.isUploaded" style="color: green">Uploaded</div>
-                                    <div *ngIf="report.isSaved" style="color:blue">Not Uploaded</div>
+                                    <div *ngIf="!report.isUploaded" style="color:blue">Not Uploaded</div>
                                 </td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>

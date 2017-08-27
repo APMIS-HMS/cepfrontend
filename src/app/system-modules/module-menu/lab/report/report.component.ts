@@ -162,6 +162,7 @@ export class ReportComponent implements OnInit {
             console.log(labRequest);
             this._laboratoryRequestService.update(labRequest).then(res => {
               console.log(res);
+              this._getAllReports();
               this.saveToDraftBtnText = "SAVE AS DRAFT";
               this._notification('Success', 'Report has been saved successfully!');
             }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
@@ -197,10 +198,6 @@ export class ReportComponent implements OnInit {
                   "Laboratory Number": labRequest.labNumber,
                   "Test Name": investigation.investigation.name,
                 }
-
-                // Updated this.pendingRequests
-                this.pendingRequests = this.pendingRequests.filter(x => x.investigationId !== this.selectedInvestigation.investigationId);
-                this.patientSelected = false;
               }
             });
             console.log(labRequest);
@@ -227,8 +224,16 @@ export class ReportComponent implements OnInit {
                 };
 
                 // Check if documentation has been created for the user
-                this._documentationService.find({ 'personId._id': this.selectedPatient.personDetails._id }).then(res => {
+                this._documentationService.find({ query: {
+                    'personId._id': this.selectedPatient.personDetails._id
+                }}).then(res => {
                   console.log(res);
+                  // Update the lists
+                  this._getAllReports();
+                  // Updated this.pendingRequests
+                  this._getAllPendingRequests();
+                  this.patientSelected = false;
+                  
                   if(res.data.length > 0) {
                     res.data[0].documentations.push(patientDocumentation);
                     // Update the existing documentation
@@ -262,7 +267,6 @@ export class ReportComponent implements OnInit {
     this.pendingReLoading = true;
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
-    console.log(value);
     this._laboratoryRequestService.find({
       query: {
         'facilityId._id': this.facility._id,
@@ -270,12 +274,10 @@ export class ReportComponent implements OnInit {
       }
     }).then(res => {
       this.pendingReLoading = false;
-      console.log(res);
       if(res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
-        console.log(pendingRequests);
         if(pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests;
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
           this.CheckIfSelectedPatient();
         } else {
           this.pendingRequests = [];
@@ -304,7 +306,7 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         console.log(pendingRequests);
         if(pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests;
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
         } else {
           this.pendingRequests = [];
         }
@@ -338,14 +340,16 @@ export class ReportComponent implements OnInit {
       this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
       this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
     }
+    // console.log(this.selectedPatient);
+    // this._documentationService.find({
+    //   query: {
+    //     'personId._id': this.selectedPatient.personDetails._id
+    //   }}).then(res => {
+    //   console.log(res);
+    // });
   }
 
   private _getAllReports() {
-    // this._laboratoryReportService.findAll().then(res => {
-    //   console.log(res);
-    //   this.reportLoading = false;
-    //   this.reports = res.data;
-    // }).catch(err => console.error(err));
     this._laboratoryRequestService.find({
       query: { 
         'facilityId._id': this.facility._id,
@@ -382,11 +386,9 @@ export class ReportComponent implements OnInit {
     data.forEach(labRequest => {
       console.log(labRequest);
       labRequest.investigations.forEach(investigation => {
-        if(
-          (investigation.isSaved === undefined || investigation.isSaved) && 
-          (investigation.isUploaded === undefined || (investigation.isUploaded === false)) && 
-          labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id
-        ) {
+        console.log(investigation);
+        if(labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id) {
+          console.log(investigation);
           const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
           if(investigation.isSaved || investigation.isUploaded) {
             pendingLabReq.report = investigation.report;
@@ -403,10 +405,6 @@ export class ReportComponent implements OnInit {
           pendingLabReq.isExternal = investigation.isExternal;
           pendingLabReq.isUrgent = investigation.isUrgent;
           pendingLabReq.minorLocation = investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id;
-          if(investigation.location !== undefined){
-            pendingLabReq.minorLocation = investigation.location.laboratoryId;
-          }
-          
           pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
           pendingLabReq.isPanel = investigation.investigation.isPanel;
           pendingLabReq.name = investigation.investigation.name;
