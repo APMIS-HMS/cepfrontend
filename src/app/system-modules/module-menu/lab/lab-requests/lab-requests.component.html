@@ -12,6 +12,45 @@
                         <i [hidden]="request_view" class="fa fa-plus" aria-hidden="true"></i>
                         <span>New Request</span>
                     </div>
+                    <div (click)="extList_show()" class="lab-btn ext-list"><i class="fa fa-plus" aria-hidden="true"></i>External Requests</div>
+
+                    <!-- <div class="ext-list">
+                        <div class="ext-title">External Investigations</div>
+                        <div class="ext-items">
+                            <div class="ext-item">
+                                <div class="ext-item-date">10th Jan, 2017.</div>
+                                <div class="ext-item-name">Clinical Cycosis</div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div *ngIf="extList" class="ext-list shadow-RB">
+                        <div (click)="extList_close()" class="x">x</div>
+                        <table cellpadding="0" cellspacing="0" border="0.5">
+                            <tbody>
+
+                                <tr>
+                                    <td>10th Jan, 2017.</td>
+                                    <td>Clinical Cycosis</td>
+                                </tr>
+
+                                <tr>
+                                    <td>10th Jan, 2017.</td>
+                                    <td>Clinical Cycosis</td>
+                                </tr>
+
+                                <tr>
+                                    <td>10th Jan, 2017.</td>
+                                    <td>Clinical Cycosis</td>
+                                </tr>
+
+                                <tr>
+                                    <td>10th Jan, 2017.</td>
+                                    <td>Clinical Cycosis</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <form class="frmNoteWrap" *ngIf="request_view" [formGroup]="frmNewRequest" novalidate>
                         <div *ngIf="isLaboratory" class="labBtn-wrap">

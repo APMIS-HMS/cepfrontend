@@ -43,6 +43,7 @@ export class LabRequestsComponent implements OnInit {
   recievedStatus = true;
   resultStatus = false;
   loading = true;
+  extList = false;
 
   checkedValues: any[] = [];
   requests: any[] = [];
@@ -192,6 +193,13 @@ export class LabRequestsComponent implements OnInit {
 
     });
     this._getAllPendingRequests();
+  }
+
+  extList_show(){
+    this.extList = true;
+  }
+  extList_close(){
+    this.extList = false;
   }
   addToast(msg: string) {
     const toastOptions: ToastOptions = {
