@@ -4,9 +4,9 @@
     <div class="modal_title">Laboratory Report</div>
 
     <div class="pre-sects">
-        <div class="status">Pending
+        <div class="status">
             <div *ngIf="selectedInvestigationData.isUploaded" style="color: green">Uploaded</div>
-            <div *ngIf="selectedInvestigationData.isSaved" style="color:blue">Not Uploaded</div>
+            <div *ngIf="!selectedInvestigationData.isUploaded" style="color:blue">Not Uploaded</div>
         </div>
         <div class="payment">Paid</div>
         <div class="date">{{ selectedInvestigationData.updatedAt | date }}</div>
