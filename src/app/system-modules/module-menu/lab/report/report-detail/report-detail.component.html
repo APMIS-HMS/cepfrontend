@@ -1,15 +1,18 @@
 <div class="modal-baseWrap animated pulse">
 
-  <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <div class="modal_title">Lab Report</div> 
+    <div (click)="close_onClick()" class="modal-close-ico">X</div>
+    <div class="modal_title">Laboratory Report</div>
 
-  <div class="pre-sects">
-    <div class="status">Pending</div>
-    <div class="payment">Paid</div>
-    <div class="date">11th July, 2017.</div>
-  </div>
+    <div class="pre-sects">
+        <div class="status">Pending
+            <div *ngIf="selectedInvestigationData.isUploaded" style="color: green">Uploaded</div>
+            <div *ngIf="selectedInvestigationData.isSaved" style="color:blue">Not Uploaded</div>
+        </div>
+        <div class="payment">Paid</div>
+        <div class="date">{{ selectedInvestigationData.updatedAt | date }}</div>
+    </div>
 
-  <!-- <div class="sect-1">
+    <!-- <div class="sect-1">
     <div class="patientImg-wrap"><img src="assets/images/users/default.png"></div>
     <div class="sect1-content">
       <div class="sect-inner">
@@ -146,115 +149,113 @@
     </div>
   </div> -->
 
-  <div class="frmNoteWrap">
-    <div class="frm-wrap">
-        <div class="frm-l">
+    <div class="frmNoteWrap">
+        <div class="frm-wrap">
+            <div class="frm-l">
 
-            <!-- <div class="frm-item-wrap">
+                <!-- <div class="frm-item-wrap">
                 <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="select patient"
                 [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                 [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             </div> -->
 
-            <div class="selected-patient-wrap">
-                <div class="sel-patient-img">
-                    <img src="assets/images/users/default.png">
+                <div class="selected-patient-wrap">
+                    <div class="sel-patient-img">
+                        <img *ngIf="selectedInvestigationData?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                        <img class="shadow" *ngIf="selectedInvestigationData?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                    </div>
+                    <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.personDetails.personFullName }}</div>
+                    <div class="sel-patient-detaills">
+                        <div>{{ selectedInvestigationData?.patient?.personDetails.apmisId }}</div>
+                        <div>{{ selectedInvestigationData?.patient?.personDetails.age }} year(s)</div>
+                        <div>{{ selectedInvestigationData?.patient?.personDetails.gender.name }}</div>
+                        <div>{{ selectedInvestigationData?.patient?.personDetails.phoneNumber }}</div>
+                        <div>{{ selectedInvestigationData?.patient?.personDetails.email }}</div>
+                    </div>
                 </div>
-                <div class="sel-patient-name">Jonathan Nelson</div>
-                <div class="sel-patient-detaills">
-                    <div>AD-22100-BE</div>
-                    <div>22 years</div>
-                    <div>Male</div>
-                    <div>08099009988</div>
-                    <div>jonathan.nelson@gmail.com</div>
+                <div class="act-right-actions">
+                    <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                        <span>Upload</span>
+                    </div>
+                    <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                        <span>Edit</span>
+                    </div>
                 </div>
-            </div>
-
-            <div class="act-right-actions">
-                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                    <span>Upload</span>
-                </div>
-                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
-                    <i class="fa fa-edit" aria-hidden="true"></i>
-                    <span>Edit</span>
-                </div>
-            </div>
-
-            <div class="tab-title">Uploaded Files</div>
-            <div class="upload-wrap">
-              <div class="uploadeds">
-                <div class="uploaded">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <div class="upload-label">HIV AIDs Test</div>
-                </div>
-
-                <div class="uploaded">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <div class="upload-label">HIV AIDs Test</div>
-                </div>
-
-                <div class="uploaded">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <div class="upload-label">HIV AIDs Test</div>
-                </div>
-                <div class="uploaded">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <div class="upload-label">HIV AIDs Test</div>
-                </div>
-
-                <div class="uploaded">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <div class="upload-label">HIV AIDs Test</div>
-                </div>
-
-                <div class="uploaded">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <div class="upload-label">HIV AIDs Test</div>
-                </div>
-              </div>
-        </div>
-
-        </div>
-        
-        <div class="frm-r">
-
-            <div>
-                <div>
-                    <div>
-                        <div class="initial-contenet invstn-val">
-                            <div class="report-title">Clinical Information</div>
-                            <div class="initial-val">
-                                when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
-                            </div>
+                <div class="tab-title">Uploaded Files</div>
+                <div class="upload-wrap">
+                    <div class="uploadeds">
+                        <div class="uploaded">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <div class="upload-label">HIV AIDs Test</div>
                         </div>
-                        <div class="initial-contenet invstn-val">
-                            <div class="report-title">Diagnosis</div>
-                            <div class="initial-val">
-                                when an unknown printer took arsions of Lorem Ipsum.Why do we use it?
-                            </div>
+
+                        <div class="uploaded">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <div class="upload-label">HIV AIDs Test</div>
+                        </div>
+
+                        <div class="uploaded">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <div class="upload-label">HIV AIDs Test</div>
+                        </div>
+                        <div class="uploaded">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <div class="upload-label">HIV AIDs Test</div>
+                        </div>
+
+                        <div class="uploaded">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <div class="upload-label">HIV AIDs Test</div>
+                        </div>
+
+                        <div class="uploaded">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <div class="upload-label">HIV AIDs Test</div>
                         </div>
                     </div>
-                    <div class="resultSect-title">Investigation Result</div>
-                    <div class="invstn-wrap">
-                        <div class="lettering-wrap">
-                            <div class="report-title">Bilateral Test</div>
-                            <div class="invstn-vals">
-                                <div class="invstn-val">
-                                    <div class="val-label">Reference:</div>
-                                    <div class="val-val">1 - 7(cm)</div>
+                </div>
+            </div>
+            <div class="frm-r">
+                <div>
+                    <div>
+                        <div>
+                            <div class="initial-contenet invstn-val">
+                                <div class="report-title">Clinical Information</div>
+                                <div class="initial-val">
+                                    {{ selectedInvestigationData?.clinicalInformation }}
                                 </div>
-                                <div class="invstn-val">
-                                    <div class="val-label">Sample NO:</div>
-                                    <div class="val-val">1220</div>
-                                </div>
-                                <div class="invstn-val">
-                                    <div class="val-label">Test Result:</div>
-                                    <div class="val-val">12cm</div>
+                            </div>
+                            <div class="initial-contenet invstn-val">
+                                <div class="report-title">Diagnosis</div>
+                                <div class="initial-val">
+                                    {{ selectedInvestigationData?.diagnosis }}
                                 </div>
                             </div>
                         </div>
-                        <div class="lettering-wrap">
+                        <div class="resultSect-title">Investigation Result</div>
+                        <div class="invstn-wrap">
+                            <div class="lettering-wrap">
+                                <div class="report-title">{{ selectedInvestigationData?.name }}</div>
+                                <div class="invstn-vals">
+                                    <div class="invstn-val">
+                                        <div class="val-label">Reference:</div>
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.reportType.ref }}</div>
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.reportType.ref.min }} - {{ selectedInvestigationData?.reportType.ref.min }}({{ selectedInvestigationData?.unit }})</div>
+                                    </div>
+                                    <div class="invstn-val">
+                                        <div class="val-label">Sample NO:</div>
+                                        <div class="val-val">1220</div>
+                                    </div>
+                                    <div class="invstn-val">
+                                        <div class="val-label">Test Result:</div>
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.reportType.ref }}</div>
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.report.result }}({{ selectedInvestigationData?.unit }})</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="lettering-wrap">
                             <div class="report-title">Pregnancy Test</div>
                             <div class="invstn-vals">
                                 <div class="invstn-val">
@@ -270,25 +271,23 @@
                                     <div class="val-val">12cm</div>
                                 </div>
                             </div>
+                        </div> -->
                         </div>
-                    </div>
-                    <div class="initial-contenet invstn-val">
-                        <div class="report-title">Conclusion</div>
-                        <div class="initial-val">
-                            when an unknown printer took nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
+                        <div class="initial-contenet invstn-val">
+                            <div class="report-title">Conclusion</div>
+                            <div class="initial-val">
+                                {{ selectedInvestigationData?.report?.conclusion }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="initial-contenet invstn-val">
-                        <div class="report-title">Recommendation</div>
-                        <div class="initial-val">
-                            when an unknown printer took nchanged. It was populaware like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?
+                        <div class="initial-contenet invstn-val">
+                            <div class="report-title">Recommendation</div>
+                            <div class="initial-val">
+                                {{ selectedInvestigationData?.report?.recommendation }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
-            
     </div>
-  </div>
 </div>

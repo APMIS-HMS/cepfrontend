@@ -1,4 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Renderer, ElementRef, ViewChild, Output, Input, EventEmitter } from '@angular/core';
+import {
+  FacilitiesService
+} from '../../../../../services/facility-manager/setup/index';
+import { Facility, User, PendingLaboratoryRequest } from '../../../../../models/index';
+import { CoolSessionStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-report-detail',
@@ -6,12 +11,15 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./report-detail.component.scss']
 })
 export class ReportDetailComponent implements OnInit {
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() selectedInvestigationData: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
 
-  constructor() { }
+  constructor(
+    public facilityService: FacilitiesService,
+  ) { }
 
   ngOnInit() {
+    console.log(this.selectedInvestigationData);
   }
 
   close_onClick() {
