@@ -1,4 +1,4 @@
-<div class="modal-baseWrap animated pulse">
+<!-- <div class="modal-baseWrap animated pulse">
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <div class="facility-title">{{facilityObj.name}}</div>
@@ -11,21 +11,18 @@
         <form [formGroup]="frmNewUnit" novalidate>
 
             <div class="frm-item-wrap">
-                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
                 <md-input-container class="example-full-width">
                     <input mdInput formControlName="unitName" placeholder="Unit Name" autocomplete="off">
                 </md-input-container>
             </div>
 
             <div class="frm-item-wrap">
-                <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
                 <md-input-container class="example-full-width">
                     <input mdInput formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
                 </md-input-container>
             </div>
 
             <div class="frm-item-wrap">
-                <!-- <i class="fa fa-object-group" aria-hidden="true"></i> -->
                 <md-select formControlName="unitParent">
                     <md-option  value="null" disabled selected>Select parent department</md-option>
                     <md-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</md-option>
@@ -86,4 +83,4 @@
         </form>
     </div>
 
-</div>
+</div> -->

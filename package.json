@@ -33,6 +33,7 @@
     "core-js": "^2.4.1",
     "css-loader": "~0.28.4",
     "date-fns": "^1.28.5",
+    "enhanced-resolve": "^3.3.0",
     "feathers": "^2.0.2",
     "feathers-authentication": "^0.7.12",
     "feathers-hooks": "^1.7.0",

@@ -46,8 +46,8 @@ import {
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
     declarations: [
-        NewTagComponent,
-        AddTagComponent,
+        // NewTagComponent,
+        // AddTagComponent,
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,

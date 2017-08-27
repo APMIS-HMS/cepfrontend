@@ -1,4 +1,4 @@
-<div class="modal-baseWrap animated pulse">
+<!-- <div class="modal-baseWrap animated pulse">
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <div class="facility-title">Add Price To List</div>
@@ -7,37 +7,14 @@
     <div class="f_sg1">
 
         <form [formGroup]="frmNewprice" novalidate>
-            <!--<div class="survery">
-                <div class="alert alert-info text-center" role="alert">Note: Click on each service to enter individual price</div>
-            </div>-->
             <div class="frm-item-wrap">
                 <md-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat">
                     <md-option *ngFor="let category of categories" [value]="category">{{category.name}}</md-option>
                 </md-select>
             </div>
-            <!-- 
-            <div class="frm-item-wrap">
-                <md-select class="example-full-width" placeholder="Service" formControlName="service">
-                    <md-option *ngFor="let service of services" [value]="service">{{service.service}}</md-option>
-                </md-select>
-            </div> -->
-
-            <!-- <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input style="text-align:left" currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text"
-                        mdInput md-error placeholder="Amount" formControlName="price">
-                </md-input-container>
-            </div>
-            <div class="col-sm-12" style="margin-top:20px; text-align:center; color: #fff;">
-                <button md-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)">
-                    Add price to list
-                </button>
-            </div> -->
             <form [formGroup]="frmNewprice2" class="form-horizontal list-div">
                 <div formArrayName="priceArray" class="frmArrayWrap">
-                        <!-- *ngFor="let schedule of clinicScheduleForm.controls['clinicScheduleArray'].controls -->
                     <div class="frmArray" *ngFor="let schedule of frmNewprice2.controls['priceArray'].controls; let i = index;">
-                        <!-- <div (click)="closeClinicSchedule(schedule, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div> -->
                         <div formGroupName="{{i}}">
                             <div style="display:flex" class="col-sm-12">
                                 <div style="width:100%" class="col-sm-9">
@@ -63,32 +40,7 @@
                 </button>
                 <span *ngIf="loadingIndicator" style="color: #000;"><span class="fa fa-spinner fa-spin"></span> {{msg}}!</span>
             </div>
-            <!--<div class="survery">
-                <div class="">
-                    <div class="list-div">
-                        <div *ngFor="let service of services" class="col-sm-12">
-                            <div class="col-sm-7">
-                                <md-list>
-                                    <md-list-item value="service">{{service.service}}</md-list-item>
-                                </md-list>
-                            </div>
-                            <div class="col-sm-5">
-                               <div>
-                                    <md-input-container class="example-full-width">
-                                    <input style="text-align:left" #price currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }"  type="text" mdInput md-error placeholder="Amount" formControlName="price">
-                                </md-input-container>
-                               </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 text-center" style="margin-top:20px; color: #fff;">
-                    <button md-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)">
-                        Add price to list
-                        </button>
-                </div>
-            </div>-->
         </form>
     </div>
 
-</div>
+</div> -->

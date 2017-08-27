@@ -18,6 +18,8 @@ export class HealthCoverageComponent implements OnInit {
   hmoCover = true;
   staffCover = false;
   currentPath = '';
+  contentSecMenuShow = false;
+  
 
   constructor(private router: Router, private route: ActivatedRoute) {
     router.events.subscribe((payload: any) => {
@@ -27,7 +29,9 @@ export class HealthCoverageComponent implements OnInit {
 
   ngOnInit() {
   }
+  contentSecMenuToggle(){
 
+  }
   pageInViewLoader(title) {
     this.pageInView = title;
   }

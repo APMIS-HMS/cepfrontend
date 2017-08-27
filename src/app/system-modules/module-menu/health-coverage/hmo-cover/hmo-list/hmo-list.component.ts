@@ -16,6 +16,7 @@ export class HmoListComponent implements OnInit {
   frmNewPlan: FormGroup;
   hmo = new FormControl('', []);
   newHmo = false;
+  newHMO = false;
 
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService) { }
 
@@ -67,6 +68,9 @@ export class HmoListComponent implements OnInit {
 
   show_beneficiaries() {
     this.showBeneficiaries.emit(true);
+  }
+  onChange(e){
+
   }
   save(valid, value) {
     value.readOnly = true;
