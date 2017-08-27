@@ -381,6 +381,15 @@ export class ReportComponent implements OnInit {
             pendingLabReq.isSaved = investigation.isSaved;
             pendingLabReq.isUploaded = investigation.isUploaded;
           }
+
+          if(investigation.specimenReceived !== undefined){
+            pendingLabReq.specimenReceived = investigation.specimenReceived;
+          }
+
+          if(investigation.specimenNumber !== undefined){
+            pendingLabReq.specimenNumber = investigation.specimenNumber;
+          }
+
           pendingLabReq.labRequestId = labRequest._id;
           pendingLabReq.facility = labRequest.facilityId;
           pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
@@ -406,7 +415,7 @@ export class ReportComponent implements OnInit {
         }
       });
     });
-
+    console.log(pendingRequests);
     return pendingRequests;
   }
 
