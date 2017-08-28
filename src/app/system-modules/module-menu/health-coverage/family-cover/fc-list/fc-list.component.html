@@ -43,22 +43,6 @@
 
 
                     </form>
-                    <form *ngIf="newFamily" [formGroup]="frmNewPlan">
-                        <div class="frmNoteWrap">
-                            <div>
-                                <div  class="frm-x2">
-                                    <div class="frmArray" >
-                                        <div class="frm-item-wrap" style="width:100%">
-                                            <md-input-container>
-                                                <input mdInput placeholder="Plans" formControlName="plans">
-                                            </md-input-container>
-                                            <div (click)="pushNewPlan(plan, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
 
                     <button [disabled]="!frmNewFamily.valid" *ngIf="newFamily" (click)="save(frmNewFamily.valid, frmNewFamily.value)" class="cta-1">Add Family</button>
                 </div>
