@@ -1,68 +1,69 @@
 <div>
-    <div class="doc-mainWrap">
-        <div class="doc-contentArea">
-            <div class="clinicalNoteWrap">
-                <div class="actSect">
-                    <div class="actSect-header">
-                        <div (click)="newHmo_show()" class="act-wrap">
-                            <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
-                            <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i>
-                            <span>Add HMO</span>
-                        </div>
-                    </div>
+  <div class="doc-mainWrap">
+    <div class="doc-contentArea">
+      <div class="clinicalNoteWrap">
+        <div class="actSect">
+          <div class="actSect-header">
+            <div (click)="newHmo_show()" class="act-wrap">
+              <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i>
+              <span>Add HMO</span>
+            </div>
+          </div>
 
-                    <form class="frmNoteWrap" *ngIf="newHmo" [formGroup]="frmNewHmo" novalidate>
-                        <div class="frm-title">NEW HMO</div>
+          <form class="frmNoteWrap" *ngIf="newHmo" [formGroup]="frmNewHmo" novalidate>
+            <div class="frm-title">NEW HMO</div>
 
-                        <div class="frm-x2">
-                            <div class="frm-item-wrap">
-                                <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                                [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
-                            </div>
-                        </div>
+            <div class="frm-x2">
+              <div class="frm-item-wrap">
+                <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
+                  placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                  [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+              </div>
+            </div>
 
 
-                    </form>
-                    <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
-                </div>
+          </form>
+          <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
+        </div>
 
-                <!-- <div class="pg-subtitle">HMO List</div>  -->
-                <div class="tblWrapa" class="actSect">
-                    <table cellpadding="0" cellspacing="0" border="0.5">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">HMO</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Address</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Email</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Phone</span>
-                                </th>
-                                <th>Plans</th>
-                                <th>No. of Beneficiaries</th>
-                                <th></th>
-                            </tr>
-                        </thead>
+        <!-- <div class="pg-subtitle">HMO List</div>  -->
+        <div class="tblWrapa" class="actSect">
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">HMO</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Address</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Email</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Phone</span>
+                </th>
+                <th>Plans</th>
+                <th>No. of Beneficiaries</th>
+                <th></th>
+              </tr>
+            </thead>
 
-                        <tbody>
+            <tbody>
 
-                            <tr>
-                                <td colspan="10">
-                                    <div class="tbl-actionRow">
-                                        <!-- <div class="frm-item-wrap">
+              <tr>
+                <td colspan="10">
+                  <div class="tbl-actionRow">
+                    <!-- <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
                           isSocket="false" displayKey="apmisLookupDisplayKey" 
@@ -82,109 +83,38 @@
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div> -->
-                                    </div>
-                                </td>
-                            </tr>
+                  </div>
+                </td>
+              </tr>
 
-                            <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
-                                <td>12B Alaro Alao Street, Akure, Lagos.</td>
-                                <td>axamansard@gmail.com</td>
-                                <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
-                                <td>230</td>
-                                <td class="action-placeholder" style="text-align:center;">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
-                                <td>12B Alaro Alao Street, Akure, Lagos.</td>
-                                <td>axamansard@gmail.com</td>
-                                <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
-                                <td>230</td>
-                                <td class="action-placeholder" style="text-align:center;">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
-                                <td>12B Alaro Alao Street, Akure, Lagos.</td>
-                                <td>axamansard@gmail.com</td>
-                                <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
-                                <td>230</td>
-                                <td class="action-placeholder" style="text-align:center;">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
-                                <td>12B Alaro Alao Street, Akure, Lagos.</td>
-                                <td>axamansard@gmail.com</td>
-                                <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
-                                <td>230</td>
-                                <td class="action-placeholder" style="text-align:center;">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+              <tr *ngFor="let hmo of loginHMOListObject.hmos">
+                <td (click)="show_beneficiaries()">{{hmo.name}}</td>
+                <td>12B Alaro Alao Street, Akure, Lagos.</td>
+                <td>{{hmo.email}}</td>
+                <td>{{hmo.contactPhoneNo}}</td>
+                <td>Gold, Silver, Bronze, Copper</td>
+                <td>230</td>
+                <td class="action-placeholder" style="text-align:center;">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <form>
+                      <div (click)="showImageBrowseDlg()" class="action-item">
+                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                        <span>Upload Beneficiary List</span>
+                        <input style="display:none;" #fileInput type="file" id="uploadResult" (change)="upload($event)">
+                      </div>
+                    </form>
+                    <div class="action-item">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      <span>Update HMO</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
 </div>

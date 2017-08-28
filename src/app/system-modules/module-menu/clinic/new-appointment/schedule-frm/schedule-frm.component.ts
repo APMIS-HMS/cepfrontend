@@ -72,7 +72,7 @@ export class ScheduleFrmComponent implements OnInit {
     auth: any;
     currentDate: Date = new Date();
     clinicMajorLocation: any;
-    filteredStates: any;
+    // filteredStates: any;
     patient: FormControl;
     clinic: FormControl;
     provider: FormControl;
@@ -483,6 +483,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     }
     filterPatients(val: any) {
+        console.log(val);
         return val ? this.patients.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.patients;
