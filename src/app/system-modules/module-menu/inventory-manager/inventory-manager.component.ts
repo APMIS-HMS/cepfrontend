@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class InventoryManagerComponent implements OnInit, OnDestroy {
   pageInView: String = '';
+  initializeNavMenu = false;
   inventoryNavMenu = false;
   stockTakingNavMenu = false;
   stockTransferNavMenu = false;
@@ -153,7 +154,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   onChangeCheckedIn() {
     this.modal_on = true;
     this.contentSecMenuShow = false;
-  
   }
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
@@ -172,11 +172,23 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.stockTransferNavMenu = false;
     this.receiveStockNavMenu = false;
     this.requisitionNavMenu = false;
+    this.initializeNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
   }
-
+  onInitialiseNavMenu() {
+    this.stockTakingNavMenu = false;
+    this.inventoryNavMenu = false;
+    this.stockHistoryNavMenu = false;
+    this.stockTransferNavMenu = false;
+    this.receiveStockNavMenu = false;
+    this.requisitionNavMenu = false;
+    this.initializeNavMenu = true;
+    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+      this.pageInView = url;
+    });
+  }
   onClickStockTakingNavMenu() {
      this.stockTakingNavMenu = true;
     this.inventoryNavMenu = false;
@@ -184,6 +196,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.stockTransferNavMenu = false;
     this.receiveStockNavMenu = false;
     this.requisitionNavMenu = false;
+    this.initializeNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
@@ -196,6 +209,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.stockHistoryNavMenu = false;
     this.receiveStockNavMenu = false;
     this.requisitionNavMenu = false;
+    this.initializeNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
@@ -207,6 +221,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.stockTransferNavMenu = false;
     this.receiveStockNavMenu = false;
     this.requisitionNavMenu = false;
+    this.initializeNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
@@ -219,6 +234,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.stockTakingNavMenu = false;
     this.stockTransferNavMenu = false;
     this.requisitionNavMenu = false;
+    this.initializeNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
@@ -231,6 +247,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.stockTakingNavMenu = false;
     this.stockTransferNavMenu = false;
     this.receiveStockNavMenu = false;
+    this.initializeNavMenu = false;
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });

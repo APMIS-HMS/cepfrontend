@@ -18,6 +18,7 @@ import {
 } from '../../../services/facility-manager/setup/index';
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { InitializeStoreComponent } from './initialize-store/initialize-store.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
         LandingpageComponent,
         ReceiveStockDetailsComponent,
         StockHistoryComponent,
+        InitializeStoreComponent,
 
     ],
 
