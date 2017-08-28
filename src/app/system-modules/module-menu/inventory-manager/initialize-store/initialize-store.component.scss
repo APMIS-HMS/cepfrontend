@@ -21,6 +21,7 @@ th.info, .survery .table > thead > tr.info > th {
     position: relative;
     margin-bottom: 15px;
     max-height: 322px;
+    min-height: 322px;
     overflow-y: scroll;
 }
 panel-bd > .panel-heading {
@@ -61,4 +62,11 @@ panel-bd > .panel-heading {
     padding: 5px;
     overflow-y: scroll;
     margin: 5px 0;
+}
+.mat-mini-fab.mat-accent {
+    background-color: #4bb8ef;
+}
+.survery .table > tbody > tr > td {
+    padding: 5px 5px;
+    line-height: 1.9;
 }

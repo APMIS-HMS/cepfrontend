@@ -4,26 +4,63 @@
             <div class="clinicalNoteWrap">
                 <div class="actSect">
                     <div class="actSect-header">
-                        <div (click)="newHmo_show()" class="act-wrap">
-                            <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
-                            <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i>
-                            <span>Add HMO</span>
+                        <div (click)="newFamily_show()" class="act-wrap">
+                            <i *ngIf="newFamily" class="fa fa-minus" aria-hidden="true"></i>
+                            <i [hidden]="newFamily" class="fa fa-plus" aria-hidden="true"></i>
+                            <span>New Family</span>
                         </div>
                     </div>
 
-                    <form class="frmNoteWrap" *ngIf="newHmo" [formGroup]="frmNewHmo" novalidate>
-                        <div class="frm-title">NEW HMO</div>
+                    <form class="frmNoteWrap" *ngIf="newFamily" [formGroup]="frmNewFamily" novalidate>
+                        <div class="frm-title">NEW Family</div>
 
                         <div class="frm-x2">
                             <div class="frm-item-wrap">
-                                <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                                [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+                                <md-input-container>
+                                    <input mdInput placeholder="Principal Name" formControlName="name">
+                                </md-input-container>
                             </div>
+
+                            <div class="frm-item-wrap">
+                                <md-input-container>
+                                    <input mdInput placeholder="Address" formControlName="address">
+                                </md-input-container>
+                            </div>
+
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input type="email" mdInput md-error placeholder="Email" formControlName="email">
+                                </md-input-container>
+                            </div>
+
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
+                                </md-input-container>
+                            </div>
+
                         </div>
 
 
                     </form>
-                    <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
+                    <form *ngIf="newFamily" [formGroup]="frmNewPlan">
+                        <div class="frmNoteWrap">
+                            <div>
+                                <div  class="frm-x2">
+                                    <div class="frmArray" >
+                                        <div class="frm-item-wrap" style="width:100%">
+                                            <md-input-container>
+                                                <input mdInput placeholder="Plans" formControlName="plans">
+                                            </md-input-container>
+                                            <div (click)="pushNewPlan(plan, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <button [disabled]="!frmNewFamily.valid" *ngIf="newFamily" (click)="save(frmNewFamily.valid, frmNewFamily.value)" class="cta-1">Add Family</button>
                 </div>
 
                 <!-- <div class="pg-subtitle">HMO List</div>  -->
@@ -34,7 +71,7 @@
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">HMO</span>
+                                    <span style="padding-left: 3px;">Principal</span>
                                 </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -51,7 +88,6 @@
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                     <span style="padding-left: 3px;">Phone</span>
                                 </th>
-                                <th>Plans</th>
                                 <th>No. of Beneficiaries</th>
                                 <th></th>
                             </tr>
@@ -87,96 +123,88 @@
                             </tr>
 
                             <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
+                                <td>Donald Jones</td>
                                 <td>12B Alaro Alao Street, Akure, Lagos.</td>
                                 <td>axamansard@gmail.com</td>
                                 <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
                                 <td>230</td>
                                 <td class="action-placeholder" style="text-align:center;">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
+                                        <div (click)="addDependant()" class="action-item">
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                                            <span>Add Dependant</span>
                                         </div>
 
                                         <div class="action-item">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
+                                            <span>Update Family</span>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
                             <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
+                                <td>Donald Jones</td>
                                 <td>12B Alaro Alao Street, Akure, Lagos.</td>
                                 <td>axamansard@gmail.com</td>
                                 <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
                                 <td>230</td>
                                 <td class="action-placeholder" style="text-align:center;">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
+                                        <div (click)="addDependant()" class="action-item">
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                                            <span>Add Dependant</span>
                                         </div>
 
                                         <div class="action-item">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
+                                            <span>Update Family</span>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
                             <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
+                                <td>Donald Jones</td>
                                 <td>12B Alaro Alao Street, Akure, Lagos.</td>
                                 <td>axamansard@gmail.com</td>
                                 <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
                                 <td>230</td>
                                 <td class="action-placeholder" style="text-align:center;">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
+                                        <div (click)="addDependant()" class="action-item">
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                                            <span>Add Dependant</span>
                                         </div>
 
                                         <div class="action-item">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
+                                            <span>Update Family</span>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
                             <tr (click)="show_beneficiaries()">
-                                <td>Axa Mansard</td>
+                                <td>Donald Jones</td>
                                 <td>12B Alaro Alao Street, Akure, Lagos.</td>
                                 <td>axamansard@gmail.com</td>
                                 <td>08032323212</td>
-                                <td>Gold, Silver, Bronze, Copper</td>
                                 <td>230</td>
                                 <td class="action-placeholder" style="text-align:center;">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
+                                        <div (click)="addDependant()" class="action-item">
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload Beneficiary List</span>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
+                                            <span>Add Dependant</span>
                                         </div>
 
                                         <div class="action-item">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Update HMO</span>
+                                            <span>Update Family</span>
                                         </div>
                                     </div>
                                 </td>

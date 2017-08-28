@@ -10,7 +10,6 @@
 
     <div class="content-sec rhs">
         <div class="inner-menu1-wrap">
-            <!--
             <i *ngIf="employee !== undefined && employee._id !== undefined" id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
                 <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> Generate User</li>
@@ -20,7 +19,8 @@
                 <li *ngIf="employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user-times" aria-hidden="true"></i> Deactivate Employee</li>
                 <li *ngIf="!employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user" aria-hidden="true"></i> Activate Employee</li>
                 <li><i class="fa fa-heartbeat" aria-hidden="true"></i> Health Care Coverage</li>
-            </ul>-->
+            </ul>
+            <!--
             <div  class="second-menu">
                 <a *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" class="btning">Generate User |</a>
                 <a (click)="generateUnit()" class="btning">Unit |</a>
@@ -29,7 +29,7 @@
                 <a *ngIf="employee?.isActive" (click)="toggleActivate()" class="btning">Deactivate Employee |</a>
                 <a *ngIf="!employee?.isActive" (click)="toggleActivate()" class="btning">Activate Employee |</a>
                 <a class="btning">Health Care</a>    
-            </div>
+            </div>-->
         </div>
         <div *ngIf="employee != undefined">
             <div class="empData-header">
