@@ -20,6 +20,8 @@ th.info, .survery .table > thead > tr.info > th {
 .lobipanel {
     position: relative;
     margin-bottom: 15px;
+    min-height: 322px;
+    overflow-y: scroll;
 }
 panel-bd > .panel-heading {
     color: #010611;
