@@ -20,7 +20,7 @@ th.info, .survery .table > thead > tr.info > th {
 .lobipanel {
     position: relative;
     margin-bottom: 15px;
-    min-height: 322px;
+    max-height: 322px;
     overflow-y: scroll;
 }
 panel-bd > .panel-heading {
@@ -53,4 +53,12 @@ panel-bd > .panel-heading {
 }
 .lobipanel>.panel-body {
     position: relative;
+}
+.form-array {
+    max-height: 155px;
+    border: 1px solid #c3ced4;
+    border-radius: 5px;
+    padding: 5px;
+    overflow-y: scroll;
+    margin: 5px 0;
 }
