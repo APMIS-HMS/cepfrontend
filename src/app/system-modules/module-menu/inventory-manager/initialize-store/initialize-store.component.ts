@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms"
 
 @Component({
   selector: 'app-initialize-store',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InitializeStoreComponent implements OnInit {
 
-  constructor() { }
+  myform: FormGroup;
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    
   }
 
 }
