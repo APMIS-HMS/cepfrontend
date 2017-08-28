@@ -1,4 +1,5 @@
 export interface PendingLaboratoryRequest {
+    billingId: any;
     investigationId: string;
     labRequestId: string;
     name: string;
@@ -23,6 +24,7 @@ export interface PendingLaboratoryRequest {
     isExternal: boolean;
     isUrgent: boolean;
     isPanel: boolean;
+    isPaid: boolean;
     updatedAt: Date;
     createdAt: Date;
     createdBy: any;
