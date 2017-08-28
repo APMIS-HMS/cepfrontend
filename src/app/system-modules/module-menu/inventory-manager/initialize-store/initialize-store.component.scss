@@ -70,3 +70,7 @@ panel-bd > .panel-heading {
     padding: 5px 5px;
     line-height: 1.9;
 }
+a:hover, a.active {
+    text-decoration: none;
+    outline: none;
+}

@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 export class CompanyBeneficiaryListComponent implements OnInit {
 
-   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
   newHmo = false;
