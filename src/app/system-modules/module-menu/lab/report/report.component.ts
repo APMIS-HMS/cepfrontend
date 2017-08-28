@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer, ElementRef, ViewChild, Output } from '@ang
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
   FacilitiesService, InvestigationService, LaboratoryRequestService,
-  LaboratoryReportService, DocumentationService, FormsService
+  LaboratoryReportService, DocumentationService, FormsService, BillingService
 } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
@@ -58,6 +58,8 @@ export class ReportComponent implements OnInit {
   referenceValue: string = '';
   saveAndUploadBtnText: string = "SAVE AND UPLOAD";
   saveToDraftBtnText: string = "SAVE AS DRAFT";
+  disablePaymentBtn: boolean = false;
+	paymentStatusText: string = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 
 
   constructor(
@@ -67,7 +69,8 @@ export class ReportComponent implements OnInit {
     private _formService: FormsService,
     private _laboratoryRequestService: LaboratoryRequestService,
     private _laboratoryReportService: LaboratoryReportService,
-    private _documentationService: DocumentationService
+    private _documentationService: DocumentationService,
+    private _billingService: BillingService
   ) { }
 
   ngOnInit() {
@@ -76,7 +79,6 @@ export class ReportComponent implements OnInit {
     this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
-    console.log(this.selectedLab);
 
     this.patientFormGroup = this.formBuilder.group({
       patient: ['', [Validators.required]],
@@ -273,7 +275,13 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
-          //this.CheckIfSelectedPatient();
+          
+          // If pendingRequests contains at least a value, then get payment status
+          if(this.pendingRequests.length > 0) {
+            setTimeout(e => {
+              this._getPaymentStatus();
+            }, 500);
+          }
         } else {
           this.pendingRequests = [];
         }
@@ -284,8 +292,24 @@ export class ReportComponent implements OnInit {
   }
 
   showImageBrowseDlg() {
-
+    //this.selectImage();
   }
+
+  selectImage(fileInput: any) {
+    console.log(event);
+    if (fileInput.target.files && fileInput.target.files[0]) {
+			const reader = new FileReader();
+
+			reader.onload = function (e: any) {
+			};
+			reader.onprogress = function (e: any) {
+			};
+
+      reader.readAsDataURL(fileInput.target.files[0]);
+      console.log(reader);
+		}
+  }
+
   onChange(e) {
 
   }
@@ -301,6 +325,13 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          
+          // If pendingRequests contains at least a value, then get payment status
+          if(this.pendingRequests.length > 0) {
+            setTimeout(e => {
+              this._getPaymentStatus();
+            }, 500);
+          }
         } else {
           this.pendingRequests = [];
         }
@@ -311,30 +342,39 @@ export class ReportComponent implements OnInit {
   }
 
   onClickInvestigation(investigation: PendingLaboratoryRequest, index) {
-    console.log(index);
+    // Highlight the item that was selected
     this.activeInvestigationNo = index;
-    this.selectedPatient = investigation.patient;
-    this.selectedInvestigation = investigation;
-    this.apmisLookupText = investigation.patient.personDetails.personFullName;
-    if (this.selectedInvestigation.reportType.name.toLowerCase() === 'text'.toLowerCase()) {
-      this.textReport = true;
-      this.numericReport = false;
-    } else {
-      this.numericReport = true;
-      this.textReport = false;
-    }
-    this.CheckIfSelectedPatient();
 
-    if (investigation.report === undefined) {
-      this.reportFormGroup.controls['result'].reset();
-      this.reportFormGroup.controls['outcome'].reset();
-      this.reportFormGroup.controls['recommendation'].reset();
-      this.reportFormGroup.controls['conclusion'].reset();
-    } else if (!investigation.isSaved || !investigation.isUploaded) {
-      this.reportFormGroup.controls['result'].setValue(this.selectedInvestigation.report.result);
-      this.reportFormGroup.controls['outcome'].setValue(this.selectedInvestigation.report.outcome);
-      this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
-      this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
+    if(investigation.isPaid) {
+      if(investigation.sampleTaken) {
+        this.selectedPatient = investigation.patient;
+        this.selectedInvestigation = investigation;
+        this.apmisLookupText = investigation.patient.personDetails.personFullName;
+        if (this.selectedInvestigation.reportType.name.toLowerCase() === 'text'.toLowerCase()) {
+          this.textReport = true;
+          this.numericReport = false;
+        } else {
+          this.numericReport = true;
+          this.textReport = false;
+        }
+        this.CheckIfSelectedPatient();
+    
+        if (investigation.report === undefined) {
+          this.reportFormGroup.controls['result'].reset();
+          this.reportFormGroup.controls['outcome'].reset();
+          this.reportFormGroup.controls['recommendation'].reset();
+          this.reportFormGroup.controls['conclusion'].reset();
+        } else if (!investigation.isSaved || !investigation.isUploaded) {
+          this.reportFormGroup.controls['result'].setValue(this.selectedInvestigation.report.result);
+          this.reportFormGroup.controls['outcome'].setValue(this.selectedInvestigation.report.outcome);
+          this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
+          this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
+        }
+      } else {
+        this._notification('Info', 'You can not attend to this request as sample has not been taken. Please use the refresh button above to check if sample has been taken.');
+      }
+    } else {
+      this._notification('Info', 'You can not attend to this request as payment has not been made. Please use the refresh button above to check for payment status.');
     }
   }
 
@@ -377,7 +417,6 @@ export class ReportComponent implements OnInit {
       labRequest.investigations.forEach(investigation => {
         console.log(investigation);
         if (!investigation.isExternal) {
-
           if (labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id) {
             const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
             if (investigation.isSaved || investigation.isUploaded) {
@@ -394,6 +433,15 @@ export class ReportComponent implements OnInit {
               pendingLabReq.specimenNumber = investigation.specimenNumber;
             }
 
+            if (investigation.sampleTaken !== undefined) {
+              pendingLabReq.sampleTaken = investigation.sampleTaken;
+            }
+
+            if (investigation.sampleTakenBy !== undefined) {
+              pendingLabReq.sampleTakenBy = investigation.sampleTakenBy;
+            }
+
+            pendingLabReq.billingId = labRequest.billingId;
             pendingLabReq.labRequestId = labRequest._id;
             pendingLabReq.facility = labRequest.facilityId;
             pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
@@ -414,6 +462,7 @@ export class ReportComponent implements OnInit {
             pendingLabReq.investigationId = investigation.investigation._id;
             pendingLabReq.createdAt = investigation.investigation.createdAt;
             pendingLabReq.updatedAt = investigation.investigation.updatedAt;
+            pendingLabReq.isPaid = false;
 
             pendingRequests.push(pendingLabReq);
           }
@@ -422,6 +471,43 @@ export class ReportComponent implements OnInit {
     });
     console.log(pendingRequests);
     return pendingRequests;
+  }
+
+  // Get payment status
+	private _getPaymentStatus() {
+		this.disablePaymentBtn = true;
+    this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
+
+    this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
+      if(!!request.billingId) {
+        this._billingService.find({ 
+          query: { 
+            facilityId: this.facility._id,
+            '_id': request.billingId._id,
+            patientId: request.patient._id
+          }
+        }).then(res => {
+          const billingItem = res.data[0];
+          let counter = 0;
+          billingItem.billItems.forEach(billItem => {
+            counter++;
+            if(billItem.serviceId === request.service._id) {
+              request.isPaid = billItem.paymentCompleted;
+            }
+          });
+
+          if(counter === billingItem.billItems.length) {
+            this.disablePaymentBtn = false;
+            this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+          }
+
+        }).catch(err => console.log(err));
+      }
+    });
+  }
+  
+  onClickRefreshPaymentStatus() {
+    this._getPaymentStatus();
   }
 
   private _getDocumentationForm() {
