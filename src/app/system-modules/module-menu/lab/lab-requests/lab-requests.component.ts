@@ -321,13 +321,11 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
-    console.log(this.selectedPatient);
+    this.frmNewRequest.controls['labNo'].setValue('');
     if(this.selectedPatient.clientsNo !== undefined){
       this.selectedPatient.clientsNo.forEach(item =>{
-        console.log(item);
-        console.log(this.selectedLab.typeObject)
-        if(item.minorLocationId._id === this.selectedLab.typeObject.minorLocationId._id){
-          this.frmNewRequest.controls['LabNo'].setValue(item.clientNumber);
+        if(item.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id){
+          this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
         }
       })
     }
