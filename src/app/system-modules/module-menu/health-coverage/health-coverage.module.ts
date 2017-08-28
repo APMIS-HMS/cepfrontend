@@ -17,6 +17,12 @@ import { HmoListComponent } from './hmo-cover/hmo-list/hmo-list.component';
 import { BeneficiaryListComponent } from './hmo-cover/beneficiary-list/beneficiary-list.component';
 import { CoverPaymentComponent } from './cover-payment/cover-payment.component';
 import { CoverBillComponent } from './cover-payment/cover-bill/cover-bill.component';
+import { CoverListComponent } from './cover-payment/cover-list/cover-list.component';
+import { CompanyListComponent } from './cover-payment/company-list/company-list.component';
+import { CompanyBillComponent } from './cover-payment/company-bill/company-bill.component';
+import { FamilyBillComponent } from './cover-payment/family-bill/family-bill.component';
+import { FamilyListComponent } from './cover-payment/family-list/family-list.component';
+import { HmoService } from './../../../services/facility-manager/setup/index';
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -30,7 +36,12 @@ import { CoverBillComponent } from './cover-payment/cover-bill/cover-bill.compon
         HmoListComponent,
         BeneficiaryListComponent,
         CoverPaymentComponent,
-        CoverBillComponent
+        CoverBillComponent,
+        CoverListComponent,
+        CompanyListComponent,
+        CompanyBillComponent,
+        FamilyBillComponent,
+        FamilyListComponent
     ],
     exports: [
     ],
@@ -38,7 +49,7 @@ import { CoverBillComponent } from './cover-payment/cover-bill/cover-bill.compon
         MaterialModule,
         healthCoverRoutes
     ],
-    providers: []
+    providers: [HmoService]
 })
 export class HealthCoverageModule { }
 

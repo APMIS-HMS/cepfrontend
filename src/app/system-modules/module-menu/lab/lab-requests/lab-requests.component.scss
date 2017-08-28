@@ -187,7 +187,7 @@ td .empWrap .list-img{
     width: 175px;
     position: relative;
     margin-top: 20px;
-    float: right;
+    float: left;
 }
 .lab-btn {
     font-size: 12px;
@@ -246,6 +246,12 @@ select, input{
     font-family: "Josefin Sans", sans-serif;
     color: #8e8e8e;
     width: 30%;
+}
+.ext-list{
+    width: 167px;
+    position: absolute;
+    top: 9px;
+    right: 14px;
 }
 .txt-val{
     font-size: 16px;
@@ -460,4 +466,24 @@ select, input{
     font-size: 12px;
     margin-bottom: 10px;
     color: #ff2500;
+}
+.ext-list{
+    width: 350px;
+    position: absolute;
+    z-index: 1;
+    background: #fff;
+    padding: 20px;
+}
+.x{
+    position: absolute;
+    top: 1px;
+    right: 9px;
+    cursor: pointer;
+    color: #777;
+}
+.ext-listBtn {
+    width: 170px;
+    position: absolute;
+    top: 9px;
+    right: 14px;
 }

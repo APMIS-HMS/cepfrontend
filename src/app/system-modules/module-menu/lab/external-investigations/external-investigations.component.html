@@ -22,13 +22,17 @@
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                <span>Priority</span>
+                            </th>
+                            <th>
+                                <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
                                 <span>Status</span>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="table-content " colspan="4">
+                            <td class="table-content " colspan="5">
                                 <form [formGroup]="extRequestFormGroup">
                                     <div class="col-sm-6">
                                         <input type="search" formControlName="search" class="form-control" placeholder="APMIS ID or Name">
@@ -44,19 +48,18 @@
                             </td>
                         </tr>
                         <tr *ngIf="extRequests.length === 0 && !loading ">
-                            <td class="table-content " colspan="4" style="text-align: center "> No data available in table</td>
+                            <td class="table-content " colspan="5" style="text-align: center "> No data available in table</td>
                         </tr>
                         <tr *ngIf="extRequests.length === 0 && loading ">
                             <td class="table-content " colspan="4" style="text-align: center ">
                                 <md-spinner class="small-spinner"></md-spinner>
                             </td>
                         </tr>
-                        <tr *ngFor="let extRequest of extRequests " routerLink='/dashboard/pharmacy/external-requests/{{extRequest._id}}'>
-                            <td class="table-content">{{extRequest?.updatedAt}}</td>
-                            <td class="table-content">{{extRequest?.patientName}}</td>
-                            <td class="table-content">{{extRequest?.clinicDetails?.clinicName}}</td>
-                            <td class="table-content">{{extRequest?.priorityObject?.name}}</td>
-                            <td class="table-content">{{extRequest?.employeeName}}</td>
+                        <tr *ngFor="let extRequest of extRequests " routerLink='/dashboard/laboratory/request/{{extRequest.personId}}'>
+                            <td class="table-content">{{extRequest?.updatedAt | date:'medium'}}</td>
+                            <td class="table-content">{{extRequest?.name}}</td>
+                            <td class="table-content">{{extRequest?.createdBy}}</td>
+                            <td class="table-content">{{extRequest?.service}}</td>
                             <td class="table-content">
                                 <span *ngIf="extRequest.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
                                 <span *ngIf="extRequest.status == 'partly'" style="color:blue">Partly<br>Assessed</span>

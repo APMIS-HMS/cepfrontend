@@ -1,5 +1,6 @@
 <div class="">
   <div class="facility-title">Patient Bills</div>
+  <i (click)="hmoList_click()" class="fa fa-long-arrow-left bck" aria-hidden="true"></i>
   <div class="inner-page-wrap">
     <div class="megaPgWrap">
       <!-- <div class="feedsWrap leftCol">
@@ -222,8 +223,9 @@
                   <th>Date</th>
                   <th>Item</th>
                   <th>Unit Price</th>
-                  <th>Quantity</th>
+                  <th>Qty</th>
                   <th>Total Price</th>
+                   <th>Cover Type</th> 
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -231,11 +233,11 @@
               <tbody *ngFor="let group of billGroups">
                 <tr class="tdMasterCategories">
                   <td colspan="1"><input type="checkbox" (change)="checkGroup($event,group)" [checked]="group.isChecked" [formControl]="select1"></td>
-                  <td (click)="toggleCurrentCategory(group)" colspan="5">{{group.category}}</td>
+                  <td (click)="toggleCurrentCategory(group)" colspan="6">{{group.category}}</td>
                   <td (click)="toggleCurrentCategory(group)" colspan="1" class="data">{{group.total | currency:'NGN':true:'4.2-2'}}</td>
                 </tr>
                 <ng-container *ngIf="isCurrentCategory(group)">
-                  <tr *ngFor="let bill of group.bills">
+                  <tr *ngFor="let bill of group.bills; let i = index;">
                     <td>
                       <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
                     </td>
@@ -254,9 +256,69 @@
                       <div class="topTotal"><span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
                     </td>
                     <td>
+                      <div class="type-wrap">
+                        <!-- <md-select placeholder="Select Type"  [formControl]="coverTypeFormControl">
+                          <md-option class="captn" [value]="Capitation">Capitation</md-option>
+                          <md-option [value]="Authorization">Authorization Required</md-option>
+                          <md-option [value]="CoPay">Fee For Service</md-option>
+                        </md-select> -->
+                        <md-select  (change)="setSeletedBill(bill)" [formControl]="coverTypeFormControl">
+                            <md-option *ngFor="let cover of coverTypes" value="{{cover.value}}">{{ cover.text }}</md-option>
+                        </md-select>
+                        <div *ngIf="selectedCoverType==='Authorization' && isSelectedBill(bill)" class="floating-action authorizn shadow-RB">
+                          <form>
+                            <md-input-container  class="full-width">
+                              <input mdInput placeholder="Authorization Code" [formControl]="authFormControl">
+                              <md-error *ngIf="authFormControl.hasError('required')">
+                                Authorization code Required
+                              </md-error>
+                            </md-input-container>
+
+                            <md-input-container class="full-width">
+                              <input mdInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
+                              <md-hint align="end">{{message.value.length}} / 256</md-hint>
+                            </md-input-container>
+
+                            <div class="btn-wrap">
+                              <button md-button>Done</button>
+                              <button (click)="cancelSelectedCover()" md-button>Cancel</button>
+                            </div>
+                          </form>
+                        </div>
+
+                        <div *ngIf="selectedCoverType==='CoPay' && isSelectedBill(bill)" class="floating-action copay shadow-RB">
+                          <form>
+                            <div class="input-x2">
+                              <md-input-container class="half-width" style="padding-top:5px;">
+                                <input type="number" mdInput placeholder="Value" [formControl]="authFormControl">
+                                <md-error *ngIf="authFormControl.hasError('required')">
+                                  Value Required
+                                </md-error>
+                              </md-input-container>
+
+                              <md-select placeholder="Unit" class="half-width"  [formControl]="coverTypeFormControl">
+                                <md-option class="captn" [value]="Capitation">%</md-option>
+                                <md-option [value]="Authorization">Naira</md-option>
+                              </md-select>
+                            </div>
+
+                            <md-input-container class="full-width">
+                              <input mdInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
+                              <md-hint align="end">{{message.value.length}} / 256</md-hint>
+                            </md-input-container>
+
+                            <div class="btn-wrap">
+                              <button md-button>Done</button>
+                              <button (click)="cancelSelectedCover()" md-button>Cancel</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
                       <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       <i *ngIf="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-check" aria-hidden="true"></i>
-                      <i (click)="onRemoveBill(bill,group)" class="fa fa-trash" aria-hidden="true"></i>
+                      <i (click)="onRemoveBill(bill,group)" class="fa fa-times" style="color:#ff2500;" aria-hidden="true"></i>
                       <div (click)="lineModifier_show(bill)" class="cta-1 btn-addItem">
                         Add Modifier
                       </div>
@@ -294,9 +356,16 @@
               </tr>
             </table>
           </div>
-          <div class="generateInvoiceWrap">
-            <div (click)="makePayment_onclick()" class="btn-1 btn-blue">
-              Make Payment
+          <div class="btn-x2">
+            <div class="generateInvoiceWrap">
+              <div (click)="makePayment_onclick()" class="btn-1 btn-blue">
+                Approve
+              </div>
+            </div>
+            <div class="generateInvoiceWrap">
+              <div (click)="makePayment_onclick()" class="btn-1 btn-red">
+                Reject
+              </div>
             </div>
           </div>
         </div>

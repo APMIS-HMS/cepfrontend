@@ -80,3 +80,4 @@ export * from './get-server-date.service';
 export * from './laboratoryrequest.service';
 export * from './laboratory-report.service';
 export * from './timezone.service';
+export * from './hmo.service';

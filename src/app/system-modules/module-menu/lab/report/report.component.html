@@ -12,7 +12,7 @@
                             <span>New Report</span>
                         </div>
 
-                        <div *ngIf="report_view" class="act-right-actions">
+                        <!-- <div *ngIf="report_view" class="act-right-actions">
                             <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
                                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
                                 <span>Save</span>
@@ -21,7 +21,7 @@
                                 <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                 <span>Upload File</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div *ngIf="report_view" class="frmNoteWrap">
                         <div class="frm-wrap">
@@ -34,39 +34,23 @@
                                 </div>
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
                                     <div class="sel-patient-img">
-                                        <img src="assets/images/users/default.png">
+                                        <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                        <img class="shadow" *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div class="sel-patient-details">
-                                        <div>{{ selectedPatient?.personDetails?.personFullName }}</div>
+                                        <div style="font-size: 14px;"><b>{{ selectedPatient?.personDetails?.personFullName }}</b></div>
+                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.apmisId }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.age }} year(s)</div>
+                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.phoneNumber }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.gender?.name }}</div>
                                         <div>{{ selectedPatient?.personDetails?.email }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.apmisId }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.age }} year(s)</div>
-                                        <div>{{ selectedPatient?.personDetails?.gender?.name }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.phoneNumber }}</div>
                                     </div>
-                                    <!-- <div class="sel-patient-img">
-                                        <img src="assets/images/users/default.png">
-                                    </div>
-                                    <div class="sel-patient-name">{{ selectedPatient?.personDetails?.personFullName }}</div>
-                                    <div class="sel-patient-detaills">
-                                        <div>{{ selectedPatient?.personDetails?.apmisId }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.age }} year(s)</div>
-                                        <div>{{ selectedPatient?.personDetails?.gender?.name }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.phoneNumber }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.email }}</div>
-                                    </div> -->
-                                </div>
-
-                                <div class="no-selected-patient-wrap" *ngIf="!patientSelected">
-                                    <span class="text-center">Please use the search input above to search for a patient 
-                                        <br> or <br> select an investigation from the list below
-                                    </span>
                                 </div>
 
                                 <div class="tab-title">Pending Requests</div>
                                 <div class="pending-req-wrap">
                                     <table *ngIf="patientSelected" cellpadding="0" cellspacing="0" border="0.5">
-                                        <thead>
+                                        <thead class="table-background-color">
                                             <tr>
                                                 <th>
                                                     <span style="padding-left: 3px; text-align:center;">S/N</span>
@@ -95,24 +79,38 @@
                                                     <md-spinner class='small-spinner'></md-spinner>
                                                 </td>
                                             </tr>
-                                            <tr *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
+                                            <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
                                                 <td> {{ i+1 }} </td>
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img src="assets/images/users/default.png">
+                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                                         </div>
                                                         <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
                                                 <td>{{ pendingRequest?.createdAt | date }}</td>
-                                                <td> Not paid </td>
+                                                <td>
+                                                    <div class="status-item">
+                                                        <div class="status-label">Payment Made</div>
+                                                        <!-- <div [class.isSample]="paymentStatus" [class.notSample]="!paymentStatus" class="status-val"></div> -->
+                                                        <!-- <i *ngIf="paymentStatus" class="fa fa-check isSample" aria-hidden="true"></i> -->
+                                                        <i class="fa fa-minus notSample" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="status-item">
+                                                        <div class="status-label">Sample Taken</div>
+                                                        <!-- <div [class.isSample]="sampleStatus" [class.notSample]="!sampleStatus" class="status-val"></div> -->
+                                                        <!-- <i *ngIf="sampleStatus" class="fa fa-check isSample" aria-hidden="true"></i> -->
+                                                        <i class="fa fa-minus notSample" aria-hidden="true"></i>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <table *ngIf="!patientSelected" cellpadding="0" cellspacing="0" border="0.5">
-                                        <thead>
+                                        <thead class="table-background-color">
                                             <tr>
                                                 <th>
                                                     <span style="padding-left: 3px; text-align:center;">S/N</span>
@@ -143,12 +141,13 @@
                                                     <md-spinner class='small-spinner'></md-spinner>
                                                 </td>
                                             </tr>
-                                            <tr *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest);">
+                                            <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
                                                 <td> {{ i+1 }} </td>
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img src="assets/images/users/default.png">
+                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                                         </div>
                                                         <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
                                                     </div>
@@ -156,7 +155,34 @@
                                                 <td>{{ pendingRequest?.name}}</td>
                                                 <td>{{ pendingRequest?.labNumber}}</td>
                                                 <td>{{ pendingRequest?.createdAt | date }}</td>
-                                                <td> Not paid </td>
+                                                <td>
+                                                    <div class="status-wrap">
+                                                        <div class="status-item">
+                                                            <div class="status-label">Payment Made</div>
+                                                            <!-- <div [class.isSample]="paymentStatus" [class.notSample]="!paymentStatus" class="status-val"></div> -->
+                                                            <!-- <i *ngIf="paymentStatus" class="fa fa-check isSample" aria-hidden="true"></i> -->
+                                                            <i class="fa fa-minus notSample" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="status-item">
+                                                            <div class="status-label">Sample Taken</div>
+                                                            <!-- <div [class.isSample]="sampleStatus" [class.notSample]="!sampleStatus" class="status-val"></div> -->
+                                                            <!-- <i *ngIf="sampleStatus" class="fa fa-check isSample" aria-hidden="true"></i> -->
+                                                            <i class="fa fa-minus notSample" aria-hidden="true"></i>
+                                                        </div>
+                                                        <!-- <div class="status-item">
+                                                            <div class="status-label">Sample Recieved</div>
+                                                            <div [class.isSample]="recievedStatus" [class.notSample]="!recievedStatus" class="status-val"></div>
+                                                            <i *ngIf="recievedStatus" class="fa fa-check isSample" aria-hidden="true"></i>
+                                                            <i class="fa fa-minus notSample" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="status-item">
+                                                            <div class="status-label">Result Available</div>
+                                                            <div [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div>
+                                                            <i *ngIf="resultStatus" class="fa fa-check isSample" aria-hidden="true"></i>
+                                                            <i class="fa fa-minus notSample" aria-hidden="true"></i>
+                                                        </div> -->
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -197,11 +223,13 @@
                                         <div class="resultSect-title">Investigation Result</div>
                                         <div class="invstn-wrap">
                                             <div *ngIf="numericReport" class="lettering-wrap">
-                                                <div class="report-title">Bilateral Test</div>
+                                                <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                 <div class="invstn-vals">
                                                     <div class="invstn-val">
                                                         <div class="val-label">Reference:</div>
-                                                        <div class="val-val">1 - 7(cm)</div>
+                                                        <div class="val-val">
+                                                            {{ selectedInvestigation?.reportType?.ref?.min }} - {{ selectedInvestigation?.reportType?.ref?.max }} ({{ selectedInvestigation?.unit }})
+                                                        </div>
                                                     </div>
                                                     <div class="invstn-val">
                                                         <div class="val-label">Sample NO:</div>
@@ -211,13 +239,20 @@
                                                         <md-input-container>
                                                             <input type="number" mdInput placeholder="Enter Result" formControlName="result">
                                                         </md-input-container>
+                                                        <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                            <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div *ngIf="textReport" class="lettering-wrap">
-                                                <div class="report-title">Bilateral Test</div>
+                                                <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                 <div class="invstn-vals">
+                                                    <div class="invstn-val">
+                                                        <div class="val-label">Reference:</div>
+                                                        <div class="val-val">{{ selectedInvestigation?.reportType?.ref }}</div>
+                                                    </div>
                                                     <div class="invstn-val">
                                                         <div class="val-label">Sample NO:</div>
                                                         <div class="val-val">1220</div>
@@ -259,10 +294,15 @@
                     </div>
                 </div>
 
+                <div class="tab-title">Requests Attended</div>
                 <div class="tblWrapa" class="actSect">
                     <table cellpadding="0" cellspacing="0" border="0.5">
                         <thead>
                             <tr>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <span style="padding-left: 3px;">S/N</span>
+                                </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
@@ -322,39 +362,45 @@
                                 </td>
                             </tr>
                             <tr *ngIf="reports.length === 0 && !reportLoading">
-                                <td class="table-content" colspan="7" style="text-align: center"> No data available in table</td>
+                                <td class="table-content" colspan="8" style="text-align: center"> No data available in table</td>
                             </tr>
                             <tr *ngIf="reports.length === 0 && reportLoading">
-                                <td class="table-content" colspan="7" style="text-align: center">
+                                <td class="table-content" colspan="8" style="text-align: center">
                                     <md-spinner class='small-spinner'></md-spinner>
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>11th Jan, 2017. 09:00AM</td>
+                            <tr *ngFor="let report of reports; let i = index;">
+                                <td>{{ i+1 }}</td>
+                                <td>{{ report?.updatedAt | date }}</td>
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img src="assets/images/users/default.png">
+                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>Johnson Wade</div>
+                                        <div>{{ report?.patient?.personDetails.personFullName }}</div>
                                     </div>
                                 </td>
-                                <td>Blood Test</td>
-                                <td>EMT Clinic</td>
+                                <td>{{ report.name }}</td>
+                                <td>{{ selectedLab.typeObject.name }}</td>
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img src="assets/images/users/default.png">
+                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.createdBy?.employeeDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>Solomon Jim</div>
+                                        <div>{{ report?.createdBy?.employeeDetails?.personFullName}}</div>
                                     </div>
                                 </td>
-                                <td>Uploaded</td>
+                                <td>
+                                    <div *ngIf="report.isUploaded" style="color: green">Uploaded</div>
+                                    <div *ngIf="!report.isUploaded" style="color:blue">Not Uploaded</div>
+                                </td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div (click)="repDetail()" class="action-item">
+                                        <div (click)="repDetail(report)" class="action-item">
                                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             <span>View Report</span>
                                         </div>
@@ -381,5 +427,5 @@
 </div>
 
 <div *ngIf="repDetail_view" class="modal-overlay">
-    <app-report-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-report-detail>
+    <app-report-detail (closeModal)="close_onClick($event)" [selectedInvestigationData]="selectedInvestigationData" id="form-modal" class="form-modal center-center"></app-report-detail>
 </div>

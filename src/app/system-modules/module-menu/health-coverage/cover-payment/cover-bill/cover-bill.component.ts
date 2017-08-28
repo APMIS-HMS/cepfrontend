@@ -13,6 +13,9 @@ import { CoolSessionStorage } from 'angular2-cool-storage';
 export class CoverBillComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+  @Output() toList: EventEmitter<boolean> = new EventEmitter<boolean>();
+  authorizn = false;
+  copay = true;
 
   public frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
@@ -23,6 +26,9 @@ export class CoverBillComponent implements OnInit {
   select3 = new FormControl('', []);
   searchPendingInvoices = new FormControl('', []);
   searchPendingBill = new FormControl('', []);
+  coverTypeFormControl = new FormControl('Capitation', []);
+  authFormControl = new FormControl('', [Validators.required]);
+  authCommentFormControl = new FormControl('', []);
 
   addItem = false;
   makePayment = false;
@@ -41,6 +47,7 @@ export class CoverBillComponent implements OnInit {
   selectedPatient: Patient = <Patient>{};
   selectedFacility: Facility = <Facility>{};
   selectedBillItem: BillModel = <BillModel>{};
+  selectedCoverTypeItem: BillModel = <BillModel>{};
   billGroups: any[] = [];
   masterBillGroups: any[] = [];
   invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
@@ -49,6 +56,14 @@ export class CoverBillComponent implements OnInit {
   subTotal = 0;
   total = 0;
   discount = 0;
+
+  // starday
+  selectedCoverType = 'Capitation';
+  coverTypes: any[] = [
+    { _id: 1, value: 'Capitation', text: 'Capitation' },
+    { _id: 2, value: 'Authorization', text: 'Authorization' },
+    { _id: 3, value: 'CoPay', text: 'Fee for Service' }]
+
   constructor(private locker: CoolSessionStorage,
     private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
@@ -56,7 +71,7 @@ export class CoverBillComponent implements OnInit {
     private router: Router,
     private billingService: BillingService,
     private patientService: PatientService) {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.patientService.receivePatient().subscribe((payload: Patient) => {
       this.selectedPatient = payload;
       this.subTotal = 0;
@@ -87,6 +102,11 @@ export class CoverBillComponent implements OnInit {
       });
 
     });
+
+    this.coverTypeFormControl.valueChanges.subscribe(value => {
+      console.log(value);
+      this.selectedCoverType = value;
+    })
   }
   fixedModifiedBill(payload) {
     const groups = this.billGroups.filter(x => x.categoryId === payload.facilityServiceObject.categoryId);
@@ -126,6 +146,21 @@ export class CoverBillComponent implements OnInit {
       });
     }
   }
+  setSeletedBill(bill) {
+    this.selectedCoverTypeItem = bill;
+  }
+  isSelectedBill(bill) {
+    if (bill === undefined || this.selectedCoverTypeItem === undefined) {
+      return false;
+    } else {
+      return this.selectedCoverTypeItem._id === bill._id;
+    }
+
+  }
+  cancelSelectedCover() {
+    this.selectedCoverTypeItem = undefined;
+  }
+
   fixedGroup(bill: BillModel) {
     console.log(1);
     const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
@@ -397,7 +432,7 @@ export class CoverBillComponent implements OnInit {
     this.selectedServiceBill = bill;
     this.priceItemDetailPopup = true;
   }
-  makePayment_onclick(){
+  makePayment_onclick() {
     this.makePayment = true;
   }
   close_onClick(e) {
@@ -406,5 +441,8 @@ export class CoverBillComponent implements OnInit {
     this.addItem = false;
     this.priceItemDetailPopup = false;
     this.makePayment = false;
+  }
+  hmoList_click() {
+    this.toList.emit(true);
   }
 }

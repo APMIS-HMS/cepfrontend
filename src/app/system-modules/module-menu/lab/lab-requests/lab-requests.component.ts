@@ -1,11 +1,13 @@
-import { Component, OnInit, Renderer, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer, ElementRef, ViewChild, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationService, LaboratoryRequestService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, InvestigationService, LaboratoryRequestService, BillingService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Investigation, InvestigationModel } from '../../../../models/index';
+import { Facility, MinorLocation, Investigation, InvestigationModel, Employee, BillIGroup, BillItem, BillModel, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-lab-requests',
@@ -15,8 +17,10 @@ import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty
 export class LabRequestsComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
+  @Input() isLaboratory = true;
+  @Input() patientId;
 
-  selelctedFacility: Facility = <Facility>{};
+  selectedFacility: Facility = <Facility>{};
   apmisLookupUrl = 'patient';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
@@ -38,9 +42,14 @@ export class LabRequestsComponent implements OnInit {
   sampleStatus = true;
   recievedStatus = true;
   resultStatus = false;
+  loading = true;
+  extList = false;
+  isExternal = false;
 
   checkedValues: any[] = [];
   requests: any[] = [];
+  pendingRequests: any[] = [];
+  pendingExternalRequests: any[] = [];
 
   selectedPatient: any = <any>{};
   errMsg = 'You have unresolved errors';
@@ -48,21 +57,25 @@ export class LabRequestsComponent implements OnInit {
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
 
-  selectedFacility: Facility = <Facility>{};
+  selectedLab: any = {};
 
   investigations: InvestigationModel[] = [];
   bindInvestigations: InvestigationModel[] = [];
   movedInvestigations: any[] = [];
+  selectedInvestigation: any = <any>{};
 
   totalPrice: Number = 0;
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
-    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
+    private toastyService: ToastyService, private toastyConfig: ToastyConfig, private route: ActivatedRoute,
+    private billingService: BillingService, private facilityService: FacilitiesService,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('miniFacility')
+    this.requests = [];
+    this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
+    this.selectedLab = <Facility>this.locker.getObject('workbenchCheckingObject');
     this.searchInvestigation = new FormControl('', []);
     this.searchInvestigation.valueChanges
       .debounceTime(400)
@@ -71,7 +84,7 @@ export class LabRequestsComponent implements OnInit {
         if (value !== null && value.length === 0) {
           this.investigationService.find({
             query: {
-              'facilityId._id': this.selelctedFacility._id,
+              'facilityId._id': this.selectedFacility._id,
               name: { $regex: -1, '$options': 'i' }
             }
           }).subscribe(payload => {
@@ -103,7 +116,7 @@ export class LabRequestsComponent implements OnInit {
         } else {
           this.investigationService.find({
             query: {
-              'facilityId._id': this.selelctedFacility._id,
+              'facilityId._id': this.selectedFacility._id,
               name: { $regex: value, '$options': 'i' }
             }
           }).subscribe(payload => {
@@ -135,7 +148,7 @@ export class LabRequestsComponent implements OnInit {
         }
 
       })
-    this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
       patient: ['', [Validators.required]],
       labNo: ['', [Validators.required]],
@@ -146,25 +159,106 @@ export class LabRequestsComponent implements OnInit {
 
     this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {
       this.apmisLookupQuery = {
-        'facilityid': this.selelctedFacility._id,
+        'facilityid': this.selectedFacility._id,
         'searchtext': value
       };
     });
     this.frmNewRequest.controls['investigation'].valueChanges.subscribe(value => {
       if (value !== null && value.length === 0) {
         this.apmisInvestigationLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
+          'facilityId._id': this.selectedFacility._id,
           name: { $regex: -1, '$options': 'i' },
         }
       } else {
         this.apmisInvestigationLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
+          'facilityId._id': this.selectedFacility._id,
           name: { $regex: value, '$options': 'i' },
         }
       }
     })
-    this.getLaboratoryRequest();
-    // this.getInvestigations();
+
+    this.route.params.subscribe((params: any) => {
+      if (params.id !== undefined && this.isLaboratory) {
+        this.isExternal = true;
+        this.requestService.find({ query: { 'patientId.personDetails._id': params.id } }).then(payload => {
+          if (payload.data.length > 0) {
+            this.frmNewRequest.controls['labNo'].setValue(payload.data[0].labNumber);
+            this.frmNewRequest.controls['patient'].setValue(payload.data[0].patientId.personDetails.personFullName);
+            this.frmNewRequest.controls['clinicalInfo'].setValue(payload.data[0].clinicalInformation);
+            this.frmNewRequest.controls['diagnosis'].setValue(payload.data[0].diagnosis);
+            this.selectedPatient = payload.data[0].patientId;
+
+          }
+          let labId = '';
+          if (this.selectedLab !== undefined && this.selectedLab.typeObject !== undefined) {
+            labId = this.selectedLab.typeObject.minorLocationId;
+          }
+
+          // Filter investigations based on the laboratory Id
+          payload.data.forEach(labRequest => {
+            console.log(labRequest);
+            labRequest.investigations.forEach(investigation => {
+              console.log(investigation);
+              console.log(investigation.isSaved);
+              console.log(investigation.isUploaded);
+              if (investigation.isExternal) {
+                const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+                console.log(investigation);
+                if (!investigation.isSaved || !investigation.isUploaded) {
+                  pendingLabReq.report = investigation.report;
+                  pendingLabReq.isSaved = investigation.isSaved;
+                  pendingLabReq.isUploaded = investigation.isUploaded;
+                }
+                pendingLabReq.labRequestId = labRequest._id;
+                pendingLabReq.facility = labRequest.facilityId;
+                pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
+                pendingLabReq.diagnosis = labRequest.diagnosis;
+                pendingLabReq.labNumber = labRequest.labNumber;
+                pendingLabReq.patient = labRequest.patientId;
+                pendingLabReq.isExternal = investigation.isExternal;
+                pendingLabReq.isUrgent = investigation.isUrgent;
+                if (investigation.location !== undefined) {
+                  pendingLabReq.minorLocation = investigation.location.laboratoryId;
+                }
+
+                pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
+                pendingLabReq.isPanel = investigation.investigation.isPanel;
+                pendingLabReq.name = investigation.investigation.name;
+                pendingLabReq.reportType = investigation.investigation.reportType;
+                pendingLabReq.specimen = investigation.investigation.specimen;
+                pendingLabReq.service = investigation.investigation.serviceId;
+                pendingLabReq.unit = investigation.investigation.unit;
+                pendingLabReq.investigationId = investigation.investigation._id;
+                pendingLabReq.createdAt = labRequest.createdAt;
+                pendingLabReq.updatedAt = labRequest.updatedAt;
+                pendingLabReq.createdBy = labRequest.createdBy;
+
+                if (investigation.specimenReceived !== undefined) {
+                  pendingLabReq.specimenReceived = investigation.specimenReceived;
+                }
+                if (investigation.specimenNumber !== undefined) {
+                  pendingLabReq.specimenNumber = investigation.specimenNumber;
+                }
+
+                this.pendingExternalRequests.push(pendingLabReq);
+              }
+            });
+          });
+          this.request_view = true;
+        })
+      } else {
+        // this.getLaboratoryRequest();
+      }
+
+    });
+    this._getAllPendingRequests();
+  }
+
+  extList_show() {
+    this.extList = true;
+  }
+  extList_close() {
+    this.extList = false;
   }
   addToast(msg: string) {
     const toastOptions: ToastOptions = {
@@ -212,7 +306,8 @@ export class LabRequestsComponent implements OnInit {
     })
   }
   getLaboratoryRequest() {
-    this.requestService.find({ query: { 'facilityId._id': this.selelctedFacility._id } }).then(payload => {
+    this.requests = [];
+    this.requestService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
       this.requests = payload.data;
     })
   }
@@ -226,6 +321,17 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
+    console.log(this.selectedPatient);
+    if(this.selectedPatient.clientsNo !== undefined){
+      this.selectedPatient.clientsNo.forEach(item =>{
+        console.log(item);
+        console.log(this.selectedLab.typeObject)
+        if(item.minorLocationId._id === this.selectedLab.typeObject.minorLocationId._id){
+          this.frmNewRequest.controls['LabNo'].setValue(item.clientNumber);
+        }
+      })
+    }
+
   }
   apmisInvestigationLookupHandleSelectedItem(value) {
     if (value.action !== undefined) {
@@ -255,7 +361,8 @@ export class LabRequestsComponent implements OnInit {
   request_show() {
     this.request_view = !this.request_view;
   }
-  reqDetail() {
+  reqDetail(request) {
+    this.selectedInvestigation = request;
     this.reqDetail_view = true;
   }
   newPerson() {
@@ -264,6 +371,7 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
+    this._getAllPendingRequests();
   }
   childChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
@@ -443,76 +551,53 @@ export class LabRequestsComponent implements OnInit {
   }
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
-    // console.log('in')
-    // console.log($event)
-    if ($event.checked) {
-      if (investigation.investigation.isPanel) {
-        // isPanel
-        console.log('is my')
-      } else {
-        // checked without panel
-        // this.investigationService.get(investigation.investigation._id, {}).then(pay => {
 
-        // })
-        // console.log(pay);
-        if ($event.checked) {
-          console.log(location)
-          this.bindInvestigations.push(investigation);
-          investigation.isChecked = true;
-          investigation.LaboratoryWorkbenches = LaboratoryWorkbenches;
-        } else {
-          console.log('slice 1')
-          const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-          this.bindInvestigations.splice(indexToRemove, 1)
-        }
+    // console.log('am here')
+    // console.log(investigation);
+    // console.log(location);
+    // console.log(LaboratoryWorkbenches);
+    let ids: any[] = [];
+    if (investigation.investigation.isPanel) {
+      const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      if (isInBind > -1) {
+        this.bindInvestigations.splice(isInBind, 1);
       }
-    } else {
-      // console.log('am here')
-      // console.log(investigation);
-      // console.log(location);
-      // console.log(LaboratoryWorkbenches);
-      let ids: any[] = [];
-      if (investigation.investigation.isPanel) {
-        const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-        if (isInBind > -1) {
-          this.bindInvestigations.splice(isInBind, 1);
-        }
-        investigation.investigation.panel.forEach((child, k) => {
-          // child.isChecked = true;
-          ids.push(child.investigation._id);
-        });
+      investigation.investigation.panel.forEach((child, k) => {
+        // child.isChecked = true;
+        ids.push(child.investigation._id);
+      });
 
 
-        // i need prices for the two children investigation and their prices
-        let labId = location.laboratoryId._id;
-        this.investigationService.find({ query: { '_id': { $in: ids } } }).then(payload => {
-          // console.log(payload.data)
-          let tempList: any[] = [];
-          payload.data.forEach((item, j) => {
-            let index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
-            if (index > -1) {
-              let withId = item.LaboratoryWorkbenches[index];
-              withId.investigationId = item._id
-              tempList.push(withId);
-            }
-          })
-          // console.log(tempList);
-          investigation.temporaryInvestigationList = tempList;
+      // i need prices for the two children investigation and their prices
+      let labId = location.laboratoryId._id;
+      this.investigationService.find({ query: { '_id': { $in: ids } } }).then(payload => {
+        // console.log(payload.data)
+        let tempList: any[] = [];
+        payload.data.forEach((item, j) => {
+          let index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
+          if (index > -1) {
+            let withId = item.LaboratoryWorkbenches[index];
+            withId.investigationId = item._id
+            tempList.push(withId);
+          }
         })
-        investigation.location = location;
-        this.bindInvestigations.push(investigation);
-      } else {
-        const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-        if (isInBind > -1) {
-          this.bindInvestigations.splice(isInBind, 1);
-        }
-        investigation.location = location;
-        this.bindInvestigations.push(investigation);
-        // console.log(this.bindInvestigations);
-        // this.getTotalPrice();
+        // console.log(tempList);
+        investigation.temporaryInvestigationList = tempList;
+      })
+      investigation.location = location;
+      this.bindInvestigations.push(investigation);
+    } else {
+      const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+      if (isInBind > -1) {
+        this.bindInvestigations.splice(isInBind, 1);
       }
-
-
+      let copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+      copyBindInvestigation.location = location;
+      copyBindInvestigation.LaboratoryWorkbenches = [];
+      copyBindInvestigation.LaboratoryWorkbenches.push(location);
+      copyBindInvestigation.investigation.LaboratoryWorkbenches = copyBindInvestigation.LaboratoryWorkbenches;
+      console.log(copyBindInvestigation)
+      this.bindInvestigations.push(copyBindInvestigation);
     }
   }
   getChildPrice(investigation, panel) {
@@ -567,11 +652,14 @@ export class LabRequestsComponent implements OnInit {
     return '';
   }
   removeBindingInvestigation(investigation: InvestigationModel) {
-    investigation.isChecked = false;
     const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
     this.bindInvestigations.splice(indexToRemove, 1)
+
+    const invIndexToUncheck = this.investigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    this.investigations[invIndexToUncheck].isChecked = false;
   }
   markExternal(event, investigation: InvestigationModel) {
+    console.log(event);
     if (event.checked) {
       delete investigation.location;
       const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -583,6 +671,7 @@ export class LabRequestsComponent implements OnInit {
       let copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
       delete copyBindInvestigation.LaboratoryWorkbenches;
       delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
+      console.log(copyBindInvestigation)
       this.bindInvestigations.push(copyBindInvestigation);
     } else {
       const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -612,7 +701,27 @@ export class LabRequestsComponent implements OnInit {
     delete this.selectedPatient.personDetails.nationalityObject;
     delete this.selectedPatient.personDetails.nextOfKin;
 
-    const selectedFacility = this.locker.getObject('miniFacility');
+    const logEmp = <any>this.locker.getObject('loginEmployee');
+    delete logEmp.department;
+    delete logEmp.employeeFacilityDetails;
+    delete logEmp.role;
+    delete logEmp.units;
+    delete logEmp.consultingRoomCheckIn;
+    delete logEmp.storeCheckIn;
+    delete logEmp.unitDetails;
+    delete logEmp.professionObject;
+    delete logEmp.workSpaces;
+    delete logEmp.employeeDetails.countryItem;
+    delete logEmp.employeeDetails.homeAddress;
+    delete logEmp.employeeDetails.gender;
+    delete logEmp.employeeDetails.maritalStatus;
+    delete logEmp.employeeDetails.nationality;
+    delete logEmp.employeeDetails.nationalityObject;
+    delete logEmp.employeeDetails.nextOfKin;
+    delete logEmp.workbenchCheckIn;
+
+    const selectedFacility = <any>this.locker.getObject('miniFacility');
+
 
 
 
@@ -628,7 +737,7 @@ export class LabRequestsComponent implements OnInit {
         delete item.isChecked;
         delete item.LaboratoryWorkbenches;
         delete item.location;
-        readyCollection.push(item.investigation);
+        readyCollection.push(item);
       }
     })
 
@@ -638,17 +747,76 @@ export class LabRequestsComponent implements OnInit {
       labNumber: this.frmNewRequest.controls['labNo'].value,
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
       diagnosis: this.frmNewRequest.controls['diagnosis'].value,
-      investigations: readyCollection
+      investigations: readyCollection,
+      createdBy: logEmp
     }
-
-    this.requestService.create(request).then(payload => {
-      this.frmNewRequest.reset();
-      this.bindInvestigations = [];
-      this.investigations = [];
-      this.apmisLookupText = '';
-      this.selectedPatient = undefined;
-      this.addToast('Request sent successfully');
+    // console.log(readyCollection);
+    let billGroup: BillIGroup = <BillIGroup>{};
+    billGroup.discount = 0;
+    billGroup.facilityId = selectedFacility._id;
+    billGroup.grandTotal = 0;
+    billGroup.isWalkIn = false;
+    billGroup.patientId = this.selectedPatient._id;
+    billGroup.subTotal = 0;
+    // billGroup.userId = '';
+    billGroup.billItems = [];
+    readyCollection.forEach(item => {
+      if (!item.isExternal) {
+        console.log(item);
+        let billItem: BillItem = <BillItem>{};
+        billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
+        billItem.facilityId = selectedFacility._id;
+        billItem.description = '';
+        billItem.facilityServiceId = item.investigation.facilityServiceId;
+        billItem.serviceId = item.investigation.serviceId;
+        billItem.itemName = item.investigation.name;
+        billItem.patientId = this.selectedPatient._id;
+        billItem.quantity = 1;
+        billItem.totalPrice = billItem.quantity * billItem.unitPrice;
+        billItem.unitDiscountedAmount = 0;
+        billItem.totalDiscoutedAmount = 0;
+        billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
+        billGroup.grandTotal = billGroup.subTotal;
+        billGroup.billItems.push(billItem);
+      }
     })
+
+    if (billGroup.billItems.length > 0) {
+      const request$ = Observable.fromPromise(this.requestService.create(request));
+      const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
+      Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
+        let request = results[0];
+        let billing = results[1];
+        delete billing.facilityItem;
+        delete billing.patientItem;
+        billing.billItems.forEach(item => {
+          delete item.facilityServiceObject;
+          delete item.modifierId;
+          delete item.paymentStatus;
+          delete item.paments;
+          delete item.serviceModifierOject
+        });
+        request.billingId = billing;
+        this.requestService.update(request).then(payload => {
+          this.frmNewRequest.reset();
+          this.bindInvestigations = [];
+          this.investigations = [];
+          this.apmisLookupText = '';
+          this.selectedPatient = undefined;
+          this.addToast('Request sent successfully');
+        })
+
+      })
+    } else {
+      this.requestService.create(request).then(payload => {
+        this.frmNewRequest.reset();
+        this.bindInvestigations = [];
+        this.investigations = [];
+        this.apmisLookupText = '';
+        this.selectedPatient = undefined;
+        this.addToast('Request sent successfully');
+      })
+    }
   }
   externalChanged($event, investigation) {
     console.log(investigation)
@@ -656,5 +824,157 @@ export class LabRequestsComponent implements OnInit {
   }
   urgentChanged($event, investigation) {
     investigation.isUrgent = $event.checked;
+  }
+  private _getAllPendingRequests() {
+    this.pendingRequests = [];
+    if (this.patientId !== undefined && this.patientId.length > 0 && !this.isExternal) {
+      console.log('have patient')
+      this.request_view = true;
+      this.requestService.find({
+        query: {
+          'patientId._id': this.patientId,
+        }
+      }).then(res => {
+        console.log(res);
+        this.loading = false;
+        let labId = '';
+        if (this.selectedLab !== undefined && this.selectedLab.typeObject !== undefined) {
+          labId = this.selectedLab.typeObject.minorLocationId;
+        }
+
+        // Filter investigations based on the laboratory Id
+        res.data.forEach(labRequest => {
+          console.log(labRequest);
+          labRequest.investigations.forEach(investigation => {
+            console.log(investigation);
+            console.log(investigation.isSaved);
+            console.log(investigation.isUploaded);
+            if (
+              (investigation.isSaved === undefined || !investigation.isSaved) ||
+              (investigation.isUploaded === undefined || !investigation.isUploaded) &&
+              labId === investigation.location.laboratoryId._id
+            ) {
+              const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+              console.log(investigation);
+              if (!investigation.isSaved || !investigation.isUploaded) {
+                pendingLabReq.report = investigation.report;
+                pendingLabReq.isSaved = investigation.isSaved;
+                pendingLabReq.isUploaded = investigation.isUploaded;
+              }
+              pendingLabReq.labRequestId = labRequest._id;
+              pendingLabReq.facility = labRequest.facilityId;
+              pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
+              pendingLabReq.diagnosis = labRequest.diagnosis;
+              pendingLabReq.labNumber = labRequest.labNumber;
+              pendingLabReq.patient = labRequest.patientId;
+              pendingLabReq.isExternal = investigation.isExternal;
+              pendingLabReq.isUrgent = investigation.isUrgent;
+              if (investigation.location !== undefined) {
+                pendingLabReq.minorLocation = investigation.location.laboratoryId;
+              }
+
+              pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
+              pendingLabReq.isPanel = investigation.investigation.isPanel;
+              pendingLabReq.name = investigation.investigation.name;
+              pendingLabReq.reportType = investigation.investigation.reportType;
+              pendingLabReq.specimen = investigation.investigation.specimen;
+              pendingLabReq.service = investigation.investigation.serviceId;
+              pendingLabReq.unit = investigation.investigation.unit;
+              pendingLabReq.investigationId = investigation.investigation._id;
+              pendingLabReq.createdAt = labRequest.createdAt;
+              pendingLabReq.updatedAt = labRequest.updatedAt;
+              pendingLabReq.createdBy = labRequest.createdBy;
+
+              if (investigation.specimenReceived !== undefined) {
+                pendingLabReq.specimenReceived = investigation.specimenReceived;
+              }
+              if (investigation.specimenNumber !== undefined) {
+                pendingLabReq.specimenNumber = investigation.specimenNumber;
+              }
+
+              this.pendingRequests.push(pendingLabReq);
+            }
+          });
+        });
+        console.log(this.pendingRequests);
+      }).catch(err => console.error(err));
+    } else if (this.patientId === undefined && !this.isExternal) {
+      this.requestService.find({
+        query: {
+          'facilityId._id': this.selectedFacility._id,
+          //'lab.id': this.selectedLab.Id, 
+          //'workbench.id': this.selectedWorkbench.id 
+        }
+      }).then(res => {
+        console.log(res);
+        this.loading = false;
+        let labId = '';
+        if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
+          labId = this.selectedLab.typeObject.minorLocationId;
+        }
+
+        // Filter investigations based on the laboratory Id
+        res.data.forEach(labRequest => {
+          console.log(labRequest);
+          labRequest.investigations.forEach(investigation => {
+            console.log(investigation);
+            console.log(investigation.isSaved);
+            console.log(investigation.isUploaded);
+            if (
+              (investigation.isSaved === undefined || !investigation.isSaved) ||
+              (investigation.isUploaded === undefined || !investigation.isUploaded) &&
+              labId === investigation.location.laboratoryId._id
+            ) {
+              const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+              console.log(investigation);
+              if (!investigation.isSaved || !investigation.isUploaded) {
+                pendingLabReq.report = investigation.report;
+                pendingLabReq.isSaved = investigation.isSaved;
+                pendingLabReq.isUploaded = investigation.isUploaded;
+              }
+              pendingLabReq.labRequestId = labRequest._id;
+              pendingLabReq.facility = labRequest.facilityId;
+              pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
+              pendingLabReq.diagnosis = labRequest.diagnosis;
+              pendingLabReq.labNumber = labRequest.labNumber;
+              pendingLabReq.patient = labRequest.patientId;
+              pendingLabReq.isExternal = investigation.isExternal;
+              pendingLabReq.isUrgent = investigation.isUrgent;
+              if (investigation.location !== undefined) {
+                pendingLabReq.minorLocation = investigation.location.laboratoryId;
+              }
+
+              pendingLabReq.facilityServiceId = investigation.investigation.facilityServiceId;
+              pendingLabReq.isPanel = investigation.investigation.isPanel;
+              pendingLabReq.name = investigation.investigation.name;
+              pendingLabReq.reportType = investigation.investigation.reportType;
+              pendingLabReq.specimen = investigation.investigation.specimen;
+              pendingLabReq.service = investigation.investigation.serviceId;
+              pendingLabReq.unit = investigation.investigation.unit;
+              pendingLabReq.investigationId = investigation.investigation._id;
+              pendingLabReq.createdAt = labRequest.createdAt;
+              pendingLabReq.updatedAt = labRequest.updatedAt;
+              pendingLabReq.createdBy = labRequest.createdBy;
+              if (investigation.specimenReceived !== undefined) {
+                pendingLabReq.specimenReceived = investigation.specimenReceived;
+              }
+              if (investigation.specimenNumber !== undefined) {
+                pendingLabReq.specimenNumber = investigation.specimenNumber;
+              }
+
+              if (investigation.sampleTaken !== undefined) {
+                pendingLabReq.sampleTaken = investigation.sampleTaken;
+              }
+              if (investigation.sampleTakenBy !== undefined) {
+                pendingLabReq.sampleTakenBy = investigation.sampleTakenBy;
+              }
+
+              this.pendingRequests.push(pendingLabReq);
+            }
+          });
+        });
+        console.log(this.pendingRequests);
+      }).catch(err => console.error(err));
+    }
   }
 }
