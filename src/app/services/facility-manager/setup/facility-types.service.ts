@@ -11,6 +11,7 @@ export class FacilityTypesService {
   ) {
     this._rest = _restService.getService('facilitytypes');
     this._socket = _socketService.getService('facilitytypes');
+    this._socket.timeout = 30000;
   }
 
   find(query: any) {

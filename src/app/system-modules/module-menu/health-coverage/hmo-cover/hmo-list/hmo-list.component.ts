@@ -1,3 +1,4 @@
+import { User } from './../../../../../models/facility-manager/setup/user';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
 import { FacilityType } from './../../../../../models/facility-manager/setup/facilitytype';
@@ -31,17 +32,16 @@ export class HmoListComponent implements OnInit {
   selectedHMO: Facility = <Facility>{};
   selectedFacilityType: FacilityType = <FacilityType>{};
   loginHMOListObject: any = <any>{};
+  user: User = <User>{};
 
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private facilityService: FacilitiesService,
     private facilityTypeService: FacilityTypesService, private locker: CoolSessionStorage) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('miniFacility');
+    this.user = <User>this.locker.getObject('auth');
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
-      phone: ['', [<any>Validators.required]],
     });
 
     this.frmNewHmo.controls['name'].valueChanges.subscribe(value => {
@@ -53,7 +53,6 @@ export class HmoListComponent implements OnInit {
           $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
         }
       } else {
-        console.log(value)
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType._id,
           name: { $regex: value, '$options': 'i' },
@@ -83,8 +82,7 @@ export class HmoListComponent implements OnInit {
         if (item.name === 'Hospital') {
           this.selectedFacilityType = item;
         }
-      })
-      console.log(payload);
+      });
     })
   }
   apmisLookupHandleSelectedItem(value) {
@@ -99,6 +97,7 @@ export class HmoListComponent implements OnInit {
       this.selectedHMO = value;
     } else {
       this.selectedHMO = <any>{};
+      this._notification('Info', 'Selected HMO is already in your list of HMOs');
     }
   }
 
@@ -116,19 +115,50 @@ export class HmoListComponent implements OnInit {
   onChange(e) {
 
   }
-  save(valid, value) {
-    console.log(valid);
-    console.log(value);
+  public upload(e, hmo) {
+    console.log('am here')
 
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      console.log(fileBrowser.files);
+      const formData = new FormData();
+      formData.append("excelfile", fileBrowser.files[0]);
+      formData.append("hmoId", hmo._id);
+      console.log(formData)
+      this.facilityService.upload(formData, this.selectedHMO._id).then(res => {
+        // do stuff w/my uploaded file
+        // console.log(res);
+        if(res.body !== undefined && res.body.error_code===0){
+          console.log(res.body.data)
+        }
+      }).catch(err => {
+        this._notification('Error', "There was an error uploading the file");
+      });
+    }
+  }
+  save(valid, value) {
     this.loginHMOListObject.facilityId = this.selelctedFacility;
     this.loginHMOListObject.hmos.push(this.selectedHMO);
-    if (true) {
+    if (this.selectedHMO._id !== undefined) {
       if (this.loginHMOListObject._id === undefined) {
         this.hmoService.create(this.loginHMOListObject).then(payload => {
           console.log(payload);
+          this._notification('Success', 'Selected HMO added to your HMO list successfully');
+          this.frmNewHmo.reset();
+        })
+      } else {
+        this.hmoService.update(this.loginHMOListObject).then(payload => {
+          this._notification('Success', 'Selected HMO added to your HMO list successfully');
           this.frmNewHmo.reset();
         })
       }
     }
+  }
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 }
