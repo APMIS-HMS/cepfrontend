@@ -42,10 +42,10 @@ export class InitializeStoreComponent implements OnInit {
       let i: number;
       this.removeProduct(i);}   
   }
-  // removeProduct(i: number){
-  //   const control = <FormArray>this.myForm.controls['initproduct'];
-  //   control.removeAt(i);
-  // }
+  removeProduct(i: number){
+    const control = <FormArray>this.myForm.controls['initproduct'];
+    control.removeAt(i);
+  }
   getProducts() {
     this._productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.products = payload.data;
