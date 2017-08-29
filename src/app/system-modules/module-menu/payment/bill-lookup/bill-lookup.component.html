@@ -72,12 +72,7 @@
          <div class="feedbox">
           <div class="pending-wrap">
             <div class="pending-header">
-              <div class="pending-title">Invoices</div>
-              <div class="search-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
-                </md-input-container>
-              </div>
+              <div class="pending-title">Invoices</div> 
             </div>
             <div class="pending-bills">
               <div class="empWrap">
@@ -222,7 +217,7 @@
                   <th>Date</th>
                   <th>Item</th>
                   <th>Unit Price</th>
-                  <th>Quantity</th>
+                  <th>Qty</th>
                   <th>Total Price</th>
                   <th>Actions</th>
                 </tr>
@@ -294,9 +289,17 @@
               </tr>
             </table>
           </div>
-          <div class="generateInvoiceWrap">
-            <div (click)="makePayment_onclick()" class="btn-1 btn-blue">
-              Make Payment
+          <div class="btn-wrap">
+            <div class="generateInvoiceWrap">
+              <div (click)="makePayment_onclick()" class="btn-1 btn-blue">
+                Make Payment
+              </div>
+            </div>
+
+            <div class="generateInvoiceWrap">
+              <div (click)="makePayment_onclick()" class="btn-1 btn-green">
+                Generate Invoice
+              </div>
             </div>
           </div>
         </div>
