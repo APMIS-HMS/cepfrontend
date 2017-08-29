@@ -65,7 +65,6 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
             .switchMap(value => this.filter({ query: this.query }, this.isSocket))
             .subscribe((payload: any) => {
                 this.cuDropdownLoading = false;
-                console.log(payload);
                  if (payload !== undefined && payload.data !== undefined) {
                     this.results = payload.data;
                 } else {

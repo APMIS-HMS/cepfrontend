@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
+const request = require('superagent');
 
 @Injectable()
 export class FacilitiesService {
@@ -94,5 +95,23 @@ export class FacilitiesService {
     delete logEmp.employeeDetails.nationalityObject;
     delete logEmp.employeeDetails.nextOfKin;
     return logEmp;
+  }
+  upload(formData, id) {
+    // let headers = this.tokenService.currentAuthHeaders;
+    // headers.delete('Content-Type');
+    // let options = new RequestOptions({ headers: headers });
+
+    // return this.tokenService.request({
+    //   method: 'post',
+    //   url: `http://localhost:3000/api/projects/${id}/upload`,
+    //   body: formData,
+    //   headers: options.headers
+    // }).map(res => res.json());
+
+    const host = this._restService.getHost();
+    const path = host + '/image';
+    return request
+      .get(path)
+      .query({}); // query string 
   }
 }
