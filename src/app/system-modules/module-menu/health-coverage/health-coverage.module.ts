@@ -30,6 +30,7 @@ import { FcBeneficiaryListComponent } from './family-cover/fc-beneficiary-list/f
 import { BillAddItemComponent } from './bill-add-item/bill-add-item.component';
 import { BillAddModefierComponent } from './bill-add-modefier/bill-add-modefier.component';
 import { BillAddLineModefierComponent } from './bill-add-line-modefier/bill-add-line-modefier.component';
+import { RecievePaymentComponent } from './recieve-payment/recieve-payment.component';
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -55,7 +56,8 @@ import { BillAddLineModefierComponent } from './bill-add-line-modefier/bill-add-
         FcBeneficiaryListComponent,
         BillAddItemComponent,
         BillAddModefierComponent,
-        BillAddLineModefierComponent
+        BillAddLineModefierComponent,
+        RecievePaymentComponent
     ],
     exports: [
     ],

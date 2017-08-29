@@ -6,7 +6,8 @@
             <li (click)="hmoCover_show()"><i class="fa fa-home" aria-hidden="true"></i>Health Insurance</li>
             <li (click)="companyCover_show()"><i class="fa fa-braille" aria-hidden="true"></i> Company Retainership</li>
             <li (click)="familyCover_show()"><i class="fa fa-building" aria-hidden="true"></i> Family Cover</li>
-            <li (click)="payment_show()"><i class="fa fa-money" aria-hidden="true"></i> Family Cover</li>
+            <li (click)="payment_show()"><i class="fa fa-money" aria-hidden="true"></i> Payment</li>
+            <li (click)="payment_show()"><i class="fa fa-money" aria-hidden="true"></i>Recieve Payment</li>
         </ul>
     </div>
     <div class="inner-page-wrap">
@@ -16,6 +17,7 @@
                 <li [class.navActive]="companyCover" (click)="companyCover_show()">Company Retainership</li>
                 <li [class.navActive]="familyCover" (click)="familyCover_show()">Family Cover</li>
                 <li [class.navActive]="payment" (click)="payment_show()">Payment</li>
+                <li [class.navActive]="recievePayment" (click)="recievePayment_show()">Recieve Payment</li>
             </ul>
         </div>
 

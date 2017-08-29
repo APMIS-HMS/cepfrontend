@@ -40,7 +40,7 @@
                   <th>Unit Price</th>
                   <th>Qty</th>
                   <th>Total Price</th>
-                   <th>Cover Type</th> 
+                   <th>Options</th> 
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -155,6 +155,13 @@
                               </md-select>
                             </div>
 
+                            <md-input-container  class="full-width">
+                              <input mdInput placeholder="Authorization Code" [formControl]="authFormControl2">
+                              <md-error *ngIf="authFormControl.hasError('required')">
+                                Authorization code Required
+                              </md-error>
+                            </md-input-container>
+
                             <md-input-container class="full-width">
                               <input mdInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
                               <md-hint align="end">{{message.value.length}} / 256</md-hint>
@@ -184,11 +191,11 @@
           </div>
 
           <div class="billSummarySect">
-            <div class="lhs">
+            <!-- <div class="lhs">
               <div *ngIf="total > 0" (click)="addModefier()" class="cta-1">
                 Add Discount
               </div>
-            </div>
+            </div> -->
             <table class="rhs">
               <div class="summaryItems">
                 <tr class="summaryItem">
@@ -196,11 +203,11 @@
                   <td class="data"> {{subTotal | currency:'NGN':true:'1.2-2' }}</td>
                   <td></td>
                 </tr>
-                <tr class="summaryItem">
+                <!-- <tr class="summaryItem">
                   <td class="label">Discount</td>
                   <td class="data"> {{discount | currency:'NGN':true:'1.2-2'}}</td>
                   <td class="remove-link"><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
-                </tr>
+                </tr> -->
               </div>
               <tr class="grandTotalWrap">
                 <td class="label">GRAND TOTAL</td>
@@ -213,11 +220,6 @@
             <div class="generateInvoiceWrap">
               <div (click)="makePayment_onclick()" class="btn-1 btn-blue">
                 Approve
-              </div>
-            </div>
-            <div class="generateInvoiceWrap">
-              <div (click)="makePayment_onclick()" class="btn-1 btn-red">
-                Reject
               </div>
             </div>
           </div>
