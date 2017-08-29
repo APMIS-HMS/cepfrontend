@@ -26,8 +26,9 @@ export class CoverBillComponent implements OnInit {
   select3 = new FormControl('', []);
   searchPendingInvoices = new FormControl('', []);
   searchPendingBill = new FormControl('', []);
-  coverTypeFormControl = new FormControl('Capitation', []);
+  coverTypeFormControl = new FormControl('Select Option', []);
   authFormControl = new FormControl('', [Validators.required]);
+  authFormControl2 = new FormControl('', []);
   authCommentFormControl = new FormControl('', []);
 
   addItem = false;
@@ -58,11 +59,13 @@ export class CoverBillComponent implements OnInit {
   discount = 0;
 
   // starday
-  selectedCoverType = 'Capitation';
+  selectedCoverType = 'Select Option';
   coverTypes: any[] = [
-    { _id: 1, value: 'Capitation', text: 'Capitation' },
-    { _id: 2, value: 'Authorization', text: 'Authorization' },
-    { _id: 3, value: 'CoPay', text: 'Fee for Service' }]
+    { _id: 1, value: 'Select Option', text: 'Select Option' },
+    { _id: 2, value: 'Capitation', text: 'Capitation' },
+    { _id: 3, value: 'Authorization', text: 'Authorization' },
+    { _id: 4, value: 'CoPay', text: 'Co-Pay' },
+    { _id: 3, value: 'Not Covered', text: 'Not Covered' }]
 
   constructor(private locker: CoolSessionStorage,
     private formBuilder: FormBuilder,
