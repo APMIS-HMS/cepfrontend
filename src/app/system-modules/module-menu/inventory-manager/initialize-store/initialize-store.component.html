@@ -38,6 +38,9 @@
                                 <span>Products {{i + 1}}</span>
                                 <span *ngIf="myForm.controls.initproduct.controls > 1" (click)=" removeAddress(i)">
                                 </span>
+                                <a (click)="removeProduct()" style="cursor: default">
+                                    Remove -
+                                  </a>
                             </div>
                             <div  class="form-array" [formGroupName]="i">
                                 <div class="col-sm-7">                                
