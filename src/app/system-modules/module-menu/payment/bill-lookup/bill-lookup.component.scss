@@ -303,3 +303,66 @@ td .cta-1:hover {
     width: 100%;
     box-sizing: border-box;
 }
+.billContentSect .tblBg td, .billContentSect .tblBg th{
+    min-width: auto;
+    width: auto;
+}
+.billContentSect .tblBg2 td, .billContentSect .tblBg2 th{
+    min-width: 90px;
+}
+.td-modefier{
+    position: relative;
+}
+.modefier-link{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 10px;
+    color: #03A9F4;
+}
+.td-modefier:hover{
+    .modefier-wrap{
+        display: block;
+    }
+    .modefier-link i{
+        color: #ff2500;
+    }
+}
+.modefier-wrap{
+    position: absolute;
+    background: #fff;
+    padding: 5px;
+    padding-bottom: 10px;
+    line-height: 1.5;
+    z-index: 1;
+    display: none;
+    border: 1px solid #777;
+    max-height: 200px;
+    overflow-y: auto;
+    right: 0;
+    top: 50%;
+}
+.actual-price{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px;
+    box-sizing: border-box;
+}
+.ac-label{
+    font-size: 14px;
+    color: #777;
+}
+.ac-val{
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.modefier-title{
+    color: #01579B;
+    margin: 5px auto;
+    font-size: 16px;
+}

@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
+const request = require('superagent');
 
 @Injectable()
 export class FacilitiesService {
@@ -94,5 +95,12 @@ export class FacilitiesService {
     delete logEmp.employeeDetails.nationalityObject;
     delete logEmp.employeeDetails.nextOfKin;
     return logEmp;
+  }
+  upload(formData, id) {
+    const host = this._restService.getHost();
+    const path = host + '/uploadexcel';
+    return request
+    .post(path)
+    .send(formData);
   }
 }

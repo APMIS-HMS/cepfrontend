@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input,AfterViewInit,AfterViewChecked } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, EmployeeService, FormsService,
@@ -19,22 +19,13 @@ import { Observable } from 'rxjs/Rx';
   templateUrl: './patient-summary.component.html',
   styleUrls: ['./patient-summary.component.scss']
 })
-export class PatientSummaryComponent implements OnInit, OnDestroy {
+export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
   // @Input() vitalDocuments: any;
 
-  lineChartData = [
-    { data: [], label: 'Pulse Rate' },
-    { data: [], label: 'Systolic' },
-    { data: [], label: 'Diastolic' },
-    { data: [], label: 'Temperature' },
-    { data: [], label: 'Respiratory Rate' },
-    { data: [], label: 'Height' },
-    { data: [], label: 'Weight' },
-    { data: [], label: 'BMI' }
-  ];
+  lineChartData = [];
 
 
   public lineChartLabels: Array<any> = [''];
@@ -194,10 +185,36 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     });
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.lineChartData = [
+      { data: [], label: 'Pulse Rate' },
+      { data: [], label: 'Systolic' },
+      { data: [], label: 'Diastolic' },
+      { data: [], label: 'Temperature' },
+      { data: [], label: 'Respiratory Rate' },
+      { data: [], label: 'Height' },
+      { data: [], label: 'Weight' },
+      { data: [], label: 'BMI' }
+    ];
   }
 
   ngOnInit() {
     this.getForms();
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    if (this.patient !== undefined) {
+      this.getCurrentUser();
+      this.bindVitalsDataToChart();
+    }
+
+    this._DocumentationService.listenerCreate.subscribe(payload => {
+      this.bindVitalsDataToChart();
+    });
+
+    this._DocumentationService.listenerUpdate.subscribe(payload => {
+      this.bindVitalsDataToChart();
+    });
+  }
+
+  ngAfterViewInit(){
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (this.patient !== undefined) {
       this.getCurrentUser();

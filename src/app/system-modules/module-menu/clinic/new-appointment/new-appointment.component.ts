@@ -53,7 +53,6 @@ export class NewAppointmentComponent implements OnInit {
     dateRange: any;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
-    filteredStates:any[] = [];
 
     constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
         private appointmentService: AppointmentService, private facilityService: FacilitiesService,

@@ -12,37 +12,9 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr>
-                          <td><md-checkbox></md-checkbox></td>
-                          <td>paracetalmol</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>ACAM2000</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Acamprosate Calcium</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Acanya Gel </td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Acarbose </td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Lynch Ltd</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Aztreonam Injection</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Azulfidine EN-Tabs (Sulfasalazine Delayed Release Tablets)</td>
+                        <tr *ngFor = "let isproduct of products; let i = index">
+                          <td></td>
+                          <td><md-checkbox [(ngModel)]="isproduct.selected" (change)="addProduct($event.checked)">{{isproduct.name}}</md-checkbox></td>
                         </tr>
                      </tbody>
                   </table>
@@ -53,24 +25,46 @@
     <div class="col-sm-5">
       <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
               <div class="panel-heading ui-sortable-handle">
+                  <!--
                 <div class="panel-title">
                     <h4>Products</h4>
-                </div>
+                </div>-->
               </div>
           <div class="panel-body">
-              <form>
-                  <div class="form-array">
-                      <div class="col-sm-6">
-                          <md-input-container class="example-full-width">
-                              <input mdInput placeholder="Enter Quantity">
-                          </md-input-container>  
+              <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+                   <div formArrayName="initproduct">
+                       <div *ngFor =" let address of myForm.controls.initproduct.controls; let i=index;">
+                            <div>
+                                <span>Products {{i + 1}}</span>
+                            </div>
+                            <div  class="form-array" [formGroupName]="i">
+                                <div class="col-sm-7">                                
+                                    <md-input-container class="example-full-width">
+                                        <input type="number" mdInput placeholder="Enter Batch No" formControlName="batchno">
+                                    </md-input-container> 
+                                    <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchno.valid">
+                                        Required
+                                    </small>
+                                </div>
+                                <div class="col-sm-5">
+                                    <md-input-container class="example-full-width">
+                                        <input type="number"  formControlName="quantity" mdInput placeholder="Enter Quantity">
+                                    </md-input-container> 
+                                    <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
+                                        Required
+                                    </small>
+                                </div>
+                            </div>
                        </div>
-                       <div class="col-sm-6">
-                          <md-input-container class="example-full-width">
-                              <input type="number" mdInput placeholder="Enter Batch No">
-                          </md-input-container> 
-                       </div> 
-                       <button md-mini-fab><md-icon><i class="fa fa-plus"></i></md-icon></button>
+                   </div>
+                   <!--
+                   <div class="margin-20">
+                        <a (click)="addProduct()" style="cursor: default">
+                          Add +
+                        </a>
+                    </div>-->
+                   <div class="col-sm-12 text-center">
+                        <a md-raised-button [disabled]="!myForm.valid">Save</a>
                    </div>                            
               </form>
             </div>
