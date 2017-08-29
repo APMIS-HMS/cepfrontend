@@ -13,6 +13,7 @@ export class InitializeStoreComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   products= [];
   myForm: FormGroup;
+  ischeck: boolean;
   constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
 
    }
@@ -32,14 +33,19 @@ export class InitializeStoreComponent implements OnInit {
       quantity:['', Validators.required]
     });
   }
-  addProduct(){
-    const control = <FormArray>this.myForm.controls['initproduct'];
+  addProduct(ischecked: boolean){
+    if(ischecked){
+      const control = <FormArray>this.myForm.controls['initproduct'];
     control.push(this.initProduct());
   }
-  removeProduct(i: number){
-    const control = <FormArray>this.myForm.controls['initproduct'];
-    control.removeAt(i);
+    else {
+      let i: number;
+      this.removeProduct(i);}   
   }
+  // removeProduct(i: number){
+  //   const control = <FormArray>this.myForm.controls['initproduct'];
+  //   control.removeAt(i);
+  // }
   getProducts() {
     this._productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.products = payload.data;

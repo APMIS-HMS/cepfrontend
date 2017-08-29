@@ -14,7 +14,7 @@
                      <tbody>
                         <tr *ngFor = "let isproduct of products; let i = index">
                           <td></td>
-                          <td><md-checkbox [(ngModel)]="isproduct.selected" (change)="addProduct()">{{isproduct.name}}</md-checkbox></td>
+                          <td><md-checkbox [(ngModel)]="isproduct.selected" (change)="addProduct($event.checked)">{{isproduct.name}}</md-checkbox></td>
                         </tr>
                      </tbody>
                   </table>
@@ -36,11 +36,6 @@
                        <div *ngFor =" let address of myForm.controls.initproduct.controls; let i=index;">
                             <div>
                                 <span>Products {{i + 1}}</span>
-                                <span *ngIf="myForm.controls.initproduct.controls > 1" (click)=" removeAddress(i)">
-                                </span>
-                                <a (click)="removeProduct()" style="cursor: default">
-                                    Remove -
-                                  </a>
                             </div>
                             <div  class="form-array" [formGroupName]="i">
                                 <div class="col-sm-7">                                
