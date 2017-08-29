@@ -97,21 +97,10 @@ export class FacilitiesService {
     return logEmp;
   }
   upload(formData, id) {
-    // let headers = this.tokenService.currentAuthHeaders;
-    // headers.delete('Content-Type');
-    // let options = new RequestOptions({ headers: headers });
-
-    // return this.tokenService.request({
-    //   method: 'post',
-    //   url: `http://localhost:3000/api/projects/${id}/upload`,
-    //   body: formData,
-    //   headers: options.headers
-    // }).map(res => res.json());
-
     const host = this._restService.getHost();
-    const path = host + '/image';
+    const path = host + '/uploadexcel';
     return request
-      .get(path)
-      .query({}); // query string 
+    .post(path)
+    .send(formData);
   }
 }

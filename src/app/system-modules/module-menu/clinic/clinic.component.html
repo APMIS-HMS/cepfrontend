@@ -1,14 +1,14 @@
 <div  class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>   
-    <ul class="second-menu">
+    <!--<ul class="second-menu">
         <a (click)="appointmentStyle()" [class.menuActive]="clinicApppointment" [routerLink]="['/dashboard/clinic/appointment']" class="btning">Appointment</a>
         <a (click)="checkedinStyle()" [class.menuActive]="clinicCheckin" [routerLink]="['/dashboard/clinic/check-in']" class="btning">Checked In Patients</a>
         <a (click)="scheduleStyle()" [class.menuActive]="clinicSchedule"  [routerLink]="['/dashboard/clinic/clinic-schedule']" class="btning">Clinic Schedule</a>
         <a (click)="consultingStyle()" [class.menuActive]="clinicConsulting" [routerLink]="['/dashboard/clinic/consulting-room']" class="btning">Consulting Room</a>
         <a (click)="roomStyle()" [class.menuActive]="clinicRoom"  *ngIf="isDoctor==true" (click)="changeRoom()" class="btning" >Change Room</a>
-    </ul>
+    </ul>-->
     <div class="inner-page-wrap">
-        <!--<div class="inner-menu1-wrap">
+        <div class="inner-menu1-wrap">
             <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
                 aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
@@ -18,7 +18,7 @@
                 <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/consulting-room']">Consulting Room</li>
                 <li *ngIf="isDoctor==true" (click)="changeRoom()" >Change Consulting Room</li>
             </ul>
-        </div>-->
+        </div>
 
         <div class="inner-page-contentArea">
             <router-outlet class="menuContent"></router-outlet>
