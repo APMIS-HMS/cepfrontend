@@ -1,6 +1,6 @@
 <div class="survery">
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-7">
         <div class="panel" data-index="0">          
               <div class="panel-body">
                <div class="table-responsive">
@@ -12,37 +12,9 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr>
-                          <td><md-checkbox></md-checkbox></td>
-                          <td>paracetalmol</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>ACAM2000</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Acamprosate Calcium</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Acanya Gel </td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Acarbose </td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Lynch Ltd</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Aztreonam Injection</td>
-                        </tr>
-                        <tr>
-                            <td><md-checkbox></md-checkbox></td>
-                           <td>Azulfidine EN-Tabs (Sulfasalazine Delayed Release Tablets)</td>
+                        <tr *ngFor = "let isproduct of products; let i = index">
+                          <td></td>
+                          <td><md-checkbox [(ngModel)]="isproduct.selected" (change)="addProduct($event.checked)">{{isproduct.name}}</md-checkbox></td>
                         </tr>
                      </tbody>
                   </table>
@@ -50,7 +22,7 @@
             </div>
          </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
               <div class="panel-heading ui-sortable-handle">
                   <!--
@@ -60,25 +32,10 @@
               </div>
           <div class="panel-body">
               <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
-                   <!-- <div class="form-array">
-                   <div class="col-sm-6">
-                        <md-input-container class="example-full-width">
-                            <input type="number" mdInput placeholder="Enter Batch No">
-                        </md-input-container> 
-                      </div> 
-                      <div class="col-sm-6">
-                          <md-input-container class="example-full-width">
-                              <input mdInput placeholder="Enter Quantity">
-                          </md-input-container>  
-                       </div>
-                       <button md-mini-fab><md-icon><i class="fa fa-plus"></i></md-icon></button>
-                   </div>-->
                    <div formArrayName="initproduct">
                        <div *ngFor =" let address of myForm.controls.initproduct.controls; let i=index;">
                             <div>
                                 <span>Products {{i + 1}}</span>
-                                <span *ngIf="myForm.controls.initproduct.controls > 1" (click)=" removeAddress(i)">
-                                </span>
                             </div>
                             <div  class="form-array" [formGroupName]="i">
                                 <div class="col-sm-7">                                
@@ -100,11 +57,12 @@
                             </div>
                        </div>
                    </div>
+                   <!--
                    <div class="margin-20">
                         <a (click)="addProduct()" style="cursor: default">
                           Add +
                         </a>
-                    </div>
+                    </div>-->
                    <div class="col-sm-12 text-center">
                         <a md-raised-button [disabled]="!myForm.valid">Save</a>
                    </div>                            
