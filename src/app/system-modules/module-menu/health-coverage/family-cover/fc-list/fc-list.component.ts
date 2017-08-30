@@ -12,6 +12,7 @@ export class FcListComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
 
   public frmNewFamily: FormGroup;
+  public frmDependant: FormGroup;
   principal = new FormControl('', []);
   newFamily = false;
 
@@ -23,6 +24,14 @@ export class FcListComponent implements OnInit {
       address: ['', [Validators.required]],
       email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phone: ['', [<any>Validators.required]],
+    });
+
+    this.frmDependant = this.formBuilder.group({
+      dependantName: ['', [Validators.required]],
+      dependantGender: ['', [Validators.required]],
+      dependantEmail: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      dependantPhone: ['', [<any>Validators.required]],
+      dependantStatus: ['', [<any>Validators.required]]
     });
   }
 

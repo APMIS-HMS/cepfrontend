@@ -9,11 +9,13 @@
     overflow-y: auto;
 }
 .feedsWrap{
-    width: 30%
+    width: 30%;
 }
 .feedbox{
     width: 100%;
     margin-bottom: 10px;
+    border: 1px solid #eee;
+    padding: 3px;
 }
 .feedbox_x1{
     min-height: 200px;
