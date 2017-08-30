@@ -1,54 +1,47 @@
 <div class="pg-subtitle">LABORATORY TEMPLATE</div>
 <div class="doc-mainWrap">
-  <div class="doc-contentArea">
-    <form [formGroup]="templateFormGroup">
-      <div class="content-left">
-        <div class="form-control-box">
-          <md-select placeholder="Select Investigation" formControlName="investigation">
-            <md-option *ngFor="let investigation of investigations" [value]="investigation">
-              {{ investigation.name }}
-            </md-option>
-          </md-select>
-        </div>
-      </div>
-      <div class="content-right">
-        <div class="form-control-box">
-          <md-input-container style="margin-bottom: 5px;">
-            <input mdInput placeholder="Template Name" formControlName="name">
-          </md-input-container>
-        </div>
-      </div>
-      <div class="content-left">
-        <div class="form-control-box">
-          <md-input-container>
-            <textarea formControlName="result" mdInput placeholder="Result"></textarea>
-          </md-input-container>
-        </div>
-      </div>
-      <div class="content-right">
-        <div class="form-control-box">
-          <md-input-container>
-            <textarea formControlName="outcome" mdInput placeholder="Outcome"></textarea>
-          </md-input-container>
-        </div>
-      </div>
-      <div class="content-left">
-        <div class="form-control-box">
-          <md-input-container>
-            <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
-          </md-input-container>
-        </div>
-      </div>
-      <div class="content-right">
-        <div class="form-control-box">
-          <md-input-container>
-            <textarea formControlName="recommendation" mdInput placeholder="Recommendation"></textarea>
-          </md-input-container>
-        </div>
-      </div>
-      <div class="fullwidth text-center">
-          <button class="text-white" md-raised-button (click)="createTemplate(templateFormGroup.valid, templateFormGroup.value);" [disabled]="!templateFormGroup.valid" [innerHtml]="templateBtnText"></button>
-      </div>
-    </form>
-  </div>
+    <div class="doc-contentArea">
+        <form [formGroup]="templateFormGroup">
+            <div class="content-left">
+                <div class="form-control-box">
+                    <md-select placeholder="Select Investigation" formControlName="investigation">
+                        <md-option *ngFor="let investigation of investigations" [value]="investigation">
+                            {{ investigation.name }}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="form-control-box">
+                    <md-input-container style="margin-bottom: 5px;">
+                        <input mdInput placeholder="Template Name" formControlName="name">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="content-left">
+                <div class="form-control-box">
+                    <md-input-container>
+                        <textarea formControlName="result" mdInput placeholder="Result"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="content-left">
+                <div class="form-control-box">
+                    <md-input-container>
+                        <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="form-control-box">
+                    <md-input-container>
+                        <textarea formControlName="recommendation" mdInput placeholder="Recommendation"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="fullwidth text-center">
+                <button class="text-white" md-raised-button (click)="createTemplate(templateFormGroup.valid, templateFormGroup.value);" [disabled]="!templateFormGroup.valid" [innerHtml]="templateBtnText"></button>
+            </div>
+        </form>
+    </div>
 </div>

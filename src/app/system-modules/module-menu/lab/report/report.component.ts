@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   FacilitiesService, LaboratoryRequestService,
@@ -53,6 +53,7 @@ export class ReportComponent implements OnInit {
   saveAndUploadBtnText: String = 'SAVE AND UPLOAD';
   saveToDraftBtnText: String = 'SAVE AS DRAFT';
   disablePaymentBtn: Boolean = false;
+  importTemplate: Boolean = false;
 	paymentStatusText: String = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 
 
@@ -290,39 +291,26 @@ export class ReportComponent implements OnInit {
 
   selectImage(fileInput: any) {
     console.log(event);
-    // if (fileInput.target.files && fileInput.target.files[0]) {
-		// 	const reader = new FileReader();
+    const fileList = fileInput.target.files;
+    console.log(fileList);
+    if (fileList.length > 0) {
+        const file: File = fileList[0];
+        const formData: FormData = new FormData();
+        formData.append('uploadFile', file, file.name);
+        const headers = new Headers();
+        /** No need to include Content-Type in Angular 4 */
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        // let options = new RequestOptions({ headers: headers });
 
-		// 	reader.onload = function (e: any) {
-		// 	};
-		// 	reader.onprogress = function (e: any) {
-		// 	};
-
-    //   reader.readAsDataURL(fileInput.target.files[0]);
-    //   console.log(reader);
-    // }
-
-
-      const fileList = fileInput.target.files;
-      console.log(fileList);
-      if (fileList.length > 0) {
-          const file: File = fileList[0];
-          const formData: FormData = new FormData();
-          formData.append('uploadFile', file, file.name);
-          const headers = new Headers();
-          /** No need to include Content-Type in Angular 4 */
-          headers.append('Content-Type', 'multipart/form-data');
-          headers.append('Accept', 'application/json');
-          // let options = new RequestOptions({ headers: headers });
-
-          // this.http.post(`${this.apiEndPoint}`, formData, options)
-          //     .map(res => res.json())
-          //     .catch(error => Observable.throw(error))
-          //     .subscribe(
-          //         data => console.log('success'),
-          //         error => console.log(error)
-          //     )
-      }
+        // this.http.post(`${this.apiEndPoint}`, formData, options)
+        //     .map(res => res.json())
+        //     .catch(error => Observable.throw(error))
+        //     .subscribe(
+        //         data => console.log('success'),
+        //         error => console.log(error)
+        //     )
+    }
   }
 
   onChange(e) {
@@ -391,6 +379,11 @@ export class ReportComponent implements OnInit {
     // } else {
     //   this._notification('Info', 'You can not attend to this request as payment has not been made. Please use the refresh button above to check for payment status.');
     // }
+  }
+
+  onClickImportTemplate(selectedInvestigation: PendingLaboratoryRequest) {
+    console.log(selectedInvestigation);
+    this.importTemplate = true;
   }
 
   private _getAllReports() {
@@ -524,6 +517,17 @@ export class ReportComponent implements OnInit {
     this._getPaymentStatus();
   }
 
+  onClickTemplate(event) {
+    this.importTemplate = false;
+    if (event.investigation.investigation.reportType.name === this.selectedInvestigation.reportType.name) {
+      this.reportFormGroup.controls['result'].setValue(event.investigation.result);
+      this.reportFormGroup.controls['recommendation'].setValue(event.investigation.recommendation);
+      this.reportFormGroup.controls['conclusion'].setValue(event.investigation.conclusion);
+    } else {
+      this._notification('Info', 'Please create a template for this report type.');
+    }
+  }
+
   private _getDocumentationForm() {
     this._formService.findAll().then(res => {
       this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
@@ -549,6 +553,7 @@ export class ReportComponent implements OnInit {
 
   close_onClick(message: Boolean): void {
     this.repDetail_view = false;
+    this.importTemplate = false;
   }
 
   report_show() {

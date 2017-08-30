@@ -225,6 +225,7 @@
                                     </div>
                                     <form [formGroup]="reportFormGroup" novalidate>
                                         <div class="resultSect-title">Investigation Result</div>
+                                        <div class="template-box" (click)="onClickImportTemplate(selectedInvestigation);"><i class="fa fa-download"></i> Import template</div>
                                         <div class="invstn-wrap">
                                             <div *ngIf="numericReport" class="lettering-wrap">
                                                 <div class="report-title">{{ selectedInvestigation?.name }}</div>
@@ -440,4 +441,7 @@
 
 <div *ngIf="repDetail_view" class="modal-overlay">
     <app-report-detail (closeModal)="close_onClick($event)" [selectedInvestigationData]="selectedInvestigationData" id="form-modal" class="form-modal center-center"></app-report-detail>
+</div>
+<div *ngIf="importTemplate" class="modal-overlay">
+    <app-select-template (closeModal)="close_onClick($event)" (template)="onClickTemplate($event);" id="form-modal" class="form-modal center-center"></app-select-template>
 </div>
