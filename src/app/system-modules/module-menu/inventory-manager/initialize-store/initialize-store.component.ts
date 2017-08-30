@@ -11,12 +11,13 @@ import { ProductService } from '../../../../services/facility-manager/setup/inde
 })
 export class InitializeStoreComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
-  products: any = <any>[];
+  products: any;
   selectedProducts: any = <any>[];
   myForm: FormGroup;
   ischeck: boolean;
-  constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
 
+  constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
+  
    }
 
   ngOnInit() {
@@ -34,18 +35,18 @@ export class InitializeStoreComponent implements OnInit {
       quantity:['', Validators.required]
     });
   }
-  addProduct(ischecked: boolean){
+  addProduct(index: number, ischecked: boolean, data: any){
     if(ischecked){
+      this.selectedProducts.push(data);
       const control = <FormArray>this.myForm.controls['initproduct'];
       control.push(this.initProduct());
       console.log(this.selectedProducts);
     }
     else {
-      let index: number;
       this.removeProduct(index);
+      this.selectedProducts.splice(index, 1);
     }   
   }
-
   removeProduct(i: number){
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
@@ -56,6 +57,9 @@ export class InitializeStoreComponent implements OnInit {
       console.log(this.products);
     });
   }
+//   searchProduct(){
+//     this._productService.update(this.products);
+// }
    save() {
         // call API to save
         console.log(this.myForm.value);

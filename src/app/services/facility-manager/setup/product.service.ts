@@ -44,4 +44,5 @@ export class ProductService {
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
+  
 }
