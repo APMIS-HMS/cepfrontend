@@ -12,9 +12,9 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr *ngFor = "let isproduct of products; let i = index">
+                        <tr *ngFor = "let isProduct of products; let i = index">
                           <td></td>
-                          <td><md-checkbox [(ngModel)]="isproduct.selected" (change)="addProduct($event.checked)">{{isproduct.name}}</md-checkbox></td>
+                          <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct(i, $event.checked, isProduct)">{{isProduct.name}}</md-checkbox></td>
                         </tr>
                      </tbody>
                   </table>
@@ -33,9 +33,9 @@
           <div class="panel-body">
               <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
                    <div formArrayName="initproduct">
-                       <div *ngFor =" let address of myForm.controls.initproduct.controls; let i=index;">
+                       <div *ngFor="let product of selectedProducts; let address of myForm.controls.initproduct.controls; let i=index;">
                             <div>
-                                <span>Products {{i + 1}}</span>
+                                <span>{{ product.name }}</span>
                             </div>
                             <div  class="form-array" [formGroupName]="i">
                                 <div class="col-sm-7">                                

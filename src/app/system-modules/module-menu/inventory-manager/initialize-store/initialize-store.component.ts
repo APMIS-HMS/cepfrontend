@@ -11,7 +11,8 @@ import { ProductService } from '../../../../services/facility-manager/setup/inde
 })
 export class InitializeStoreComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
-  products= [];
+  products: any = <any>[];
+  selectedProducts: any = <any>[];
   myForm: FormGroup;
   ischeck: boolean;
   constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
@@ -33,15 +34,19 @@ export class InitializeStoreComponent implements OnInit {
       quantity:['', Validators.required]
     });
   }
-  addProduct(ischecked: boolean){
+  addProduct(index: number, ischecked: boolean, data: any){
     if(ischecked){
+      this.selectedProducts.push(data);
       const control = <FormArray>this.myForm.controls['initproduct'];
-    control.push(this.initProduct());
-  }
+      control.push(this.initProduct());
+      console.log(this.selectedProducts);
+    }
     else {
-      let i: number;
-      this.removeProduct(i);}   
+      this.removeProduct(index);
+      this.selectedProducts.splice(index, 1);
+    }   
   }
+
   removeProduct(i: number){
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
