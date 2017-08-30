@@ -59,7 +59,6 @@ export class InitializeStoreComponent implements OnInit {
   }
    save(model) {
         // call API to save
-        // ...
         console.log(model);
     }
 }
