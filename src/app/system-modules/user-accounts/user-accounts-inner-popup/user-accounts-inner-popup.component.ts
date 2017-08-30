@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { UserService, EmployeeService } from '../../../services/facility-manager/setup/index';
+import { UserService, EmployeeService, PatientService } from '../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -16,10 +16,14 @@ export class UserAccountsInnerPopupComponent implements OnInit {
   @Input() loginEmployee: any;
 
   constructor(private router: Router, private locker: CoolSessionStorage,
-    private employeeService: EmployeeService,
+    private employeeService: EmployeeService, private patientService: PatientService,
     private userService: UserService) { }
 
   ngOnInit() {
+    console.log(this.loginEmployee)
+    this.patientService.find({query:{personId:this.loginEmployee.personId}}).then(payload =>{
+      console.log(payload)
+    })
   }
 
   close_onClick() {
@@ -31,6 +35,9 @@ export class UserAccountsInnerPopupComponent implements OnInit {
     } else {
       return true;
     }
+  }
+  isPatientInFacility() {
+    console.log(this.loginEmployee)
   }
   loadEmployeeRecord() {
     this.locker.setObject('selectedFacility', this.selectedFacility);
