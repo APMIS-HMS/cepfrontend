@@ -1,3 +1,10 @@
+<ul class="pg-menuWrap">
+    <li [class.pg-menuActive]="admissionNavMenu" (click)="onClickAdmissionNavMenu()" routerLink="/dashboard/ward-manager/admission"><i class="fa fa-list-alt" aria-hidden="true"></i> Admission List</li>
+    <li [class.pg-menuActive]="admittedNavMenu" (click)="onClickAdmittedNavMenu()" routerLink="/dashboard/ward-manager/admitted"><i class="fa fa-bed" aria-hidden="true"></i> Admitted Patients</li>
+    <li [class.pg-menuActive]="setupNavMenu" (click)="onClickSetupNavMenu()" routerLink="/dashboard/ward-manager/setup"><i class="fa fa-cog" aria-hidden="true"></i> Setup</li>
+    <li [class.pg-menuActive]="wardNavMenu" (click)="onClickWardNavMenu()" routerLink="/dashboard/ward-manager/wards"><i class="fa fa-building" aria-hidden="true"></i> Wards</li>
+</ul>
+
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
@@ -22,14 +29,14 @@
     </div>-->
     <div class="inner-page-wrap">
 
-        <div class="lhs inner-page-menuTab">
+        <!-- <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
                 <li [class.navActive]="admissionNavMenu" (click)="onClickAdmissionNavMenu()" routerLink="/dashboard/ward-manager/admission">Admission List</li>
                 <li [class.navActive]="admittedNavMenu" (click)="onClickAdmittedNavMenu()" routerLink="/dashboard/ward-manager/admitted">Admitted Patients</li>
                 <li [class.navActive]="setupNavMenu" (click)="onClickSetupNavMenu()" routerLink="/dashboard/ward-manager/setup">Setup</li>
                 <li [class.navActive]="wardNavMenu" (click)="onClickWardNavMenu()" routerLink="/dashboard/ward-manager/wards">Wards</li>
             </ul>
-        </div>
+        </div> -->
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>
         </div>
