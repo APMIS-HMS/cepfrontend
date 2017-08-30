@@ -38,7 +38,6 @@ export class LabCheckInComponent implements OnInit {
 
     if (!!this.loginEmployee.workSpaces) {
 			this.loginEmployee.workSpaces.forEach(workspace => {
-        console.log(workspace);
         if (workspace.isActive && workspace.locations.length > 0) {
           workspace.locations.forEach(x => {
             if (x.isActive && new RegExp('lab', 'i').test(x.majorLocationId.name)) {
