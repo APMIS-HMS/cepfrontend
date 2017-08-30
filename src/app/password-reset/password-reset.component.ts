@@ -13,7 +13,7 @@ export class PasswordResetComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   showInfo = true;
-  isTokenAvailable: boolean = false;
+  isTokenAvailable: Boolean = false;
   selectedPerson: Person = <Person>{};
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -30,10 +30,11 @@ export class PasswordResetComponent implements OnInit {
     private personService: PersonService) { }
 
   ngOnInit() {
+    const EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
     this.frm_pwdReset1 = this.formBuilder.group({
       apmisid: ['', [<any>Validators.required]],
-      email: ['', [<any>Validators.
-        pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      email: ['', [<any>Validators.pattern(EMAIL_REGEXP)]],
+      // email: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
     });
 
@@ -84,7 +85,7 @@ export class PasswordResetComponent implements OnInit {
 
   }
 
-  reset(valid, val) {
+  reset(valid: Boolean, val: any) {
     this.userService.find({ query: { personId: this.selectedPerson._id } }).then(payload => {
       if (payload.length > 0) {
         const user: User = payload[0];
@@ -98,11 +99,9 @@ export class PasswordResetComponent implements OnInit {
               this.close_onClick();
             });
         }
-
       }
     }, error => {
     });
-
   }
 
   back_resetFrm1() {
