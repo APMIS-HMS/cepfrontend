@@ -472,7 +472,7 @@ select {
 .modal-baseWrap {
     position: relative;
     width: auto;
-    min-width: 560px;
+    min-width: 440px;
     max-height: 90%;
     background: #fff;
     overflow: auto;
@@ -1370,13 +1370,12 @@ ul.topmenuwrap li:hover {
 /* second menu */
 
 * {
-	-webkit-transition-property: all;
-	-webkit-transition-duration: .03s;
-    -moz-transition-timing-function: cubic-bezier(100,50,21,6);
-        -moz-transition-property: all;
-    -moz-transition-timing-function: cubic-bezier(100,50,21,6);
+    -webkit-transition-property: all;
+    -webkit-transition-duration: .03s;
+    -moz-transition-timing-function: cubic-bezier(100, 50, 21, 6);
+    -moz-transition-property: all;
+    -moz-transition-timing-function: cubic-bezier(100, 50, 21, 6);
 }
-
 
 // .btning{
 //     color: #0288d1;
@@ -1402,8 +1401,6 @@ ul.topmenuwrap li:hover {
 //   transition: ease-out;
 //   transition-delay: .3s;
 // }
-    
-
 // .btning {
 //     color: #0288d1;
 //     background: transparent;
@@ -1413,13 +1410,11 @@ ul.topmenuwrap li:hover {
 //     letter-spacing: 2px;
 //     text-transform: uppercase;
 // }
-
 // .second-menu {
 //     margin: 27px auto 0;
 //     width: 90%;
 //     text-align: center;
 // }
-
 // .btning:hover {
 //     background: rgba(0, 0, 0, 0.4);
 //     background: #fff;
@@ -1430,7 +1425,6 @@ ul.topmenuwrap li:hover {
 //     transition: ease-out;
 //     transition-delay: .3s;
 // }
-
 .menuActive {
     border: 1px solid #0288d1;
 }
