@@ -25,6 +25,7 @@ export class LabComponent implements OnInit, OnDestroy {
   panelContentArea = false;
   reportContentArea = false;
   externalContentArea = false;
+  templateContentArea = false;
   checkedInObject:any;
 
   constructor(
@@ -100,6 +101,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = true;
+      this.templateContentArea = false;
     } else if (param.includes('request')) {
 			this.requestContentArea = true;
       this.workbenchContentArea = false;
@@ -108,6 +110,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if (param.includes('workbench')) {
 			this.requestContentArea = false;
       this.workbenchContentArea = true;
@@ -116,6 +119,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if (param.includes('investigation-pricing')) {
 			this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -124,6 +128,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if (param.includes('investigation')) {
 			this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -132,6 +137,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if(param.includes('panel')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -140,6 +146,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = true;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
     } else if(param.includes('report')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -148,6 +155,16 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = true;
       this.externalContentArea = false;
+      this.templateContentArea = false;
+    } else if(param.includes('template')) {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = true;
     }
   }
   

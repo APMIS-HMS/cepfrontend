@@ -13,6 +13,7 @@ import { WorkbenchService, LaboratoryRequestService } from '../../../services/fa
 import { ReportComponent } from './report/report.component';
 import { ReportDetailComponent } from './report/report-detail/report-detail.component';
 import { ExternalInvestigationsComponent } from './external-investigations/external-investigations.component';
+import { TemplateComponent } from './template/template.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { ExternalInvestigationsComponent } from './external-investigations/exter
     // SharedModule,
     MaterialModule
   ],
-  declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent, ExternalInvestigationsComponent],
+  declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent, ExternalInvestigationsComponent, TemplateComponent],
   providers:[WorkbenchService, LaboratoryRequestService]
 })
 export class LabModule { }

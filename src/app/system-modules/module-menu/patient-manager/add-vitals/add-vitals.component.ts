@@ -223,7 +223,6 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.temperature = this.temperature;
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
-      console.log(vitalValue);
       this._ServerDateService.find({ query: {} }).then(datePayload => {
         this.serverDate = new Date(datePayload);
 
