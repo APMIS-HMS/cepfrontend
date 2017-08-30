@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   FacilitiesService, InvestigationService, TemplateService
 } from '../../../../services/facility-manager/setup/index';
+import { ScopeLevelService } from '../../../../services/module-manager/setup/index';
 import { Facility, User } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
@@ -19,6 +20,7 @@ export class TemplateComponent implements OnInit {
     user: User = <User>{};
     employeeDetails: any = <any>{};
     selectedLab: any = <any>{};
+    scopeLevels: any = <any>[];
     templateBtnText: String = 'Create Template';
 
     constructor(
@@ -26,7 +28,8 @@ export class TemplateComponent implements OnInit {
         private _locker: CoolSessionStorage,
         private _facilityService: FacilitiesService,
         private _investigationService: InvestigationService,
-        private _templateService: TemplateService
+        private _templateService: TemplateService,
+        private _scopeLevelService: ScopeLevelService
     ) { }
 
     ngOnInit() {
@@ -37,6 +40,7 @@ export class TemplateComponent implements OnInit {
         this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
 
         this.templateFormGroup = this._fb.group({
+            scopeLevel: ['', [Validators.required]],
             investigation: ['', [Validators.required]],
             name: ['', [Validators.required]],
             result: ['', [Validators.required]],
@@ -45,6 +49,7 @@ export class TemplateComponent implements OnInit {
         });
 
         this._getAllInvestigations();
+        this._getAllScopeLevels();
     }
 
     createTemplate(valid: boolean, value: any) {
@@ -61,6 +66,7 @@ export class TemplateComponent implements OnInit {
                 const template = {
                     facility: this.miniFacility,
                     investigation: value.investigation,
+                    scopeLevel: value.scopeLevel,
                     minorLocation: this.selectedLab.typeObject.minorLocationObject,
                     createdBy: this.employeeDetails.employeeDetails,
                     name: value.name,
@@ -85,6 +91,12 @@ export class TemplateComponent implements OnInit {
     private _getAllInvestigations() {
         this._investigationService.find({ query: { 'facilityId._id': this.facility._id }}).then(res => {
             this.investigations = res.data;
+        }).catch(err => this._notification('Error', 'There was a problem getting investigations'));
+    }
+
+    private _getAllScopeLevels() {
+        this._scopeLevelService.findAll().then(res => {
+            this.scopeLevels = res.data;
         }).catch(err => this._notification('Error', 'There was a problem getting investigations'));
     }
 

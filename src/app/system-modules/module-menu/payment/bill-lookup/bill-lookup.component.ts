@@ -246,7 +246,7 @@ export class BillLookupComponent implements OnInit {
     bill.unitPrice = payload.unitPrice;
     return bill;
   }
-  
+
   getPatientBills() {
     this.billGroups = [];
     this.masterBillGroups = [];

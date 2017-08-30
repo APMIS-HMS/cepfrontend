@@ -4,6 +4,13 @@
         <form [formGroup]="templateFormGroup">
             <div class="content-left">
                 <div class="form-control-box">
+                    <md-select placeholder="Scope Level" formControlName="scopeLevel">
+                        <md-option *ngFor="let scopeLevel of scopeLevels" [value]="scopeLevel">{{scopeLevel.name}}</md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="form-control-box">
                     <md-select placeholder="Select Investigation" formControlName="investigation">
                         <md-option *ngFor="let investigation of investigations" [value]="investigation">
                             {{ investigation.name }}
@@ -11,14 +18,14 @@
                     </md-select>
                 </div>
             </div>
-            <div class="content-right">
+            <div class="content-left" style="margin-top: 40px;">
                 <div class="form-control-box">
-                    <md-input-container style="margin-bottom: 5px;">
+                    <md-input-container>
                         <input mdInput placeholder="Template Name" formControlName="name">
                     </md-input-container>
                 </div>
             </div>
-            <div class="content-left">
+            <div class="content-right" style="margin-top: -40px;">
                 <div class="form-control-box">
                     <md-input-container>
                         <textarea formControlName="result" mdInput placeholder="Result"></textarea>

@@ -31,6 +31,45 @@
                  </div>
               </div>
            </div>
+          <div class="panel-body">
+              <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+                   <div formArrayName="initproduct">
+                       <div *ngFor="let product of selectedProducts; let address of myForm.controls.initproduct.controls; let i=index;">
+                            <div>
+                                <span>{{ product.name }}</span>
+                            </div>
+                            <div  class="form-array" [formGroupName]="i">
+                                <div class="col-sm-7">                                
+                                    <md-input-container class="example-full-width">
+                                        <input type="number" mdInput placeholder="Enter Batch No" formControlName="batchno" >
+                                    </md-input-container> 
+                                    <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchno.valid">
+                                        Required
+                                    </small>
+                                </div>
+                                <div class="col-sm-5">
+                                    <md-input-container class="example-full-width">
+                                        <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity" >
+                                    </md-input-container> 
+                                    <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
+                                        Required
+                                    </small>
+                                </div>
+                            </div>
+                       </div>
+                   </div>
+                   <!--
+                   <div class="margin-20">
+                        <a (click)="addProduct()" style="cursor: default">
+                          Add +
+                        </a>
+                    </div>-->
+                   <div class="col-sm-12 text-center">
+                        <a md-raised-button (click)="save()">Save</a>
+                        <a md-raised-button [disabled]="!myForm.valid">Save</a>
+                   </div>                            
+              </form>
+            </div>
       </div>
       <div class="col-sm-5">
         <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
