@@ -113,26 +113,21 @@ export class InvestigationServiceComponent implements OnInit {
   }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
-      console.log(payload);
-      this.investigations = payload.data;
-      this.bindInvestigations = payload.data;
+     this.investigations = payload.data;
+      this.bindInvestigations = JSON.parse(JSON.stringify(payload.data));
     })
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
-      if (payload.data.length > 0) {
+     if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
         const index = this.categories.findIndex(x => x.name === 'Laboratory');
         this.selectedServiceCategory = this.categories[index];
-        console.log(this.categories);
-        console.log(this.selectedServiceCategory);
       }
     });
   }
   editInvestigation(investigation) {
-    console.log(investigation)
     if (!investigation.isPanel) {
       this.selectedInvestigation = investigation;
       this.frmNewInvestigationh.controls['investigationName'].setValue(this.selectedInvestigation.name);
@@ -226,9 +221,6 @@ export class InvestigationServiceComponent implements OnInit {
           investigation.reportType = reportType;
         }
         this.investigationService.create(investigation).then(payload => {
-
-
-          //
           const service: any = <any>{};
           service.name = value.investigationName;
           this.selectedFacilityService.categories.forEach((item, i) => {
@@ -256,27 +248,20 @@ export class InvestigationServiceComponent implements OnInit {
                     const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                     Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
                       console.log(results);
+                      this.investigation_view = false;
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
-                      this.addToast("Investigation created successfully")
+                      this.addToast("Investigation created successfully");
+                      this.getInvestigations();
                     })
                   }
                 });
               }
             });
           });
-
-          //
-
-
-
-
-
-
         })
       } else {
-        console.log('am updating')
         this.selectedInvestigation.name = this.frmNewInvestigationh.controls['investigationName'].value;
         this.selectedInvestigation.specimen = this.frmNewInvestigationh.controls['specimen'].value;
         this.selectedInvestigation.isPanel = this.frmNewInvestigationh.controls['isPanel'].value;
@@ -294,17 +279,8 @@ export class InvestigationServiceComponent implements OnInit {
           }
           this.selectedInvestigation.reportType = reportType;
         }
-        console.log('about');
         this.investigationService.update(this.selectedInvestigation).then(payload => {
-          console.log('after');
-          console.log(this.selectedInvestigation);
           if (this.selectedInvestigation.serviceId === undefined) {
-
-
-            console.log('ininin')
-
-
-            //
             const service: any = <any>{};
             service.name = value.investigationName;
             this.selectedFacilityService.categories.forEach((item, i) => {
@@ -312,21 +288,13 @@ export class InvestigationServiceComponent implements OnInit {
                 item.services.push(service);
               }
             });
-            console.log(service)
             this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
-              console.log('in2')
               payResult.categories.forEach((itemi, i) => {
                 if (itemi.name === 'Laboratory') {
                   itemi.services.forEach((items, s) => {
                     if (items.name === service.name) {
-                      console.log(s);
-                      console.log(items.name);
-                      console.log(service.name);
                       payload.serviceId = items;
                       payload.facilityServiceId = this.selectedFacilityService._id;
-
-
-
 
                       const price: FacilityServicePrice = <FacilityServicePrice>{};
                       price.categoryId = itemi._id;
@@ -338,7 +306,6 @@ export class InvestigationServiceComponent implements OnInit {
                       const facilityService$ = Observable.fromPromise(this.servicePriceService.create(price));
                       const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                       Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
-                        console.log(results);
                         this.investigation_view = false;
                         this.btnText = 'Create Investigation';
                         this.selectedInvestigation = <any>{};
@@ -346,34 +313,14 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this.addToast("Investigation updated successfully")
+                        this.addToast("Investigation updated successfully");
+                        this.getInvestigations();
                       })
-
-
-
-
-
-
-                      // this.investigationService.update(payload).then(result => {
-                      //   this.investigation_view = false;
-                      //   this.btnText = 'Create Investigation';
-                      //   this.selectedInvestigation = <any>{};
-                      //   this.frmNewInvestigationh.reset();
-                      //   this.frmNewInvestigationh.controls['isPanel'].setValue(false);
-                      //   const index = this.investigations.findIndex((obj => obj._id === payload._id));
-                      //   this.investigations.splice(index, 1, payload);
-                      // });
                     }
                   });
                 }
               });
             });
-
-            //
-
-
-
-
           } else {
             this.investigation_view = false;
             this.btnText = 'Create Investigation';
@@ -382,6 +329,8 @@ export class InvestigationServiceComponent implements OnInit {
             this.frmNewInvestigationh.controls['isPanel'].setValue(false);
             const index = this.investigations.findIndex((obj => obj._id === payload._id));
             this.investigations.splice(index, 1, payload);
+            this.addToast("Investigation updated successfully");
+            this.getInvestigations();
           }
 
         }, error => {
@@ -409,7 +358,8 @@ export class InvestigationServiceComponent implements OnInit {
 
           //
           const service: any = <any>{};
-          service.name = value.investigationName;
+          service.name = value.panelName;
+          
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item.name === "Laboratory") {
               item.services.push(service);
@@ -456,7 +406,7 @@ export class InvestigationServiceComponent implements OnInit {
 
 
 
-         
+
         })
       } else {
         this.selectedInvestigation.name = this.frmNewPanel.controls['panelName'].value;

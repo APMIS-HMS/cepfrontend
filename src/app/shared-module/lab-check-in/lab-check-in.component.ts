@@ -18,7 +18,7 @@ export class LabCheckInComponent implements OnInit {
 	errMsg = 'You have unresolved errors';
 	workbenches: any[] = [];
 	locations: any[] = [];
-  checkInBtnText: string = '<i class="fa fa-check-circle"></i> Check In';
+  checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
 
   constructor(
     private _fb: FormBuilder,
@@ -38,18 +38,18 @@ export class LabCheckInComponent implements OnInit {
 
     if (!!this.loginEmployee.workSpaces) {
 			this.loginEmployee.workSpaces.forEach(workspace => {
-        if(workspace.isActive && workspace.locations.length > 0) {
+        if (workspace.isActive && workspace.locations.length > 0) {
           workspace.locations.forEach(x => {
-            if(x.isActive && new RegExp('laboratory', "i").test(x.majorLocationId.name)) {
+            if (x.isActive && new RegExp('lab', 'i').test(x.majorLocationId.name)) {
               this.locations.push(x.minorLocationId);
             }
           });
         }
       });
     }
-    
+
 		this.labCheckin.controls['location'].valueChanges.subscribe(val => {
-			this._workbenchService.find({ query: { "laboratoryId._id": val._id } }).then(res => {
+			this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
 				if (res.data.length > 0) {
 					this.workbenches = res.data;
 				} else {
@@ -73,7 +73,7 @@ export class LabCheckInComponent implements OnInit {
 			this.loginEmployee.workbenchCheckIn = [];
     }
     // Set to false any existing workbench that is set to true.
-    if(!!this.loginEmployee.workbenchCheckIn && this.loginEmployee.workbenchCheckIn.length > 0) {
+    if (!!this.loginEmployee.workbenchCheckIn && this.loginEmployee.workbenchCheckIn.length > 0) {
       this.loginEmployee.workbenchCheckIn.forEach((item, i) => {
         item.isOn = false;
         if (value.isDefault === true) {
@@ -81,7 +81,7 @@ export class LabCheckInComponent implements OnInit {
         }
       });
     }
-    
+
     this.loginEmployee.workbenchCheckIn.push(checkIn);
     this._employeeService.update(this.loginEmployee).then(res => {
       this.loginEmployee = res;
@@ -106,7 +106,7 @@ export class LabCheckInComponent implements OnInit {
   close_onClick() {
 		this.closeModal.emit(true);
 	}
-  
+
 	changeRoom(checkIn: any) {
 		let keepCheckIn;
 		this.loginEmployee.workbenchCheckIn.forEach((item, i) => {

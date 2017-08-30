@@ -14,9 +14,9 @@ export class LabComponent implements OnInit, OnDestroy {
   pageInView = 'Laboratory';
   loginEmployee: Employee = <Employee>{};
   selectedFacility: Facility = <Facility>{};
-  workbenchTitle: string = '';
-  isWorkbenchAvailable: boolean = false;
-  modal_on: boolean = false;
+  workbenchTitle: String = '';
+  isWorkbenchAvailable: Boolean = false;
+  modal_on: Boolean = false;
   contentSecMenuShow = false;
   requestContentArea = false;
   workbenchContentArea = false;
@@ -26,7 +26,7 @@ export class LabComponent implements OnInit, OnDestroy {
   reportContentArea = false;
   externalContentArea = false;
   templateContentArea = false;
-  checkedInObject:any;
+  checkedInObject: any;
 
   constructor(
     private _router: Router,
@@ -87,13 +87,13 @@ export class LabComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
 	contentSecMenuToggle() {
 		this.contentSecMenuShow = !this.contentSecMenuShow;
   }
-  
+
   checkPageUrl(param: string) {
-    if(param.includes('external')) {
+    if (param.includes('external')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -138,7 +138,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-		} else if(param.includes('panel')) {
+		} else if (param.includes('panel')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -147,7 +147,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-    } else if(param.includes('report')) {
+    } else if (param.includes('report')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -156,7 +156,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = true;
       this.externalContentArea = false;
       this.templateContentArea = false;
-    } else if(param.includes('template')) {
+    } else if (param.includes('template')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -167,7 +167,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.templateContentArea = true;
     }
   }
-  
+
   checkIntoWorkbench() {
     this.modal_on = true;
   }
@@ -175,7 +175,7 @@ export class LabComponent implements OnInit, OnDestroy {
   close_onClick(message: boolean): void {
 		this.modal_on = false;
   }
-  
+
   ngOnDestroy() {
 		this._employeeService.announceCheckIn(undefined);
     this._locker.setObject('workbenchCheckingObject', {});

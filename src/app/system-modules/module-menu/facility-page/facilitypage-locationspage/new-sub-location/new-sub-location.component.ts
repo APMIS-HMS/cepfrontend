@@ -51,7 +51,6 @@ export class NewSubLocationComponent implements OnInit {
   }
   addNew() {
     this.frmNewSubLoc = this.formBuilder.group({
-
       sublocName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       sublocAlias: ['', [<any>Validators.minLength(2)]],
       sublocParent: ['', [<any>Validators.required]],
