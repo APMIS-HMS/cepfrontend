@@ -12,6 +12,16 @@
                           </tr>
                        </thead>
                        <tbody>
+                           <tr>
+                               <td></td>
+                               <td>
+                                   <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Search Product" [(ngModel)]="productName" name="productName" (keyup)="searchProduct()" />
+                                        </div>
+                                   </div>
+                               </td>
+                           </tr>
                           <tr *ngFor = "let isProduct of products; let i = index">
                             <td></td>
                             <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct(i, $event.checked, isProduct)">{{isProduct.name}}</md-checkbox></td>
@@ -25,10 +35,6 @@
       <div class="col-sm-5">
         <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
                 <div class="panel-heading ui-sortable-handle">
-                    <!--
-                  <div class="panel-title">
-                      <h4>Products</h4>
-                  </div>-->
                 </div>
             <div class="panel-body">
                 <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
@@ -57,14 +63,8 @@
                               </div>
                          </div>
                      </div>
-                     <!--
-                     <div class="margin-20">
-                          <a (click)="addProduct()" style="cursor: default">
-                            Add +
-                          </a>
-                      </div>-->
                      <div class="col-sm-12 text-center">
-                          <a md-raised-button [disabled]="!myForm.valid">Save</a>
+                          <a md-raised-button (click)="save()">Save</a>
                      </div>                            
                 </form>
               </div>
