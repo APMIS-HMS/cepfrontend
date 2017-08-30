@@ -1,314 +1,214 @@
 <div class="inner-wrap-b body-wrap">
-  <div class="facility-title">Patient Bills</div>
-  <div class="inner-page-wrap">
-    <div class="megaPgWrap">
-      <div class="feedsWrap leftCol">
-        <div class="feedbox">
-          <div class="pending-wrap">
-            <div class="pending-header">
-              <div class="pending-title">Patient's Pending Bills</div>
-              <div class="search-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
-                </md-input-container>
-              </div>
-            </div>
-            <ul class="pending-bills">
-              <li class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </li>
+    <div class="facility-title">Patient Bills</div>
+    <div class="inner-page-wrap">
+        <div class="megaPgWrap">
+            <div class="feedsWrap leftCol">
+                <div class="feedbox">
+                    <div class="pending-wrap">
+                        <div class="pending-header">
+                            <div class="pending-title">Patient's Pending Bills</div>
+                            <div class="search-wrap">
+                                <md-input-container>
+                                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <ul class="pending-bills">
+                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill);">
+                                <div class="list-img">
+                                    <img *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                    <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.personFullName }}</div>
+                                    <div class="oda">
+                                        <div class="pending-date">{{ pendingBill?.updatedAt | date }}</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
+                                    </div>
+                                </div>
+                            </li>
 
-              <li class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </li>
+                            <li *ngIf="pendingBills.length === 0 && loadingPendingBills" class="empWrap">
+                                <div class="text-center">
+                                    <md-spinner class='small-spinner'></md-spinner>
+                                </div>
+                            </li>
 
-              <li class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                            <li *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="empWrap">
+                                <div>No data available in table</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </li>
 
-              <li class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+                <div class="feedbox">
+                    <div class="pending-wrap">
+                        <div class="pending-header">
+                            <div class="pending-title">Invoices</div>
+                            <!-- <div class="search-wrap">
+                                <md-input-container>
+                                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
+                                </md-input-container>
+                            </div> -->
+                        </div>
+                        <div class="pending-bills">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </div>
 
-         <div class="feedbox">
-          <div class="pending-wrap">
-            <div class="pending-header">
-              <div class="pending-title">Invoices</div> 
-            </div>
-            <div class="pending-bills">
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>   
-        </div> 
-      </div>
-
-      <div class="contentCol" *ngIf="selectedPatient._id != undefined">
-        <div class="billTopSect">
-          <div class="topsecInnerWrap">
-            <div>
-              <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
-              <div class="clientAddress">
-                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}},
-                  {{selectedPatient?.country}}
-                </div>
-                <div>{{selectedPatient?.personDetails?.email}}</div>
-                <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
-              </div>
-            </div>
-            <div class="patientImgWrap">
-              <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-              <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.detailthumbnail)">
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="selectedPatient._id != undefined" class="billBody">
-          <div class="billContentSect">
-            <div (click)="addItem_show()" class="cta-1 btn-addItem">
-              Add Item 
-            </div>
-            <table class="tblBg">
-              <thead>
-                <tr>
-                  <th class="selectTD">
-                    <input (change)="selectAll_change($event)" type="checkbox" [attr.checked]="selectAll" [formControl]="txtSelectAll">
-                  </th>
-                  <th>Date</th>
-                  <th>Item</th>
-                  <th>Unit Price</th>
-                  <th>Qty</th>
-                  <th>Total Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-
-              <tbody *ngFor="let group of billGroups">
-                <tr class="tdMasterCategories">
-                  <td colspan="1"><input type="checkbox" (change)="checkGroup($event,group)" [checked]="group.isChecked" [formControl]="select1"></td>
-                  <td (click)="toggleCurrentCategory(group)" colspan="5">{{group.category}}</td>
-                  <td (click)="toggleCurrentCategory(group)" colspan="1" class="data">{{group.total | currency:'NGN':true:'4.2-2'}}</td>
-                </tr>
-                <ng-container *ngIf="isCurrentCategory(group)">
-                  <tr *ngFor="let bill of group.bills">
-                    <td>
-                      <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
-                    </td>
-                    <td>11th October, 2017. 10:00am</td>
-                    <td (click)="itemDetail(bill)">
-                      <div class="itemName">{{bill.itemName}}</div>
-                    </td>
-                    <td>
-                      <div class="topTotal"><span>&#8358;</span> {{bill.unitPrice | number:'1.2-2'}}</div>
-                    </td>
-                    <td>
-                      <span [hidden]="isCurrentBill(bill, group)"> {{bill.qty}}</span>
-                      <input *ngIf="isCurrentBill(bill, group)" min="0" class="edit-control" type="number" [value]="bill.qty" [formControl]="itemQtyEdit">
-                    </td>
-                    <td>
-                      <div class="topTotal"><span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
-                    </td>
-                    <td>
-                      <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      <i *ngIf="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-check" aria-hidden="true"></i>
-                      <i (click)="onRemoveBill(bill,group)" class="fa fa-trash" aria-hidden="true"></i>
-                      <div (click)="lineModifier_show(bill)" class="cta-1 btn-addItem">
-                        Add Modifier
-                      </div>
-                    </td>
-                  </tr>
-                </ng-container>
-
-              </tbody>
-            </table>
-          </div>
-
-          <div class="billSummarySect">
-            <div class="lhs">
-              <div *ngIf="total > 0" (click)="addModefier()" class="cta-1">
-                Add Discount
-              </div>
-            </div>
-            <table class="rhs">
-              <div class="summaryItems">
-                <tr class="summaryItem">
-                  <td class="label">Sub Total</td>
-                  <td class="data"> {{subTotal | currency:'NGN':true:'1.2-2' }}</td>
-                  <td></td>
-                </tr>
-                <tr class="summaryItem">
-                  <td class="label">Discount</td>
-                  <td class="data"> {{discount | currency:'NGN':true:'1.2-2'}}</td>
-                  <td class="remove-link"><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
-                </tr>
-              </div>
-              <tr class="grandTotalWrap">
-                <td class="label">GRAND TOTAL</td>
-                <td class="data"> {{total | currency:'NGN':true:'1.2-2'}}</td>
-                <td></td>
-              </tr>
-            </table>
-          </div>
-          <div class="btn-wrap">
-            <div class="generateInvoiceWrap">
-              <div (click)="makePayment_onclick()" class="btn-1 btn-blue">
-                Make Payment
-              </div>
             </div>
 
-            <div class="generateInvoiceWrap">
-              <div (click)="makePayment_onclick()" class="btn-1 btn-green">
-                Generate Invoice
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="contentCol emptySet" *ngIf="selectedPatient._id === undefined">
-        <span>Kindly select a patient from the lookup below</span>
-      </div>
+            <div class="contentCol" *ngIf="selectedPatient._id != undefined">
+                <div class="billTopSect">
+                    <div class="topsecInnerWrap">
+                        <div>
+                            <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
+                            <div class="clientAddress">
+                                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}}, {{selectedPatient?.country}}
+                                </div>
+                                <div>{{selectedPatient?.personDetails?.email}}</div>
+                                <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
+                            </div>
+                        </div>
+                        <div class="patientImgWrap">
+                            <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                            <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.detailthumbnail)">
+                        </div>
+                    </div>
+                </div>
 
-      <!-- <div class="feedsWrap rightCol">
+                <div *ngIf="selectedPatient._id != undefined" class="billBody">
+                    <div class="billContentSect">
+                        <button md-raised-button (click)="addItem_show()" style="padding: 10px;color: #fff; margin-left:10px;">Add Item</button>
+                        <table class="tblBg">
+                            <thead>
+                                <tr>
+                                    <th class="selectTD">
+                                        <input (change)="selectAll_change($event)" type="checkbox" [attr.checked]="selectAll" [formControl]="txtSelectAll">
+                                    </th>
+                                    <th>Date</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngFor="let group of billGroups">
+                                <tr class="tdMasterCategories">
+                                    <td colspan="1"><input type="checkbox" (change)="checkGroup($event,group)" [checked]="group.isChecked" [formControl]="select1"></td>
+                                    <td (click)="toggleCurrentCategory(group)" colspan="5">{{group.category}}</td>
+                                    <td (click)="toggleCurrentCategory(group)" colspan="1" class="data">{{group.total | currency:'NGN':true:'4.2-2'}}</td>
+                                </tr>
+                                <ng-container *ngIf="isCurrentCategory(group)">
+                                    <tr *ngFor="let bill of group.bills">
+                                        <td>
+                                            <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
+                                        </td>
+                                        <td>11th October, 2017. 10:00am</td>
+                                        <td (click)="itemDetail(bill)">
+                                            <div class="itemName">{{bill.itemName}}</div>
+                                        </td>
+                                        <td>
+                                            <div class="topTotal"><span>&#8358;</span> {{bill.unitPrice | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td>
+                                            <span [hidden]="isCurrentBill(bill, group)"> {{bill.qty}}</span>
+                                            <input *ngIf="isCurrentBill(bill, group)" min="0" class="edit-control" type="number" [value]="bill.qty" [formControl]="itemQtyEdit">
+                                        </td>
+                                        <td>
+                                            <div class="topTotal"><span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td>
+                                            <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <i *ngIf="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-check" aria-hidden="true"></i>
+                                            <i (click)="onRemoveBill(bill,group)" class="fa fa-trash" aria-hidden="true"></i>
+                                            <div (click)="lineModifier_show(bill)" class="cta-1 btn-addItem">
+                                                Add Modifier
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="billSummarySect">
+                        <div class="lhs">
+                            <div *ngIf="total > 0" (click)="addModefier()" class="cta-1">
+                                Add Discount
+                            </div>
+                        </div>
+                        <table class="rhs">
+                            <div class="summaryItems">
+                                <tr class="summaryItem">
+                                    <td class="label">Sub Total</td>
+                                    <td class="data"> {{subTotal | currency:'NGN':true:'1.2-2' }}</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="summaryItem">
+                                    <td class="label">Discount</td>
+                                    <td class="data"> {{discount | currency:'NGN':true:'1.2-2'}}</td>
+                                    <td class="remove-link"><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
+                                </tr>
+                            </div>
+                            <tr class="grandTotalWrap">
+                                <td class="label">GRAND TOTAL</td>
+                                <td class="data"> {{total | currency:'NGN':true:'1.2-2'}}</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="generateInvoiceWrap">
+                        <button md-raised-button class="mat-lg-btn" (click)="makePayment_onclick()" style="background-color: green !important; padding: 15px 30px !important;">Make Payment</button>
+                        <button md-raised-button class="mat-lg-btn" style="padding: 15px 30px !important;">Generate Bill</button>
+                    </div>
+                </div>
+            </div>
+            <div class="contentCol emptySet" *ngIf="selectedPatient._id === undefined">
+                <span>Kindly select a patient from the lookup below</span>
+            </div>
+
+            <!-- <div class="feedsWrap rightCol">
          <div class="feedbox">
           <div class="pending-wrap">
             <div class="pending-header">
@@ -427,28 +327,28 @@
           </div>   
         </div> 
       </div> -->
+        </div>
     </div>
-  </div>
 </div>
 
-<app-global-patient-lookup></app-global-patient-lookup>
+<!-- <app-global-patient-lookup></app-global-patient-lookup> -->
 
 <div *ngIf="addItem" class="modal-overlay">
-  <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>
+    <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>
 </div>
 
 <div *ngIf="makePayment" class="modal-overlay">
-  <app-make-payment (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-make-payment>
+    <app-make-payment (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-make-payment>
 </div>
 
 <div *ngIf="addModefierPopup" class="modal-overlay">
-  <app-add-modefier (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-modefier>
+    <app-add-modefier (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-modefier>
 </div>
 
 <div *ngIf="addLineModefierPopup" class="modal-overlay">
-  <app-add-line-modifier [selectedServiceBill]="selectedServiceBill" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-line-modifier>
+    <app-add-line-modifier [selectedServiceBill]="selectedServiceBill" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-line-modifier>
 </div>
 
 <div *ngIf="priceItemDetailPopup" class="modal-overlay">
-  <app-item-detail [selectedBillItem]="selectedServiceBill" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
+    <app-item-detail [selectedBillItem]="selectedServiceBill" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
 </div>

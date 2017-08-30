@@ -14,9 +14,9 @@ export class LabComponent implements OnInit, OnDestroy {
   pageInView = 'Laboratory';
   loginEmployee: Employee = <Employee>{};
   selectedFacility: Facility = <Facility>{};
-  workbenchTitle: string = '';
-  isWorkbenchAvailable: boolean = false;
-  modal_on: boolean = false;
+  workbenchTitle: String = '';
+  isWorkbenchAvailable: Boolean = false;
+  modal_on: Boolean = false;
   contentSecMenuShow = false;
   requestContentArea = false;
   workbenchContentArea = false;
@@ -25,7 +25,8 @@ export class LabComponent implements OnInit, OnDestroy {
   panelContentArea = false;
   reportContentArea = false;
   externalContentArea = false;
-  checkedInObject:any;
+  templateContentArea = false;
+  checkedInObject: any;
 
   constructor(
     private _router: Router,
@@ -86,13 +87,13 @@ export class LabComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
 	contentSecMenuToggle() {
 		this.contentSecMenuShow = !this.contentSecMenuShow;
   }
-  
+
   checkPageUrl(param: string) {
-    if(param.includes('external')) {
+    if (param.includes('external')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -100,6 +101,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = true;
+      this.templateContentArea = false;
     } else if (param.includes('request')) {
 			this.requestContentArea = true;
       this.workbenchContentArea = false;
@@ -108,6 +110,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if (param.includes('workbench')) {
 			this.requestContentArea = false;
       this.workbenchContentArea = true;
@@ -116,6 +119,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if (param.includes('investigation-pricing')) {
 			this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -124,6 +128,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
+      this.templateContentArea = false;
 		} else if (param.includes('investigation')) {
 			this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -132,7 +137,8 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = false;
       this.externalContentArea = false;
-		} else if(param.includes('panel')) {
+      this.templateContentArea = false;
+		} else if (param.includes('panel')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -140,7 +146,8 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = true;
       this.reportContentArea = false;
       this.externalContentArea = false;
-    } else if(param.includes('report')) {
+      this.templateContentArea = false;
+    } else if (param.includes('report')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -148,9 +155,19 @@ export class LabComponent implements OnInit, OnDestroy {
       this.panelContentArea = false;
       this.reportContentArea = true;
       this.externalContentArea = false;
+      this.templateContentArea = false;
+    } else if (param.includes('template')) {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = true;
     }
   }
-  
+
   checkIntoWorkbench() {
     this.modal_on = true;
   }
@@ -158,7 +175,7 @@ export class LabComponent implements OnInit, OnDestroy {
   close_onClick(message: boolean): void {
 		this.modal_on = false;
   }
-  
+
   ngOnDestroy() {
 		this._employeeService.announceCheckIn(undefined);
     this._locker.setObject('workbenchCheckingObject', {});

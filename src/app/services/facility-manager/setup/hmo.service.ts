@@ -18,7 +18,7 @@ export class HmoService {
   ) {
     this._rest = _restService.getService('hmos');
     this._socket = _socketService.getService('hmos');
-     this._socket.timeout = 90000;
+     this._socket.timeout = 50000;
     this._socket.on('created', function (gender) {
 
     });

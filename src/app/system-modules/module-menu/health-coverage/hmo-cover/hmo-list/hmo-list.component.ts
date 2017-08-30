@@ -115,18 +115,24 @@ export class HmoListComponent implements OnInit {
   onChange(e) {
 
   }
-  public upload(e) {
+  public upload(e, hmo) {
     console.log('am here')
 
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
       console.log(fileBrowser.files);
       const formData = new FormData();
-      formData.append("image", fileBrowser.files[0]);
+      formData.append("excelfile", fileBrowser.files[0]);
+      formData.append("hmoId", hmo._id);
       console.log(formData)
       this.facilityService.upload(formData, this.selectedHMO._id).then(res => {
         // do stuff w/my uploaded file
-        console.log(res);
+        // console.log(res);
+        if(res.body !== undefined && res.body.error_code===0){
+          console.log(res.body.data)
+        }
+      }).catch(err => {
+        this._notification('Error', "There was an error uploading the file");
       });
     }
   }

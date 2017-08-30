@@ -1,11 +1,9 @@
-import { Component, OnInit, Renderer, ElementRef, ViewChild, Output } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Output, Input } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, InvestigationService, LaboratoryRequestService,
+  FacilitiesService, LaboratoryRequestService,
   LaboratoryReportService, DocumentationService, FormsService, BillingService
 } from '../../../../services/facility-manager/setup/index';
-import { LocationService } from '../../../../services/module-manager/setup/index';
-import { Location } from '../../../../models/index'
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
@@ -32,20 +30,16 @@ export class ReportComponent implements OnInit {
   apmisLookupDisplayKey = 'personDetails.personFullName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   apmisInvestigationLookupUrl = 'investigations';
-  apmisInvestigationLookupText = '';
-  apmisInvestigationLookupQuery: any = {};
-  apmisInvestigationLookupDisplayKey = 'name';
-  apmisInvestigationLookupImgKey = '';
   apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
   selectedPatient: any = <any>{};
-  patientSelected: boolean = false;
-  loading: boolean = true;
-  reportLoading: boolean = true;
-  pendingReLoading: boolean = true;
+  patientSelected: Boolean = false;
+  loading: Boolean = true;
+  reportLoading: Boolean = true;
+  pendingReLoading: Boolean = true;
   requests: any[] = [];
   pendingRequests: any[] = [];
   reports: any[] = [];
-  hasRequest: boolean = false;
+  hasRequest: Boolean = false;
   mainErr = true;
   errMsg = 'You have unresolved errors';
   numericReport = false;
@@ -55,11 +49,12 @@ export class ReportComponent implements OnInit {
   report_view = false;
   repDetail_view = false;
   activeInvestigationNo: number = -1;
-  referenceValue: string = '';
-  saveAndUploadBtnText: string = "SAVE AND UPLOAD";
-  saveToDraftBtnText: string = "SAVE AS DRAFT";
-  disablePaymentBtn: boolean = false;
-	paymentStatusText: string = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+  referenceValue: String = '';
+  saveAndUploadBtnText: String = 'SAVE AND UPLOAD';
+  saveToDraftBtnText: String = 'SAVE AS DRAFT';
+  disablePaymentBtn: Boolean = false;
+  importTemplate: Boolean = false;
+	paymentStatusText: String = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 
 
   constructor(
@@ -68,7 +63,6 @@ export class ReportComponent implements OnInit {
     public facilityService: FacilitiesService,
     private _formService: FormsService,
     private _laboratoryRequestService: LaboratoryRequestService,
-    private _laboratoryReportService: LaboratoryReportService,
     private _documentationService: DocumentationService,
     private _billingService: BillingService
   ) { }
@@ -124,15 +118,15 @@ export class ReportComponent implements OnInit {
     this.hasRequest = true;
   }
 
-  createReport(valid: boolean, value: any, action: string) {
+  createReport(valid: Boolean, value: any, action: String) {
     if (valid) {
       if (action === 'save') {
-        this.saveToDraftBtnText = "SAVING...";
+        this.saveToDraftBtnText = 'SAVING...';
       } else if (action === 'upload') {
-        this.saveAndUploadBtnText = "UPLOADING...";
+        this.saveAndUploadBtnText = 'UPLOADING...';
       }
-      const isUploaded: boolean = false;
-      const isSaved: boolean = false;
+      const isUploaded: Boolean = false;
+      const isSaved: Boolean = false;
       const report = {
         conclusion: value.conclusion,
         outcome: value.outcome,
@@ -164,7 +158,7 @@ export class ReportComponent implements OnInit {
             this._laboratoryRequestService.update(labRequest).then(res => {
               console.log(res);
               this._getAllReports();
-              this.saveToDraftBtnText = "SAVE AS DRAFT";
+              this.saveToDraftBtnText = 'SAVE AS DRAFT';
               this._notification('Success', 'Report has been saved successfully!');
             }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
           } else {
@@ -186,15 +180,15 @@ export class ReportComponent implements OnInit {
 
                 // Build document to save in documentation
                 saveDocument.body = {
-                  "Conclusion": investigation.report.conclusion,
-                  "Recommendation": investigation.report.outcome,
-                  "Outcome": investigation.report.outcome,
-                  "Result": investigation.report.result,
-                  "Specimen": investigation.investigation.specimen.name,
-                  "Diagnosis": labRequest.diagnosis,
-                  "Clinical Information": labRequest.clinicalInformation,
-                  "Laboratory Number": labRequest.labNumber,
-                  "Test Name": investigation.investigation.name,
+                  'Conclusion': investigation.report.conclusion,
+                  'Recommendation': investigation.report.outcome,
+                  'Outcome': investigation.report.outcome,
+                  'Result': investigation.report.result,
+                  'Specimen': investigation.investigation.specimen.name,
+                  'Diagnosis': labRequest.diagnosis,
+                  'Clinical Information': labRequest.clinicalInformation,
+                  'Laboratory Number': labRequest.labNumber,
+                  'Test Name': investigation.investigation.name
                 }
               }
             });
@@ -207,7 +201,7 @@ export class ReportComponent implements OnInit {
                 delete this.employeeDetails.employeeDetails.nationalityObject;
                 delete this.employeeDetails.employeeDetails.nationality;
 
-                //Build documentation model
+                // Build documentation model
                 const patientDocumentation = {
                   document: saveDocument,
                   createdBy: this.employeeDetails.employeeDetails,
@@ -237,13 +231,13 @@ export class ReportComponent implements OnInit {
                     res.data[0].documentations.push(patientDocumentation);
                     // Update the existing documentation
                     this._documentationService.update(res.data[0]).then(res => {
-                      this.saveAndUploadBtnText = "SAVE AND UPLOAD";
+                      this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
                       this._notification('Success', 'Report has been saved successfully!');
                     });
                   } else {
                     // Save into documentation
                     this._documentationService.create(documentation).then(res => {
-                      this.saveAndUploadBtnText = "SAVE AND UPLOAD";
+                      this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
                       this._notification('Success', 'Report has been saved and uploaded successfully!');
                     });
                   }
@@ -275,9 +269,9 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
-          
+
           // If pendingRequests contains at least a value, then get payment status
-          if(this.pendingRequests.length > 0) {
+          if (this.pendingRequests.length > 0) {
             setTimeout(e => {
               this._getPaymentStatus();
             }, 500);
@@ -292,22 +286,31 @@ export class ReportComponent implements OnInit {
   }
 
   showImageBrowseDlg() {
-    //this.selectImage();
+    // this.selectImage();
   }
 
   selectImage(fileInput: any) {
     console.log(event);
-    if (fileInput.target.files && fileInput.target.files[0]) {
-			const reader = new FileReader();
+    const fileList = fileInput.target.files;
+    console.log(fileList);
+    if (fileList.length > 0) {
+        const file: File = fileList[0];
+        const formData: FormData = new FormData();
+        formData.append('uploadFile', file, file.name);
+        const headers = new Headers();
+        /** No need to include Content-Type in Angular 4 */
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        // let options = new RequestOptions({ headers: headers });
 
-			reader.onload = function (e: any) {
-			};
-			reader.onprogress = function (e: any) {
-			};
-
-      reader.readAsDataURL(fileInput.target.files[0]);
-      console.log(reader);
-		}
+        // this.http.post(`${this.apiEndPoint}`, formData, options)
+        //     .map(res => res.json())
+        //     .catch(error => Observable.throw(error))
+        //     .subscribe(
+        //         data => console.log('success'),
+        //         error => console.log(error)
+        //     )
+    }
   }
 
   onChange(e) {
@@ -325,9 +328,9 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
-          
+
           // If pendingRequests contains at least a value, then get payment status
-          if(this.pendingRequests.length > 0) {
+          if (this.pendingRequests.length > 0) {
             setTimeout(e => {
               this._getPaymentStatus();
             }, 500);
@@ -345,8 +348,8 @@ export class ReportComponent implements OnInit {
     // Highlight the item that was selected
     this.activeInvestigationNo = index;
 
-    if(investigation.isPaid) {
-      if(investigation.sampleTaken) {
+    // if(investigation.isPaid) {
+    //   if(investigation.sampleTaken) {
         this.selectedPatient = investigation.patient;
         this.selectedInvestigation = investigation;
         this.apmisLookupText = investigation.patient.personDetails.personFullName;
@@ -358,7 +361,7 @@ export class ReportComponent implements OnInit {
           this.textReport = false;
         }
         this.CheckIfSelectedPatient();
-    
+
         if (investigation.report === undefined) {
           this.reportFormGroup.controls['result'].reset();
           this.reportFormGroup.controls['outcome'].reset();
@@ -370,12 +373,17 @@ export class ReportComponent implements OnInit {
           this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
           this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
         }
-      } else {
-        this._notification('Info', 'You can not attend to this request as sample has not been taken. Please use the refresh button above to check if sample has been taken.');
-      }
-    } else {
-      this._notification('Info', 'You can not attend to this request as payment has not been made. Please use the refresh button above to check for payment status.');
-    }
+    //   } else {
+    //     this._notification('Info', 'You can not attend to this request as sample has not been taken. Please use the refresh button above to check if sample has been taken.');
+    //   }
+    // } else {
+    //   this._notification('Info', 'You can not attend to this request as payment has not been made. Please use the refresh button above to check for payment status.');
+    // }
+  }
+
+  onClickImportTemplate(selectedInvestigation: PendingLaboratoryRequest) {
+    console.log(selectedInvestigation);
+    this.importTemplate = true;
   }
 
   private _getAllReports() {
@@ -469,7 +477,6 @@ export class ReportComponent implements OnInit {
         }
       });
     });
-    console.log(pendingRequests);
     return pendingRequests;
   }
 
@@ -480,8 +487,8 @@ export class ReportComponent implements OnInit {
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
       if(!!request.billingId) {
-        this._billingService.find({ 
-          query: { 
+        this._billingService.find({
+          query: {
             facilityId: this.facility._id,
             '_id': request.billingId._id,
             patientId: request.patient._id
@@ -491,12 +498,12 @@ export class ReportComponent implements OnInit {
           let counter = 0;
           billingItem.billItems.forEach(billItem => {
             counter++;
-            if(billItem.serviceId === request.service._id) {
+            if (billItem.serviceId === request.service._id) {
               request.isPaid = billItem.paymentCompleted;
             }
           });
 
-          if(counter === billingItem.billItems.length) {
+          if (counter === billingItem.billItems.length) {
             this.disablePaymentBtn = false;
             this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
           }
@@ -505,19 +512,30 @@ export class ReportComponent implements OnInit {
       }
     });
   }
-  
+
   onClickRefreshPaymentStatus() {
     this._getPaymentStatus();
   }
 
+  onClickTemplate(event) {
+    this.importTemplate = false;
+    if (event.investigation.investigation.reportType.name === this.selectedInvestigation.reportType.name) {
+      this.reportFormGroup.controls['result'].setValue(event.investigation.result);
+      this.reportFormGroup.controls['recommendation'].setValue(event.investigation.recommendation);
+      this.reportFormGroup.controls['conclusion'].setValue(event.investigation.conclusion);
+    } else {
+      this._notification('Info', 'Please create a template for this report type.');
+    }
+  }
+
   private _getDocumentationForm() {
     this._formService.findAll().then(res => {
-      this.selectedForm = res.data.filter(x => new RegExp('laboratory', "i").test(x.title))[0];
+      this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
     }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
   }
 
   // Notification
-  private _notification(type: string, text: string): void {
+  private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({
       users: [this.user._id],
       type: type,
@@ -525,26 +543,23 @@ export class ReportComponent implements OnInit {
     });
   }
 
-  numeric_report() {
-    this.numericReport = true;
-    this.textReport = false;
-  }
-  text_report() {
-    this.numericReport = false;
-    this.textReport = true;
-  }
   showDoc_toggle() {
     this.docAction = !this.docAction;
   }
+
   showDiagnosis_toggle() {
     this.diagnosisAction = !this.diagnosisAction;
   }
-  close_onClick(message: boolean): void {
+
+  close_onClick(message: Boolean): void {
     this.repDetail_view = false;
+    this.importTemplate = false;
   }
+
   report_show() {
     this.report_view = !this.report_view;
   }
+
   repDetail(value: PendingLaboratoryRequest) {
     this.selectedInvestigationData = value;
     this.repDetail_view = true;

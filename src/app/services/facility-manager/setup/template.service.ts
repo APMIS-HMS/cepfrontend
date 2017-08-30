@@ -4,45 +4,39 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 @Injectable()
-export class ProductService {
+export class TemplateService {
   public _socket;
   private _rest;
-  public listenerCreate;
-  public listenerUpdate;
-  public listenerDelete;
+  public listner;
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('products');
-    this._socket = _socketService.getService('products');
+    this._rest = _restService.getService('templates');
+    this._socket = _socketService.getService('templates');
     this._socket.timeout = 30000;
-    this.listenerCreate = Observable.fromEvent(this._socket, 'created');
-    this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
-    this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
-
+    this.listner = Observable.fromEvent(this._socket, 'created');
+    this.listner = Observable.fromEvent(this._socket, 'updated');
+    this.listner = Observable.fromEvent(this._socket, 'deleted');
 
   }
 
   find(query: any) {
     return this._socket.find(query);
   }
-
   findAll() {
     return this._socket.find();
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
   }
-
-  create(serviceprice: any) {
-    return this._socket.create(serviceprice);
+  create(template: any) {
+    return this._socket.create(template);
   }
-  update(serviceprice: any) {
-    return this._socket.update(serviceprice._id, serviceprice);
+  update(template: any) {
+    return this._socket.update(template._id, template);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
-  
 }

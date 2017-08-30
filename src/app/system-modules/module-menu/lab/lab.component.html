@@ -24,6 +24,7 @@
                 <li [class.navActive]="workbenchContentArea" (click)="checkPageUrl('workbenches');" routerLink="/dashboard/laboratory/workbenches">Workbench</li>
                 <li [class.navActive]="investigationContentArea" (click)="checkPageUrl('investigation');" routerLink="/dashboard/laboratory/investigations">Investigation</li>
                 <li [class.navActive]="pricingContentArea" (click)="checkPageUrl('investigation-pricing');" routerLink="/dashboard/laboratory/investigation-pricing">Investigation Pricing</li>
+                <li [class.navActive]="templateContentArea" (click)="checkPageUrl('template');" routerLink="/dashboard/laboratory/templates">Templates</li>
                 <li (click)="checkIntoWorkbench();">Check into Workbench</li>
             </ul>
         </div>
@@ -37,4 +38,4 @@
 
 <div *ngIf="modal_on" class="modal-overlay">
     <app-lab-check-in [loginEmployee]="loginEmployee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-lab-check-in>
-</div> 
+</div>
