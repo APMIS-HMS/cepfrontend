@@ -236,6 +236,7 @@ export class BillLookupComponent implements OnInit {
       this.toggleCurrentCategory(group);
     }
   }
+
   getBill(payload: any) {
     const bill: BillItem = <BillItem>{};
     bill.description = payload.itemDesc;
