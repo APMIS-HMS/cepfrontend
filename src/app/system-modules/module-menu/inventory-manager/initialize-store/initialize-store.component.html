@@ -14,7 +14,7 @@
                      <tbody>
                         <tr *ngFor = "let isProduct of products; let i = index">
                           <td></td>
-                          <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct(i, $event.checked, isProduct)">{{isProduct.name}}</md-checkbox></td>
+                          <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct($event.checked)">{{isProduct.name}}</md-checkbox></td>
                         </tr>
                      </tbody>
                   </table>
@@ -64,6 +64,7 @@
                         </a>
                     </div>-->
                    <div class="col-sm-12 text-center">
+                        <a md-raised-button (click)="save()">Save</a>
                         <a md-raised-button [disabled]="!myForm.valid">Save</a>
                    </div>                            
               </form>
