@@ -16,7 +16,7 @@ export class SupplierService {
   ) {
     this._rest = _restService.getService('suppliers');
     this._socket = _socketService.getService('suppliers');
-    this._socket.timeout = 800000;
+    this._socket.timeout = 80000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
