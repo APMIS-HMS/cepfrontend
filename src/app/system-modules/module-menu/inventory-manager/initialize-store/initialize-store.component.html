@@ -14,7 +14,7 @@
                      <tbody>
                         <tr *ngFor = "let isProduct of products; let i = index">
                           <td></td>
-                          <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct(i, $event.checked, isProduct)">{{isProduct.name}}</md-checkbox></td>
+                          <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct($event.checked)">{{isProduct.name}}</md-checkbox></td>
                         </tr>
                      </tbody>
                   </table>
@@ -40,7 +40,7 @@
                             <div  class="form-array" [formGroupName]="i">
                                 <div class="col-sm-7">                                
                                     <md-input-container class="example-full-width">
-                                        <input type="number" mdInput placeholder="Enter Batch No" formControlName="batchno">
+                                        <input type="number" mdInput placeholder="Enter Batch No" formControlName="batchno" >
                                     </md-input-container> 
                                     <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchno.valid">
                                         Required
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <md-input-container class="example-full-width">
-                                        <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity">
+                                        <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity" >
                                     </md-input-container> 
                                     <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
                                         Required
@@ -65,6 +65,7 @@
                     </div>-->
                    <div class="col-sm-12 text-center">
                         <a md-raised-button (click)="save()">Save</a>
+                        <a md-raised-button [disabled]="!myForm.valid">Save</a>
                    </div>                            
               </form>
             </div>

@@ -34,16 +34,15 @@ export class InitializeStoreComponent implements OnInit {
       quantity:['', Validators.required]
     });
   }
-  addProduct(index: number, ischecked: boolean, data: any){
+  addProduct(ischecked: boolean){
     if(ischecked){
-      this.selectedProducts.push(data);
       const control = <FormArray>this.myForm.controls['initproduct'];
       control.push(this.initProduct());
       console.log(this.selectedProducts);
     }
     else {
+      let index: number;
       this.removeProduct(index);
-      this.selectedProducts.splice(index, 1);
     }   
   }
 
