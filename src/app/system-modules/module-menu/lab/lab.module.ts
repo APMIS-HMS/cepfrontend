@@ -15,6 +15,7 @@ import { ReportDetailComponent } from './report/report-detail/report-detail.comp
 import { ExternalInvestigationsComponent } from './external-investigations/external-investigations.component';
 import { TemplateComponent } from './template/template.component';
 import { SelectTemplateComponent } from './template/select-template/select-template.component';
+import { ScopeLevelService, FormTypeService } from '../../../services/module-manager/setup/index';
 
 @NgModule({
   imports: [
@@ -24,6 +25,6 @@ import { SelectTemplateComponent } from './template/select-template/select-templ
     MaterialModule
   ],
   declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent, InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent, ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
-  providers:[WorkbenchService, LaboratoryRequestService]
+  providers:[WorkbenchService, LaboratoryRequestService, ScopeLevelService]
 })
 export class LabModule { }

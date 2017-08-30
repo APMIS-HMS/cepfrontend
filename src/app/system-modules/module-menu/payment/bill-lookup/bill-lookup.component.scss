@@ -136,10 +136,15 @@ td .cta-1:hover {
     padding: 5px;
 }
 
-.generateInvoiceWrap .btn-1 {
-    width: 100px;
-    margin: 20px auto;
-    padding: 20px 15px;
+.generateInvoiceWrap {
+    text-align: center;
+    padding: 30px 0;
+    // .btn-1 {
+    //     width: 100px;
+    //     margin: 20px auto;
+    //     padding: 20px 15px;
+    //     text-align: center;
+    // }
 }
 
 .contentCol {
@@ -303,17 +308,23 @@ td .cta-1:hover {
     width: 100%;
     box-sizing: border-box;
 }
-.billContentSect .tblBg td, .billContentSect .tblBg th{
+
+.billContentSect .tblBg td,
+.billContentSect .tblBg th {
     min-width: auto;
     width: auto;
 }
-.billContentSect .tblBg2 td, .billContentSect .tblBg2 th{
+
+.billContentSect .tblBg2 td,
+.billContentSect .tblBg2 th {
     min-width: 90px;
 }
-.td-modefier{
+
+.td-modefier {
     position: relative;
 }
-.modefier-link{
+
+.modefier-link {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -321,15 +332,17 @@ td .cta-1:hover {
     font-size: 10px;
     color: #03A9F4;
 }
-.td-modefier:hover{
-    .modefier-wrap{
+
+.td-modefier:hover {
+    .modefier-wrap {
         display: block;
     }
-    .modefier-link i{
+    .modefier-link i {
         color: #ff2500;
     }
 }
-.modefier-wrap{
+
+.modefier-wrap {
     position: absolute;
     background: #fff;
     padding: 5px;
@@ -343,7 +356,8 @@ td .cta-1:hover {
     right: 0;
     top: 50%;
 }
-.actual-price{
+
+.actual-price {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -351,17 +365,20 @@ td .cta-1:hover {
     padding: 3px;
     box-sizing: border-box;
 }
-.ac-label{
+
+.ac-label {
     font-size: 14px;
     color: #777;
 }
-.ac-val{
+
+.ac-val {
     font-size: 16px;
     color: #333;
     font-weight: bold;
     text-decoration: underline;
 }
-.modefier-title{
+
+.modefier-title {
     color: #01579B;
     margin: 5px auto;
     font-size: 16px;

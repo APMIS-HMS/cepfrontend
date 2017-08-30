@@ -37,10 +37,6 @@ export class SelectTemplateComponent implements OnInit {
       investigation: ['', [Validators.required]],
     });
 
-    this.templateFormGroup.controls['investigation'].valueChanges.subscribe(val => {
-      console.log(val);
-    });
-
     this._getAllTemplates();
   }
 
@@ -54,9 +50,8 @@ export class SelectTemplateComponent implements OnInit {
 
   private _getAllTemplates() {
     this._templateService.find({query: { 'facility._id': this.facility._id }}).then(res => {
-      console.log(res);
       this.investigations = res.data;
-    }).catch(err => console.log(err));
+    }).catch(err => this._notification('Error', 'There was a problem getting templates. Please try again later!'));
   }
 
   // Notification
