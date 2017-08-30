@@ -15,6 +15,7 @@ export class InitializeStoreComponent implements OnInit {
   selectedProducts: any = <any>[];
   myForm: FormGroup;
   ischeck: boolean;
+  name: any;
 
   constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
   
@@ -58,7 +59,10 @@ export class InitializeStoreComponent implements OnInit {
     });
   }
 //   searchProduct(){
-//     this._productService.update(this.products);
+//     this._productService.find({ query: { name: this.products.name} }).then(payload => {
+//       this.name = payload.data;
+//       console.log(this.name);
+//     });
 // }
    save() {
         // call API to save
