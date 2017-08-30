@@ -40,7 +40,6 @@ export class TemplateComponent implements OnInit {
             investigation: ['', [Validators.required]],
             name: ['', [Validators.required]],
             result: ['', [Validators.required]],
-            outcome: ['', [Validators.required]],
             conclusion: ['', [Validators.required]],
             recommendation: ['', [Validators.required]]
         });
@@ -49,9 +48,8 @@ export class TemplateComponent implements OnInit {
     }
 
     createTemplate(valid: boolean, value: any) {
-        if(!!this.selectedLab.typeObject || this.selectedLab.typeObject !== undefined) {
+        if (!!this.selectedLab.typeObject || this.selectedLab.typeObject !== undefined) {
             if (valid) {
-                console.log(value);
                 delete this.employeeDetails.employeeDetails.countryItem;
                 delete this.employeeDetails.employeeDetails.nationalityObject;
                 delete this.employeeDetails.employeeDetails.nationality;
@@ -59,7 +57,7 @@ export class TemplateComponent implements OnInit {
                 delete value.investigation.facilityServiceId;
                 delete value.investigation.facilityId;
                 delete value.investigation.LaboratoryWorkbenches;
-    
+
                 const template = {
                     facility: this.miniFacility,
                     investigation: value.investigation,
@@ -71,11 +69,10 @@ export class TemplateComponent implements OnInit {
                     conclusion: value.conclusion,
                     recommendation: value.recommendation,
                 };
-    
+
                 this._templateService.create(template).then(res => {
-                  console.log(res);
-                  this.templateFormGroup.reset();
-                  this._notification('Success', 'Template has been created successfully!');
+                    this.templateFormGroup.reset();
+                    this._notification('Success', 'Template has been created successfully!');
                 }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
             } else {
               this._notification('Error', 'Some fields are empty. Please fill all required fields');
@@ -87,7 +84,6 @@ export class TemplateComponent implements OnInit {
 
     private _getAllInvestigations() {
         this._investigationService.find({ query: { 'facilityId._id': this.facility._id }}).then(res => {
-            console.log(res);
             this.investigations = res.data;
         }).catch(err => this._notification('Error', 'There was a problem getting investigations'));
     }
