@@ -1,7 +1,7 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">Payment</div>
     <div class="inner-page-wrap">
-        <div class="megaPgWrap">
+        <div class="megaPgWrap pay-pg">
             <div class="feedsWrap leftCol">
                 <div class="feedbox">
                     <div class="pending-wrap">
@@ -14,28 +14,121 @@
                             </div>
                         </div>
                         <ul class="pending-bills">
-                            <!-- <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill);">
+                            <li class="empWrap">
                                 <div class="list-img">
-                                    <img *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                    <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
+                                    <img src="assets/images/users/default.png">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.personFullName }}</div>
+                                    <div class="pending-name">Johnson Wade</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{ pendingBill?.updatedAt | date }}</div>
-                                        <div class="pending-amount"><span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
                             </li>
 
-                            <li *ngIf="pendingBills.length === 0 && loadingPendingBills" class="empWrap">
-                                <div class="text-center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
                                 </div>
-                            </li> -->
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
 
-                            <li *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="empWrap">
-                                <div>No data available in table</div>
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -90,24 +183,237 @@
                                     </div>
                                 </div>
                             </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="contentCol" *ngIf="selectedPatient._id != undefined">
+            <div class="contentCol">
+                <div class="stat-summary">
+                    <div class="stat-item shadow-grey">
+                        <div class="stat-label">Amount Recieved</div>
+                        <div class="stat-val"><span>&#x20a6;</span>300,100,000</div>
+                    </div>
+
+                    <div class="stat-item shadow-grey">
+                        <div class="stat-label">Amount Paid</div>
+                        <div class="stat-val"><span>&#x20a6;</span>30,000,000</div>
+                    </div>
+
+                    <div class="stat-item shadow-grey">
+                        <div class="stat-label">Pending Bills</div>
+                        <div class="stat-val"><span>&#x20a6;</span>3,000,000</div>
+                    </div>
+                </div>
+
                 <div class="stat-wrap">
-                    <div>
-                        <div style="display: block">
-                            <canvas baseChart
-                                    [datasets]="barChartData"
-                                    [labels]="barChartLabels"
-                                    [options]="barChartOptions"
-                                    [legend]="barChartLegend"
-                                    [chartType]="barChartType"
-                                    (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event)"></canvas>
-                        </div>
+                    <div style="display: block">
+                        <canvas baseChart
+                                [datasets]="barChartData"
+                                [labels]="barChartLabels"
+                                [options]="barChartOptions"
+                                [legend]="barChartLegend"
+                                [chartType]="barChartType"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+
+                    <div class="stat-tbl pending-title">
+                        <table class="tblBg">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Jan</th>
+                                    <th>Feb</th>
+                                    <th>Mar</th>
+                                    <th>Apr</th>
+                                    <th>May</th>
+                                    <th>Jun</th>
+                                    <th>Jul</th>
+                                    <th>Aug</th>
+                                    <th>Sep</th>
+                                    <th>Oct</th>
+                                    <th>Nov</th>
+                                    <th>Dec</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td><span class="service"> Registration</span></td>
+                                    <td><span>&#x20a6;</span>30,000</td>
+                                    <td><span>&#x20a6;</span> 45,000</td>
+                                    <td><span>&#x20a6;</span> 200,000</td>
+                                    <td><span>&#x20a6;</span> 15,000</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 34,200</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 54,210</td>
+                                    <td><span>&#x20a6;</span> 21,000</td>
+                                    <td><span>&#x20a6;</span> 30,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="service">Appointment</span></td>
+                                    <td><span>&#x20a6;</span>30,000</td>
+                                    <td><span>&#x20a6;</span> 45,000</td>
+                                    <td><span>&#x20a6;</span> 200,000</td>
+                                    <td><span>&#x20a6;</span> 15,000</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 34,200</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 54,210</td>
+                                    <td><span>&#x20a6;</span> 21,000</td>
+                                    <td><span>&#x20a6;</span> 30,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="service">Ward</span></td>
+                                    <td><span>&#x20a6;</span>30,000</td>
+                                    <td><span>&#x20a6;</span> 45,000</td>
+                                    <td><span>&#x20a6;</span> 200,000</td>
+                                    <td><span>&#x20a6;</span> 15,000</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 34,200</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 54,210</td>
+                                    <td><span>&#x20a6;</span> 21,000</td>
+                                    <td><span>&#x20a6;</span> 30,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="service">Clinic</span></td>
+                                    <td><span>&#x20a6;</span>30,000</td>
+                                    <td><span>&#x20a6;</span> 45,000</td>
+                                    <td><span>&#x20a6;</span> 200,000</td>
+                                    <td><span>&#x20a6;</span> 15,000</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 34,200</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 54,210</td>
+                                    <td><span>&#x20a6;</span> 21,000</td>
+                                    <td><span>&#x20a6;</span> 30,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="service">Pharmacy</span></td>
+                                    <td><span>&#x20a6;</span>30,000</td>
+                                    <td><span>&#x20a6;</span> 45,000</td>
+                                    <td><span>&#x20a6;</span> 200,000</td>
+                                    <td><span>&#x20a6;</span> 15,000</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 34,200</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 54,210</td>
+                                    <td><span>&#x20a6;</span> 21,000</td>
+                                    <td><span>&#x20a6;</span> 30,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="service">Laboratory</span></td>
+                                    <td><span>&#x20a6;</span>30,000</td>
+                                    <td><span>&#x20a6;</span> 45,000</td>
+                                    <td><span>&#x20a6;</span> 200,000</td>
+                                    <td><span>&#x20a6;</span> 15,000</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 34,200</td>
+                                    <td><span>&#x20a6;</span> 12,000</td>
+                                    <td><span>&#x20a6;</span> 54,210</td>
+                                    <td><span>&#x20a6;</span> 21,000</td>
+                                    <td><span>&#x20a6;</span> 30,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                    <td><span>&#x20a6;</span> 43,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

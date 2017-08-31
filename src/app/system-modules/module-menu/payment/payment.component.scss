@@ -27,6 +27,12 @@
     border: 0px solid transparent;
     text-align: left;
 }
+.stat-tbl th{
+    border-bottom: 1px solid #03A9F4;
+}
+.stat-tbl .service{
+    color: #ff2500;
+}
 
 .pending-title td,
 .pending-title td {
@@ -103,10 +109,6 @@
 
 .pending-amount {
     color: #ff2500;
-}
-
-.contentCol {
-    border: 0px solid transparent;
 }
 
 .megaPgWrap{
@@ -485,4 +487,38 @@ td:hover {
 }
 .tbl-actionRow{
     height: 45px;
+}
+.stat-wrap {
+    padding: 20px;
+}
+.pay-pg .contentCol {
+    border: 0px solid transparent;
+}
+.stat-tbl{
+    margin-top: 20px;
+    max-height: 516px;
+    overflow-y: auto;
+}
+.stat-summary{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.stat-item {
+    border: 1px solid #b3b3b3;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.stat-label {
+    color: #5dd79b;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+}
+.stat-val {
+    color: #ff2500;
+    font-size: 22px;
+    width: 100%;
+    text-align: center;
 }
