@@ -590,6 +590,8 @@ select {
     font-size: 22px;
     color: #424242;
     letter-spacing: 1.5px;
+    margin-top: 20px;
+    margin-bottom: -10px;
 }
 
 .page-title {
@@ -1428,26 +1430,30 @@ ul.topmenuwrap li:hover {
 .menuActive {
     border: 1px solid #0288d1;
 }
-.search-wrap{
+
+.search-wrap {
     position: relative;
     width: 96%;
     margin: 0 auto;
     margin-top: 10px;
 }
-.search-wrap i{
+
+.search-wrap i {
     position: absolute;
     color: #777;
     top: 20%;
     left: 5px;
     font-size: 16px
 }
-.search-wrap .x{
+
+.search-wrap .x {
     position: absolute;
     color: #777;
     top: 5px;
     right: 9px;
     font-size: 16px;
 }
+
 .pg-menuWrap {
     width: 100%;
     display: flex;
@@ -1458,16 +1464,20 @@ ul.topmenuwrap li:hover {
     color: #333;
     box-sizing: border-box;
 }
-.pg-menuWrap  li{
+
+.pg-menuWrap li {
     cursor: pointer;
     padding: 5px 10px;
     font-size: 12px;
     margin: 0 5px;
 }
-.pg-menuWrap  li:hover, .pg-menuActive{
+
+.pg-menuWrap li:hover,
+.pg-menuActive {
     background: #0D47A1;
     color: #fff;
 }
-.pg-menuWrap  li i{
+
+.pg-menuWrap li i {
     font-size: 16px;
 }

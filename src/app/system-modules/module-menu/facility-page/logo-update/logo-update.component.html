@@ -1,10 +1,10 @@
 <div class="modal-baseWrap animated pulse">
-
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <legend class="modal_title">Upload Logo</legend>
-
-  <!--<input type="file" (change)="imageChange($event)">-->
-   <input type="file" ngFileSelect [events]="uploadEvents" (onUpload)="handleUpload($event)" [options]="options" (beforeUpload)="beforeUpload($event)">
-  <div (click)="uploadButton()" class="cta-1">Upload</div>
-
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Upload Logo</legend>
+    <div class="content-box">
+        <input type="file" ngFileSelect [events]="uploadEvents" (onUpload)="handleUpload($event)" [options]="options" (beforeUpload)="beforeUpload($event)">
+    </div>
+    <div class="btn-box">
+        <button class="small-btn" (click)="uploadButton();" md-raised-button>Upload</button>
+    </div>
 </div>

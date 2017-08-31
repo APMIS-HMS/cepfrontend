@@ -1,33 +1,13 @@
+<ul class="pg-menuWrap">
+    <li (click)="changeRoute('prescriptions')" [class.pg-menuActive]="prescriptionNavMenu" routerLink="/dashboard/pharmacy/prescriptions"><i class="fa fa-home" aria-hidden="true"></i> Prescriptions</li>
+    <li (click)="changeRoute('external-prescriptions')" [class.pg-menuActive]="externalPrescriptionNavMenu" routerLink="/dashboard/pharmacy/external-prescriptions"><i class="fa fa-braille" aria-hidden="true"></i> External Prescriptions</li>
+    <li (click)="changeRoute('dispense')" [class.pg-menuActive]="walkInNavMenu" routerLink="/dashboard/pharmacy/dispense"><i class="fa fa-building" aria-hidden="true"></i> Walk in</li>
+</ul>
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
     <div *ngIf="isStoreAvailable" class="small-header">{{storeTitle}}</div>
     <div class="inner-page-wrap">
-        <!-- <div class="lhs inner-page-menuTab">
-            <div class="lTab-title">Prescription List</div>
-            <ul class="nav-group">
-                <li [class.navActive]="productNavMenu" routerLink="/dashboard/pharmacy/prescriptions">Prescriptions</li>
-                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/external-prescriptions">External Prescriptions</li>
-            </ul>
-
-            <div class="lTab-title">Dispense</div>
-            <ul class="nav-group">
-                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/dispense">Walk in</li>
-            </ul>
-        </div> -->
-
-
-
-        <div class="lhs inner-page-menuTab">
-            <ul class="nav-group">
-                <li [class.navActive]="productNavMenu" routerLink="/dashboard/pharmacy/prescriptions">Prescriptions</li>
-                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/external-prescriptions">External Prescriptions</li>
-                <li [class.navActive]="supplierNavMenu" routerLink="/dashboard/pharmacy/dispense">Walk in</li>
-            </ul>
-        </div>
-        <div class="rhs inner-page-contentArea c-page-wrapper">
-            <router-outlet></router-outlet>
-        </div>
-        <div class="clear"></div>
+        <router-outlet></router-outlet>
     </div>
 </div>
 

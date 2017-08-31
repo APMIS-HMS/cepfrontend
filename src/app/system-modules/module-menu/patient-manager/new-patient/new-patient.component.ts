@@ -71,7 +71,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     // ***
     uploadFile: any;
-    hasBaseDropZoneOver: boolean = false;
+    hasBaseDropZoneOver: Boolean = false;
     options: NgUploaderOptions = {
         url: 'http://localhost:3030/image',
         autoUpload: false,
@@ -116,10 +116,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         // this.uploadEvents = new EventEmitter();
     }
     fileChangeListener($event) {
-        let image: any = new Image();
-        let file: File = $event.target.files[0];
-        let myReader: FileReader = new FileReader();
-        let that = this;
+        const image: any = new Image();
+        const file: File = $event.target.files[0];
+        const myReader: FileReader = new FileReader();
+        const that = this;
         myReader.onloadend = function (loadEvent: any) {
             image.src = loadEvent.target.result;
             console.log(that.cropper);
@@ -152,7 +152,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         if (data && data.response) {
             console.log('am uploading 2')
             data = JSON.parse(data.response);
-            let file = data[0].file;
+            const file = data[0].file;
             if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
                 console.log('am uploading 3')
                 this.personService.get(this.selectedPerson._id, {}).then(payload => {
@@ -482,7 +482,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     savePerson() {
         {
-            let person: Person = <Person>{ nextOfKin: [] };
+            const person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
@@ -617,7 +617,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.patientService.create(model).then(payload => {
             this.facilityService.announceNotification({
                 type: 'Success',
-                text: this.selectedPerson.personFullName + " added successfully",
+                text: this.selectedPerson.personFullName + ' added successfully',
                 users: [this.facilityService.getLoginUserId()]
             })
             this.close_onClick();
