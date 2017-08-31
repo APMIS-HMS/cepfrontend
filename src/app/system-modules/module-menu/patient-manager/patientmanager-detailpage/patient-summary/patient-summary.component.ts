@@ -242,26 +242,38 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
         this.vitalsObjArray.forEach(item => {
           this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
           this.lineChartData[1].data.push(item.respiratoryRate);
-          //this.lineChartData[2].data.push(item.bodyMass.bmi);
-          //this.lineChartData[3].data.push(item.bodyMass.height);
-          //this.lineChartData[4].data.push(item.bodyMass.Weight);
+          this.lineChartData[2].data.push(item.bodyMass.bmi);
+          this.lineChartData[3].data.push(item.bodyMass.height);
+          this.lineChartData[4].data.push(item.bodyMass.Weight);
           this.lineChartData[5].data.push(item.temperature);
           this.lineChartData[6].data.push(item.bloodPressure.diastolic);
           this.lineChartData[7].data.push(item.bloodPressure.systolic);
           const d = new Date(item.updatedAt);
-          this.lineChartLabels.push(d.toDateString());
+          let dt = this.dateFormater(d);
+          this.lineChartLabels.push(dt);
         });
         this.refreshVitalsGraph();
       }
     })
   }
 
-   refreshVitalsGraph() {
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
+  dateFormater(d) {
+    var dt = [d.getDate() + 1,
+    d.getMonth(),
+    d.getFullYear()].join('/') + ' ' +
+      [d.getHours(),
+      d.getMinutes(),
+      d.getSeconds()].join(':');
+    return dt;
+  }
+
+
+  refreshVitalsGraph() {
+    let _lineChartData: Array<any> = new Array(this.lineChartData.length);
     for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
+      _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
       for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
+        _lineChartData[i].data[j] = this.lineChartData[i].data[j];
       }
     }
     this.lineChartData = _lineChartData;
