@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input,AfterViewInit,AfterViewChecked } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, EmployeeService, FormsService,
@@ -19,7 +19,7 @@ import { Observable } from 'rxjs/Rx';
   templateUrl: './patient-summary.component.html',
   styleUrls: ['./patient-summary.component.scss']
 })
-export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit {
+export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
@@ -100,9 +100,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit 
   ];
   public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
-
-
-
   subsect_biodata = true;
   subsect_contacts = false;
   subsect_vitals = true;
@@ -215,7 +212,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit 
     console.log("Ng Init");
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (this.patient !== undefined) {
       this.getCurrentUser();
@@ -229,7 +226,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit 
     this._DocumentationService.listenerUpdate.subscribe(payload => {
       this.bindVitalsDataToChart();
     });
-    console.log("After View");
+    this.refreshVitalsGraph();
   }
 
   bindVitalsDataToChart() {
@@ -252,10 +249,34 @@ export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit 
           this.lineChartData[6].data.push(item.bloodPressure.diastolic);
           this.lineChartData[7].data.push(item.bloodPressure.systolic);
           const d = new Date(item.updatedAt);
-          this.lineChartLabels.push(d.toDateString());
+          let dt = this.dateFormater(d);
+          this.lineChartLabels.push(dt);
         });
+        this.refreshVitalsGraph();
       }
     })
+  }
+
+  dateFormater(d) {
+    var dt = [d.getDate() + 1,
+    d.getMonth(),
+    d.getFullYear()].join('/') + ' ' +
+      [d.getHours(),
+      d.getMinutes(),
+      d.getSeconds()].join(':');
+    return dt;
+  }
+
+
+  refreshVitalsGraph() {
+    let _lineChartData: Array<any> = new Array(this.lineChartData.length);
+    for (let i = 0; i < this.lineChartData.length; i++) {
+      _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
+      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
+        _lineChartData[i].data[j] = this.lineChartData[i].data[j];
+      }
+    }
+    this.lineChartData = _lineChartData;
   }
 
   getForms() {
@@ -286,6 +307,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy,AfterViewInit 
       }
     });
   }
+
   getSelectedLGA() {
     this.selectedState.lgs.forEach((item, i) => {
       if (item._id === this.patient.personDetails.lgaOfOriginId) {
