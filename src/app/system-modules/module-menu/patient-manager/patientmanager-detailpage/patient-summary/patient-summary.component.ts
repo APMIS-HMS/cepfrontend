@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, EmployeeService, FormsService,
@@ -19,7 +19,7 @@ import { Observable } from 'rxjs/Rx';
   templateUrl: './patient-summary.component.html',
   styleUrls: ['./patient-summary.component.scss']
 })
-export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
@@ -182,15 +182,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
     });
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    this.lineChartData = [
-      //{ data: [], label: 'Pulse Rate' },
-      { data: [], label: 'Systolic' },
-      { data: [], label: 'Diastolic' },
-      { data: [], label: 'Temperature' },
-      { data: [], label: 'Height' },
-      { data: [], label: 'Weight' },
-      { data: [], label: 'BMI' }
-    ];
+    
   }
 
   ngOnInit() {
@@ -208,34 +200,41 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
     this._DocumentationService.listenerUpdate.subscribe(payload => {
       this.bindVitalsDataToChart();
     });
-    console.log("Ng Init");
   }
 
-  ngAfterViewInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    if (this.patient !== undefined) {
-      this.getCurrentUser();
-      this.bindVitalsDataToChart();
-    }
+  // ngAfterViewInit() {
+  //   this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+  //   if (this.patient !== undefined) {
+  //     this.getCurrentUser();
+  //     this.bindVitalsDataToChart();
+  //   }
 
-    this._DocumentationService.listenerCreate.subscribe(payload => {
-      this.bindVitalsDataToChart();
-    });
+  //   this._DocumentationService.listenerCreate.subscribe(payload => {
+  //     this.bindVitalsDataToChart();
+  //   });
 
-    this._DocumentationService.listenerUpdate.subscribe(payload => {
-      this.bindVitalsDataToChart();
-    });
-    this.refreshVitalsGraph();
-  }
+  //   this._DocumentationService.listenerUpdate.subscribe(payload => {
+  //     this.bindVitalsDataToChart();
+  //   });
+  //   this.refreshVitalsGraph();
+  // }
 
   bindVitalsDataToChart() {
+    this.lineChartData = [
+      //{ data: [], label: 'Pulse Rate' },
+      { data: [], label: 'Systolic' },
+      { data: [], label: 'Diastolic' },
+      { data: [], label: 'Temperature' },
+      { data: [], label: 'Height' },
+      { data: [], label: 'Weight' },
+      { data: [], label: 'BMI' }
+    ];
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length !== 0) {
         console.log(payload.data)
         payload.data[0].documentations.forEach(documentItem => {
           if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
             this.vitalsObjArray = documentItem.document.body.vitals;
-            console.log(this.vitalsObjArray);
           }
         });
         this.vitalsObjArray.forEach(item => {
