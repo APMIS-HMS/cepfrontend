@@ -353,6 +353,12 @@ select {
     box-shadow: 0 8px 6px -6px black;
 }
 
+.shadow-grey {
+    -webkit-box-shadow: 0 8px 6px -6px #777;
+    -moz-box-shadow: 0 8px 6px -6px #777;
+    box-shadow: 0 8px 6px -6px #777;
+}
+
 .shadow-w {
     -webkit-box-shadow: 0 8px 6px -6px white;
     -moz-box-shadow: 0 8px 6px -6px white;
