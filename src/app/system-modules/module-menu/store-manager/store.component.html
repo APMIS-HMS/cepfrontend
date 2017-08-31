@@ -1,6 +1,6 @@
 <ul class="pg-menuWrap">
-    <li (click)="changeRoute('')" [class.pg-menuActive]="homeContentArea" [routerLink]="['/dashboard/store/home']">Manage Store</li>
-    <li (click)="changeRoute('products')" [class.pg-menuActive]="productsContentArea" [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
+    <li (click)="changeRoute('')" [class.pg-menuActive]="homeContentArea">Manage Store</li>
+    <li (click)="changeRoute('products')" [class.pg-menuActive]="productsContentArea">Manage Product</li>
     <li (click)="changeRoute('orders')" [class.pg-menuActive]="ordersContentArea" [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
     <li (click)="changeRoute('inventory')" [class.pg-menuActive]="inventoryContentArea" [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
 </ul>
