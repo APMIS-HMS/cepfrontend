@@ -25,7 +25,7 @@ export class InitializeStoreComponent implements OnInit {
   ngOnInit() {
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
-        this.initProduct(),
+       
       ])
     });
     this.selectedFacility = <Facility> this._locker.getObject('selectedFacility');

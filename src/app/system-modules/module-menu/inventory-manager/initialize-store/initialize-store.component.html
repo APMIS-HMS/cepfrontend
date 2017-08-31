@@ -53,7 +53,7 @@
                                               <input type="text" mdInput placeholder="Enter Batch No" formControlName="batchno" >
                                           </md-input-container> 
                                           <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchno.valid">
-                                              Required
+                                              Batchno Required
                                           </small>
                                       </div>
                                       <div class="col-sm-5">
@@ -61,7 +61,7 @@
                                               <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity" >
                                           </md-input-container> 
                                           <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
-                                              Required
+                                              Quantity Required
                                           </small>
                                       </div>
                                   </div>
@@ -74,7 +74,7 @@
                               </a>
                           </div>-->
                          <div class="col-sm-12 text-center">
-                              <a md-raised-button [disabled]="!myForm.valid">Save</a>
+                              <a md-raised-button [disabled]="!myForm.valid" (click)="save()">Save</a>
                          </div>                            
                     </form>
                   </div>
