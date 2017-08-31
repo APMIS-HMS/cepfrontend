@@ -256,14 +256,13 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   dateFormater(d) {
-    var dt = [d.getDate() + 1,
-    d.getMonth()].join('/') + ' ' +
+    var dt = [d.getDate() + 1, 
+    d.getMonth()].join('/')+' '+
       [d.getHours(),
       d.getMinutes(),
       d.getSeconds()].join(':');
     return dt;
   }
-
 
   refreshVitalsGraph() {
     let _lineChartData: Array<any> = new Array(this.lineChartData.length);
