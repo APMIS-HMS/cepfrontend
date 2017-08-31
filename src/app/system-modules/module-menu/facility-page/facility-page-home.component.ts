@@ -46,7 +46,6 @@ export class FacilityPageHomeComponent implements OnInit {
   }
   ngOnInit() {
     const page: string = this.router.url;
-    console.log(page);
     this.checkPageUrl(page);
     
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');

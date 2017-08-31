@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterContentChecked, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { EmployeeService, ProfessionService, AppointmentService } from '../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../services/module-manager/setup/index';
 import { Profession, Employee, Facility, Location, MinorLocation } from '../../../models/index';
@@ -55,7 +55,9 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 		const auth: any = this.locker.getObject('auth');
 
-
+		const page: string = this.router.url;
+		this.checkPageUrl(page);
+	
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 		// this.clinicHelperService.getClinicMajorLocation();
 		if (this.loginEmployee.professionObject !== undefined) {
@@ -173,8 +175,33 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	pageInViewLoader(title) {
 		this.pageInView = title;
 	}
-	navItemClick() {
+	navItemClick(val) {
 		this.contentSecMenuShow = false;
+		if(val == 'appointment'){
+			this.clinicApppointment = true;
+			this.clinicCheckin = false;
+			this.clinicSchedule= false;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+		} else if(val == 'checkin'){
+			this.clinicApppointment = false;
+			this.clinicCheckin = true;
+			this.clinicSchedule= false;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+		} else if(val == 'schedule'){
+			this.clinicApppointment = false;
+			this.clinicCheckin = false;
+			this.clinicSchedule= true;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+		} else if(val == 'room'){
+			this.clinicApppointment = false;
+			this.clinicCheckin = false;
+			this.clinicSchedule= false;
+			this.clinicConsulting = true;
+			this.clinicRoom = false;
+		}
 	}
 	contentSecMenuToggle() {
 		this.contentSecMenuShow = !this.contentSecMenuShow;
@@ -244,5 +271,33 @@ export class ClinicComponent implements OnInit, OnDestroy {
 			});
 		}
 		this.employeeService.announceCheckIn(undefined);
+	}
+	private checkPageUrl(param: string) {
+		if (param.includes('appointment')) {
+			this.clinicApppointment = true;
+			this.clinicCheckin = false;
+			this.clinicSchedule= false;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+
+		} else if (param.includes('check-in')) {
+			this.clinicApppointment = false;
+			this.clinicCheckin = true;
+			this.clinicSchedule= false;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+		} else if (param.includes('clinic-schedule')) {
+			this.clinicApppointment = false;
+			this.clinicCheckin = false;
+			this.clinicSchedule= true;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+		} else if (param.includes('consulting-room')) {
+			this.clinicApppointment = false;
+			this.clinicCheckin = false;
+			this.clinicSchedule= false;
+			this.clinicConsulting = true;
+			this.clinicRoom = false;
+		}
 	}
 }

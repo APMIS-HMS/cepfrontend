@@ -104,8 +104,12 @@
     position: absolute;
     color: #fff;
     top: 2px;
-    right: 71px;
+    right: 19px;
     font-size: 16px;
+    cursor: pointer;
+}
+.search-wrap .x:hover{
+    color: #ff2500;
 }
 .top-tab-search {
     background-color: #555;
