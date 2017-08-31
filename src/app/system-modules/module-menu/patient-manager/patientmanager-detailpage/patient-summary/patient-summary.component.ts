@@ -189,7 +189,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
       { data: [], label: 'Temperature' },
       { data: [], label: 'Height' },
       { data: [], label: 'Weight' },
-      { data: [], label: 'BMI' }
+      //{ data: [], label: 'BMI' }
     ];
   }
 
@@ -245,7 +245,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
           this.lineChartData[3].data.push(item.temperature);
           this.lineChartData[4].data.push(item.bodyMass.height);
           this.lineChartData[5].data.push(item.bodyMass.weight);
-          this.lineChartData[6].data.push(item.bodyMass.bmi);
+          //this.lineChartData[6].data.push(item.bodyMass.bmi);
           const d = new Date(item.updatedAt);
           let dt = this.dateFormater(d);
           this.lineChartLabels.push(dt);
