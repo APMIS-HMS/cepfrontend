@@ -1,5 +1,6 @@
 @import "globals/variables.scss";
 @import "globals/normalize.scss";
+
 html,
 body {
     font-family: $font-main;
@@ -15,6 +16,10 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    outline: 0;
+}
+li{
+    outline: 0;
 }
 
 input,
@@ -1453,6 +1458,10 @@ ul.topmenuwrap li:hover {
     top: 5px;
     right: 9px;
     font-size: 16px;
+    cursor: pointer;
+}
+.search-wrap .x:hover{
+    color: #ff2500;
 }
 .pg-menuWrap {
     width: 100%;

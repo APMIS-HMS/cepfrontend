@@ -133,7 +133,7 @@
     background: #f8f8f8;
     color: #0288D1;
 }
-.mainmenu-stripe .innerMenu-ul li:hover{
+.mainmenu-stripe .innerMenu-ul li:hover, .stripeMenuActive{
     color: #fff;
     border-bottom: 2px solid #0288D1;
     background: #171717;
