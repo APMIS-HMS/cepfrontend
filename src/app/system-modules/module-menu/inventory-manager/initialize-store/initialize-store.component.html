@@ -17,7 +17,7 @@
                                 <td>
                                     <div class="col-sm-6">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Search Product" [(ngModel)]="productname" name="productname" (keyup)="searchProduct()" />
+                                                <input type="text" class="form-control" placeholder="Search Product" [(ngModel)]="productname" name="productname" (keyup)="searchProduct.next($event)" />
                                             </div>
                                     </div>
                                 </td>
@@ -50,7 +50,7 @@
                                   <div  class="form-array" [formGroupName]="i">
                                       <div class="col-sm-7">                                
                                           <md-input-container class="example-full-width">
-                                              <input type="number" mdInput placeholder="Enter Batch No" formControlName="batchno" >
+                                              <input type="text" mdInput placeholder="Enter Batch No" formControlName="batchno" >
                                           </md-input-container> 
                                           <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchno.valid">
                                               Required

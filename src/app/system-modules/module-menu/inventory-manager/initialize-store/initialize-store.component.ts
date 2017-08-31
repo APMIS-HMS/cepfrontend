@@ -16,9 +16,10 @@ export class InitializeStoreComponent implements OnInit {
   myForm: FormGroup;
   ischeck: boolean;
   name: any;
+  
 
   constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
-  
+    
    }
 
   ngOnInit() {
