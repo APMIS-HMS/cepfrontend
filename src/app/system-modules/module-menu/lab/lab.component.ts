@@ -32,8 +32,8 @@ export class LabComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _locker: CoolSessionStorage,
     public facilityService: FacilitiesService,
-		private _employeeService: EmployeeService
-  ) {}
+    private _employeeService: EmployeeService
+  ) { }
 
   ngOnInit() {
     const page: string = this._router.url;
@@ -88,8 +88,8 @@ export class LabComponent implements OnInit, OnDestroy {
     }
   }
 
-	contentSecMenuToggle() {
-		this.contentSecMenuShow = !this.contentSecMenuShow;
+  contentSecMenuToggle() {
+    this.contentSecMenuShow = !this.contentSecMenuShow;
   }
 
   checkPageUrl(param: string) {
@@ -103,7 +103,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = true;
       this.templateContentArea = false;
     } else if (param.includes('request')) {
-			this.requestContentArea = true;
+      this.requestContentArea = true;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
       this.pricingContentArea = false;
@@ -111,8 +111,8 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-		} else if (param.includes('workbench')) {
-			this.requestContentArea = false;
+    } else if (param.includes('workbench')) {
+      this.requestContentArea = false;
       this.workbenchContentArea = true;
       this.investigationContentArea = false;
       this.pricingContentArea = false;
@@ -120,8 +120,8 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-		} else if (param.includes('investigation-pricing')) {
-			this.requestContentArea = false;
+    } else if (param.includes('investigation-pricing')) {
+      this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
       this.pricingContentArea = true;
@@ -129,8 +129,8 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-		} else if (param.includes('investigation')) {
-			this.requestContentArea = false;
+    } else if (param.includes('investigation')) {
+      this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = true;
       this.pricingContentArea = false;
@@ -138,7 +138,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-		} else if (param.includes('panel')) {
+    } else if (param.includes('panel')) {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -167,18 +167,90 @@ export class LabComponent implements OnInit, OnDestroy {
       this.templateContentArea = true;
     }
   }
-
+  changeRoute(value: string) {
+    if (value == '') {
+      this.requestContentArea = true;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = false;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    } else if (value == 'external-requests') {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = true;
+      this.templateContentArea = false;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    } else if (value == 'workbenches') {
+      this.requestContentArea = false;
+      this.workbenchContentArea = true;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = false;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    } else if (value == 'investigation-pricing') {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = true;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = false;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    } else if (value == 'investigations') {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = true;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = false;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    } else if (value == 'reports') {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = true;
+      this.externalContentArea = false;
+      this.templateContentArea = false;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    } else if (value == 'templates') {
+      this.requestContentArea = false;
+      this.workbenchContentArea = false;
+      this.investigationContentArea = false;
+      this.pricingContentArea = false;
+      this.panelContentArea = false;
+      this.reportContentArea = false;
+      this.externalContentArea = false;
+      this.templateContentArea = true;
+      this._router.navigate(['/dashboard/laboratory/' + value]);
+    }
+  }
   checkIntoWorkbench() {
     this.modal_on = true;
   }
 
   close_onClick(message: boolean): void {
-		this.modal_on = false;
+    this.modal_on = false;
   }
 
   ngOnDestroy() {
-		this._employeeService.announceCheckIn(undefined);
+    this._employeeService.announceCheckIn(undefined);
     this._locker.setObject('workbenchCheckingObject', {});
     this.checkedInObject = {};
-	}
+  }
 }
