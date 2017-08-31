@@ -157,14 +157,15 @@
     align-items: center;*/
     margin-right: auto;
     margin-left: auto;
-    position: absolute;
-    top: -60px;
+    // position: absolute;
+    // top: -60px;
     display: block;
     width: 100%;
+    margin: 0;
 }
 td{
-    padding: 5px;
-    font-size: 10px;
+    // padding: 5px;
+    // font-size: 10px;
     line-height: 2;
 }
 .mat-select {

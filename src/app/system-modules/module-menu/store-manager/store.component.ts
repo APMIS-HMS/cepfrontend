@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreEmitterService } from '../../../services/facility-manager/store-emitter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store',
@@ -13,7 +14,7 @@ export class StoreComponent implements OnInit {
   productsContentArea = false;
   ordersContentArea = false;
   inventoryContentArea = false;
-  constructor(private _storeEventEmitter: StoreEmitterService) { }
+  constructor(private _storeEventEmitter: StoreEmitterService, private _router: Router) { }
 
   ngOnInit() {
     this._storeEventEmitter.announcedUrl.subscribe(url => {
@@ -35,32 +36,34 @@ export class StoreComponent implements OnInit {
       this.contentSecMenuShow = false;
     }
   }
-  changeRoute(val){
-    if(val == ''){
+  changeRoute(val) {
+    if (val == '') {
       this.homeContentArea = true;
       this.productsContentArea = false;
       this.ordersContentArea = false;
       this.inventoryContentArea = false;
-    } else if(val == 'products'){
+      this._router.navigate(['/dashboard/store/' + val]);
+    } else if (val == 'products') {
       this.homeContentArea = false;
       this.productsContentArea = true;
       this.ordersContentArea = false;
       this.inventoryContentArea = false;
-    } else if(val == 'orders'){
+      this._router.navigate(['/dashboard/product-manager/' + val])
+    } else if (val == 'orders') {
       this.homeContentArea = false;
       this.productsContentArea = false;
       this.ordersContentArea = true;
       this.inventoryContentArea = false;
-    } else if(val == 'inventory'){
+    } else if (val == 'inventory') {
       this.homeContentArea = false;
       this.productsContentArea = false;
       this.ordersContentArea = false;
       this.inventoryContentArea = true;
     }
-    
+
   }
 
-	// pageInViewLoader(title) {
-	// 	this.pageInView = title;
-	// }
+  // pageInViewLoader(title) {
+  // 	this.pageInView = title;
+  // }
 }
