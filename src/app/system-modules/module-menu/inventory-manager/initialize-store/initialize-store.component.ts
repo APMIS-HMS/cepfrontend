@@ -68,5 +68,6 @@ export class InitializeStoreComponent implements OnInit {
    save() {
         // call API to save
         console.log(this.myForm.value);
+        this.myForm.reset();
     }
 }
