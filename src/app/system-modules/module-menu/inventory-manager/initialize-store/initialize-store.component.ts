@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { Facility } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ProductService } from '../../../../services/facility-manager/setup/index';
@@ -18,33 +19,36 @@ export class InitializeStoreComponent implements OnInit {
   name: any;
   
 
-  constructor(private _fb: FormBuilder,private _locker: CoolSessionStorage, private _productService: ProductService) {
-    
+  constructor(
+    private _fb: FormBuilder,
+    private _locker: CoolSessionStorage,
+    private _inventoryEventEmitter: InventoryEmitterService,
+    private _productService: ProductService) {
    }
 
   ngOnInit() {
+    this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
-       
+
       ])
     });
     this.selectedFacility = <Facility> this._locker.getObject('selectedFacility');
     this.getProducts();
   }
-  initProduct(){
+  initProduct() {
     return this._fb.group({
       batchno: ['', Validators.required],
-      quantity:['', Validators.required]
+      quantity: ['', Validators.required]
     });
   }
   addProduct(index: number, ischecked: boolean, data: any){
-    if(ischecked){
+    if (ischecked) {
       this.selectedProducts.push(data);
       const control = <FormArray>this.myForm.controls['initproduct'];
       control.push(this.initProduct());
       console.log(this.selectedProducts);
-    }
-    else {
+    } else {
       this.removeProduct(index);
       this.selectedProducts.splice(index, 1);
     }   
