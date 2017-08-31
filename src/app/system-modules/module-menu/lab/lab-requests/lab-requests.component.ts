@@ -1,9 +1,11 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationService, LaboratoryRequestService, BillingService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, InvestigationService, LaboratoryRequestService,
+  BillingService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Investigation, InvestigationModel, Employee, BillIGroup, BillItem, BillModel, PendingLaboratoryRequest } from '../../../../models/index';
+import { Facility, MinorLocation, Investigation, InvestigationModel, Employee,
+  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { ActivatedRoute } from '@angular/router';
@@ -315,16 +317,16 @@ export class LabRequestsComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
   onChange() {
-    //upload file
+    // upload file
   }
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.personDetails.personFullName;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
-    if(this.selectedPatient.clientsNo !== undefined){
-      this.selectedPatient.clientsNo.forEach(item =>{
-        if(item.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id){
+    if (this.selectedPatient.clientsNo !== undefined) {
+      this.selectedPatient.clientsNo.forEach(item => {
+        if (item.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id) {
           this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
         }
       })
@@ -377,8 +379,8 @@ export class LabRequestsComponent implements OnInit {
       if (investigation.investigation.isPanel) {
         // isPanel
         if (childInvestigation !== undefined) {
-          //also send child investigation
-          let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+          // also send child investigation
+          const copyInvestigation = JSON.parse(JSON.stringify(investigation));
           const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
           if (isInBind > -1) {
             if ($event.checked) {
@@ -426,12 +428,12 @@ export class LabRequestsComponent implements OnInit {
       if (investigation.investigation.isPanel) {
         // isPanel
         if (childInvestigation !== undefined) {
-          //also send child investigation
+          // also send child investigation
           childInvestigation.isChecked = true;
-          let found = false;
+          const found = false;
           const childIndex = investigation.investigation.panel.findIndex(x => x.investigation._id === childInvestigation.investigation._id);
           if (childIndex > -1) {
-            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            const copyInvestigation = JSON.parse(JSON.stringify(investigation));
             investigation.investigation.panel.forEach((item, i) => {
               if (i !== childIndex) {
                 copyInvestigation.investigation.panel.splice(i, 1);
@@ -474,7 +476,7 @@ export class LabRequestsComponent implements OnInit {
         } else {
 
           // without child investigation
-          let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+          const copyInvestigation = JSON.parse(JSON.stringify(investigation));
           const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
           if (isInBind > -1) {
             if ($event.checked) {
@@ -493,7 +495,7 @@ export class LabRequestsComponent implements OnInit {
             }
           } else {
             investigation.isChecked = true;
-            let copyInvestigation = JSON.parse(JSON.stringify(investigation));
+            // copyInvestigation = JSON.parse(JSON.stringify(investigation));
             // this.bindInvestigations.push(copyInvestigation);
             // check all children
 
@@ -504,8 +506,6 @@ export class LabRequestsComponent implements OnInit {
             }
           }
           // investigation.LaboratoryWorkbenches = pay.LaboratoryWorkbenches;
-
-
         }
 
       } else {
@@ -549,12 +549,11 @@ export class LabRequestsComponent implements OnInit {
   }
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
-
     // console.log('am here')
     // console.log(investigation);
     // console.log(location);
     // console.log(LaboratoryWorkbenches);
-    let ids: any[] = [];
+    const ids: any[] = [];
     if (investigation.investigation.isPanel) {
       const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
       if (isInBind > -1) {
@@ -567,14 +566,14 @@ export class LabRequestsComponent implements OnInit {
 
 
       // i need prices for the two children investigation and their prices
-      let labId = location.laboratoryId._id;
+      const labId = location.laboratoryId._id;
       this.investigationService.find({ query: { '_id': { $in: ids } } }).then(payload => {
         // console.log(payload.data)
-        let tempList: any[] = [];
+        const tempList: any[] = [];
         payload.data.forEach((item, j) => {
-          let index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
+          const index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
           if (index > -1) {
-            let withId = item.LaboratoryWorkbenches[index];
+            const withId = item.LaboratoryWorkbenches[index];
             withId.investigationId = item._id
             tempList.push(withId);
           }
@@ -589,7 +588,7 @@ export class LabRequestsComponent implements OnInit {
       if (isInBind > -1) {
         this.bindInvestigations.splice(isInBind, 1);
       }
-      let copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+      const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
       copyBindInvestigation.location = location;
       copyBindInvestigation.LaboratoryWorkbenches = [];
       copyBindInvestigation.LaboratoryWorkbenches.push(location);
@@ -622,7 +621,7 @@ export class LabRequestsComponent implements OnInit {
     let retVal = 0;
     this.bindInvestigations.forEach((bind => {
       if (!bind.isExternal) {
-        if (bind.location != undefined) {
+        if (bind.location !== undefined) {
           if (bind.location.workbenches !== undefined) {
             bind.location.workbenches.forEach(item => {
               retVal = retVal + item.price;
@@ -666,7 +665,7 @@ export class LabRequestsComponent implements OnInit {
       }
 
       investigation.isExternal = true;
-      let copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+      const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
       delete copyBindInvestigation.LaboratoryWorkbenches;
       delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
       console.log(copyBindInvestigation)
@@ -723,8 +722,8 @@ export class LabRequestsComponent implements OnInit {
 
 
 
-    let copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
-    let readyCollection: any[] = [];
+    const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
+    const readyCollection: any[] = [];
     copyBindInvestigation.forEach((item: InvestigationModel, i) => {
       if (item.investigation.isPanel) {
         delete item.isChecked;
@@ -739,7 +738,7 @@ export class LabRequestsComponent implements OnInit {
       }
     })
 
-    let request: any = {
+    const request: any = {
       facilityId: selectedFacility,
       patientId: this.selectedPatient,
       labNumber: this.frmNewRequest.controls['labNo'].value,
@@ -749,7 +748,7 @@ export class LabRequestsComponent implements OnInit {
       createdBy: logEmp
     }
     // console.log(readyCollection);
-    let billGroup: BillIGroup = <BillIGroup>{};
+    const billGroup: BillIGroup = <BillIGroup>{};
     billGroup.discount = 0;
     billGroup.facilityId = selectedFacility._id;
     billGroup.grandTotal = 0;
@@ -761,7 +760,7 @@ export class LabRequestsComponent implements OnInit {
     readyCollection.forEach(item => {
       if (!item.isExternal) {
         console.log(item);
-        let billItem: BillItem = <BillItem>{};
+        const billItem: BillItem = <BillItem>{};
         billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
         billItem.facilityId = selectedFacility._id;
         billItem.description = '';
@@ -783,8 +782,8 @@ export class LabRequestsComponent implements OnInit {
       const request$ = Observable.fromPromise(this.requestService.create(request));
       const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
       Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
-        let request = results[0];
-        let billing = results[1];
+        const request = results[0];
+        const billing = results[1];
         delete billing.facilityItem;
         delete billing.patientItem;
         billing.billItems.forEach(item => {
@@ -899,9 +898,7 @@ export class LabRequestsComponent implements OnInit {
     } else if (this.patientId === undefined && !this.isExternal) {
       this.requestService.find({
         query: {
-          'facilityId._id': this.selectedFacility._id,
-          //'lab.id': this.selectedLab.Id, 
-          //'workbench.id': this.selectedWorkbench.id 
+          'facilityId._id': this.selectedFacility._id
         }
       }).then(res => {
         console.log(res);

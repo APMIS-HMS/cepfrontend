@@ -393,19 +393,23 @@ export class ReportComponent implements OnInit {
       }
     }).then(res => {
       console.log(res);
-      this.reportLoading = false;
-      if (res.data.length > 0) {
-        const reports = this._modelPendingRequests(res.data);
+      if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
+        this.reportLoading = false;
+        if (res.data.length > 0) {
+          const reports = this._modelPendingRequests(res.data);
 
-        if (reports.length > 0) {
-          this.reports = reports.filter(x => x.isUploaded || x.isSaved);
+          if (reports.length > 0) {
+            this.reports = reports.filter(x => x.isUploaded || x.isSaved);
+          } else {
+            this.reports = [];
+          }
         } else {
           this.reports = [];
         }
       } else {
-        this.reports = [];
+        this._notification('Error', 'There was a problem getting pending requests. Please try again later!');
       }
-    }).catch(err => console.error(err));
+    }).catch(err => this._notification('Error', 'There was a problem getting pending requests. Please try again later!'));
   }
 
   private CheckIfSelectedPatient() {

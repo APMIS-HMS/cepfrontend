@@ -38,6 +38,7 @@ export class TemplateComponent implements OnInit {
         this.employeeDetails = this._locker.getObject('loginEmployee');
         this.user = <User>this._locker.getObject('auth');
         this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
+        console.log(this.miniFacility);
 
         this.templateFormGroup = this._fb.group({
             scopeLevel: ['', [Validators.required]],
@@ -46,6 +47,28 @@ export class TemplateComponent implements OnInit {
             result: ['', [Validators.required]],
             conclusion: ['', [Validators.required]],
             recommendation: ['', [Validators.required]]
+        });
+
+        this.templateFormGroup.controls['investigation'].valueChanges.subscribe(val => {
+            this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
+                const containsSelected = res.data.filter(x => x.investigation._id === val._id);
+                if (containsSelected.length > 0) {
+                    console.log(containsSelected[0]);
+                    // Fill the other fields with the data
+                    this.templateBtnText = 'Edit Template';
+                    this.templateFormGroup.controls['scopeLevel'].setValue(containsSelected[0].scopeLevel);
+                    this.templateFormGroup.controls['name'].setValue(containsSelected[0].name);
+                    this.templateFormGroup.controls['recommendation'].setValue(containsSelected[0].recommendation);
+                    this.templateFormGroup.controls['result'].setValue(containsSelected[0].result);
+                    this.templateFormGroup.controls['conclusion'].setValue(containsSelected[0].conclusion);
+                } else {
+                    this.templateBtnText = 'Create Template';
+                    this.templateFormGroup.controls['name'].setValue('');
+                    this.templateFormGroup.controls['recommendation'].setValue('');
+                    this.templateFormGroup.controls['result'].setValue('');
+                    this.templateFormGroup.controls['conclusion'].setValue('');
+                }
+            }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
         });
 
         this._getAllInvestigations();

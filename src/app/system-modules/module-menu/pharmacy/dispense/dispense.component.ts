@@ -28,6 +28,7 @@ export class DispenseComponent implements OnInit {
 
 		this._route.data.subscribe(data => {
 			data['loginEmployee'].subscribe(payload => {
+				console.log(payload);
 				this.employeeDetails = payload.loginEmployee;
 			});
 		});
