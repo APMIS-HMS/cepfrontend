@@ -20,6 +20,7 @@ export class TemplateComponent implements OnInit {
     user: User = <User>{};
     employeeDetails: any = <any>{};
     selectedLab: any = <any>{};
+    selectedScopeLevel: any = <any>{};
     scopeLevels: any = <any>[];
     templateBtnText: String = 'Create Template';
 
@@ -38,10 +39,9 @@ export class TemplateComponent implements OnInit {
         this.employeeDetails = this._locker.getObject('loginEmployee');
         this.user = <User>this._locker.getObject('auth');
         this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
-        console.log(this.miniFacility);
 
         this.templateFormGroup = this._fb.group({
-            scopeLevel: ['', [Validators.required]],
+            apmisScopeLevel: ['', [Validators.required]],
             investigation: ['', [Validators.required]],
             name: ['', [Validators.required]],
             result: ['', [Validators.required]],
@@ -50,25 +50,25 @@ export class TemplateComponent implements OnInit {
         });
 
         this.templateFormGroup.controls['investigation'].valueChanges.subscribe(val => {
-            this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
-                const containsSelected = res.data.filter(x => x.investigation._id === val._id);
-                if (containsSelected.length > 0) {
-                    console.log(containsSelected[0]);
-                    // Fill the other fields with the data
-                    this.templateBtnText = 'Edit Template';
-                    this.templateFormGroup.controls['scopeLevel'].setValue(containsSelected[0].scopeLevel);
-                    this.templateFormGroup.controls['name'].setValue(containsSelected[0].name);
-                    this.templateFormGroup.controls['recommendation'].setValue(containsSelected[0].recommendation);
-                    this.templateFormGroup.controls['result'].setValue(containsSelected[0].result);
-                    this.templateFormGroup.controls['conclusion'].setValue(containsSelected[0].conclusion);
-                } else {
-                    this.templateBtnText = 'Create Template';
-                    this.templateFormGroup.controls['name'].setValue('');
-                    this.templateFormGroup.controls['recommendation'].setValue('');
-                    this.templateFormGroup.controls['result'].setValue('');
-                    this.templateFormGroup.controls['conclusion'].setValue('');
-                }
-            }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
+            if (!!val || val === undefined) {
+                this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
+                    const containsSelected = res.data.filter(x => x.investigation._id === val._id);
+                    if (containsSelected.length > 0) {
+                        // Fill the other fields with the data
+                        this.templateBtnText = 'Edit Template';
+                        this.templateFormGroup.controls['name'].setValue(containsSelected[0].name);
+                        this.templateFormGroup.controls['recommendation'].setValue(containsSelected[0].recommendation);
+                        this.templateFormGroup.controls['result'].setValue(containsSelected[0].result);
+                        this.templateFormGroup.controls['conclusion'].setValue(containsSelected[0].conclusion);
+                    } else {
+                        this.templateBtnText = 'Create Template';
+                        this.templateFormGroup.controls['name'].setValue('');
+                        this.templateFormGroup.controls['recommendation'].setValue('');
+                        this.templateFormGroup.controls['result'].setValue('');
+                        this.templateFormGroup.controls['conclusion'].setValue('');
+                    }
+                }).catch(err => this._notification('Error', 'There was an error getting Template. Please try again later!'));
+            }
         });
 
         this._getAllInvestigations();
@@ -86,7 +86,7 @@ export class TemplateComponent implements OnInit {
                 delete value.investigation.facilityId;
                 delete value.investigation.LaboratoryWorkbenches;
 
-                const template = {
+                const myTemplate = {
                     facility: this.miniFacility,
                     investigation: value.investigation,
                     scopeLevel: value.scopeLevel,
@@ -99,9 +99,24 @@ export class TemplateComponent implements OnInit {
                     recommendation: value.recommendation,
                 };
 
-                this._templateService.create(template).then(res => {
-                    this.templateFormGroup.reset();
-                    this._notification('Success', 'Template has been created successfully!');
+                // Check if this uses has created a template before.
+                this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
+                    const containsSelected = res.data.filter(x => x.investigation._id === value.investigation._id);
+                    if (containsSelected.length > 0) {
+                        this.templateBtnText = 'Updating Template...';
+                        this._templateService.update(containsSelected[0]).then(res => {
+                            this.templateFormGroup.reset();
+                            this.templateBtnText = 'Create Template';
+                            this._notification('Success', 'Template has been updated successfully!');
+                        }).catch(err => this._notification('Error', 'There was an error getting Template. Please try again later!'));
+                    } else {
+                        this.templateBtnText = 'Creating Template...';
+                        this._templateService.create(myTemplate).then(res => {
+                            this.templateFormGroup.reset();
+                            this.templateBtnText = 'Create Template';
+                            this._notification('Success', 'Template has been created successfully!');
+                        }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
+                    }
                 }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
             } else {
               this._notification('Error', 'Some fields are empty. Please fill all required fields');

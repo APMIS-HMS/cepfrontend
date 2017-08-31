@@ -38,7 +38,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
 
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
-        console.log('is true')
+      console.log('is true')
       this.modal_on = true;
     } else {
       console.log('is false')
@@ -51,7 +51,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
           console.log(checkingObject)
-          
+
           console.log('sent');
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
@@ -220,6 +220,53 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
 
   pageInViewLoader(title) {
     this.pageInView = title;
+  }
+
+  changeRoute(val) {
+    console.log(val);
+    if (val == 'home') {
+      this._router.navigate(['/dashboard/store']);
+    }
+    if (val == '') {
+      this.purchaseHistoryNavMenu = true;
+      this.purchaseOrderNavMenu = false;
+      this.purchaseEntryNavMenu = false;
+      this.invoicesNavMenu = false;
+      this._purchaseEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+      this._router.navigate(['/dashboard/purchase-manager/' + val]);
+    } else if (val == 'histories') {
+      this.purchaseHistoryNavMenu = true;
+      this.purchaseOrderNavMenu = false;
+      this.invoicesNavMenu = false;
+      this.purchaseEntryNavMenu = false;
+      this._purchaseEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+      this._router.navigate(['/dashboard/purchase-manager/' + val]);
+    } else if (val == 'invoices') {
+      this.purchaseHistoryNavMenu = true;
+      this.purchaseOrderNavMenu = false;
+      this.invoicesNavMenu = false;
+      this.purchaseEntryNavMenu = false;
+      this._purchaseEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+      this._router.navigate(['/dashboard/purchase-manager/' + val]);
+    } else if (val == 'purchase-entry') {
+      this.purchaseEntryNavMenu = true;
+      this.newpurchaseNavMenu = false;
+      this.purchaseHistoryNavMenu = false;
+      this.purchaseOrderNavMenu = false;
+      this.invoicesNavMenu = false;
+      this.pageInView = 'Purchase Entry';
+      this.pageInView_subTitle = 'Purchase Manager';
+      this._router.navigate(['/dashboard/purchase-manager/' + val]);
+    } else if (val == 'suppliers') {
+      this._router.navigate(['/dashboard/product-manager/' + val]);
+    }
+
   }
 
   private checkPageUrl(param: string) {
