@@ -1,21 +1,21 @@
 <ul class="pg-menuWrap">
-  <li [class.navActive]="productNavMenu" (click)="changeRoute('home')">Home</li>
-  <!-- <li [class.navActive]="productNavMenu" (click)="changeRoute('')">Purchase Orders</li> -->
-  <li [class.navActive]="supplierNavMenu" (click)="changeRoute('histories')">Purchase History</li>
-  <li [class.navActive]="supplierNavMenu" (click)="changeRoute('invoices')">Invoices</li>
-  <!-- <li [class.navActive]="supplierNavMenu" (click)="changeRoute('purchase-entry')">Purchase Entry</li> -->
-  <li [class.navActive]="supplierNavMenu" (click)="changeRoute('suppliers')">Suppliers</li>
+    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/store" (click)="changeRoute('home')">Home</li>
+    <!-- <li [class.navActive]="productNavMenu" (click)="changeRoute('')">Purchase Orders</li> -->
+    <li [class.pg-menuActive]="purchaseHistoryNavMenu" routerLink="/dashboard/purchase-manager/orders" (click)="changeRoute('histories')">Purchase History</li>
+    <li [class.pg-menuActive]="invoicesNavMenu" routerLink="/dashboard/purchase-manager/invoices" (click)="changeRoute('invoices')">Invoices</li>
+    <!-- <li [class.navActive]="supplierNavMenu" (click)="changeRoute('purchase-entry')">Purchase Entry</li> -->
+    <li [class.pg-menuActive]="supplierNavMenu" routerLink="/dashboard/product-manager/suppliers" (click)="changeRoute('suppliers')">Suppliers</li>
 </ul>
 <div class="inner-wrap-b body-wrap">
-  <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-  <div class="facility-subTitle" (pageInView)="pageInViewLoader($event)">{{pageInView_subTitle}}</div>
-  <div class="inner-page-wrap">
-    <div class="rhs inner-page-contentArea c-page-wrapper">
-      <router-outlet></router-outlet>
+    <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
+    <div class="facility-subTitle" (pageInView)="pageInViewLoader($event)">{{pageInView_subTitle}}</div>
+    <div class="inner-page-wrap">
+        <div class="rhs inner-page-contentArea c-page-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="clear"></div>
+        <div *ngIf="modal_on" class="modal-overlay">
+            <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
+        </div>
     </div>
-    <div class="clear"></div>
-    <div *ngIf="modal_on" class="modal-overlay">
-      <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
-    </div>
-  </div>
 </div>

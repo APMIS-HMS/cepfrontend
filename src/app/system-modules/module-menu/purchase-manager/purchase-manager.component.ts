@@ -224,18 +224,14 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
 
   changeRoute(val) {
     console.log(val);
-    if (val == 'home') {
-      this._router.navigate(['/dashboard/store']);
-    }
     if (val == '') {
-      this.purchaseHistoryNavMenu = true;
-      this.purchaseOrderNavMenu = false;
+      this.purchaseHistoryNavMenu = false;
+      this.purchaseOrderNavMenu = true;
       this.purchaseEntryNavMenu = false;
       this.invoicesNavMenu = false;
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-      this._router.navigate(['/dashboard/purchase-manager/' + val]);
     } else if (val == 'histories') {
       this.purchaseHistoryNavMenu = true;
       this.purchaseOrderNavMenu = false;
@@ -244,16 +240,14 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-      this._router.navigate(['/dashboard/purchase-manager/' + val]);
     } else if (val == 'invoices') {
-      this.purchaseHistoryNavMenu = true;
+      this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = false;
-      this.invoicesNavMenu = false;
+      this.invoicesNavMenu = true;
       this.purchaseEntryNavMenu = false;
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-      this._router.navigate(['/dashboard/purchase-manager/' + val]);
     } else if (val == 'purchase-entry') {
       this.purchaseEntryNavMenu = true;
       this.newpurchaseNavMenu = false;
@@ -262,11 +256,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this.invoicesNavMenu = false;
       this.pageInView = 'Purchase Entry';
       this.pageInView_subTitle = 'Purchase Manager';
-      this._router.navigate(['/dashboard/purchase-manager/' + val]);
-    } else if (val == 'suppliers') {
-      this._router.navigate(['/dashboard/product-manager/' + val]);
     }
-
   }
 
   private checkPageUrl(param: string) {
