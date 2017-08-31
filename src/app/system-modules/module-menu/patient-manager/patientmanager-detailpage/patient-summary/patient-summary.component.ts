@@ -183,13 +183,13 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.lineChartData = [
-      { data: [], label: 'Pulse Rate' },
+      //{ data: [], label: 'Pulse Rate' },
       { data: [], label: 'Systolic' },
       { data: [], label: 'Diastolic' },
       { data: [], label: 'Temperature' },
       { data: [], label: 'Height' },
       { data: [], label: 'Weight' },
-      //{ data: [], label: 'BMI' }
+      { data: [], label: 'BMI' }
     ];
   }
 
@@ -239,13 +239,13 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
           }
         });
         this.vitalsObjArray.forEach(item => {
-          this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
-          this.lineChartData[1].data.push(item.bloodPressure.systolic);
-          this.lineChartData[2].data.push(item.bloodPressure.diastolic);
-          this.lineChartData[3].data.push(item.temperature);
-          this.lineChartData[4].data.push(item.bodyMass.height);
-          this.lineChartData[5].data.push(item.bodyMass.weight);
-          //this.lineChartData[6].data.push(item.bodyMass.bmi);
+          //this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
+          this.lineChartData[0].data.push(item.bloodPressure.systolic);
+          this.lineChartData[1].data.push(item.bloodPressure.diastolic);
+          this.lineChartData[2].data.push(item.temperature);
+          this.lineChartData[3].data.push(item.bodyMass.height);
+          this.lineChartData[4].data.push(item.bodyMass.weight);
+          this.lineChartData[5].data.push(item.bodyMass.bmi);
           const d = new Date(item.updatedAt);
           let dt = this.dateFormater(d);
           this.lineChartLabels.push(dt);
