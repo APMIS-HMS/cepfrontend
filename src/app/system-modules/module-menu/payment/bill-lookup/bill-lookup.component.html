@@ -51,8 +51,8 @@
                                 </md-input-container>
                             </div> -->
                         </div>
-                        <div class="pending-bills">
-                            <div class="empWrap">
+                        <ul class="pending-bills">
+                            <li class="empWrap">
                                 <div class="list-img">
                                     <img src="assets/images/users/default.png">
                                 </div>
@@ -63,9 +63,9 @@
                                         <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
-                            </div>
+                            </li>
 
-                            <div class="empWrap">
+                            <li class="empWrap">
                                 <div class="list-img">
                                     <img src="assets/images/users/default.png">
                                 </div>
@@ -76,9 +76,9 @@
                                         <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
-                            </div>
+                            </li>
 
-                            <div class="empWrap">
+                            <li class="empWrap">
                                 <div class="list-img">
                                     <img src="assets/images/users/default.png">
                                 </div>
@@ -89,8 +89,8 @@
                                         <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -331,7 +331,7 @@
     </div>
 </div>
 
-<app-global-patient-lookup></app-global-patient-lookup>
+<!-- <app-global-patient-lookup></app-global-patient-lookup> -->
 
 <div *ngIf="addItem" class="modal-overlay">
     <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>

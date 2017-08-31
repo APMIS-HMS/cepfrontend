@@ -1,6 +1,4 @@
-<div class="pg-subtitle">
-  <ng2-toasty [position]="'top-right'"></ng2-toasty>
-  INVESTIGATION PRICING</div>
+<div class="pg-subtitle">INVESTIGATION PRICING</div>
 <div>
     <div class="doc-mainWrap">
         <div class="doc-contentArea">
@@ -35,9 +33,7 @@
                             </div>
                         </div>
 
-                        <button (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="cta-1">
-              Set Price
-            </button>
+                        <button (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="cta-1">Set Price</button>
                     </form>
                 </div>
 
@@ -83,7 +79,6 @@
                                         <div class="frm-item-wrap">
                                             <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
-
                                         <div class="frm-item-wrap">
                                             <md-select placeholder="Status">
                                                 <md-option [value]="Active">Active</md-option>

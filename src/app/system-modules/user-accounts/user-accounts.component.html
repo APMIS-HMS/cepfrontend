@@ -15,9 +15,9 @@
         <div class="userAccs-pgTitle">All Purpose Medical Information System</div>
     </div>
 
-    <div class="userAccs-listing">
+    <div *ngIf="listOfFacilities.length > 1" class="userAccs-listing">
         <div class="listing-title">User Accounts</div>
-        <div class="userAccs-listingWrap">
+        <div  class="userAccs-listingWrap">
 
             <div *ngFor="let item of listOfFacilities" (click)="popListing(item)" class="acc-listing">
                 <div class="listing-imgWrap">

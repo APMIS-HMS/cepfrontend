@@ -181,6 +181,9 @@ td .cta-1:hover {
     background: #fff;
     line-height: 2;
     border-bottom: 1px solid #777;
+    -webkit-box-shadow: 0 8px 6px -6px #bebebe;
+    -moz-box-shadow: 0 8px 6px -6px #bebebe;
+    box-shadow: 0 8px 6px -6px #bebebe;
 }
 
 .billContentSect tbody tr {
@@ -382,4 +385,11 @@ td .cta-1:hover {
     color: #01579B;
     margin: 5px auto;
     font-size: 16px;
+}
+.btn-wrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 300px;
+    margin: 0 auto;
 }

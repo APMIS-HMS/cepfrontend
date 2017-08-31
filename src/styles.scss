@@ -1,5 +1,6 @@
 @import "globals/variables.scss";
 @import "globals/normalize.scss";
+
 html,
 body {
     font-family: $font-main;
@@ -15,6 +16,10 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    outline: 0;
+}
+li{
+    outline: 0;
 }
 
 input,
@@ -314,16 +319,18 @@ select {
     padding: 5px 20px;
     display: flex;
     align-items: center;
-    width: 90%;
+    width: 100%;
     margin: 0px auto;
+    box-sizing: border-box;
 }
 
 .inner-wrap-b {
     position: relative;
-    padding: 5px 20px;
+    padding: 0 20px;
     display: block;
-    width: 90%;
+    width: 100%;
     margin: 0px auto;
+    box-sizing: border-box;
 }
 
 .body-wrap {
@@ -362,26 +369,6 @@ select {
     -moz-box-shadow: 5px 6px 3px 3px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 5px 6px 3px 3px rgba(0, 0, 0, 0.1);
     box-shadow: 5px 6px 3px 3px rgba(0, 0, 0, 0.1);
-}
-
-.menuBar-facilityName {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: #fff;
-}
-
-.menubar_facilityLogo {
-    overflow: hidden;
-    background: #fff;
-    border-radius: 100%;
-    margin-left: 30px;
-    border: 10px solid #03A9F4;
-}
-
-.menuBar-facilityName span {
-    padding-left: 10px;
 }
 
 .modal-overlay {
@@ -490,7 +477,7 @@ select {
 .modal-baseWrap {
     position: relative;
     width: auto;
-    min-width: 560px;
+    min-width: 440px;
     max-height: 90%;
     background: #fff;
     overflow: auto;
@@ -559,10 +546,9 @@ select {
 .secondary-tab {
     position: relative;
     width: 100%;
-    background: #03A9F4;
+    background: #2f2f2f;
     font-family: $font-titles;
     letter-spacing: 2px;
-    margin-top: 30px;
 }
 
 .orgLogo-wrap {
@@ -570,8 +556,8 @@ select {
     justify-content: center;
     align-items: center;
     position: relative;
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     text-align: center;
 }
 
@@ -609,6 +595,8 @@ select {
     font-size: 22px;
     color: #424242;
     letter-spacing: 1.5px;
+    margin-top: 20px;
+    margin-bottom: -10px;
 }
 
 .page-title {
@@ -730,8 +718,7 @@ select {
 
 .inner-page-contentArea {
     position: relative;
-    width: 75%;
-    padding: 0 20px;
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -964,15 +951,6 @@ select {
     position: relative;
     display: flex;
     margin-top: 30px;
-}
-
-.top-tab-search {
-    background-color: #F5F5F5;
-    border-radius: 7px;
-    border: 0;
-    margin-right: 10px;
-    padding: 7px 10px;
-    font-size: 12px;
 }
 
 .ng2-imgcrop,
@@ -1399,13 +1377,12 @@ ul.topmenuwrap li:hover {
 /* second menu */
 
 * {
-	-webkit-transition-property: all;
-	-webkit-transition-duration: .03s;
-    -moz-transition-timing-function: cubic-bezier(100,50,21,6);
-        -moz-transition-property: all;
-    -moz-transition-timing-function: cubic-bezier(100,50,21,6);
+    -webkit-transition-property: all;
+    -webkit-transition-duration: .03s;
+    -moz-transition-timing-function: cubic-bezier(100, 50, 21, 6);
+    -moz-transition-property: all;
+    -moz-transition-timing-function: cubic-bezier(100, 50, 21, 6);
 }
-
 
 // .btning{
 //     color: #0288d1;
@@ -1433,33 +1410,57 @@ ul.topmenuwrap li:hover {
 // }
    
 
-.btning {
-    color: #0288d1;
-    background: transparent;
-    padding: 10px 10px;
-    font-size: 12px;
-    text-decoration: none;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+.search-wrap {
+    position: relative;
+    width: 96%;
+    margin: 0 auto;
+    margin-top: 10px;
 }
 
-.second-menu {
-    margin: 27px auto 0;
-    width: 90%;
-    text-align: center;
+.search-wrap i {
+    position: absolute;
+    color: #777;
+    top: 20%;
+    left: 5px;
+    font-size: 16px
 }
 
-.btning:hover {
-    background: rgba(0, 0, 0, 0.4);
-    background: #fff;
-    padding: 10px 10px;
-    color: #1b1b1b;
-    border: 1px solid #0288d1;
+.search-wrap .x {
+    position: absolute;
+    color: #777;
+    top: 5px;
+    right: 9px;
+    font-size: 16px;
     cursor: pointer;
-    transition: ease-out;
-    transition-delay: .3s;
+}
+.search-wrap .x:hover{
+    color: #ff2500;
 }
 
-.menuActive {
-    border: 1px solid #0288d1;
+.pg-menuWrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #777;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.pg-menuWrap li {
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: 0 5px;
+}
+
+.pg-menuWrap li:hover,
+.pg-menuActive {
+    background: #0D47A1;
+    color: #fff;
+}
+
+.pg-menuWrap li i {
+    font-size: 16px;
 }

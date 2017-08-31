@@ -15,12 +15,14 @@ import { Observable } from 'rxjs/Observable';
 export class PharmacyManagerComponent implements OnInit, OnDestroy {
 	pageInView: String = '';
 	storeTitle: String = '';
-	modal_on: boolean = false;
-	isStoreAvailable: boolean = false;
-	supplierNavMenu: boolean = false;
-	productNavMenu = false;
+	modal_on: Boolean = false;
+	isStoreAvailable: Boolean = false;
+	externalPrescriptionNavMenu: Boolean = false;
+	prescriptionNavMenu: Boolean = false;
+	walkInNavMenu: Boolean = false;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
+	miniFacility: Facility = <Facility>{};
 
 	constructor(
 		private _router: Router,
@@ -32,8 +34,12 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.miniFacility = <Facility>this._locker.getObject('miniFacility');
 		const auth: any = this._locker.getObject('auth');
 		this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
+		const url: String = this._router.url;
+		console.log(url);
+		this.changeRoute(url);
 
 		if ((this.loginEmployee.storeCheckIn === undefined
 			|| this.loginEmployee.storeCheckIn.length === 0)) {
@@ -90,6 +96,22 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 
 	pageInViewLoader(title) {
 		this.pageInView = title;
+	}
+
+	changeRoute(route: String) {
+		if (route.endsWith('external-prescriptions')) {
+			this.externalPrescriptionNavMenu = true;
+			this.prescriptionNavMenu = false;
+			this.walkInNavMenu = false;
+		} else if (route.endsWith('prescriptions')) {
+			this.externalPrescriptionNavMenu = false;
+			this.prescriptionNavMenu = true;
+			this.walkInNavMenu = false;
+		} else if (route.endsWith('dispense')) {
+			this.externalPrescriptionNavMenu = false;
+			this.prescriptionNavMenu = false;
+			this.walkInNavMenu = true;
+		}
 	}
 
 	ngOnDestroy() {
