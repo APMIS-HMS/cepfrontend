@@ -1,4 +1,4 @@
-<div class="modal-baseWrap animated pulse">
+<div class="modal-baseWrap animated pulse" *ngIf="hasReturned && isEmployeeInFacility()">
 
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <legend class="modal_title">{{selectedFacility.name}}</legend>
@@ -6,14 +6,14 @@
   <div class="userAccs-listing">
     <div class="userAccs-listingWrap">
 
-      <div class="acc-listing">
+      <div *ngIf="hasReturned && isPatientInFacility()" class="acc-listing" (click)="loadPatientRecord()">
         <div class="listing-imgWrap">
           <i class="fa fa-bed" aria-hidden="true"></i>
         </div>
         <div class="listing-name">Patient (Personal) Module</div>
       </div>
 
-      <div *ngIf="isEmployeeInFacility()" class="acc-listing" (click)="loadEmployeeRecord()">
+      <div *ngIf="isEmployeeInFacility() && hasReturned" class="acc-listing" (click)="loadEmployeeRecord()">
         <div class="listing-imgWrap">
           <i class="fa fa-user" aria-hidden="true"></i>
         </div>

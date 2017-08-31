@@ -6,7 +6,10 @@
     <div *ngIf="apmisId_show" class="newEmp-idWrap">
         <input type="text" placeholder="Patient's Apmis ID'" [formControl]="newEmpIdControl">
         <div class="gen_idWrap">Patient has no <strong>apmis ID</strong>? <span (click)="newPerson1_show()">Generate New ID</span></div>
-        <div (click)="empApmisID()" class="btn-1 btn-blue">Add Patient</div>
+        <!-- <div (click)="empApmisID()" class="btn-1 btn-blue">Add Patient</div> -->
+        <div class="btn-box">
+            <button class="small-btn" (click)="empApmisID();" md-raised-button>Add Patient</button>
+        </div>
     </div>
 
     <div *ngIf="frmNewPerson1_show">
@@ -72,9 +75,14 @@
 
             <div class="clear"></div>
 
-            <div (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+            <div class="back-btn-box">
+                <span (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</span>
+            </div>
 
-            <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div>
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp1.valid" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button>CONTINUE</button>
+            </div>
+            <!-- <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div> -->
         </form>
     </div>
 
@@ -124,7 +132,11 @@
             </div>
             <div class="clear"></div>
             <div (click)="back_newPerson1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-            <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">CONTINUE</div>
+
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp2.valid" (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value);" md-raised-button>CONTINUE</button>
+            </div>
+            <!-- <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">CONTINUE</div> -->
         </form>
     </div>
 
@@ -169,7 +181,10 @@
                 <div (click)="back_newPerson2()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
                 <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
             </div>
-            <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div>
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp3.valid" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" md-raised-button>CONTINUE</button>
+            </div>
+            <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
         </form>
     </div>
 
@@ -177,7 +192,10 @@
         <form [formGroup]="frmNewEmp4" novalidate>
             <div class="clear"></div>
             <div (click)="back_newPerson3()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-            <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">Create Patient</div>
+            <!-- <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">Create Patient</div> -->
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp4.valid" (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value);" md-raised-button>Create Patient</button>
+            </div>
         </form>
     </div>
 </div>

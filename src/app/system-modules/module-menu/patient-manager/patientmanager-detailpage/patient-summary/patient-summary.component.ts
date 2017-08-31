@@ -209,6 +209,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
     this._DocumentationService.listenerUpdate.subscribe(payload => {
       this.bindVitalsDataToChart();
     });
+    console.log("Ng Init");
   }
 
   ngAfterViewInit() {
@@ -216,7 +217,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.patient !== undefined) {
       this.getCurrentUser();
       this.bindVitalsDataToChart();
-      this.refreshVitalsGraph();
     }
 
     this._DocumentationService.listenerCreate.subscribe(payload => {

@@ -1,26 +1,35 @@
+<!-- <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
+    <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> Generate User</li>
+    <li (click)="generateUnit()"><i class="fa fa-cube-in" aria-hidden="true"></i> Assign Unit</li>
+    <li (click)="generateWorkSpace()"><i class="fa fa-fax-in" aria-hidden="true"></i> Assign Workspace</li>
+    <li *ngIf="selectedUser?._id != undefined" (click)="editUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> User Privileges</li>
+    <li *ngIf="employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user-times" aria-hidden="true"></i> Deactivate Employee</li>
+    <li *ngIf="!employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user" aria-hidden="true"></i> Activate Employee</li>
+    <li><i class="fa fa-heartbeat" aria-hidden="true"></i> Health Care Coverage</li>
+</ul> -->
+<ul class="pg-menuWrap">
+    <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" [class.pg-menuActive]="requestContentArea"><i class="fa fa-home" aria-hidden="true"></i> Generate User</li>
+    <li (click)="generateUnit()" [class.pg-menuActive]="externalContentArea"><i class="fa fa-braille" aria-hidden="true"></i> Assign Unit</li>
+    <li (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea"><i class="fa fa-building" aria-hidden="true"></i> Assign Workspace</li>
+    <li *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> User Privileges</li>
+    <li *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea"><i class="fa fa-superpowers" aria-hidden="true"></i> Deactivate Employee</li>
+    <li *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea"><i class="fa fa-filter" aria-hidden="true"></i>Activate Employee</li>
+</ul>
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">Employee Manager</div>
     <!--<div class="">
         <a class="back-btn" md-raised-button routerLink="/dashboard/employee-manager"><i class="fa fa-arrow-circle-o-left"></i> Go Back</a>
     </div>-->
     <div routerLink="/dashboard/employee-manager" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-    <div class="side-sec lhs">
+    <!-- <div class="side-sec lhs">
         <app-employee-lookup (selectedEmployee)="navEpDetail($event)"></app-employee-lookup>
-    </div>
+    </div> -->
 
     <div class="content-sec rhs">
-        <div class="inner-menu1-wrap">
+        <!-- <div class="inner-menu1-wrap">
             <i *ngIf="employee !== undefined && employee._id !== undefined" id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
-            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-                <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> Generate User</li>
-                <li (click)="generateUnit()"><i class="fa fa-cube-in" aria-hidden="true"></i> Assign Unit</li>
-                <li (click)="generateWorkSpace()"><i class="fa fa-fax-in" aria-hidden="true"></i> Assign Workspace</li>
-                <li *ngIf="selectedUser?._id != undefined" (click)="editUserShow()"><i class="fa fa-sign-in" aria-hidden="true"></i> User Privileges</li>
-                <li *ngIf="employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user-times" aria-hidden="true"></i> Deactivate Employee</li>
-                <li *ngIf="!employee?.isActive" (click)="toggleActivate()"><i class="fa fa-user" aria-hidden="true"></i> Activate Employee</li>
-                <li><i class="fa fa-heartbeat" aria-hidden="true"></i> Health Care Coverage</li>
-            </ul>
-            <!--
+           
+            
             <div  class="second-menu">
                 <a *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" class="btning">Generate User |</a>
                 <a (click)="generateUnit()" class="btning">Unit |</a>
@@ -29,8 +38,8 @@
                 <a *ngIf="employee?.isActive" (click)="toggleActivate()" class="btning">Deactivate Employee |</a>
                 <a *ngIf="!employee?.isActive" (click)="toggleActivate()" class="btning">Activate Employee |</a>
                 <a class="btning">Health Care</a>    
-            </div>-->
-        </div>
+            </div>
+        </div> -->
         <div *ngIf="employee != undefined">
             <div class="empData-header">
                 <div class="lhs emp-data">

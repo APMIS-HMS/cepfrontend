@@ -1,5 +1,4 @@
 <div class="pg-subtitle">REPORT</div>
-
 <div>
     <div class="doc-mainWrap">
         <div class="doc-contentArea">
@@ -226,6 +225,7 @@
                                     </div>
                                     <form [formGroup]="reportFormGroup" novalidate>
                                         <div class="resultSect-title">Investigation Result</div>
+                                        <div class="template-box" (click)="onClickImportTemplate(selectedInvestigation);"><i class="fa fa-download"></i> Import template</div>
                                         <div class="invstn-wrap">
                                             <div *ngIf="numericReport" class="lettering-wrap">
                                                 <div class="report-title">{{ selectedInvestigation?.name }}</div>
@@ -284,7 +284,7 @@
                                         </div>
                                         <div class="frm-item-wrap">
                                             <md-input-container>
-                                                <textarea formControlName="recommendation" mdInput placeholder="Recomendation"></textarea>
+                                                <textarea formControlName="recommendation" mdInput placeholder="Recommendation"></textarea>
                                             </md-input-container>
                                         </div>
                                         <div class="frm-item-wrap">
@@ -347,28 +347,27 @@
                         </thead>
 
                         <tbody>
-
                             <tr>
                                 <td colspan="10">
                                     <div class="tbl-actionRow">
                                         <!-- <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
-                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          isSocket="false" displayKey="apmisLookupDisplayKey"
                           (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
 
                         <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              isSocket="false" displayKey="apmisLookupDisplayKey"
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
 
                         <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              isSocket="false" displayKey="apmisLookupDisplayKey"
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div> -->
                                     </div>
@@ -441,4 +440,7 @@
 
 <div *ngIf="repDetail_view" class="modal-overlay">
     <app-report-detail (closeModal)="close_onClick($event)" [selectedInvestigationData]="selectedInvestigationData" id="form-modal" class="form-modal center-center"></app-report-detail>
+</div>
+<div *ngIf="importTemplate" class="modal-overlay">
+    <app-select-template (closeModal)="close_onClick($event)" (template)="onClickTemplate($event);" id="form-modal" class="form-modal center-center"></app-select-template>
 </div>

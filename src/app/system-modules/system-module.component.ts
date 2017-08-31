@@ -12,7 +12,6 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./system-module.component.scss']
 })
 export class SystemModuleComponent implements OnInit {
-  dmenu = false;
 
   searchControl = new FormControl();
 
@@ -49,9 +48,9 @@ export class SystemModuleComponent implements OnInit {
     this.personService.get(authData.personId, {}).then(ppayload => {
       this.selectedPerson = ppayload;
     });
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      this.checkedInObject = payload;
-    });
+    // this.employeeService.checkInAnnounced$.subscribe(payload => {
+    //   this.checkedInObject = payload;
+    // });
     this.personService.updateListener.subscribe((payload: Person) => {
       auth = this.locker.getObject('auth');
       authData = auth.data;
@@ -88,8 +87,5 @@ export class SystemModuleComponent implements OnInit {
   moduleManager_onClick() {
     this.moduleManagerActive = true;
     this.facilityManagerActive = false;
-  }
-  dmenuShow() {
-    this.dmenu = !this.dmenu;
   }
 }

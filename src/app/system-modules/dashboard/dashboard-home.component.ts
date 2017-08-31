@@ -6,6 +6,7 @@ import { Facility, Employee } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Observable, Subscription } from 'rxjs/Rx';
+
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
@@ -44,6 +45,7 @@ export class DashboardHomeComponent implements OnInit {
   subscription: Subscription;
   loginEmployee: Employee = <Employee>{};
 
+  checkedInObject: any = <any>{};
   constructor(private _elRef: ElementRef, private locker: CoolSessionStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
     private workSpaceService: WorkSpaceService) {
@@ -66,6 +68,9 @@ export class DashboardHomeComponent implements OnInit {
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
     }
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      this.checkedInObject = payload;
+    });
     this.facilityService.listner.subscribe(pay => {
       this.facilityName = pay.name;
     })

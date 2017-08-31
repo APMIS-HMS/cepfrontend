@@ -1,6 +1,114 @@
 @import "../../../../globals/variables.scss";
 @import "../../../../globals/normalize.scss";
 
+.pending-title table,
+.pending-title table {
+    border-collapse: collapse;
+}
+
+.pending-title table,
+.pending-title td,
+.pending-title table,
+.pending-title td {
+    border: 0px solid transparent;
+}
+
+.pending-title td,
+.pending-title td {
+    vertical-align: center;
+    text-align: left;
+    padding: 2px;
+}
+
+.pending-title th,
+.pending-title th {
+    height: 50px;
+    background: transparent;
+    border: 0px solid transparent;
+    text-align: left;
+}
+
+.pending-title td,
+.pending-title td {
+    padding: 5px;
+}
+
+.pending-header {
+    background: #f8f8f8;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.pending-title {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #474747;
+}
+
+.pending-header input {
+    width: 100%;
+}
+
+.mat-input-container {
+    width: 100%;
+    margin-bottom: -20px;
+}
+
+.pending-bills {
+    padding: 10px;
+    box-sizing: border-box;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.pending-bills li:hover {
+    background-color: #eee
+}
+
+.pending-bills li:nth-child(even) {
+    background-color: #f8f8f8
+}
+
+.empWrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.list-img {
+    margin-right: 10px;
+}
+
+.pending-name {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 18px;
+}
+
+.pending-bills .list-labels {
+    width: 70%;
+}
+
+.oda {
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: #777;
+}
+
+.pending-amount {
+    color: #ff2500;
+}
+
+.contentCol {
+    border: 0px solid transparent;
+}
+
 .megaPgWrap{
     display: flex;
     justify-content: space-between;
@@ -9,11 +117,13 @@
     overflow-y: auto;
 }
 .feedsWrap{
-    width: 30%
+    width: 30%;
 }
 .feedbox{
     width: 100%;
     margin-bottom: 10px;
+    border: 1px solid #777;
+    padding: 3px;
 }
 .feedbox_x1{
     min-height: 200px;

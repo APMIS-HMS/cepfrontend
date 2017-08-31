@@ -4,6 +4,12 @@
     padding: 10px;
 }
 
+.btn-box {
+    margin: 20px 0;
+    text-align: center;
+    color: #fff;
+}
+
 .newEmp-idWrap input {
     border: 1px solid #727272;
     border-radius: 10px;
@@ -11,11 +17,13 @@
     margin: 20px auto;
     padding: 10px;
 }
+
 th {
     height: 50px;
     background: transparent;
     border: 0.5px solid $th-border;
 }
+
 .gen_idWrap {
     width: 100%;
     text-align: center;
@@ -45,9 +53,10 @@ th {
     margin: 20px auto;
 }
 
-.modal_mini_title{
+.modal_mini_title {
     margin-bottom: 0;
 }
+
 .dx-dropdowneditor-button-visible .dx-texteditor-input {
     padding-right: 34px;
     background: transparent;

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationService, WorkbenchService, ServicePriceService, TagService } from '../../../../services/facility-manager/setup/index';
+import {
+  FacilitiesService, InvestigationService, WorkbenchService, ServicePriceService, TagService
+ } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice } from '../../../../models/index';
@@ -16,9 +18,9 @@ import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty
 export class InvestigationPriceComponent implements OnInit {
 
   apmisLookupUrl = 'workbenches';
-  apmisLookupText = "";
+  apmisLookupText = '';
   apmisLookupQuery = {};
-  apmisLookupDisplayKey = "name";
+  apmisLookupDisplayKey = 'name';
   apmisLookupOtherKeys = ['laboratoryId.name']
 
   apmisInvestigationLookupUrl = 'investigations';
@@ -79,7 +81,6 @@ export class InvestigationPriceComponent implements OnInit {
     })
 
     this.frmNewPrice.controls['workbench'].valueChanges.subscribe(value => {
-     
       if (value !== null && value.length === 0) {
         this.apmisLookupQuery = {
           'facilityId._id': this.selelctedFacility._id,
@@ -98,10 +99,9 @@ export class InvestigationPriceComponent implements OnInit {
     if (this.loginEmployee.workSpaces !== undefined) {
       this.loginEmployee.workSpaces.forEach(work => {
         work.locations.forEach(loc => {
-          if (loc.majorLocationId.name === "Laboratory") {
+          if (loc.majorLocationId.name === 'Laboratory') {
             this.locationIds.push(loc.minorLocationId._id);
           }
-
         })
       })
 

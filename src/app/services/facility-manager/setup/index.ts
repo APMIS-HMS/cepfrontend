@@ -82,3 +82,4 @@ export * from './laboratory-report.service';
 export * from './timezone.service';
 export * from './hmo.service';
 export * from './vital.service';
+export * from './template.service';

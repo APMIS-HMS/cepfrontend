@@ -1,205 +1,116 @@
-
-<!-- <div class="survery">
-    <div class="col-sm-3">
-        1 - something here
-    </div>
-    <div class="col-sm-6">
-        <div class="white-box">
-            <h3 class="box-title">Recent Billing
-            </h3>
-            <div class="row sales-report">
-                <div class="col-md-8 col-sm-8 col-xs-8">
-                    <h2>August 2017</h2>
-                    <p>BILLING REPORT</p>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4 ">
-                    <select class="form-control pull-right row b-none">
-                    <option>August 2017</option>
-                    <option>July 2017</option>
-                    <option>June 2017</option>
-                    <option>May 2017</option>
-                    <option>April 2017</option>
-                    </select>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table ">
-                    <thead>
-                        <tr>
-                            <th><i class="fa fa-sort-alpha-asc"></i> Name</th>
-                            <th><i class="fa fa-sort-alpha-asc"></i> Status</th>
-                            <th><i class="fa fa-sort-alpha-asc"></i> Date</th>
-                            <th><i class="fa fa-sort-alpha-asc"></i>Total Bill</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="txt-oflo">Aser Ogbe</td>
-                            <td><span class="label label-info label-rounded">PAID</span></td>
-                            <td class="txt-oflo">April 19</td>
-                            <td><span class="text-info">N1250</span></td>
-                        </tr>
-                        <tr>
-                            <td class="txt-oflo">Blessing Ibanga</td>
-                            <td><span class="label label-danger label-rounded">PENDING</span></td>
-                            <td class="txt-oflo">April 20</td>
-                            <td><span class="text-danger">N2024</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3">
-        3-something here
-    </div>
-</div> -->
-<div class="facility-title">Bills/Payment</div>
-<div class="pg-wrap">
-    <div class="content-wrap">
-        <table cellpadding="0" cellspacing="0" border="0.5">
-            <thead>
-                <tr>
-                    <th>
-                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                        <span style="padding-left: 3px;">Date</span>
-                    </th>
-                    <th>
-                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                        <span style="padding-left: 3px;">Patient</span>
-                    </th>
-                    <th>
-                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                        <span style="padding-left: 3px;">Description</span>
-                    </th>
-                    <th>
-                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                        <span style="padding-left: 3px;">Source</span>
-                    </th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td colspan="10">
-                        <div class="tbl-actionRow">
-                             <div class="frm-item-wrap">
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">Payment</div>
+    <div class="inner-page-wrap">
+        <div class="megaPgWrap">
+            <div class="feedsWrap leftCol">
+                <div class="feedbox">
+                    <div class="pending-wrap">
+                        <div class="pending-header">
+                            <div class="pending-title">Patient's Pending Bills</div>
+                            <div class="search-wrap">
                                 <md-input-container>
-                                    <input mdInput placeholder="search for bill" [formControl]="searchInvestigation">
+                                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
                                 </md-input-container>
                             </div>
                         </div>
-                    </td>
-                </tr>
+                        <ul class="pending-bills">
+                            <!-- <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill);">
+                                <div class="list-img">
+                                    <img *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                    <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.personFullName }}</div>
+                                    <div class="oda">
+                                        <div class="pending-date">{{ pendingBill?.updatedAt | date }}</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
+                                    </div>
+                                </div>
+                            </li>
 
-                <tr>
-                    <td>11th Jan, 2017. 09:00AM</td>
-                    <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div>Johnson Wade</div>
+                            <li *ngIf="pendingBills.length === 0 && loadingPendingBills" class="empWrap">
+                                <div class="text-center">
+                                    <md-spinner class='small-spinner'></md-spinner>
+                                </div>
+                            </li> -->
+
+                            <li *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="empWrap">
+                                <div>No data available in table</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feedbox">
+                    <div class="pending-wrap">
+                        <div class="pending-header">
+                            <div class="pending-title">Invoices</div>
+                             <div class="search-wrap">
+                                <md-input-container>
+                                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
+                                </md-input-container>
+                            </div> 
                         </div>
-                    </td>
-                    <td>Payment for patient registration</td>
-                    <td>Jiniel Lab</td>
-                    <td>Paid</td>
-                </tr>
+                        <ul class="pending-bills">
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
 
-                <tr>
-                    <td>11th Jan, 2017. 09:00AM</td>
-                    <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div>Johnson Wade</div>
-                        </div>
-                    </td>
-                    <td>Payment for patient registration</td>
-                    <td>Jiniel Lab</td>
-                    <td>Paid</td>
-                </tr>
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
 
-                <tr>
-                    <td>11th Jan, 2017. 09:00AM</td>
-                    <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div>Johnson Wade</div>
-                        </div>
-                    </td>
-                    <td>Payment for patient registration</td>
-                    <td>Jiniel Lab</td>
-                    <td>Not Paid</td>
-                </tr>
-
-                <tr>
-                    <td>11th Jan, 2017. 09:00AM</td>
-                    <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div>Johnson Wade</div>
-                        </div>
-                    </td>
-                    <td>Payment for patient registration</td>
-                    <td>Jiniel Lab</td>
-                    <td>Not Paid</td>
-                </tr>
-
-                <tr>
-                    <td>11th Jan, 2017. 09:00AM</td>
-                    <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div>Johnson Wade</div>
-                        </div>
-                    </td>
-                    <td>Payment for patient registration</td>
-                    <td>Jiniel Lab</td>
-                    <td>Not Paid</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- <div class="graphs-wrap">
-        <div class="graph-item">
-            <div style="display: block">
-                <canvas baseChart
-                        [datasets]="barChartData"
-                        [labels]="barChartLabels"
-                        [options]="barChartOptions"
-                        [legend]="barChartLegend"
-                        [chartType]="barChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div> 
 
-        <div class="graph-item">
-            <div style="display: block">
-                <canvas baseChart
-                        [data]="polarAreaChartData"
-                        [labels]="polarAreaChartLabels"
-                        [legend]="polarAreaLegend"
-                        [chartType]="polarAreaChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
+            <div class="contentCol" *ngIf="selectedPatient._id != undefined">
+                <div class="stat-wrap">
+                    <div>
+                        <div style="display: block">
+                            <canvas baseChart
+                                    [datasets]="barChartData"
+                                    [labels]="barChartLabels"
+                                    [options]="barChartOptions"
+                                    [legend]="barChartLegend"
+                                    [chartType]="barChartType"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>

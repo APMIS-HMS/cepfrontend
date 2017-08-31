@@ -54,8 +54,10 @@ export class FacilitypageLocationspageComponent implements OnInit {
   constructor(private locationService: LocationService, private locker: CoolSessionStorage,
   public facilityService: FacilitiesService, private route: ActivatedRoute) {
     this.facilityService.listner.subscribe(payload => {
+      console.log('am received');
       this.facility = payload;
       this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      console.log(this.filteredMinorLocations);
     });
     this.locationService.listner.subscribe(payload => {
       this.getLocations();
@@ -65,6 +67,12 @@ export class FacilitypageLocationspageComponent implements OnInit {
 
   ngOnInit() {
     this.facility =   <Facility> this.facilityService.getSelectedFacilityId();
+    this.facilityService.listner.subscribe(payload => {
+      console.log('am received');
+      this.facility = payload;
+      this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      console.log(this.filteredMinorLocations);
+    });
     this.pageInView.emit('Locations');
 
     this.locationNameEdit.valueChanges.subscribe(value => {

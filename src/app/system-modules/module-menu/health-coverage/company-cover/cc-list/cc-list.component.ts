@@ -8,18 +8,102 @@ import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@ang
 })
 export class CcListComponent implements OnInit {
 
-  @Output() showBeneficiaries: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('fileInput') fileInput: ElementRef;
+  @Output() showBeneficiaries: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() { }
+  public frmAddCompany: FormGroup;
+  addCompany = false;
+  stateCtrl: FormControl;
+  filteredStates: any;
 
-  ngOnInit() {}
+  states = [
+    'Alabama',
+    'Alaska',
+    'Arizona',
+    'Arkansas',
+    'California',
+    'Colorado',
+    'Connecticut',
+    'Delaware',
+    'Florida',
+    'Georgia',
+    'Hawaii',
+    'Idaho',
+    'Illinois',
+    'Indiana',
+    'Iowa',
+    'Kansas',
+    'Kentucky',
+    'Louisiana',
+    'Maine',
+    'Maryland',
+    'Massachusetts',
+    'Michigan',
+    'Minnesota',
+    'Mississippi',
+    'Missouri',
+    'Montana',
+    'Nebraska',
+    'Nevada',
+    'New Hampshire',
+    'New Jersey',
+    'New Mexico',
+    'New York',
+    'North Carolina',
+    'North Dakota',
+    'Ohio',
+    'Oklahoma',
+    'Oregon',
+    'Pennsylvania',
+    'Rhode Island',
+    'South Carolina',
+    'South Dakota',
+    'Tennessee',
+    'Texas',
+    'Utah',
+    'Vermont',
+    'Virginia',
+    'Washington',
+    'West Virginia',
+    'Wisconsin',
+    'Wyoming',
+  ];
 
-  showImageBrowseDlg() {
-    this.fileInput.nativeElement.click()
+  constructor(private formBuilder: FormBuilder) { 
+    this.stateCtrl = new FormControl();
+    this.filteredStates = this.stateCtrl.valueChanges
+        .startWith(null)
+        .map(name => this.filterStates(name));
+  }
+
+  ngOnInit() {
+    // this.frmNewBeneficiary = this.formBuilder.group({
+    //   name: ['', [Validators.required]],
+    //   address: ['', [Validators.required]],
+    //   email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+    //   phone: ['', [<any>Validators.required]],
+    //   principalGender: ['', [<any>Validators.required]],
+    //   principalstatus: ['', [<any>Validators.required]],
+    //   principalEmpID: ['', [<any>Validators.required]]
+    // });
   }
 
   show_beneficiaries() {
     this.showBeneficiaries.emit(true);
   }
+
+  addCompany_show(){
+    this.addCompany = !this.addCompany;
+  }
+
+  showImageBrowseDlg() {
+    this.fileInput.nativeElement.click()
+  }
+
+  filterStates(val: string) {
+    return val ? this.states.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
+               : this.states;
+  }
+
+
 }

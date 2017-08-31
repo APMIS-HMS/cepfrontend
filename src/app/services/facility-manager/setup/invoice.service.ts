@@ -21,6 +21,7 @@ export class InvoiceService {
   ) {
     this._rest = _restService.getService('invoices');
     this._socket = _socketService.getService('invoices');
+    this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
     });
   }
