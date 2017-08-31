@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   DocumentationService, VitaLocationService, VitalRythmService, VitalPositionService,
-  EmployeeService, FormsService, FacilitiesService, PatientService, ServerDateService
+  EmployeeService, FormsService, FacilitiesService, PatientService, VitalService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
@@ -55,7 +55,7 @@ export class AddVitalsComponent implements OnInit {
     private _FormsService: FormsService,
     private _PatientService: PatientService,
     private _facilityService: FacilitiesService,
-    private _ServerDateService: ServerDateService) {
+    private _vitalService: VitalService) {
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
   }
 
@@ -65,7 +65,7 @@ export class AddVitalsComponent implements OnInit {
     this.getVitalLocation();
     this.getVitalPosition();
     this.getVitalRythm();
-    this.getPersonDocumentation();
+    //this.getPersonDocumentation();
     this.getForm();
     this._employeeService.find({
       query:
@@ -223,59 +223,74 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.temperature = this.temperature;
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
-      this._ServerDateService.find({ query: {} }).then(datePayload => {
-        this.serverDate = new Date(datePayload);
+      vitalValue.facilityObj = this._locker.getObject('miniFacility');
+      vitalValue.employeeObj = this._facilityService.trimEmployee(this.loginEmployee);
+      vitalValue.patientId = this.patient._id;
+      vitalValue.documentType = this.selectedForm;
+      vitalValue.personId = this.patient.personDetails;
 
-        this.patientDocumentation.documentations.forEach(documentation => {
-          if (documentation.document == undefined) {
-            documentation.document = {
-              documentType: this.selectedForm
-            }
-          }
-          console.log(documentation)
-          if (documentation.document.documentType._id != undefined &&
-            documentation.document.documentType._id === this.selectedForm._id) {
-            isExisting = true;
-            documentation.document.body.vitals.push({
-              pulseRate: this.pulseRate,
-              respiratoryRate: this.respiratoryRate,
-              temperature: this.temperature,
-              bodyMass: this.heightWeight,
-              bloodPressure: this.bloodPressure,
-              updatedAt: this.serverDate
-            })
-          }
-        });
-        if (!isExisting) {
-          const doc: PatientDocumentation = <PatientDocumentation>{};
-          doc.facilityId = this._locker.getObject('miniFacility');
-          doc.createdBy = this._facilityService.trimEmployee(this.loginEmployee);
-          doc.patientId = this.patient._id;
-          doc.document = {
-            documentType: this.selectedForm,
-            body: {
-              vitals: []
-            }
-          }
-          doc.document.body.vitals.push({
-            pulseRate: this.pulseRate,
-            respiratoryRate: this.respiratoryRate,
-            temperature: this.temperature,
-            bodyMass: this.heightWeight,
-            bloodPressure: this.bloodPressure,
-            updatedAt: this.serverDate
-          });
-          this.patientDocumentation.documentations.push(doc);
-        }
-
-        this.documentationService.update(this.patientDocumentation).subscribe(payload => {
-          this.patientDocumentation = payload;
-          this.frmAddVitals.reset();
-          this.disableSaveBtn = false;
-          this.saveBtnText = "Add Vitals";
-        })
+      let params = {
+        patientId: this.patient._id,
+        personId: this.patient.personDetails._id
+      }
+      this._vitalService.post(vitalValue, params).then(payload => {
+        this.frmAddVitals.reset();
+        this.disableSaveBtn = false;
+        this.saveBtnText = "Add Vitals";
       })
 
+      // this._ServerDateService.find({ query: {} }).then(datePayload => {
+      //   this.serverDate = new Date(datePayload);
+
+      //   this.patientDocumentation.documentations.forEach(documentation => {
+      //     if (documentation.document == undefined) {
+      //       documentation.document = {
+      //         documentType: this.selectedForm
+      //       }
+      //     }
+      //     console.log(documentation)
+      //     if (documentation.document.documentType._id != undefined &&
+      //       documentation.document.documentType._id === this.selectedForm._id) {
+      //       isExisting = true;
+      //       documentation.document.body.vitals.push({
+      //         pulseRate: this.pulseRate,
+      //         respiratoryRate: this.respiratoryRate,
+      //         temperature: this.temperature,
+      //         bodyMass: this.heightWeight,
+      //         bloodPressure: this.bloodPressure,
+      //         updatedAt: this.serverDate
+      //       })
+      //     }
+      //   });
+      //   if (!isExisting) {
+      //     const doc: PatientDocumentation = <PatientDocumentation>{};
+      //     doc.facilityId = this._locker.getObject('miniFacility');
+      //     doc.createdBy = this._facilityService.trimEmployee(this.loginEmployee);
+      //     doc.patientId = this.patient._id;
+      //     doc.document = {
+      //       documentType: this.selectedForm,
+      //       body: {
+      //         vitals: []
+      //       }
+      //     }
+      //     doc.document.body.vitals.push({
+      //       pulseRate: this.pulseRate,
+      //       respiratoryRate: this.respiratoryRate,
+      //       temperature: this.temperature,
+      //       bodyMass: this.heightWeight,
+      //       bloodPressure: this.bloodPressure,
+      //       updatedAt: this.serverDate
+      //     });
+      //     this.patientDocumentation.documentations.push(doc);
+      //   }
+
+      //   this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+      //     this.patientDocumentation = payload;
+      //     this.frmAddVitals.reset();
+      //     this.disableSaveBtn = false;
+      //     this.saveBtnText = "Add Vitals";
+      //   })
+      // })
 
 
     }
