@@ -1,6 +1,5 @@
 @import "globals/variables.scss";
 @import "globals/normalize.scss";
-
 html,
 body {
     font-family: $font-main;
@@ -18,7 +17,8 @@ ul {
     padding: 0;
     outline: 0;
 }
-li{
+
+li {
     outline: 0;
 }
 
@@ -596,7 +596,7 @@ select {
     color: #424242;
     letter-spacing: 1.5px;
     margin-top: 20px;
-    margin-bottom: -10px;
+    //margin-bottom: -10px;
 }
 
 .page-title {
@@ -1459,7 +1459,8 @@ ul.topmenuwrap li:hover {
     font-size: 16px;
     cursor: pointer;
 }
-.search-wrap .x:hover{
+
+.search-wrap .x:hover {
     color: #ff2500;
 }
 

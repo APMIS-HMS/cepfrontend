@@ -3,6 +3,11 @@
     position: fixed;
 }
 
+.inner-page-wrap {
+    margin-top: 0;
+    padding: 0 15px;
+}
+
 .page-title {
     text-align: left;
     position: absolute;
@@ -10,7 +15,6 @@
 
 .inner-page-contentArea {
     padding: 0;
-    padding-left: 5px;
 }
 
 .inner-menu1-wrap {
@@ -62,7 +66,8 @@
     font-size: 12px;
     text-decoration: underline;
 }
+
 .body-wrap {
     min-height: 0;
-    margin-bottom: 0;
+    margin-bottom: 15px;
 }

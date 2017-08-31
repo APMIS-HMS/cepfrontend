@@ -782,7 +782,7 @@ export class LabRequestsComponent implements OnInit {
       const request$ = Observable.fromPromise(this.requestService.create(request));
       const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
       Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
-        const request = results[0];
+        // const request = results[0];
         const billing = results[1];
         delete billing.facilityItem;
         delete billing.patientItem;
