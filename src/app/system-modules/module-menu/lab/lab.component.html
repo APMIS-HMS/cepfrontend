@@ -7,32 +7,7 @@
     <li (click)="changeRoute('investigation-pricing')" [class.pg-menuActive]="pricingContentArea"><i class="fa fa-filter" aria-hidden="true"></i> Investigation Pricing</li>
     <li (click)="changeRoute('templates')" [class.pg-menuActive]="templateContentArea"><i class="fa fa-briefcase" aria-hidden="true"></i> Template</li>
 </ul>
-<!-- this.requestContentArea = false;
-this.workbenchContentArea = true;
-this.investigationContentArea = false;
-this.pricingContentArea = false;
-this.panelContentArea = false;
-this.reportContentArea = false;
-this.externalContentArea = false;
-this.templateContentArea = false; -->
 <div class="inner-page-wrap">
-    <!-- <div class="lhs inner-page-menuTab">
-        <div class="lTab-title">LABORATORY MANAGER</div>
-        <ul class="nav-group">
-            <li [class.navActive]="requestContentArea" (click)="checkPageUrl('request');" routerLink="/dashboard/laboratory/requests">Laboratory Requests</li>
-            <li [class.navActive]="externalContentArea" (click)="checkPageUrl('external');" routerLink="/dashboard/laboratory/external-requests">External Requests</li>
-            <li [class.navActive]="reportContentArea" (click)="checkPageUrl('report');" routerLink="/dashboard/laboratory/reports">Report</li>
-        </ul>
-
-        <div class="lTab-title">LABORATORY SETUP</div>
-        <ul class="nav-group">
-            <li [class.navActive]="workbenchContentArea" (click)="checkPageUrl('workbenches');" routerLink="/dashboard/laboratory/workbenches">Workbench</li>
-            <li [class.navActive]="investigationContentArea" (click)="checkPageUrl('investigation');" routerLink="/dashboard/laboratory/investigations">Investigation</li>
-            <li [class.navActive]="pricingContentArea" (click)="checkPageUrl('investigation-pricing');" routerLink="/dashboard/laboratory/investigation-pricing">Investigation Pricing</li>
-            <li [class.navActive]="templateContentArea" (click)="checkPageUrl('template');" routerLink="/dashboard/laboratory/templates">Templates</li>
-            <li (click)="checkIntoWorkbench();">Check into Workbench</li>
-        </ul>
-    </div> -->
     <div class="inner-wrap-b body-wrap">
         <div class="facility-title">{{pageInView}}</div>
         <div class="title2">{{checkedInObject?.typeObject?.minorLocationObject?.name}}</div>

@@ -142,10 +142,11 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.homeCountries = results[3].data;
     })
   }
-  getEmployee(employee) {
+  getEmployee(id) {
     this.loadIndicatorVisible = true;
-    const employee$ = this.employeeService.get(employee._id, {});
-    const user$ = this.userService.find({ query: { personId: employee.personId } });
+    const auth = <any>this.locker.getObject('auth');
+    const employee$ = this.employeeService.get(id, {});
+    const user$ = this.userService.find({ query: { personId: auth.data.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};
@@ -229,6 +230,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     //     }
     //   });
     // });
+    this.route.params.subscribe((params: any) => {
+      this.getEmployee(params.id);
+    })
   }
   navEpDetail(val: Employee) {
     this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', val.personId]);
