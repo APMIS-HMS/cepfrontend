@@ -1,16 +1,16 @@
 <ul class="pg-menuWrap">
-  <li [class.navActive]="productNavMenu" (click)="changeRoute('home')">Home</li>
-  <li [class.navActive]="inventoryNavMenu" (click)="changeRoute('')">My Inventory</li>
-  <li [class.navActive]="initializeNavMenu" (click)="changeRoute('initialize-store')">Initialize Store</li>
-  <li [class.navActive]="stockTransferNavMenu" (click)="changeRoute('stock-transfer')">Transfer Stock</li>
-  <li [class.navActive]="stockHistoryNavMenu" (click)="changeRoute('stock-history')">Transfer History</li>
-  <li [class.navActive]="receiveStockNavMenu" (click)="changeRoute('receive-stock')">Receive Stock</li>
-  <li [class.navActive]="requisitionNavMenu" (click)="changeRoute('requisition')">Requisition</li>
+    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/store">Home</li>
+    <li [class.pg-menuActive]="inventoryNavMenu" routerLink="/dashboard/inventory-manager/inventory" (click)="changeRoute('/dashboard/inventory-manager/inventory')">My Inventory</li>
+    <li [class.pg-menuActive]="initializeNavMenu" routerLink="/dashboard/inventory-manager/initialize-store" (click)="changeRoute('/dashboard/inventory-manager/initialize-store')">Initialize Store</li>
+    <li [class.pg-menuActive]="stockTransferNavMenu" routerLink="/dashboard/inventory-manager/stock-transfer" (click)="changeRoute('/dashboard/inventory-manager/stock-transfer')">Transfer Stock</li>
+    <li [class.pg-menuActive]="stockHistoryNavMenu" routerLink="/dashboard/inventory-manager/stock-history" (click)="changeRoute('/dashboard/inventory-manager/stock-history')">Transfer History</li>
+    <li [class.pg-menuActive]="receiveStockNavMenu" routerLink="/dashboard/inventory-manager/receive-stock" (click)="changeRoute('/dashboard/inventory-manager/receive-stock')">Receive Stock</li>
+    <li [class.pg-menuActive]="requisitionNavMenu" routerLink="/dashboard/inventory-manager/requisition" (click)="changeRoute('/dashboard/inventory-manager/requisition')">Requisition</li>
 </ul>
 <div class="inner-wrap-b body-wrap">
-  <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-  <div class="inner-page-wrap">
-    <!-- <div class="lhs inner-page-menuTab">
+    <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
+    <div class="inner-page-wrap">
+        <!-- <div class="lhs inner-page-menuTab">
       <ul class="nav-group">
         <li [class.navActive]="initializeNavMenu" (click)="onInitialiseNavMenu()" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
         <li [class.navActive]="inventoryNavMenu" (click)="onClickInventoryNavMenu()" routerLink="/dashboard/inventory-manager/inventory">My Inventory</li>
@@ -22,10 +22,10 @@
         <li [class.navActive]="purchaseManagerNavMenu" routerLink="/dashboard/purchase-manager/orders">Purchase Manager</li>
       </ul>
     </div> -->
-    <div class="rhs inner-page-contentArea c-page-wrapper">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="clear"></div>
-    <div *ngIf="modal_on" class="modal-overlay">
-      <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
-    </div>
+        <div class="rhs inner-page-contentArea c-page-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="clear"></div>
+        <div *ngIf="modal_on" class="modal-overlay">
+            <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
+        </div>
