@@ -186,6 +186,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
     this.getForms();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (this.patient !== undefined) {
@@ -255,8 +256,8 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   }
 
   dateFormater(d) {
-    var dt = [d.getDate() + 1, 
-    d.getMonth()].join('/')+' '+
+    var dt = [d.getDate(), 
+    d.getMonth()+1].join('/')+' '+
       [d.getHours(),
       d.getMinutes(),
       d.getSeconds()].join(':');
@@ -269,9 +270,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
       for (let j = 0; j < this.lineChartData[i].data.length; j++) {
         _lineChartData[i].data[j] = this.lineChartData[i].data[j];
+        console.log(this.lineChartData[i].data[j]);
       }
     }
     this.lineChartData = _lineChartData;
+    
   }
 
   getForms() {
