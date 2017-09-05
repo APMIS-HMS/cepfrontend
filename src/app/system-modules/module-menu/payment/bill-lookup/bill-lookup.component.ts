@@ -1,7 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
+import { Router, ActivatedRoute } from '@angular/router';
+import {
+  FacilitiesService, BillingService, PatientService, InvoiceService, PersonService
+ } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 
@@ -23,9 +25,7 @@ export class BillLookupComponent implements OnInit {
   select3 = new FormControl('', []);
   searchPendingInvoices = new FormControl('', []);
   searchPendingBill = new FormControl('', []);
-
   user: User = <User>{};
-
   addItem = false;
   makePayment = false;
   addModefierPopup = false;
@@ -52,14 +52,16 @@ export class BillLookupComponent implements OnInit {
   total = 0;
   discount = 0;
   pendingBills: any[] = [];
-  loadingPendingBills: boolean = true;
+  loadingPendingBills: Boolean = true;
 
   constructor(private locker: CoolSessionStorage,
     private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
     private invoiceService: InvoiceService,
+    private _route: ActivatedRoute,
     private router: Router,
     private billingService: BillingService,
+    private personService: PersonService,
     private patientService: PatientService) {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.patientService.receivePatient().subscribe((payload: Patient) => {
@@ -100,6 +102,15 @@ export class BillLookupComponent implements OnInit {
     this.pageInView.emit('Generate Bill');
     this.user = <User>this.locker.getObject('auth');
 
+    this._route.params.subscribe(params => {
+      if (!!params.id && params.id !== undefined) {
+        this.patientService.find({ query: { facilityId: this.selectedFacility._id, personId: params.id }}).then(res => {
+          this.selectedPatient = res.data[0];
+          this.getPatientBills();
+        }).catch(err => console.log(err));
+      }
+		});
+
     this.itemQtyEdit.valueChanges.subscribe(value => {
       this.selectedBillItem.qty = value;
       this.selectedBillItem.amount = this.selectedBillItem.qty * this.selectedBillItem.unitPrice;
@@ -107,7 +118,7 @@ export class BillLookupComponent implements OnInit {
     });
 
     this._getAllPendingBills();
-    //this._getAllInvoices();
+    this._getAllInvoices();
   }
 
 
@@ -264,7 +275,7 @@ export class BillLookupComponent implements OnInit {
         });
       });
   }
-  
+
   onClickPatientPendingBill(pendingBill: any) {
     this.selectedPatient = pendingBill.patientItem;
     this.getPatientBills();
@@ -279,9 +290,9 @@ export class BillLookupComponent implements OnInit {
         const result = [];
 
         for (let i = 0; i < billings.length; i++) {
-            let val = billings[i];
+            const val = billings[i];
             const index = result.filter(x => x.patientId === val.patientId);
-            
+
             if (index.length > 0) {
               index[0].billItems = index[0].billItems.concat(val.billItems);
               index[0].subTotal += val.subTotal;
@@ -291,20 +302,19 @@ export class BillLookupComponent implements OnInit {
             }
         }
 
-        if(result.length > 0) {
+        if (result.length > 0) {
           this.pendingBills = result;
         } else {
           this.pendingBills = [];
         }
       }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
   }
-  
+
   private _getAllInvoices() {
     this.invoiceService.find({ query: { facilityId: this.selectedFacility._id }})
       .then(res => {
         console.log(res);
-      }).catch(err => console.log(err));
-      // }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
+      }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
   }
 
 
@@ -470,7 +480,7 @@ export class BillLookupComponent implements OnInit {
     this.selectedServiceBill = bill;
     this.priceItemDetailPopup = true;
   }
-  makePayment_onclick(){
+  makePayment_onclick() {
     this.makePayment = true;
   }
   close_onClick(e) {

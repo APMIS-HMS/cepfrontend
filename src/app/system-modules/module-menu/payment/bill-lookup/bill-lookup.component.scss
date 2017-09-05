@@ -50,7 +50,7 @@ th {
     background: transparent;
     padding: 0;
     box-sizing: border-box;
-    margin: 0;
+    margin: 0 5px;
 }
 
 // table{
@@ -386,7 +386,8 @@ td .cta-1:hover {
     margin: 5px auto;
     font-size: 16px;
 }
-.btn-wrap{
+
+.btn-wrap {
     display: flex;
     justify-content: space-around;
     align-items: center;

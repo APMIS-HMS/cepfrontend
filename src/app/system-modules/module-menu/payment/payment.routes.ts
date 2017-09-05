@@ -12,6 +12,7 @@ const PAYMENTMODULES_ROUTES: Routes = [
             { path: 'invoice/:id', component: InvoiceComponent },
             { path: 'invoice', component: InvoiceComponent },
             { path: 'bill', component: BillLookupComponent },
+            { path: 'bill/:id', component: BillLookupComponent },
         ]
     }
 ];
