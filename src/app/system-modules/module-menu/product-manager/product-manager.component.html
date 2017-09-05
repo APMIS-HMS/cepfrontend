@@ -1,34 +1,18 @@
+<ul class="pg-menuWrap">
+    <li [class.pg-menuActive]="" routerLink="/dashboard/store">Home</li>
+    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/product-manager/products" (click)="changeRoute('products')">Product</li>
+    <li [class.pg-menuActive]="supplierNavMenu" routerLink="/dashboard/product-manager/suppliers" (click)="changeRoute('suppliers')">Supplier</li>
+    <li [class.pg-menuActive]="categoryNavMenu" (click)="productCatSlide()">Product Type</li>
+    <li [class.pg-menuActive]="genericNavMenu" (click)="genericSlide()">Generic</li>
+    <li [class.pg-menuActive]="manufacturerNavMenu" (click)="manufacturerSlide()">Manufacturer</li>
+    <li [class.pg-menuActive]="presentationNavMenu" (click)="presentationSlide()">Presentation</li>
+    <li [class.pg-menuActive]="routeNavMenu" (click)="routeSlide()">Route</li>
+    <li [class.pg-menuActive]="strengthNavMenu" (click)="strengthSlide()">Strength</li>
+</ul>
+
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-     <!--
-    <div  class="second-menu">
-        <a [routerLink]="['/dashboard/store/home']" class="btning">Store</a>
-        <a [routerLink]="['/dashboard/product-manager/products']" class="btning btning-product">Product</a>
-        <a [routerLink]="['/dashboard/purchase-manager/orders']" class="btning">Purchase</a>
-        <a [routerLink]="['/dashboard/inventory-manager/inventory']" class="btning">Inventory</a>
-    </div>-->
-   <div (focusout)="contentSecMenuToggle()" class="inner-menu1-wrap responsive_nav-group">
-        <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
-        <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-            <li [routerLink]="['/dashboard/store/home']">Manage Store</li>
-            <li [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
-            <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
-            <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
-        </ul>
-    </div>
     <div class="inner-page-wrap" id="inner-page-wrap">
-        <div class="lhs inner-page-menuTab">
-            <ul class="nav-group">
-                <li [class.navActive]="productNavMenu" (click)="onClickProductNavMenu()" routerLink="/dashboard/product-manager/products">Product</li>
-                <li [class.navActive]="supplierNavMenu" (click)="onClickSupplierNavMenu()" routerLink="/dashboard/product-manager/suppliers">Supplier</li>
-                <li [class.navActive]="categoryNavMenu" (click)="productCatSlide()">Product Type</li>
-                <li [class.navActive]="genericNavMenu" (click)="genericSlide()">Generic</li>
-                <li [class.navActive]="manufacturerNavMenu" (click)="manufacturerSlide()">Manufacturer</li>
-                <li [class.navActive]="presentationNavMenu" (click)="presentationSlide()">Presentation</li>
-                <li [class.navActive]="routeNavMenu" (click)="routeSlide()">Route</li>
-                <li [class.navActive]="strengthNavMenu" (click)="strengthSlide()">Strength</li>
-            </ul>
-        </div>
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>
         </div>

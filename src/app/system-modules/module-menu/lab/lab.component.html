@@ -3,7 +3,7 @@
     <li (click)="changeRoute('external-requests')" [class.pg-menuActive]="externalContentArea"><i class="fa fa-braille" aria-hidden="true"></i> External Request</li>
     <li (click)="changeRoute('reports')" [class.pg-menuActive]="reportContentArea"><i class="fa fa-building" aria-hidden="true"></i> Report</li>
     <li (click)="changeRoute('workbenches')" [class.pg-menuActive]="workbenchContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> WorkBenches</li>
-    <li (click)="changeRoute('investigations')" [class.pg-menuActive]="investigationContentArea"><i class="fa fa-superpowers" aria-hidden="true"></i> Investigation</li>
+    <li (click)="changeRoute('investigations')" [class.pg-menuActive]="investigationContentArea"><i class="fa fa-eyedropper" aria-hidden="true"></i> Investigation</li>
     <li (click)="changeRoute('investigation-pricing')" [class.pg-menuActive]="pricingContentArea"><i class="fa fa-filter" aria-hidden="true"></i> Investigation Pricing</li>
     <li (click)="changeRoute('templates')" [class.pg-menuActive]="templateContentArea"><i class="fa fa-briefcase" aria-hidden="true"></i> Template</li>
 </ul>
@@ -11,15 +11,14 @@
     <div class="inner-wrap-b body-wrap">
         <div class="facility-title">{{pageInView}}</div>
         <div class="title2">{{checkedInObject?.typeObject?.minorLocationObject?.name}}</div>
-        <div class="inner-menu1-wrap responsive_nav-group">
-            <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
-            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-                <li (click)="navFpHome()"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-                <li (click)="navFpModules()"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
-                <li (click)="navFpDepartments()"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
-                <li (click)="navFpLocations()"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
-            </ul>
-        </div>
+    </div>
+    <div class="top-button-box">
+        <ul class="topmenuwrap" (click)="checkIntoWorkbench();">
+            <li tabindex="0">
+                <i aria-hidden="true" class="fa fa-plus-circle"></i>
+                <span>Check into WorkBench</span>
+            </li>
+        </ul>
     </div>
     <div class="rhs inner-page-contentArea c-page-wrapper">
         <router-outlet></router-outlet>

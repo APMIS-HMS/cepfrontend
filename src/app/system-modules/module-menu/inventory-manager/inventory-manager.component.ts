@@ -135,11 +135,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //     }
     //   });
 
-
-
-
-
-
     const page: string = this._router.url;
     console.log(page);
     this.checkPageUrl(page);
@@ -165,100 +160,178 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickInventoryNavMenu() {
-    this.inventoryNavMenu = true;
-    this.stockTakingNavMenu = false;
-    this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this.initializeNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
-  onInitialiseNavMenu() {
-    this.stockTakingNavMenu = false;
-    this.inventoryNavMenu = false;
-    this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this.initializeNavMenu = true;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
-  onClickStockTakingNavMenu() {
-     this.stockTakingNavMenu = true;
-    this.inventoryNavMenu = false;
-    this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this.initializeNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickInventoryNavMenu() {
+  //   this.inventoryNavMenu = true;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
+  // onInitialiseNavMenu() {
+  //   this.stockTakingNavMenu = false;
+  //   this.inventoryNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = true;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
+  // onClickStockTakingNavMenu() {
+  //   this.stockTakingNavMenu = true;
+  //   this.inventoryNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickStockTransferNavMenu() {
-    this.stockTransferNavMenu = true;
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockHistoryNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this.initializeNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
-  onClickStockHistoryNavMenu() {
-     this.stockHistoryNavMenu = true;
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this.initializeNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickStockTransferNavMenu() {
+  //   this.stockTransferNavMenu = true;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
+  // onClickStockHistoryNavMenu() {
+  //   this.stockHistoryNavMenu = true;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickReceiveStockNavMenu() {
-    this.receiveStockNavMenu = true;
-    this.stockHistoryNavMenu = false;
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.requisitionNavMenu = false;
-    this.initializeNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickReceiveStockNavMenu() {
+  //   this.receiveStockNavMenu = true;
+  //   this.stockHistoryNavMenu = false;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickRequisitionNavMenu() {
-    this.requisitionNavMenu = true;
-    this.stockHistoryNavMenu = false;
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.initializeNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickRequisitionNavMenu() {
+  //   this.requisitionNavMenu = true;
+  //   this.stockHistoryNavMenu = false;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
+  changeRoute(val) {
+    console.log(val);
+    if (val == '/dashboard/inventory-manager/inventory') {
+      this.inventoryNavMenu = true;
+      this.stockTakingNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/initialize-store') {
+      this.stockTakingNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = true;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/stock-transfer') {
+      this.stockTransferNavMenu = true;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/stock-history') {
+      this.stockHistoryNavMenu = true;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/receive-stock') {
+      this.receiveStockNavMenu = true;
+      this.stockHistoryNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/requisition') {
+      this.requisitionNavMenu = true;
+      this.stockHistoryNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    }
+  }
 
   private checkPageUrl(param: string) {
-    if (param.includes('inventory')) {
+    if (param.includes('inventory-manager/inventory')) {
       this.inventoryNavMenu = true;
+      this.stockTakingNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
     } else if (param.includes('stock-taking')) {
       this.stockTakingNavMenu = true;
+    } else if (param.includes('initialize-store')) {
+      this.initializeNavMenu = true;
     } else if (param.includes('stock-transfer')) {
       this.stockTransferNavMenu = true;
     } else if (param.includes('receive-stock')) {

@@ -4,8 +4,8 @@
         <form [formGroup]="templateFormGroup">
             <div class="content-left">
                 <div class="form-control-box">
-                    <md-select placeholder="Scope Level" formControlName="scopeLevel">
-                        <md-option *ngFor="let scopeLevel of scopeLevels" [(value)]="scopeLevel">{{scopeLevel.name}}</md-option>
+                    <md-select placeholder="Scope Level" formControlName="apmisScopeLevel">
+                        <md-option *ngFor="let scopeLevel of scopeLevels" [value]="scopeLevel">{{scopeLevel.name}}</md-option>
                     </md-select>
                 </div>
             </div>
