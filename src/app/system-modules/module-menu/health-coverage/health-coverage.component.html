@@ -1,3 +1,11 @@
+<ul class="pg-menuWrap">
+    <li [class.pg-menuActive]="hmoCover" (click)="hmoCover_show()">Health Insurance</li>
+    <li [class.pg-menuActive]="companyCover" (click)="companyCover_show()">Company Retainership</li>
+    <li [class.pg-menuActive]="familyCover" (click)="familyCover_show()">Family Cover</li>
+    <li [class.pg-menuActive]="payment" (click)="payment_show()">Payment</li>
+    <li [class.pg-menuActive]="recievePayment" (click)="recievePayment_show()">Recieve Payment</li>
+</ul>
+
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
     <div class="inner-menu1-wrap responsive_nav-group">
@@ -11,7 +19,7 @@
         </ul>
     </div>
     <div class="inner-page-wrap">
-        <div class="lhs inner-page-menuTab">
+        <!-- <div class="lhs inner-page-menuTab">
             <ul class="nav-group">
                 <li [class.navActive]="hmoCover" (click)="hmoCover_show()">Health Insurance</li>
                 <li [class.navActive]="companyCover" (click)="companyCover_show()">Company Retainership</li>
@@ -19,7 +27,7 @@
                 <li [class.navActive]="payment" (click)="payment_show()">Payment</li>
                 <li [class.navActive]="recievePayment" (click)="recievePayment_show()">Recieve Payment</li>
             </ul>
-        </div>
+        </div> -->
 
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, Event, NavigationStart, ActivatedRoute, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
 @Component({
   selector: 'app-health-coverage',
@@ -29,6 +29,8 @@ export class HealthCoverageComponent implements OnInit {
   }
 
   ngOnInit() {
+    const page: string = this.router.url;
+    this.checkPageUrl(page);
   }
   contentSecMenuToggle(){
 
@@ -81,5 +83,44 @@ export class HealthCoverageComponent implements OnInit {
     this.pageInView = "Recieve Payment";
     this.router.navigate(['/dashboard/health-coverage/recieve-payment']);
   }
+
+  private checkPageUrl(param: string) {
+		if (param.includes('hmo-cover')) {
+			this.companyCover = false;
+      this.familyCover = false;
+      this.payment = false;
+      this.hmoCover = true;
+      this.recievePayment = false;
+      this.pageInView = "Health Insurance";
+		} else if (param.includes('company-cover')) {
+			this.companyCover = true;
+      this.familyCover = false;
+      this.payment = false;
+      this.hmoCover = false;
+      this.recievePayment = false;
+      this.pageInView = "Company Retainership";
+		} else if (param.includes('family-cover')) {
+			this.companyCover = false;
+      this.familyCover = true;
+      this.payment = false;
+      this.hmoCover = false;
+      this.recievePayment = false;
+      this.pageInView = "Family Cover";
+		} else if (param.includes('recieve-payment')) {
+			this.companyCover = false;
+      this.familyCover = false;
+      this.payment = false;
+      this.hmoCover = false;
+      this.recievePayment = true;
+      this.pageInView = "Recieve Payment";
+		} else if (param.includes('payment')) {
+			this.companyCover = false;
+      this.familyCover = false;
+      this.payment = true;
+      this.hmoCover = false;
+      this.recievePayment = false;
+      this.pageInView = "Payment";
+		}
+	}
 
 }
