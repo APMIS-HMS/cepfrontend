@@ -3,7 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { Facility,Inventory,InventoryTransaction} from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { ProductService,InventoryService } from '../../../../services/facility-manager/setup/index';
+import {StoreService, ProductService,InventoryService} from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -17,7 +17,8 @@ export class InitializeStoreComponent implements OnInit {
   myForm: FormGroup;
   ischeck: boolean;
   name: any;
-  inventoryModel:Inventory=<Inventory>{};
+  checkingObject: any = <any>{};
+  inventoryModel:Inventory = <Inventory>{};
   InventoryTxnModel:InventoryTransaction=<InventoryTransaction>{};
   //initializePriduct: InitProduct[];
   errorMessage = 'an error occured';
@@ -31,6 +32,7 @@ export class InitializeStoreComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.checkingObject = this._locker.getObject('checkingObject');
     this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
@@ -43,14 +45,22 @@ export class InitializeStoreComponent implements OnInit {
   initProduct() {
     return this._fb.group({
       batchno: ['', Validators.required],
-      quantity: ['', Validators.required]
+      quantity: ['', Validators.required],
+      product: ['']
     });
   }
   addProduct(index: number, ischecked: boolean, data: any){
     if (ischecked) {
       this.selectedProducts.push(data);
       const control = <FormArray>this.myForm.controls['initproduct'];
-      control.push(this.initProduct());
+      control.push(
+        this._fb.group({
+          batchno: ['', Validators.required],
+          quantity: ['', Validators.required],
+          product: [data, Validators.required]
+        })
+      );
+      //control.push(this.initProduct());
       console.log(this.selectedProducts);
     } else {
       this.removeProduct(index);
@@ -74,23 +84,48 @@ export class InitializeStoreComponent implements OnInit {
 //     });
 // }
    save(valid,value) {
-    console.log(value);
      if(valid){
        console.log(value);
-      this.inventoryModel.facilityId = this.selectedFacility._id;
-      this.inventoryModel.storeId;
-      this.inventoryModel.serviceId;
-      this.inventoryModel.categoryId;
-      this.inventoryModel.facilityServiceId;
-      this.inventoryModel.productId = this.selectedProducts._id;
-      this.inventoryModel.totalQuantity = value.totalQuantity;
-      this.inventoryModel.transactions = [];
-      this.InventoryTxnModel.batchNumber = value.batchNumber;
-      this.InventoryTxnModel.quantity = value.quantity;
-      this.inventoryModel.transactions.push(this.InventoryTxnModel)
-      this._inventoryService.create(this.inventoryModel).then(payload => {
-        console.log(payload);
+      const transactionsArray = [];
+      let totalQuantity = 0;
+      value.initproduct.forEach(item => {
+          console.log(item);
+          const batchObject = {
+            batchNumber: item.batchno,
+            quantity: item.quantity,
+            // productionDate: { type: Date, required: false },
+            // expiryDate: { type: Date, required: false },
+            // costPrice: { type: Number, required: false },
+            // quantity: { type: Number, require: true },
+            // strengthId: { type: Schema.Types.ObjectId, require: false },
+            // purchaseEntryId: { type: Schema.Types.ObjectId, require: false },
+            // purchaseEntryDetailId: { type: Schema.Types.ObjectId, require: false },
+            // createdAt: { type: Date, 'default': Date.now },
+            // updatedAt: { type: Date, 'default': Date.now },
+            // batchTransactions: [batchTransactionSchema], // Transactions at the batch level.
+            // inventorytransactionTypeId: { type: Schema.Types.ObjectId, require: false }, // in, out
+          }
+          totalQuantity += item.quantity;
+          this.inventoryModel = <Inventory> {
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingObject.typeObject.storeId,
+            serviceId: item.product.serviceId,
+            categoryId: item.product.categoryId,
+            facilityServiceId: item.product.facilityServiceId,
+            productId: item.product.productId,
+            transactions: transactionsArray,
+            reorderLevel: 0,
+            reorderQty: 0,
+            isOpen: false,
+          };
+          
+          transactionsArray.push(batchObject);
       });
+       console.log(this.inventoryModel);
+       this.inventoryModel.totalQuantity = totalQuantity;
+       this._inventoryService.create(this.inventoryModel).then(payload => {
+         console.log(payload);
+        }).catch(err => console.log(err));
      }
     }
 }
