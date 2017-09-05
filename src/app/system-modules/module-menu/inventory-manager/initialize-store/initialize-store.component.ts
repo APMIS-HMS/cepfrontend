@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { Facility } from '../../../../models/index';
+import { Facility,Inventory,InventoryTransaction} from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { ProductService } from '../../../../services/facility-manager/setup/index';
+import { ProductService,InventoryService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -17,13 +17,17 @@ export class InitializeStoreComponent implements OnInit {
   myForm: FormGroup;
   ischeck: boolean;
   name: any;
-  
+  inventoryModel:Inventory=<Inventory>{};
+  InventoryTxnModel:InventoryTransaction=<InventoryTransaction>{};
+  //initializePriduct: InitProduct[];
+  errorMessage = 'an error occured';
 
   constructor(
     private _fb: FormBuilder,
     private _locker: CoolSessionStorage,
     private _inventoryEventEmitter: InventoryEmitterService,
-    private _productService: ProductService) {
+    private _productService: ProductService,
+    private _inventoryService: InventoryService) {
    }
 
   ngOnInit() {
@@ -69,9 +73,24 @@ export class InitializeStoreComponent implements OnInit {
 //       console.log(this.name);
 //     });
 // }
-   save() {
-        // call API to save
-        console.log(this.myForm.value);
-        this.myForm.reset();
+   save(valid,value) {
+    console.log(value);
+     if(valid){
+       console.log(value);
+      this.inventoryModel.facilityId = this.selectedFacility._id;
+      this.inventoryModel.storeId;
+      this.inventoryModel.serviceId;
+      this.inventoryModel.categoryId;
+      this.inventoryModel.facilityServiceId;
+      this.inventoryModel.productId = this.selectedProducts._id;
+      this.inventoryModel.totalQuantity = value.totalQuantity;
+      this.inventoryModel.transactions = [];
+      this.InventoryTxnModel.batchNumber = value.batchNumber;
+      this.InventoryTxnModel.quantity = value.quantity;
+      this.inventoryModel.transactions.push(this.InventoryTxnModel)
+      this._inventoryService.create(this.inventoryModel).then(payload => {
+        console.log(payload);
+      });
+     }
     }
 }

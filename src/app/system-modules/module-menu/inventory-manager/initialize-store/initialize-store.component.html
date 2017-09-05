@@ -41,7 +41,7 @@
                       </div>-->
                     </div>
                 <div class="panel-body">
-                    <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+                    <form [formGroup]="myForm" novalidate>
                          <div formArrayName="initproduct">
                              <div *ngFor="let product of selectedProducts; let address of myForm.controls.initproduct.controls; let i=index;">
                                   <div>
@@ -67,14 +67,8 @@
                                   </div>
                              </div>
                          </div>
-                         <!--
-                         <div class="margin-20">
-                              <a (click)="addProduct()" style="cursor: default">
-                                Add +
-                              </a>
-                          </div>-->
                          <div class="col-sm-12 text-center">
-                              <a md-raised-button [disabled]="!myForm.valid" (click)="save()">Save</a>
+                              <a md-raised-button [disabled]="!myForm.valid" (click)="save(myForm.valid,myForm.value)">Save</a>
                          </div>                            
                     </form>
                   </div>
