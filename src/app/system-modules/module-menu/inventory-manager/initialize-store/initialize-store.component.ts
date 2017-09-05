@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { Facility } from '../../../../models/index';
+import { Facility,Inventory,InventoryTransaction} from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
-import { ProductService } from '../../../../services/facility-manager/setup/index';
+import {StoreService, ProductService,InventoryService} from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -17,16 +17,22 @@ export class InitializeStoreComponent implements OnInit {
   myForm: FormGroup;
   ischeck: boolean;
   name: any;
-  
+  checkingObject: any = <any>{};
+  inventoryModel:Inventory = <Inventory>{};
+  InventoryTxnModel:InventoryTransaction=<InventoryTransaction>{};
+  //initializePriduct: InitProduct[];
+  errorMessage = 'an error occured';
 
   constructor(
     private _fb: FormBuilder,
     private _locker: CoolSessionStorage,
     private _inventoryEventEmitter: InventoryEmitterService,
-    private _productService: ProductService) {
+    private _productService: ProductService,
+    private _inventoryService: InventoryService) {
    }
 
   ngOnInit() {
+    this.checkingObject = this._locker.getObject('checkingObject');
     this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
@@ -39,14 +45,22 @@ export class InitializeStoreComponent implements OnInit {
   initProduct() {
     return this._fb.group({
       batchno: ['', Validators.required],
-      quantity: ['', Validators.required]
+      quantity: ['', Validators.required],
+      product: ['']
     });
   }
   addProduct(index: number, ischecked: boolean, data: any){
     if (ischecked) {
       this.selectedProducts.push(data);
       const control = <FormArray>this.myForm.controls['initproduct'];
-      control.push(this.initProduct());
+      control.push(
+        this._fb.group({
+          batchno: ['', Validators.required],
+          quantity: ['', Validators.required],
+          product: [data, Validators.required]
+        })
+      );
+      //control.push(this.initProduct());
       console.log(this.selectedProducts);
     } else {
       this.removeProduct(index);
@@ -69,9 +83,49 @@ export class InitializeStoreComponent implements OnInit {
 //       console.log(this.name);
 //     });
 // }
-   save() {
-        // call API to save
-        console.log(this.myForm.value);
-        this.myForm.reset();
+   save(valid,value) {
+     if(valid){
+       console.log(value);
+      const transactionsArray = [];
+      let totalQuantity = 0;
+      value.initproduct.forEach(item => {
+          console.log(item);
+          const batchObject = {
+            batchNumber: item.batchno,
+            quantity: item.quantity,
+            // productionDate: { type: Date, required: false },
+            // expiryDate: { type: Date, required: false },
+            // costPrice: { type: Number, required: false },
+            // quantity: { type: Number, require: true },
+            // strengthId: { type: Schema.Types.ObjectId, require: false },
+            // purchaseEntryId: { type: Schema.Types.ObjectId, require: false },
+            // purchaseEntryDetailId: { type: Schema.Types.ObjectId, require: false },
+            // createdAt: { type: Date, 'default': Date.now },
+            // updatedAt: { type: Date, 'default': Date.now },
+            // batchTransactions: [batchTransactionSchema], // Transactions at the batch level.
+            // inventorytransactionTypeId: { type: Schema.Types.ObjectId, require: false }, // in, out
+          }
+          totalQuantity += item.quantity;
+          this.inventoryModel = <Inventory> {
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingObject.typeObject.storeId,
+            serviceId: item.product.serviceId,
+            categoryId: item.product.categoryId,
+            facilityServiceId: item.product.facilityServiceId,
+            productId: item.product.productId,
+            transactions: transactionsArray,
+            reorderLevel: 0,
+            reorderQty: 0,
+            isOpen: false,
+          };
+          
+          transactionsArray.push(batchObject);
+      });
+       console.log(this.inventoryModel);
+       this.inventoryModel.totalQuantity = totalQuantity;
+       this._inventoryService.create(this.inventoryModel).then(payload => {
+         console.log(payload);
+        }).catch(err => console.log(err));
+     }
     }
 }

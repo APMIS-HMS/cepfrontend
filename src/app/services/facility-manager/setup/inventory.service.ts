@@ -53,8 +53,8 @@ export class InventoryService {
     return this._socket.get(id, query);
   }
 
-  create(gender: any) {
-    return this._socket.create(gender);
+  create(inventory: any) {
+    return this._socket.create(inventory);
   }
 
   remove(id: string, query: any) {
@@ -68,5 +68,5 @@ export class InventoryService {
   update(inventory: any) {
     return this._socket.update(inventory._id, inventory);
   }
-
+  
 }
