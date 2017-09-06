@@ -38,28 +38,28 @@ export class HealthCoverageComponent implements OnInit {
   pageInViewLoader(title) {
     this.pageInView = title;
   }
-  private checkPageUrl(param: string) {
-		if (param.includes('health-coverage/hmo-cover')) {
-      this.companyCover = false;
-      this.familyCover = false;
-      this.payment = false;
-      this.hmoCover = true;
-      this.recievePayment = false;
-		} else if (param.includes('health-coverage/company-cover')) {
-      this.companyCover = true;
-      this.familyCover = false;
-      this.payment = false;
-      this.hmoCover = false;
-      this.recievePayment = false;
+  // private checkPageUrl(param: string) {
+	// 	if (param.includes('health-coverage/hmo-cover')) {
+  //     this.companyCover = false;
+  //     this.familyCover = false;
+  //     this.payment = false;
+  //     this.hmoCover = true;
+  //     this.recievePayment = false;
+	// 	} else if (param.includes('health-coverage/company-cover')) {
+  //     this.companyCover = true;
+  //     this.familyCover = false;
+  //     this.payment = false;
+  //     this.hmoCover = false;
+  //     this.recievePayment = false;
 		
-		} else if (param.includes('health-coverage/family-cover')) {
+	// 	} else if (param.includes('health-coverage/family-cover')) {
 		
-		} else if (param.includes('health-coverage/payment')) {
+	// 	} else if (param.includes('health-coverage/payment')) {
 			
-		} else if (param.includes('health-coverage/make-payment')) {
+	// 	} else if (param.includes('health-coverage/make-payment')) {
 		
-		}
-	}
+	// 	}
+	// }
   companyCover_show() {
     this.companyCover = true;
     this.familyCover = false;
