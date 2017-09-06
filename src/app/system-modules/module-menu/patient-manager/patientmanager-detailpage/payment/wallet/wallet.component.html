@@ -75,3 +75,37 @@
     </tbody>
   </table>
 </div>
+
+
+
+<!-- wallet pop -->
+<div class="modal-overlay" *ngIf="fundPopShow" >
+    <div class="form-modal center-center">
+        <div class="modal-baseWrap animated pulse">
+            <div class="modal-close-ico" aria-hidden="true" (click)="onClose()">X</div>
+            <legend class="modal_title">Fund Wallet</legend>
+                <div class="acc-bal">
+                    <div class="acc-content survery">
+                        <div class="alert alert-info text-center">
+                                <strong>Account Bal: </strong> N3,000
+                        </div>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <form>
+                        <md-select placeholder="Mode of Payment" [(ngModel)]="selectedValue" name="wallet">
+                            <md-option *ngFor="let wallet of wallets" [value]="wallet.value">
+                                {{wallet.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <md-input-container class="example-full-width">
+                                <input mdInput placeholder="Enter Amount">
+                        </md-input-container>
+                        <div class="container-center">
+                            <button md-raised-button style="text-align:center;">Fund Wallet</button>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>

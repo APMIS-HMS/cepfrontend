@@ -112,7 +112,7 @@ export class InitializeStoreComponent implements OnInit {
             serviceId: item.product.serviceId,
             categoryId: item.product.categoryId,
             facilityServiceId: item.product.facilityServiceId,
-            productId: item.product.productId,
+            productId: item.product._id,
             transactions: transactionsArray,
             reorderLevel: 0,
             reorderQty: 0,
@@ -125,7 +125,10 @@ export class InitializeStoreComponent implements OnInit {
        this.inventoryModel.totalQuantity = totalQuantity;
        this._inventoryService.create(this.inventoryModel).then(payload => {
          console.log(payload);
+        this.myForm.removeControl;
+
         }).catch(err => console.log(err));
      }
     }
+    
 }

@@ -9,9 +9,17 @@ import { PersonService } from '../../../../../../services/facility-manager/setup
 })
 export class WalletComponent implements OnInit {
   @Input() patient;
-  search: FormControl;
   person: any;
   transactions: any[] = [];
+  search: FormControl;
+  fundPopShow = false;
+  selectedValue: string;
+  
+    wallets = [
+      {value: 'cash', viewValue: 'Cash'},
+      {value: 'paystack', viewValue: 'Paystack'},
+
+    ];
 
   constructor(private personService: PersonService) { }
 
@@ -52,6 +60,7 @@ export class WalletComponent implements OnInit {
     })
   }
   fundWallet() {
+    this.fundPopShow = true;
     const personId = this.person._id;
     const transactionType = 'Dr';
     const transactionSource = 'POS';
@@ -62,5 +71,8 @@ export class WalletComponent implements OnInit {
       this.person = payload.body;
       this.transactions = this.person.wallet.transactions;
     })
+  }
+  onClose() {
+    this.fundPopShow = false;
   }
 }
