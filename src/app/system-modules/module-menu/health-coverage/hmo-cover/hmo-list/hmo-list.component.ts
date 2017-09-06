@@ -6,7 +6,7 @@ import { Facility } from './../../../../../models/facility-manager/setup/facilit
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { HmoService, FacilitiesService, FacilityTypesService } from '../../../../../services/facility-manager/setup/index';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-hmo-list',
   templateUrl: './hmo-list.component.html',
@@ -35,7 +35,7 @@ export class HmoListComponent implements OnInit {
   user: User = <User>{};
 
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private facilityService: FacilitiesService,
-    private facilityTypeService: FacilityTypesService, private locker: CoolSessionStorage) { }
+    private facilityTypeService: FacilityTypesService, private locker: CoolSessionStorage, private router: Router) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('miniFacility');
@@ -110,8 +110,9 @@ export class HmoListComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
 
-  show_beneficiaries() {
-    this.showBeneficiaries.emit(true);
+  show_beneficiaries(hmo) {
+    // this.showBeneficiaries.emit(true);
+    this.router.navigate(['/dashboard/health-coverage/hmo-cover-list/', hmo._id]);
   }
   onChange(e) {
 
@@ -174,7 +175,7 @@ export class HmoListComponent implements OnInit {
   }
   getEnrolleeCount(enrolleeList) {
     let retCount = 0;
-    if(enrolleeList.length > 0){
+    if (enrolleeList.length > 0) {
       return enrolleeList[0].enrollees.length;
     }
     return retCount;
@@ -186,12 +187,12 @@ export class HmoListComponent implements OnInit {
     return this.loginHMOListObject.hmos.findIndex(x => x.hmo_id === this.selectedHMO._id) > -1;
   }
   save(valid, value) {
-    if(this.checkHmo()){
-      if(this.selectedHMO._id === undefined){
-        this._notification('Warning','Please select and HMO to continue!');
+    if (this.checkHmo()) {
+      if (this.selectedHMO._id === undefined) {
+        this._notification('Warning', 'Please select and HMO to continue!');
         return;
       }
-      this._notification('Warning','The selected HMO is already in the list of HMOs');
+      this._notification('Warning', 'The selected HMO is already in the list of HMOs');
       return;
     }
     let newHmo = {

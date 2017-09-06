@@ -17,8 +17,7 @@ export class WalletComponent implements OnInit {
   
     wallets = [
       {value: 'cash', viewValue: 'Cash'},
-      {value: 'paystack', viewValue: 'Paystack'},
-
+      {value: 'paystack', viewValue: 'Paystack'}
     ];
 
   constructor(private personService: PersonService) { }
@@ -65,7 +64,7 @@ export class WalletComponent implements OnInit {
     const transactionType = 'Dr';
     const transactionSource = 'POS';
     const amount = 500;
-    const description = 'payment for investigation'
+    const description = 'payment for investigation';
 
     this.personService.walletTransaction(personId, transactionType, transactionSource, amount, description).then(payload => {
       this.person = payload.body;
