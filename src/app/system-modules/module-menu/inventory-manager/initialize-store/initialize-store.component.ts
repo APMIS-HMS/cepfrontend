@@ -90,42 +90,33 @@ export class InitializeStoreComponent implements OnInit {
       let totalQuantity = 0;
       value.initproduct.forEach(item => {
           console.log(item);
-          const batchObject = {
+          let batchObject = {
             batchNumber: item.batchno,
             quantity: item.quantity,
-            // productionDate: { type: Date, required: false },
-            // expiryDate: { type: Date, required: false },
-            // costPrice: { type: Number, required: false },
-            // quantity: { type: Number, require: true },
-            // strengthId: { type: Schema.Types.ObjectId, require: false },
-            // purchaseEntryId: { type: Schema.Types.ObjectId, require: false },
-            // purchaseEntryDetailId: { type: Schema.Types.ObjectId, require: false },
-            // createdAt: { type: Date, 'default': Date.now },
-            // updatedAt: { type: Date, 'default': Date.now },
-            // batchTransactions: [batchTransactionSchema], // Transactions at the batch level.
-            // inventorytransactionTypeId: { type: Schema.Types.ObjectId, require: false }, // in, out
           }
           totalQuantity += item.quantity;
+          transactionsArray.push(batchObject);
           this.inventoryModel = <Inventory> {
             facilityId: this.selectedFacility._id,
             storeId: this.checkingObject.typeObject.storeId,
             serviceId: item.product.serviceId,
             categoryId: item.product.categoryId,
             facilityServiceId: item.product.facilityServiceId,
-            productId: item.product.productId,
+            productId: item.product._id,
             transactions: transactionsArray,
             reorderLevel: 0,
             reorderQty: 0,
             isOpen: false,
           };
-          
-          transactionsArray.push(batchObject);
       });
        console.log(this.inventoryModel);
        this.inventoryModel.totalQuantity = totalQuantity;
        this._inventoryService.create(this.inventoryModel).then(payload => {
          console.log(payload);
-        }).catch(err => console.log(err));
+        this.myForm.reset();
+
+        });
      }
     }
+    
 }

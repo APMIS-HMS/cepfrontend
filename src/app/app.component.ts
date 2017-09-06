@@ -37,6 +37,8 @@ export class AppComponent implements OnInit {
               this.error(obj.text);
             } else if (obj.type === 'Info') {
               this.info(obj.text);
+            }else if(obj.type ==='Warning'){
+              this.warning(obj.text);
             }
           }
         }
@@ -56,6 +58,9 @@ export class AppComponent implements OnInit {
   }
   info(text) {
     this.toastr.info(text, 'Info');
+  }
+  warning(text){
+    this.toastr.warning(text, 'Warning');
   }
   checkRouterEvent(routerEvent: Event): void {
     if (routerEvent instanceof NavigationStart) {
