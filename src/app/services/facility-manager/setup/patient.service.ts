@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
-import {  Patient } from '../../../models/index';
+import { Patient } from '../../../models/index';
 const request = require('superagent');
 
 @Injectable()
@@ -81,12 +81,10 @@ export class PatientService {
     return this._socket.update(patient._id, patient);
   }
   searchPatient(facilityId: string, searchText: string) {
-    // path = 'http://localhost:3030/patient?facilityid=5859041abf87fb1918b5c256&searchtext=Rebecca';
     const host = this._restService.getHost();
     const path = host + '/patient';
     return request
       .get(path)
       .query({ facilityid: facilityId, searchtext: searchText }); // query string 
   }
-
 }

@@ -56,7 +56,7 @@ export class HmoListComponent implements OnInit {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType._id,
           name: { $regex: value, '$options': 'i' },
-          $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
+          $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject', 'address']
         }
       }
     });
@@ -72,6 +72,7 @@ export class HmoListComponent implements OnInit {
       if (payload.data.length > 0) {
         this.loginHMOListObject = payload.data[0];
       } else {
+        this.loginHMOListObject.facilityId = this.selelctedFacility;
         this.loginHMOListObject.hmos = [];
       }
     })
@@ -116,43 +117,106 @@ export class HmoListComponent implements OnInit {
 
   }
   public upload(e, hmo) {
-    console.log('am here')
+    // console.log('am here')
 
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
-      console.log(fileBrowser.files);
+      // console.log(fileBrowser.files);
       const formData = new FormData();
       formData.append("excelfile", fileBrowser.files[0]);
       formData.append("hmoId", hmo._id);
-      console.log(formData)
+      // console.log(formData)
       this.facilityService.upload(formData, this.selectedHMO._id).then(res => {
         // do stuff w/my uploaded file
         // console.log(res);
-        if(res.body !== undefined && res.body.error_code===0){
-          console.log(res.body.data)
+        let enrolleeList: any[] = [];
+        if (res.body !== undefined && res.body.error_code === 0) {
+          // console.log(res.body.data.Sheet1);
+          res.body.data.Sheet1.forEach(row => {
+            let rowObj: any = <any>{};
+            rowObj.serial = row.A;
+            rowObj.surname = row.B;
+            rowObj.firstName = row.C;
+            rowObj.gender = row.D;
+            rowObj.filNo = row.E;
+            rowObj.category = row.F;
+            rowObj.sponsor = row.G;
+            rowObj.plan = row.H;
+            rowObj.type = row.I;
+            rowObj.date = this.excelDateToJSDate(row.J);
+            enrolleeList.push(rowObj);
+          });
+          // console.log(enrolleeList);
+          const index = this.loginHMOListObject.hmos.findIndex(x => x._id === hmo._id);
+          let facHmo = this.loginHMOListObject.hmos[index];
+          let enrolleeItem = {
+            month: new Date().getMonth() + 1,
+            year: new Date().getFullYear(),
+            enrollees: enrolleeList
+          }
+          console.log(enrolleeItem);
+
+          facHmo.enrolleeList.push(enrolleeItem);
+          console.log(facHmo);
+          this.loginHMOListObject.hmos[index] = facHmo;
+
+
+          console.log(this.loginHMOListObject);
+          this.hmoService.update(this.loginHMOListObject).then(pay => {
+            console.log(pay);
+            this.getLoginHMOList();
+          })
         }
       }).catch(err => {
         this._notification('Error', "There was an error uploading the file");
       });
     }
   }
-  save(valid, value) {
-    this.loginHMOListObject.facilityId = this.selelctedFacility;
-    this.loginHMOListObject.hmos.push(this.selectedHMO);
-    if (this.selectedHMO._id !== undefined) {
-      if (this.loginHMOListObject._id === undefined) {
-        this.hmoService.create(this.loginHMOListObject).then(payload => {
-          console.log(payload);
-          this._notification('Success', 'Selected HMO added to your HMO list successfully');
-          this.frmNewHmo.reset();
-        })
-      } else {
-        this.hmoService.update(this.loginHMOListObject).then(payload => {
-          this._notification('Success', 'Selected HMO added to your HMO list successfully');
-          this.frmNewHmo.reset();
-        })
-      }
+  getEnrolleeCount(enrolleeList) {
+    let retCount = 0;
+    if(enrolleeList.length > 0){
+      return enrolleeList[0].enrollees.length;
     }
+    return retCount;
+  }
+  excelDateToJSDate(date) {
+    return new Date(Math.round((date - 25569) * 86400 * 1000));
+  }
+  checkHmo() {
+    return this.loginHMOListObject.hmos.findIndex(x => x.hmo_id === this.selectedHMO._id) > -1;
+  }
+  save(valid, value) {
+    if(this.checkHmo()){
+      if(this.selectedHMO._id === undefined){
+        this._notification('Warning','Please select and HMO to continue!');
+        return;
+      }
+      this._notification('Warning','The selected HMO is already in the list of HMOs');
+      return;
+    }
+    let newHmo = {
+      hmo: this.selectedHMO,
+      enrolleeList: []
+    }
+    // this.loginHMOListObject.hmos.push(newHmo);
+    // if (this.selectedHMO._id !== undefined) {
+    //   if (this.loginHMOListObject._id === undefined) {
+    //     this.hmoService.create(this.loginHMOListObject).then(payload => {
+    //       console.log(payload);
+    //       this.frmNewHmo.controls['name'].reset();
+    //       this.apmisLookupText = '';
+    //       this.getLoginHMOList();
+    //       this._notification('Success', 'Selected HMO added to your HMO list successfully');
+    //     })
+    //   } else {
+    //     this.hmoService.update(this.loginHMOListObject).then(payload => {
+    //       this.frmNewHmo.controls['name'].reset();
+    //       this.apmisLookupText = '';
+    //       this.getLoginHMOList();
+    //       this._notification('Success', 'Selected HMO added to your HMO list successfully');
+    //     })
+    //   }
+    // }
   }
   private _notification(type: string, text: string): void {
     this.facilityService.announceNotification({
