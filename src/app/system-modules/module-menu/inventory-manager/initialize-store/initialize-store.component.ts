@@ -108,7 +108,7 @@ export class InitializeStoreComponent implements OnInit {
           totalQuantity += item.quantity;
           this.inventoryModel = <Inventory> {
             facilityId: this.selectedFacility._id,
-            storeId: this.checkingObject.typeObject.storeId,
+            storeId: this.checkingObject.typeObject._id,
             serviceId: item.product.serviceId,
             categoryId: item.product.categoryId,
             facilityServiceId: item.product.facilityServiceId,
