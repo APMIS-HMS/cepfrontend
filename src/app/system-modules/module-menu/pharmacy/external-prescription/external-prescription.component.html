@@ -1,86 +1,87 @@
 <div class="backBtn" routerLink="/dashboard/store/home">
-    Go To Store
+  Go To Store
 </div>
 <section id="presc-list">
-    <div class="survery">
-        <div class="col-xs-12 " style="padding: 0; ">
-            <table cellpadding="0 " cellspacing="0 " border="0.5 ">
-                <thead>
-                    <tr class="table-header ">
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Date</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Patient</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Location</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Priority</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Prescriber</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                            <span>Status</span>
-                        </th>
-                    </tr>
-                </thead>
+  <div class="survery">
+    <div class="col-xs-12 " style="padding: 0; ">
+      <table cellpadding="0 " cellspacing="0 " border="0.5 ">
+        <thead>
+          <tr class="table-header ">
+            <th>
+              <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+              <span>Date</span>
+            </th>
+            <th>
+              <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+              <span>Patient</span>
+            </th>
+            <th>
+              <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+              <span>Location</span>
+            </th>
+            <th>
+              <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+              <span>Priority</span>
+            </th>
+            <th>
+              <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+              <span>Prescriber</span>
+            </th>
+            <th>
+              <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+              <span>Status</span>
+            </th>
+          </tr>
+        </thead>
 
-                <tbody>
-                    <tr>
-                        <td class="table-content " colspan="6">
-                            <form [formGroup]="extPrescriptionFormGroup">
-                                <div class="col-sm-4">
-                                    <input type="search" formControlName="search" class="form-control" placeholder="Search Employee">
-                                </div>
-                                <div class="col-sm-4">
-                                    <select formControlName="category" class="form-control" (change)="onChangeCategory($event);">
+        <tbody>
+          <tr>
+            <td class="table-content " colspan="6">
+              <form [formGroup]="extPrescriptionFormGroup">
+                <div class="col-sm-4">
+                  <input type="search" formControlName="search" class="form-control" placeholder="Search Employee">
+                </div>
+                <div class="col-sm-4">
+                  <select formControlName="category" class="form-control" (change)="onChangeCategory($event);">
                                                 <option value="" selected>Select Category</option>
                                                 <option value="individual">Individual</option>
                                                 <option value="corporate">Corporate</option>
                                                 <option value="internal">Internal</option>
                                             </select>
-                                </div>
-                                <div class="col-sm-4">
-                                    <md-input-container>
-                                        <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-                                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                                    </md-input-container>
-                                    <md-datepicker #picker></md-datepicker>
-                                </div>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr *ngIf="extPrescriptions.length===0 && !loading ">
-                        <td class="table-content " colspan="6" style="text-align: center "> No data available in table</td>
-                    </tr>
-                    <tr *ngIf="extPrescriptions.length===0 && loading ">
-                        <td class="table-content " colspan="6" style="text-align: center ">
-                            <md-spinner class="small-spinner"></md-spinner>
-                        </td>
-                    </tr>
-                    <tr *ngFor="let prescription of extPrescriptions " routerLink='/dashboard/pharmacy/external-prescriptions/{{prescription._id}}'>
-                        <td class="table-content">{{prescription?.updatedAt | date}}</td>
-                        <td class="table-content">{{prescription?.patientName}}</td>
-                        <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
-                        <td class="table-content">{{prescription?.priorityObject?.name}}</td>
-                        <td class="table-content">{{prescription?.employeeName}}</td>
-                        <td class="table-content">
-                            <span *ngIf="prescription.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
-                            <span *ngIf="prescription.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
-                            <span *ngIf="prescription.status == 'not'" style="color:crimson">Not<br>Assessed</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                </div>
+                <div class="col-sm-4">
+                  <md-input-container>
+                    <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                  </md-input-container>
+                  <md-datepicker #picker></md-datepicker>
+                </div>
+              </form>
+            </td>
+          </tr>
+          <tr *ngIf="extPrescriptions.length===0 && !loading ">
+            <td class="table-content " colspan="6" style="text-align: center "> No data available in table</td>
+          </tr>
+          <tr *ngIf="extPrescriptions.length===0 && loading ">
+            <td class="table-content " colspan="6" style="text-align: center ">
+              <md-spinner class="small-spinner"></md-spinner>
+            </td>
+          </tr>
+          <tr *ngFor="let prescription of extPrescriptions " routerLink='/dashboard/pharmacy/external-prescriptions/{{prescription._id}}'>
+            <td class="table-content">{{prescription?.updatedAt | date}}</td>
+            <td class="table-content">{{prescription?.patientName}}</td>
+            <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
+            <td class="table-content">{{prescription?.priorityObject?.name}}</td>
+            <td class="table-content">{{prescription?.employeeName}}</td>
+            <td class="table-content">
+              <span *ngIf="prescription.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
+              <span *ngIf="prescription.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
+              <span *ngIf="prescription.status == 'not'" style="color:crimson">Not<br>Assessed</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </section>

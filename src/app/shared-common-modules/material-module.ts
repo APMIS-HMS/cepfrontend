@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdError, MdDatepickerToggle,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectBase, MdSelectModule, MdRadioModule
+    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectBase, MdSelectModule, MdRadioModule, MdPaginatorModule
 }
     from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -65,6 +65,7 @@ import { NgPipesModule } from 'ngx-pipes';
         MdAutocompleteModule,
         MdOptionModule,
         MdDatepickerToggle,
+        MdPaginatorModule,
         // MdSelectBase,
         MdSelectModule,
         MdRadioModule,
@@ -114,6 +115,7 @@ import { NgPipesModule } from 'ngx-pipes';
         MdInputModule,
         MdAutocompleteModule,
         MdOptionModule,
+        MdPaginatorModule,
         // MdSelectBase,
         MdSelectModule,
         MdListModule,

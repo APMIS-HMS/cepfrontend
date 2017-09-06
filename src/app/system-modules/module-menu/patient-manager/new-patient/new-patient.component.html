@@ -97,7 +97,8 @@
                 <div class="frm-item-wrap">
                     <md-input-container>
                         <input mdInput [mdDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                     </md-input-container>
                     <md-datepicker #picker></md-datepicker>
                 </div>

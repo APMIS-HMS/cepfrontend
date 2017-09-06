@@ -26,7 +26,8 @@
                     <md-input-container>
                         <input mdInput formControlName="deliveryDate" [mdDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
                     </md-input-container>
-                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                     <md-datepicker #picker></md-datepicker>
                 </div>
             </div>
