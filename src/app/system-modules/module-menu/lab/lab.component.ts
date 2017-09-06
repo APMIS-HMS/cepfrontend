@@ -70,14 +70,15 @@ export class LabComponent implements OnInit, OnDestroy {
       if (!isOn) {
         this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
           if (r === 0) {
+            console.log(this.loginEmployee.workbenchCheckIn)
             x.isOn = true;
             x.lastLogin = new Date();
             // Set page title
             this.isWorkbenchAvailable = true;
-            this.workbenchTitle = x.storeObject.name;
+            this.workbenchTitle = x.workbenchObject.name;
             this._employeeService.update(this.loginEmployee).then(payload => {
               this.loginEmployee = payload;
-              const checkingObject = { typeObject: x, type: 'store' };
+              const checkingObject = { typeObject: x, type: 'workbench' };
               this.checkedInObject = checkingObject;
               this._employeeService.announceCheckIn(checkingObject);
               this._locker.setObject('workbenchCheckingObject', checkingObject);

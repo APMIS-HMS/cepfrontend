@@ -68,7 +68,7 @@
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
         <app-lab-requests [isLaboratory]="false" [patientId]="patient._id" *ngIf="menuLab"></app-lab-requests>
-        <app-payment *ngIf="menuPayment"></app-payment>
+        <app-payment [patient]="patient" *ngIf="menuPayment"></app-payment>
     </div>
 
     <div *ngIf="addVitalsPop" class="modal-overlay">

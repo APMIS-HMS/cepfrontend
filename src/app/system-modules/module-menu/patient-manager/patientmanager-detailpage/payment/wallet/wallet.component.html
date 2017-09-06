@@ -1,133 +1,111 @@
 <div class="head">
   <div class="wallet-summary">
     <div class="summary-item">
-      <div class="item-label">Total Balance</div>
-      <div class="item-val other-bal"><span>&#x20a6;</span> 300,000</div>
+      <div class="item-label">Ledger Balance</div>
+      <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.ledgerBalance}}</div>
     </div>
     <div class="summary-item">
-      <div class="item-label">Current Balance</div>
-      <div class="item-val other-bal"><span>&#x20a6;</span> 300,000</div>
+      <div class="item-label">Balance</div>
+      <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
     </div>
     <hr>
     <div class="summary-item">
       <div class="item-label">Available Balance</div>
-      <div class="item-val available-bal"><span>&#x20a6;</span> 300,000</div>
+      <div class="item-val available-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
     </div>
   </div>
   <div class="head-others">
     <ul class="topmenuwrap">
-        <li (click)="fundWallet()">
-            <i class="fa fa-credit-card" aria-hidden="true"></i>
-            <span>Fund Wallet</span>
-        </li>
+      <li (click)="fundWallet()">
+        <i class="fa fa-credit-card" aria-hidden="true"></i>
+        <span>Fund Wallet</span>
+      </li>
     </ul>
   </div>
 </div>
 
 <div class="tbl-header">
-    <div class="pg-subtitle">Account Statement</div>
-    <div class="frm-item-wrap">
-        <md-input-container>
-            <input type="text" mdInput placeholder="search activities" [formControl]="search">
-        </md-input-container>
-    </div> 
+  <div class="pg-subtitle">Account Statement</div>
+  <div class="frm-item-wrap">
+    <md-input-container>
+      <input type="text" mdInput placeholder="search activities" [formControl]="search">
+    </md-input-container>
+  </div>
 </div>
 <div class="content">
-    <table cellpadding="0" cellspacing="0" border="0.5">
-        <thead>
-            <tr>
-              <th>
-                  <span style="padding-left: 3px;">Date</span>
-              </th>  
-              <th>
-                  <span style="padding-left: 3px;">Description</span>
-              </th>
-              <th>
-                  <span style="padding-left: 3px; text-align:center;">Ref Code</span>
-              </th>
-              <th>
-                  <span style="padding-left: 3px; text-align:center;">Transaction Type</span>
-              </th>
-              <th>
-                    <span style="padding-left: 3px; text-align:center;">Amount</span>
-                </th>
-                <th>
-                    <span style="padding-left: 3px; text-align:center;">Current Balance</span>
-                </th>
-                
-                <th>
-                    <span style="padding-left: 3px; text-align:center;">Available Balance</span>
-                </th>
-            </tr>
-        </thead>
+  <table cellpadding="0" cellspacing="0" border="0.5">
+    <thead>
+      <tr>
+        <th>
+          <span style="padding-left: 3px;">Date</span>
+        </th>
+        <th>
+          <span style="padding-left: 3px;">Description</span>
+        </th>
+        <th>
+          <span style="padding-left: 3px; text-align:center;">Ref Code</span>
+        </th>
+        <th>
+          <span style="padding-left: 3px; text-align:center;">Transaction Type</span>
+        </th>
+        <th>
+          <span style="padding-left: 3px; text-align:center;">Amount</span>
+        </th>
+        <th>
+          <span style="padding-left: 3px; text-align:center;">Current Balance</span>
+        </th>
 
-        <tbody>
-            <!-- <tr>
-                <td colspan="8">
-                    <div class="tbl-actionRow">
-                        <div class="frm-item-wrap">
-                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for patient" isSocket="false"
-                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
+        <th>
+          <span style="padding-left: 3px; text-align:center;">Available Balance</span>
+        </th>
+      </tr>
+    </thead>
 
-                        <div class="frm-item-wrap">
-                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="search for nvestigation" isSocket="false"
-                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+    <tbody>
+      <tr *ngFor="let tx of transactions">
+        <td>{{tx.createdAt | date:'short'}}</td>
+        <td>{{tx.description}}</td>
+        <td>{{tx.refCode}}</td>
+        <td>{{tx.transactionType}}</td>
+        <td><span>&#x20a6;</span>{{tx.amount}}</td>
+        <td><span>&#x20a6;</span>{{tx.ledgerBalance}}</td>
+        <td><span>&#x20a6;</span>{{tx.balance}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- wallet pop -->
+<div class="modal-overlay" *ngIf="fundPopShow" >
+    <div class="form-modal center-center">
+        <div class="modal-baseWrap animated pulse">
+            <div class="modal-close-ico" aria-hidden="true" (click)="onClose()">X</div>
+            <legend class="modal_title">Fund Wallet</legend>
+                <div class="acc-bal">
+                    <div class="acc-content survery">
+                        <div class="alert alert-info text-center">
+                                <strong>Account Bal: </strong> N3,000
                         </div>
                     </div>
-                </td>
-            </tr> -->
-
-            <tr>
-                <td>10th Jan, 2017. 10:00am</td>
-                <td>Bank transfer Johnson Jude, Diamond Bank Ketu branch.</td>
-                <td>22100</td>
-                <td>Cr</td>
-                <td><span>&#x20a6;</span>30,00</td>
-                <td><span>&#x20a6;</span>30,000</td>
-                <td><span>&#x20a6;</span>30,000</td>
-            </tr>
-
-            <tr>
-                <td>11th Jan, 2017. 10:00am</td>
-                <td>patient registeration fee</td>
-                <td>23100</td>
-                <td>Dr</td>
-                <td><span>&#x20a6;</span>2500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-            </tr>
-
-            <tr>
-                <td>11th Jan, 2017. 10:00am</td>
-                <td>patient registeration fee</td>
-                <td>23100</td>
-                <td>Dr</td>
-                <td><span>&#x20a6;</span>2500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-            </tr>
-
-            <tr>
-                <td>11th Jan, 2017. 10:00am</td>
-                <td>patient registeration fee</td>
-                <td>23100</td>
-                <td>Dr</td>
-                <td><span>&#x20a6;</span>2500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-            </tr>
-              
-            <tr>
-                <td>11th Jan, 2017. 10:00am</td>
-                <td>patient registeration fee</td>
-                <td>23100</td>
-                <td>Dr</td>
-                <td><span>&#x20a6;</span>2500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-                <td><span>&#x20a6;</span>27,500</td>
-            </tr>
-
-        </tbody>
-    </table>
+                </div>
+                <div class="form-container">
+                    <form>
+                        <md-select placeholder="Mode of Payment" [(ngModel)]="selectedValue" name="wallet">
+                            <md-option *ngFor="let wallet of wallets" [value]="wallet.value">
+                                {{wallet.viewValue}}
+                            </md-option>
+                        </md-select>
+                        <md-input-container class="example-full-width">
+                                <input mdInput placeholder="Enter Amount">
+                        </md-input-container>
+                        <div class="container-center">
+                            <button md-raised-button style="text-align:center;">Fund Wallet</button>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>
 </div>

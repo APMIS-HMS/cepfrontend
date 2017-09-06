@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
-import {  Person } from '../../../models/index';
+import { Person } from '../../../models/index';
+const request = require('superagent');
 
 @Injectable()
 export class PersonService {
@@ -53,6 +54,14 @@ export class PersonService {
 
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  walletTransaction(personId, transactionType, transactionSource, amount, description) {
+    const host = this._restService.getHost();
+    const path = host + '/wallet-transaction';
+    return request
+      .get(path)
+      .query({ personId: personId, transactionType: transactionType, transactionSource: transactionSource, amount: amount, description: description }); // query string 
   }
 
 }

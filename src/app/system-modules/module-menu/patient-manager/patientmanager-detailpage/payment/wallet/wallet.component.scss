@@ -70,3 +70,47 @@
 .tbl-header .frm-item-wrap .mat-input-container{
     width: 100%;
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.form-container {
+    max-width: 350px;
+    margin: 0 auto;
+}
+.container-center {
+    text-align: center;
+    color: #fff;
+}
+.survery .alert {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.modal_title {
+    position: absolute;
+    top: 20px;
+    left: 36%;
+}
+
+@media only screen and (max-width: 500px) {
+    .modal_title {
+        position: relative;
+        display: block;
+    }
+}
+@media only screen and (max-width: 700px){
+    .modal_title {
+        position: relative;
+        display: block;
+        top: 0;
+        left: 0;
+    }
+}
