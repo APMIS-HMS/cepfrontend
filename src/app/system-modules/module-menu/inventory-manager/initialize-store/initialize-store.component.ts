@@ -125,7 +125,10 @@ export class InitializeStoreComponent implements OnInit {
        this.inventoryModel.totalQuantity = totalQuantity;
        this._inventoryService.create(this.inventoryModel).then(payload => {
          console.log(payload);
+        this.myForm.removeControl;
+
         }).catch(err => console.log(err));
      }
     }
+    
 }
