@@ -18,6 +18,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   patientEditForm: FormGroup;
 
   editPatient = false;
+  payPlan = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
 
@@ -302,6 +303,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
     control.push(this._initNextOfKin());
   }
 
+  payPlanShow() {
+    this.payPlan = true;
+  }
+
   removeNextOfKin(i: number) {
     const control = <FormArray>this.patientEditForm.controls['nextOfKin'];
     control.removeAt(i);
@@ -309,6 +314,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
   close_onClick() {
     this.editPatient = false;
+    this.payPlan = false;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);
   }
