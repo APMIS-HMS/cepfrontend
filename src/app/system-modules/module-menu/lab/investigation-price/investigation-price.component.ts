@@ -5,7 +5,7 @@ import {
  } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice } from '../../../../models/index';
+import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
 import { CoolSessionStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
@@ -16,7 +16,7 @@ import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty
   styleUrls: ['./investigation-price.component.scss']
 })
 export class InvestigationPriceComponent implements OnInit {
-
+  user: User = <User>{};
   apmisLookupUrl = 'workbenches';
   apmisLookupText = '';
   apmisLookupQuery = {};
@@ -49,16 +49,19 @@ export class InvestigationPriceComponent implements OnInit {
   selectedModifierIndex = -1;
   selectedFacilityServicePrice: FacilityServicePrice = <FacilityServicePrice>{};
   selectedModifier: any = <any>{};
+  loading: Boolean = true;
+  foundPrice: Boolean = false;
 
-  foundPrice = false;
   constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
-    private facilityPriceService: ServicePriceService, private tagService: TagService
+    private facilityPriceService: ServicePriceService, private tagService: TagService,
+    private _facilityService: FacilitiesService
   ) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User> this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.frmNewPrice = this.formBuilder.group({
       price: ['', [Validators.required]],
@@ -124,15 +127,13 @@ export class InvestigationPriceComponent implements OnInit {
   getInvestigations() {
     console.log(this.checkingObject.typeObject.minorLocationObject._id);
     this.investigationService.find({
-      query:
-      {
+      query: {
         'facilityId._id': this.selelctedFacility._id,
         'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id
         // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id } }
-      },
-
-
+      }
     }).then(payload => {
+      this.loading = false;
       this.investigations = payload.data;
       console.log(this.investigations);
     })
@@ -146,7 +147,9 @@ export class InvestigationPriceComponent implements OnInit {
   getTags() {
     this.checkingObject = this.locker.getObject('workbenchCheckingObject');
     if (this.checkingObject.typeObject !== undefined) {
-      this.tagService.find({ query: { tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name } }).then(payload => {
+      this.tagService.find({ query: {
+        tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
+      }).then(payload => {
         if (payload.data.length > 0) {
           this.selectedTag = payload.data[0];
         }
@@ -252,12 +255,12 @@ export class InvestigationPriceComponent implements OnInit {
     }
 
 
-    let isLabExisting = false;
+    const isLabExisting = false;
     let labCollectionObject: any;
     const labIndex = this.selectedInvestigation.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === this.checkingObject.typeObject.minorLocationObject._id);
     if (labIndex === -1) {
       // is not existing
-      //create a new collection object;
+      // create a new collection object;
       labCollectionObject = {
         laboratoryId: this.checkingObject.typeObject.minorLocationObject,
         workbenches: [{ workBench: this.selectedWorkBench, price: this.frmNewPrice.controls['price'].value }],
@@ -267,15 +270,15 @@ export class InvestigationPriceComponent implements OnInit {
     } else {
       // is existing
       labCollectionObject = this.selectedInvestigation.LaboratoryWorkbenches[labIndex];
-      let index = labCollectionObject.workbenches.findIndex(x => x.workBench.id === this.selectedWorkBench._id);
+      const index = labCollectionObject.workbenches.findIndex(x => x.workBench.id === this.selectedWorkBench._id);
       labCollectionObject.workbenches[index].price = this.frmNewPrice.controls['price'].value;
       // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
       this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
     }
     console.log(this.selectedFacilityServicePrice);
 
-    let updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
-    let updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
+    const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
+    const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
 
     Observable.forkJoin([updateInvestigation$, updatePrice$]).subscribe((result: any) => {
       this.selectedInvestigation = result[0];
@@ -286,7 +289,8 @@ export class InvestigationPriceComponent implements OnInit {
       this.frmNewPrice.controls['investigation'].reset();
       this.frmNewPrice.controls['workbench'].reset();
       this.getInvestigations();
-      this.addToast('Price set/updated successfully');
+      // this.addToast('Price set/updated successfully');
+      this._notification('Success', 'Price set/updated successfully');
     })
 
     // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
@@ -296,6 +300,14 @@ export class InvestigationPriceComponent implements OnInit {
     //   this.frmNewPrice.controls['workbench'].reset();
     //   console.log(payload);
     // });
+  }
+
+  private _notification(type: string, text: string): void {
+    this._facilityService.announceNotification({
+        users: [this.user._id],
+        type: type,
+        text: text
+    });
   }
 }
 
