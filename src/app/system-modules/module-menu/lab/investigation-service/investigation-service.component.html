@@ -76,9 +76,11 @@
                             </div>
                         </div>
 
-                        <button (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="cta-1">
-                            {{btnText}}
-                        </button>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
+                                {{btnText}}
+                            </button>
+                        </div>
                     </form>
 
                     <form class="frmNoteWrap" *ngIf="pannel_view" [formGroup]="frmNewPanel" novalidate>
@@ -133,9 +135,11 @@
                             </div>
                         </div>
 
-                        <button (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="cta-1">
-                            {{panelBtnText}}
-                        </button>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!frmNewPanel.valid" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
+                                {{panelBtnText}}
+                            </button>
+                        </div>
                     </form>
                 </div>
 
@@ -175,27 +179,31 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="8">
+                                <td colspan="7">
                                     <div class="tbl-actionRow">
                                         <!-- <div class="tbl-title">Employee Workspace</div> -->
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-
+                            <tr *ngIf="investigations.length === 0 && !loading">
+                                <td class="table-content" colspan="7" style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="investigations.length === 0 && loading">
+                                <td class="table-content " colspan="7" style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
                             <tr *ngFor="let investigation of investigations">
                                 <td>{{investigation.name}}</td>
                                 <td>{{investigation.specimen?.name}}</td>

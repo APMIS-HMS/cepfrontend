@@ -8,9 +8,9 @@
   </div>
 
   <div class="tab-content">
-    <app-wallet *ngIf="tabWallet"></app-wallet>
+    <app-wallet [patient]="patient" *ngIf="tabWallet"></app-wallet>
     <app-insurance *ngIf="tabInsurance"></app-insurance>
     <app-company *ngIf="tabCompany"></app-company>
     <app-family *ngIf="tabFamily"></app-family>
   </div>
-</div> 
+</div>

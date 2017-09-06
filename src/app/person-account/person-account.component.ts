@@ -95,11 +95,11 @@ export class PersonAccountComponent implements OnInit {
           stateOfOriginId: this.frmPerson.controls['state'].value._id,
           lgaOfOriginId: this.frmPerson.controls['lga'].value
         };
-        const userModel = <User>{
-          email: this.frmPerson.controls['email'].value,
-          password: this.frmPerson.controls['password'].value
-        };
+        
         this.personService.create(personModel).then((ppayload) => {
+          const userModel = <User>{
+            email: ppayload.apmisId
+          };
           userModel.personId = ppayload._id;
           this.userService.create(userModel).then((upayload) => {
           }, error => {

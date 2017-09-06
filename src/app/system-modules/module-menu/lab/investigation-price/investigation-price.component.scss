@@ -1,5 +1,12 @@
 @import '../lab-requests/lab-requests.component.scss';
-
-td{
+td {
     padding: 5px;
+}
+
+.btn-box {
+    padding: 10px;
+    text-align: center;
+    .btn {
+        color: #fff;
+    }
 }

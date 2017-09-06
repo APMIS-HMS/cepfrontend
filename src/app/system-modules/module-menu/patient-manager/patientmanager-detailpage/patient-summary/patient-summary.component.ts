@@ -24,10 +24,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
   // @Input() vitalDocuments: any;
-
   lineChartData = [];
-
-
   public lineChartLabels: Array<any> = [''];
   public lineChartOptions: any = {
     responsive: true
@@ -148,7 +145,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   minorLocationList: MinorLocation[] = [];
   selectedAppointment: Appointment = <Appointment>{};
   json: any = {};
-  vitalsObjArray = [];
+
   vitalsPulse = [];
   vitalsRespiratoryRate = [];
   vitalsBMI = [];
@@ -182,11 +179,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     });
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    
+
   }
 
   ngOnInit() {
-    
+
     this.getForms();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     if (this.patient !== undefined) {
@@ -197,7 +194,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this._DocumentationService.listenerCreate.subscribe(payload => {
       this.bindVitalsDataToChart();
     });
-
     this._DocumentationService.listenerUpdate.subscribe(payload => {
       this.bindVitalsDataToChart();
     });
@@ -221,60 +217,63 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   // }
 
   bindVitalsDataToChart() {
+    var vitalsObjArray = [];
     this.lineChartData = [
-      //{ data: [], label: 'Pulse Rate' },
-      { data: [], label: 'Systolic' },
-      { data: [], label: 'Diastolic' },
-      { data: [], label: 'Temperature' },
-      { data: [], label: 'Height' },
-      { data: [], label: 'Weight' },
-      { data: [], label: 'BMI' }
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' }
+
     ];
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length !== 0) {
-        console.log(payload.data)
         payload.data[0].documentations.forEach(documentItem => {
           if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
-            this.vitalsObjArray = documentItem.document.body.vitals;
+            vitalsObjArray = documentItem.document.body.vitals;
+            vitalsObjArray.forEach(item => {
+              this.lineChartData[0].data.push(item.bloodPressure.systolic);
+              this.lineChartData[0].label = "Systolic";
+              this.lineChartData[1].data.push(item.bloodPressure.diastolic);
+              this.lineChartData[1].label = "Diastolic";
+              this.lineChartData[2].data.push(item.temperature);
+              this.lineChartData[2].label = "Temperature";
+              this.lineChartData[3].data.push(item.bodyMass.height);
+              this.lineChartData[3].label = "Height";
+              this.lineChartData[4].data.push(item.bodyMass.weight);
+              this.lineChartData[4].label = "Weight";
+              this.lineChartData[5].data.push(item.bodyMass.bmi);
+              this.lineChartData[5].label = "BMI";
+              const d = new Date(item.updatedAt);
+              let dt = this.dateFormater(d);
+              this.lineChartLabels.push(dt);
+            });
+            this.lineChartData =  this.refreshVitalsGraph(this.lineChartData);
           }
         });
-        this.vitalsObjArray.forEach(item => {
-          //this.lineChartData[0].data.push(item.pulseRate.pulseRateValue);
-          this.lineChartData[0].data.push(item.bloodPressure.systolic);
-          this.lineChartData[1].data.push(item.bloodPressure.diastolic);
-          this.lineChartData[2].data.push(item.temperature);
-          this.lineChartData[3].data.push(item.bodyMass.height);
-          this.lineChartData[4].data.push(item.bodyMass.weight);
-          this.lineChartData[5].data.push(item.bodyMass.bmi);
-          const d = new Date(item.updatedAt);
-          let dt = this.dateFormater(d);
-          this.lineChartLabels.push(dt);
-        });
-        this.refreshVitalsGraph();
       }
     })
   }
 
   dateFormater(d) {
-    var dt = [d.getDate(), 
-    d.getMonth()+1].join('/')+' '+
+    var dt = [d.getDate(),
+    d.getMonth() + 1].join('/') + ' ' +
       [d.getHours(),
       d.getMinutes(),
       d.getSeconds()].join(':');
     return dt;
   }
 
-  refreshVitalsGraph() {
-    let _lineChartData: Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = this.lineChartData[i].data[j];
-        console.log(this.lineChartData[i].data[j]);
+  refreshVitalsGraph(lineChartData:any[]) {
+    let _lineChartData: Array<any> = new Array(lineChartData.length);
+    for (let i = 0; i < lineChartData.length; i++) {
+      _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
+      for (let j = 0; j < lineChartData[i].data.length; j++) {
+        _lineChartData[i].data[j] = lineChartData[i].data[j];
       }
     }
-    this.lineChartData = _lineChartData;
-    
+    return _lineChartData;
   }
 
   getForms() {

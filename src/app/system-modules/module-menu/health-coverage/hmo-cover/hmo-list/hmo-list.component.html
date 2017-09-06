@@ -52,7 +52,7 @@
                   <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                   <span style="padding-left: 3px;">Phone</span>
                 </th>
-                <th>Plans</th>
+                <!-- <th>Plans</th> -->
                 <th>No. of Beneficiaries</th>
                 <th></th>
               </tr>
@@ -88,12 +88,12 @@
               </tr>
 
               <tr *ngFor="let hmo of loginHMOListObject.hmos">
-                <td (click)="show_beneficiaries()">{{hmo.name}}</td>
-                <td>12B Alaro Alao Street, Akure, Lagos.</td>
-                <td>{{hmo.email}}</td>
-                <td>{{hmo.contactPhoneNo}}</td>
-                <td>Gold, Silver, Bronze, Copper</td>
-                <td>230</td>
+                <td (click)="show_beneficiaries(hmo.hmo)">{{hmo.hmo.name}}</td>
+                <td>{{hmo.hmo.address.street}}, {{hmo.hmo?.addressObj.city}}, {{hmo.hmo?.addressObj.state}}.</td>
+                <td>{{hmo.hmo.email}}</td>
+                <td>{{hmo.hmo.contactPhoneNo}}</td>
+                <!-- <td>Gold, Silver, Bronze, Copper</td> -->
+                <td>{{getEnrolleeCount(hmo.enrolleeList)}}</td>
                 <td class="action-placeholder" style="text-align:center;">
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                   <div class="action-container shadow-RB">
@@ -101,7 +101,8 @@
                       <div (click)="showImageBrowseDlg()" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload Beneficiary List</span>
-                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;" #fileInput type="file" id="uploadResult" (change)="upload($event, hmo)">
+                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
+                          #fileInput type="file" id="uploadResult" (change)="upload($event, hmo)">
                       </div>
                     </form>
                     <div class="action-item">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-payment',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent implements OnInit {
-
+  @Input() patient;
   tabWallet = true;
   tabInsurance = false;
   tabCompany = false;
@@ -17,25 +17,25 @@ export class PaymentComponent implements OnInit {
   ngOnInit() {
   }
 
-  tabWallet_click(){
+  tabWallet_click() {
     this.tabWallet = true;
     this.tabCompany = false;
     this.tabFamily = false;
     this.tabInsurance = false;
   }
-  tabCompany_click(){
+  tabCompany_click() {
     this.tabWallet = false;
     this.tabCompany = true;
     this.tabFamily = false;
     this.tabInsurance = false;
   }
-  tabFamily_click(){
+  tabFamily_click() {
     this.tabWallet = false;
     this.tabCompany = false;
     this.tabFamily = true;
     this.tabInsurance = false;
   }
-  tabInsurance_click(){
+  tabInsurance_click() {
     this.tabWallet = false;
     this.tabCompany = false;
     this.tabFamily = false;

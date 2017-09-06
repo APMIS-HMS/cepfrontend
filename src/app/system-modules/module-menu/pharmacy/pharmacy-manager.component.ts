@@ -38,7 +38,6 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		const auth: any = this._locker.getObject('auth');
 		this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
 		const url: String = this._router.url;
-		console.log(url);
 		this.changeRoute(url);
 
 		if ((this.loginEmployee.storeCheckIn === undefined

@@ -53,13 +53,14 @@ export class PrescriptionComponent implements OnInit {
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,
 		private _inventoryService: InventoryService,
-		//private _medicationListService: MedicationListService,
+		// private _medicationListService: MedicationListService,
 		private _billingService: BillingService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
 		private _externalPrescriptionService: ExternalPrescriptionService
 	) {
-		let url = window.location.href;
-		if(url.includes('pharmacy/external-prescriptions')) {
+		const url: String = this._router.url;
+		// let url = window.location.href;
+		if (url.includes('pharmacy/external-prescriptions')) {
 			this.isExternalPrescription = true;
 		} else {
 			this.isExternalPrescription = false;
@@ -79,7 +80,7 @@ export class PrescriptionComponent implements OnInit {
 		this._getPrescriptionDetails();
 		this._getInventoryTransactionTypes();
 
-		if(this.prescriptionItems.prescriptionItems !== undefined) {
+		if (this.prescriptionItems.prescriptionItems !== undefined) {
 			const notBilled = this.prescriptionItems.prescriptionItems.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
 			
 			if(notBilled.length > 0) {

@@ -7,7 +7,7 @@ import {
     PrescriptionPriorityService, DictionariesService, BillingService,
     RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService
 } from '../../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed }
+import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed, User }
     from '../../../../../models/index';
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
@@ -25,7 +25,7 @@ export class PatientPrescriptionComponent implements OnInit {
     facility: Facility = <Facility>{};
     clinicObj: any = {};
     employeeDetails: any = {};
-    user: any = <any>{};
+    user: User = <User>{};
 
     showCuDropdown = false;
     cuDropdownLoading = false;
@@ -86,11 +86,11 @@ export class PatientPrescriptionComponent implements OnInit {
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
-        this.user = this._locker.getObject('auth');
+        this.user = <User> this._locker.getObject('auth');
         this.employeeDetails = this._locker.getObject('loginEmployee');
-        console.log(this.patientDetails);
+        console.log(this.selectedAppointment);
         // Remove this when you are done
-        //this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
+        this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
@@ -214,7 +214,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     totalCost: 0,
                     totalQuantity: 0
                 };
-                
+
                 this.prescriptionItems = prescription;
                 this.prescriptions = prescription;
                 this.addPrescriptionForm.reset();
@@ -248,6 +248,7 @@ export class PatientPrescriptionComponent implements OnInit {
                             serviceId: element.serviceId,
                             facilityId: this.facility._id,
                             patientId: this.prescriptions.patientId,
+                            patientObject: this.prescriptions.patientObject,
                             description: element.productName,
                             quantity: element.quantity,
                             totalPrice: element.totalCost,
@@ -269,23 +270,25 @@ export class PatientPrescriptionComponent implements OnInit {
                     subTotal: totalCost,
                     grandTotal: totalCost,
                 }
+
+                console.log(bill);
                 // If any item was billed, then call the billing service
-                if (billItemArray.length > 0) {
-                    // send the billed items to the billing service
-                    this._billingService.create(bill).then(res => {
-                        console.log(res);
-                        if (res._id !== undefined) {
-                            this.prescriptions.billId = res._id;
-                            // if this is true, send the prescribed drugs to the prescription service
-                            this._sendPrescription(this.prescriptions);
-                        } else {
-                            this._notification('Error', 'There was an error generating bill. Please try again later.');
-                        }
-                    }).catch(err => console.error(err));
-                } else {
-                    // Else, if no item was billed, just save to the prescription table.
-                    this._sendPrescription(this.prescriptions);
-                }
+                // if (billItemArray.length > 0) {
+                //     // send the billed items to the billing service
+                //     this._billingService.create(bill).then(res => {
+                //         console.log(res);
+                //         if (res._id !== undefined) {
+                //             this.prescriptions.billId = res._id;
+                //             // if this is true, send the prescribed drugs to the prescription service
+                //             this._sendPrescription(this.prescriptions);
+                //         } else {
+                //             this._notification('Error', 'There was an error generating bill. Please try again later.');
+                //         }
+                //     }).catch(err => console.error(err));
+                // } else {
+                //     // Else, if no item was billed, just save to the prescription table.
+                //     this._sendPrescription(this.prescriptions);
+                // }
             }
         } else {
             this._notification('Info', 'Please use the "Add" button above to add prescription!');
