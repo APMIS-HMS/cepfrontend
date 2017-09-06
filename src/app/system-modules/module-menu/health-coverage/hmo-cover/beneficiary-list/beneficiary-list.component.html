@@ -6,6 +6,9 @@
     <div class="doc-contentArea">
       <div class="clinicalNoteWrap">
         <div class="tblWrapa" class="actSect">
+          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+            [pageSizeOptions]="pageSizeOptions">
+          </md-paginator>
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
               <tr>
@@ -70,7 +73,7 @@
               serial : 1 sponsor : "AERO CONTRACTORS CO. NIG LTD." surname : "ESEIGBE" type : "FEE-FOR-SERVICE" -->
 
 
-              <tr *ngFor="let beneficiary of beneficiaries">
+              <tr *ngFor="let beneficiary of filteredBeneficiaries">
                 <td>{{beneficiary?.surname}} {{beneficiary?.firstName}}</td>
                 <td>{{beneficiary?.gender}}</td>
                 <td>{{beneficiary?.filNo}}</td>
@@ -81,11 +84,13 @@
                 <td>{{beneficiary?.date | date:'shortDate'}}</td>
               </tr>
             </tbody>
-            <tfoot>
-              <md-paginator  [pageIndex]="1" [length]="beneficiaries.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-              </md-paginator>
-            </tfoot>
+            <!-- <tfoot>
+
+            </tfoot> -->
           </table>
+          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+            [pageSizeOptions]="pageSizeOptions">
+          </md-paginator>
         </div>
       </div>
     </div>
