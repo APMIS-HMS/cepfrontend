@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
 import { FormTypeService, SeverityService } from '../../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../../shared-module/shared.service';
 
@@ -33,7 +33,7 @@ export class AddAllergyComponent implements OnInit {
   patientDocumentation: Documentation = <Documentation>{};
 
 
-  constructor(private formBuilder: FormBuilder, private formService: FormsService, private locker: CoolSessionStorage,
+  constructor(private formBuilder: FormBuilder, private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
     private facilityService: FacilitiesService, private severityService: SeverityService) {

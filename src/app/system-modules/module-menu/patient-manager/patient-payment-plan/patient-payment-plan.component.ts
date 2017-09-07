@@ -1,7 +1,7 @@
 import { User } from './../../../../models/facility-manager/setup/user';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Facility } from './../../../../models/facility-manager/setup/facility';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { HmoService } from './../../../../services/facility-manager/setup/hmo.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -16,7 +16,7 @@ export class PatientPaymentPlanComponent implements OnInit {
   selectedHMO: any;
 
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
 
   tabWallet = true;
   tabInsurance = false;
@@ -38,9 +38,13 @@ export class PatientPaymentPlanComponent implements OnInit {
   plans: any[] = [];
   user: User = <User>{};
   insurancePlanForm: FormGroup;
+<<<<<<< HEAD
 
   insuranceFormArrayIndex = 0;
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolSessionStorage,
+=======
+  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolLocalStorage,
+>>>>>>> 2846fdb9222c2ad9ea0f0caa4baf36c7ffb8fcb5
     private facilityService: FacilitiesService) { }
 
   ngOnInit() {

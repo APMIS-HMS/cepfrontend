@@ -10,7 +10,7 @@ import {
     Department,
     MinorLocation, Gender, Title, Country
 } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { Observable } from 'rxjs/Observable';
@@ -105,7 +105,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private maritalStatusService: MaritalStatusService,
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
-        private locker: CoolSessionStorage, private patientService: PatientService,
+        private locker: CoolLocalStorage, private patientService: PatientService,
         private personService: PersonService,
         private employeeService: EmployeeService,
         private facilityService: FacilitiesService

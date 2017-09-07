@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import { Facility } from '../../models/index';
 import { FacilitiesService }
   from '../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class FacilityResolverService implements Resolve<Facility> {
   previousUrl = '/';
   selectedFacility: Facility = <Facility>{};
   constructor(public facilityService: FacilitiesService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private router: Router) {
   }
 

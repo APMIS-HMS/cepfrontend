@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FacilitiesService } from '../../../services/facility-manager/setup/index'; 
 import { Facility } from '../../../models/index';
 import { UserService } from '../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-facility-page',
@@ -26,7 +26,7 @@ export class FacilityPageComponent implements OnInit {
 
   constructor(public facilityService: FacilitiesService,
     private _DomSanitizationService: DomSanitizer,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     });

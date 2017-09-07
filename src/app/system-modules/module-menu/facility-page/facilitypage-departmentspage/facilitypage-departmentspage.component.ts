@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FacilitiesService, DepartmentService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Department, MinorLocation, Location } from '../../../../models/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -54,7 +54,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   constructor(public facilityService: FacilitiesService,
     private locationService: LocationService,
     private route: ActivatedRoute,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
       console.log(payload)
       this.facilityObj = payload;

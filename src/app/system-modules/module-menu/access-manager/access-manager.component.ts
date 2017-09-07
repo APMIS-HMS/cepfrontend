@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, UserService } from '../../../services/facility-manager/setup/index';
 import { Facility, User } from '../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 
 
@@ -27,7 +27,7 @@ export class AccessManagerComponent implements OnInit {
   pageSize = 1;
   limit = 100;
 
-  constructor(private locker: CoolSessionStorage, private router: Router,
+  constructor(private locker: CoolLocalStorage, private router: Router,
     public facilityService: FacilitiesService,
     private userService: UserService) { }
 

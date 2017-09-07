@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { FacilitiesService, ProfessionService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Profession } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-add-profession',
@@ -21,7 +21,7 @@ export class AddProfessionComponent implements OnInit {
   cadreForm: FormGroup;
   facilityObj: Facility = <Facility>{};
   professionCtrl:FormControl = new FormControl();
-  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage,
+  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     public facilityService: FacilitiesService, private professionService: ProfessionService) { }
 
   ngOnInit() {

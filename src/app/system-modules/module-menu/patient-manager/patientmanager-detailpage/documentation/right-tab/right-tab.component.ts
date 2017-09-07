@@ -5,7 +5,7 @@ import { FormsService, FacilitiesService, DocumentationService, AppointmentServi
     from '../../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../../shared-module/shared.service';
 
@@ -34,7 +34,7 @@ export class RightTabComponent implements OnInit {
     futureAppointments: any[] = [];
 
     constructor(private orderStatusService: OrderStatusService,
-        private formService: FormsService, private locker: CoolSessionStorage,
+        private formService: FormsService, private locker: CoolLocalStorage,
         private documentationService: DocumentationService, private appointmentService: AppointmentService,
         private formTypeService: FormTypeService, private sharedService: SharedService,
         private facilityService: FacilitiesService) {

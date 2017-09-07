@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PersonService, FacilitiesService, PatientService } from '../../services/facility-manager/setup/index';
 import { Person, Patient, Facility } from '../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -16,7 +16,7 @@ export class GlobalPatientLookupComponent implements OnInit {
   maximize = false;
   people: Person[] = [];
   selectedFacility: Facility = <Facility>{};
-  constructor(private locker: CoolSessionStorage,
+  constructor(private locker: CoolLocalStorage,
     private personService: PersonService,
     private patientService: PatientService,
     public facilityService: FacilitiesService, ) { }

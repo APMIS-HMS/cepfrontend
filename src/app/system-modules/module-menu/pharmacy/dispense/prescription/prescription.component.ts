@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User, 
 	Dispensed, DispensedArray, BatchTransaction,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem } from '../../../../../models/index';
@@ -47,7 +47,7 @@ export class PrescriptionComponent implements OnInit {
 		//private _fb: FormBuilder,
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _facilityService: FacilitiesService,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,

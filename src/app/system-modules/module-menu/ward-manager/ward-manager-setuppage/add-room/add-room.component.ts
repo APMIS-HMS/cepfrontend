@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 // tslint:disable-next-line:max-line-length
 import { RoomGroupService, WardAdmissionService, FacilitiesServiceCategoryService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -29,7 +29,7 @@ export class AddRoomComponent implements OnInit {
 		private _router: Router,
 		private _roomGroupService: RoomGroupService,
 		private _wardAdmissionService: WardAdmissionService,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private fb: FormBuilder,
 		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService) {
 

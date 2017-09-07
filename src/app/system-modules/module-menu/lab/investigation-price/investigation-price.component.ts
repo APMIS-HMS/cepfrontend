@@ -6,7 +6,7 @@ import {
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
@@ -52,7 +52,7 @@ export class InvestigationPriceComponent implements OnInit {
   loading: Boolean = true;
   foundPrice: Boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage,
+  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
@@ -99,9 +99,11 @@ export class InvestigationPriceComponent implements OnInit {
       }
     })
 
+    console.log(this.loginEmployee);
     if (this.loginEmployee.workSpaces !== undefined) {
       this.loginEmployee.workSpaces.forEach(work => {
         work.locations.forEach(loc => {
+          console.log(work);
           if (loc.majorLocationId.name === 'Laboratory') {
             this.locationIds.push(loc.minorLocationId._id);
           }
@@ -150,6 +152,7 @@ export class InvestigationPriceComponent implements OnInit {
       this.tagService.find({ query: {
         tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
       }).then(payload => {
+        console.log(payload);
         if (payload.data.length > 0) {
           this.selectedTag = payload.data[0];
         }
@@ -212,6 +215,7 @@ export class InvestigationPriceComponent implements OnInit {
     this.facilityPriceService.find({ query: { serviceId: this.selectedInvestigation.serviceId._id } }).then(payload => {
       this.selectedFacilityServicePrice = payload.data.length > 0 ? payload.data[0] : undefined;
 
+      console.log(this.selectedFacilityServicePrice);
       this.selectedFacilityServicePrice.modifiers.forEach((item, i) => {
         if (item.tagDetails !== undefined) {
           delete item.tagDetails;

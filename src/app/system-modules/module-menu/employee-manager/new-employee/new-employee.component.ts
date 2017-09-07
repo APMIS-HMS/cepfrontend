@@ -9,7 +9,7 @@ import {
 import {
     Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country,User, Role
 } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -69,7 +69,7 @@ export class NewEmployeeComponent implements OnInit {
         private maritalStatusService: MaritalStatusService,
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
-        private locker: CoolSessionStorage, private employeeService: EmployeeService,
+        private locker: CoolLocalStorage, private employeeService: EmployeeService,
         private personService: PersonService, private userService: UserService
     ) {
         this.cropperSettings = new CropperSettings();
