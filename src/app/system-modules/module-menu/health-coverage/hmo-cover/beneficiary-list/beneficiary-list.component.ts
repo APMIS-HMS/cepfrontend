@@ -17,7 +17,12 @@ export class BeneficiaryListComponent implements OnInit {
   newHmo = false;
   selectedFacility: any = <any>{};
   beneficiaries: any[] = [];
+  filteredBeneficiaries:any[] = [];
+  operateBeneficiaries:any[] = [];
   selectedHMO: any = <any>{};
+
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   pageEvent: PageEvent;
@@ -37,21 +42,20 @@ export class BeneficiaryListComponent implements OnInit {
 
     this.route.params.subscribe(parameters => {
       this.getBeneficiaryList(parameters.id);
-      console.log(this.paginator)
     })
   }
   getBeneficiaryList(id) {
     this.hmoService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
-      console.log(payload);
       if (payload.data.length > 0) {
         let facHmo = payload.data[0];
         const index = facHmo.hmos.findIndex(x => x.hmo._id === id);
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             this.selectedHMO = facHmo.hmos[index].hmo;
-            console.log(this.selectedHMO);
             this.beneficiaries = facHmo.hmos[index].enrolleeList[0].enrollees;
-            console.log(this.beneficiaries[0]);
+            const startIndex = 0 * 10;
+            this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+            this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
           }
         }
       }
@@ -73,4 +77,9 @@ export class BeneficiaryListComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
 
+  onPaginateChange(event) {
+    const startIndex = event.pageIndex * event.pageSize;
+    this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+    this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
 }
