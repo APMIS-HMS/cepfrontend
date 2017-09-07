@@ -16,7 +16,7 @@ export class PatientPaymentPlanComponent implements OnInit {
   selectedHMO: any;
 
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
 
   tabWallet = true;
   tabInsurance = false;
@@ -38,7 +38,7 @@ export class PatientPaymentPlanComponent implements OnInit {
   plans: any[] = [];
   user: User = <User>{};
   insurancePlanForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolSessionStorage,
+  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolLocalStorage,
     private facilityService: FacilitiesService) { }
 
   ngOnInit() {
