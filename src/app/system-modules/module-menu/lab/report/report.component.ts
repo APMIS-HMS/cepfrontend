@@ -5,7 +5,7 @@ import {
   LaboratoryReportService, DocumentationService, FormsService, BillingService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-report',
@@ -59,7 +59,7 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     public facilityService: FacilitiesService,
     private _formService: FormsService,
     private _laboratoryRequestService: LaboratoryRequestService,

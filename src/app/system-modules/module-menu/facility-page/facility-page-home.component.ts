@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { EmployeeService } from '../../../services/facility-manager/setup/index';
 @Component({
   selector: 'app-facility-page-home',
@@ -29,7 +29,7 @@ export class FacilityPageHomeComponent implements OnInit {
   hasAssignedEmployees = false;
   hasWorkSpaces = false;
 
-  constructor(private router: Router, private locker: CoolSessionStorage, private employeeService: EmployeeService) {
+  constructor(private router: Router, private locker: CoolLocalStorage, private employeeService: EmployeeService) {
     router.events.subscribe((routerEvent: Event) => {
       this.checkRouterEvent(routerEvent);
     });

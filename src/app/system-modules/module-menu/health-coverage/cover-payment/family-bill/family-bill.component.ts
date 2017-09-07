@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-family-bill',
@@ -50,7 +50,7 @@ export class FamilyBillComponent implements OnInit {
   subTotal = 0;
   total = 0;
   discount = 0;
-  constructor(private locker: CoolSessionStorage,
+  constructor(private locker: CoolLocalStorage,
     private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
     private invoiceService: InvoiceService,

@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { WardAdmissionService, InPatientService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from './../../../../models/index';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 // import { globalConfig } from '../../../../shared-module/helpers/global-config';
@@ -30,7 +30,7 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	public frmNewAdmit: FormGroup;
 
 	constructor(private fb: FormBuilder,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _wardEventEmitter: WardEmitterService,
 		private _inPatientService: InPatientService,
 		private _wardAdmissionService: WardAdmissionService,

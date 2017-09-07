@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import { WardAdmissionService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-ward-manager-listpage',
@@ -17,7 +17,7 @@ export class WardManagerListpageComponent implements OnInit {
 		private _wardEventEmitter: WardEmitterService,
 		private _wardAdmissionService: WardAdmissionService,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolSessionStorage) {
+		private _locker: CoolLocalStorage) {
 		this._wardAdmissionService.listenerCreate.subscribe(payload => {
 			this.getFacilityWard();
 		});

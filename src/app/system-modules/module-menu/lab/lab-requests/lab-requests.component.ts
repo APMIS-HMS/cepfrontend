@@ -6,7 +6,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Investigation, InvestigationModel, Employee,
   BillIGroup, BillItem, BillModel, PendingLaboratoryRequest } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -67,7 +67,7 @@ export class LabRequestsComponent implements OnInit {
   selectedInvestigation: any = <any>{};
 
   totalPrice: Number = 0;
-  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolSessionStorage,
+  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig, private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {

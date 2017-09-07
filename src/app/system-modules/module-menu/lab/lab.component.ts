@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/cor
 import { Router } from '@angular/router';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
 import { Employee, Facility } from '../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-lab',
@@ -30,7 +30,7 @@ export class LabComponent implements OnInit, OnDestroy {
 
   constructor(
     private _router: Router,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     public facilityService: FacilitiesService,
     private _employeeService: EmployeeService
   ) { }
@@ -40,7 +40,7 @@ export class LabComponent implements OnInit, OnDestroy {
     this.checkPageUrl(page);
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
-
+    console.log(this.loginEmployee);
     if ((this.loginEmployee.workbenchCheckIn === undefined
       || this.loginEmployee.workbenchCheckIn.length === 0)) {
       this.modal_on = true;

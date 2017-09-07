@@ -3,7 +3,7 @@ import { ConsultingRoomService, SchedulerTypeService } from '../../../../service
 import { RoomModel, Facility, Location, ConsultingRoomModel } from '../../../../models/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-consulting-room',
@@ -31,7 +31,7 @@ export class ConsultingRoomComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private locationService: LocationService,
-    private locker: CoolSessionStorage, private schedulerTypeService: SchedulerTypeService,
+    private locker: CoolLocalStorage, private schedulerTypeService: SchedulerTypeService,
     private consultingRoomService: ConsultingRoomService) {
   }
   ngOnInit() {

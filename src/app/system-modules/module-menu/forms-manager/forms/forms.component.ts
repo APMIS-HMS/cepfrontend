@@ -4,7 +4,7 @@ import { FormsService, FacilityModuleService } from '../../../../services/facili
 import { ModuleViewModel, Facility } from '../../../../models/index';
 import { FormTypeService, ScopeLevelService } from '../../../../services/module-manager/setup/index';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -186,7 +186,7 @@ export class FormsComponent implements OnInit {
   checkboxArray = new FormArray([]);
 
   constructor(private route: ActivatedRoute, private formsService: FormsService, private scopeLevelService: ScopeLevelService,
-    private locker: CoolSessionStorage, private facilityModuleService: FacilityModuleService, private formTypeService: FormTypeService,
+    private locker: CoolLocalStorage, private facilityModuleService: FacilityModuleService, private formTypeService: FormTypeService,
     private formBuilder: FormBuilder) {
 
     this.txtForm.valueChanges.subscribe(value => {

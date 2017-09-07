@@ -5,7 +5,7 @@ import {
   FacilitiesService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService, WorkSpaceService
 } from './services/facility-manager/setup/index';
 import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession } from './models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 @Component({
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
 
   constructor(router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
     private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
-    private facilityService: FacilitiesService, private locker: CoolSessionStorage) {
+    private facilityService: FacilitiesService, private locker: CoolLocalStorage) {
     this.toastr.setRootViewContainerRef(vcr);
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
       if (obj.users !== undefined && obj.users.length > 0) {

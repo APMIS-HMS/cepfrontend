@@ -1,5 +1,5 @@
 import { User } from './../../../../../models/facility-manager/setup/user';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 import { FacilityType } from './../../../../../models/facility-manager/setup/facilitytype';
 import { Facility } from './../../../../../models/facility-manager/setup/facility';
@@ -35,7 +35,7 @@ export class HmoListComponent implements OnInit {
   user: User = <User>{};
 
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private facilityService: FacilitiesService,
-    private facilityTypeService: FacilityTypesService, private locker: CoolSessionStorage, private router: Router) { }
+    private facilityTypeService: FacilityTypesService, private locker: CoolLocalStorage, private router: Router) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('miniFacility');

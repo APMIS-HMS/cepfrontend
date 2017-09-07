@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, EmployeeService, WorkSpaceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, MinorLocation, Location, WorkSpace, Department } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { LocationService } from '../../../../services/module-manager/setup/location.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -40,7 +40,7 @@ export class CreateWorkspaceComponent implements OnInit {
   @Input() selectedEmployee: any = <any>{};
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private locationService: LocationService,
     private employeeService: EmployeeService,
     private workspaceService: WorkSpaceService,

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -42,7 +42,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   updatePatientBtnText: string = 'Update';
 
   constructor(private patientService: PatientService, private personService: PersonService,
-    private facilityService: FacilitiesService, private locker: CoolSessionStorage, private router: Router,
+    private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
     private _countryService: CountriesService,

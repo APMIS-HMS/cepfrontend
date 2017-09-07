@@ -1,5 +1,5 @@
 import { Facility } from './../../../../models/facility-manager/setup/facility';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { HmoService } from './../../../../services/facility-manager/setup/hmo.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -34,7 +34,7 @@ export class PatientPaymentPlanComponent implements OnInit {
   hmos: any[] = [];
   plans: any[] = [];
 
-  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolSessionStorage) { }
+  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolLocalStorage) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');

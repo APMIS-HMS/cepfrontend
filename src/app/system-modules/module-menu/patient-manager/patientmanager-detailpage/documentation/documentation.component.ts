@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../shared-module/shared.service';
 
@@ -28,7 +28,7 @@ export class DocumentationComponent implements OnInit {
   patientDocumentation: Documentation = <Documentation>{};
   documents: PatientDocumentation[] = [];
 
-  constructor(private formService: FormsService, private locker: CoolSessionStorage,
+  constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
     private facilityService: FacilitiesService) {

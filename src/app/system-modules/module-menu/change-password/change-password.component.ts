@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-change-password',
@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
   public frm_changePass: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private userService: UserService) { }
 
   ngOnInit() {

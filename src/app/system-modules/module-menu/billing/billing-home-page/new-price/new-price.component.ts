@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -25,7 +25,7 @@ export class NewPriceComponent implements OnInit {
   msg = '';
   loadingIndicator = false;
   constructor(private formBuilder: FormBuilder, private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-    private _locker: CoolSessionStorage, private servicePriceService: ServicePriceService) {
+    private _locker: CoolLocalStorage, private servicePriceService: ServicePriceService) {
   }
 
   ngOnInit() {

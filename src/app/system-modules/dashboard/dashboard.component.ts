@@ -4,7 +4,7 @@ import {
   PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService,
 } from '../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router'
 
 @Component({
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
     private genderService: GenderService,
     private relationshipService: RelationshipService,
     private maritalStatusService: MaritalStatusService,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
 
   }
 

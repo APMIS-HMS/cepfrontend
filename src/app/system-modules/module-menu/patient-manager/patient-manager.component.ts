@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
 import { Employee, Facility } from '../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { PatientmanagerHomepageComponent } from './patientmanager-homepage/patientmanager-homepage.component'
 
 @Component({
@@ -30,7 +30,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router, 
     private route: ActivatedRoute,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     public facilityService: FacilitiesService,
 		private _employeeService: EmployeeService
   ) { }
