@@ -21,16 +21,12 @@ export class PatientPaymentPlanComponent implements OnInit {
   tabFamily = false;
   
   walletPlan = new FormControl('', Validators.required);
-  walletPlanCheck = new FormControl('');
   hmo = new FormControl('', Validators.required);
   hmoPlan = new FormControl('', Validators.required);
   hmoPlanId = new FormControl('', Validators.required);
-  hmoPlanCheck = new FormControl('');
   ccPlan = new FormControl('', Validators.required);
   ccPlanId = new FormControl('', Validators.required);
-  ccPlanCheck = new FormControl('');
   familyPlanId = new FormControl('', Validators.required);
-  familyPlanCheck = new FormControl('');
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 

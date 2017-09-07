@@ -84,7 +84,6 @@
       <div *ngIf="tabWallet">
         <div class="plan">
           <div class="plan-title">Out of Pocket</div>
-          <md-checkbox class="plan-checker" [formControl]="walletPlanCheck"></md-checkbox>
           <div class="frm-item-wrap">
             <md-select placeholder="Select Plan" [formControl]="walletPlan">
               <md-option>Diamond</md-option>
@@ -99,7 +98,6 @@
       <div *ngIf="tabInsurance">
         <div class="plan">
           <div class="plan-title">Insurance</div>
-          <md-checkbox class="plan-checker" [formControl]="hmoPlanCheck"></md-checkbox>
           <div class="frm-item-wrap">
               <md-input-container class="example-full-width">
                   <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
@@ -121,7 +119,6 @@
       <div *ngIf="tabCompany">
         <div class="plan">
           <div class="plan-title">Company Cover</div>
-          <md-checkbox class="plan-checker" [formControl]="ccPlanCheck"></md-checkbox>
           <div class="frm-item-wrap">
               <md-input-container class="example-full-width">
                   <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
@@ -143,7 +140,6 @@
       <div *ngIf="tabFamily">
         <div class="plan">
           <div class="plan-title">Family Cover</div>
-          <md-checkbox class="plan-checker" [formControl]="familyPlanCheck"></md-checkbox>
           <div class="frm-item-wrap">
               <md-input-container class="example-full-width">
                   <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">

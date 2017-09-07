@@ -37,6 +37,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     shouldMoveFirst = false;
     nextOfKinReadOnly = false;
 
+    tabWallet = true;
+    tabInsurance = false;
+    tabCompany = false;
+    tabFamily = false;
+
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
     public frmNewEmp2: FormGroup;
@@ -700,6 +705,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         //     type: 'Info',
         //     text: 'This operation has been canceled!'
         // });
+    }
+
+    tabWallet_click() {
+    this.tabWallet = true;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+    }
+    tabCompany_click() {
+    this.tabWallet = false;
+    this.tabCompany = true;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+    }
+    tabFamily_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = true;
+    this.tabInsurance = false;
+    }
+    tabInsurance_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = true;
     }
 
 }
