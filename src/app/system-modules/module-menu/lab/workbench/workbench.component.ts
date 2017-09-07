@@ -33,7 +33,8 @@ export class WorkbenchComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   btnText = 'Create Workbench';
   reqDetail_view = false;
-  personAcc_view = false
+  personAcc_view = false;
+  loading: Boolean = true;
 
   public frmNewWorkbench: FormGroup;
 
@@ -52,6 +53,7 @@ export class WorkbenchComponent implements OnInit {
   }
   getWorkBenches() {
     this.workBenchService.find({ query: { 'facilityId._id': this.selectedFacility._id, $limit: 100 } }).then(payload => {
+      this.loading = false;
       this.workbenches = payload.data;
     })
   }
