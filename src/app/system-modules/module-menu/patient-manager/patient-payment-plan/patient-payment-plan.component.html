@@ -96,59 +96,111 @@
       </div>
 
       <div *ngIf="tabInsurance">
-        <div class="plan">
+        <!-- <div class="plan">
           <div class="plan-title">Insurance</div>
-          <div class="frm-item-wrap">
-              <md-input-container class="example-full-width">
-                  <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-              </md-input-container>
+          <div *ngIf="selectedHMOClient !== undefined">
+            {{selectedHMOClient?.surname}} {{selectedHMOClient?.firstName}} <span class="role">{{getRole()}}</span>
           </div>
           <div class="frm-item-wrap">
-            <md-select placeholder="Select Plan" [formControl]="hmoPlan">
-              <md-option>Diamond</md-option>
-              <md-option>Gold</md-option>
-              <md-option>Bronze</md-option>
+            <md-select placeholder="HMO" [formControl]="hmo">
+              <md-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+            </md-select>
+          </div>
+          <div class="frm-item-wrap">
+            <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+            </md-input-container>
+          </div>
+
+          <div class="frm-item-wrap">
+            <md-select [disabled]=true placeholder="Select Plan" [formControl]="hmoPlan">
+              <md-option *ngFor="let item of plans" [value]="item">{{item}}</md-option>
             </md-select>
           </div>
           <button class="cta-1">Save</button>
-    
+
           <div class="another">Another Insurance</div>
+        </div> -->
+
+
+
+
+
+        <!-- for array -->
+        <form [formGroup]="insurancePlanForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+          <div formArrayName="insurancePlanArray" class="frmArrayWrap">
+            <div class="frmArray" *ngFor="let schedule of insurancePlanForm.controls['insurancePlanArray'].controls; let i = index;">
+              <div (click)="closeClinicSchedule(schedule, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+              <div formGroupName="{{i}}">
+                <div>
+                  <div class="plan">
+                    <div class="plan-title">Insurance</div>
+                    <div *ngIf="selectedHMOClient !== undefined">
+                      {{selectedHMOClient?.surname}} {{selectedHMOClient?.firstName}} <span class="role">{{getRole()}}</span>
+                    </div>
+                    <div class="frm-item-wrap">
+                      <md-select placeholder="HMO" formControlName="hmo">
+                        <md-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+                      </md-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Insurance ID" formControlName="hmoPlanId">
+                      </md-input-container>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                      <md-select placeholder="Select Plan" formControlName="hmoPlan">
+                        <md-option *ngFor="let item of plans" [value]="item">{{item}}</md-option>
+                      </md-select>
+                    </div>
+                    <button class="cta-1">Save</button>
+
+                    <div class="another">Another Insurance</div>
+                  </div>
+                </div>
+
+                <div *ngIf="schedule.value.readOnly == true || schedule.value.valid == true" (click)="pushNewClinicSchedule(schedule)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Add Schedule</span></div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- end -->
         </div>
-      </div>
 
-      <div *ngIf="tabCompany">
-        <div class="plan">
-          <div class="plan-title">Company Cover</div>
-          <div class="frm-item-wrap">
+        <div *ngIf="tabCompany">
+          <div class="plan">
+            <div class="plan-title">Company Cover</div>
+            <div class="frm-item-wrap">
               <md-input-container class="example-full-width">
-                  <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+                <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
               </md-input-container>
+            </div>
+            <div class="frm-item-wrap">
+              <md-select placeholder="Select Plan" [formControl]="ccPlan">
+                <md-option>Diamond</md-option>
+                <md-option>Gold</md-option>
+                <md-option>Bronze</md-option>
+              </md-select>
+            </div>
+            <button class="cta-1">Save</button>
+
+            <div class="another">Another Company</div>
           </div>
-          <div class="frm-item-wrap">
-            <md-select placeholder="Select Plan" [formControl]="ccPlan">
-              <md-option>Diamond</md-option>
-              <md-option>Gold</md-option>
-              <md-option>Bronze</md-option>
-            </md-select>
-          </div>
-          <button class="cta-1">Save</button>
-    
-          <div class="another">Another Company</div>
         </div>
-      </div>
 
-      <div *ngIf="tabFamily">
-        <div class="plan">
-          <div class="plan-title">Family Cover</div>
-          <div class="frm-item-wrap">
+        <div *ngIf="tabFamily">
+          <div class="plan">
+            <div class="plan-title">Family Cover</div>
+            <div class="frm-item-wrap">
               <md-input-container class="example-full-width">
-                  <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+                <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
               </md-input-container>
-          </div>
-          <button class="cta-1">Save</button>
+            </div>
+            <button class="cta-1">Save</button>
 
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
