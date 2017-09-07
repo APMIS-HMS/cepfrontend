@@ -10,6 +10,11 @@ export class PatientPaymentPlanComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+
+  tabWallet = true;
+  tabInsurance = false;
+  tabCompany = false;
+  tabFamily = false;
   
   walletPlan = new FormControl('', Validators.required);
   walletPlanCheck = new FormControl('');
@@ -27,6 +32,31 @@ export class PatientPaymentPlanComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+  }
+
+  tabWallet_click() {
+    this.tabWallet = true;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+  }
+  tabCompany_click() {
+    this.tabWallet = false;
+    this.tabCompany = true;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+  }
+  tabFamily_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = true;
+    this.tabInsurance = false;
+  }
+  tabInsurance_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = true;
   }
 
   close_onClick() {
