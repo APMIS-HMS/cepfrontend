@@ -201,71 +201,84 @@
     </div>
 
     <div *ngIf="paymentPlan">
-        <div class="plans-wrap">
-            <div>
-                <div class="plan shadow-grey">
-                    <div class="plan-title">Out of Pocket</div>
-                    <md-checkbox class="plan-checker" [formControl]="walletPlanCheck"></md-checkbox>
-                    <div class="frm-item-wrap">
+        <div class="doc-mainWrap">
+            <div class="tab-wrap">
+              <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
+              <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
+              <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+              <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+            </div>
+        
+            <div class="tab-content">
+              <div *ngIf="tabWallet">
+                <div class="plan">
+                  <div class="plan-title">Out of Pocket</div>
+                  <div class="frm-item-wrap">
                     <md-select placeholder="Select Plan" [formControl]="walletPlan">
-                        <md-option>Diamond</md-option>
-                        <md-option>Gold</md-option>
-                        <md-option>Bronze</md-option>
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
                     </md-select>
-                    </div>
+                  </div>
+                  <button class="cta-1">Save</button>
                 </div>
-
-                <div class="plan shadow-grey">
-                    <div class="plan-title">Family Cover</div>
-                    <md-checkbox class="plan-checker" [formControl]="familyPlanCheck"></md-checkbox>
-                    <div class="frm-item-wrap">
-                        <md-input-container class="example-full-width">
-                            <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
-                        </md-input-container>
-                    </div>
+              </div>
+        
+              <div *ngIf="tabInsurance">
+                <div class="plan">
+                  <div class="plan-title">Insurance</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+                      </md-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="hmoPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+            
+                  <div class="another">Another Insurance</div>
                 </div>
+              </div>
+        
+              <div *ngIf="tabCompany">
+                <div class="plan">
+                  <div class="plan-title">Company Cover</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+                      </md-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="ccPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+            
+                  <div class="another">Another Company</div>
+                </div>
+              </div>
+        
+              <div *ngIf="tabFamily">
+                <div class="plan">
+                  <div class="plan-title">Family Cover</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+                      </md-input-container>
+                  </div>
+                  <button class="cta-1">Save</button>
+        
+                </div>
+              </div>
             </div>
-
-            <div class="plan shadow-grey">
-            <div class="plan-title">Insurance</div>
-            <md-checkbox class="plan-checker" [formControl]="hmoPlanCheck"></md-checkbox>
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-                </md-input-container>
-            </div>
-            <div class="frm-item-wrap">
-                <md-select placeholder="Select Plan" [formControl]="hmoPlan">
-                <md-option>Diamond</md-option>
-                <md-option>Gold</md-option>
-                <md-option>Bronze</md-option>
-                </md-select>
-            </div>
-
-            <div class="another">Another Insurance</div>
-            </div>
-
-            <div class="plan shadow-grey">
-            <div class="plan-title">Company Cover</div>
-            <md-checkbox class="plan-checker" [formControl]="ccPlanCheck"></md-checkbox>
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
-                </md-input-container>
-            </div>
-            <div class="frm-item-wrap">
-                <md-select placeholder="Select Plan" [formControl]="ccPlan">
-                <md-option>Diamond</md-option>
-                <md-option>Gold</md-option>
-                <md-option>Bronze</md-option>
-                </md-select>
-            </div>
-
-            <div class="another">Another Company</div>
-            </div>
-
         </div>
-
-        <button class="cta-1">Save</button>
     </div>
 </div>
