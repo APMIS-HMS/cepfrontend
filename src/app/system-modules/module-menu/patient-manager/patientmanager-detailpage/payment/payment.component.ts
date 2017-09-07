@@ -13,7 +13,7 @@ export class PaymentComponent implements OnInit {
   tabFamily = false;
 
   constructor() { }
-
+ 
   ngOnInit() {
   }
 
