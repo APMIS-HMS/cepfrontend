@@ -2,6 +2,7 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+const request = require('superagent');
 // import 'rxjs/Rx';
 
 @Injectable()
@@ -50,5 +51,13 @@ export class HmoService {
 
   update(hmo: any) {
     return this._socket.update(hmo._id, hmo);
+  }
+
+  hmos(facilityId, hmoId?, search?) {
+    const host = this._restService.getHost();
+    const path = host + '/distinct-hmo-plans';
+    return request
+      .get(path)
+      .query({ facilityId: facilityId, hmoId:hmoId, search:search });
   }
 }

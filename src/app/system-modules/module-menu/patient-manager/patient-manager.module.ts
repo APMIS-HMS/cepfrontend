@@ -1,3 +1,4 @@
+import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -76,7 +77,7 @@ import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-paym
         ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
-        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService]
+        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService]
 })
 export class PatientManagerModule { }
 

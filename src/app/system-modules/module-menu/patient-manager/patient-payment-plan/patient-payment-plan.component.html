@@ -1,7 +1,7 @@
 <div class="modal-baseWrap animated pulse">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Payment Plans</legend>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <legend class="modal_title">Payment Plans</legend>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
   <div class="plans-wrap">
     <div>
@@ -21,9 +21,9 @@
         <div class="plan-title">Family Cover</div>
         <md-checkbox class="plan-checker" [formControl]="familyPlanCheck"></md-checkbox>
         <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-                <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
-            </md-input-container>
+          <md-input-container class="example-full-width">
+            <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+          </md-input-container>
         </div>
       </div>
     </div>
@@ -32,15 +32,18 @@
       <div class="plan-title">Insurance</div>
       <md-checkbox class="plan-checker" [formControl]="hmoPlanCheck"></md-checkbox>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-          </md-input-container>
+        <md-select placeholder="HMO" [formControl]="hmo">
+          <md-option *ngFor="let item of hmos" [value]="item.hmo._id">{{item.hmo.name}}</md-option>
+        </md-select>
+      </div>
+      <div class="frm-item-wrap">
+        <md-input-container class="example-full-width">
+          <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+        </md-input-container>
       </div>
       <div class="frm-item-wrap">
         <md-select placeholder="Select Plan" [formControl]="hmoPlan">
-          <md-option>Diamond</md-option>
-          <md-option>Gold</md-option>
-          <md-option>Bronze</md-option>
+          <md-option *ngFor="let item of plans" [value]="item">{{item}}</md-option>
         </md-select>
       </div>
 
@@ -51,9 +54,9 @@
       <div class="plan-title">Company Cover</div>
       <md-checkbox class="plan-checker" [formControl]="ccPlanCheck"></md-checkbox>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
-          </md-input-container>
+        <md-input-container class="example-full-width">
+          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+        </md-input-container>
       </div>
       <div class="frm-item-wrap">
         <md-select placeholder="Select Plan" [formControl]="ccPlan">
