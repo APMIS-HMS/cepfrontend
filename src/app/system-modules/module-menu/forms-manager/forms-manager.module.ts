@@ -9,11 +9,13 @@ import { SystemModulesResolverService } from '../../../resolvers/module-menu/ind
 import { FormTypeResolverService, ScopeLevelResolverService } from '../../../resolvers/module-manager/index';
 import { ScopeLevelService, FormTypeService } from '../../../services/module-manager/setup/index';
 import { FormsService } from '../../../services/facility-manager/setup/index';
+import { TreatementTemplateComponent } from './treatement-template/treatement-template.component';
 
 @NgModule({
     declarations: [
         FormsManagerComponent,
-        FormsComponent],
+        FormsComponent,
+        TreatementTemplateComponent],
     exports: [
     ],
     imports: [

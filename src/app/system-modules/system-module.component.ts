@@ -22,6 +22,7 @@ export class SystemModuleComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   authData: any = <any>{};
   checkedInObject: any = <any>{};
+  logoutConfirm_on = false;
 
   constructor(private userService: UserService,
     public facilityService: FacilitiesService,
@@ -69,6 +70,9 @@ export class SystemModuleComponent implements OnInit {
     this.userService.logOut();
     this.userService.announceMission('out');
     this.userService.isLoggedIn = false;
+  }
+  logOut() {
+    this.logoutConfirm_on = true;
   }
 
   success(text) {
