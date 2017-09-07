@@ -280,7 +280,14 @@
                                     </div>
                                 </td>
                             </tr>
-
+                            <tr *ngIf="pendingRequests.length === 0 && !loading">
+                                <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="pendingRequests.length === 0 && loading">
+                                <td class="table-content " colspan="6" style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
                             <tr *ngFor="let request of pendingRequests">
                                 <td>{{request.createdAt | date:'short'}}</td>
                                 <td>

@@ -219,11 +219,13 @@ export class CreateWorkspaceComponent implements OnInit {
         query:
         { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
       }).then(payload => {
+        console.log(payload);
         filtered.forEach((iteme, e) => {
           let hasRecord = false;
           if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
             hasRecord = true;
           }
+          console.log(hasRecord);
           if (hasRecord) {
             updateArrays.push(iteme);
           } else {
@@ -235,6 +237,7 @@ export class CreateWorkspaceComponent implements OnInit {
         {
           const workSpaces: WorkSpace[] = [];
           console.log(createArrays);
+          console.log(updateArrays);
           createArrays.forEach((emp, i) => {
             const space: WorkSpace = <WorkSpace>{};
             space.employeeId = emp;
@@ -261,6 +264,7 @@ export class CreateWorkspaceComponent implements OnInit {
         }
         Observable.forkJoin(workSpaces$).subscribe(results => {
           this.getWorkSpace();
+          this.loadIndicatorVisible = false;
         }, error => {
           this.loadIndicatorVisible = false;
         });

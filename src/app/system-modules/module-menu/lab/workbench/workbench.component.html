@@ -37,10 +37,9 @@
                                 </div>
                             </div>
                         </div>
-
-                        <button (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="cta-1">
-              {{btnText}}
-            </button>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!frmNewWorkbench.valid" (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="btn"> {{btnText}} </button>
+                        </div>
                     </form>
                 </div>
 
@@ -69,20 +68,17 @@
                         </thead>
 
                         <tbody>
-
                             <tr>
-                                <td colspan="6">
+                                <td colspan="5">
                                     <div class="tbl-actionRow">
-                                    
+
                                         <!-- <div class="tbl-title">Employee Workspace</div> -->
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Bench Name" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Bench Name" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location" isSocket="false"
-                                                displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
@@ -94,7 +90,14 @@
                                     </div>
                                 </td>
                             </tr>
-
+                            <tr *ngIf="workbenches.length === 0 && !loading">
+                                <td class="table-content" colspan="5" style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="workbenches.length === 0 && loading">
+                                <td class="table-content " colspan="5" style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
                             <tr *ngFor="let bench of workbenches">
                                 <td>{{bench.laboratoryId.name}} </td>
                                 <td>{{bench.name}}</td>

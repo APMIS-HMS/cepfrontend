@@ -37,9 +37,11 @@ export class LabCheckInComponent implements OnInit {
     });
 
     if (!!this.loginEmployee.workSpaces) {
+      console.log(this.loginEmployee.workSpaces);
 			this.loginEmployee.workSpaces.forEach(workspace => {
         if (workspace.isActive && workspace.locations.length > 0) {
           workspace.locations.forEach(x => {
+            console.log(x);
             if (x.isActive && new RegExp('lab', 'i').test(x.majorLocationId.name)) {
               this.locations.push(x.minorLocationId);
             }
@@ -49,7 +51,9 @@ export class LabCheckInComponent implements OnInit {
     }
 
 		this.labCheckin.controls['location'].valueChanges.subscribe(val => {
-			this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
+      console.log(val);
+      this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
+        console.log(res);
 				if (res.data.length > 0) {
 					this.workbenches = res.data;
 				} else {

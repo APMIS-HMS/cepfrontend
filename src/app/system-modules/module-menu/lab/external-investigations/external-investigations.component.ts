@@ -13,7 +13,7 @@ export class ExternalInvestigationsComponent implements OnInit {
   extRequestFormGroup: FormGroup;
   facility: Facility = <Facility>{};
   extRequests: any = [];
-  loading: boolean = false;
+  loading: Boolean = false;
 
   constructor(
     private _fb: FormBuilder,
@@ -26,7 +26,7 @@ export class ExternalInvestigationsComponent implements OnInit {
 
     this.extRequestFormGroup = this._fb.group({
       search: [''],
-      date: [Date.now()]
+      date: [null]
     });
 
     this.extRequestFormGroup.controls['search'].valueChanges
@@ -69,16 +69,13 @@ export class ExternalInvestigationsComponent implements OnInit {
             console.log(this.extRequests);
           })
         }
-
-      })
+    });
 
     this.extRequestFormGroup.controls['date'].valueChanges.subscribe(value => {
       this._laboratoryRequestService.find({ query: { dateExternalInvestigation: true, date: value } }).then(payload => {
         console.log(payload);
       })
-    })
-
-
+    });
   }
 
 

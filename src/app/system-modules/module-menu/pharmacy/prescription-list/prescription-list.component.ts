@@ -18,8 +18,9 @@ export class PrescriptionListComponent implements OnInit {
 	prescriptionLists: any[] = [];
 	noPrescriptionLists: any[] = [];
 	tempPrescriptionLists: any[] = [];
-	loading: boolean = true;
-	noPresLoading: boolean = true;
+	loading: Boolean = true;
+	noPresLoading: Boolean = true;
+	currentDate: Date = new Date();
 
 	constructor(
 		private _fb: FormBuilder,
@@ -40,7 +41,7 @@ export class PrescriptionListComponent implements OnInit {
 		this.prescriptionFormGroup = this._fb.group({
 			search: [''],
 			category: [''],
-			date: [Date.now()]
+			date: [this.currentDate]
 		});
 
 		// this.searchNonePrescriptionFormGroup = this._fb.group({
@@ -50,7 +51,7 @@ export class PrescriptionListComponent implements OnInit {
 		this.walkinFormGroup = this._fb.group({
 			search: [''],
 			category: [''],
-			date: [Date.now()]
+			date: [this.currentDate]
 		});
 
 		this.prescriptionFormGroup.controls['search'].valueChanges.subscribe(val => {
@@ -66,7 +67,7 @@ export class PrescriptionListComponent implements OnInit {
 				});
 
 				this.loading = false;
-				if(tempArray.length > 0) {
+				if (tempArray.length > 0) {
 					this.prescriptionLists = tempArray;
 				} else {
 					this.prescriptionLists = [];
@@ -88,24 +89,24 @@ export class PrescriptionListComponent implements OnInit {
 				console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
-					if(!element.isDispensed) {
+					if (!element.isDispensed) {
 						let isBilledCount = 0;
-						let preItemCount = element.prescriptionItems.length;
+						const preItemCount = element.prescriptionItems.length;
 						element.prescriptionItems.forEach(preItem => {
-							if(preItem.isBilled) {
+							if (preItem.isBilled) {
 								++isBilledCount;
 							}
 						});
 
-						if(isBilledCount === preItemCount) {
+						if (isBilledCount === preItemCount) {
 							element.status = 'completely';
-						} else if(isBilledCount === 0) {
+						} else if (isBilledCount === 0) {
 							element.status = 'not';
 						} else {
 							element.status = 'partly';
 						}
 
-						this.tempPrescriptionLists.push(element);// temporary variable to search from.
+						this.tempPrescriptionLists.push(element); // temporary variable to search from.
 						this.prescriptionLists.push(element);
 					}
 				});
@@ -119,7 +120,7 @@ export class PrescriptionListComponent implements OnInit {
 		this._dispenseService.find({ query: {facilityId: this.facility._id, isPrescription: false }}).then(res => {
 			console.log(res);
 			this.noPresLoading = false;
-			if(res.data.length > 0) {
+			if (res.data.length > 0) {
 				this.noPrescriptionLists = res.data;
 			} else {
 				this.noPrescriptionLists = [];
@@ -129,7 +130,7 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Call Api to search
 	private searchApi() {
-		console.log("name");
+		console.log('name');
 	}
 
 }

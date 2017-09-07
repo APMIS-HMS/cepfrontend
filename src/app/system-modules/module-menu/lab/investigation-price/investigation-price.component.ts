@@ -216,7 +216,7 @@ export class InvestigationPriceComponent implements OnInit {
         if (item.tagDetails !== undefined) {
           delete item.tagDetails;
         }
-        console.log(this.selectedFacilityServicePrice);
+        // console.log(this.selectedFacilityServicePrice);
         if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Laboratory Location'
           && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
           console.log('price found')

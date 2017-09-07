@@ -115,10 +115,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" 
-                        [query]="apmisLookupQuery" [isSocket]="false" [displayImage] = "false"
-                        [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" 
-                        placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup> 
+                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <md-input-container>
@@ -166,7 +163,6 @@
                         <div class="col-sm-3 col-md-3">
                             <md-input-container>
                                 <input mdInput formControlName="startDate" [mdDatepicker]="picker" placeholder="Start Date">
-                                <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
                                 <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                             </md-input-container>
                             <md-datepicker #picker></md-datepicker>
