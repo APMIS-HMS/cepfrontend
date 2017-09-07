@@ -15,8 +15,8 @@ export class ExternalPrescriptionComponent implements OnInit {
 	extPrescriptionFormGroup: FormGroup;
 	extPrescriptions: any[] = [];
 	tempExtPrescriptions: any[] = [];
-	loading: boolean = true;
-  
+	loading: Boolean = true;
+
   constructor(
     private _fb: FormBuilder,
 		private _locker: CoolSessionStorage,
@@ -29,11 +29,11 @@ export class ExternalPrescriptionComponent implements OnInit {
     this.facility = <Facility> this._locker.getObject('selectedFacility');
 
     this._getAllPrescriptions();
-    
+
     this.extPrescriptionFormGroup = this._fb.group({
 			search: [''],
 			category: [''],
-			date: [Date.now()]
+			date: [new Date()]
     });
   }
 
@@ -43,38 +43,38 @@ export class ExternalPrescriptionComponent implements OnInit {
 				console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
-					if(element.isDispensed) {
+					if (element.isDispensed) {
 						let isBilledCount = 0;
 						let isExternalCount = 0;
-						let preItemCount = element.prescriptionItems.length;
+						const preItemCount = element.prescriptionItems.length;
 						element.prescriptionItems.forEach(preItem => {
-							if(preItem.isBilled) {
+							if (preItem.isBilled) {
 								++isBilledCount;
               }
-              
-              if(preItem.isExternal) {
+
+              if (preItem.isExternal) {
                 ++isExternalCount;
               }
 						});
 
-						if(isBilledCount === preItemCount) {
+						if (isBilledCount === preItemCount) {
 							element.status = 'completely';
-						} else if(isBilledCount === 0) {
+						} else if (isBilledCount === 0) {
 							element.status = 'not';
 						} else {
 							element.status = 'partly';
             }
-            
+
             // Check if there is any external item
-            if(isExternalCount > 0) {
-              this.tempExtPrescriptions.push(element);// temporary variable to search from.
+            if (isExternalCount > 0) {
+              this.tempExtPrescriptions.push(element); // temporary variable to search from.
               this.extPrescriptions.push(element);
             }
 					}
 				});
 			}).catch(err => console.error(err));
 	}
-	onChangeCategory(e){
-		
+	onChangeCategory(e) {
+
 	}
 }
