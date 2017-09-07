@@ -1,0 +1,28 @@
+@import '../../health-coverage/hmo-cover/hmo-cover.component.scss';
+
+.docFrmArea{
+    width: 100%;
+}
+.template-sect {
+    width: 100%;
+    border: 1px solid #eee;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.chk-item{
+    border: 1px solid #eee;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.template-sect .frm-title{
+    margin-bottom: 20px;
+}
+.frm-x3{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.frm-x3 .frm-item-wrap{
+    width: 30%;
+    font-size: 12px;
+}

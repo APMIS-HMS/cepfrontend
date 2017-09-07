@@ -1,57 +1,90 @@
-<div> 
+<div>
   <div class="doc-mainWrap">
     <div class="doc-contentArea">
       <div class="clinicalNoteWrap">
         <div class="actSect">
           <div class="actSect-header">
-            <div (click)="recieve_show()" class="act-wrap">
-              <i *ngIf="recieve" class="fa fa-minus" aria-hidden="true"></i>
-              <i [hidden]="recieve" class="fa fa-plus" aria-hidden="true"></i>
-              <span>Recieve Payment</span>
+            <div (click)="newTemplate_show()" class="act-wrap">
+              <i *ngIf="newTemplate" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+              <span>New Template</span>
             </div>
           </div>
 
-          <form class="frmNoteWrap" *ngIf="recieve" [formGroup]="frmRecieve" novalidate>
-            <div class="frm-title">Recieve Payment</div>
+          <form class="frmNoteWrap" *ngIf="newTemplate" [formGroup]="frmnewTemplate" novalidate>
+            <div class="frm-title">New Template</div>
 
             <div class="frm-x2">
+              
               <div class="frm-item-wrap">
-                <md-select placeholder="Payment Mode" formControlName="paytype">
-                  <md-option>Wallet</md-option>
-                  <md-option>Paystack</md-option>
+                <md-input-container>
+                    <input mdInput placeholder="Template Name" formControlName="name">
+                </md-input-container>
+              </div>
+
+              <div class="frm-item-wrap">
+                <md-select placeholder="Select Diagnosis" formControlName="diagnosis">
+                  <md-option>Malaria</md-option>
+                  <md-option>Yellow Fever</md-option>
                 </md-select>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container>
-                    <input type="number" mdInput placeholder="Amount(&#x20a6;)" formControlName="amount">
-                </md-input-container>
-              </div>
-
-              <div class="frm-item-wrap">
-                <md-select placeholder="Payment For" formControlName="payfor">
-                  <md-option>Insurance</md-option>
-                  <md-option>Company Cover</md-option>
-                  <md-option>Family Cover</md-option>
+                <md-select placeholder="Set Visibility" formControlName="visibility">
+                  <md-option>Global</md-option>
+                  <md-option>Local</md-option>
                 </md-select>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="Invoice No." formControlName="invoiceNo">
-                </md-input-container>
-              </div>
-
-              <div class="frm-item-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="Comment" formControlName="comment">
-                </md-input-container>
+                <md-select placeholder="Type" formControlName="type">
+                  <md-option>Documentation</md-option>
+                  <md-option>Order Set</md-option>
+                </md-select>
               </div>
             </div>
 
+            <div *ngIf="isDocumentation" class="template-sect animated fadeIn">
+              <div class="frm-item-wrap">
+                <md-select placeholder="Select Form" formControlName="docFrmList">
+                  <md-option>Malaria</md-option>
+                  <md-option>Yellow Fever</md-option>
+                </md-select>
+              </div>
 
+              <div class="docFrmArea">
+                <div style="width:100%;text-align:center;color:#777;padding:5px;font-size:10px;"> Load frm here</div>
+              </div>
+            </div>
+
+            <div *ngIf="isOrderSet" class="template-sect animated fadeIn">
+              <div class="frm-title">Select Services</div>
+              <div class="frm-x3">
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkMed">Medication</md-checkbox>
+                </div>
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkLab">Laboratory Investigation</md-checkbox>
+                </div>
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkDiagnostic">Diagnostic</md-checkbox>
+                </div>
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkProcedure">Procedure</md-checkbox>
+                </div>
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkImmunization">Immunization</md-checkbox>
+                </div>
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkNursing">Nursing Care</md-checkbox>
+                </div>
+                <div class="frm-item-wrap chk-item">
+                    <md-checkbox formControlName="chkPhysician">Physician Order</md-checkbox>
+                </div>
+              </div>
+            </div>
           </form>
-          <button *ngIf="recieve" (click)="save(frmRecieve.valid, frmRecieve.value)" class="cta-1">Recieve Payment</button>
+          <button *ngIf="recieve" (click)="save(frmnewTemplate.valid, frmnewTemplate.value)" class="cta-1">Recieve Payment</button>
         </div>
         
         <div class="tblWrapa" class="actSect">
