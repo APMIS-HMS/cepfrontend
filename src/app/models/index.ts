@@ -85,3 +85,4 @@ export * from './facility-manager/setup/document';
 export * from './facility-manager/setup/investigation';
 export * from './module-manager/setup/orderstatus';
 export * from './facility-manager/setup/pending-laboratory-request';
+export * from './facility-manager/setup/lab-template';

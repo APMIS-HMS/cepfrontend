@@ -4,8 +4,9 @@ import {
     MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectBase, MdSelectModule, MdRadioModule, MdPaginatorModule
 }
     from '@angular/material';
+// import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule, } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
 import { GlobalDialogComponent } from '../shared-module/global-dialog/global-dialog.component';
@@ -106,6 +107,7 @@ import { NgPipesModule } from 'ngx-pipes';
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
+        // BrowserModule,
         MdNativeDateModule,
         MdDatepickerModule,
         MdButtonModule,
