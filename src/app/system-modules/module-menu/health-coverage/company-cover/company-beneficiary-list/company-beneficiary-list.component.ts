@@ -1,3 +1,7 @@
+import { ActivatedRoute } from '@angular/router';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { MdPaginator } from '@angular/material';
+import { FacilityCompanyCoverService } from './../../../../../services/facility-manager/setup/facility-company-cover.service';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -14,13 +18,24 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   beneficiary = new FormControl('', []);
   newBeneficiary = false;
 
-  constructor(private formBuilder: FormBuilder) { }
+  selectedFacility: any = <any>{};
+  beneficiaries: any[] = [];
+  filteredBeneficiaries:any[] = [];
+  operateBeneficiaries:any[] = [];
+  selectedCompanyCover: any = <any>{};
+
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
+  @ViewChild(MdPaginator) paginator: MdPaginator;
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
+    private companyCoverService:FacilityCompanyCoverService) { }
 
   ngOnInit() {
     this.frmNewBeneficiary = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      othernames: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      email: ['', [, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phone: ['', [<any>Validators.required]],
       principalGender: ['', [<any>Validators.required]],
       principalstatus: ['', [<any>Validators.required]],
@@ -34,6 +49,9 @@ export class CompanyBeneficiaryListComponent implements OnInit {
       dependantPhone: ['', [<any>Validators.required]],
       dependantStatus: ['', [<any>Validators.required]]
     });
+    this.route.params.subscribe(parameters => {
+      this.getBeneficiaryList(parameters.id);
+    })
   }
 
   newBeneficiary_show(){
@@ -43,5 +61,34 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
-
+  getBeneficiaryList(id) {
+    this.companyCoverService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+      if (payload.data.length > 0) {
+        let facCompanyCover = payload.data[0];
+        const index = facCompanyCover.companyCovers.findIndex(x => x.hmo._id === id);
+        if (index > -1) {
+          if (facCompanyCover.companyCovers[index].enrolleeList.length > 0) {
+            this.selectedCompanyCover = facCompanyCover.companyCovers[index].hmo;
+            this.beneficiaries = facCompanyCover.companyCovers[index].enrolleeList[0].enrollees;
+            const startIndex = 0 * 10;
+            this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+            this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+          }
+        }
+      }
+    })
+  }
+  getRole(beneficiary) {
+    let filNo = beneficiary.filNo;
+    if (filNo !== undefined) {
+      const filNoLength = filNo.length;
+      const lastCharacter = filNo[filNoLength - 1];
+      return isNaN(lastCharacter) ? 'D' : 'P';
+    }
+  }
+  onPaginateChange(event) {
+    const startIndex = event.pageIndex * event.pageSize;
+    this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+    this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
 }
