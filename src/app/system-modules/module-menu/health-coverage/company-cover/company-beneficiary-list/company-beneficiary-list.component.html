@@ -71,45 +71,70 @@
 
             </div>
           </form>
+
+
+
+          <!-- <form [formGroup]="insurancePlanForm" class="form-horizontal">
+            <div formArrayName="insurancePlanArray" class="frmArrayWrap">
+              <div class="frmArray" *ngFor="let insurance of insurancePlanForm.controls['insurancePlanArray'].controls; let i = index;">
+                <div (click)="closeInsurancePlan(insurance, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+                <div formGroupName="{{i}}">
+                </div>
+              </div>
+            </div>
+          </form> -->
+
+
           <form *ngIf="newBeneficiary" [formGroup]="frmDependant">
-            <div class="frmNoteWrap">
-              <div class="">Add Dependant</div>
-              <div>
-                <div class="dv-wrap">
-                  <div class="frm-x2 frmArray">
-                    <div class="frm-item-wrap">
-                      <md-input-container>
-                        <input mdInput placeholder="Name" formControlName="dependantName">
-                      </md-input-container>
-                    </div>
+            <div formArrayName="dependantArray" class="frmArrayWrap">
+              <div class="frmArray" *ngFor="let dependant of frmDependant.controls['dependantArray'].controls; let i = index;">
+                <div (click)="closeDependant(dependant, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+                <div formGroupName="{{i}}">
+                  <div class="frmNoteWrap">
+                    <div class="">Add Dependant</div>
+                    <div>
+                      <div class="dv-wrap">
+                        <div class="frm-x2 frmArray">
+                          <div class="frm-item-wrap">
+                            <md-input-container>
+                              <input mdInput placeholder="Name" formControlName="dependantSurname">
+                            </md-input-container>
+                          </div>
+                          <div class="frm-item-wrap">
+                            <md-input-container>
+                              <input mdInput placeholder="Name" formControlName="dependantOthernames">
+                            </md-input-container>
+                          </div>
+                          <div class="frm-item-wrap">
+                            <md-input-container class="example-full-width">
+                              <input type="email" mdInput md-error placeholder="Email" formControlName="dependantEmail">
+                            </md-input-container>
+                          </div>
 
-                    <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                        <input type="email" mdInput md-error placeholder="Email" formControlName="dependantEmail">
-                      </md-input-container>
-                    </div>
+                          <div class="frm-item-wrap">
+                            <md-input-container class="example-full-width">
+                              <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="dependantPhone">
+                            </md-input-container>
+                          </div>
 
-                    <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                        <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="dependantPhone">
-                      </md-input-container>
-                    </div>
+                          <div class="frm-item-wrap">
+                            <md-select placeholder="Gender" formControlName="dependantGender">
+                              <md-option [value]="Male">Male</md-option>
+                              <md-option [value]="Female">Female</md-option>
+                            </md-select>
+                          </div>
 
-                    <div class="frm-item-wrap">
-                      <md-select placeholder="Gender" formControlName="dependantGender">
-                        <md-option [value]="Male">Male</md-option>
-                        <md-option [value]="Female">Female</md-option>
-                      </md-select>
-                    </div>
-
-                    <div class="frm-item-wrap">
-                      <md-select placeholder="Status" formControlName="dependantStatus">
-                        <md-option [value]="Active">Active</md-option>
-                        <md-option [value]="Inactive">Inactive</md-option>
-                      </md-select>
+                          <div class="frm-item-wrap">
+                            <md-select placeholder="Status" formControlName="dependantStatus">
+                              <md-option [value]="Active">Active</md-option>
+                              <md-option [value]="Inactive">Inactive</md-option>
+                            </md-select>
+                          </div>
+                        </div>
+                        <div (click)="pushNewDependant(plan, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                      </div>
                     </div>
                   </div>
-                  <div (click)="pushNewPlan(plan, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
                 </div>
               </div>
             </div>
