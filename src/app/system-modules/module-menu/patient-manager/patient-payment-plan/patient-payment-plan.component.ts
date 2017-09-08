@@ -38,13 +38,9 @@ export class PatientPaymentPlanComponent implements OnInit {
   plans: any[] = [];
   user: User = <User>{};
   insurancePlanForm: FormGroup;
-<<<<<<< HEAD
 
   insuranceFormArrayIndex = 0;
-  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolSessionStorage,
-=======
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolLocalStorage,
->>>>>>> 2846fdb9222c2ad9ea0f0caa4baf36c7ffb8fcb5
     private facilityService: FacilitiesService) { }
 
   ngOnInit() {
@@ -67,7 +63,7 @@ export class PatientPaymentPlanComponent implements OnInit {
           hmoPlan: ['', [<any>Validators.required]],
           hmoPlanId: ['', [<any>Validators.required]],
           plans: [''],
-          client: [''],
+          client: [null],
           readOnly: [false]
         })
       ])
@@ -118,14 +114,22 @@ export class PatientPaymentPlanComponent implements OnInit {
         hmoPlan: ['', [<any>Validators.required]],
         hmoPlanId: ['', [<any>Validators.required]],
         plans: [''],
-        client: [''],
+        client: [null],
         readOnly: [false]
       })
       );
     const index = (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.length - 1;
     this.insuranceFormArrayIndex = index;
     this.subscribeToValueChanges();
-    (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).markAsPristine();
+    console.log((<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+    .controls[this.insuranceFormArrayIndex]));
+    
+
+
+    // (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+    // .controls[this.insuranceFormArrayIndex]).controls['hmo'].markAsPristine();
+    // (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+    // .controls[this.insuranceFormArrayIndex]).markAsPristine();
   }
   onSubmit(insurance, i) {
     this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])

@@ -135,7 +135,7 @@
                 <div>
                   <div class="plan">
                     <div class="plan-title">Insurance</div>
-                    <div *ngIf="selectedHMOClient !== undefined">
+                    <div *ngIf="insurance.controls.client.value !== null">
                       {{insurance.controls.client?.value.surname}} {{insurance.controls.client?.value.firstName}} <span class="role">{{getRole(insurance.controls.client?.value)}}</span>
                     </div>
                     <div class="frm-item-wrap">
