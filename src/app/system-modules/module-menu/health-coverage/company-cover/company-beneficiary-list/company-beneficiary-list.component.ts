@@ -27,6 +27,26 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   @ViewChild(MdPaginator) paginator: MdPaginator;
+  genders: any[] = [
+    {
+      name: 'Male',
+      _id: 'M'
+    },
+    {
+      name: 'Female',
+      _id: 'F'
+    }
+  ];
+  statuses: any[] = [
+    {
+      name: 'Active',
+      _id: 'Active'
+    },
+    {
+      name: 'Inactive',
+      _id: 'Inactive'
+    }
+  ]
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
     private companyCoverService: FacilityCompanyCoverService) { }
 
@@ -34,9 +54,9 @@ export class CompanyBeneficiaryListComponent implements OnInit {
     this.frmNewBeneficiary = this.formBuilder.group({
       surname: ['', [Validators.required]],
       othernames: ['', [Validators.required]],
-      address: ['', [Validators.required]],
+      address: ['', []],
       email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-      phone: ['', [<any>Validators.required]],
+      phone: ['', []],
       principalGender: ['', [<any>Validators.required]],
       principalstatus: ['', [<any>Validators.required]],
       principalEmpID: ['', [<any>Validators.required]]
@@ -93,7 +113,25 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   newBeneficiary_show() {
     this.newBeneficiary = !this.newBeneficiary;
   }
+  showEdit(beneficiary) {
+    console.log(beneficiary);
 
+    this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
+    this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.firstName);
+    this.frmNewBeneficiary.controls['principalGender'].setValue(beneficiary.gender);
+    this.frmNewBeneficiary.controls['principalEmpID'].setValue(beneficiary.filNo);
+
+    this.newBeneficiary = true;
+
+    // surname: ['', [Validators.required]],
+    // othernames: ['', [Validators.required]],
+    // address: ['', [Validators.required]],
+    // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+    // phone: ['', [<any>Validators.required]],
+    // principalGender: ['', [<any>Validators.required]],
+    // principalstatus: ['', [<any>Validators.required]],
+    // principalEmpID: ['', [<any>Validators.required]]
+  }
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
