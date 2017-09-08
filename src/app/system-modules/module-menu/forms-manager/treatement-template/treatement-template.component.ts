@@ -14,6 +14,9 @@ export class TreatementTemplateComponent implements OnInit {
   isOrderSet = true;
   isDocumentation = false;
 
+  showMedService = true;
+  showLabService = true;
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -29,7 +32,7 @@ export class TreatementTemplateComponent implements OnInit {
       chkProcedure: [''],
       chkImmunization: [''],
       chkNursing: [''],
-      chkPhysician: ['']
+      chkPhysician: [''],
     });
   }
 

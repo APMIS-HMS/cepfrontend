@@ -112,7 +112,7 @@ export class HmoListComponent implements OnInit {
 
   show_beneficiaries(hmo) {
     // this.showBeneficiaries.emit(true);
-    this.router.navigate(['/dashboard/health-coverage/hmo-cover-list/', hmo._id]);
+    this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
 
@@ -199,25 +199,25 @@ export class HmoListComponent implements OnInit {
       hmo: this.selectedHMO,
       enrolleeList: []
     }
-    // this.loginHMOListObject.hmos.push(newHmo);
-    // if (this.selectedHMO._id !== undefined) {
-    //   if (this.loginHMOListObject._id === undefined) {
-    //     this.hmoService.create(this.loginHMOListObject).then(payload => {
-    //       console.log(payload);
-    //       this.frmNewHmo.controls['name'].reset();
-    //       this.apmisLookupText = '';
-    //       this.getLoginHMOList();
-    //       this._notification('Success', 'Selected HMO added to your HMO list successfully');
-    //     })
-    //   } else {
-    //     this.hmoService.update(this.loginHMOListObject).then(payload => {
-    //       this.frmNewHmo.controls['name'].reset();
-    //       this.apmisLookupText = '';
-    //       this.getLoginHMOList();
-    //       this._notification('Success', 'Selected HMO added to your HMO list successfully');
-    //     })
-    //   }
-    // }
+    this.loginHMOListObject.hmos.push(newHmo);
+    if (this.selectedHMO._id !== undefined) {
+      if (this.loginHMOListObject._id === undefined) {
+        this.hmoService.create(this.loginHMOListObject).then(payload => {
+          console.log(payload);
+          this.frmNewHmo.controls['name'].reset();
+          this.apmisLookupText = '';
+          this.getLoginHMOList();
+          this._notification('Success', 'Selected HMO added to your HMO list successfully');
+        })
+      } else {
+        this.hmoService.update(this.loginHMOListObject).then(payload => {
+          this.frmNewHmo.controls['name'].reset();
+          this.apmisLookupText = '';
+          this.getLoginHMOList();
+          this._notification('Success', 'Selected HMO added to your HMO list successfully');
+        })
+      }
+    }
   }
   private _notification(type: string, text: string): void {
     this.facilityService.announceNotification({

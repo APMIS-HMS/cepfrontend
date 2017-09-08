@@ -82,9 +82,20 @@
                     <md-checkbox formControlName="chkPhysician">Physician Order</md-checkbox>
                 </div>
               </div>
+
+              <div *ngIf="showMedService" class="service-wrap">
+                <div class="frm-title">Medication</div>
+                <app-template-medication></app-template-medication>
+              </div>
+
+              <div *ngIf="showLabService" class="service-wrap">
+                  <div class="frm-title">Laboratory Investigation</div>
+                  <app-template-lab></app-template-lab>
+                </div>
             </div>
+
+            <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value)" class="cta-1">Save Template</button>
           </form>
-          <button *ngIf="recieve" (click)="save(frmnewTemplate.valid, frmnewTemplate.value)" class="cta-1">Recieve Payment</button>
         </div>
         
         <div class="tblWrapa" class="actSect">

@@ -99,7 +99,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this._getAllRoutes();
         this._getAllFrequencies();
 
-        this.allPrescriptionsForm = this.fb.group({
+        this.allPrescriptionsForm = this.fb.group({ 
             priority: ['', [<any>Validators.required]],
         });
 
