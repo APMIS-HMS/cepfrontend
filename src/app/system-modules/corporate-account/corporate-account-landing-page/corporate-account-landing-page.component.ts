@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FacilitiesService, CompanyHealthCoverService } from '../../../services/facility-manager/setup/index';
 import { CorporateEmitterService } from '../../../services/facility-manager/corporate-emitter.service';
 import { Facility, CompanyHealthCover } from '../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,7 +32,7 @@ export class CorporateAccountLandingPageComponent implements OnInit {
   constructor(public facilityService: FacilitiesService,
     private companyHealthCoverService: CompanyHealthCoverService,
     private router: Router,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private _corporateEventEmitter: CorporateEmitterService) { }
 
   ngOnInit() {

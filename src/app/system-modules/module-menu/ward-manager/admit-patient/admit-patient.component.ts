@@ -4,7 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 // tslint:disable-next-line:max-line-length
 import { WardAdmissionService, InPatientService, InPatientListService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, InPatient, WardTransfer } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
 @Component({
@@ -31,7 +31,7 @@ export class AdmitPatientComponent implements OnInit {
 	constructor(
 		private _wardAdmissionService: WardAdmissionService,
 		private fb: FormBuilder,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private router: Router,
 		private _facilitiesService: FacilitiesService,
 		private _inPatientService: InPatientService,

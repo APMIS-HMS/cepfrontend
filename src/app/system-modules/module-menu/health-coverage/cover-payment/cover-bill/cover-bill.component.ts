@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-cover-bill',
@@ -67,7 +67,7 @@ export class CoverBillComponent implements OnInit {
     { _id: 4, value: 'CoPay', text: 'Co-Pay' },
     { _id: 3, value: 'Not Covered', text: 'Not Covered' }]
 
-  constructor(private locker: CoolSessionStorage,
+  constructor(private locker: CoolLocalStorage,
     private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
     private invoiceService: InvoiceService,

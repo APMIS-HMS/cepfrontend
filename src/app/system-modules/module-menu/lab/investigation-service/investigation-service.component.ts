@@ -4,7 +4,7 @@ import {
   FacilitiesService, InvestigationSpecimenService, InvestigationService, FacilitiesServiceCategoryService, ServicePriceService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, MinorLocation, FacilityService, FacilityServicePrice, User } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
@@ -48,7 +48,7 @@ export class InvestigationServiceComponent implements OnInit {
     private formBuilder: FormBuilder,
     private specimenService: InvestigationSpecimenService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
-    private locker: CoolSessionStorage, private investigationService: InvestigationService,
+    private locker: CoolLocalStorage, private investigationService: InvestigationService,
     private dragulaService: DragulaService, private _facilityService: FacilitiesService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private servicePriceService: ServicePriceService) {
     dragulaService.drag.subscribe((value) => {
@@ -243,7 +243,6 @@ export class InvestigationServiceComponent implements OnInit {
                     payload.serviceId = items;
                     payload.facilityServiceId = this.selectedFacilityService._id;
 
-
                     const price: FacilityServicePrice = <FacilityServicePrice>{};
                     price.categoryId = itemi._id;
                     price.facilityId = this.selectedFacility._id;
@@ -262,7 +261,7 @@ export class InvestigationServiceComponent implements OnInit {
                       // this.addToast('Investigation created successfully');
                       this._notification('Success', 'Investigation created successfully.');
                       this.getInvestigations();
-                    })
+                    });
                   }
                 });
               }

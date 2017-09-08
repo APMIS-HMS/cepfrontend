@@ -10,7 +10,7 @@ import {
   Facility, User, Patient, Employee, MinorLocation, Appointment, Country, ClinicInteraction,
   Documentation
 } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
@@ -164,7 +164,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private formsService: FormsService,
     private router: Router, private route: ActivatedRoute,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private _DocumentationService: DocumentationService) {
 
     this.router.events

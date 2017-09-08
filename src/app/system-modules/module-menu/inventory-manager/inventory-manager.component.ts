@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryEmitterService } from '../../../services/facility-manager/inventory-emitter.service';
 import { Employee, Facility } from '../../../models/index';
 import { EmployeeService, WorkSpaceService } from '../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -32,7 +32,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService,
-    private locker: CoolSessionStorage, private workSpaceService: WorkSpaceService) {
+    private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');

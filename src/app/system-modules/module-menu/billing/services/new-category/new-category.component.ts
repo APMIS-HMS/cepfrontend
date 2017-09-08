@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, FacilityService, ServiceCategory, ServiceItem } from '../../../../../models/index';
 import { FacilitiesServiceCategoryService } from '../../../../../services/facility-manager/setup/index';
 
@@ -23,7 +23,7 @@ export class NewCategoryComponent implements OnInit {
   btnTitle = 'CREATE CATEGORY';
 
   constructor(private formBuilder: FormBuilder,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService) { }
 
   ngOnInit() {

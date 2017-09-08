@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeService, FacilitiesService, WorkbenchService } from '../../services/facility-manager/setup/index';
 import { Employee } from '../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-lab-check-in',
@@ -22,7 +22,7 @@ export class LabCheckInComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		public facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
     private _workbenchService: WorkbenchService

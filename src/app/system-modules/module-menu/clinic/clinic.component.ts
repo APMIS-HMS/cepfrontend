@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, Navigati
 import { EmployeeService, ProfessionService, AppointmentService } from '../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../services/module-manager/setup/index';
 import { Profession, Employee, Facility, Location, MinorLocation } from '../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ClinicHelperService } from './services/clinic-helper.service';
 import { Observable, Subject } from 'rxjs/Rx';
 
@@ -36,7 +36,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 	constructor(private router: Router, private appointmentService: AppointmentService,
 		private professionService: ProfessionService,
-		private locker: CoolSessionStorage,
+		private locker: CoolLocalStorage,
 		private route: ActivatedRoute,
 		private employeeService: EmployeeService,
 		public clinicHelperService: ClinicHelperService,

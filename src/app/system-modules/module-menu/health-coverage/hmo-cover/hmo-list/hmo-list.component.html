@@ -10,14 +10,13 @@
               <span>Add HMO</span>
             </div>
           </div>
-
           <form class="frmNoteWrap" *ngIf="newHmo" [formGroup]="frmNewHmo" novalidate>
             <div class="frm-title">NEW HMO</div>
 
             <div class="frm-x2">
               <div class="frm-item-wrap">
                 <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                  placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                  placeholder="Select HMO" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
                   [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
               </div>
             </div>

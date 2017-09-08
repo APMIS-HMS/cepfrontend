@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService, TagService } from '../../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, FacilityServicePrice, Tag } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-modefier',
@@ -28,7 +28,7 @@ export class NewModefierComponent implements OnInit {
     private _tagService: TagService,
     private servicePriceService: ServicePriceService,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-    private _locker: CoolSessionStorage) { }
+    private _locker: CoolLocalStorage) { }
 
   ngOnInit() {
     this.addNew();

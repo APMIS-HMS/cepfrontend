@@ -3,7 +3,7 @@ import {
   FacilitiesService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, User, PendingLaboratoryRequest } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-report-detail',

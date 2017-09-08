@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, PrescriptionService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Prescription, PrescriptionItem } from '../../../../models/index';
 import { PharmacyEmitterService } from '../../../../services/facility-manager/pharmacy-emitter.service';
@@ -19,7 +19,7 @@ export class ExternalPrescriptionComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService
   ) { }

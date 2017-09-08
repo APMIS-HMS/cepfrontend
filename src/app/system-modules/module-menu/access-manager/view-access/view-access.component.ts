@@ -4,7 +4,7 @@ import { FeatureModuleService } from '../../../../services/module-manager/setup/
 import { AccessControlService } from '../../../../services/facility-manager/setup/index';
 // tslint:disable-next-line:max-line-length
 import { FeatureModule, AccessControl, FeatureModuleViewModel, FacilityModule, Facility, Address, Profession, Relationship, Employee, Person, MaritalStatus, Department, MinorLocation, Gender, Title, Country } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class ViewAccessComponent implements OnInit {
   selectedAccessControl: AccessControl = <AccessControl>{};
   accessControlList: AccessControl[] = [];
   constructor(private featureModuleService: FeatureModuleService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private accessControlService: AccessControlService) { }
 
   ngOnInit() {

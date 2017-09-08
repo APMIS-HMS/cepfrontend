@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 import { FacilitiesService } from '../services/facility-manager/setup/index';
 import { Facility } from '../models/index';
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private userService: UserService,
     public facilityService: FacilitiesService,
-    private locker: CoolSessionStorage, private router: Router) {
+    private locker: CoolLocalStorage, private router: Router) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, LaboratoryRequestService, } from '../../../../services/facility-manager/setup/index';
 import { Facility, PendingLaboratoryRequest } from '../../../../models/index';
 
@@ -17,7 +17,7 @@ export class ExternalInvestigationsComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     private _laboratoryRequestService: LaboratoryRequestService
   ) { }
 

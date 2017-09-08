@@ -11,7 +11,7 @@ import { LocationService, OrderStatusService } from '../../../../../services/mod
 import {
     Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, Patient, ScheduleRecordModel, MinorLocation
 } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
@@ -97,7 +97,7 @@ export class ScheduleFrmComponent implements OnInit {
     user = {};
     placeholderString = 'Select timezone';
 
-    constructor(private scheduleService: SchedulerService, private locker: CoolSessionStorage,
+    constructor(private scheduleService: SchedulerService, private locker: CoolLocalStorage,
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,

@@ -9,7 +9,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import {
   Appointment, ClinicModel, Profession, Timeline, Employee, Facility, Location, MinorLocation, Patient
 } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ClinicHelperService } from '../services/clinic-helper.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
@@ -53,7 +53,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     private consultingRoomService: ConsultingRoomService,
     private locationService: LocationService,
     public clinicHelperService: ClinicHelperService, private patientService: PatientService,
-    private locker: CoolSessionStorage, public facilityService: FacilitiesService) {
+    private locker: CoolLocalStorage, public facilityService: FacilitiesService) {
     this.clinicHelperService.getConsultingRoom();
     this.subscription = this.employeeService.listner.subscribe(payload => {
       this.loginEmployee = payload;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PurchaseEmitterService } from '../../../../services/facility-manager/purchase-emitter.service';
 import { PurchaseEntryService, EmployeeService, SupplierService } from '../../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Employee } from '../../../../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -23,7 +23,7 @@ export class InvoicesComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private invoiceService: PurchaseEntryService,
     private employeeService: EmployeeService,
     private supplierService: SupplierService,

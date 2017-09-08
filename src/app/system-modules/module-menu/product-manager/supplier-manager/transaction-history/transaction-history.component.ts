@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupplierService, PurchaseEntryService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, PurchaseEntry } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -25,7 +25,7 @@ export class TransactionHistoryComponent implements OnInit {
     private router: Router,
     private supplierService: SupplierService,
     private invoiceService: PurchaseEntryService,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
   }
 
   ngOnInit() {

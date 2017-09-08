@@ -67,7 +67,7 @@ export class HealthCoverageComponent implements OnInit {
     this.hmoCover = false;
     this.recievePayment = false;
     this.pageInView = "Company Retainership";
-    this.router.navigate(['/dashboard/health-coverage/company-cover']);
+    this.router.navigate(['/dashboard/health-coverage/company-list']);
     this.checkPageUrl('company-cover');
   }
   familyCover_show() {
@@ -86,7 +86,7 @@ export class HealthCoverageComponent implements OnInit {
     this.hmoCover = true;
     this.recievePayment = false;
     this.pageInView = "Health Insurance";
-    this.router.navigate(['/dashboard/health-coverage/hmo-cover']);
+    this.router.navigate(['/dashboard/health-coverage/hmo-list']);
   }
   payment_show() {
     this.companyCover = false;
@@ -108,14 +108,14 @@ export class HealthCoverageComponent implements OnInit {
   }
 
   private checkPageUrl(param: string) {
-		if (param.includes('hmo-cover')) {
+		if (param.includes('hmo-list')) {
 			this.companyCover = false;
       this.familyCover = false;
       this.payment = false;
       this.hmoCover = true;
       this.recievePayment = false;
       this.pageInView = "Health Insurance";
-		} else if (param.includes('company-cover')) {
+		} else if (param.includes('company-list')) {
 			this.companyCover = true;
       this.familyCover = false;
       this.payment = false;

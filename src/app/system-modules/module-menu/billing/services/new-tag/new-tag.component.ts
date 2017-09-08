@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Tag, Facility } from '../../../../../models/index';
 import { TagService, TagDictionaryService } from '../../../../../services/facility-manager/setup/index';
 
@@ -20,7 +20,7 @@ export class NewTagComponent implements OnInit {
   public frmNewtag: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private _tagService: TagService,
-    private _locker: CoolSessionStorage, private tagDictionaryService: TagDictionaryService) { }
+    private _locker: CoolLocalStorage, private tagDictionaryService: TagDictionaryService) { }
 
   ngOnInit() {
     this.addNew();

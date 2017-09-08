@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { EmployeeService, FacilitiesService, PersonService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ export class EmployeeLookupComponent implements OnInit {
     private router: Router,
     public facilityService: FacilitiesService,
     private personService: PersonService,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
     employeeService.listner.subscribe(payload => {
       this.loadIndicatorVisible = true;
       let index = -1;

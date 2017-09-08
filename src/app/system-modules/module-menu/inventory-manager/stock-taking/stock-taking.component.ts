@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@ang
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { Facility, Inventory } from '../../../../models/index';
 import { ProductService, InventoryService } from '../../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-stock-taking',
@@ -43,7 +43,7 @@ export class StockTakingComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder, private productService: ProductService,
-    private locker: CoolSessionStorage, private inventoryService: InventoryService,
+    private locker: CoolLocalStorage, private inventoryService: InventoryService,
     private _inventoryEventEmitter: InventoryEmitterService
   ) { }
 

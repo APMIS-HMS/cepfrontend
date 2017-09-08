@@ -5,7 +5,7 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 import { ScopeLevelService } from '../../../../services/module-manager/setup/index';
 import { Facility, User } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-template',
@@ -26,7 +26,7 @@ export class TemplateComponent implements OnInit {
 
     constructor(
         private _fb: FormBuilder,
-        private _locker: CoolSessionStorage,
+        private _locker: CoolLocalStorage,
         private _facilityService: FacilitiesService,
         private _investigationService: InvestigationService,
         private _templateService: TemplateService,

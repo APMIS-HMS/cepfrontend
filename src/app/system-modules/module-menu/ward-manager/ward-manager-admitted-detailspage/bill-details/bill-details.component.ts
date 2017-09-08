@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from '../../../../../models/index';
 import { WardEmitterService } from '../../../../../services/facility-manager/ward-emitter.service';
 import { WardAdmissionService, InPatientService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
@@ -21,7 +21,7 @@ export class BillDetailsComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		public _inPatientService: InPatientService,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _wardAdmissionService: WardAdmissionService,
 		private _facilitiesService: FacilitiesService
 	) {

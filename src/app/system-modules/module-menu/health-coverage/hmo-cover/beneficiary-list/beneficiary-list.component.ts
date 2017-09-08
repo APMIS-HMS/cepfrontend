@@ -1,5 +1,5 @@
 import { HmoService } from './../../../../../services/facility-manager/setup/hmo.service';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -26,7 +26,7 @@ export class BeneficiaryListComponent implements OnInit {
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   pageEvent: PageEvent;
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolSessionStorage,
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
     private hmoService: HmoService) { }
 
   ngOnInit() {
