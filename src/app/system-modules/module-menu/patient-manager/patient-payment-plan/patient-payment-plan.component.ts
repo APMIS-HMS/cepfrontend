@@ -14,7 +14,6 @@ import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@ang
 export class PatientPaymentPlanComponent implements OnInit {
   selectedHMOClient: any;
   selectedHMO: any;
-
   mainErr = true;
   errMsg = 'You have unresolved errors';
 
