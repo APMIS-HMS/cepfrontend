@@ -53,10 +53,15 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <md-input-container>
+                                                <input mdInput formControlName="date" [mdDatepicker]="pickerr" placeholder="Choose a date">
+                                                <md-datepicker-toggle mdSuffix [for]="pickerr"></md-datepicker-toggle>
+                                            </md-input-container>
+                                            <md-datepicker #pickerr></md-datepicker>
+                                            <!-- <md-input-container>
                                                 <input formControlName="date" mdInput [mdDatepicker]="picker1" placeholder="Choose a date">
                                                 <button mdSuffix [mdDatepickerToggle]="picker1"></button>
                                             </md-input-container>
-                                            <md-datepicker #picker1></md-datepicker>
+                                            <md-datepicker #picker1></md-datepicker> -->
                                         </div>
                                     </form>
                                 </td>
@@ -137,7 +142,8 @@
                                         <div class="col-sm-4">
                                             <md-input-container>
                                                 <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-                                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                                <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                                             </md-input-container>
                                             <md-datepicker #picker></md-datepicker>
                                         </div>

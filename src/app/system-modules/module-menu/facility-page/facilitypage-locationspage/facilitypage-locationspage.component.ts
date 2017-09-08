@@ -4,7 +4,7 @@ import { FacilitiesService } from '../../../../services/facility-manager/setup/i
 import { LocationService } from '../../../../services/module-manager/setup/index';
 
 import { Facility, Location } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -51,7 +51,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   isWardSelected: Boolean = false;
   facility: Facility = <Facility>{};
 
-  constructor(private locationService: LocationService, private locker: CoolSessionStorage,
+  constructor(private locationService: LocationService, private locker: CoolLocalStorage,
   public facilityService: FacilitiesService, private route: ActivatedRoute) {
     this.facilityService.listner.subscribe(payload => {
       console.log('am received');

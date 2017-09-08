@@ -3,8 +3,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { Facility, MinorLocation, User } from '../../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WorkbenchService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -30,18 +30,21 @@ export class WorkbenchComponent implements OnInit {
   Inactive = false;
 
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   btnText = 'Create Workbench';
   reqDetail_view = false;
-  personAcc_view = false
+  personAcc_view = false;
+  loading: Boolean = true;
+  user: User = <User>{};
 
   public frmNewWorkbench: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private locker: CoolSessionStorage, private locationService: LocationService,
-    private workBenchService: WorkbenchService) { }
+  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage, private locationService: LocationService,
+    private workBenchService: WorkbenchService, private _facilityService: FacilitiesService) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User> this.locker.getObject('auth');
     this.frmNewWorkbench = this.formBuilder.group({
       minorLocation: ['', [Validators.required]],
       benchName: ['', [Validators.required]],
@@ -52,6 +55,7 @@ export class WorkbenchComponent implements OnInit {
   }
   getWorkBenches() {
     this.workBenchService.find({ query: { 'facilityId._id': this.selectedFacility._id, $limit: 100 } }).then(payload => {
+      this.loading = false;
       this.workbenches = payload.data;
     })
   }
@@ -85,6 +89,7 @@ export class WorkbenchComponent implements OnInit {
           laboratoryId: value.minorLocation
         }
         this.workBenchService.create(workBench).then(payload => {
+          this._notification('Success', 'Workbench has been created successufully!');
           this.workbenches.push(payload);
           this.frmNewWorkbench.reset();
           this.frmNewWorkbench.controls['isActive'].setValue(true);
@@ -96,6 +101,7 @@ export class WorkbenchComponent implements OnInit {
         this.selectedWorkBench.laboratoryId = this.frmNewWorkbench.controls['minorLocation'].value;
         this.selectedWorkBench.isActive = this.frmNewWorkbench.controls['isActive'].value;
         this.workBenchService.update(this.selectedWorkBench).then(payload => {
+          this._notification('Success', 'Workbench has been updated successufully!');
           this.workbench_view = false;
           this.btnText = 'Create Workbench';
           this.selectedWorkBench = <any>{};
@@ -127,5 +133,13 @@ export class WorkbenchComponent implements OnInit {
     this.frmNewWorkbench.controls['minorLocation'].setValue(bench.laboratoryId);
     this.frmNewWorkbench.controls['isActive'].setValue(bench.isActive);
     this.createWorkbench(this.frmNewWorkbench.valid, bench);
+  }
+
+  private _notification(type: string, text: string): void {
+    this._facilityService.announceNotification({
+        users: [this.user._id],
+        type: type,
+        text: text
+    });
   }
 }

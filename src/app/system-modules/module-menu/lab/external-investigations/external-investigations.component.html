@@ -38,11 +38,18 @@
                                         <input type="search" formControlName="search" class="form-control" placeholder="APMIS ID or Name">
                                     </div>
                                     <div class="col-sm-6">
-                                        <md-input-container>
+                                        <md-form-field>
+                                            <input mdInput formControlName="date" [mdDatepicker]="picker" placeholder="Choose a date">
+                                            <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                            <md-datepicker #picker></md-datepicker>
+                                        </md-form-field>
+
+                                        <!-- <md-input-container>
                                             <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
                                             <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                            <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                                         </md-input-container>
-                                        <md-datepicker #picker></md-datepicker>
+                                        <md-datepicker #picker></md-datepicker> -->
                                     </div>
                                 </form>
                             </td>

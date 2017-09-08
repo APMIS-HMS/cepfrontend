@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, LaboratoryRequestService, } from '../../../../services/facility-manager/setup/index';
 import { Facility, PendingLaboratoryRequest } from '../../../../models/index';
 
@@ -13,11 +13,11 @@ export class ExternalInvestigationsComponent implements OnInit {
   extRequestFormGroup: FormGroup;
   facility: Facility = <Facility>{};
   extRequests: any = [];
-  loading: boolean = false;
+  loading: Boolean = false;
 
   constructor(
     private _fb: FormBuilder,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     private _laboratoryRequestService: LaboratoryRequestService
   ) { }
 
@@ -26,7 +26,7 @@ export class ExternalInvestigationsComponent implements OnInit {
 
     this.extRequestFormGroup = this._fb.group({
       search: [''],
-      date: [Date.now()]
+      date: [null]
     });
 
     this.extRequestFormGroup.controls['search'].valueChanges
@@ -69,16 +69,13 @@ export class ExternalInvestigationsComponent implements OnInit {
             console.log(this.extRequests);
           })
         }
-
-      })
+    });
 
     this.extRequestFormGroup.controls['date'].valueChanges.subscribe(value => {
       this._laboratoryRequestService.find({ query: { dateExternalInvestigation: true, date: value } }).then(payload => {
         console.log(payload);
       })
-    })
-
-
+    });
   }
 
 

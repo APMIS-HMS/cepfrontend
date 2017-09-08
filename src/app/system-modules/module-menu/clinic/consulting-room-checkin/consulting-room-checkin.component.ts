@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { ConsultingRoomModel, Employee } from '../../../../models/index';
 import { ClinicHelperService } from '../services/clinic-helper.service';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-consulting-room-checkin',
@@ -27,7 +27,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     public facilityService: FacilitiesService,
     private consultingRoomService: ConsultingRoomService,
     private employeeService: EmployeeService,
-    private locker: CoolSessionStorage
+    private locker: CoolLocalStorage
   ) { }
 
   ngOnInit() {

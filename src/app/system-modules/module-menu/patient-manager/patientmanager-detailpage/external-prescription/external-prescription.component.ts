@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
 	FacilitiesService, PrescriptionService
@@ -18,7 +18,7 @@ export class ExternalPrescriptionComponent implements OnInit {
 	loading: boolean = true;
 
 	constructor(
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _prescriptionService: PrescriptionService,
 		private _facilityService: FacilitiesService
 	) { }

@@ -4,7 +4,7 @@ import {
   SupplierService, ProductService, StoreService, PurchaseOrderService, StrengthService, PurchaseEntryService, InventoryService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, PurchaseOrder, PurchaseEntry, Inventory, InventoryTransaction, Employee } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PurchaseEmitterService } from '../../../../services/facility-manager/purchase-emitter.service';
 
@@ -51,7 +51,7 @@ export class PurchaseEntryComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   checkingObject: any = <any>{};
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService, private storeService: StoreService,
-    private locker: CoolSessionStorage, private productService: ProductService, private purchaseOrderService: PurchaseOrderService,
+    private locker: CoolLocalStorage, private productService: ProductService, private purchaseOrderService: PurchaseOrderService,
     private strengthService: StrengthService, private route: ActivatedRoute, private purchaseEntryService: PurchaseEntryService,
     private inventoryService: InventoryService, private _purchaseEventEmitter: PurchaseEmitterService, private router: Router) {
   }

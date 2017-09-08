@@ -4,7 +4,7 @@ import {
   FacilitiesService, InvestigationService, TemplateService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, User } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-select-template',
@@ -23,7 +23,7 @@ export class SelectTemplateComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     private _facilityService: FacilitiesService,
     private _templateService: TemplateService
   ) { }

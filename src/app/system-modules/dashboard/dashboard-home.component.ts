@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, UserService, EmployeeService, WorkSpaceService } from '../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
@@ -46,7 +46,7 @@ export class DashboardHomeComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
 
   checkedInObject: any = <any>{};
-  constructor(private _elRef: ElementRef, private locker: CoolSessionStorage, private userService: UserService,
+  constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
     private workSpaceService: WorkSpaceService) {
     router.events.subscribe((routerEvent: Event) => {

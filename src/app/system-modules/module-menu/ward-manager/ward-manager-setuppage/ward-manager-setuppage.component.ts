@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FacilitiesService, WardAdmissionService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { RouterModule, Routes, ActivatedRoute } from '@angular/router';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 
@@ -17,7 +17,7 @@ export class WardManagerSetuppageComponent implements OnInit {
 	facilityWardId = '';
 
 	constructor(private _facilitiesService: FacilitiesService,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _wardAdmissionService: WardAdmissionService,
 		private _wardEventEmitter: WardEmitterService,
 		private _route: ActivatedRoute) {

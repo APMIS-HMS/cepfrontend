@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ProductTypeService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Category } from '../../../../models/index';
@@ -20,7 +20,7 @@ export class CategoryManagerComponent implements OnInit {
 	errMsg: String = 'You have unresolved errors';
 
 	constructor(
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _fb: FormBuilder,
 		private _categoryService: ProductTypeService
 	) {

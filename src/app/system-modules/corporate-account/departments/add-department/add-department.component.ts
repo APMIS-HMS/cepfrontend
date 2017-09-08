@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, CompanyHealthCoverService, CorporateFacilityService } from '../../../../services/facility-manager/setup/index';
 import { Facility, CompanyHealthCover, CorporateFacility } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-add-department',
@@ -20,7 +20,7 @@ export class AddDepartmentComponent implements OnInit {
 	selectedFacility: CorporateFacility = <CorporateFacility>{};
 	constructor(private formBuilder: FormBuilder, private companyHealthCoverService: CompanyHealthCoverService,
 		private corporateFacilityService: CorporateFacilityService,
-		private locker: CoolSessionStorage) { }
+		private locker: CoolLocalStorage) { }
 
 	ngOnInit() {
 		this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');

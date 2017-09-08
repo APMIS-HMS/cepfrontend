@@ -1,1 +1,11 @@
- <router-outlet class="menuContent"></router-outlet>
+<ul class="pg-menuWrap">
+    <li (click)="treatementTemplate_show()" [class.pg-menuActive]="treatementTemplate"><i class="fa fa-braille" aria-hidden="true"></i> Treatement Template</li>
+    <li (click)="formGen_show()" [class.pg-menuActive]="formGen"><i class="fa fa-list-alt" aria-hidden="true"></i>Form Generator</li>
+</ul>
+
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+    <router-outlet></router-outlet>
+</div>
+
+<!-- <router-outlet class="menuContent"></router-outlet> -->

@@ -3,14 +3,14 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { AppointmentType, Facility } from '../../models/index';
 import { AppointmentTypeService } from '../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 
 @Injectable()
 export class AppointmentTypeResolverService implements Resolve<AppointmentType> {
   selectedFacility: Facility = <Facility>{};
   constructor(private appointmentTypeService: AppointmentTypeService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private router: Router) {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
   }

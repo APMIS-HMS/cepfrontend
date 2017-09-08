@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { UserService, FacilitiesService, PersonService, EmployeeService } from '../services/facility-manager/setup/index';
 import { Person, Facility } from '../models/index';
 import { Router } from '@angular/router';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
@@ -22,13 +22,14 @@ export class SystemModuleComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   authData: any = <any>{};
   checkedInObject: any = <any>{};
+  logoutConfirm_on = false;
 
   constructor(private userService: UserService,
     public facilityService: FacilitiesService,
     private personService: PersonService,
     private employeeService: EmployeeService,
     private toast: ToastsManager,
-    private router: Router, private locker: CoolSessionStorage) {
+    private router: Router, private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
       if (facility._id === payload._id) {
@@ -69,6 +70,9 @@ export class SystemModuleComponent implements OnInit {
     this.userService.logOut();
     this.userService.announceMission('out');
     this.userService.isLoggedIn = false;
+  }
+  logOut() {
+    this.logoutConfirm_on = true;
   }
 
   success(text) {

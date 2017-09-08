@@ -11,8 +11,8 @@ table, td {
 } 
 th {
     height: 50px;
-    background: $th-background;
-    border: 0.5px solid $th-border;
+    background: transparent;
+    border: 0.5px solid $td-border;
 }
 td {
     vertical-align: center;

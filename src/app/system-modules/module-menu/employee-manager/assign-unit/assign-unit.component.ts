@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { FacilitiesService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, Department } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-assign-unit',
@@ -32,7 +32,7 @@ export class AssignUnitComponent implements OnInit {
   @Input() selectedEmployee: any = <any>{};
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private employeeService: EmployeeService,
     public facilityService: FacilitiesService) { }
 

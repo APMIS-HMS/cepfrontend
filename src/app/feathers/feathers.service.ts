@@ -5,13 +5,13 @@ const localstorage = require('feathers-localstorage');
 const hooks = require('feathers-hooks');
 const rest = require('feathers-rest/client');
 const authentication = require('feathers-authentication/client');
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 
-// const HOST = 'http://40.68.100.29:3030'; // Online 
-//const HOST = 'http://192.168.20.101:3030'; // Sunday 
+// const HOST = 'http://40.68.100.29:3030'; // Online
+// const HOST = 'http://192.168.20.101:3030'; // Sunday
 const HOST = 'http://localhost:3030'; // Local Server
 
 @Injectable()
@@ -19,7 +19,7 @@ export class SocketService {
   public socket: any;
   public HOST;
   private _app: any;
-  constructor(public locker: CoolSessionStorage) {
+  constructor(public locker: CoolLocalStorage) {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
@@ -52,7 +52,7 @@ export class RestService {
   logOut() {
     this.locker.clear();
   }
-  constructor(private locker: CoolSessionStorage) {
+  constructor(private locker: CoolLocalStorage) {
     this.HOST = HOST;
     if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
       const auth: any = this.locker.getObject('auth')

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Employee, Facility, MinorLocation, ScheduleRecordModel, WorkSpace } from '../../models/index';
 import { EmployeeService, SchedulerService, WorkSpaceService } from '../../services/facility-manager/setup/index';
 import { LocationService } from '../../services/module-manager/setup/location.service';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class LoginEmployeeResolverService implements Resolve<Employee> {
@@ -15,7 +15,7 @@ export class LoginEmployeeResolverService implements Resolve<Employee> {
   workSpaces: WorkSpace[] = [];
   clinic: any = <any>{};
   constructor(private employeeService: EmployeeService,
-    private locker: CoolSessionStorage, private scheduleService: SchedulerService,
+    private locker: CoolLocalStorage, private scheduleService: SchedulerService,
     private locationService: LocationService, private workSpaceService: WorkSpaceService,
     private router: Router) { }
 

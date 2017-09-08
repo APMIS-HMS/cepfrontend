@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 import { ProductTypeService, ProductService } from '../../../../services/facility-manager/setup/index';
@@ -30,7 +30,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   products: any[] = [];
   selProductType = new FormControl();
   searchControl = new FormControl();
-  constructor(private locker: CoolSessionStorage, private productTypeService: ProductTypeService,
+  constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
     private productService: ProductService, private _productEventEmitter: ProductEmitterService,
     private toast: ToastsManager) {
     this.productService.listenerUpdate.subscribe(payload => {

@@ -6,7 +6,7 @@ import {
     FacilitiesService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService, WorkSpaceService, SchedulerService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, ScheduleRecordModel } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { IDateRange } from 'ng-pick-daterange';
@@ -51,7 +51,7 @@ export class AppointmentComponent implements OnInit {
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
 
-    constructor(private locker: CoolSessionStorage, private appointmentService: AppointmentService,
+    constructor(private locker: CoolLocalStorage, private appointmentService: AppointmentService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private facilityService: FacilitiesService,
         private scheduleService: SchedulerService) {

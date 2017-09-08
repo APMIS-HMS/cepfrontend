@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, EmployeeService, WorkSpaceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, MinorLocation, Location, WorkSpace, Department } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { LocationService } from '../../../../services/module-manager/setup/location.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -40,7 +40,7 @@ export class CreateWorkspaceComponent implements OnInit {
   @Input() selectedEmployee: any = <any>{};
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private locationService: LocationService,
     private employeeService: EmployeeService,
     private workspaceService: WorkSpaceService,
@@ -219,11 +219,13 @@ export class CreateWorkspaceComponent implements OnInit {
         query:
         { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
       }).then(payload => {
+        console.log(payload);
         filtered.forEach((iteme, e) => {
           let hasRecord = false;
           if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
             hasRecord = true;
           }
+          console.log(hasRecord);
           if (hasRecord) {
             updateArrays.push(iteme);
           } else {
@@ -235,6 +237,7 @@ export class CreateWorkspaceComponent implements OnInit {
         {
           const workSpaces: WorkSpace[] = [];
           console.log(createArrays);
+          console.log(updateArrays);
           createArrays.forEach((emp, i) => {
             const space: WorkSpace = <WorkSpace>{};
             space.employeeId = emp;
@@ -261,6 +264,7 @@ export class CreateWorkspaceComponent implements OnInit {
         }
         Observable.forkJoin(workSpaces$).subscribe(results => {
           this.getWorkSpace();
+          this.loadIndicatorVisible = false;
         }, error => {
           this.loadIndicatorVisible = false;
         });

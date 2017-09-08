@@ -51,10 +51,16 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <md-input-container>
-                                        <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-                                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                        <input mdInput formControlName="date" [mdDatepicker]="picker" placeholder="Choose a date">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                                     </md-input-container>
                                     <md-datepicker #picker></md-datepicker>
+                                    <!-- <md-input-container>
+                    <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                  </md-input-container>
+                  <md-datepicker #picker></md-datepicker> -->
                                 </div>
                             </form>
                         </td>

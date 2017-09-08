@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Prescription, PrescriptionItem, Dispense, User, 
 	Dispensed, DispensedArray, DispenseByNoprescription, DispenseItem,  } from '../../../../../models/index';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
@@ -25,7 +25,7 @@ export class WalkInDetailsComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
 		private _router: Router,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _facilityService: FacilitiesService,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,

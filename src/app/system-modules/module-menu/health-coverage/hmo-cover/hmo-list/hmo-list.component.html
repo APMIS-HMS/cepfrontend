@@ -1,6 +1,6 @@
 <div>
   <div class="doc-mainWrap">
-    <div class="doc-contentArea">
+    <div class="doc-contentArea"> 
       <div class="clinicalNoteWrap">
         <div class="actSect">
           <div class="actSect-header">
@@ -88,7 +88,7 @@
               </tr>
 
               <tr *ngFor="let hmo of loginHMOListObject.hmos">
-                <td (click)="show_beneficiaries()">{{hmo.hmo.name}}</td>
+                <td (click)="show_beneficiaries(hmo.hmo)">{{hmo.hmo.name}}</td>
                 <td>{{hmo.hmo.address.street}}, {{hmo.hmo?.addressObj.city}}, {{hmo.hmo?.addressObj.state}}.</td>
                 <td>{{hmo.hmo.email}}</td>
                 <td>{{hmo.hmo.contactPhoneNo}}</td>

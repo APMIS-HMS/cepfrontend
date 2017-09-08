@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PharmacyEmitterService } from '../../../services/facility-manager/pharmacy-emitter.service';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
 import { Employee, Facility } from '../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -26,7 +26,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private _router: Router,
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		public facilityService: FacilitiesService,
 		private _employeeService: EmployeeService

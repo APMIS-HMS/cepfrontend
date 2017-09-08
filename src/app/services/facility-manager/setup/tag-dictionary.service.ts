@@ -2,7 +2,7 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class TagDictionaryService {
     private _socketService: SocketService,
     private _restService: RestService,
     private sanitizer: DomSanitizer,
-    private locker: CoolSessionStorage
+    private locker: CoolLocalStorage
   ) {
     this._rest = _restService.getService('tagdictioneries');
     this._socket = _socketService.getService('tagdictioneries');

@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 import { SharedService } from '../../../../../../shared-module/shared.service';
 
@@ -37,7 +37,7 @@ export class ClinicalNoteComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
 
-  constructor(private formService: FormsService, private locker: CoolSessionStorage,
+  constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
     private facilityService: FacilitiesService) {

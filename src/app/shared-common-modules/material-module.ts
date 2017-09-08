@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
-    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdErrorDirective,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectionModule, MdSelectModule, MdRadioModule
+    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdError, MdDatepickerToggle,
+    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectBase, MdSelectModule, MdRadioModule, MdPaginatorModule
 }
     from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -50,6 +50,7 @@ import { NgPipesModule } from 'ngx-pipes';
         ImageUpdateComponent,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
+        // MdDatepickerToggle,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent
         //  SurveyComponent, SurveyEditorComponent
@@ -63,7 +64,9 @@ import { NgPipesModule } from 'ngx-pipes';
         MdInputModule,
         MdAutocompleteModule,
         MdOptionModule,
-        MdSelectionModule,
+        MdDatepickerToggle,
+        MdPaginatorModule,
+        // MdSelectBase,
         MdSelectModule,
         MdRadioModule,
         MdListModule,
@@ -92,7 +95,7 @@ import { NgPipesModule } from 'ngx-pipes';
         MomentModule,
         ToastModule,
         CoolStorageModule,
-        MdErrorDirective,
+        MdError,
         ToastyModule,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
@@ -112,7 +115,8 @@ import { NgPipesModule } from 'ngx-pipes';
         MdInputModule,
         MdAutocompleteModule,
         MdOptionModule,
-        MdSelectionModule,
+        MdPaginatorModule,
+        // MdSelectBase,
         MdSelectModule,
         MdListModule,
         MdRadioModule,

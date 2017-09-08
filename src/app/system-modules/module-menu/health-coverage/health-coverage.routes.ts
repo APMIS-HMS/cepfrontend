@@ -5,6 +5,7 @@ import { HmoCoverComponent } from './hmo-cover/hmo-cover.component';
 import { CoverPaymentComponent } from './cover-payment/cover-payment.component';
 import { HealthCoverageComponent } from './health-coverage.component';
 import { RecievePaymentComponent } from './recieve-payment/recieve-payment.component';
+import { BeneficiaryListComponent } from './hmo-cover/beneficiary-list/beneficiary-list.component';
 
 const HEALTHCOVERMODULES_ROUTES: Routes = [
     {
@@ -12,7 +13,8 @@ const HEALTHCOVERMODULES_ROUTES: Routes = [
             { path: '', redirectTo: 'hmo-cover' },
             { path: 'company-cover', component: CompanyCoverComponent },
             { path: 'family-cover', component: FamilyCoverComponent },
-             { path: 'hmo-cover', component: HmoCoverComponent },
+            { path: 'hmo-cover', component: HmoCoverComponent },
+            { path: 'hmo-cover-list/:id', component: BeneficiaryListComponent },
             { path: 'payment', component: CoverPaymentComponent },
             { path: 'recieve-payment', component: RecievePaymentComponent }
         ]
