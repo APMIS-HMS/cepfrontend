@@ -38,13 +38,8 @@ export class PatientPaymentPlanComponent implements OnInit {
   plans: any[] = [];
   user: User = <User>{};
   insurancePlanForm: FormGroup;
-<<<<<<< HEAD
-
   insuranceFormArrayIndex = 0;
-  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolSessionStorage,
-=======
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolLocalStorage,
->>>>>>> 2846fdb9222c2ad9ea0f0caa4baf36c7ffb8fcb5
     private facilityService: FacilitiesService) { }
 
   ngOnInit() {
