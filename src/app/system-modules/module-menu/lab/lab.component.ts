@@ -169,7 +169,7 @@ export class LabComponent implements OnInit, OnDestroy {
     }
   }
   changeRoute(value: string) {
-    if (value == '') {
+    if (value === '') {
       this.requestContentArea = true;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -179,7 +179,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = false;
       this.templateContentArea = false;
       this._router.navigate(['/dashboard/laboratory/' + value]);
-    } else if (value == 'external-requests') {
+    } else if (value === 'external-requests') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -189,7 +189,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = true;
       this.templateContentArea = false;
       this._router.navigate(['/dashboard/laboratory/' + value]);
-    } else if (value == 'workbenches') {
+    } else if (value === 'workbenches') {
       this.requestContentArea = false;
       this.workbenchContentArea = true;
       this.investigationContentArea = false;
@@ -199,7 +199,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = false;
       this.templateContentArea = false;
       this._router.navigate(['/dashboard/laboratory/' + value]);
-    } else if (value == 'investigation-pricing') {
+    } else if (value === 'investigation-pricing') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -209,7 +209,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = false;
       this.templateContentArea = false;
       this._router.navigate(['/dashboard/laboratory/' + value]);
-    } else if (value == 'investigations') {
+    } else if (value === 'investigations') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = true;
@@ -219,7 +219,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = false;
       this.templateContentArea = false;
       this._router.navigate(['/dashboard/laboratory/' + value]);
-    } else if (value == 'reports') {
+    } else if (value === 'reports') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;
@@ -229,7 +229,7 @@ export class LabComponent implements OnInit, OnDestroy {
       this.externalContentArea = false;
       this.templateContentArea = false;
       this._router.navigate(['/dashboard/laboratory/' + value]);
-    } else if (value == 'templates') {
+    } else if (value === 'templates') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
       this.investigationContentArea = false;

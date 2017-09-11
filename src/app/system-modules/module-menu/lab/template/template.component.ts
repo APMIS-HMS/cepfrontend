@@ -4,7 +4,7 @@ import {
   FacilitiesService, InvestigationService, TemplateService
 } from '../../../../services/facility-manager/setup/index';
 import { ScopeLevelService } from '../../../../services/module-manager/setup/index';
-import { Facility, User } from '../../../../models/index';
+import { Facility, User, LabTemplate } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -22,7 +22,10 @@ export class TemplateComponent implements OnInit {
     selectedLab: any = <any>{};
     selectedScopeLevel: any = <any>{};
     scopeLevels: any = <any>[];
+    templates: LabTemplate = <any>[];
     templateBtnText: String = 'Create Template';
+    template_view: Boolean = false;
+    loading: Boolean = true;
 
     constructor(
         private _fb: FormBuilder,
@@ -62,15 +65,16 @@ export class TemplateComponent implements OnInit {
                         this.templateFormGroup.controls['conclusion'].setValue(containsSelected[0].conclusion);
                     } else {
                         this.templateBtnText = 'Create Template';
-                        this.templateFormGroup.controls['name'].setValue('');
-                        this.templateFormGroup.controls['recommendation'].setValue('');
-                        this.templateFormGroup.controls['result'].setValue('');
-                        this.templateFormGroup.controls['conclusion'].setValue('');
+                        // this.templateFormGroup.controls['name'].setValue('');
+                        // this.templateFormGroup.controls['recommendation'].setValue('');
+                        // this.templateFormGroup.controls['result'].setValue('');
+                        // this.templateFormGroup.controls['conclusion'].setValue('');
                     }
                 }).catch(err => this._notification('Error', 'There was an error getting Template. Please try again later!'));
             }
         });
 
+        this._getAllTemplates();
         this._getAllInvestigations();
         this._getAllScopeLevels();
     }
@@ -86,10 +90,10 @@ export class TemplateComponent implements OnInit {
                 delete value.investigation.facilityId;
                 delete value.investigation.LaboratoryWorkbenches;
 
-                const myTemplate = {
+                const myTemplate = <LabTemplate> {
                     facility: this.miniFacility,
                     investigation: value.investigation,
-                    scopeLevel: value.scopeLevel,
+                    scopeLevel: value.apmisScopeLevel,
                     minorLocation: this.selectedLab.typeObject.minorLocationObject,
                     createdBy: this.employeeDetails.employeeDetails,
                     name: value.name,
@@ -105,6 +109,7 @@ export class TemplateComponent implements OnInit {
                     if (containsSelected.length > 0) {
                         this.templateBtnText = 'Updating Template...';
                         this._templateService.update(containsSelected[0]).then(res => {
+                            this._getAllTemplates();
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
                             this._notification('Success', 'Template has been updated successfully!');
@@ -112,6 +117,7 @@ export class TemplateComponent implements OnInit {
                     } else {
                         this.templateBtnText = 'Creating Template...';
                         this._templateService.create(myTemplate).then(res => {
+                            this._getAllTemplates();
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
                             this._notification('Success', 'Template has been created successfully!');
@@ -126,6 +132,22 @@ export class TemplateComponent implements OnInit {
         }
     }
 
+    editTemplate(template: LabTemplate) {
+        this.template_view = true;
+        this.templateFormGroup.controls['investigation'].setValue(template.investigation.name);
+        this.templateFormGroup.controls['apmisScopeLevel'].setValue(template.scopeLevel.name);
+        this.templateFormGroup.controls['name'].setValue(template.name);
+        this.templateFormGroup.controls['result'].setValue(template.result);
+        this.templateFormGroup.controls['recommendation'].setValue(template.recommendation);
+        this.templateFormGroup.controls['conclusion'].setValue(template.conclusion);
+    }
+
+    private _getAllTemplates() {
+        this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
+            this.loading = false;
+            this.templates = res.data;
+        }).catch(err => this._notification('Error', 'There was a problem getting templates'));
+    }
     private _getAllInvestigations() {
         this._investigationService.find({ query: { 'facilityId._id': this.facility._id }}).then(res => {
             this.investigations = res.data;
@@ -145,5 +167,9 @@ export class TemplateComponent implements OnInit {
           type: type,
           text: text
         });
+    }
+
+    template_show() {
+        this.template_view = !this.template_view;
     }
 }
