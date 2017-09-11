@@ -97,12 +97,12 @@ export class InitializeStoreComponent implements OnInit {
           totalQuantity += item.quantity;
           transactionsArray.push(batchObject);
           this.inventoryModel = <Inventory> {
-            facilityId: this.selectedFacility._id,
-            storeId: this.checkingObject.typeObject.storeId,
-            serviceId: item.product.serviceId,
+            // facilityId: this.selectedFacility._id,
+            // storeId: this.checkingObject.typeObject.storeId,
+            //productId: item.product._id,
+             serviceId: item.product.serviceId,
             categoryId: item.product.categoryId,
             facilityServiceId: item.product.facilityServiceId,
-            productId: item.product._id,
             transactions: transactionsArray,
             reorderLevel: 0,
             reorderQty: 0,
