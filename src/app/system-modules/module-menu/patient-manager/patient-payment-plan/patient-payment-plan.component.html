@@ -1,0 +1,137 @@
+<div class="modal-baseWrap animated pulse">
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <legend class="modal_title">Payment Plans</legend>
+  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+  <div class="doc-mainWrap">
+    <div class="tab-wrap">
+      <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
+      <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
+      <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+      <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+    </div>
+
+    <div class="tab-content">
+      <div *ngIf="tabWallet">
+        <div class="plan">
+          <div class="plan-title">Out of Pocket</div>
+          <div class="frm-item-wrap">
+            <md-select placeholder="Select Plan" [formControl]="walletPlan">
+              <md-option>Diamond</md-option>
+              <md-option>Gold</md-option>
+              <md-option>Bronze</md-option>
+            </md-select>
+          </div>
+          <button class="cta-1">Save</button>
+        </div>
+      </div>
+
+      <div *ngIf="tabInsurance">
+        <!-- <div class="plan">
+          <div class="plan-title">Insurance</div>
+          <div *ngIf="selectedHMOClient !== undefined">
+            {{selectedHMOClient?.surname}} {{selectedHMOClient?.firstName}} <span class="role">{{getRole()}}</span>
+          </div>
+          <div class="frm-item-wrap">
+            <md-select placeholder="HMO" [formControl]="hmo">
+              <md-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+            </md-select>
+          </div>
+          <div class="frm-item-wrap">
+            <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+            </md-input-container>
+          </div>
+
+          <div class="frm-item-wrap">
+            <md-select [disabled]=true placeholder="Select Plan" [formControl]="hmoPlan">
+              <md-option *ngFor="let item of plans" [value]="item">{{item}}</md-option>
+            </md-select>
+          </div>
+          <button class="cta-1">Save</button>
+
+          <div class="another">Another Insurance</div>
+        </div> -->
+
+
+
+
+
+        <!-- for array -->
+        <form [formGroup]="insurancePlanForm" class="form-horizontal">
+          <div formArrayName="insurancePlanArray" class="frmArrayWrap">
+            <div class="frmArray" *ngFor="let insurance of insurancePlanForm.controls['insurancePlanArray'].controls; let i = index;">
+              <div (click)="closeInsurancePlan(insurance, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+              <div formGroupName="{{i}}">
+                <div>
+                  <div class="plan">
+                    <div class="plan-title">Insurance</div>
+                    <div *ngIf="insurance.controls.client.value !== null">
+                      {{insurance.controls.client?.value.surname}} {{insurance.controls.client?.value.firstName}} <span class="role">{{getRole(insurance.controls.client?.value)}}</span>
+                    </div>
+                    <div class="frm-item-wrap">
+                      <md-select (change)="formArrayControlChanges(insurance, i)" placeholder="HMO" formControlName="hmo">
+                        <md-option  *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+                      </md-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                        <input (change)="formArrayControlChanges(insurance, i)" mdInput md-error placeholder="Insurance ID" formControlName="hmoPlanId">
+                      </md-input-container>
+                      <md-error *ngIf="insurance.controls.hmoPlanId.hasError('idNotFound')">
+                        <span style="font-size:10px">Insurance ID not found!</span>
+                    </md-error>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                      <md-select placeholder="Select Plan" formControlName="hmoPlan">
+                        <md-option *ngFor="let item of insurance.controls.plans.value" [value]="item">{{item}}</md-option>
+                      </md-select>
+                    </div>
+                    <button [disabled]="!insurance.valid" (click)="onSubmit(insurance, i)"class="cta-1">Save</button>
+
+                    <div *ngIf="insurance.controls.readOnly.value && isLastChild(i)" (click)="pushNewInsurancePlan()" class="another">Another Insurance</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- end -->
+        </div>
+
+        <div *ngIf="tabCompany">
+          <div class="plan">
+            <div class="plan-title">Company Cover</div>
+            <div class="frm-item-wrap">
+              <md-input-container class="example-full-width">
+                <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+              </md-input-container>
+            </div>
+            <div class="frm-item-wrap">
+              <md-select placeholder="Select Plan" [formControl]="ccPlan">
+                <md-option>Diamond</md-option>
+                <md-option>Gold</md-option>
+                <md-option>Bronze</md-option>
+              </md-select>
+            </div>
+            <button class="cta-1">Save</button>
+
+            <div class="another">Another Company</div>
+          </div>
+        </div>
+
+        <div *ngIf="tabFamily">
+          <div class="plan">
+            <div class="plan-title">Family Cover</div>
+            <div class="frm-item-wrap">
+              <md-input-container class="example-full-width">
+                <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+              </md-input-container>
+            </div>
+            <button class="cta-1">Save</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

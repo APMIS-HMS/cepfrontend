@@ -1,5 +1,5 @@
 
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { User } from './../../../../../models/facility-manager/setup/user';
 import { LaboratoryRequestService } from './../../../../../services/facility-manager/setup/laboratoryrequest.service';
 import { Investigation, Patient } from './../../../../../models/index';
@@ -35,7 +35,7 @@ export class RequestDetailComponent implements OnInit {
   client: any = <any>{};
 
   constructor(private renderer: Renderer, private facilityService: FacilitiesService,
-    private _locker: CoolSessionStorage, private patientService: PatientService,
+    private _locker: CoolLocalStorage, private patientService: PatientService,
     private _laboratoryRequestService: LaboratoryRequestService) { }
 
   ngOnInit() {

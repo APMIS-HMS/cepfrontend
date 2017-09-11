@@ -1,5 +1,6 @@
 @import "globals/variables.scss";
 @import "globals/normalize.scss";
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 html,
 body {
     font-family: $font-main;
@@ -1464,7 +1465,7 @@ ul.topmenuwrap li:hover {
 
 .pg-menuWrap li:hover,
 .pg-menuActive {
-    background: #0D47A1;
+    background: #009ADF;
     color: #fff;
 }
 

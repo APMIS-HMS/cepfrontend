@@ -5,7 +5,7 @@ import {
   EmployeeService, FormsService, FacilitiesService, PatientService, VitalService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Rx';
 
 
@@ -50,7 +50,7 @@ export class AddVitalsComponent implements OnInit {
     private _vitaLocationService: VitaLocationService,
     private _vitalPositionService: VitalPositionService,
     private _vitalRythmService: VitalRythmService,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     private _employeeService: EmployeeService,
     private _FormsService: FormsService,
     private _PatientService: PatientService,

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ManufacturerService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Manufacturer } from '../../../../models/index';
@@ -21,7 +21,7 @@ export class ManufacturerManagerComponent implements OnInit {
 	errMsg: String = 'You have unresolved errors';
 
 	constructor(
-		private _locker: CoolSessionStorage,
+		private _locker: CoolLocalStorage,
 		private _fb: FormBuilder,
 		private _manufacturerService: ManufacturerService
 	) {

@@ -5,7 +5,7 @@ import {
   FacilitiesService, BillingService, PatientService, InvoiceService, PersonService
  } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-bill-lookup',
@@ -54,7 +54,7 @@ export class BillLookupComponent implements OnInit {
   pendingBills: any[] = [];
   loadingPendingBills: Boolean = true;
 
-  constructor(private locker: CoolSessionStorage,
+  constructor(private locker: CoolLocalStorage,
     private formBuilder: FormBuilder,
     public facilityService: FacilitiesService,
     private invoiceService: InvoiceService,

@@ -1,3 +1,4 @@
+import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +39,8 @@ import { WalletComponent } from './patientmanager-detailpage/payment/wallet/wall
 import { InsuranceComponent } from './patientmanager-detailpage/payment/insurance/insurance.component';
 import { CompanyComponent } from './patientmanager-detailpage/payment/company/company.component';
 import { FamilyComponent } from './patientmanager-detailpage/payment/family/family.component';
+import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-payment-plan.component';
+import { OrderSetComponent } from './patientmanager-detailpage/order-set/order-set.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -63,7 +66,9 @@ import { FamilyComponent } from './patientmanager-detailpage/payment/family/fami
         WalletComponent,
         InsuranceComponent,
         CompanyComponent,
-        FamilyComponent
+        FamilyComponent,
+        PatientPaymentPlanComponent,
+        OrderSetComponent
     ],
     exports: [
     ],
@@ -74,7 +79,7 @@ import { FamilyComponent } from './patientmanager-detailpage/payment/family/fami
         ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
-        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService]
+        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService]
 })
 export class PatientManagerModule { }
 

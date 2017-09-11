@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import { FacilitiesService, FacilityModuleService, TagService } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
 import { FacilityModule, Facility, Location, MinorLocation, Tag } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-new-sub-location',
@@ -27,7 +27,7 @@ export class NewSubLocationComponent implements OnInit {
   tags: Tag[] = [];
 
   constructor(private formBuilder: FormBuilder,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private locationService: LocationService,
     private tagService: TagService,
     public facilityService: FacilitiesService) {
@@ -59,6 +59,7 @@ export class NewSubLocationComponent implements OnInit {
   }
   getTags() {
     this.tagService.find({ query: { tagType: 'Laboratory Location' } }).then(payload => {
+      console.log(payload);
       this.tags = payload.data;
     })
   }
@@ -68,8 +69,16 @@ export class NewSubLocationComponent implements OnInit {
       if (val.sublocName === '' || val.sublocName === ' ' || val.sublocAlias === ''
         || val.sublocAlias === ' ' || val.sublocDesc === '' || val.sublocDesc === ' ') {
         this.mainErr = false;
-        this.errMsg = 'you left out a required field';
+        this.errMsg = 'You left out a required field';
       } else if (this.subLocation._id === undefined) {
+        const tag: Tag = <Tag>{};
+        tag.facilityId = this.facilityObj._id;
+        tag.name = val.sublocName;
+        tag.tagType = 'Laboratory Location';
+
+        const authObj: any = this.locker.getObject('auth');
+        const auth: any = authObj.data;
+        tag.createdBy = auth._id;
         const model: MinorLocation = <MinorLocation>{
           name: val.sublocName,
           shortName: val.sublocAlias,
@@ -78,18 +87,20 @@ export class NewSubLocationComponent implements OnInit {
         };
         this.facilityObj.minorLocations.push(model);
         this.facilityService.update(this.facilityObj).then((payload) => {
-          this.addNew();
+          this.tagService.update(tag).then(pay => {
+            this.addNew();
+          });
         });
         this.mainErr = true;
       } else {
-        const tags = this.tags.filter(x =>x.name === this.subLocation.name)
-        if (tags.length == 0) {
-          let tag: Tag = <Tag>{};
+        const tags = this.tags.filter(x => x.name === this.subLocation.name);
+        if (tags.length === 0) {
+          const tag: Tag = <Tag>{};
           tag.facilityId = this.facilityObj._id;
           tag.name = val.sublocName;
-          tag.tagType = "Laboratory Location";
+          tag.tagType = 'Laboratory Location';
 
-          const authObj: any = this.locker.getObject('auth')
+          const authObj: any = this.locker.getObject('auth');
           const auth: any = authObj.data;
           tag.createdBy = auth._id;
 
@@ -101,7 +112,7 @@ export class NewSubLocationComponent implements OnInit {
           this.facilityService.update(this.facilityObj).then((payload) => {
             this.tagService.create(tag).then(pay => {
               this.addNew();
-            })
+            });
 
           });
 
@@ -117,8 +128,7 @@ export class NewSubLocationComponent implements OnInit {
             tag.name = this.subLocation.name;
             this.tagService.update(tag).then(pay => {
               this.addNew();
-            })
-
+            });
           });
         }
       }

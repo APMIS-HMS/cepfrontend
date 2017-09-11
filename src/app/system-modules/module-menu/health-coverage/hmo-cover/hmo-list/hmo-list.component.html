@@ -1,6 +1,6 @@
 <div>
   <div class="doc-mainWrap">
-    <div class="doc-contentArea">
+    <div class="doc-contentArea"> 
       <div class="clinicalNoteWrap">
         <div class="actSect">
           <div class="actSect-header">
@@ -10,14 +10,13 @@
               <span>Add HMO</span>
             </div>
           </div>
-
           <form class="frmNoteWrap" *ngIf="newHmo" [formGroup]="frmNewHmo" novalidate>
             <div class="frm-title">NEW HMO</div>
 
             <div class="frm-x2">
               <div class="frm-item-wrap">
                 <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                  placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                  placeholder="Select HMO" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
                   [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
               </div>
             </div>
@@ -88,7 +87,7 @@
               </tr>
 
               <tr *ngFor="let hmo of loginHMOListObject.hmos">
-                <td (click)="show_beneficiaries()">{{hmo.hmo.name}}</td>
+                <td (click)="show_beneficiaries(hmo.hmo)">{{hmo.hmo.name}}</td>
                 <td>{{hmo.hmo.address.street}}, {{hmo.hmo?.addressObj.city}}, {{hmo.hmo?.addressObj.state}}.</td>
                 <td>{{hmo.hmo.email}}</td>
                 <td>{{hmo.hmo.contactPhoneNo}}</td>

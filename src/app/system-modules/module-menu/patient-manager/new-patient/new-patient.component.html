@@ -97,7 +97,8 @@
                 <div class="frm-item-wrap">
                     <md-input-container>
                         <input mdInput [mdDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                     </md-input-container>
                     <md-datepicker #picker></md-datepicker>
                 </div>
@@ -197,5 +198,87 @@
                 <button class="small-btn" [disabled]="!frmNewEmp4.valid" (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value);" md-raised-button>Create Patient</button>
             </div>
         </form>
+    </div>
+
+    <div *ngIf="paymentPlan">
+        <div class="doc-mainWrap">
+            <div class="tab-wrap">
+              <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
+              <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
+              <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+              <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+            </div>
+        
+            <div class="tab-content">
+              <div *ngIf="tabWallet">
+                <div class="plan">
+                  <div class="plan-title">Out of Pocket</div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="walletPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+                </div>
+              </div>
+        
+              <div *ngIf="tabInsurance">
+                <div class="plan">
+                  <div class="plan-title">Insurance</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+                      </md-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="hmoPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+            
+                  <div class="another">Another Insurance</div>
+                </div>
+              </div>
+        
+              <div *ngIf="tabCompany">
+                <div class="plan">
+                  <div class="plan-title">Company Cover</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+                      </md-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="ccPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+            
+                  <div class="another">Another Company</div>
+                </div>
+              </div>
+        
+              <div *ngIf="tabFamily">
+                <div class="plan">
+                  <div class="plan-title">Family Cover</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+                      </md-input-container>
+                  </div>
+                  <button class="cta-1">Save</button>
+        
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
 </div>

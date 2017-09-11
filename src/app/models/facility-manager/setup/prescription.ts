@@ -4,6 +4,7 @@ export interface Prescription {
     facilityId: string;
     employeeId: string;
     patientId: string;
+    patientObject: any;
     personId: string;
     title?: string;
     index?: number;

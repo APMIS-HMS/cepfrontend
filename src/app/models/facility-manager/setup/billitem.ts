@@ -4,6 +4,7 @@ export interface BillItem {
     serviceId: string;
     facilityId: string;
     patientId: string;
+    patientObject: any;
     description: string;
     quantity: number;
     totalPrice: number;

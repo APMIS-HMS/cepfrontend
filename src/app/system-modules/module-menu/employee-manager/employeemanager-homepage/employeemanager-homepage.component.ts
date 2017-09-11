@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/cor
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, EmployeeService, PersonService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
@@ -25,7 +25,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
-    private personService: PersonService, private locker: CoolSessionStorage,
+    private personService: PersonService, private locker: CoolLocalStorage,
     private toast: ToastsManager,
     private router: Router, private route: ActivatedRoute) {
     this.employeeService.listner.subscribe(payload => {

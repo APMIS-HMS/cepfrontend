@@ -40,7 +40,7 @@ import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requ
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-    MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule, MdRadioButton
+    MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
 } from '@angular/material';
 //import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';

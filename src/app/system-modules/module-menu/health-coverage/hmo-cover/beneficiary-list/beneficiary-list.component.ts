@@ -1,6 +1,9 @@
+import { HmoService } from './../../../../../services/facility-manager/setup/hmo.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-
+import { MdPaginator, PageEvent } from '@angular/material';
 @Component({
   selector: 'app-beneficiary-list',
   templateUrl: './beneficiary-list.component.html',
@@ -12,10 +15,22 @@ export class BeneficiaryListComponent implements OnInit {
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
   newHmo = false;
+  selectedFacility: any = <any>{};
+  beneficiaries: any[] = [];
+  filteredBeneficiaries:any[] = [];
+  operateBeneficiaries:any[] = [];
+  selectedHMO: any = <any>{};
 
-  constructor(private formBuilder: FormBuilder) { }
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
+
+  @ViewChild(MdPaginator) paginator: MdPaginator;
+  pageEvent: PageEvent;
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
+    private hmoService: HmoService) { }
 
   ngOnInit() {
+    this.selectedFacility = this.locker.getObject('selectedFacility');
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
@@ -23,9 +38,38 @@ export class BeneficiaryListComponent implements OnInit {
       phone: ['', [<any>Validators.required]],
       plans: ['', [<any>Validators.required]]
     });
-  }
 
-  newHmo_show(){
+
+    this.route.params.subscribe(parameters => {
+      this.getBeneficiaryList(parameters.id);
+    })
+  }
+  getBeneficiaryList(id) {
+    this.hmoService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+      if (payload.data.length > 0) {
+        let facHmo = payload.data[0];
+        const index = facHmo.hmos.findIndex(x => x.hmo._id === id);
+        if (index > -1) {
+          if (facHmo.hmos[index].enrolleeList.length > 0) {
+            this.selectedHMO = facHmo.hmos[index].hmo;
+            this.beneficiaries = facHmo.hmos[index].enrolleeList[0].enrollees;
+            const startIndex = 0 * 10;
+            this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+            this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+          }
+        }
+      }
+    })
+  }
+  getRole(beneficiary) {
+    let filNo = beneficiary.filNo;
+    if (filNo !== undefined) {
+      const filNoLength = filNo.length;
+      const lastCharacter = filNo[filNoLength - 1];
+      return isNaN(lastCharacter) ? 'D' : 'P';
+    }
+  }
+  newHmo_show() {
     this.newHmo = !this.newHmo;
   }
 
@@ -33,4 +77,9 @@ export class BeneficiaryListComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
 
+  onPaginateChange(event) {
+    const startIndex = event.pageIndex * event.pageSize;
+    this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+    this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
 }

@@ -14,12 +14,11 @@ export class WalletComponent implements OnInit {
   search: FormControl;
   fundPopShow = false;
   selectedValue: string;
-  
-    wallets = [
-      {value: 'cash', viewValue: 'Cash'},
-      {value: 'paystack', viewValue: 'Paystack'},
 
-    ];
+  wallets = [
+    { value: 'cash', viewValue: 'Cash' },
+    { value: 'paystack', viewValue: 'Paystack' }
+  ];
 
   constructor(private personService: PersonService) { }
 
@@ -61,18 +60,20 @@ export class WalletComponent implements OnInit {
   }
   fundWallet() {
     this.fundPopShow = true;
-    const personId = this.person._id;
-    const transactionType = 'Dr';
-    const transactionSource = 'POS';
-    const amount = 500;
-    const description = 'payment for investigation'
-
-    this.personService.walletTransaction(personId, transactionType, transactionSource, amount, description).then(payload => {
-      this.person = payload.body;
-      this.transactions = this.person.wallet.transactions;
-    })
   }
   onClose() {
     this.fundPopShow = false;
+  }
+  save() {
+    // const personId = this.person._id;
+    // const transactionType = 'Dr';
+    // const transactionSource = 'POS';
+    // const amount = 500;
+    // const description = 'payment for investigation';
+
+    // this.personService.walletTransaction(personId, transactionType, transactionSource, amount, description).then(payload => {
+    //   this.person = payload.body;
+    //   this.transactions = this.person.wallet.transactions;
+    // })
   }
 }

@@ -1,12 +1,12 @@
 import { User } from './../../../../../models/facility-manager/setup/user';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 import { FacilityType } from './../../../../../models/facility-manager/setup/facilitytype';
 import { Facility } from './../../../../../models/facility-manager/setup/facility';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { HmoService, FacilitiesService, FacilityTypesService } from '../../../../../services/facility-manager/setup/index';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-hmo-list',
   templateUrl: './hmo-list.component.html',
@@ -35,7 +35,7 @@ export class HmoListComponent implements OnInit {
   user: User = <User>{};
 
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private facilityService: FacilitiesService,
-    private facilityTypeService: FacilityTypesService, private locker: CoolSessionStorage) { }
+    private facilityTypeService: FacilityTypesService, private locker: CoolLocalStorage, private router: Router) { }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('miniFacility');
@@ -110,8 +110,9 @@ export class HmoListComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
 
-  show_beneficiaries() {
-    this.showBeneficiaries.emit(true);
+  show_beneficiaries(hmo) {
+    // this.showBeneficiaries.emit(true);
+    this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
 
@@ -174,7 +175,7 @@ export class HmoListComponent implements OnInit {
   }
   getEnrolleeCount(enrolleeList) {
     let retCount = 0;
-    if(enrolleeList.length > 0){
+    if (enrolleeList.length > 0) {
       return enrolleeList[0].enrollees.length;
     }
     return retCount;
@@ -186,37 +187,37 @@ export class HmoListComponent implements OnInit {
     return this.loginHMOListObject.hmos.findIndex(x => x.hmo_id === this.selectedHMO._id) > -1;
   }
   save(valid, value) {
-    if(this.checkHmo()){
-      if(this.selectedHMO._id === undefined){
-        this._notification('Warning','Please select and HMO to continue!');
+    if (this.checkHmo()) {
+      if (this.selectedHMO._id === undefined) {
+        this._notification('Warning', 'Please select and HMO to continue!');
         return;
       }
-      this._notification('Warning','The selected HMO is already in the list of HMOs');
+      this._notification('Warning', 'The selected HMO is already in the list of HMOs');
       return;
     }
     let newHmo = {
       hmo: this.selectedHMO,
       enrolleeList: []
     }
-    // this.loginHMOListObject.hmos.push(newHmo);
-    // if (this.selectedHMO._id !== undefined) {
-    //   if (this.loginHMOListObject._id === undefined) {
-    //     this.hmoService.create(this.loginHMOListObject).then(payload => {
-    //       console.log(payload);
-    //       this.frmNewHmo.controls['name'].reset();
-    //       this.apmisLookupText = '';
-    //       this.getLoginHMOList();
-    //       this._notification('Success', 'Selected HMO added to your HMO list successfully');
-    //     })
-    //   } else {
-    //     this.hmoService.update(this.loginHMOListObject).then(payload => {
-    //       this.frmNewHmo.controls['name'].reset();
-    //       this.apmisLookupText = '';
-    //       this.getLoginHMOList();
-    //       this._notification('Success', 'Selected HMO added to your HMO list successfully');
-    //     })
-    //   }
-    // }
+    this.loginHMOListObject.hmos.push(newHmo);
+    if (this.selectedHMO._id !== undefined) {
+      if (this.loginHMOListObject._id === undefined) {
+        this.hmoService.create(this.loginHMOListObject).then(payload => {
+          console.log(payload);
+          this.frmNewHmo.controls['name'].reset();
+          this.apmisLookupText = '';
+          this.getLoginHMOList();
+          this._notification('Success', 'Selected HMO added to your HMO list successfully');
+        })
+      } else {
+        this.hmoService.update(this.loginHMOListObject).then(payload => {
+          this.frmNewHmo.controls['name'].reset();
+          this.apmisLookupText = '';
+          this.getLoginHMOList();
+          this._notification('Success', 'Selected HMO added to your HMO list successfully');
+        })
+      }
+    }
   }
   private _notification(type: string, text: string): void {
     this.facilityService.announceNotification({

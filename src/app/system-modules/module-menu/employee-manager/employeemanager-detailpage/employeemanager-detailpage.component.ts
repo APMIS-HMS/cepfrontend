@@ -5,7 +5,7 @@ import {
   PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService,
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -73,7 +73,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private genderService: GenderService,
     private relationshipService: RelationshipService,
     private maritalStatusService: MaritalStatusService,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
     });

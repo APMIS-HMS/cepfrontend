@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { InventoryService, ProductService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -43,7 +43,7 @@ export class LandingpageComponent implements OnInit {
     private inventoryService: InventoryService,
     private route: ActivatedRoute,
     private productService: ProductService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private employeeService: EmployeeService
   ) { }
 

@@ -3,7 +3,7 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { Facility, Person } from '../../models/index';
 import { FacilitiesService, PersonService, CorporateFacilityService } from '../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class SwitchUserResolverService implements Resolve<Facility> {
@@ -13,7 +13,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
   selectedPerson: Person = <Person>{};
   listOfFacilities: Facility[] = [];
   constructor(public facilityService: FacilitiesService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private corporateFacilityService: CorporateFacilityService,
     private personService: PersonService,
     private router: Router) {

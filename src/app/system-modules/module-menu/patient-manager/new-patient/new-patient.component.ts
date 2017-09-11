@@ -10,7 +10,7 @@ import {
     Department,
     MinorLocation, Gender, Title, Country
 } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { Observable } from 'rxjs/Observable';
@@ -32,15 +32,32 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     frmNewPerson2_show = false;
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
+    paymentPlan = false;
 
     shouldMoveFirst = false;
     nextOfKinReadOnly = false;
+
+    tabWallet = true;
+    tabInsurance = false;
+    tabCompany = false;
+    tabFamily = false;
 
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
     public frmNewEmp2: FormGroup;
     public frmNewEmp3: FormGroup;
     public frmNewEmp4: FormGroup;
+
+    walletPlan = new FormControl('', Validators.required);
+    walletPlanCheck = new FormControl('');
+    hmoPlan = new FormControl('', Validators.required);
+    hmoPlanId = new FormControl('', Validators.required);
+    hmoPlanCheck = new FormControl('');
+    ccPlan = new FormControl('', Validators.required);
+    ccPlanId = new FormControl('', Validators.required);
+    ccPlanCheck = new FormControl('');
+    familyPlanId = new FormControl('', Validators.required);
+    familyPlanCheck = new FormControl('');
 
     @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('cropper', undefined)
@@ -88,7 +105,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private maritalStatusService: MaritalStatusService,
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
-        private locker: CoolSessionStorage, private patientService: PatientService,
+        private locker: CoolLocalStorage, private patientService: PatientService,
         private personService: PersonService,
         private employeeService: EmployeeService,
         private facilityService: FacilitiesService
@@ -351,7 +368,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
             } else if (result.data.length > 0) {
-                this.errMsg = 'This APMIS ID is valid but has been previously used to generate an employee!';
+                this.errMsg = 'This APMIS ID is valid or has been previously used to generate an employee!';
                 this.mainErr = false;
             } else {
                 this.frmNewEmp4_show = true;
@@ -361,6 +378,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = false;
+                this.paymentPlan = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
                 this.shouldMoveFirst = true;
@@ -405,6 +423,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = true;
         this.mainErr = true;
     }
@@ -414,6 +433,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = false;
         this.shouldMoveFirst = false;
     }
@@ -431,6 +451,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson2_show = true;
                 this.frmNewPerson3_show = false;
                 this.frmNewEmp4_show = false;
+                this.paymentPlan = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
 
@@ -446,6 +467,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = false;
         this.mainErr = true;
     }
@@ -462,6 +484,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = true;
                 this.frmNewEmp4_show = false;
+                this.paymentPlan = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
 
@@ -476,6 +499,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = true;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = false;
         this.mainErr = true;
     }
@@ -523,6 +547,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     this.frmNewPerson2_show = false;
                     this.frmNewPerson3_show = false;
                     this.frmNewEmp4_show = true;
+                    this.paymentPlan = false;
                     this.apmisId_show = false;
                     this.mainErr = true;
                 });
@@ -546,6 +571,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     this.frmNewPerson2_show = false;
                     this.frmNewPerson3_show = false;
                     this.frmNewEmp4_show = true;
+                    this.paymentPlan = false;
                     this.apmisId_show = false;
                     this.mainErr = true;
                 }, error => {
@@ -598,6 +624,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = false;
             this.frmNewEmp4_show = false;
+            this.paymentPlan = false;
             this.apmisId_show = true;
             this.mainErr = true;
         } else {
@@ -605,6 +632,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = true;
             this.frmNewEmp4_show = false;
+            this.paymentPlan = false;
             this.apmisId_show = false;
             this.mainErr = true;
         }
@@ -620,7 +648,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 text: this.selectedPerson.personFullName + ' added successfully',
                 users: [this.facilityService.getLoginUserId()]
             })
-            this.close_onClick();
+            //this.close_onClick();
+            this.paymentPlan = true;
+            this.frmNewPerson1_show = false;
+            this.frmNewPerson2_show = false;
+            this.frmNewPerson3_show = false;
+            this.frmNewEmp4_show = false;
+            this.apmisId_show = false;
         }, error => {
             if (this.shouldMoveFirst !== true) {
                 this.personService.remove(this.selectedPerson._id, {}).subscribe(payload => {
@@ -637,6 +671,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     newEmp4(valid, val) {
         this.saveEmployee();
+    }
+    payplans(){
+        this.close_onClick();
     }
 
     onEmpTitleChange(val) { }
@@ -668,6 +705,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         //     type: 'Info',
         //     text: 'This operation has been canceled!'
         // });
+    }
+
+    tabWallet_click() {
+    this.tabWallet = true;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+    }
+    tabCompany_click() {
+    this.tabWallet = false;
+    this.tabCompany = true;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+    }
+    tabFamily_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = true;
+    this.tabInsurance = false;
+    }
+    tabInsurance_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = true;
     }
 
 }

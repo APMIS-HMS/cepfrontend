@@ -4,7 +4,7 @@
     <legend class="modal_title">Individual Account</legend>
     <div class="modal_mini_title">All Purpose Medical Information System</div>
 
-    <div class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied below</div>
+    <!-- <div class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied below</div> -->
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form [formGroup]="frmPerson" novalidate>
@@ -38,7 +38,8 @@
             <div class="frm-item-wrap">
                 <md-input-container class="example-full-width">
                     <input mdInput [mdDatepicker]="picker" placeholder="Date of Birth" formControlName="dob">
-                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                 </md-input-container>
                 <md-datepicker #picker></md-datepicker>
             </div>

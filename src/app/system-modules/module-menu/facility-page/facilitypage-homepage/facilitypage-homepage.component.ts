@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 // tslint:disable-next-line:max-line-length
 import { CountriesService, FacilityTypesService, CorporateFacilityService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, FacilityType, Country } from '../../../../models/index';
@@ -60,7 +60,7 @@ export class FacilitypageHomepageComponent implements OnInit {
     private countryService: CountriesService,
     private facilityTypeService: FacilityTypesService,
     private corporateFacilityService: CorporateFacilityService,
-    private locker: CoolSessionStorage) {
+    private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     });

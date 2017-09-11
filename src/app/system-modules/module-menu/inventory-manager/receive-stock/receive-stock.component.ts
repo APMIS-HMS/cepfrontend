@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 // tslint:disable-next-line:max-line-length
 import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
   InventoryTransfer, Employee
@@ -31,7 +31,7 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
-    private locker: CoolSessionStorage
+    private locker: CoolLocalStorage
   ) { }
 
   ngOnInit() {

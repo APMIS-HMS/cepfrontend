@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@ang
 // tslint:disable-next-line:max-line-length
 import { SupplierService, StrengthService, ProductService, PurchaseOrderService, StoreService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { PurchaseOrder } from '../../../../../models/index';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -52,7 +52,7 @@ export class NewPurchaseOrderComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService,
     private storeService: StoreService, private route: ActivatedRoute, private router: Router, private strengthService: StrengthService,
-    private locker: CoolSessionStorage, private productService: ProductService, private purchaseOrderService: PurchaseOrderService) { }
+    private locker: CoolLocalStorage, private productService: ProductService, private purchaseOrderService: PurchaseOrderService) { }
 
   ngOnInit() {
     this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');

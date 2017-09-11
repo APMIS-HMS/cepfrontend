@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -18,6 +18,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   patientEditForm: FormGroup;
 
   editPatient = false;
+  payPlan = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
 
@@ -41,7 +42,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   updatePatientBtnText: string = 'Update';
 
   constructor(private patientService: PatientService, private personService: PersonService,
-    private facilityService: FacilitiesService, private locker: CoolSessionStorage, private router: Router,
+    private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
     private _countryService: CountriesService,
@@ -302,6 +303,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
     control.push(this._initNextOfKin());
   }
 
+  payPlanShow() {
+    this.payPlan = true;
+  }
+
   removeNextOfKin(i: number) {
     const control = <FormArray>this.patientEditForm.controls['nextOfKin'];
     control.removeAt(i);
@@ -309,6 +314,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
   close_onClick() {
     this.editPatient = false;
+    this.payPlan = false;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);
   }

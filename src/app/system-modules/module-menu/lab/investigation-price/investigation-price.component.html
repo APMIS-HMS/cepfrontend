@@ -33,7 +33,9 @@
                             </div>
                         </div>
 
-                        <button (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="cta-1">Set Price</button>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!frmNewPrice.valid" (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="btn">Set Price</button>
+                        </div>
                     </form>
                 </div>
 
@@ -88,7 +90,14 @@
                                     </div>
                                 </td>
                             </tr>
-
+                            <tr *ngIf="investigations.length === 0 && !loading">
+                                <td class="table-content" colspan="7" style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="investigations.length === 0 && loading">
+                                <td class="table-content " colspan="7" style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
                             <tr *ngFor="let price of investigations">
                                 <td>{{getLaboratoryFromInvestigation(price.LaboratoryWorkbenches)}}</td>
                                 <td>{{getWorkbenchFromInvestigation(price.LaboratoryWorkbenches)}}</td>

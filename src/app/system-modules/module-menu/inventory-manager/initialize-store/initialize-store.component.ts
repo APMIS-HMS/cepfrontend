@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { Facility,Inventory,InventoryTransaction} from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import {StoreService, ProductService,InventoryService} from '../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -25,7 +25,7 @@ export class InitializeStoreComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _locker: CoolSessionStorage,
+    private _locker: CoolLocalStorage,
     private _inventoryEventEmitter: InventoryEmitterService,
     private _productService: ProductService,
     private _inventoryService: InventoryService) {

@@ -4,7 +4,7 @@ import { SchedulerService, ConsultingRoomService, EmployeeService, ProfessionSer
 import { LocationService } from '../../../../services/module-manager/setup/index';
 // tslint:disable-next-line:max-line-length
 import { ScheduleRecordModel, Profession, ConsultingRoomModel, Employee, Facility, Location, MinorLocation } from '../../../../models/index';
-import { CoolSessionStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class ClinicHelperService {
 
   isDoctor = false;
   constructor(private professionService: ProfessionService,
-    private locker: CoolSessionStorage,
+    private locker: CoolLocalStorage,
     private scheduleService: SchedulerService,
     private consultingRoomService: ConsultingRoomService,
     private employeeService: EmployeeService,
