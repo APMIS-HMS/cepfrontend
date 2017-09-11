@@ -115,7 +115,7 @@ export class HealthCoverageComponent implements OnInit {
       this.hmoCover = true;
       this.recievePayment = false;
       this.pageInView = "Health Insurance";
-		} else if (param.includes('company-list')) {
+		} else if (param.includes('company-list') || param.includes('company-beneficiaries')) {
 			this.companyCover = true;
       this.familyCover = false;
       this.payment = false;
