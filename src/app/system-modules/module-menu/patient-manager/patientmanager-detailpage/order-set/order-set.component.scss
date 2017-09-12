@@ -1,0 +1,31 @@
+@import'../documentation/documentation.component.scss';
+
+.frm-x2{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.frm-x2 .frm-item-wrap{
+    width: 47%;
+}
+.doc-contentArea{
+    width: 100%;
+}
+.med-sect {
+    background: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.itemSect-title {
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #ff2500;
+}
+.med-sect td{
+    padding: 3px;
+    text-align: left;
+}
+.sect-remove{
+    color: #ff2500;
+    cursor: pointer;
+}
