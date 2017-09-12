@@ -17,6 +17,10 @@ export class OrderSetComponent implements OnInit {
   apmisLookupText = '';
 
   popMed = false;
+  popInvestigation = false;
+  popNursingCare = false;
+  popPhysicianOrder = false;
+  popProcedure = false;
 
   constructor() { }
 
@@ -26,8 +30,24 @@ export class OrderSetComponent implements OnInit {
   popMed_show(){
     this.popMed = true;
   }
+  popInvestigation_show(){
+    this.popInvestigation = true;
+  }
+  popNursingCare_show(){
+    this.popNursingCare = true;
+  }
+  popPhysicianOrder_show(){
+    this.popPhysicianOrder = true;
+  }
+  popProcedure_show(){
+    this.popProcedure = true;
+  }
   close_onClick(e){
     this.popMed = false;
+    this.popInvestigation = false;
+    this.popNursingCare = false;
+    this.popPhysicianOrder = false;
+    this.popProcedure = false;
   }
 
 }

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 
 @Component({
   selector: 'app-template-lab',
-  templateUrl: './template-lab.component.html',
+  templateUrl: './template-lab.component.html', 
   styleUrls: ['./template-lab.component.scss']
 })
 export class TemplateLabComponent implements OnInit {

@@ -8,7 +8,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class TemplatePhysicianOrderComponent implements OnInit {
 
-addPhysicianOrderForm: FormGroup;
+  addPhysicianOrderForm: FormGroup;
 
   constructor(private fb: FormBuilder) { }
 

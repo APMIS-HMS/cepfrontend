@@ -2,4 +2,20 @@
   
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">Edit Investigation</legend>
+
+    <form [formGroup]="addInvestigationForm" novalidate>
+      <div class="frmArrWrap">
+        <div class="frm-x2">
+          <div class="frm-item-wrap">
+            <apmis-lookup formControlName="investigation" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Investigation" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+          </div>
+        </div>
+      </div>
+    
+      <div class="addDrugBtn">
+          <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+          <span>UPDATE INVESTIGATION</span>
+      </div>
+    </form>
+      
 </div>
