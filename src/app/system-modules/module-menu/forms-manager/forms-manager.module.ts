@@ -12,6 +12,9 @@ import { FormsService } from '../../../services/facility-manager/setup/index';
 import { TreatementTemplateComponent } from './treatement-template/treatement-template.component';
 import { TemplateMedicationComponent } from './treatement-template/template-medication/template-medication.component';
 import { TemplateLabComponent } from './treatement-template/template-lab/template-lab.component';
+import { TemplateProcedureComponent } from './treatement-template/template-procedure/template-procedure.component';
+import { TemplateNursingCareComponent } from './treatement-template/template-nursing-care/template-nursing-care.component';
+import { TemplatePhysicianOrderComponent } from './treatement-template/template-physician-order/template-physician-order.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +22,10 @@ import { TemplateLabComponent } from './treatement-template/template-lab/templat
         FormsComponent,
         TreatementTemplateComponent,
         TemplateMedicationComponent,
-        TemplateLabComponent],
+        TemplateLabComponent,
+        TemplateProcedureComponent,
+        TemplateNursingCareComponent,
+        TemplatePhysicianOrderComponent],
     exports: [
     ],
     imports: [

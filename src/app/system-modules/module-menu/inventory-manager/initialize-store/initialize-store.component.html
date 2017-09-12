@@ -40,8 +40,12 @@
                           <h4>Products</h4>
                       </div>-->
                     </div>
+                    <div class="alert alert-info" *ngIf ="!saveAlert ">
+                        <strong>Select product to initialize</strong>
+                    </div>
+                    
                 <div class="panel-body">
-                    <form [formGroup]="myForm" novalidate>
+                    <form [formGroup]="myForm" novalidate >
                          <div formArrayName="initproduct">
                              <div *ngFor="let product of selectedProducts; let address of myForm.controls.initproduct.controls; let i=index;">
                                   <div>
@@ -64,6 +68,7 @@
                                               Quantity Required
                                           </small>
                                       </div>
+                                      <span class="pull-right">add more+</span>
                                   </div>
                              </div>
                          </div>

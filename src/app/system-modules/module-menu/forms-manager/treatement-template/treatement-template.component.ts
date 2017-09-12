@@ -15,7 +15,10 @@ export class TreatementTemplateComponent implements OnInit {
   isDocumentation = false;
 
   showMedService = true;
-  showLabService = true;
+  showLabService = false;
+  showNursingCareService = false;
+  showPhysicianOrderService = false;
+  showProcedureService = false;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -24,6 +27,7 @@ export class TreatementTemplateComponent implements OnInit {
       name: ['', [Validators.required]],
       diagnosis: [''],
       visibility: [''],
+      isEditable: [''],
       type: ['', [<any>Validators.required]],
       docFrmList: [''],
       chkLab: [''],

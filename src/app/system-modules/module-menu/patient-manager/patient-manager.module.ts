@@ -40,6 +40,7 @@ import { InsuranceComponent } from './patientmanager-detailpage/payment/insuranc
 import { CompanyComponent } from './patientmanager-detailpage/payment/company/company.component';
 import { FamilyComponent } from './patientmanager-detailpage/payment/family/family.component';
 import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-payment-plan.component';
+import { OrderSetComponent } from './patientmanager-detailpage/order-set/order-set.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -66,7 +67,8 @@ import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-paym
         InsuranceComponent,
         CompanyComponent,
         FamilyComponent,
-        PatientPaymentPlanComponent
+        PatientPaymentPlanComponent,
+        OrderSetComponent
     ],
     exports: [
     ],
