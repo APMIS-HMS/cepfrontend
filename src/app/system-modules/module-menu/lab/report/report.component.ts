@@ -81,8 +81,8 @@ export class ReportComponent implements OnInit {
     this.reportFormGroup = this.formBuilder.group({
       result: ['', [Validators.required]],
       outcome: ['', [Validators.required]],
-      conclusion: ['', [Validators.required]],
-      recommendation: ['', [Validators.required]]
+      conclusion: [''],
+      recommendation: ['']
     });
 
     this.patientFormGroup.controls['patient'].valueChanges.subscribe(value => {

@@ -11,6 +11,7 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 	styleUrls: ['./ward-manager-admissionpage.component.scss']
 })
 export class WardManagerAdmissionpageComponent implements OnInit {
+	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 	admitPatient = false;
 	transferReqShow = false;
 	transferInShow = false;
@@ -18,7 +19,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	newAdmissionShow = true;
 	dischargeShow = false;
 	_wardTransfer: WardTransfer = <WardTransfer>{};
-	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
 	typeChecker: any = myGlobals;
 	selectInpatient: any;
@@ -26,6 +26,9 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	listPatientTransferWaiting: any[] = [];
 	listPatientDischarge: any[] = [];
 	facility: Facility = <Facility>{};
+	newAdmissionLoading: Boolean = true;
+	transferInLoading: Boolean = true;
+	dischargeLoading: Boolean = true;
 
 	constructor(
 		private _inPatientListService: InPatientListService,
@@ -46,39 +49,40 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Admission waiting list');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
-		this.newAdmissionTab();
-	}
-
-	newAdmissionTab() {
-		this.newAdmissionShow = true;
-		this.transferInShow = false;
-		this.transferOutShow = false;
-		this.dischargeShow = false;
+		this.getDischargeList();
 		this.getWaitingList();
 	}
 
-	transferInTab() {
-		this.newAdmissionShow = false;
-		this.transferInShow = true;
-		this.transferOutShow = false;
-		this.dischargeShow = false;
-		this.getTransferInList();
-	}
+	// newAdmissionTab() {
+	// 	this.newAdmissionShow = true;
+	// 	this.transferInShow = false;
+	// 	this.transferOutShow = false;
+	// 	this.dischargeShow = false;
+	// 	this.getWaitingList();
+	// }
 
-	transferOutTab() {
-		this.newAdmissionShow = false;
-		this.transferInShow = false;
-		this.transferOutShow = true;
-		this.dischargeShow = false;
-	}
+	// transferInTab() {
+	// 	this.newAdmissionShow = false;
+	// 	this.transferInShow = true;
+	// 	this.transferOutShow = false;
+	// 	this.dischargeShow = false;
+	// 	this.getTransferInList();
+	// }
 
-	dischargeTab() {
-		this.newAdmissionShow = false;
-		this.transferInShow = false;
-		this.transferOutShow = false;
-		this.dischargeShow = true;
-		this.getDischargeList();
-	}
+	// transferOutTab() {
+	// 	this.newAdmissionShow = false;
+	// 	this.transferInShow = false;
+	// 	this.transferOutShow = true;
+	// 	this.dischargeShow = false;
+	// }
+
+	// dischargeTab() {
+	// 	this.newAdmissionShow = false;
+	// 	this.transferInShow = false;
+	// 	this.transferOutShow = false;
+	// 	this.dischargeShow = true;
+	// 	this.getDischargeList();
+	// }
 
 	admitPatient_onClick(model: any, typeChecker = myGlobals) {
 		this.selectInpatient = model;
@@ -116,6 +120,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	getWaitingList() {
 		this._inPatientListService.find({ query: { facilityId: this.facility._id, isAdmitted: false } })
 			.then(payload => {
+				this.newAdmissionLoading = false;
 				console.log(payload);
 				if (payload.data.length !== 0) {
 					this.listPatientAdmissionWaiting = payload.data;
@@ -128,6 +133,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	getTransferInList() {
 		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.transfer, discharge: undefined } })
 			.then(payload => {
+				this.transferInLoading = false;
 				console.log(payload.data);
 				if (payload.data.length !== 0) {
 					this.listPatientTransferWaiting = payload.data;
@@ -140,6 +146,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	getDischargeList() {
 		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.discharge } })
 			.then(payload => {
+				this.dischargeLoading = false;
 				if (payload.data.length !== 0) {
 					this.listPatientDischarge = payload.data;
 				} else {

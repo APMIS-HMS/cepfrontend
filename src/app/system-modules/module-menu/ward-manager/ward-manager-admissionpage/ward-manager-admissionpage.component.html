@@ -35,8 +35,15 @@
                 </thead>
 
                 <tbody>
-                    <tr *ngIf="listPatientAdmissionWaiting.length == 0">
-                        <td colspan="9"> No data available in table</td>
+                    <tr *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            No data available in table
+                        </td>
                     </tr>
                     <tr *ngFor="let inPatientWaitingItem of listPatientAdmissionWaiting">
                         <td (click)="navEpDetail(item)">
@@ -57,10 +64,6 @@
                             <div (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Admit</div>
                         </td>
                     </tr>
-
-                    <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
-                    </div>
                 </tbody>
             </table>
         </md-tab>
@@ -97,8 +100,15 @@
                 </thead>
 
                 <tbody>
-                    <tr *ngIf="listPatientTransferWaiting.length == 0">
-                        <td colspan="9"> No data available in table</td>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            No data available in table
+                        </td>
                     </tr>
                     <tr *ngFor="let inPatientWaitingItem of listPatientTransferWaiting">
                         <td (click)="navEpDetail(item)">
@@ -120,10 +130,6 @@
                             <div (click)="onClickDeclineTransfer(inPatientWaitingItem)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Decline</div>
                         </td>
                     </tr>
-
-                    <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
-                    </div>
                 </tbody>
             </table>
         </md-tab>
@@ -160,8 +166,15 @@
                 </thead>
 
                 <tbody>
-                    <tr *ngIf="listPatientTransferWaiting.length == 0">
-                        <td colspan="9"> No data available in table</td>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            No data available in table
+                        </td>
                     </tr>
                     <tr *ngFor="let inPatientWaitingItem of listPatientTransferWaiting">
                         <td (click)="navEpDetail(item)">
@@ -185,10 +198,6 @@
                             </div>
                         </td>
                     </tr>
-
-                    <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
-                    </div>
                 </tbody>
             </table>
         </md-tab>
@@ -214,20 +223,25 @@
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-
                             <span style="padding-left: 3px;">Ward</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-
                             <span style="padding-left: 3px;">Discharge Date</span>
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr *ngIf="listPatientDischarge.length == 0">
-                        <td colspan="9"> No data available in table</td>
+                    <tr *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
+                        <td class="table-content " colspan="6" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
+                        <td class="table-content " colspan="6" style="text-align: center">
+                            No data available in table
+                        </td>
                     </tr>
                     <tr *ngFor="let inPatientWaitingItem of listPatientDischarge">
                         <td (click)="navEpDetail(item)">
@@ -245,10 +259,6 @@
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.updatedAt}}</td>
                     </tr>
-
-                    <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
-                    </div>
                 </tbody>
             </table>
         </md-tab>

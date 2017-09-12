@@ -26,7 +26,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   @Output() patientDetails: any;
   @Input() patient: Patient;
 
-
+  user: User = <User>{};
   subsect_biodata = true;
   subsect_contacts = false;
   subsect_vitals = true;
@@ -110,9 +110,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
+      console.log(appointment);
       this.selectedAppointment = appointment;
       this.patient = appointment.patientId;
-      console.log(appointment);
       this.patientDetails = appointment.patientId;
       this.employeeDetails = this.loginEmployee;
       this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
@@ -134,6 +134,8 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
+
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
     } else {
@@ -149,8 +151,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
         if (isOnList.length > 0) {
           const isOnObj = isOnList[0];
           isOnObj.isOn = true;
-
-
 
           this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
             this.loginEmployee = payloadu;
@@ -544,8 +544,26 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.addVitalsPop = true;
   }
   checkoutPatient_show() {
-    this.checkoutPatient = true;
+    // Check is this patient has an appointment. If not, redirect the user to the appointment page
+		// if (!!this.selectedAppointment && this.selectedAppointment._id !== undefined) {
+      this.patientDetails = this.patient;
+      this.checkoutPatient = true;
+		// } else {
+    //   let text = 'Please set appointment for ' + this.patient.personDetails.personFullName + '';
+
+		// 	this._notification('Info', text.concat(' before you can continue this process.'));
+    // }
   }
+
+  // Notification
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
+
   addTagsPop_show() {
     this.addTagsPop = true;
   }
