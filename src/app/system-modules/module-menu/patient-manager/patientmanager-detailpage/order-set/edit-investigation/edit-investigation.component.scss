@@ -1,11 +1,9 @@
-@import '../../../patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component.scss';
-
 .md-select{
     margin-top: 0;
 }
 .frmArrWrap{
     position: relative;
-    background: #fff; 
+    background: #fff;
     padding: 10px;
     box-sizing: border-box;
     margin-bottom: 10px;
@@ -25,4 +23,8 @@
 .addDrugBtn:hover{
     background: #fff;
     color: #009ADF;
+}
+.frm-item-wrap {
+    width: 100%;
+    max-width: 400px;
 }

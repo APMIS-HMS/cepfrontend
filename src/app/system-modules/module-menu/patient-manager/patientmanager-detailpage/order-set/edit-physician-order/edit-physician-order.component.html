@@ -1,0 +1,22 @@
+<div class="modal-baseWrap animated pulse">
+  
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Edit Procedure</legend>
+
+    <form [formGroup]="addProcedureForm" novalidate>
+      <div class="frmArrWrap">
+        <div class="frm-x2">
+          <div class="frm-item-wrap">
+            <apmis-lookup formControlName="procedure" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Investigation" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+          </div>
+        </div>
+      </div>
+    
+      <div class="addDrugBtn">
+          <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+          <span>UPDATE PROCEDURE</span>
+      </div>
+    </form>
+      
+      
+</div>

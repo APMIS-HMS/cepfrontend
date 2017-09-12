@@ -2,11 +2,13 @@ import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@ang
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-template-lab',
-  templateUrl: './template-lab.component.html', 
-  styleUrls: ['./template-lab.component.scss']
+  selector: 'app-edit-investigation',
+  templateUrl: './edit-investigation.component.html',
+  styleUrls: ['./edit-investigation.component.scss']
 })
-export class TemplateLabComponent implements OnInit {
+export class EditInvestigationComponent implements OnInit {
+
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   addInvestigationForm: FormGroup;
   apmisLookupQuery = {};
@@ -20,6 +22,10 @@ export class TemplateLabComponent implements OnInit {
     this.addInvestigationForm = this.fb.group({
       investigation: ['', [<any>Validators.required]]
     });
+  }
+
+  close_onClick() {
+    this.closeModal.emit(true);
   }
 
 }

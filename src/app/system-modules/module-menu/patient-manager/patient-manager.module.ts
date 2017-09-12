@@ -41,6 +41,11 @@ import { CompanyComponent } from './patientmanager-detailpage/payment/company/co
 import { FamilyComponent } from './patientmanager-detailpage/payment/family/family.component';
 import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-payment-plan.component';
 import { OrderSetComponent } from './patientmanager-detailpage/order-set/order-set.component';
+import { EditMedicationComponent } from './patientmanager-detailpage/order-set/edit-medication/edit-medication.component';
+import { EditInvestigationComponent } from './patientmanager-detailpage/order-set/edit-investigation/edit-investigation.component';
+import { EditProcedureComponent } from './patientmanager-detailpage/order-set/edit-procedure/edit-procedure.component';
+import { EditNursingCareComponent } from './patientmanager-detailpage/order-set/edit-nursing-care/edit-nursing-care.component';
+import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-set/edit-physician-order/edit-physician-order.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -68,7 +73,12 @@ import { OrderSetComponent } from './patientmanager-detailpage/order-set/order-s
         CompanyComponent,
         FamilyComponent,
         PatientPaymentPlanComponent,
-        OrderSetComponent
+        OrderSetComponent,
+        EditMedicationComponent,
+        EditInvestigationComponent,
+        EditProcedureComponent,
+        EditNursingCareComponent,
+        EditPhysicianOrderComponent
     ],
     exports: [
     ],

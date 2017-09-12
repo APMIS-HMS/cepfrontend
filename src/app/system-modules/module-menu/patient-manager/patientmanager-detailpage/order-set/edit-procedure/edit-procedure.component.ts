@@ -2,12 +2,14 @@ import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@ang
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-template-lab',
-  templateUrl: './template-lab.component.html', 
-  styleUrls: ['./template-lab.component.scss']
+  selector: 'app-edit-procedure',
+  templateUrl: './edit-procedure.component.html',
+  styleUrls: ['./edit-procedure.component.scss']
 })
-export class TemplateLabComponent implements OnInit {
+export class EditProcedureComponent implements OnInit {
 
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
   addInvestigationForm: FormGroup;
   apmisLookupQuery = {};
   apmisLookupUrl = '';
@@ -22,4 +24,9 @@ export class TemplateLabComponent implements OnInit {
     });
   }
 
+  close_onClick() {
+    this.closeModal.emit(true);
+  }
+
 }
+  
