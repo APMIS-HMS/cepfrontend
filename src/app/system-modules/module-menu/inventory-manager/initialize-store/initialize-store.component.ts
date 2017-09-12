@@ -12,6 +12,7 @@ import {StoreService, ProductService,InventoryService} from '../../../../service
 })
 export class InitializeStoreComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
+  saveAlert: true;
   products: any;
   selectedProducts: any = <any>[];
   myForm: FormGroup;
@@ -48,6 +49,7 @@ export class InitializeStoreComponent implements OnInit {
       quantity: ['', Validators.required],
       product: ['']
     });
+    
   }
   addProduct(index: number, ischecked: boolean, data: any){
     if (ischecked) {
@@ -60,6 +62,7 @@ export class InitializeStoreComponent implements OnInit {
           product: [data, Validators.required]
         })
       );
+      this.saveAlert = true;
       //control.push(this.initProduct());
       console.log(this.selectedProducts);
     } else {
@@ -67,6 +70,7 @@ export class InitializeStoreComponent implements OnInit {
       this.selectedProducts.splice(index, 1);
     }   
   }
+ 
   removeProduct(i: number){
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
@@ -97,9 +101,9 @@ export class InitializeStoreComponent implements OnInit {
           totalQuantity += item.quantity;
           transactionsArray.push(batchObject);
           this.inventoryModel = <Inventory> {
-            // facilityId: this.selectedFacility._id,
-            // storeId: this.checkingObject.typeObject.storeId,
-            //productId: item.product._id,
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingObject.typeObject.storeId,
+            productId: item.product._id,
              serviceId: item.product.serviceId,
             categoryId: item.product.categoryId,
             facilityServiceId: item.product.facilityServiceId,
@@ -111,12 +115,13 @@ export class InitializeStoreComponent implements OnInit {
       });
        console.log(this.inventoryModel);
        this.inventoryModel.totalQuantity = totalQuantity;
-       this._inventoryService.create(this.inventoryModel).then(payload => {
-         console.log(payload);
+       this._inventoryService.create(this.inventoryModel).then(payload => {  
+        console.log(payload);
         this.myForm.reset();
-
         });
-     }
+     } else 
+       console.log ("this product has been initialize")
+     
     }
     
 }
