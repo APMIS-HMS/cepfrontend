@@ -54,23 +54,14 @@ export class CheckoutPatientComponent implements OnInit {
 		});
 
 		// Check is this patient has an appointment. If not, redirect the user to the appointment page
-		// if (!!this.selectedAppointment && this.selectedAppointment._id === undefined) {
-		// 	const text = 'Please set appointment for ' + this.patientDetails.personDetails.personFullName;
-		// 	this._notification('Info', text);
-		// 	this.closeModal.emit(true);
-		// }
+		if (!!this.selectedAppointment && this.selectedAppointment._id === undefined) {
+			const text = 'Please set appointment for ' + this.patientDetails.personDetails.personFullName;
+			this._notification('Info', text);
+			this.closeModal.emit(true);
+		}
 
 		this.getAllWards();
 		this._CheckIfPatientIsAdmitted();
-
-		this._appointmentService.find({ query: {
-			'facilityId._id': this.facility._id,
-			'patientId._id': this.patientDetails._id,
-			'clinicId._id': this.selectedAppointment.clinicId._id,
-			isCheckedOut: false
-		}}).then(clinicRes => {
-			console.log(clinicRes);
-		}).catch(err => console.log(err));
 	}
 
 	onClickAdmit(value: any, valid: boolean) {
@@ -93,7 +84,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 			this._inPatientListService.create(patient).then(res => {
 				console.log(res);
-				// Update the clinic checkin
+				// Get Appointment
 				this._appointmentService.find({ query: {
 					'facilityId._id': this.facility._id,
 					'patientId._id': this.patientDetails._id,
@@ -101,14 +92,21 @@ export class CheckoutPatientComponent implements OnInit {
 					isCheckedOut: false
 				}}).then(clinicRes => {
 					console.log(clinicRes);
+					let updateData = clinicRes.data[0];
+					updateData.isCheckedOut = true;
+					updateData.attendance.dateCheckOut = new Date();
+
+					this._appointmentService.update(updateData).then(updateRes => {
+						console.log(updateRes);
+						this.admitFormGroup.reset();
+						this.admitBtnText = 'Send <i class="fa fa-check-circle-o"></i>';
+						let text = this.patientDetails.personDetails.personFullName + ' has been sent to ' + value.ward.name + ' ward for admission';
+						res.isAdmitted = true;
+						res.msg = text;
+						this.admittedWard = res;
+						this._notification('Success', text);
+					}).catch(err => console.log(err));
 				}).catch(err => console.log(err));
-				this.admitFormGroup.reset();
-				this.admitBtnText = 'Send <i class="fa fa-check-circle-o"></i>';
-				let text = this.patientDetails.personDetails.personFullName + ' has been sent to ' + value.ward.name + ' ward for admission';
-				res.isAdmitted = true;
-				res.msg = text;
-				this.admittedWard = res;
-				this._notification('Success', text);
 			}).catch(err => console.log(err));
 		} else {
 			this._notification('Error', 'Please select a ward for patient to be admitted into.');

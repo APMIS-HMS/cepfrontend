@@ -186,7 +186,8 @@
                 <div class="tab-title">Uploaded Files</div>
                 <div class="upload-wrap">
                     <div class="uploadeds">
-                        <div class="uploaded">
+                        <span>No File uploaded yet.</span>
+                        <!-- <div class="uploaded">
                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                             <div class="upload-label">HIV AIDs Test</div>
                         </div>
@@ -194,26 +195,7 @@
                         <div class="uploaded">
                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                             <div class="upload-label">HIV AIDs Test</div>
-                        </div>
-
-                        <div class="uploaded">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                            <div class="upload-label">HIV AIDs Test</div>
-                        </div>
-                        <div class="uploaded">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                            <div class="upload-label">HIV AIDs Test</div>
-                        </div>
-
-                        <div class="uploaded">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                            <div class="upload-label">HIV AIDs Test</div>
-                        </div>
-
-                        <div class="uploaded">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                            <div class="upload-label">HIV AIDs Test</div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -250,7 +232,7 @@
                                     </div>
                                     <div class="invstn-val">
                                         <div class="val-label">Test Result:</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.reportType.ref }}</div>
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.report.result }}</div>
                                         <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.report.result }}({{ selectedInvestigationData?.unit }})</div>
                                     </div>
                                 </div>
