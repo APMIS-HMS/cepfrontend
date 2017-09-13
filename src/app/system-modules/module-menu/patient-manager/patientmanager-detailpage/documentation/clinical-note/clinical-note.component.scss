@@ -1,6 +1,7 @@
 @import "../documentation-detail/documentation-detail.component.scss";
 
 .frmNoteWrap{
+    position: relative;
     background: #fff;
     width: 90%;
     margin: 0 auto;
@@ -10,4 +11,33 @@
 .modal_title{
     padding-top: 10px;
     font-size: 16px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.jsonFrnWrap{
+    position: relative;
+}
+.actWrappers-jsonFrm{
+    position: absolute;
+    bottom: 21px;
+    right: 10px;
+    display: flex;
+}
+.atch-orderSet {
+    font-size: 12px;
+    cursor: pointer;
+    color: #0288D1;
+    margin-right: 10px;
+}
+.atch-orderSet:hover, .links-ul li:hover{
+    text-decoration: underline;
+}
+.links-ul {
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #0288D1;
 }
