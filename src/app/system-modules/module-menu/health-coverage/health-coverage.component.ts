@@ -38,28 +38,7 @@ export class HealthCoverageComponent implements OnInit {
   pageInViewLoader(title) {
     this.pageInView = title;
   }
-  // private checkPageUrl(param: string) {
-	// 	if (param.includes('health-coverage/hmo-cover')) {
-  //     this.companyCover = false;
-  //     this.familyCover = false;
-  //     this.payment = false;
-  //     this.hmoCover = true;
-  //     this.recievePayment = false;
-	// 	} else if (param.includes('health-coverage/company-cover')) {
-  //     this.companyCover = true;
-  //     this.familyCover = false;
-  //     this.payment = false;
-  //     this.hmoCover = false;
-  //     this.recievePayment = false;
-		
-	// 	} else if (param.includes('health-coverage/family-cover')) {
-		
-	// 	} else if (param.includes('health-coverage/payment')) {
-			
-	// 	} else if (param.includes('health-coverage/make-payment')) {
-		
-	// 	}
-	// }
+
   companyCover_show() {
     this.companyCover = true;
     this.familyCover = false;
@@ -68,7 +47,7 @@ export class HealthCoverageComponent implements OnInit {
     this.recievePayment = false;
     this.pageInView = "Company Retainership";
     this.router.navigate(['/dashboard/health-coverage/company-list']);
-    this.checkPageUrl('company-cover');
+    this.checkPageUrl('company-list');
   }
   familyCover_show() {
     this.companyCover = false;
@@ -77,7 +56,7 @@ export class HealthCoverageComponent implements OnInit {
     this.hmoCover = false;
     this.recievePayment = false;
     this.pageInView = "Family Cover";
-    this.router.navigate(['/dashboard/health-coverage/family-cover']);
+    this.router.navigate(['/dashboard/health-coverage/family-list']);
   }
   hmoCover_show() {
     this.companyCover = false;
@@ -122,7 +101,7 @@ export class HealthCoverageComponent implements OnInit {
       this.hmoCover = false;
       this.recievePayment = false;
       this.pageInView = "Company Retainership";
-		} else if (param.includes('family-cover')) {
+		} else if (param.includes('family-list') || param.includes('family-beneficiaries')) {
 			this.companyCover = false;
       this.familyCover = true;
       this.payment = false;

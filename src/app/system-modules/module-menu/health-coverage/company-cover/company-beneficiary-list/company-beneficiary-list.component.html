@@ -71,22 +71,10 @@
           </form>
 
 
-
-          <!-- <form [formGroup]="insurancePlanForm" class="form-horizontal">
-            <div formArrayName="insurancePlanArray" class="frmArrayWrap">
-              <div class="frmArray" *ngFor="let insurance of insurancePlanForm.controls['insurancePlanArray'].controls; let i = index;">
-                <div (click)="closeInsurancePlan(insurance, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
-                <div formGroupName="{{i}}">
-                </div>
-              </div>
-            </div>
-          </form> -->
-
-
           <form *ngIf="frmNewBeneficiary.valid" [formGroup]="frmDependant">
             <div formArrayName="dependantArray" class="frmArrayWrap">
               <div class="frmArray" *ngFor="let dependant of frmDependant.controls['dependantArray'].controls; let i = index;">
-                <div (click)="closeDependant(dependant, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+                <div *ngIf="!dependant.value.readOnly" (click)="closeDependant(dependant, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
                 <div formGroupName="{{i}}">
                   <div class="frmNoteWrap">
                     <div class="">Add Dependant</div>
@@ -95,12 +83,12 @@
                         <div class="frm-x2 frmArray">
                           <div class="frm-item-wrap">
                             <md-input-container>
-                              <input mdInput placeholder="Name" formControlName="dependantSurname">
+                              <input mdInput placeholder="Surname" formControlName="dependantSurname">
                             </md-input-container>
                           </div>
                           <div class="frm-item-wrap">
                             <md-input-container>
-                              <input mdInput placeholder="Name" formControlName="dependantOthernames">
+                              <input mdInput placeholder="Othernames" formControlName="dependantOthernames">
                             </md-input-container>
                           </div>
                           <div class="frm-item-wrap">
@@ -117,19 +105,17 @@
 
                           <div class="frm-item-wrap">
                             <md-select placeholder="Gender" formControlName="dependantGender">
-                              <md-option [value]="Male">Male</md-option>
-                              <md-option [value]="Female">Female</md-option>
+                              <md-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</md-option>
                             </md-select>
                           </div>
 
                           <div class="frm-item-wrap">
                             <md-select placeholder="Status" formControlName="dependantStatus">
-                              <md-option [value]="Active">Active</md-option>
-                              <md-option [value]="Inactive">Inactive</md-option>
+                              <md-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</md-option>
                             </md-select>
                           </div>
                         </div>
-                        <div (click)="pushNewDependant(plan, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                        <div *ngIf="!dependant.value.readOnly" (click)="pushNewDependant(dependant, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
                       </div>
                     </div>
                   </div>
@@ -137,9 +123,12 @@
               </div>
             </div>
           </form>
-
-          <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newBeneficiary" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value)"
-            class="cta-1">Add Beneficiary</button>
+          <div class="flex-button">
+            <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newBeneficiary" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant.value)"
+              class="cta-1">Add Beneficiary</button>
+            <button *ngIf="newBeneficiary" (click)="cancel()"
+              class="cta-1">Cancel</button>
+          </div>
         </div>
 
         <div class="tblWrapa" class="actSect">

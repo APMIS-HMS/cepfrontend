@@ -1,7 +1,7 @@
 @import "../../hmo-cover/hmo-cover.component.scss";
 
 .frmArray{
-    width: 70%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -46,3 +46,8 @@
 tr{
     cursor: pointer;
 }
+.flex-button{
+    display: flex;
+    width: 375px;
+    margin: 0 auto;
+  }
