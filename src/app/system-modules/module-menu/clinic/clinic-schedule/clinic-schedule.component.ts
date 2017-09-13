@@ -30,8 +30,10 @@ export class ClinicScheduleComponent implements OnInit {
 
   days: any[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-  constructor(private formBuilder: FormBuilder, private locationService: LocationService,
-    private locker: CoolLocalStorage, private schedulerTypeService: SchedulerTypeService,
+  constructor(private formBuilder: FormBuilder,
+    private locationService: LocationService,
+    private locker: CoolLocalStorage,
+    private schedulerTypeService: SchedulerTypeService,
     private schedulerService: SchedulerService) {
   }
   ngOnInit() {
@@ -123,12 +125,12 @@ export class ClinicScheduleComponent implements OnInit {
     });
   }
   getSchedulerType() {
-    this.schedulerTypeService.find({ query: { name: 'Clinic' } }).then(payload => {
-      console.log(payload)
-      if (payload.data.length > 0) {
-        this.selectedSchedulerType = payload.data[0];
+    this.schedulerTypeService.findAll().then(res => {
+      console.log(res);
+      if (res.data.length > 0) {
+        this.selectedSchedulerType = res.data[0];
       }
-    });
+    }).catch(err => console.log(err));
   }
   getClinicLocation() {
     this.clinicLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);

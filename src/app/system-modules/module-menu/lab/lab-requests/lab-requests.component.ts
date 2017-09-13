@@ -688,130 +688,131 @@ export class LabRequestsComponent implements OnInit {
   }
   save(valid, value) {
     console.log(value);
-    // delete this.selectedPatient.appointments;
-    // delete this.selectedPatient.encounterRecords;
-    // delete this.selectedPatient.orders;
-    // delete this.selectedPatient.tags;
-    // delete this.selectedPatient.personDetails.addressObj;
-    // delete this.selectedPatient.personDetails.countryItem;
-    // delete this.selectedPatient.personDetails.homeAddress;
-    // delete this.selectedPatient.personDetails.maritalStatus;
-    // delete this.selectedPatient.personDetails.nationality;
-    // delete this.selectedPatient.personDetails.nationalityObject;
-    // delete this.selectedPatient.personDetails.nextOfKin;
+    delete this.selectedPatient.appointments;
+    delete this.selectedPatient.encounterRecords;
+    delete this.selectedPatient.orders;
+    delete this.selectedPatient.tags;
+    delete this.selectedPatient.personDetails.addressObj;
+    delete this.selectedPatient.personDetails.countryItem;
+    delete this.selectedPatient.personDetails.homeAddress;
+    delete this.selectedPatient.personDetails.maritalStatus;
+    delete this.selectedPatient.personDetails.nationality;
+    delete this.selectedPatient.personDetails.nationalityObject;
+    delete this.selectedPatient.personDetails.nextOfKin;
 
-    // const logEmp = <any>this.locker.getObject('loginEmployee');
-    // delete logEmp.department;
-    // delete logEmp.employeeFacilityDetails;
-    // delete logEmp.role;
-    // delete logEmp.units;
-    // delete logEmp.consultingRoomCheckIn;
-    // delete logEmp.storeCheckIn;
-    // delete logEmp.unitDetails;
-    // delete logEmp.professionObject;
-    // delete logEmp.workSpaces;
-    // delete logEmp.employeeDetails.countryItem;
-    // delete logEmp.employeeDetails.homeAddress;
-    // delete logEmp.employeeDetails.gender;
-    // delete logEmp.employeeDetails.maritalStatus;
-    // delete logEmp.employeeDetails.nationality;
-    // delete logEmp.employeeDetails.nationalityObject;
-    // delete logEmp.employeeDetails.nextOfKin;
-    // delete logEmp.workbenchCheckIn;
+    const logEmp = <any>this.locker.getObject('loginEmployee');
+    delete logEmp.department;
+    delete logEmp.employeeFacilityDetails;
+    delete logEmp.role;
+    delete logEmp.units;
+    delete logEmp.consultingRoomCheckIn;
+    delete logEmp.storeCheckIn;
+    delete logEmp.unitDetails;
+    delete logEmp.professionObject;
+    delete logEmp.workSpaces;
+    delete logEmp.employeeDetails.countryItem;
+    delete logEmp.employeeDetails.homeAddress;
+    delete logEmp.employeeDetails.gender;
+    delete logEmp.employeeDetails.maritalStatus;
+    delete logEmp.employeeDetails.nationality;
+    delete logEmp.employeeDetails.nationalityObject;
+    delete logEmp.employeeDetails.nextOfKin;
+    delete logEmp.workbenchCheckIn;
 
-    // const selectedFacility = <any>this.locker.getObject('miniFacility');
-    // const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
-    // const readyCollection: any[] = [];
-    // copyBindInvestigation.forEach((item: InvestigationModel, i) => {
-    //   if (item.investigation.isPanel) {
-    //     delete item.isChecked;
-    //     item.investigation.panel.forEach((panel, j) => {
-    //       delete panel.isChecked;
-    //     })
-    //   } else {
-    //     delete item.isChecked;
-    //     delete item.LaboratoryWorkbenches;
-    //     delete item.location;
-    //     readyCollection.push(item);
-    //   }
-    // })
+    const selectedFacility = <any>this.locker.getObject('miniFacility');
+    const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
+    const readyCollection: any[] = [];
 
-    // const request: any = {
-    //   facilityId: selectedFacility,
-    //   patientId: this.selectedPatient,
-    //   labNumber: this.frmNewRequest.controls['labNo'].value,
-    //   clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
-    //   diagnosis: this.frmNewRequest.controls['diagnosis'].value,
-    //   investigations: readyCollection,
-    //   createdBy: logEmp
-    // }
-    // // console.log(readyCollection);
-    // const billGroup: BillIGroup = <BillIGroup>{};
-    // billGroup.discount = 0;
-    // billGroup.facilityId = selectedFacility._id;
-    // billGroup.grandTotal = 0;
-    // billGroup.isWalkIn = false;
-    // billGroup.patientId = this.selectedPatient._id;
-    // billGroup.subTotal = 0;
-    // // billGroup.userId = '';
-    // billGroup.billItems = [];
-    // readyCollection.forEach(item => {
-    //   if (!item.isExternal) {
-    //     console.log(item);
-    //     const billItem: BillItem = <BillItem>{};
-    //     billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
-    //     billItem.facilityId = selectedFacility._id;
-    //     billItem.description = '';
-    //     billItem.facilityServiceId = item.investigation.facilityServiceId;
-    //     billItem.serviceId = item.investigation.serviceId;
-    //     billItem.itemName = item.investigation.name;
-    //     billItem.patientId = this.selectedPatient._id;
-    //     billItem.quantity = 1;
-    //     billItem.totalPrice = billItem.quantity * billItem.unitPrice;
-    //     billItem.unitDiscountedAmount = 0;
-    //     billItem.totalDiscoutedAmount = 0;
-    //     billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
-    //     billGroup.grandTotal = billGroup.subTotal;
-    //     billGroup.billItems.push(billItem);
-    //   }
-    // })
+    copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+      if (item.investigation.isPanel) {
+        delete item.isChecked;
+        item.investigation.panel.forEach((panel, j) => {
+          delete panel.isChecked;
+        })
+      } else {
+        delete item.isChecked;
+        delete item.LaboratoryWorkbenches;
+        delete item.location;
+        readyCollection.push(item);
+      }
+    })
 
-    // if (billGroup.billItems.length > 0) {
-    //   const request$ = Observable.fromPromise(this.requestService.create(request));
-    //   const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
-    //   Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
-    //     // const request = results[0];
-    //     const billing = results[1];
-    //     delete billing.facilityItem;
-    //     delete billing.patientItem;
-    //     billing.billItems.forEach(item => {
-    //       delete item.facilityServiceObject;
-    //       delete item.modifierId;
-    //       delete item.paymentStatus;
-    //       delete item.paments;
-    //       delete item.serviceModifierOject
-    //     });
-    //     request.billingId = billing;
-    //     this.requestService.update(request).then(payload => {
-    //       this.frmNewRequest.reset();
-    //       this.bindInvestigations = [];
-    //       this.investigations = [];
-    //       this.apmisLookupText = '';
-    //       this.selectedPatient = undefined;
-    //       this.addToast('Request sent successfully');
-    //     })
+    const request: any = {
+      facilityId: selectedFacility,
+      patientId: this.selectedPatient,
+      labNumber: this.frmNewRequest.controls['labNo'].value,
+      clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
+      diagnosis: this.frmNewRequest.controls['diagnosis'].value,
+      investigations: readyCollection,
+      createdBy: logEmp
+    }
+    // console.log(readyCollection);
+    const billGroup: BillIGroup = <BillIGroup>{};
+    billGroup.discount = 0;
+    billGroup.facilityId = selectedFacility._id;
+    billGroup.grandTotal = 0;
+    billGroup.isWalkIn = false;
+    billGroup.patientId = this.selectedPatient._id;
+    billGroup.subTotal = 0;
+    // billGroup.userId = '';
+    billGroup.billItems = [];
+    readyCollection.forEach(item => {
+      if (!item.isExternal) {
+        console.log(item);
+        const billItem: BillItem = <BillItem>{};
+        billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
+        billItem.facilityId = selectedFacility._id;
+        billItem.description = '';
+        billItem.facilityServiceId = item.investigation.facilityServiceId;
+        billItem.serviceId = item.investigation.serviceId;
+        billItem.itemName = item.investigation.name;
+        billItem.patientId = this.selectedPatient._id;
+        billItem.quantity = 1;
+        billItem.totalPrice = billItem.quantity * billItem.unitPrice;
+        billItem.unitDiscountedAmount = 0;
+        billItem.totalDiscoutedAmount = 0;
+        billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
+        billGroup.grandTotal = billGroup.subTotal;
+        billGroup.billItems.push(billItem);
+      }
+    })
 
-    //   })
-    // } else {
-    //   this.requestService.create(request).then(payload => {
-    //     this.frmNewRequest.reset();
-    //     this.bindInvestigations = [];
-    //     this.investigations = [];
-    //     this.apmisLookupText = '';
-    //     this.selectedPatient = undefined;
-    //     this.addToast('Request sent successfully');
-    //   })
-    // }
+    if (billGroup.billItems.length > 0) {
+      const request$ = Observable.fromPromise(this.requestService.create(request));
+      const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
+      Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
+        // const request = results[0];
+        const billing = results[1];
+        delete billing.facilityItem;
+        delete billing.patientItem;
+        billing.billItems.forEach(item => {
+          delete item.facilityServiceObject;
+          delete item.modifierId;
+          delete item.paymentStatus;
+          delete item.paments;
+          delete item.serviceModifierOject
+        });
+        request.billingId = billing;
+        this.requestService.update(request).then(payload => {
+          this.frmNewRequest.reset();
+          this.bindInvestigations = [];
+          this.investigations = [];
+          this.apmisLookupText = '';
+          this.selectedPatient = undefined;
+          this.addToast('Request sent successfully');
+        })
+
+      })
+    } else {
+      this.requestService.create(request).then(payload => {
+        this.frmNewRequest.reset();
+        this.bindInvestigations = [];
+        this.investigations = [];
+        this.apmisLookupText = '';
+        this.selectedPatient = undefined;
+        this.addToast('Request sent successfully');
+      })
+    }
   }
 
   externalChanged($event, investigation) {

@@ -220,7 +220,7 @@
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button md-raised-button [disabled]="frmNewRequest.valid" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                            <button md-raised-button [disabled]="!frmNewRequest.valid" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
                         </div>
                     </form>
                 </div>
