@@ -1,3 +1,6 @@
+import { Category } from './../../../../../models/facility-manager/setup/category';
+import { User } from './../../../../../models/facility-manager/setup/user';
+import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
 import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { MdPaginator } from '@angular/material';
@@ -27,6 +30,7 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   @ViewChild(MdPaginator) paginator: MdPaginator;
+  user: User = <User>{};
   genders: any[] = [
     {
       name: 'Male',
@@ -46,11 +50,14 @@ export class CompanyBeneficiaryListComponent implements OnInit {
       name: 'Inactive',
       _id: 'Inactive'
     }
-  ]
+  ];
+  routeId = '';
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
-    private companyCoverService: FacilityCompanyCoverService) { }
+    private companyCoverService: FacilityCompanyCoverService, private facilityService: FacilitiesService) { }
 
   ngOnInit() {
+    this.selectedFacility = <any>this.locker.getObject('miniFacility');
+    this.user = <User>this.locker.getObject('auth');
     this.frmNewBeneficiary = this.formBuilder.group({
       surname: ['', [Validators.required]],
       othernames: ['', [Validators.required]],
@@ -59,19 +66,15 @@ export class CompanyBeneficiaryListComponent implements OnInit {
       phone: ['', []],
       principalGender: ['', [<any>Validators.required]],
       principalstatus: ['', [<any>Validators.required]],
-      principalEmpID: ['', [<any>Validators.required]]
+      principalEmpID: ['', [<any>Validators.required]],
+      operation: ['save'],
+      date: [new Date()],
+      serial: [0]
     });
 
-    // this.frmDependant = this.formBuilder.group({
-    //   dependantSurname: ['', [Validators.required]],
-    //   dependantOthernames: ['', [Validators.required]],
-    //   dependantGender: ['', [Validators.required]],
-    //   dependantEmail: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-    //   dependantPhone: ['', [<any>Validators.required]],
-    //   dependantStatus: ['', [<any>Validators.required]]
-    // });
     this.addDependant();
     this.route.params.subscribe(parameters => {
+      this.routeId = parameters.id;
       this.getBeneficiaryList(parameters.id);
     })
   }
@@ -83,14 +86,20 @@ export class CompanyBeneficiaryListComponent implements OnInit {
           dependantOthernames: ['', [Validators.required]],
           dependantGender: ['', [Validators.required]],
           dependantEmail: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-          dependantPhone: ['', [<any>Validators.required]],
+          dependantPhone: ['', []],
           dependantStatus: ['', [<any>Validators.required]],
-          readOnly: [false]
+          readOnly: [false],
+          operation: ['save'],
+          date: [new Date()]
         })
       ])
     });
   }
-  pushNewDependant() {
+  pushNewDependant(dependant?, index?) {
+    console.log(dependant)
+    if (dependant !== undefined && dependant.valid) {
+      dependant.value.readOnly = true;
+    }
     (<FormArray>this.frmDependant.controls['dependantArray'])
       .push(
       this.formBuilder.group({
@@ -98,9 +107,11 @@ export class CompanyBeneficiaryListComponent implements OnInit {
         dependantOthernames: ['', [Validators.required]],
         dependantGender: ['', [Validators.required]],
         dependantEmail: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-        dependantPhone: ['', [<any>Validators.required]],
+        dependantPhone: ['', []],
         dependantStatus: ['', [<any>Validators.required]],
-        readOnly: [false]
+        readOnly: [false],
+        operation: ['save'],
+        date: [new Date()]
       })
       );
   }
@@ -115,22 +126,121 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   }
   showEdit(beneficiary) {
     console.log(beneficiary);
+    if (this.getRole(beneficiary) === 'P') {
+      this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
+      this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.firstName);
+      this.frmNewBeneficiary.controls['principalGender'].setValue(beneficiary.gender);
+      this.frmNewBeneficiary.controls['principalEmpID'].setValue(beneficiary.filNo);
+      this.frmNewBeneficiary.controls['operation'].setValue('update');
+      this.frmNewBeneficiary.controls['date'].setValue(beneficiary.date);
+      this.frmNewBeneficiary.controls['serial'].setValue(beneficiary.serial);
+      this.frmNewBeneficiary.controls['email'].setValue(beneficiary.email);
+      this.frmNewBeneficiary.controls['phone'].setValue(beneficiary.phone);
+      this.frmNewBeneficiary.controls['address'].setValue(beneficiary.address);
+      if (beneficiary.isActive === undefined) {
+        this.frmNewBeneficiary.controls['principalstatus'].setValue(this.statuses[0]._id);
+      }
+      let filtered = this.beneficiaries.filter(x => x.filNo.includes(beneficiary.filNo));
+      console.log(filtered);
+      let hasRecord = false;
+      this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
+      filtered.forEach((filter, i) => {
+        if (this.getRole(filter) === 'D') {
+          hasRecord = true;
+          (<FormArray>this.frmDependant.controls['dependantArray'])
+            .push(
+            this.formBuilder.group({
+              dependantSurname: [filter.surname],
+              dependantOthernames: [filter.firstName],
+              dependantGender: [filter.gender],
+              dependantEmail: [filter.filNo],
+              dependantPhone: [filter.phone],
+              dependantStatus: [filter.status],
+              operation: ['update'],
+              date: [filter.date],
+              serial: [filter.serial],
+              category: [filter.category],
+              readOnly: [true],
+            }));
 
-    this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
-    this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.firstName);
-    this.frmNewBeneficiary.controls['principalGender'].setValue(beneficiary.gender);
-    this.frmNewBeneficiary.controls['principalEmpID'].setValue(beneficiary.filNo);
+        }
+      })
+      this.newBeneficiary = true;
+    } else {
+      this.frmNewBeneficiary.reset();
+      const filNoLength = beneficiary.filNo.length;
+      const lastCharacter = beneficiary.filNo[filNoLength - 1];
+      console.log(beneficiary)
+      let sub = beneficiary.filNo.substring(0, (filNoLength - 1));
+      console.log(sub);
+      let filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
 
-    this.newBeneficiary = true;
+      let hasRecord = false;
+      this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
+      filtered.forEach((filter, i) => {
+        if (this.getRole(filter) === 'D') {
+          hasRecord = true;
+          (<FormArray>this.frmDependant.controls['dependantArray'])
+            .push(
+            this.formBuilder.group({
+              dependantSurname: [filter.surname],
+              dependantOthernames: [filter.firstName],
+              dependantGender: [filter.gender],
+              dependantEmail: [filter.filNo],
+              dependantPhone: [filter.phone],
+              dependantStatus: [filter.status],
+              operation: ['update'],
+              date: [filter.date],
+              serial: [filter.serial],
+              category: [filter.category],
+              readOnly: [true],
+            }));
 
-    // surname: ['', [Validators.required]],
-    // othernames: ['', [Validators.required]],
-    // address: ['', [Validators.required]],
-    // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-    // phone: ['', [<any>Validators.required]],
-    // principalGender: ['', [<any>Validators.required]],
-    // principalstatus: ['', [<any>Validators.required]],
-    // principalEmpID: ['', [<any>Validators.required]]
+        } else if (this.getRole(filter) === 'P') {
+          this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);
+          this.frmNewBeneficiary.controls['othernames'].setValue(filter.firstName);
+          this.frmNewBeneficiary.controls['principalGender'].setValue(filter.gender);
+          this.frmNewBeneficiary.controls['principalEmpID'].setValue(filter.filNo);
+          this.frmNewBeneficiary.controls['operation'].setValue('update');
+          this.frmNewBeneficiary.controls['date'].setValue(filter.date);
+          this.frmNewBeneficiary.controls['serial'].setValue(beneficiary.serial);
+          this.frmNewBeneficiary.controls['email'].setValue(filter.email);
+          this.frmNewBeneficiary.controls['phone'].setValue(filter.phone);
+          this.frmNewBeneficiary.controls['address'].setValue(filter.address);
+          if (beneficiary.isActive === undefined) {
+            this.frmNewBeneficiary.controls['principalstatus'].setValue(this.statuses[0]._id);
+          }
+        }
+      })
+    }
+
+  }
+  save(valid, value, dependantValid, dependantValue) {
+    if (valid) {
+      let param = {
+        model: value,
+        operation: value.operation,
+        dependants: [],
+        facilityId: this.selectedFacility._id,
+        company: this.selectedCompanyCover
+      };
+      console.log(dependantValue.dependantArray);
+      let filtered = dependantValue.dependantArray.filter(x => x.readOnly === true);
+      param.dependants = filtered;
+      this.companyCoverService.updateBeneficiaryList(param).then(payload => {
+        console.log(payload);
+        this.getBeneficiaryList(this.routeId)
+      })
+    } else {
+      this._notification('Warning', 'A value is missing, please fill all required field and try again!');
+    }
+
+  }
+  cancel(){
+    this.frmNewBeneficiary.reset();
+    this.frmDependant.reset();
+    this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
+    this.pushNewDependant();
   }
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
@@ -164,5 +274,12 @@ export class CompanyBeneficiaryListComponent implements OnInit {
     const startIndex = event.pageIndex * event.pageSize;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 }

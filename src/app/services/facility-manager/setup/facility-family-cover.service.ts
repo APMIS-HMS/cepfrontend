@@ -6,29 +6,29 @@ const request = require('superagent');
 // import 'rxjs/Rx';
 
 @Injectable()
-export class FacilityCompanyCoverService {
+export class FacilityFamilyCoverService {
   public _socket;
   private _rest;
 
-  private companyCoverAnnouncedSource = new Subject<Object>();
-  companyCoverAnnounced$ = this.companyCoverAnnouncedSource.asObservable();
+  private familyCoverAnnouncedSource = new Subject<Object>();
+  familyCoverAnnounced$ = this.familyCoverAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('companycovers');
-    this._socket = _socketService.getService('companycovers');
+    this._rest = _restService.getService('families');
+    this._socket = _socketService.getService('families');
     this._socket.timeout = 20000;
     this._socket.on('created', function (gender) {
 
     });
   }
-  announceCompanyCover(companyCover: Object) {
-    this.companyCoverAnnouncedSource.next(companyCover);
+  announceCompanyCover(familyCover: Object) {
+    this.familyCoverAnnouncedSource.next(familyCover);
   }
   receiveCompanyCover(): Observable<Object> {
-    return this.companyCoverAnnouncedSource.asObservable();
+    return this.familyCoverAnnouncedSource.asObservable();
   }
   find(query: any) {
     return this._socket.find(query);
@@ -49,20 +49,20 @@ export class FacilityCompanyCoverService {
     return this._socket.remove(id, query);
   }
 
-  update(companyCover: any) {
-    return this._socket.update(companyCover._id, companyCover);
+  update(familyCover: any) {
+    return this._socket.update(familyCover._id, familyCover);
   }
 
-  companycovers(facilityId, companyCoverId?, search?) {
+  familycovers(facilityId, familyCoverId?, search?) {
     const host = this._restService.getHost();
-    const path = host + '/distinct-companycover-plans';
+    const path = host + '/distinct-familycover-plans';
     return request
       .get(path)
-      .query({ facilityId: facilityId, companyCoverId: companyCoverId, search: search });
+      .query({ facilityId: facilityId, familyCoverId: familyCoverId, search: search });
   }
   updateBeneficiaryList(formData) {
     const host = this._restService.getHost();
-    const path = host + '/company-beneficiaries';
+    const path = host + '/family-beneficiaries';
     return request
       .post(path)
       .send(formData);
