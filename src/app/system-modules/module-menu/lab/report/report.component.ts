@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FacilitiesService, LaboratoryRequestService,
   LaboratoryReportService, DocumentationService, FormsService, BillingService
@@ -59,6 +60,8 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private _router: ActivatedRoute,
+    private _route: Router,
     private _locker: CoolLocalStorage,
     public facilityService: FacilitiesService,
     private _formService: FormsService,
@@ -111,11 +114,20 @@ export class ReportComponent implements OnInit {
       }
     });
 
-    this.CheckIfSelectedPatient();
     this._getAllReports();
-    this._getAllPendingRequests();
     this._getDocumentationForm();
-    this.hasRequest = true;
+
+    this._router.params.subscribe(url => {
+      console.log(url);
+      if (!!url.requestId) {
+        this.report_show();
+        this._getSelectedPendingRequests(url.requestId, url.investigationId);
+      } else {
+        this.CheckIfSelectedPatient();
+        this._getAllPendingRequests();
+        this.hasRequest = true;
+      }
+    });
   }
 
   createReport(valid: Boolean, value: any, action: String) {
@@ -316,6 +328,54 @@ export class ReportComponent implements OnInit {
   onChange(e) {
 
   }
+
+  private _getSelectedPendingRequests(requestId, investigationId) {
+    this._laboratoryRequestService.find({
+      query: {
+        'facilityId._id': this.facility._id,
+        '_id': requestId,
+      }
+    }).then(res => {
+      this.pendingReLoading = false;
+      if (res.data.length > 0) {
+        this.pendingReLoading = true;
+        this.hasRequest = true;
+        const pendingRequests = this._modelPendingRequests(res.data);
+        if (pendingRequests.length > 0) {
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+
+          // Highlight the investigation that was selected fro the route parameters
+          this.pendingRequests.forEach((invesigation, i) => {
+            if (invesigation.investigationId === investigationId) {
+              this.onClickInvestigation(invesigation, i);
+            }
+          });
+
+          // If pendingRequests contains at least a value, then get payment status
+          if (this.pendingRequests.length > 0) {
+            setTimeout(e => {
+              this._getPaymentStatus();
+            }, 500);
+          }
+        } else {
+          this.pendingRequests = [];
+        }
+      } else {
+        const text = 'This page with id ' + investigationId + ' Does not have any pending request. Redirecting...';
+        this._notification('Error', text);
+        setTimeout(e => {
+          this._route.navigate(['/dashboard/laboratory/reports']);
+        }, 2000);
+      }
+    }).catch(err => {
+      const text = 'This page with id ' + investigationId + ' Does not exist. Redirecting...';
+      this._notification('Error', text);
+      setTimeout(e => {
+        this._route.navigate(['/dashboard/laboratory/reports']);
+      }, 2000);
+    });
+  }
+
   private _getAllPendingRequests() {
     this._laboratoryRequestService.find({
       query: {
@@ -348,8 +408,8 @@ export class ReportComponent implements OnInit {
     // Highlight the item that was selected
     this.activeInvestigationNo = index;
 
-    // if(investigation.isPaid) {
-    //   if(investigation.sampleTaken) {
+    if (investigation.isPaid) {
+      if (investigation.sampleTaken) {
         this.selectedPatient = investigation.patient;
         this.selectedInvestigation = investigation;
         this.apmisLookupText = investigation.patient.personDetails.personFullName;
@@ -373,12 +433,14 @@ export class ReportComponent implements OnInit {
           this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
           this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
         }
-    //   } else {
-    //     this._notification('Info', 'You can not attend to this request as sample has not been taken. Please use the refresh button above to check if sample has been taken.');
-    //   }
-    // } else {
-    //   this._notification('Info', 'You can not attend to this request as payment has not been made. Please use the refresh button above to check for payment status.');
-    // }
+      } else {
+        const text = 'You can not attend to this request as sample has not been taken. ';
+        this._notification('Info', text.concat('Please use the refresh button above to check if sample has been taken.'));
+      }
+    } else {
+      const text = 'You can not attend to this request as payment has not been made. ';
+      this._notification('Info', text.concat(' Please use the refresh button above to check for payment status.'));
+    }
   }
 
   onClickImportTemplate(selectedInvestigation: PendingLaboratoryRequest) {
@@ -490,7 +552,8 @@ export class ReportComponent implements OnInit {
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
-      if(!!request.billingId) {
+      console.log(request);
+      if (!!request.billingId) {
         this._billingService.find({
           query: {
             facilityId: this.facility._id,
@@ -498,6 +561,7 @@ export class ReportComponent implements OnInit {
             patientId: request.patient._id
           }
         }).then(res => {
+          console.log(res);
           const billingItem = res.data[0];
           let counter = 0;
           billingItem.billItems.forEach(billItem => {
@@ -511,7 +575,6 @@ export class ReportComponent implements OnInit {
             this.disablePaymentBtn = false;
             this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
           }
-
         }).catch(err => console.log(err));
       }
     });

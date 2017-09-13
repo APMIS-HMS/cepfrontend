@@ -21,6 +21,7 @@ const LABMODULES_ROUTES: Routes = [
             { path: 'panels', component: PanelComponent },
             { path: 'external-requests', component: ExternalInvestigationsComponent },
             { path: 'reports', component: ReportComponent },
+            { path: 'report/:requestId/:investigationId', component: ReportComponent },
             { path: 'templates', component: TemplateComponent }
         ]
     }
