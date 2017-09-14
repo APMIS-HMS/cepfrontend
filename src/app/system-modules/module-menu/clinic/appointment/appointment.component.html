@@ -1,4 +1,3 @@
-
 <div class="preTbl-topItems-wrap">
     <div class="dr-wrap survery">
         <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range> <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span>
@@ -96,7 +95,14 @@
                 </div>
             </td>
         </tr>
-
+        <tr *ngIf="filteredAppointments.length === 0 && !loading">
+            <td class="table-content" colspan="8" style="text-align: center"> No data available in table</td>
+        </tr>
+        <tr *ngIf="filteredAppointments.length === 0 && loading">
+            <td class="table-content" colspan="8" style="text-align: center">
+                <md-spinner class='small-spinner'></md-spinner>
+            </td>
+        </tr>
         <tr *ngFor="let appointment of filteredAppointments">
             <td>
                 <div class="empWrap">

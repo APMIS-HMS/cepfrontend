@@ -11,7 +11,6 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 	styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
-
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
 	@Input() loginEmployee: Employee;
@@ -22,8 +21,8 @@ export class StoreCheckInComponent implements OnInit {
 	selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
 	stores: any[] = [];
 	locations: any[] = [];
-	//loadIndicatorVisible = false;
-	checkInBtnText: string = '<i class="fa fa-check-circle"></i> Check In';
+	// loadIndicatorVisible = false;
+	checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
 	constructor(
 		public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,

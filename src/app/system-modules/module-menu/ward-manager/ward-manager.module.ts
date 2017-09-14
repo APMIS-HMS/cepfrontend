@@ -19,6 +19,7 @@ import { TransferPatientComponent } from './transfer-patient/transfer-patient.co
 import { WardEmitterService } from '../../../services/facility-manager/ward-emitter.service';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-details/bill-details.component';
+import { WardCheckInComponent } from './ward-check-in/ward-check-in.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
     AddBedComponent,
     DischargePatientComponent,
     TransferPatientComponent,
-    BillDetailsComponent],
+    BillDetailsComponent,
+    WardCheckInComponent],
     exports: [
     ],
     imports: [

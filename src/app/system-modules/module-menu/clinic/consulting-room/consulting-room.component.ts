@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ConsultingRoomService, SchedulerTypeService } from '../../../../services/facility-manager/setup/index';
-import { RoomModel, Facility, Location, ConsultingRoomModel } from '../../../../models/index';
+import { ConsultingRoomService, SchedulerTypeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { RoomModel, Facility, Location, ConsultingRoomModel, User } from '../../../../models/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -16,6 +16,7 @@ export class ConsultingRoomComponent implements OnInit {
   now: Date = new Date();
   min: Date = new Date(1900, 0, 1);
   dateClear = new Date(2015, 11, 1, 6);
+  user: User = <User>{};
 
   consultingRoomForm: FormGroup;
   locationTypeControl = new FormControl();
@@ -28,11 +29,15 @@ export class ConsultingRoomComponent implements OnInit {
   clinicLocations: any[] = [];
   schedules: any[] = [];
   roomManager: ConsultingRoomModel[] = [];
+  loading: Boolean = true;
 
 
-  constructor(private formBuilder: FormBuilder, private locationService: LocationService,
-    private locker: CoolLocalStorage, private schedulerTypeService: SchedulerTypeService,
-    private consultingRoomService: ConsultingRoomService) {
+  constructor(private formBuilder: FormBuilder,
+    private locationService: LocationService,
+    private locker: CoolLocalStorage,
+    private schedulerTypeService: SchedulerTypeService,
+    private consultingRoomService: ConsultingRoomService,
+  private facilityService: FacilitiesService) {
   }
   ngOnInit() {
     this.subscribToFormControls();
@@ -63,6 +68,7 @@ export class ConsultingRoomComponent implements OnInit {
         majorLocationId: majorLocation._id
       }
     }).then(payload => {
+      this.loading = false;
       this.roomManager = payload.data;
     });
   }
@@ -176,6 +182,7 @@ export class ConsultingRoomComponent implements OnInit {
         });
       this.consultingRoomService.update(this.selectedManager).then(payload => {
         this.selectedManager = payload;
+        this._notification('Success', 'Consulting Room has been updated successfully.');
         this.loadManagerRooms(true);
       });
     } else {
@@ -189,11 +196,23 @@ export class ConsultingRoomComponent implements OnInit {
           manager.rooms.push(itemi.value);
         });
       this.consultingRoomService.create(manager).then(payload => {
+        this.loading = false;
+        this._notification('Success', 'Consulting Room has been created successfully.');
         this.roomManager = payload.data;
         this.loadManagerRooms(true);
       });
     }
   }
+
+  // Notification
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
+
   closeConsultingRoom(clinic: any, i: any) {
     (<FormArray>this.consultingRoomForm.controls['consultingRoomArray']).controls.splice(i, 1);
     this.loadManagerRooms(false);

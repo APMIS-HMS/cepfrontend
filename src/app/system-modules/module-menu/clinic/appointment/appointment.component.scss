@@ -1,5 +1,5 @@
 @import '../../facility-page/facilitypage-workspace/facilitypage-workspace.component.scss';
-.page-title{
+.page-title {
     text-align: center;
     position: relative;
     top: -20px;
@@ -7,32 +7,43 @@
     width: 100%;
     color: #A6ACAF;
 }
+
 ul.topmenuwrap {
     position: relative;
     top: auto;
     right: auto;
     margin-bottom: 3px;
 }
-.tbl-actionRow{
+
+.tbl-actionRow {
     height: auto;
 }
+
 .frm-item-wrap {
     display: flex;
     align-items: center;
     width: 197px;
 }
-.searchInput{
+
+.searchInput {
     width: 100%;
 }
-.tr-act-btn{
+
+.tr-act-btn {
     width: auto;
     margin: 0;
 }
-.preTbl-topItems-wrap{
+
+.preTbl-topItems-wrap {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
-.filter-xxx{
+
+.filter-xxx {
     width: 250px;
+}
+
+.table-content {
+    padding: 10px !important;
 }

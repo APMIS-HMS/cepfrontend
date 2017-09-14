@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { WardAdmissionService, InPatientListService, InPatientService } from '../../../../services/facility-manager/setup/index';
-import { Facility, InPatient, WardTransfer } from '../../../../models/index';
+import {
+	WardAdmissionService, InPatientListService, InPatientService, FacilitiesService
+} from '../../../../services/facility-manager/setup/index';
+import { Facility, InPatient, WardTransfer, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
@@ -26,6 +28,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	listPatientTransferWaiting: any[] = [];
 	listPatientDischarge: any[] = [];
 	facility: Facility = <Facility>{};
+	user: User = <User>{};
 	newAdmissionLoading: Boolean = true;
 	transferInLoading: Boolean = true;
 	dischargeLoading: Boolean = true;
@@ -34,7 +37,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 		private _inPatientListService: InPatientListService,
 		private _locker: CoolLocalStorage,
 		private _wardEventEmitter: WardEmitterService,
-		private _inPatientService:InPatientService,
+		private _inPatientService: InPatientService,
+		private facilityService: FacilitiesService
 		// private gvariable: globalConfig
 		) {
 		this._inPatientListService.listenerCreate.subscribe(payload => {
@@ -49,6 +53,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Admission waiting list');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.user = <User>this._locker.getObject('auth');
 		this.getDischargeList();
 		this.getWaitingList();
 	}
@@ -118,16 +123,11 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	}
 
 	getWaitingList() {
-		this._inPatientListService.find({ query: { facilityId: this.facility._id, isAdmitted: false } })
-			.then(payload => {
-				this.newAdmissionLoading = false;
-				console.log(payload);
-				if (payload.data.length !== 0) {
-					this.listPatientAdmissionWaiting = payload.data;
-				} else {
-					this.listPatientAdmissionWaiting = [];
-				}
-			});
+		this._inPatientListService.find({ query: { 'facilityId._id': this.facility._id, isAdmitted: false } }).then(res => {
+			console.log(res);
+			this.newAdmissionLoading = false;
+			this.listPatientAdmissionWaiting = res.data;
+		});
 	}
 
 	getTransferInList() {
@@ -154,4 +154,13 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 				}
 			});
 	}
+
+	// Notification
+	private _notification(type: String, text: String): void {
+		this.facilityService.announceNotification({
+		  users: [this.user._id],
+		  type: type,
+		  text: text
+		});
+	  }
 }

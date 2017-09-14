@@ -57,7 +57,6 @@ export class ReportComponent implements OnInit {
   importTemplate: Boolean = false;
 	paymentStatusText: String = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 
-
   constructor(
     private formBuilder: FormBuilder,
     private _router: ActivatedRoute,

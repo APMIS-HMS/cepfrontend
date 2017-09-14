@@ -5,7 +5,9 @@ import 'rxjs/add/operator/map';
 import {
     FacilitiesService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService, WorkSpaceService, SchedulerService
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, ScheduleRecordModel } from '../../../../models/index';
+import {
+    Facility, Employee, ClinicModel, AppointmentType, Appointment, Profession, ScheduleRecordModel, User
+} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -22,6 +24,7 @@ export class AppointmentComponent implements OnInit {
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};
     clinics: any[] = [];
+    user: User = <User>{};
     // filteredClinics: any;
     filteredClinics: Observable<any[]>
     filteredProviders: Observable<Employee[]>
@@ -47,6 +50,7 @@ export class AppointmentComponent implements OnInit {
     searchControl: FormControl = new FormControl();
     filteredStates: any;
     dateRange: any;
+    loading: Boolean = true;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
@@ -79,6 +83,7 @@ export class AppointmentComponent implements OnInit {
 
     ngOnInit() {
         this.loginEmployee = <any>this.locker.getObject('loginEmployee');
+        this.user = <User>this.locker.getObject('auth');
         this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
             this.loginEmployee = employee;
             this.prime();
@@ -136,11 +141,11 @@ export class AppointmentComponent implements OnInit {
         this.appointmentService.find({
             query:
             { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
-        })
-            .subscribe(payload => {
-                this.filteredAppointments = this.appointments = payload.data;
-                console.log(this.filteredAppointments);
-            })
+        }).subscribe(payload => {
+            this.loading = false;
+            this.filteredAppointments = this.appointments = payload.data;
+            console.log(this.filteredAppointments);
+        });
     }
 
     prime() {
@@ -178,33 +183,27 @@ export class AppointmentComponent implements OnInit {
         this.loadingProvider = true;
         this.providers = [];
         if (this.isDoctor) {
-            this.employeeService.find({
-                query: {
-                    facilityId: this.selectedFacility._id,
-                    professionId: this.selectedProfession._id, units: { $in: this.loginEmployee.units }
-                }
-            })
-                .then(payload => {
-                    payload.data.forEach((itemi, i) => {
-                        this.providers.push(itemi);
-                        if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
-                        }
-                    });
-                    this.loadingProvider = false;
+            this.employeeService.find({ query: {
+                facilityId: this.selectedFacility._id,
+                professionId: this.selectedProfession._id, units: { $in: this.loginEmployee.units }
+            }}).then(payload => {
+                payload.data.forEach((itemi, i) => {
+                    this.providers.push(itemi);
+                    if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
+                    }
                 });
+                this.loadingProvider = false;
+            });
         } else {
-            this.employeeService.find({
-                query: {
-                    facilityId: this.selectedFacility._id,
-                    professionId: this.selectedProfession._id
-                }
-            })
-                .then(payload => {
-                    payload.data.forEach((itemi, i) => {
-                        this.providers.push(itemi);
-                    });
-                    this.loadingProvider = false;
+            this.employeeService.find({ query: {
+                facilityId: this.selectedFacility._id,
+                professionId: this.selectedProfession._id
+            }}).then(payload => {
+                payload.data.forEach((itemi, i) => {
+                    this.providers.push(itemi);
                 });
+                this.loadingProvider = false;
+            });
         }
 
     }
@@ -216,8 +215,9 @@ export class AppointmentComponent implements OnInit {
                 'facilityId._id': this.selectedFacility._id
             }
         }).subscribe(payload => {
+            this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
-        })
+        });
     }
     getAppointmentTypes() {
         this.appointmentTypeService.findAll().subscribe(payload => {
@@ -250,6 +250,15 @@ export class AppointmentComponent implements OnInit {
 
     appointmentTypeDisplayFn(type: any): string {
         return type ? type.name : type;
+    }
+
+    // Notification
+    private _notification(type: String, text: String): void {
+        this.facilityService.announceNotification({
+            users: [this.user._id],
+            type: type,
+            text: text
+        });
     }
 
 }

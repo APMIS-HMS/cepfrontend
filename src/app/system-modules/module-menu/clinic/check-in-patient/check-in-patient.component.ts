@@ -40,10 +40,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   selectedProfession: Profession = <Profession>{};
   clinic: Location = <Location>{};
   patient: any = <any>{};
-
   isDoctor = false;
   counter = 0;
   subscription: Subscription;
+  loading: Boolean = true;
+
   constructor(private appointmentService: AppointmentService,
     private router: Router,
     private route: ActivatedRoute,
@@ -123,10 +124,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
   getAppointments() {
     this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, $limit: 200 } })
-      .subscribe(payload => {
+      .then(payload => {
+        this.loading = false;
         this.checkedInAppointments = payload.data;
         console.log(this.checkedInAppointments);
-      })
+      });
   }
   getClinics() {
     this.clinics = [];
@@ -185,6 +187,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   getCheckedInPatients() {
     this.appointmentService.find({ query: { facilityId: this.selectedFacility._id, attendance: { $exists: true } } })
       .then(payload => {
+        this.loading = false;
         this.checkedInAppointments = payload.data;
         if (this.checkedInAppointments.length > 0) {
           this.selectedCheckedInAppointment = this.checkedInAppointments[0];
@@ -253,6 +256,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     }
 
   }
+
   getCheckedInTimeLine() {
     if (this.selectedCheckedInAppointment !== undefined) {
       const timeline: Timeline = <Timeline>{};
@@ -264,6 +268,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       this.getOtherTimeLines();
     }
   }
+
   getOtherTimeLines() {
     if (this.selectedCheckedInAppointment.clinicInteractions !== undefined) {
       this.appointmentService.get(this.selectedCheckedInAppointment._id, {})
@@ -283,9 +288,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
 
     }
   }
+
   show_addVital() {
     this.addVital = true;
   }
+
   getConsultingRoom(appointment) {
     const retVal = '';
     // if (appointment.employeeDetails.consultingRoomCheckIn !== undefined) {
@@ -304,9 +311,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
 
     return retVal;
   }
+
   dontGo() {
     this.slideTimeline = false;
   }
+
   goToPatientPage(appointment, append) {
     console.log(appointment);
     console.log(append);
@@ -330,6 +339,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     }
 
   }
+
   slideTimeline_toggle(value, event) {
     this.slideTimeline = !this.slideTimeline;
     this.selectedCheckedInAppointment = value;
@@ -337,6 +347,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     this.getCheckedInTimeLine();
     event.stopPropagation();
   }
+
   showVital(appointment) {
     this.addVital = true;
     this.selectedCheckedInAppointment = appointment;
@@ -344,9 +355,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       this.patient = payload.data[0];
     });
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
   onNavigate(appointment) {
     window.open(appointment.zoom.join_url, '_blank');
   }

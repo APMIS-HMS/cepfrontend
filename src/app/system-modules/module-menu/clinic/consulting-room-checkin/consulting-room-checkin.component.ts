@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { ConsultingRoomModel, Employee } from '../../../../models/index';
+import { ConsultingRoomModel, Employee, User } from '../../../../models/index';
 import { ClinicHelperService } from '../services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -16,6 +16,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   loginEmployee: Employee = <Employee>{};
   locations: any[] = [];
+  user: User = <User>{};
 
   public roomCheckin: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -32,14 +33,15 @@ export class ConsultingRoomCheckinComponent implements OnInit {
 
   ngOnInit() {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.user = <User>this.locker.getObject('auth');
     this.loginEmployee.workSpaces.forEach(work => {
       work.locations.forEach(loc => {
         this.locations.push(loc.minorLocationId);
       })
     })
     this.roomCheckin = this.formBuilder.group({
-      location: ['', []],
-      room: ['', []],
+      location: ['', [<any>Validators.required]],
+      room: ['', [<any>Validators.required]],
       isDefault: [false, []]
     });
     this.roomCheckin.controls['location'].valueChanges.subscribe(value => {
@@ -58,6 +60,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+
   checkIn(valid, value) {
     let checkIn: any = <any>{};
     checkIn.minorLocationId = value.location;
@@ -76,6 +79,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     });
     this.loginEmployee.consultingRoomCheckIn.push(checkIn);
     this.employeeService.update(this.loginEmployee).then(payload => {
+      this._notification('Success', 'You have successfully checked into consulting room.');
       this.loginEmployee.consultingRoomCheckIn = payload.consultingRoomCheckIn;
       const workspaces = <any>this.locker.getObject('workspaces');
       this.loginEmployee.workSpaces = workspaces;
@@ -90,6 +94,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       this.close_onClick();
     });
   }
+
   changeRoom(checkIn: any) {
     let keepCheckIn;
     this.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
@@ -100,6 +105,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       }
     });
     this.employeeService.update(this.loginEmployee).then(payload => {
+      this._notification('Success', 'You have successfully changed consulting room.');
       this.loginEmployee = payload;
       const workspaces = <any>this.locker.getObject('workspaces');
       this.loginEmployee.workSpaces = workspaces;
@@ -108,4 +114,13 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       this.close_onClick();
     });
   }
+
+  // Notification
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+        users: [this.user._id],
+        type: type,
+        text: text
+    });
+}
 }

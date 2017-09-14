@@ -19,9 +19,9 @@
                             <div class="row" style="margin-left: 0; margin-right: 0">
                                 <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
                                     <select [formControl]="selMinorLocation" class="form-control">
-                                                <option value="Select by location" disabled selected>Select by location</option>
-                                                <option *ngFor="let minorLocation of minorLocations" value={{minorLocation._id}}>{{minorLocation.name}}</option>
-                                            </select>
+                                        <option value="Select by location" disabled selected>Select by location</option>
+                                        <option *ngFor="let minorLocation of minorLocations" value={{minorLocation._id}}>{{minorLocation.name}}</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-4">
                                     <select [formControl]="selProductType" class="form-control">

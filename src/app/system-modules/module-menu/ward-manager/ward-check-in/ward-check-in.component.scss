@@ -62,16 +62,21 @@ label {
 }
 
 .cont-wrap .set-default {
-    //display: flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    /* margin-top: -20px; */
     font-size: 12px;
-    //align-items: center;
-    margin-bottom: 10px;
-    text-align: left !important;
-    //background: #ccc;
-    //justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 15px;
+    /* background: #ccc; */
+    -ms-flex-pack: distribute;
+    /* justify-content: space-around; */
     padding: 5px;
-    //border-radius: 10px;
-    //border: 1px solid #bbb;
+    /* border-radius: 10px; */
+    /* border: 1px solid #bbb; */
 }
 
 tr,
@@ -131,14 +136,6 @@ td {
     cursor: default;
 }
 
-.apmis-blue {
-    color: #fff;
-    background: #0288D1;
-    margin: 5px 2px;
-}
-
-.apmis-danger {
-    color: #fff;
-    background: red;
-    margin: 5px 2px;
+.mat-select {
+    padding: 1.0em 0;
 }

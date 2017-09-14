@@ -12,18 +12,6 @@
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <span style="padding-left: 3px;">Age</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <span style="padding-left: 3px;">Sex</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <span style="padding-left: 3px;">Phone Number</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                             <span style="padding-left: 3px;">Clinic</span>
                         </th>
                         <th>
@@ -36,12 +24,12 @@
 
                 <tbody>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
-                        <td class="table-content " colspan="7" style="text-align: center">
+                        <td class="table-content " colspan="4" style="text-align: center">
                             <md-spinner class="small-spinner"></md-spinner>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
-                        <td class="table-content " colspan="7" style="text-align: center">
+                        <td class="table-content " colspan="4" style="text-align: center">
                             No data available in table
                         </td>
                     </tr>
@@ -49,17 +37,19 @@
                         <td (click)="navEpDetail(item)">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>
+                                    <b>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</b><br>
+                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}, </small>
+                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.age}} year(s) old, </small>
+                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</small>
+                                </div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
-                        <td>{{inPatientWaitingItem.clinicDetails?.clinicName}}</td>
-                        <td>{{inPatientWaitingItem.wardDetails.name}}</td>
+                        <td>{{inPatientWaitingItem.clinicId?.clinicName}}</td>
+                        <td>{{inPatientWaitingItem.wardId?.name}}</td>
                         <td>
                             <div (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Admit</div>
                         </td>
@@ -114,15 +104,15 @@
                         <td (click)="navEpDetail(item)">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
                         <td>
@@ -180,15 +170,15 @@
                         <td (click)="navEpDetail(item)">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
                         <td>
@@ -247,15 +237,15 @@
                         <td (click)="navEpDetail(item)">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.updatedAt}}</td>
                     </tr>
@@ -310,15 +300,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.clinicDetails?.clinicName}}</td>
                         <td>{{inPatientWaitingItem.wardDetails.name}}</td>
                         <td>
@@ -372,15 +362,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
                         <td>
@@ -438,15 +428,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
                         <td>
@@ -508,15 +498,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.updatedAt}}</td>
                     </tr>
