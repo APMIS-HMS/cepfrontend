@@ -1,7 +1,259 @@
 <div class="c-page-header">
 </div>
 <div class="c-page-body">
-    <div class="inPatients">
+    <md-tab-group>
+        <md-tab label="New Admission">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Clinic</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">To Ward</span>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
+                        <td class="table-content " colspan="4" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
+                        <td class="table-content " colspan="4" style="text-align: center">
+                            No data available in table
+                        </td>
+                    </tr>
+                    <tr *ngFor="let inPatientWaitingItem of listPatientAdmissionWaiting">
+                        <td (click)="navEpDetail(item)">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
+                                </div>
+                                <div>
+                                    <b>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</b><br>
+                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}, </small>
+                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.age}} year(s) old, </small>
+                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{inPatientWaitingItem.clinicId?.clinicName}}</td>
+                        <td>{{inPatientWaitingItem.wardId?.name}}</td>
+                        <td>
+                            <div (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Admit</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-tab>
+        <md-tab label="Transfer In">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Age</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Sex</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Phone Number</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">From Ward</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">To Ward</span>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            No data available in table
+                        </td>
+                    </tr>
+                    <tr *ngFor="let inPatientWaitingItem of listPatientTransferWaiting">
+                        <td (click)="navEpDetail(item)">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
+                                </div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
+                            </div>
+                        </td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.transfers[0].name}}</td>
+                        <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
+                        <td>
+                            <div (click)="transferAdmitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Accept</div>
+                            <div (click)="onClickDeclineTransfer(inPatientWaitingItem)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Decline</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-tab>
+        <md-tab label="Transfer Out">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Age</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Sex</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Phone Number</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">From Ward</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">To Ward</span>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
+                        <td class="table-content " colspan="7" style="text-align: center">
+                            No data available in table
+                        </td>
+                    </tr>
+                    <tr *ngFor="let inPatientWaitingItem of listPatientTransferWaiting">
+                        <td (click)="navEpDetail(item)">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
+                                </div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
+                            </div>
+                        </td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.transfers[0].name}}</td>
+                        <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
+                        <td>
+                            <div class="tbl-actions-wrap">
+                                <div (click)="transferAdmitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Accept</div>
+                                <div (click)="onClickDeclineTransfer(inPatientWaitingItem)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Decline</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-tab>
+        <md-tab label="Discharge">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Age</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Sex</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Phone Number</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Ward</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Discharge Date</span>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
+                        <td class="table-content " colspan="6" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
+                        <td class="table-content " colspan="6" style="text-align: center">
+                            No data available in table
+                        </td>
+                    </tr>
+                    <tr *ngFor="let inPatientWaitingItem of listPatientDischarge">
+                        <td (click)="navEpDetail(item)">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
+                                </div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
+                            </div>
+                        </td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.transfers[0].name}}</td>
+                        <td>{{inPatientWaitingItem.updatedAt}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-tab>
+    </md-tab-group>
+    <!-- <div class="inPatients">
         <ul class="moduleNav">
             <li (click)="newAdmissionTab()" [class.moduleNav-active]="newAdmissionShow">New Admission</li>
             <li (click)="transferInTab()" [class.moduleNav-active]="transferInShow">Transfer In</li>
@@ -14,32 +266,26 @@
                     <tr>
                         <th> 
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Patient</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Age</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Sex</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Phone Number</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Clinic</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">To Ward</span>
                         </th>
                         <th>Actions</th>
@@ -54,15 +300,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.clinicDetails?.clinicName}}</td>
                         <td>{{inPatientWaitingItem.wardDetails.name}}</td>
                         <td>
@@ -82,32 +328,26 @@
                     <tr>
                         <th> 
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Patient</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Age</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Sex</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Phone Number</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">From Ward</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">To Ward</span>
                         </th>
                         <th>Actions</th>
@@ -122,15 +362,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
                         <td>
@@ -151,32 +391,29 @@
                     <tr>
                         <th> 
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Patient</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Age</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                             <span style="padding-left: 3px;">Sex</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Phone Number</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">From Ward</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">To Ward</span>
                         </th>
                         <th>Actions</th>
@@ -191,15 +428,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].proposeWard.ward.name}}</td>
                         <td>
@@ -222,32 +459,32 @@
                     <tr>
                         <th> 
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Patient</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Age</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Sex</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Phone Number</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Ward</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                            
                             <span style="padding-left: 3px;">Discharge Date</span>
                         </th>
                     </tr>
@@ -261,15 +498,15 @@
                         <td (click)="navEpDetail(item)">                
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
-                                <div>{{inPatientWaitingItem.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</div>
                             </div>
                         </td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.age}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.gender.name}}</td>
-                        <td>{{inPatientWaitingItem.patientDetails?.personDetails?.phoneNumber}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.age}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}</td>
+                        <td>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</td>
                         <td>{{inPatientWaitingItem.transfers[0].name}}</td>
                         <td>{{inPatientWaitingItem.updatedAt}}</td>
                     </tr>
@@ -280,8 +517,8 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="admitPatient" class="modal-overlay">
-            <app-admit-patient (closeModal)="close_onClick($event)" [inpatientItem]="selectInpatient" id="form-modal" class="form-modal center-center"></app-admit-patient>
-        </div>
-    </div>
+    </div> -->
+</div>
+<div *ngIf="admitPatient" class="modal-overlay">
+    <app-admit-patient (closeModal)="close_onClick($event)" [inpatientItem]="selectInpatient" id="form-modal" class="form-modal center-center"></app-admit-patient>
 </div>

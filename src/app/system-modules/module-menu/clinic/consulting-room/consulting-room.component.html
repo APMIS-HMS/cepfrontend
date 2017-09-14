@@ -1,4 +1,3 @@
-
 <div class="room-wrap">
     <div class="lhsInnerFrm">
         <div class="sect-title">New Consulting Room</div>
@@ -55,7 +54,14 @@
                 <div class="li-Item" style="cursor: pointer;">Room Capacity<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
                 <div class="li-cta"></div>
             </li>
-
+            <li *ngIf="roomManager.length === 0 && !loading" class="li-itemWrap">
+                <div class="table-content">No data available in table</div>
+            </li>
+            <li *ngIf="roomManager.length === 0 && loading" class="li-itemWrap">
+                <div class="table-content">
+                    <md-spinner class='small-spinner'></md-spinner>
+                </div>
+            </li>
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of roomManager" class="li-itemWrap">
                 <div class="li-Item">{{manager.minorLocationDetails.name}}</div>
                 <div class="li-Item-group">

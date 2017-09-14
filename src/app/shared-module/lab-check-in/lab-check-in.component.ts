@@ -51,9 +51,7 @@ export class LabCheckInComponent implements OnInit {
     }
 
 		this.labCheckin.controls['location'].valueChanges.subscribe(val => {
-      console.log(val);
       this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
-        console.log(res);
 				if (res.data.length > 0) {
 					this.workbenches = res.data;
 				} else {

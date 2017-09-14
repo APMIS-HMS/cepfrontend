@@ -26,7 +26,7 @@ export class LabComponent implements OnInit, OnDestroy {
   reportContentArea = false;
   externalContentArea = false;
   templateContentArea = false;
-  checkedInObject: any;
+  checkedInObject: any = <any>{};
 
   constructor(
     private _router: Router,

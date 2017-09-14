@@ -8,7 +8,7 @@ import { Facility, MinorLocation, Investigation, InvestigationModel, Employee,
   BillIGroup, BillItem, BillModel, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -70,6 +70,7 @@ export class LabRequestsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig, private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
+    private _router: Router,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
 
   }
@@ -686,6 +687,7 @@ export class LabRequestsComponent implements OnInit {
     return workbenches[0].price;
   }
   save(valid, value) {
+    console.log(value);
     delete this.selectedPatient.appointments;
     delete this.selectedPatient.encounterRecords;
     delete this.selectedPatient.orders;
@@ -718,12 +720,9 @@ export class LabRequestsComponent implements OnInit {
     delete logEmp.workbenchCheckIn;
 
     const selectedFacility = <any>this.locker.getObject('miniFacility');
-
-
-
-
     const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
     const readyCollection: any[] = [];
+
     copyBindInvestigation.forEach((item: InvestigationModel, i) => {
       if (item.investigation.isPanel) {
         delete item.isChecked;
@@ -815,13 +814,16 @@ export class LabRequestsComponent implements OnInit {
       })
     }
   }
+
   externalChanged($event, investigation) {
     console.log(investigation)
     investigation.isExternal = $event.checked;
   }
+
   urgentChanged($event, investigation) {
     investigation.isUrgent = $event.checked;
   }
+
   private _getAllPendingRequests() {
     this.pendingRequests = [];
     if (this.patientId !== undefined && this.patientId.length > 0 && !this.isExternal) {
@@ -912,9 +914,6 @@ export class LabRequestsComponent implements OnInit {
         res.data.forEach(labRequest => {
           console.log(labRequest);
           labRequest.investigations.forEach(investigation => {
-            console.log(investigation);
-            console.log(investigation.isSaved);
-            console.log(investigation.isUploaded);
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
@@ -971,5 +970,10 @@ export class LabRequestsComponent implements OnInit {
         console.log(this.pendingRequests);
       }).catch(err => console.error(err));
     }
+  }
+
+  goToWriteReport(request: any) {
+    console.log(request);
+    this._router.navigate(['/dashboard/laboratory/report/' + request.labRequestId + '/' + request.investigationId]);
   }
 }

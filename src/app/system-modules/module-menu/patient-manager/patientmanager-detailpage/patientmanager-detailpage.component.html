@@ -81,8 +81,8 @@
     <div *ngIf="addTagsPop" class="modal-overlay">
         <app-add-tags (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-tags>
     </div>
-    <div style="z-index: 1501;" *ngIf="checkoutPatient" class="modal-overlay">
-        <app-checkout-patient [employeeDetails]="employeeDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
+    <div *ngIf="checkoutPatient" class="modal-overlay">
+        <app-checkout-patient [patientDetails]="patientDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
     </div>
     <div *ngIf="changeUserImg" class="modal-overlay">
         <app-image-update [selectedPerson]="patient.personDetails" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-image-update>

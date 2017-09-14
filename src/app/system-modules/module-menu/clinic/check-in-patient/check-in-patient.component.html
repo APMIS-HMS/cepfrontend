@@ -1,48 +1,17 @@
-
-
 <div class="checkedinPatients">
-    <div class="survery">
-        <div class="row">
-            <div class="col-sm-3">
-                <md-select placeholder="Doctor">
-                    <md-option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</md-option>
-                </md-select>
-            </div>
-            <div class="col-sm-3">
-                <md-select placeholder="Sort By Location">
-                    <md-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</md-option>
-                </md-select>
-            </div>
-            <div class="col-sm-3">
-                <md-select placeholder="Sort By Clinics">
-                    <md-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</md-option>
-                </md-select>
-            </div>
-            <div class="col-sm-3">
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Search Checked in Patient">
-                </md-input-container>
-                <i class="fa fa-search" aria-hidden="true"></i>
-            </div>
-        </div>
-    </div>
-
     <table cellpadding="0" cellspacing="0" border="0.5">
         <thead>
             <tr>
                 <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Name</span>
                 </th>
                 <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Currently In</span>
                 </th>
                 <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Care Giver</span>
                 </th>
                 <!-- <th>
@@ -52,12 +21,10 @@
                 </th> -->
                 <th>
                     <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Checked In</span>
                 </th>
                 <th>
                     <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Time Spent</span>
                 </th>
                 <th>Actions</th>
@@ -65,6 +32,60 @@
         </thead>
 
         <tbody>
+            <tr>
+                <td colspan="6">
+                    <div class="survery" style="padding: 10px 5px;">
+                        <div class="row" style="margin-left: 0; margin-right: 0">
+                            <div class="col-sm-3" style="padding-left: 0;">
+                                <select class="form-control">
+                                        <option value="Select by location" disabled selected>Select Doctor</option>
+                                        <option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</option>
+                                    </select>
+                                <!-- <md-select placeholder="Doctor">
+                                    <md-option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</md-option>
+                                </md-select> -->
+                            </div>
+                            <div class="col-sm-3" style="padding-left: 0;">
+                                <select class="form-control">
+                                            <option value="Select by location" disabled selected>Sort by Location</option>
+                                            <option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</option>
+                                        </select>
+                                <!-- <md-select placeholder="Sort By Location">
+                                    <md-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</md-option>
+                                </md-select> -->
+                            </div>
+                            <div class="col-sm-3" style="padding-left: 0;">
+                                <select class="form-control">
+                                            <option value="Select by Clinic" disabled selected>Sort by Clinic</option>
+                                            <option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</option>
+                                        </select>
+                                <!-- <md-select placeholder="Sort By Clinics">
+                                    <md-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</md-option>
+                                </md-select> -->
+                            </div>
+                            <div class="col-sm-3" style="padding-right: 0;padding-left: 0;">
+                                <div class="col-xs-10" style="padding-left: 0;">
+                                    <input type="text" placeholder="Search Checked in Patient" class="searchInput" />
+                                    <!-- <md-input-container class="example-full-width">
+                                        <input mdInput placeholder="Search Checked in Patient">
+                                    </md-input-container> -->
+                                </div>
+                                <div class="col-xs-2" style="padding-right: 0;padding-left: 0;">
+                                    <button md-raised-button style="background: #FAFAFA;height: 33px;line-height: 1.5;min-width:40px;"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="checkedInAppointments.length === 0 && !loading">
+                <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
+            </tr>
+            <tr *ngIf="checkedInAppointments.length === 0 && loading">
+                <td class="table-content" colspan="6" style="text-align: center">
+                    <md-spinner class='small-spinner'></md-spinner>
+                </td>
+            </tr>
             <tr *ngFor="let appointment of checkedInAppointments">
                 <td>
                     <div class="empWrap" (click)="goToPatientPage(appointment,false)">

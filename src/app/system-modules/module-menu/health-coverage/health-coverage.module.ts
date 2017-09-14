@@ -1,3 +1,4 @@
+import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -66,7 +67,7 @@ import { RecievePaymentComponent } from './recieve-payment/recieve-payment.compo
         MaterialModule,
         healthCoverRoutes
     ],
-    providers: [HmoService, FacilityCompanyCoverService]
+    providers: [HmoService, FacilityCompanyCoverService, FacilityFamilyCoverService]
 })
 export class HealthCoverageModule { }
 

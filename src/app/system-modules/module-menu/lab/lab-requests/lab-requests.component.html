@@ -219,7 +219,9 @@
                                 </div>
                             </div>
                         </div>
-                        <button (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="cta-1">Make Request</button>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!frmNewRequest.valid" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                        </div>
                     </form>
                 </div>
 
@@ -337,7 +339,7 @@
                                             <span>View Investigation</span>
                                         </div>
 
-                                        <div class="action-item">
+                                        <div *ngIf="request.isPaid && request.sampleTaken" class="action-item" (click)="goToWriteReport(request);">
                                             <i class="fa fa-file-text" aria-hidden="true"></i>
                                             <span>Write Report</span>
                                         </div>

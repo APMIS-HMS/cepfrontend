@@ -1,4 +1,3 @@
-
 <div class="schedule-wrap">
     <div class="lhsInnerFrm">
         <div class="sect-title">Add Clinic Schedule</div>
@@ -38,7 +37,7 @@
                                         <div class="dx-field">
                                             <div class="frm-label">End Time</div>
                                             <div class="dx-field-value">
-                                                 <div class="survery">
+                                                <div class="survery">
                                                     <ngb-timepicker formControlName="endTime" [meridian]="true"></ngb-timepicker>
                                                 </div>
                                             </div>
@@ -75,6 +74,14 @@
                 <div class="li-Item" style="cursor: pointer;">Unit<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
                 <div class="li-Item-group">Schedule</div>
                 <div class="li-cta"></div>
+            </li>
+            <li *ngIf="scheduleManagers.length === 0 && !loading" class="li-itemWrap">
+                <div class="table-content">No data available in table</div>
+            </li>
+            <li *ngIf="scheduleManagers.length === 0 && loading" class="li-itemWrap">
+                <div class="table-content">
+                    <md-spinner class='small-spinner'></md-spinner>
+                </div>
             </li>
 
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of scheduleManagers" class="li-itemWrap">
