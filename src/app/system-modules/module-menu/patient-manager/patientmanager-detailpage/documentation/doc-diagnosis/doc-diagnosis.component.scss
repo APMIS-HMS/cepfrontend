@@ -1,0 +1,58 @@
+.addDrugBtn{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 12px;
+    color: #777;
+    width: 170px;
+    margin: 20px auto;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #777;
+}
+.addDrugBtn:hover{
+    background: #fff;
+    color: #009ADF;
+}
+.frm-item-wrap {
+    width: 100%;
+    max-width: 400px;
+}
+.frmOuter-wrap{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.frmInner-wrap1, .frmInner-wrap2{
+    min-width: 300px;
+    border: 1px solid #777;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.frmInner-wrap1{
+    width: 39%;
+}
+.frmInner-wrap2{
+    width: 59%;
+}
+.plus-link {
+    color: #0D47A1;
+    font-size: 12px;
+    width: 100%;
+    cursor: pointer;
+    text-align: right;
+}
+.plus-link:hover{
+    text-decoration: underline;
+}
+.plus-link i{
+    padding-right: 10px;
+}
+.modal-baseWrap{
+    width: 80%;
+}
+.typeCat li{
+    display: block;
+    width: 100%;
+}

@@ -27,6 +27,7 @@ export class ClinicalNoteComponent implements OnInit {
   showDocument = false;
   personDocumentation: Documentation = <Documentation>{};
   docSymptom_view = false;
+  docDiagnosis_view = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -88,6 +89,7 @@ export class ClinicalNoteComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
     this.docSymptom_view = false;
+    this.docDiagnosis_view = false;
   }
   showOrderset_onClick() {
     this.showOrderset.emit(true);
@@ -103,6 +105,9 @@ export class ClinicalNoteComponent implements OnInit {
   }
   docSymptom_show(){
     this.docSymptom_view = true;
+  }
+  docDiagnosis_show(){
+    this.docDiagnosis_view = true;
   }
 
 }

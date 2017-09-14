@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-doc-diagnosis',
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocDiagnosisComponent implements OnInit {
 
-  constructor() { }
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
+  addDiagnosisForm: FormGroup;
+  apmisLookupQuery = {};
+  apmisLookupUrl = '';
+  apmisLookupDisplayKey = '';
+  apmisLookupText = '';
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.addDiagnosisForm = this.fb.group({
+      type: ['', [<any>Validators.required]],
+      diagnosis: ['', [<any>Validators.required]]
+    });
+  }
+
+  close_onClick() {
+    this.closeModal.emit(true);
   }
 
 }
+  

@@ -46,7 +46,7 @@
                 <survey [json]="json"></survey>
 
                 <div class="actWrappers-jsonFrm">
-                    <div (click)="showOrderset_onClick()" class="atch-orderSet">
+                    <div (click)="docDiagnosis_show()" class="atch-orderSet">
                         <i [hidden]="clinicalNote_view" class="fa fa-plus" aria-hidden="true"></i>
                         <span>Diagnosis</span>
                     </div>
@@ -64,4 +64,7 @@
 
 <div *ngIf="docSymptom_view" class="modal-overlay">
     <app-doc-symptom (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>
+</div>
+<div *ngIf="docDiagnosis_view" class="modal-overlay">
+    <app-doc-diagnosis (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
 </div>
