@@ -49,7 +49,7 @@
             </div>
             <div class="menu-sect">
                 <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
-                <div (click)="menuOrder_click()" [class.active-menuItem]="menuOrder" class="menu-item">Order Set</div>
+                <!-- <div (click)="menuOrder_click()" [class.active-menuItem]="menuOrder" class="menu-item">Order Set</div> -->
             </div>
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
@@ -66,7 +66,6 @@
     <div class="patientPage-contentArea">
         <app-patient-summary [patient]="patient" *ngIf="menuSummary && patient !== undefined"></app-patient-summary>
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
-        <app-order-set *ngIf="menuOrder"></app-order-set>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>

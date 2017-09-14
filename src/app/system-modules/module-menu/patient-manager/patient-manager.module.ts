@@ -47,6 +47,8 @@ import { EditInvestigationComponent } from './patientmanager-detailpage/order-se
 import { EditProcedureComponent } from './patientmanager-detailpage/order-set/edit-procedure/edit-procedure.component';
 import { EditNursingCareComponent } from './patientmanager-detailpage/order-set/edit-nursing-care/edit-nursing-care.component';
 import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-set/edit-physician-order/edit-physician-order.component';
+import { DocSymptomComponent } from './patientmanager-detailpage/documentation/doc-symptom/doc-symptom.component';
+import { DocDiagnosisComponent } from './patientmanager-detailpage/documentation/doc-diagnosis/doc-diagnosis.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -79,7 +81,9 @@ import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-s
         EditInvestigationComponent,
         EditProcedureComponent,
         EditNursingCareComponent,
-        EditPhysicianOrderComponent
+        EditPhysicianOrderComponent,
+        DocSymptomComponent,
+        DocDiagnosisComponent
     ],
     exports: [
     ],

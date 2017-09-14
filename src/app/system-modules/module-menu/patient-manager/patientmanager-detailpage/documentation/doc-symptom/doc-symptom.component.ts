@@ -1,16 +1,16 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-procedure',
-  templateUrl: './edit-procedure.component.html',
-  styleUrls: ['./edit-procedure.component.scss']
+  selector: 'app-doc-symptom',
+  templateUrl: './doc-symptom.component.html',
+  styleUrls: ['./doc-symptom.component.scss']
 })
-export class EditProcedureComponent implements OnInit {
+export class DocSymptomComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   
-  addInvestigationForm: FormGroup;
+  addSymptomForm: FormGroup;
   apmisLookupQuery = {};
   apmisLookupUrl = '';
   apmisLookupDisplayKey = '';
@@ -19,8 +19,8 @@ export class EditProcedureComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.addInvestigationForm = this.fb.group({
-      investigation: ['', [<any>Validators.required]]
+    this.addSymptomForm = this.fb.group({
+      symptom: ['', [<any>Validators.required]]
     });
   }
 
