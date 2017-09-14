@@ -124,7 +124,7 @@
             </div>
           </form>
           <div class="flex-button">
-            <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newBeneficiary" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant.value)"
+            <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newBeneficiary" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant)"
               class="cta-1">Add Beneficiary</button>
             <button *ngIf="newBeneficiary" (click)="cancel()"
               class="cta-1">Cancel</button>

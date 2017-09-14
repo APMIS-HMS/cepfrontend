@@ -216,6 +216,12 @@ export class CompanyBeneficiaryListComponent implements OnInit {
 
   }
   save(valid, value, dependantValid, dependantValue) {
+    console.log(dependantValue)
+    let unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
+    if(unsavedFiltered.length > 0){
+      this._notification('Warning', 'There seems to unsaved but valid dependant yet to be saved, please save and try again!');
+      return;
+    }
     if (valid) {
       let param = {
         model: value,
@@ -224,9 +230,17 @@ export class CompanyBeneficiaryListComponent implements OnInit {
         facilityId: this.selectedFacility._id,
         company: this.selectedCompanyCover
       };
-      console.log(dependantValue.dependantArray);
-      let filtered = dependantValue.dependantArray.filter(x => x.readOnly === true);
-      param.dependants = filtered;
+      // console.log(dependantValue.dependantArray);
+      // let filtered = dependantValue.dependantArray.filter(x => x.readOnly === true);
+      // param.dependants = filtered;
+
+
+      let filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
+      filtered.forEach(item =>{
+        param.dependants.push(item.value);
+      })
+
+
       this.companyCoverService.updateBeneficiaryList(param).then(payload => {
         console.log(payload);
         this.getBeneficiaryList(this.routeId)
