@@ -9,6 +9,11 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 export class DocDiagnosisComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  tab_all = true;
+  tab_favourite = false;
+  tab_patient = false;
+  tab_recent = false;
   
   addDiagnosisForm: FormGroup;
   apmisLookupQuery = {};
@@ -23,6 +28,31 @@ export class DocDiagnosisComponent implements OnInit {
       type: ['', [<any>Validators.required]],
       diagnosis: ['', [<any>Validators.required]]
     });
+  }
+
+  tabAll_click(){
+    this.tab_all = true;
+    this.tab_favourite = false;
+    this.tab_patient = false;
+    this.tab_recent = false;
+  }
+  tabFavourite_click(){
+    this.tab_all = false;
+    this.tab_favourite = true;
+    this.tab_patient = false;
+    this.tab_recent = false;
+  }
+  tabPatient_click(){
+    this.tab_all = false;
+    this.tab_favourite = false;
+    this.tab_patient = true;
+    this.tab_recent = false;
+  }
+  tabRecent_click(){
+    this.tab_all = false;
+    this.tab_favourite = false;
+    this.tab_patient = false;
+    this.tab_recent = true;
   }
 
   close_onClick() {

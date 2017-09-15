@@ -1,7 +1,7 @@
 <div class="frmNoteWrap">
     <legend class="modal_title">Clinical Note</legend>
 
-    <ul class="links-ul">
+    <ul *ngIf="showDocument" class="links-ul">
         <li (click)="docSymptom_show()">
             <i class="fa fa-plus" aria-hidden="true"></i>
             <span>Symptoms</span>
@@ -52,7 +52,7 @@
                     </div>
                     <div (click)="showOrderset_onClick()" class="atch-orderSet">
                         <i [hidden]="clinicalNote_view" class="fa fa-plus" aria-hidden="true"></i>
-                        <span>Order Set</span>
+                        <span>Order Management</span>
                     </div>
                 </div>
             </div>
