@@ -1,6 +1,11 @@
 <div class="c-page-header">
-    <div routerLink="/dashboard/setup/locations" class="short-cut-link pull-right">
-        <i class="fa fa-arrow-circle-o-right"></i> Create Wards
+    <div class="top-button-box">
+        <ul class="topmenuwrap pull-right" (click)="goToFacility();">
+            <li tabindex="0">
+                <i class="fa fa-arrow-circle-o-right"></i>
+                <span>Create Wards</span>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="c-page-body">
@@ -15,8 +20,13 @@
                     </tr>
                 </thead>
                 <tbody class="custom-tbody">
-                    <tr *ngIf="facilityWards.length == 0">
-                        <td colspan="3"> No data available in table</td>
+                    <tr *ngIf="facilityWards.length === 0 && !loading">
+                        <td class="table-content" colspan="3" style="text-align: center"> No data available in table</td>
+                    </tr>
+                    <tr *ngIf="facilityWards.length === 0 && loading">
+                        <td class="table-content" colspan="3" style="text-align: center">
+                            <md-spinner class='small-spinner'></md-spinner>
+                        </td>
                     </tr>
                     <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{facilityWard._id}}" *ngFor="let facilityWard of facilityWards;let i = index">
                         <td>{{i+1}}</td>

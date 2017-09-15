@@ -1,33 +1,48 @@
 <div class="modal-baseWrap animated pulse">
-
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">Admit Patient</legend>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <form [formGroup]="admitFormGroup" novalidate>
-        <div>
-            <div class="frm-item-wrap">
-                <md-select placeholder="Select Room" formControlName="room" (change)="onRoomChange($event.value)">
-                    <md-option *ngFor="let roomItem of wardRoomLocationItems" [value]="roomItem?._id">{{roomItem?.name}}</md-option>
-                </md-select> 
-            </div>
-            <div class="frm-item-wrap">
-                <md-select placeholder="Select Bed" formControlName="bed">
-                    <md-option *ngFor="let bedItem of wardRoomBedLocationItems" [value]="bedItem._id">{{bedItem.name}}</md-option>
-                </md-select> 
-            </div>
+    <div class="survery">
+        <div class="row">
+            <div class="col-xs-4">
+                <form [formGroup]="admitFormGroup" novalidate>
+                    <div class="frm-item-wrap">
+                        <md-select placeholder="Select Ward" formControlName="ward">
+                            <md-option *ngFor="let ward of wards" [value]="ward">{{ward.name}}</md-option>
+                        </md-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <md-select placeholder="Select Room" formControlName="room" (change)="onRoomChange($event.value)">
+                            <md-option *ngFor="let room of rooms" [value]="room">{{room.name}}</md-option>
+                        </md-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <md-select placeholder="Select Bed" formControlName="bed">
+                            <md-option *ngFor="let bed of beds" [value]="bed">{{bed.name}}</md-option>
+                        </md-select>
+                    </div>
 
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <textarea mdInput formControlName="desc" placeholder="Description"></textarea>
-                </md-input-container>
-                <!--<small class="alert-label" [hidden]="admitFormGroup.controls.desc.valid || admitFormGroup.controls.desc.pristine">
-					this is a required field (minimum 3 and max of 20 characters).
-				</small>
-                <i class="fa fa-building-o" aria-hidden="true"></i>
-                <textarea class="edit-control lhs modal-textarea" formControlName="desc" placeholder="Description" autocomplete="off" style="width:90%; height:120px;"></textarea>-->
+                    <div class="frm-item-wrap">
+                        <md-input-container class="example-full-width">
+                            <textarea mdInput formControlName="desc" placeholder="Description"></textarea>
+                        </md-input-container>
+                        <!--<small class="alert-label" [hidden]="admitFormGroup.controls.desc.valid || admitFormGroup.controls.desc.pristine">
+                            this is a required field (minimum 3 and max of 20 characters).
+                        </small>
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <textarea class="edit-control lhs modal-textarea" formControlName="desc" placeholder="Description" autocomplete="off" style="width:90%; height:120px;"></textarea>-->
+                    </div>
+                    <div class="btn-box">
+                        <button md-raised-button [disabled]="!admitFormGroup.valid" (click)="onAdmit(admitFormGroup.value, admitFormGroup.valid);" class="btn" [innerHtml]="admitBtnText"></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-8">
+                <div class="container-right">
+                    Right content
+                </div>
             </div>
         </div>
-        <button (click)="onAdmit(admitFormGroup.value, admitFormGroup.valid)" class="cta-1"> <i class="fa fa-plus"></i>&nbsp; Admit Patient</button>
-    </form>
+    </div>
 </div>

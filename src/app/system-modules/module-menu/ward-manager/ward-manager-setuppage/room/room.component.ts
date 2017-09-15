@@ -18,7 +18,7 @@ export class RoomComponent implements OnInit {
 	wardId: string;
 	facility: Facility = <Facility>{};
 	wardDetail: any = <any>{};
-	roomItems: any[] = [];
+	rooms: any[] = [];
 	wardRoom: WardRoom = <WardRoom>{};
 	wardServicePriceTags = [];
 	roomNameEditShow: any;
@@ -26,6 +26,7 @@ export class RoomComponent implements OnInit {
 	editRoomGroup = new FormControl();
 	editRoomName = new FormControl();
 	editServicePrice = new FormControl();
+	loading: Boolean = true;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -50,7 +51,7 @@ export class RoomComponent implements OnInit {
 
 	ngOnInit() {
 		this._route.params.subscribe(params => {
-			this.wardId = params['wardid'];
+			this.wardId = params.wardId;
 		});
 		this._wardEventEmitter.setRouteUrl('Room Setup');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
@@ -109,19 +110,31 @@ export class RoomComponent implements OnInit {
 	}
 
 	getWardRooomItems() {
-		this._facilitiesService.get(this.facility._id, {})
-			.then(payload => {
-				payload.wards.forEach(item => {
-					if (item._id.toString() === this.wardId.toString()) {
-						console.log(item.wardDetails);
-						if (item.wardDetails !== undefined) {
-							this.roomItems = item.wardDetails.rooms;
-						}
-						this.wardDetail = item;
-						this.roomNameEditShow = this.roomItems.map(i => false);
-					}
-				});
-			});
+		// this._facilitiesService.get(this.facility._id, {}).then(res => {
+		// 		console.log(res);
+		// 		this.loading = false;
+		// 		res.wards.forEach(item => {
+		// 			if (item._id === this.wardId) {
+		// 				console.log(item.wardDetails);
+		// 				if (item.wardDetails !== undefined) {
+		// 					this.rooms = item.wardDetails.rooms;
+		// 				}
+		// 				this.wardDetail = item;
+		// 				this.roomNameEditShow = this.rooms.map(i => false);
+		// 			}
+		// 		});
+		// 	});
+		this._wardAdmissionService.find({ query: {
+			facilityId: this.facility._id
+		}}).then(res => {
+			console.log(res);
+			if (res.data.length > 0) {
+				console.log(res.data[0].locations);
+				const rooms = res.data[0].locations.filter(x => x.minorLocationId === this.wardId);
+				this.rooms = rooms.rooms;
+				console.log(rooms);
+			}
+		});
 	}
 
 

@@ -8,23 +8,32 @@
     height: 40px;
     z-index: 2;
     .c-page-title {
+        text-align: left;
         float: left;
+        width: 60%;
     }
-    .back-btn {
-        padding: 10px;
-        font-size: 16px;
-        font-family: "Josefin Sans", sans-serif;
-        color: #BDBDBD;
-        margin: 0;
-        z-index: 3;
-        &:hover {
-            cursor: pointer;
+    .btn-box {
+        width: 40%;
+        .back-btn {
+            padding: 10px;
+            font-size: 16px;
+            font-family: "Josefin Sans", sans-serif;
+            color: #BDBDBD;
+            margin: 0;
+            z-index: 3;
+            float: right;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .add-action-box {
+            float: right;
+            height: 40px;
+            .btn {
+                color: #fff;
+            }
         }
     }
-}
-
-.add-action-box {
-    height: 40px;
 }
 
 .inPatients {
