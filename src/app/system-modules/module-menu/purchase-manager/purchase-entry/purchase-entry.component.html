@@ -187,10 +187,8 @@
                                     </div>
 
                                     <div style="width: 15%;" class="frm-item-wrap">
-                                        <md-input-container>
-                                            <input mdInput formControlName="expiryDate" [mdDatepicker]="picker" placeholder="Expiry Date">
-                                        </md-input-container>
-                                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                        <input mdInput formControlName="expiryDate" [mdDatepicker]="picker" placeholder="Expiry Date">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                                         <md-datepicker #picker></md-datepicker>
                                     </div>
                                 </div>

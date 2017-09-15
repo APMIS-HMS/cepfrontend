@@ -18,6 +18,7 @@ import { SharedService } from '../../../../../../shared-module/shared.service';
 export class ClinicalNoteComponent implements OnInit {
   @Input() patient;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() showOrderset: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   json: any
   selectFormCtrl: FormControl;
@@ -25,6 +26,8 @@ export class ClinicalNoteComponent implements OnInit {
   filteredForms: any;
   showDocument = false;
   personDocumentation: Documentation = <Documentation>{};
+  docSymptom_view = false;
+  docDiagnosis_view = false;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -85,6 +88,11 @@ export class ClinicalNoteComponent implements OnInit {
   }
   close_onClick() {
     this.closeModal.emit(true);
+    this.docSymptom_view = false;
+    this.docDiagnosis_view = false;
+  }
+  showOrderset_onClick() {
+    this.showOrderset.emit(true);
   }
 
   filterForms(val: any) {
@@ -94,6 +102,12 @@ export class ClinicalNoteComponent implements OnInit {
 
   formDisplayFn(form: any): string {
     return form ? form.title : form;
+  }
+  docSymptom_show(){
+    this.docSymptom_view = true;
+  }
+  docDiagnosis_show(){
+    this.docDiagnosis_view = true;
   }
 
 }

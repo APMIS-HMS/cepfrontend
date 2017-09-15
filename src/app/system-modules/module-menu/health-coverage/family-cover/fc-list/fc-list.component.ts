@@ -94,7 +94,6 @@ export class FcListComponent implements OnInit {
     });
   }
   pushNewDependant(dependant?, index?) {
-    console.log(dependant)
     if (dependant !== undefined && dependant.valid) {
       dependant.value.readOnly = true;
     }
@@ -122,10 +121,9 @@ export class FcListComponent implements OnInit {
   }
 
   showEdit(beneficiary) {
-    console.log(beneficiary);
     if (this.getRole(beneficiary) === 'P') {
       this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
-      this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.firstName);
+      this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.othernames);
       this.frmNewBeneficiary.controls['gender'].setValue(beneficiary.gender);
       this.frmNewBeneficiary.controls['filNo'].setValue(beneficiary.filNo);
       this.frmNewBeneficiary.controls['operation'].setValue('update');
@@ -155,7 +153,7 @@ export class FcListComponent implements OnInit {
               operation: ['update'],
               filNo: [filter.filNo],
               serial: [filter.serial],
-              category: [filter.category],
+              category: 'Dependant',
               readOnly: [true],
             }));
 
@@ -166,16 +164,15 @@ export class FcListComponent implements OnInit {
       this.frmNewBeneficiary.reset();
       const filNoLength = beneficiary.filNo.length;
       const lastCharacter = beneficiary.filNo[filNoLength - 1];
-      console.log(beneficiary)
       let sub = beneficiary.filNo.substring(0, (filNoLength - 1));
-      console.log(sub);
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
-
+      console.log(filtered)
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
         if (this.getRole(filter) === 'D') {
           hasRecord = true;
+          console.log('isD');
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
             this.formBuilder.group({
@@ -188,30 +185,42 @@ export class FcListComponent implements OnInit {
               operation: ['update'],
               filNo: [filter.filNo],
               serial: [filter.serial],
-              category: [filter.category],
+              category: 'Dependant',
               readOnly: [true],
             }));
-
+            console.log((<FormArray>this.frmDependant.controls['dependantArray']))
         } else if (this.getRole(filter) === 'P') {
           this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);
-          this.frmNewBeneficiary.controls['othernames'].setValue(filter.firstName);
+          this.frmNewBeneficiary.controls['othernames'].setValue(filter.othernames);
           this.frmNewBeneficiary.controls['gender'].setValue(filter.gender);
           this.frmNewBeneficiary.controls['filNo'].setValue(filter.filNo);
           this.frmNewBeneficiary.controls['operation'].setValue('update');
-          this.frmNewBeneficiary.controls['date'].setValue(filter.date);
-          this.frmNewBeneficiary.controls['serial'].setValue(beneficiary.serial);
+          // this.frmNewBeneficiary.controls['date'].setValue(filter.date);
+          this.frmNewBeneficiary.controls['serial'].setValue(filter.serial);
           this.frmNewBeneficiary.controls['email'].setValue(filter.email);
           this.frmNewBeneficiary.controls['phone'].setValue(filter.phone);
           this.frmNewBeneficiary.controls['address'].setValue(filter.address);
           if (beneficiary.isActive === undefined) {
-            this.frmNewBeneficiary.controls['principalstatus'].setValue(this.statuses[0]._id);
+            this.frmNewBeneficiary.controls['status'].setValue(this.statuses[0]._id);
           }
         }
-      })
+      });
+      this.newFamily = true;
     }
 
   }
+  change(value){
+    console.log(value)
+  }
   save(valid, value, dependantValid, dependantValue) {
+    console.log(dependantValue.controls.dependantArray.controls)
+    console.log(dependantValid)
+    console.log(value)
+    let unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
+    if(unsavedFiltered.length > 0){
+      this._notification('Warning', 'There seems to unsaved but valid dependant yet to be saved, please save and try again!');
+      return;
+    }
     if (valid) {
       let param = {
         model: value,
@@ -220,14 +229,18 @@ export class FcListComponent implements OnInit {
         facilityId: this.selectedFacility._id,
         facilityObject:this.selectedFacility
       };
-      console.log(dependantValue.dependantArray);
-      let filtered = dependantValue.dependantArray.filter(x => x.readOnly === true);
-      param.dependants = filtered;
+      // console.log(dependantValue.dependantArray);
+      let filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
+      filtered.forEach(item =>{
+        param.dependants.push(item.value);
+      })
+  
       console.log(param);
 
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
         console.log(payload);
         this.getBeneficiaryList(this.selectedFacility._id);
+        this.cancel();
       })
     } else {
       this._notification('Warning', 'A value is missing, please fill all required field and try again!');
