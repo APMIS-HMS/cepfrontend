@@ -23,5 +23,5 @@
     <div class="clear"></div>
 </div>
 <div *ngIf="modal_on" class="modal-overlay">
-    <app-ward-check-in [loginEmployee]="loginEmployee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-ward-check-in>
+    <app-ward-check-in (checkedInWard)="getCheckedInWard($event);" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-ward-check-in>
 </div>

@@ -123,7 +123,7 @@
 
           </form>
           <div class="flex-button">
-            <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newFamily" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant.value)"
+            <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newFamily" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant)"
               class="cta-1">Add Family</button>
             <button *ngIf="newFamily" (click)="cancel()" class="cta-1">Cancel</button>
           </div>
@@ -207,7 +207,7 @@
               </tr>
 
               <tr *ngFor="let beneficiary of beneficiaries" (click)="show_beneficiaries()">
-                <td>{{beneficiary.surname}} {{beneficiary.surname}}</td>
+                <td>{{beneficiary.surname}} {{beneficiary.othernames}}</td>
                 <td>{{beneficiary.gender}}</td>
                 <td> {{beneficiary.filNo}}</td>
                 <td>
@@ -224,9 +224,9 @@
                       <span>Add Dependant</span>
                     </div>
 
-                    <div class="action-item">
+                    <div (click)="showEdit(beneficiary)" class="action-item">
                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      <span>Update Family</span>
+                      <span>Edit Family</span>
                     </div>
                   </div>
                 </td>

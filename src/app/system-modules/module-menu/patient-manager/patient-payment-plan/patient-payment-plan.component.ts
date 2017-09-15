@@ -1,3 +1,4 @@
+import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
 import { User } from './../../../../models/facility-manager/setup/user';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Facility } from './../../../../models/facility-manager/setup/facility';
@@ -12,6 +13,7 @@ import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@ang
   styleUrls: ['./patient-payment-plan.component.scss']
 })
 export class PatientPaymentPlanComponent implements OnInit {
+  selectedCompanyCover: any;
   selectedHMOClient: any;
   selectedHMO: any;
   mainErr = true;
@@ -34,25 +36,34 @@ export class PatientPaymentPlanComponent implements OnInit {
 
   selectedFacility: Facility = <Facility>{};
   hmos: any[] = [];
+  companies: any[] = [];
   plans: any[] = [];
   user: User = <User>{};
   insurancePlanForm: FormGroup;
+  companyCoverPlanForm:FormGroup;
 
-  insuranceFormArrayIndex = 0;
-  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private locker: CoolLocalStorage,
-    private facilityService: FacilitiesService) { }
+  insuranceFormArrayIndex = 0;  
+  companyFormArrayIndex = 0;
+  constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private companyService: FacilityCompanyCoverService,
+    private locker: CoolLocalStorage, private facilityService: FacilitiesService) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.hmoService.hmos(this.selectedFacility._id).then(payload => {
       if (payload.body.length > 0) {
-        console.log(payload.body[0].hmos);
+        // console.log(payload.body[0].hmos);
         this.hmos = payload.body[0].hmos;
       }
     });
+    this.companyService.companycovers(this.selectedFacility._id).then(payload =>{
+      console.log(payload);
+      this.companies = payload.body[0].companyCovers;
+    })
     this.addInsurancePlan();
+    this.addCompanyCoverPlan();
     this.subscribeToValueChanges();
+    this.subscribeToCompanyCoverValueChanges();
   }
   addInsurancePlan() {
     this.insurancePlanForm = this.formBuilder.group({
@@ -63,7 +74,26 @@ export class PatientPaymentPlanComponent implements OnInit {
           hmoPlanId: ['', [<any>Validators.required]],
           plans: [''],
           client: [null],
-          readOnly: [false]
+          readOnly: [false],
+          addToHMOPlan: [false],
+          isPrincipal: [false]
+        })
+      ])
+    });
+  }
+
+  addCompanyCoverPlan() {
+    this.companyCoverPlanForm = this.formBuilder.group({
+      'companyCoverPlanArray': this.formBuilder.array([
+        this.formBuilder.group({
+          company: ['', [<any>Validators.required]],
+          companyPlan: ['', [<any>Validators.required]],
+          companyPlanId: ['', [<any>Validators.required]],
+          plans: [''],
+          client: [null],
+          readOnly: [false],
+          addToCompanyPlan: [false],
+          isPrincipal: [false]
         })
       ])
     });
@@ -105,6 +135,53 @@ export class PatientPaymentPlanComponent implements OnInit {
         }
       });
   }
+  subscribeToCompanyCoverValueChanges() {
+    (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['company'].valueChanges.subscribe(value => {
+      this.selectedCompanyCover = value;
+      console.log(value)
+      this.companyService.companycovers(this.selectedFacility._id, value).then(payload => {
+        console.log(payload.body);
+        this.plans = payload.body;
+        (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['plans'].setValue(this.plans, { onlySelf: true });
+      });
+    });
+
+
+    (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['addToCompanyPlan'].valueChanges.subscribe(value => {
+      if(value===true){
+        (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['companyPlanId'].setErrors(null);
+      }
+    });
+
+
+    (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['companyPlanId'].valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        console.log(value);
+        this.selectedCompanyCover = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['company'].value;
+        if (this.selectedCompanyCover === undefined) {
+          this._notification('Warning', 'Please select a Company to search from and try again!');
+        } else {
+          this.companyService.companycovers(this.selectedFacility._id, this.selectedCompanyCover, value).then(payload => {
+            console.log(payload);
+            if (payload.body !== null) {
+              this.selectedCompanyCover = payload.body;
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['client'].setValue(payload.body);
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['companyPlan'].setValue(payload.body.category);
+            } else {
+              this.selectedCompanyCover = undefined;
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['companyPlanId'].setErrors({ idNotFound: true });
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['companyPlan'].reset();
+            }
+          })
+        }
+      });
+  }
   pushNewInsurancePlan() {
     (<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
       .push(
@@ -114,48 +191,81 @@ export class PatientPaymentPlanComponent implements OnInit {
         hmoPlanId: ['', [<any>Validators.required]],
         plans: [''],
         client: [null],
-        readOnly: [false]
+        readOnly: [false],
+        addToHMOPlan: [false],
+        isPrincipal: [false]
       })
       );
     const index = (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.length - 1;
     this.insuranceFormArrayIndex = index;
     this.subscribeToValueChanges();
     console.log((<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
-    .controls[this.insuranceFormArrayIndex]));
-    
+      .controls[this.insuranceFormArrayIndex]));
+  }
 
-
-    // (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
-    // .controls[this.insuranceFormArrayIndex]).controls['hmo'].markAsPristine();
-    // (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
-    // .controls[this.insuranceFormArrayIndex]).markAsPristine();
+  pushNewCompanyCoverPlan() {
+    (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+      .push(
+      this.formBuilder.group({
+        company: ['', [<any>Validators.required]],
+        companyPlan: ['', [<any>Validators.required]],
+        companyPlanId: ['', [<any>Validators.required]],
+        plans: [''],
+        client: [null],
+        readOnly: [false],
+        addToCompanyPlan: [false],
+        isPrincipal: [false]
+      })
+      );
+    const index = (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length - 1;
+    this.companyFormArrayIndex = index;
+    this.subscribeToCompanyCoverValueChanges();
+    console.log((<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+      .controls[this.companyFormArrayIndex]));
   }
   onSubmit(insurance, i) {
     this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
       .controls[this.insuranceFormArrayIndex]).controls['readOnly'].setValue(true);
     console.log(insurance)
   }
+  onSubmitCompanyCover(company, i) {
+    this.selectedHMO = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+      .controls[this.companyFormArrayIndex]).controls['readOnly'].setValue(true);
+    console.log(company)
+  }
   isLastChild(i) {
     const len = (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.length;
-    console.log(i);
-    console.log(len)
-
-    if (i === (len - 1)){
-      console.log('on')
+    if (i === (len - 1)) {
       return true;
     }
-    console.log('off')
+    return false;
+  }
+  isCompanyLastChild(i) {
+    const len = (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length;
+    if (i === (len - 1)) {
+      return true;
+    }
     return false;
   }
   closeInsurancePlan(insurance, i) {
     (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.splice(i, 1);
     if ((<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.length === 0) {
       this.insuranceFormArrayIndex = 0;
-      this.addInsurancePlan()
+      this.addInsurancePlan();
+    }
+  }
+  closeCompanyPlan(company, i) {
+    (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.splice(i, 1);
+    if ((<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length === 0) {
+      this.companyFormArrayIndex = 0;
+      this.addCompanyCoverPlan()
     }
   }
   formArrayControlChanges(insurance, i) {
     this.insuranceFormArrayIndex = i;
+  }
+  companyFormArrayControlChanges(insurance, i) {
+    this.companyFormArrayIndex = i;
     console.log(i)
   }
   getRole(client) {

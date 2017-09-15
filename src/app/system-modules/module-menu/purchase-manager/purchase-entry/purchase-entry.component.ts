@@ -404,7 +404,7 @@ export class PurchaseEntryComponent implements OnInit {
           costPrice: ['', [<any>Validators.required]],
           total: [{value: "₦ 0", disabled:true}],
           qty: ['', [<any>Validators.required]],
-          expiryDate: ['', [<any>Validators.required]],
+          expiryDate: [new Date(), [<any>Validators.required]],
           readOnly: [false],
           id: ['']
         })

@@ -7,8 +7,15 @@
                 <thead>
                     <tr>
                         <th>
+                            <span style="padding-left: 3px;">S/N</span>
+                        </th>
+                        <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                             <span style="padding-left: 3px;">Patient</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Sent by</span>
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -24,16 +31,17 @@
 
                 <tbody>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
-                        <td class="table-content " colspan="4" style="text-align: center">
+                        <td class="table-content " colspan="6" style="text-align: center">
                             <md-spinner class="small-spinner"></md-spinner>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
-                        <td class="table-content " colspan="4" style="text-align: center">
+                        <td class="table-content " colspan="6" style="text-align: center">
                             No data available in table
                         </td>
                     </tr>
-                    <tr *ngFor="let inPatientWaitingItem of listPatientAdmissionWaiting">
+                    <tr *ngFor="let inPatientWaitingItem of listPatientAdmissionWaiting; let i = index;">
+                        <td>{{i+1}}</td>
                         <td (click)="navEpDetail(item)">
                             <div class="empWrap">
                                 <div class="list-img">
@@ -48,10 +56,23 @@
                                 </div>
                             </div>
                         </td>
+                        <td (click)="navEpDetail(item)">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="inPatientWaitingItem.employeeId?.employeeDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem.employeeId?.employeeDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.employeeId?.employeeDetails.profileImageObject?.thumbnail)"></div>
+                                </div>
+                                <div>
+                                    <b>{{inPatientWaitingItem.employeeId?.employeeDetails?.personFullName}}</b><br>
+                                    <small>{{inPatientWaitingItem.employeeId?.employeeDetails?.phoneNumber}}</small>
+                                </div>
+                            </div>
+                        </td>
                         <td>{{inPatientWaitingItem.clinicId?.clinicName}}</td>
                         <td>{{inPatientWaitingItem.wardId?.name}}</td>
                         <td>
-                            <div (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Admit</div>
+                            <button md-raised-button [disabled]="disableAdmitBtn" (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" style="color: #fff;height: 30px;line-height: 1.5;" [innerHtml]="admitBtnText"> </button>
+                            <!-- <div (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Admit</div> -->
                         </td>
                     </tr>
                 </tbody>

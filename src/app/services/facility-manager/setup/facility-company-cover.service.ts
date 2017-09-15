@@ -53,12 +53,12 @@ export class FacilityCompanyCoverService {
     return this._socket.update(companyCover._id, companyCover);
   }
 
-  companycovers(facilityId, companyCoverId?, search?) {
+  companycovers(facilityId, companyId?, search?) {
     const host = this._restService.getHost();
     const path = host + '/distinct-companycover-plans';
     return request
       .get(path)
-      .query({ facilityId: facilityId, companyCoverId: companyCoverId, search: search });
+      .query({ facilityId: facilityId, companyId: companyId, search: search });
   }
   updateBeneficiaryList(formData) {
     const host = this._restService.getHost();

@@ -107,7 +107,7 @@ export class NewSubLocationComponent implements OnInit {
           this.subLocation.description = val.sublocDesc;
           this.subLocation.name = val.sublocName;
           this.subLocation.shortName = val.sublocAlias;
-          const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
+          const index = this.facilityObj.minorLocations.findIndex((obj => obj._id === this.subLocation._id));
           this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
           this.facilityService.update(this.facilityObj).then((payload) => {
             this.tagService.create(tag).then(pay => {
@@ -121,7 +121,7 @@ export class NewSubLocationComponent implements OnInit {
           this.subLocation.description = val.sublocDesc;
           this.subLocation.name = val.sublocName;
           this.subLocation.shortName = val.sublocAlias;
-          const index = this.facilityObj.minorLocations.findIndex((obj => obj._id == this.subLocation._id));
+          const index = this.facilityObj.minorLocations.findIndex((obj => obj._id === this.subLocation._id));
           this.facilityObj.minorLocations.splice(index, 1, this.subLocation);
           this.facilityService.update(this.facilityObj).then((payload) => {
             let tag = this.tags[tagIndex];

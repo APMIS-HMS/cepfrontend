@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, AfterViewInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
@@ -12,6 +12,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 	styleUrls: ['./ward-manager.component.scss']
 })
 export class WardManagerComponent implements OnInit, OnDestroy {
+	@Input() checkedInWard: any;
 	pageInView: string;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
@@ -46,7 +47,11 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 			this.pageInView = url;
 		});
 
-		console.log(this.loginEmployee);
+		// Update the wardCheckedIn object when it changes.
+		this._wardEventEmitter.announceWard.subscribe(val => {
+			this.checkedInObject = val;
+		});
+
 		if ((this.loginEmployee.wardCheckIn === undefined
 		  || this.loginEmployee.wardCheckIn.length === 0)) {
 		  this.modal_on = true;
@@ -59,7 +64,7 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 			  isOn = true;
 			  let checkingObject = { typeObject: x, type: 'ward' };
 			  this.checkedInObject = checkingObject;
-			  this._employeeService.announceCheckIn(checkingObject);
+			  // this._employeeService.announceCheckIn(checkingObject);
 			  // Set page title
 			  this.isWardAvailable = true;
 			  this.wardTitle = x.minorLocationId.name;
@@ -67,6 +72,7 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 				this.loginEmployee = res;
 				checkingObject = { typeObject: x, type: 'ward' };
 				this.checkedInObject = checkingObject;
+				this._wardEventEmitter.announceWardChange(checkingObject);
 				this._employeeService.announceCheckIn(checkingObject);
 				this._locker.setObject('wardCheckingObject', checkingObject);
 			  });
@@ -84,7 +90,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 				this._employeeService.update(this.loginEmployee).then(payload => {
 				  this.loginEmployee = payload;
 				  const checkingObject = { typeObject: x, type: 'ward' };
-				  this.checkedInObject = checkingObject;
+					this.checkedInObject = checkingObject;
+					this._wardEventEmitter.announceWardChange(checkingObject);
 				  this._employeeService.announceCheckIn(checkingObject);
 				  this._locker.setObject('wardCheckingObject', checkingObject);
 				});
@@ -110,7 +117,6 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		this._wardEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
-
 	}
 
 	onClickAdmittedNavMenu() {
@@ -154,6 +160,11 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 			this.wardNavMenu = true;
 		}
 	}
+
+	// getCheckedInWard(value: any) {
+	// 	const checkedInObject = { typeObject: value, type: 'ward' };
+	// 	this.checkedInObject = checkedInObject;
+	// }
 
 	close_onClick(message: boolean): void {
 		this.modal_on = false;

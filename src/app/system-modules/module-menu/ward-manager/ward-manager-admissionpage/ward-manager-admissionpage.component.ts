@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import {
 	WardAdmissionService, InPatientListService, InPatientService, FacilitiesService
 } from '../../../../services/facility-manager/setup/index';
@@ -12,6 +12,7 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 	templateUrl: './ward-manager-admissionpage.component.html',
 	styleUrls: ['./ward-manager-admissionpage.component.scss']
 })
+
 export class WardManagerAdmissionpageComponent implements OnInit {
 	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 	admitPatient = false;
@@ -21,7 +22,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	newAdmissionShow = true;
 	dischargeShow = false;
 	_wardTransfer: WardTransfer = <WardTransfer>{};
-
+	selectedWard: any;
 	typeChecker: any = myGlobals;
 	selectInpatient: any;
 	listPatientAdmissionWaiting: any[] = [];
@@ -32,6 +33,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	newAdmissionLoading: Boolean = true;
 	transferInLoading: Boolean = true;
 	dischargeLoading: Boolean = true;
+	disableAdmitBtn: Boolean = false;
+	admitBtnText: String = '<i class="fa fa-bed" aria-hidden="true"></i> Admit';
 
 	constructor(
 		private _inPatientListService: InPatientListService,
@@ -42,11 +45,11 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 		// private gvariable: globalConfig
 		) {
 		this._inPatientListService.listenerCreate.subscribe(payload => {
-			this.getWaitingList();
+			this.getWaitingList(this.selectedWard);
 		});
 
 		this._inPatientListService.listenerUpdate.subscribe(payload => {
-			this.getWaitingList();
+			this.getWaitingList(this.selectedWard);
 		});
 	}
 
@@ -54,8 +57,13 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 		this._wardEventEmitter.setRouteUrl('Admission waiting list');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.user = <User>this._locker.getObject('auth');
-		this.getDischargeList();
-		this.getWaitingList();
+
+		this._wardEventEmitter.announceWard.subscribe(val => {
+			console.log(val);
+			this.selectedWard = val;
+			this.getWaitingList(val);
+			// this.getDischargeList(val);
+		});
 	}
 
 	// newAdmissionTab() {
@@ -89,8 +97,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	// 	this.getDischargeList();
 	// }
 
-	admitPatient_onClick(model: any, typeChecker = myGlobals) {
-		this.selectInpatient = model;
+	admitPatient_onClick(value: any, typeChecker = myGlobals) {
+		this.selectInpatient = value;
 		this.selectInpatient.typeChecker = typeChecker.onAdmission;
 		this.admitPatient = true;
 	}
@@ -114,7 +122,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 				// Update the checkOutDate of the last tranfer
 				this._inPatientService.update(payload)
 					.then(payload1 => {
-						this.getTransferInList();
+						this.getTransferInList(this.selectedWard);
 					})
 					.catch(err => {
 						console.log(err);
@@ -122,16 +130,24 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 			});
 	}
 
-	getWaitingList() {
-		this._inPatientListService.find({ query: { 'facilityId._id': this.facility._id, isAdmitted: false } }).then(res => {
+	getWaitingList(checkedInWard: any) {
+		this._inPatientListService.find({ query: {
+			'facilityId._id': this.facility._id,
+			'wardId._id': checkedInWard.typeObject.minorLocationId._id,
+			isAdmitted: false
+		}}).then(res => {
 			console.log(res);
 			this.newAdmissionLoading = false;
 			this.listPatientAdmissionWaiting = res.data;
 		});
 	}
 
-	getTransferInList() {
-		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.transfer, discharge: undefined } })
+	getTransferInList(checkedInWard: any) {
+		this._inPatientService.find({ query: {
+			facilityId: this.facility._id,
+			statusId: myGlobals.transfer,
+			discharge: undefined
+		}})
 			.then(payload => {
 				this.transferInLoading = false;
 				console.log(payload.data);
@@ -143,7 +159,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 			});
 	}
 
-	getDischargeList() {
+	getDischargeList(checkedInWard: any) {
 		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.discharge } })
 			.then(payload => {
 				this.dischargeLoading = false;

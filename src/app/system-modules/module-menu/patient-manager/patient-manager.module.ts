@@ -1,3 +1,4 @@
+import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -93,7 +94,7 @@ import { DocDiagnosisComponent } from './patientmanager-detailpage/documentation
         ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
-        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService]
+        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService, FacilityCompanyCoverService]
 })
 export class PatientManagerModule { }
 
