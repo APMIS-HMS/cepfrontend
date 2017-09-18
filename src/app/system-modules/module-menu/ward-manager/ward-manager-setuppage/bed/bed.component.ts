@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, WardAdmissionService } from '../../../../../services/facility-manager/setup/index';
-import { Facility, WardDetail, Room, WardRoom } from '../../../../../models/index';
+import { Facility, WardDetail, Room, WardRoom, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WardEmitterService } from '../../../../../services/facility-manager/ward-emitter.service';
@@ -12,19 +12,21 @@ import { WardEmitterService } from '../../../../../services/facility-manager/war
 	styleUrls: ['./bed.component.scss']
 })
 export class BedComponent implements OnInit {
+	@Output() selectedBed: any;
 	addbed = false;
 	wardId: string;
 	roomId: string;
 	facility: Facility = <Facility>{};
 	wardDetail: WardDetail = <WardDetail>{};
-	bedItems: any[] = [];
+	user: User = <User>{};
+	beds: any[] = [];
 	wardRoom: WardRoom = <WardRoom>{};
 	bedNameEditShow: any;
 	editBedName = new FormControl();
 
 	constructor(private _route: ActivatedRoute,
 		private router: Router,
-		private _facilitiesService: FacilitiesService,
+		public facilityService: FacilitiesService,
 		private _locker: CoolLocalStorage,
 		private _wardAdmissionService: WardAdmissionService,
 		private _wardEventEmitter: WardEmitterService) {
@@ -38,61 +40,56 @@ export class BedComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.user = <User>this._locker.getObject('auth');
 		this._route.params.subscribe(params => {
-			this.wardId = params['wardid'];
-			this.roomId = params['roomid'];
+			this.wardId = params.wardId;
+			this.roomId = params.roomId;
 		});
 		this._wardEventEmitter.setRouteUrl('Bed Setup');
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.getRooomBedItems();
 	}
 
-	bedNameEditToggle(indx) {
-		this.bedNameEditShow[indx] = !this.bedNameEditShow[indx];
-	}
-
-	bedNameEdit(indx, model) {
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
-				payload.data[0].locations.forEach(item => {
-					if (item.minorLocationId.toString() === this.wardId.toString()) {
-						item.rooms.forEach(itm => {
-							if (itm._id.toString() === this.roomId.toString()) {
-								itm.beds.forEach(bed => {
-									if (bed._id.toString() === model._id.toString()) {
-										bed.name = this.editBedName.value;
-									}
-								})
-							}
-						})
-					}
-				})
-				this._wardAdmissionService.update(payload.data[0]).then(callback => {})
-			})
+	bedNameEdit(index: Boolean, selectedBed: any) {
+		this.selectedBed = selectedBed;
+		this.addBedModal();
 	}
 
 	getRooomBedItems() {
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
-				payload.data[0].locations.forEach(item => {
-					if (item.minorLocationId.toString() === this.wardId.toString()) {
+		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
+			if (res.data.length > 0) {
+				console.log(res.data);
+				res.data[0].locations.forEach(item => {
+					if (item.minorLocationId === this.wardId) {
 						item.rooms.forEach(itm => {
-							if (itm._id.toString() === this.roomId.toString()) {
-								this.bedItems = itm.beds;
+							if (itm._id === this.roomId) {
+								console.log(itm);
+								this.beds = itm.beds;
 								this.wardRoom = itm;
-								this.bedNameEditShow = this.bedItems.map(i => false);
+								this.bedNameEditShow = this.beds.map(i => false);
 							}
 						})
 					}
 				});
-			});
+			}
+		});
 	}
+
+	// Notification
+	private _notification(type: String, text: String): void {
+		this.facilityService.announceNotification({
+		  users: [this.user._id],
+		  type: type,
+		  text: text
+		});
+	  }
 
 	addBedModal() {
 		this.addbed = true;
 	}
 
 	close_onClick() {
+		this.selectedBed = undefined;
 		this.addbed = false;
 	}
 
