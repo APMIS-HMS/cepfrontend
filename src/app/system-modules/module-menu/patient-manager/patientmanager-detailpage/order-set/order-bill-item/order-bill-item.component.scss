@@ -1,0 +1,86 @@
+.billitem-wrap{
+    position: relative;
+}
+.billbox-pointer{
+    position: absolute;
+    bottom: -26px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    color: #fff
+}
+.addDrugBtn{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 10px;
+    width: 70px;
+    margin: 0 auto;
+    cursor: pointer;
+    padding: 5px;
+}
+.btn-bill{
+    border: 1px solid #0270AC;
+    color: #0270AC;
+}
+.btn-bill:hover{
+    background: #0270AC;
+    color: #fff;
+}
+.btn-cancel{
+    border: 1px solid #ff2500;
+    color: #ff2500;
+}
+.btn-cancel:hover{
+    background: #ff2500;
+    color: #fff;
+}
+.modal_title{
+    font-size: 14px;
+}
+.modal-close-ico {
+    top: -7px;
+    right: -4px;
+    font-size: 13px;
+}
+.btn-wrap {
+    display: flex;
+    justify-content: space-around;
+}
+.frm-x2{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.frm-x2 .frm-item-wrap{
+    width: 48%;
+}
+.price-label-wrap{
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    line-height: 2;
+}
+.price-label {
+    font-style: italic;
+    color: #777;
+}
+.price-val {
+    font-weight: bold;
+    color: #ff2500;
+}
+.sel-item {
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #777;
+}
+form{
+    position: relative;
+}
+.ext-wrap{
+    position: absolute;
+    right: 0px;
+    top: -13px;
+    font-size: 10px;
+}

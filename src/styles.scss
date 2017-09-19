@@ -359,6 +359,11 @@ select {
     -moz-box-shadow: 0 8px 6px -6px #777;
     box-shadow: 0 8px 6px -6px #777;
 }
+.shadow-tb{
+    -webkit-box-shadow: 2px 16px 31px 0px #777;
+    -moz-box-shadow: 2px 16px 31px 0px #777;
+    box-shadow: 2px 16px 31px 0px #777;
+}
 
 .shadow-w {
     -webkit-box-shadow: 0 8px 6px -6px white;

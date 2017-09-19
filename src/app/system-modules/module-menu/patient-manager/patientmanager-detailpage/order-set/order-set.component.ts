@@ -24,6 +24,8 @@ export class OrderSetComponent implements OnInit {
   popPhysicianOrder = false;
   popProcedure = false;
 
+  showbill= false;
+
   constructor() { }
 
   ngOnInit() {
@@ -50,9 +52,13 @@ export class OrderSetComponent implements OnInit {
     this.popNursingCare = false;
     this.popPhysicianOrder = false;
     this.popProcedure = false;
+    this.showbill = false;
   }
   authorizerx(){
     this.showDoc.emit(true);
+  }
+  showbill_click(){
+    this.showbill = true;
   }
 
 }

@@ -30,6 +30,39 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div (click)="showbill_click()" class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
+                    
+                        <div class="action-item">
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                          <span>Remove Item</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td *ngIf="showbill" style="background:#bebebe; position:relative;">
+                      <div class="billItemWrap shadow-tb">
+                        <app-order-bill-item  (closeModal)="close_onClick($event)"></app-order-bill-item>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Paracetamol</td>
+                    <td>strength-route-frequency-duration+unit-refil-startdate-enddate</td>
+                    <td class="action-placeholder" style="text-align:center;">
+                      <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                      <div class="action-container shadow-RB">
+                        <div (click)="popMed_show()" class="action-item">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          <span>Edit Item</span>
+                        </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -48,23 +81,10 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
-                      
-                        <div class="action-item">
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                          <span>Remove Item</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Paracetamol</td>
-                    <td>strength-route-frequency-duration+unit-refil-startdate-enddate</td>
-                    <td class="action-placeholder" style="text-align:center;">
-                      <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                      <div class="action-container shadow-RB">
-                        <div (click)="popMed_show()" class="action-item">
-                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                          <span>Edit Item</span>
+
+                        <div (click)="showbill_click()" class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
                         </div>
                       
                         <div class="action-item">
@@ -76,8 +96,9 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
 
+              <div (click)="popMed_show()" class="add-link"><i class="fa fa-plus" aria-hidden="true"></i> Add Medication</div>
+            </div>
             <div class="med-sect">
               <div class="itemSect-title">Investigation</div>
 
@@ -93,23 +114,10 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
-                      
+
                         <div class="action-item">
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                          <span>Remove Item</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Paracetamol</td>
-                    <td>strength-route-frequency-duration+unit-refil-startdate-enddate</td>
-                    <td class="action-placeholder" style="text-align:center;">
-                      <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                      <div class="action-container shadow-RB">
-                        <div class="action-item">
-                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                          <span>Edit Item</span>
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
                         </div>
                       
                         <div class="action-item">
@@ -128,6 +136,34 @@
                         <div class="action-item">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
+                        </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
+                      
+                        <div class="action-item">
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                          <span>Remove Item</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Paracetamol</td>
+                    <td>strength-route-frequency-duration+unit-refil-startdate-enddate</td>
+                    <td class="action-placeholder" style="text-align:center;">
+                      <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                      <div class="action-container shadow-RB">
+                        <div class="action-item">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          <span>Edit Item</span>
+                        </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
                         </div>
                       
                         <div class="action-item">
@@ -139,6 +175,7 @@
                   </tr>
                 </tbody>
               </table>
+              <div (click)="popInvestigation_show()" class="add-link"><i class="fa fa-plus" aria-hidden="true"></i> Add Investigation</div>
             </div>
 
             <div class="med-sect">
@@ -156,6 +193,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -174,6 +216,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -191,6 +238,11 @@
                         <div (click)="popProcedure_show()" class="action-item">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
+                        </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
                         </div>
                       
                         <div class="action-item">
@@ -202,6 +254,7 @@
                   </tr>
                 </tbody>
               </table>
+              <div (click)="popProcedure_show()" class="add-link"><i class="fa fa-plus" aria-hidden="true"></i> Add Procedure</div>
             </div>
 
             <div class="med-sect">
@@ -219,6 +272,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -237,6 +295,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -254,6 +317,11 @@
                         <div (click)="popNursingCare_show()" class="action-item">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
+                        </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
                         </div>
                       
                         <div class="action-item">
@@ -265,6 +333,7 @@
                   </tr>
                 </tbody>
               </table>
+              <div (click)="popNursingCare_show()" class="add-link"><i class="fa fa-plus" aria-hidden="true"></i> Add Nursing Care</div>
             </div>
 
             <div class="med-sect">
@@ -282,6 +351,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -300,6 +374,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
                         </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
+                        </div>
                       
                         <div class="action-item">
                           <i class="fa fa-times" aria-hidden="true"></i>
@@ -317,6 +396,11 @@
                         <div (click)="popPhysicianOrder_show()" class="action-item">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <span>Edit Item</span>
+                        </div>
+
+                        <div class="action-item">
+                          <i class="fa fa-money" aria-hidden="true"></i>
+                          <span>Bill Item</span>
                         </div>
                       
                         <div class="action-item">
@@ -328,6 +412,7 @@
                   </tr>
                 </tbody>
               </table>
+              <div (click)="popPhysicianOrder_show()" class="add-link"><i class="fa fa-plus" aria-hidden="true"></i> Add Physician Order</div>
             </div>
           </div>
 
