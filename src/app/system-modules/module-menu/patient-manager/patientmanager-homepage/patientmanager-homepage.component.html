@@ -80,7 +80,7 @@
                         <span>Set Appointment</span>
                     </div>
 
-                    <div (click)="payPlanShow()" class="action-item">
+                    <div (click)="payPlanShow(patient)" class="action-item">
                         <i class="fa fa-money" aria-hidden="true"></i>
                         <span>Payment Plans</span>
                     </div>
@@ -288,5 +288,5 @@
 
 
 <div *ngIf="payPlan" class="modal-overlay">
-    <app-patient-payment-plan (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-patient-payment-plan>
+    <app-patient-payment-plan [selectedPatient]="selectedPatient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-patient-payment-plan>
 </div>
