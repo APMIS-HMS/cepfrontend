@@ -10,10 +10,15 @@
     margin: 0 5px 20px 0;
     width: 100%;
     height: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    justify-content: space-around;
-    padding-bottom: 10px;
+    -ms-flex-pack: distribute;
+    justify-content: flex-start;
+    padding: 10px;
+    box-sizing: border-box;
 }
 .another{
     position: absolute;
@@ -102,4 +107,21 @@
     border-radius: 100%;
     margin: 0 auto;
     background: #eee
+}
+.mat-input-container{
+    width: 100%;
+}
+.addNew{
+    width: 50%;
+    justify-content: space-between;
+    display: flex;
+}
+.frmArray{
+    position: relative;
+    width:100%;
+}
+.closeIcon{
+    right: 10px;
+    top: 6px;
+    position: absolute
 }

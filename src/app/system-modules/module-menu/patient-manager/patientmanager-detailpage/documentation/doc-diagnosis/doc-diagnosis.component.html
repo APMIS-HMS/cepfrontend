@@ -29,8 +29,6 @@
             <div class="frm-item-wrap">
               <apmis-lookup formControlName="diagnosis" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             </div>
-
-            <div class="plus-link"><i class="fa fa-plus" aria-hidden="true"></i>Another Diagnosis</div>
           </div>
         
           <div class="addDrugBtn">
@@ -44,29 +42,19 @@
           <table>
             <tbody>
               <tr>
-                <td>Principal</td>
+                <td>
+                  <div class="frm-item-wrap">
+                      <md-select placeholder="Type" [formControl]="favorite_type">
+                          <md-option [value]="1">Principal</md-option>
+                          <md-option [value]="1">Associated</md-option>
+                          <md-option [value]="1">Complication</md-option>
+                          <md-option [value]="1">Working</md-option>
+                          <md-option [value]="1">Rule Out</md-option>
+                      </md-select>
+                  </div>
+                </td>
                 <td>
                   <ul class="typeCat">
-                    <li>High Temprature</li>
-                    <li>Fever</li>
-                  </ul>
-                </td>
-                <td>1220A</td>
-              </tr>
-              <tr>
-                <td>Associated</td>
-                <td>
-                  <ul>
-                    <li>High Temprature</li>
-                    <li>Fever</li>
-                  </ul>
-                </td>
-                <td>1220A</td>
-              </tr>
-              <tr>
-                <td>Complication</td>
-                <td>
-                  <ul>
                     <li>High Temprature</li>
                     <li>Fever</li>
                   </ul>
@@ -118,29 +106,19 @@
           <table>
             <tbody>
               <tr>
-                <td>Principal</td>
+                <td>
+                  <div class="frm-item-wrap">
+                      <md-select placeholder="Type" [formControl]="recently_type">
+                          <md-option [value]="1">Principal</md-option>
+                          <md-option [value]="1">Associated</md-option>
+                          <md-option [value]="1">Complication</md-option>
+                          <md-option [value]="1">Working</md-option>
+                          <md-option [value]="1">Rule Out</md-option>
+                      </md-select>
+                  </div>
+                </td>
                 <td>
                   <ul class="typeCat">
-                    <li>High Temprature</li>
-                    <li>Fever</li>
-                  </ul>
-                </td>
-                <td>1220A</td>
-              </tr>
-              <tr>
-                <td>Associated</td>
-                <td>
-                  <ul>
-                    <li>High Temprature</li>
-                    <li>Fever</li>
-                  </ul>
-                </td>
-                <td>1220A</td>
-              </tr>
-              <tr>
-                <td>Complication</td>
-                <td>
-                  <ul>
                     <li>High Temprature</li>
                     <li>Fever</li>
                   </ul>
@@ -164,6 +142,7 @@
               </ul>
             </td>
             <td>1220A</td>
+            <td class="delItem"><i class="fa fa-trash" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>Associated</td>
@@ -174,6 +153,7 @@
               </ul>
             </td>
             <td>1220A</td>
+            <td class="delItem"><i class="fa fa-trash" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>Complication</td>
@@ -184,9 +164,12 @@
               </ul>
             </td>
             <td>1220A</td>
+            <td class="delItem"><i class="fa fa-trash" aria-hidden="true"></i></td>
           </tr>
         </tbody>
       </table>
+
+      <button class="cta-1">DONE</button>
     </div>
   </div>
 </div>
