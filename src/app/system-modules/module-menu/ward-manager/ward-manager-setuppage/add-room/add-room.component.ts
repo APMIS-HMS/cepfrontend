@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
@@ -15,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AddRoomComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Input() selectedRoom: any;
 	addRoomFormGroup: FormGroup;
 	mainErr = true;
 	wardId: string;
@@ -26,6 +27,7 @@ export class AddRoomComponent implements OnInit {
 	room: Room = <Room>{};
 	wardRoom: WardRoom = <WardRoom>{};
 	servicePriceTags: any[] = [];
+	serviceId: any = <any>{};
 	groups: any[] = [];
 	errMsg = 'You have unresolved errors';
 	addRoomBtnText: String = '<i class="fa fa-plus"></i> Add Room';
@@ -61,6 +63,24 @@ export class AddRoomComponent implements OnInit {
 
 		this.getWaitGroupItems();
 		this.getServicePriceTag();
+
+		setTimeout(x => {
+			if (!!this.selectedRoom) {
+				if (this.groups.length > 0 && this.servicePriceTags.length > 0) {
+					this.addRoomFormGroup.controls['room'].setValue(this.selectedRoom.name);
+					this.addRoomFormGroup.controls['group'].setValue(this.selectedRoom.groupId);
+					this.addRoomFormGroup.controls['service'].setValue(this.selectedRoom.serviceId);
+					this.serviceId = this.selectedRoom.serviceId;
+					this.addRoomBtnText = 'Edit Room';
+				}
+			}
+		}, 2000);
+
+		// this.addRoomFormGroup.controls['service'].valueChanges.subscribe(val => {
+		// 	console.log(val);
+		// 	this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
+		// 	this.selectedProductId = drugId.getAttribute('data-p-id');
+		// });
 	}
 
 	getWaitGroupItems() {
@@ -82,51 +102,18 @@ export class AddRoomComponent implements OnInit {
 			this.disableAddRoomBtn = true;
 			this.addRoomBtnText = 'Adding Room... <i class="fa fa-spinner fa-spin"></i>';
 			this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-				console.log(res);
-				const roomArray = [];
 				const room = {
 					name: value.room,
 					groupId: value.group,
 					serviceId: value.service
 				};
-				roomArray.push(room);
-				const ward = {
-					minorLocationId: this.wardId,
-					rooms: roomArray
-				};
 
 				if (res.data.length > 0) {
-					// Loop through locations.
-					// If minorLocationId already exist?
-					// Push room item into rooms, else push ward into locations.
 					res.data[0].locations.forEach(item => {
-						if (item.minorLocationId === this.wardId) {
+						if (item.minorLocationId._id === this.wardId) {
 							item.rooms.push(room);
-						} else {
-							res.data[0].locations.push(ward);
 						}
 					});
-					// this.wardRoom.minorLocationId = this.wardId;
-					// this.room.name = this.addRoomFormGroup.controls['room'].value;
-					// this.room.groupId = this.addRoomFormGroup.controls['group'].value;
-					// this.room.serviceId = this.addRoomFormGroup.controls['service'].value;
-					// this.wardRoom.rooms = [];
-					// this.wardRoom.rooms.push(this.room);
-					// res.data[0].locations.forEach(item => {
-					// 	console.log(item);
-					// 	if (item.minorLocationId.toString() === this.wardId.toString()) {
-					// 		item.rooms.push(this.room);
-					// 	}
-					// });
-					// let counter = 0;
-					// res.data[0].locations.forEach(itm => {
-					// 	if (itm.minorLocationId.toString() !== this.wardId.toString()) {
-					// 		counter += 1;
-					// 	}
-					// 	if (counter === res.data[0].locations.length) {
-					// 		res.data[0].locations.push(this.wardRoom);
-					// 	}
-					// });
 					this._wardAdmissionService.update(res.data[0]).then(updateRes => {
 						console.log(updateRes);
 						const text = value.room + ' has been added successfully';
@@ -136,28 +123,15 @@ export class AddRoomComponent implements OnInit {
 						this.addRoomFormGroup.reset();
 						this.closeModal.emit(true);
 					}).catch(err => console.log(err));
-				} else {
-					this.wardDetail.locations = [];
-					this.wardRoom.rooms = [];
-					const locationArray = [];
-					locationArray.push(ward);
-					const wardDetails = {
-						facilityId: this.miniFacility,
-						locations: locationArray
-					};
-
-					this._wardAdmissionService.create(wardDetails).then(createRes => {
-						const text = value.room + ' has been added successfully';
-						this._notification('Success', text);
-						this.addRoomBtnText = '<i class="fa fa-plus"></i> Add Room';
-						this.disableAddRoomBtn = false;
-						this.addRoomFormGroup.reset();
-						this.closeModal.emit(true);
-					});
 				}
 			}).catch(err => console.log(err));
 		}
 
+	}
+
+	onChangeService(item, serviceId) {
+		console.log(item);
+		console.log(serviceId);
 	}
 
 	// Notification

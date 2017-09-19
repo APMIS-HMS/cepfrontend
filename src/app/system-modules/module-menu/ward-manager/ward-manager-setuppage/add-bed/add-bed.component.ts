@@ -55,7 +55,6 @@ export class AddBedComponent implements OnInit {
 			bed: ['', [<any>Validators.required]]
 		});
 
-		console.log(this.selectedBed);
 		this._route.params.subscribe(params => {
 			this.wardId = params.wardId;
 			this.roomId = params.roomId;
@@ -75,7 +74,7 @@ export class AddBedComponent implements OnInit {
 				this.addBedBtnText = 'Editing Bed... <i class="fa fa-spinner fa-spin"></i>';
 				this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
 					res.data[0].locations.forEach(item => {
-						if (item.minorLocationId === this.wardId) {
+						if (item.minorLocationId._id === this.wardId) {
 							item.rooms.forEach(itm => {
 								if (itm._id === this.roomId) {
 									itm.beds.forEach(bed => {
@@ -103,7 +102,7 @@ export class AddBedComponent implements OnInit {
 				this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
 					if (res.data.length > 0) {
 						res.data[0].locations.forEach(item => {
-							if (item.minorLocationId === this.wardId) {
+							if (item.minorLocationId._id === this.wardId) {
 								item.rooms.forEach(itm => {
 									if (itm._id === this.roomId) {
 										const bed = {

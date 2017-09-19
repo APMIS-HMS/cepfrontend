@@ -112,14 +112,14 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationHomeContentArea = false;
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
-    if(model.name !== undefined && model.name.toLowerCase() == 'ward') {
+    if (model.name !== undefined && model.name.toLowerCase() == 'ward') {
       this.isWardSelected = true;
     } else {
       this.isWardSelected = false;
     }
-    
+
     this.locationObj = model;
-    
+
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
   }
 
@@ -172,7 +172,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.newLocationModal_on = false;
     this.subLocation = <any>{};
   }
-  editMinorLoc(value){
+  editMinorLoc(value) {
     console.log(value);
     this.subLocation = value;
     this.modal_on = false;

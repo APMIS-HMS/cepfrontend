@@ -60,7 +60,7 @@ export class BedComponent implements OnInit {
 			if (res.data.length > 0) {
 				console.log(res.data);
 				res.data[0].locations.forEach(item => {
-					if (item.minorLocationId === this.wardId) {
+					if (item.minorLocationId._id === this.wardId) {
 						item.rooms.forEach(itm => {
 							if (itm._id === this.roomId) {
 								console.log(itm);
