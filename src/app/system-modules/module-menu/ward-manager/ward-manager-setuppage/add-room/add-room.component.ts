@@ -79,10 +79,9 @@ export class AddRoomComponent implements OnInit {
 
 	addroom(value: any, valid: boolean) {
 		if (valid) {
-			console.log(value);
 			this.disableAddRoomBtn = true;
 			this.addRoomBtnText = 'Adding Room... <i class="fa fa-spinner fa-spin"></i>';
-			this._wardAdmissionService.find({ query: { facilityId: this.facility._id } }).then(res => {
+			this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
 				console.log(res);
 				const roomArray = [];
 				const room = {

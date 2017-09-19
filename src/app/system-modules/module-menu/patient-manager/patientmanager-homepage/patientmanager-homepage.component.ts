@@ -303,7 +303,8 @@ export class PatientmanagerHomepageComponent implements OnInit {
     control.push(this._initNextOfKin());
   }
 
-  payPlanShow() {
+  payPlanShow(patient) {
+    this.selectedPatient = patient;
     this.payPlan = true;
   }
 

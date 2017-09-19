@@ -125,14 +125,15 @@ export class RoomComponent implements OnInit {
 		// 		});
 		// 	});
 		this._wardAdmissionService.find({ query: {
-			facilityId: this.facility._id
+			'facilityId._id': this.facility._id
 		}}).then(res => {
+			this.loading = false;
 			console.log(res);
 			if (res.data.length > 0) {
-				console.log(res.data[0].locations);
 				const rooms = res.data[0].locations.filter(x => x.minorLocationId === this.wardId);
-				this.rooms = rooms.rooms;
 				console.log(rooms);
+				this.rooms = rooms[0].rooms;
+				console.log(this.rooms);
 			}
 		});
 	}

@@ -1,12 +1,15 @@
+import { FacilityFamilyCoverService } from './../../../../services/facility-manager/setup/facility-family-cover.service';
+import { MaritalStatus } from './../../../../models/facility-manager/setup/maritalstatus';
+import { PolicyService } from './../../../../services/facility-manager/setup/policy.service';
 import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
 import { User } from './../../../../models/facility-manager/setup/user';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Facility } from './../../../../models/facility-manager/setup/facility';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { HmoService } from './../../../../services/facility-manager/setup/hmo.service';
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
-
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 @Component({
   selector: 'app-patient-payment-plan',
   templateUrl: './patient-payment-plan.component.html',
@@ -15,7 +18,9 @@ import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@ang
 export class PatientPaymentPlanComponent implements OnInit {
   selectedCompanyCover: any;
   selectedHMOClient: any;
+  selectedFamilyCover:any;
   selectedHMO: any;
+  selectedPatientPolicy: any = undefined;
   mainErr = true;
   errMsg = 'You have unresolved errors';
 
@@ -33,6 +38,7 @@ export class PatientPaymentPlanComponent implements OnInit {
   familyPlanId = new FormControl('', Validators.required);
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() selectedPatient;
 
   selectedFacility: Facility = <Facility>{};
   hmos: any[] = [];
@@ -40,30 +46,115 @@ export class PatientPaymentPlanComponent implements OnInit {
   plans: any[] = [];
   user: User = <User>{};
   insurancePlanForm: FormGroup;
-  companyCoverPlanForm:FormGroup;
+  companyCoverPlanForm: FormGroup;
+  familyCoverPlanForm: FormGroup;
 
-  insuranceFormArrayIndex = 0;  
+  insuranceFormArrayIndex = 0;
   companyFormArrayIndex = 0;
+  familyFormArrayIndex = 0;
+  addCompanyCondition = false;
+  addInsuranceCondition = false;
+
+  genders: any[] = [
+    {
+      name: 'Male',
+      _id: 'M'
+    },
+    {
+      name: 'Female',
+      _id: 'F'
+    }
+  ];
+  statuses: any[] = [
+    {
+      name: 'Active',
+      _id: 'Active'
+    },
+    {
+      name: 'Inactive',
+      _id: 'Inactive'
+    }
+  ];
+
   constructor(private formBuilder: FormBuilder, private hmoService: HmoService, private companyService: FacilityCompanyCoverService,
-    private locker: CoolLocalStorage, private facilityService: FacilitiesService) { }
+    private locker: CoolLocalStorage, private facilityService: FacilitiesService, private policyService: PolicyService,
+    private companyCoverService: FacilityCompanyCoverService, private familyCoverService: FacilityFamilyCoverService) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.hmoService.hmos(this.selectedFacility._id).then(payload => {
       if (payload.body.length > 0) {
-        // console.log(payload.body[0].hmos);
         this.hmos = payload.body[0].hmos;
       }
     });
-    this.companyService.companycovers(this.selectedFacility._id).then(payload =>{
-      console.log(payload);
+    this.companyService.companycovers(this.selectedFacility._id).then(payload => {
       this.companies = payload.body[0].companyCovers;
-    })
+    });
     this.addInsurancePlan();
     this.addCompanyCoverPlan();
+    this.addDependant();
     this.subscribeToValueChanges();
     this.subscribeToCompanyCoverValueChanges();
+    this.getPersonPolicies();
+  }
+  getPersonPolicies() {
+    this.policyService.find({ query: { 'personId._id': this.selectedPatient.personId } }).then(payload => {
+      if (payload.data.length > 0 && payload.data[0].companyCovers !== undefined) {
+        payload.data[0].companyCovers.forEach((item, i) => {
+          this.selectedPatientPolicy = payload.data[0];
+          this.companyService.companycovers(this.selectedFacility._id, item.company._id).then(payload2 => {
+            console.log(item);
+            (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .push(
+              this.formBuilder.group({
+                company: [item.company._id, [<any>Validators.required]],
+                plans: [payload2.body],
+                companyPlan: [item.category, [<any>Validators.required]],
+                companyPlanId: [item.filNo, [<any>Validators.required]],
+                client: [null],
+                readOnly: [false],
+                addToCompanyPlan: [false],
+                isPrincipal: [false],
+                addCompanyCondition: [false]
+              })
+              );
+            // (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.reverse();
+          });
+          // (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.reverse();
+          const index = (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length - 1;
+          this.companyFormArrayIndex = index;
+          this.subscribeToCompanyCoverValueChanges();
+          // (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.reverse();
+        })
+      }
+
+      if (payload.data.length > 0 && payload.data[0].hmoCovers !== undefined) {
+        payload.data[0].hmoCovers.forEach((item, i) => {
+          this.selectedPatientPolicy = payload.data[0];
+          this.hmoService.hmos(this.selectedFacility._id, item.hmo._id).then(payload2 => {
+            console.log(item);
+            (<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+              .push(
+              this.formBuilder.group({
+                hmo: [item.hmo._id, [<any>Validators.required]],
+                hmoPlan: [item.plan, [<any>Validators.required]],
+                hmoPlanId: [item.filNo, [<any>Validators.required]],
+                plans: [payload2.body],
+                client: [null],
+                readOnly: [false],
+                addToHMOPlan: [false],
+                isPrincipal: [false],
+                addInsuranceCondition: [false]
+              })
+              );
+          });
+          const index = (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length - 1;
+          this.companyFormArrayIndex = index;
+          this.subscribeToCompanyCoverValueChanges();
+        })
+      }
+    })
   }
   addInsurancePlan() {
     this.insurancePlanForm = this.formBuilder.group({
@@ -76,7 +167,8 @@ export class PatientPaymentPlanComponent implements OnInit {
           client: [null],
           readOnly: [false],
           addToHMOPlan: [false],
-          isPrincipal: [false]
+          isPrincipal: [false],
+          addInsuranceCondition: [false]
         })
       ])
     });
@@ -93,7 +185,28 @@ export class PatientPaymentPlanComponent implements OnInit {
           client: [null],
           readOnly: [false],
           addToCompanyPlan: [false],
-          isPrincipal: [false]
+          isPrincipal: [false],
+          addCompanyCondition: [false]
+        })
+      ])
+    });
+  }
+
+  addDependant() {
+    this.familyCoverPlanForm = this.formBuilder.group({
+      'dependantArray': this.formBuilder.array([
+        this.formBuilder.group({
+          surname: ['', [Validators.required]],
+          familyPlanId:['',[Validators.required]],
+          othernames: ['', [Validators.required]],
+          gender: ['', [Validators.required]],
+          email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+          phone: ['', []],
+          status: ['', [<any>Validators.required]],
+          filNo: [''],
+          readOnly: [false],
+          operation: ['save'],
+          serial: [0]
         })
       ])
     });
@@ -102,34 +215,45 @@ export class PatientPaymentPlanComponent implements OnInit {
     (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls[this.insuranceFormArrayIndex]).controls['hmo'].valueChanges.subscribe(value => {
       this.selectedHMO = value;
       this.hmoService.hmos(this.selectedFacility._id, value).then(payload => {
-        console.log(payload.body);
         this.plans = payload.body;
         (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls[this.insuranceFormArrayIndex]).controls['plans'].setValue(this.plans, { onlySelf: true });
       });
     });
+
+
+    (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls[this.insuranceFormArrayIndex]).controls['addToHMOPlan'].valueChanges.subscribe(value => {
+      if (value === true) {
+        (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls[this.insuranceFormArrayIndex]).controls['hmoPlanId'].setErrors(null);
+      }
+    });
+
     (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls[this.insuranceFormArrayIndex]).controls['hmoPlanId'].valueChanges
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
-        console.log(value);
         this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls[this.insuranceFormArrayIndex]).controls['hmo'].value;
         if (this.selectedHMO === undefined) {
           this._notification('Warning', 'Please select an HMO to search from and try again!');
         } else {
           this.hmoService.hmos(this.selectedFacility._id, this.selectedHMO, value).then(payload => {
-            console.log(payload);
             if (payload.body !== null) {
               this.selectedHMOClient = payload.body;
               (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
                 .controls[this.insuranceFormArrayIndex]).controls['client'].setValue(payload.body);
               (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
                 .controls[this.insuranceFormArrayIndex]).controls['hmoPlan'].setValue(payload.body.plan);
+              (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+                .controls[this.insuranceFormArrayIndex]).controls['addInsuranceCondition'].setValue(false);
+              this.addInsuranceCondition = false;
             } else {
               this.selectedHMOClient = undefined;
               (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
                 .controls[this.insuranceFormArrayIndex]).controls['hmoPlanId'].setErrors({ idNotFound: true });
               (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
                 .controls[this.insuranceFormArrayIndex]).controls['hmoPlan'].reset();
+              (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+                .controls[this.insuranceFormArrayIndex]).controls['addInsuranceCondition'].setValue(true);
+              this.addInsuranceCondition = true;
             }
           })
         }
@@ -138,9 +262,7 @@ export class PatientPaymentPlanComponent implements OnInit {
   subscribeToCompanyCoverValueChanges() {
     (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['company'].valueChanges.subscribe(value => {
       this.selectedCompanyCover = value;
-      console.log(value)
       this.companyService.companycovers(this.selectedFacility._id, value).then(payload => {
-        console.log(payload.body);
         this.plans = payload.body;
         (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['plans'].setValue(this.plans, { onlySelf: true });
       });
@@ -148,7 +270,7 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
     (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['addToCompanyPlan'].valueChanges.subscribe(value => {
-      if(value===true){
+      if (value === true) {
         (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['companyPlanId'].setErrors(null);
       }
     });
@@ -158,28 +280,61 @@ export class PatientPaymentPlanComponent implements OnInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
-        console.log(value);
         this.selectedCompanyCover = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['company'].value;
         if (this.selectedCompanyCover === undefined) {
           this._notification('Warning', 'Please select a Company to search from and try again!');
         } else {
           this.companyService.companycovers(this.selectedFacility._id, this.selectedCompanyCover, value).then(payload => {
-            console.log(payload);
             if (payload.body !== null) {
               this.selectedCompanyCover = payload.body;
               (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
                 .controls[this.companyFormArrayIndex]).controls['client'].setValue(payload.body);
               (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
                 .controls[this.companyFormArrayIndex]).controls['companyPlan'].setValue(payload.body.category);
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['addCompanyCondition'].setValue(false);
             } else {
               this.selectedCompanyCover = undefined;
               (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
                 .controls[this.companyFormArrayIndex]).controls['companyPlanId'].setErrors({ idNotFound: true });
               (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
                 .controls[this.companyFormArrayIndex]).controls['companyPlan'].reset();
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['addCompanyCondition'].setValue(true);
+              (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+                .controls[this.companyFormArrayIndex]).controls['client'].reset();
             }
           })
         }
+      });
+  }
+  subscribeToFamilyCoverValueChanges() {
+    (<FormGroup>(<FormArray>this.familyCoverPlanForm.controls['dependantArray']).controls[this.familyFormArrayIndex]).controls['familyPlanId'].valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        // this.selectedCompanyCover = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls[this.companyFormArrayIndex]).controls['company'].value;
+        this.familyCoverService.familycovers(this.selectedFacility._id, this.selectedCompanyCover, value).then(payload => {
+          if (payload.body !== null) {
+            this.selectedCompanyCover = payload.body;
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['client'].setValue(payload.body);
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['companyPlan'].setValue(payload.body.category);
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['addCompanyCondition'].setValue(false);
+          } else {
+            this.selectedCompanyCover = undefined;
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['companyPlanId'].setErrors({ idNotFound: true });
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['companyPlan'].reset();
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['addCompanyCondition'].setValue(true);
+            (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+              .controls[this.companyFormArrayIndex]).controls['client'].reset();
+          }
+        })
       });
   }
   pushNewInsurancePlan() {
@@ -193,14 +348,13 @@ export class PatientPaymentPlanComponent implements OnInit {
         client: [null],
         readOnly: [false],
         addToHMOPlan: [false],
-        isPrincipal: [false]
+        isPrincipal: [false],
+        addInsuranceCondition: [false]
       })
       );
     const index = (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.length - 1;
     this.insuranceFormArrayIndex = index;
     this.subscribeToValueChanges();
-    console.log((<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
-      .controls[this.insuranceFormArrayIndex]));
   }
 
   pushNewCompanyCoverPlan() {
@@ -214,24 +368,659 @@ export class PatientPaymentPlanComponent implements OnInit {
         client: [null],
         readOnly: [false],
         addToCompanyPlan: [false],
-        isPrincipal: [false]
+        isPrincipal: [false],
+        addCompanyCondition: [false]
       })
       );
     const index = (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length - 1;
     this.companyFormArrayIndex = index;
     this.subscribeToCompanyCoverValueChanges();
-    console.log((<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
-      .controls[this.companyFormArrayIndex]));
   }
+
+  saveINullPolicyNullClientWithPrincipal(insurance) {
+    let newModel = {
+      catetory: 'STAFF',
+      date: new Date(),
+      principalEmpID: insurance.value.hmoPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.lastName,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    console.log(insurance.value.client)
+    console.log(insurance)
+    console.log(this.selectedPatient.personDetails)
+    if (insurance.value.client === undefined || insurance.value.client === null) {
+      console.log('null client')
+      insurance.value.client = {};
+      insurance.value.client = newModel;
+      console.log(newModel)
+    }
+    const index = this.hmos.findIndex(x => x.hmo._id === insurance.value.hmo);
+    insurance.value.client.hmo = this.hmos[index].hmo;
+
+
+    let param = {
+      model: insurance.value.client,
+      operation: 'save',
+      dependants: [],
+      facilityId: this.selectedFacility._id,
+      hmo: this.hmos[index].hmo,
+      hmoPlan:insurance.value.hmoPlan
+    };
+    console.log(param);
+    this.hmoService.updateBeneficiaryList(param).then(payload => {
+      const comCoverId = insurance.value.hmoPlanId;
+      this.hmoService.hmos(this.selectedFacility._id, insurance.value.hmo, comCoverId).then(pay => {
+        console.log(pay);
+
+        let newPolicy: any = {};
+        let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
+        copyPatient = this.trimPerson(copyPatient);
+
+        newPolicy.personId = copyPatient.personDetails;
+
+        pay.body.hmo = this.hmos[index].hmo;
+        newPolicy.hmoCovers = [pay.body];
+
+
+        this.policyService.create(newPolicy).then(payload => {
+          console.log('new policy');
+          console.log(payload);
+        })
+
+
+      });
+    })
+  }
+  saveINullPolicyNullClientWithDependant(insurance) {
+    let newModel = {
+      catetory: 'DEPENDANT',
+      date: new Date(),
+      principalEmpID: insurance.value.hmoPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.surname,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    if (insurance.value.client === undefined || insurance.value.client === null) {
+      insurance.value.client = {};
+      insurance.value.client = newModel;
+    }
+    const index = this.hmos.findIndex(x => x.hmo._id === insurance.value.hmo);
+    insurance.value.client.hmo = this.hmos[index].hmo;
+
+
+    let param = {
+      model: undefined,
+      operation: 'save',
+      dependants: [insurance.value.client],
+      facilityId: this.selectedFacility._id,
+      hmo: this.hmos[index].hmo,
+      hmoPlan:insurance.value.hmoPlan
+    };
+    this.hmoService.updateBeneficiaryList(param).then(payload => {
+
+
+
+
+
+
+
+      const comCoverId = insurance.value.hmoPlanId;
+      this.hmoService.hmos(this.selectedFacility._id, insurance.value.hmo, comCoverId).then(pay => {
+        console.log(pay);
+
+        let newPolicy: any = {};
+        let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
+        copyPatient = this.trimPerson(copyPatient);
+
+        newPolicy.personId = copyPatient.personDetails;
+
+        pay.body.hmo = this.hmos[index].hmo;
+        newPolicy.hmoCovers = [pay.body];
+
+
+        this.policyService.create(newPolicy).then(payload => {
+          console.log('new policy');
+          console.log(payload);
+        })
+
+
+      });
+
+
+
+
+
+
+
+
+
+
+
+    })
+  }
+  saveINullPolicyClient(insurance, newPolicy, index) {
+    insurance.value.client.hmo = this.hmos[index].hmo;
+    newPolicy.hmoCovers = [insurance.value.client];
+
+
+    this.policyService.create(newPolicy).then(payload => {
+    })
+  }
+  saveIPolicyNullClientWithPrincipal(insurnace) {
+    let newModel = {
+      catetory: 'STAFF',
+      date: new Date(),
+      principalEmpID: insurnace.value.hmoPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.surname,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    if (insurnace.value.client === undefined || insurnace.value.client === null) {
+      console.log('in')
+      insurnace.value.client = {};
+      insurnace.value.client = newModel;
+    }
+    console.log(insurnace.value)
+    const index = this.hmos.findIndex(x => x.hmo._id === insurnace.value.hmo);
+    console.log(index)
+    insurnace.value.client.hmo = this.hmos[index];
+
+
+    let param = {
+      model: insurnace.value.client,
+      operation: 'save',
+      dependants: [],
+      facilityId: this.selectedFacility._id,
+      hmo: this.hmos[index].hmo,
+      hmoPlan: insurnace.value.hmoPlan
+    };
+    this.hmoService.updateBeneficiaryList(param).then(payload => {
+
+
+      console.log(payload)
+
+
+
+
+      const comCoverId = insurnace.value.hmoPlanId;
+      this.hmoService.hmos(this.selectedFacility._id, insurnace.value.hmo, comCoverId).then(pay => {
+        console.log(pay);
+
+
+
+        pay.body.hmo = this.hmos[index].hmo;
+        if (this.selectedPatientPolicy.hmoCovers === undefined) {
+          this.selectedPatientPolicy.hmoCovers = []
+        }
+        this.selectedPatientPolicy.hmoCovers.push(pay.body);
+
+
+        this.policyService.update(this.selectedPatientPolicy).then(payload => {
+          console.log('updated policy');
+          console.log(payload);
+        })
+
+
+      });
+
+
+
+
+
+
+
+
+
+
+    })
+  }
+  saveIPolicyNullClientWithDependant(insurnace) {
+    let newModel = {
+      catetory: 'DEPENDANT',
+      date: new Date(),
+      principalEmpID: insurnace.value.hmoPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.lastName,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    if (insurnace.value.client === undefined || insurnace.value.client === null) {
+      insurnace.value.clien = {};
+      insurnace.value.client = newModel;
+    }
+    const index = this.hmos.findIndex(x => x.hmo._id === insurnace.value.hmo);
+    insurnace.value.client.hmo = this.hmos[index].hmo;
+
+
+    let param = {
+      model: undefined,
+      operation: 'save',
+      dependants: [insurnace.value.client],
+      facilityId: this.selectedFacility._id,
+      hmo: this.hmos[index].hmo,
+      hmoPlan: insurnace.value.hmoPlan
+    };
+    this.hmoService.updateBeneficiaryList(param).then(payload => {
+
+
+
+      console.log(payload)
+
+
+
+
+      const comCoverId = insurnace.value.hmoPlanId;
+      this.hmoService.hmos(this.selectedFacility._id, insurnace.value.hmo, comCoverId).then(pay => {
+        console.log(pay);
+
+
+
+        pay.body.hmo = this.hmos[index].hmo;
+        if (this.selectedPatientPolicy.hmoCovers === undefined) {
+          this.selectedPatientPolicy.hmoCovers = []
+        }
+        this.selectedPatientPolicy.hmoCovers.push(pay.body);
+
+
+        this.policyService.update(this.selectedPatientPolicy).then(payload => {
+          console.log('updated policy');
+          console.log(payload);
+        })
+
+      });
+
+
+
+    })
+  }
+  saveIPolicyClient(insurnace) {
+
+    const index = this.hmos.findIndex(x => x.hmo._id === insurnace.value.company);
+    insurnace.value.client.company = this.hmos[index].hmo;
+    this.selectedPatientPolicy.companyCovers.push(insurnace.value.client);
+
+
+    this.policyService.update(this.selectedPatientPolicy).then(payload => {
+    })
+  }
+
+
+
   onSubmit(insurance, i) {
     this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
       .controls[this.insuranceFormArrayIndex]).controls['readOnly'].setValue(true);
-    console.log(insurance)
+    console.log(insurance);
+
+
+    //selected patient has no existing policy
+    if (this.selectedPatientPolicy === undefined) {
+      let newPolicy: any = {};
+      let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
+      copyPatient = this.trimPerson(copyPatient);
+
+      newPolicy.personId = copyPatient.personDetails;
+      const index = this.hmos.findIndex(x => x.hmo._id === insurance.value.hmo);
+      if (insurance.value.client === null) {
+        // selected patient has no existing policy and has no record in the insurance cover master file
+        // add him/her to master file
+        // add to insurance cover to policy and create;
+        if (insurance.value.isPrincipal) {
+          console.log(1)
+          this.saveINullPolicyNullClientWithPrincipal(insurance);
+        } else {
+          console.log(2)
+          this.saveINullPolicyNullClientWithDependant(insurance);
+        }
+      } else {
+        console.log(3)
+        this.saveINullPolicyClient(insurance, newPolicy, index);
+      }
+    } else {
+      if (insurance.value.client === null) {
+        if (insurance.value.isPrincipal) {
+          console.log(4)
+          this.saveIPolicyNullClientWithPrincipal(insurance);
+        } else {
+          console.log(5)
+          this.saveIPolicyNullClientWithDependant(insurance);
+        }
+      } else {
+        console.log(6)
+        this.saveIPolicyClient(insurance);
+      }
+
+    }
+
+
+
+
+
+
+
+
   }
+  trimPerson(copyPatient) {
+    delete copyPatient.personDetails.addressObj;
+    delete copyPatient.personDetails.age;
+    delete copyPatient.personDetails.countryItem;
+    delete copyPatient.personDetails.gender;
+    delete copyPatient.personDetails.homeAddress;
+    delete copyPatient.personDetails.maritalStatus;
+    delete copyPatient.personDetails.nationality;
+    delete copyPatient.personDetails.nationalityObject;
+    delete copyPatient.personDetails.nextOfKin;
+    delete copyPatient.personDetails.title;
+    delete copyPatient.personDetails.wallet;
+    delete copyPatient.personDetails.personFullName;
+    delete copyPatient.personDetails.fullAddress;
+    return copyPatient;
+  }
+  saveNullPolicyNullClientWithPrincipal(company) {
+    let newModel = {
+      catetory: 'STAFF',
+      date: new Date(),
+      principalEmpID: company.value.companyPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.surname,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    console.log(company.value.client)
+    if (company.value.client === undefined || company.value.client === null) {
+      console.log('null client')
+      company.value.client = {};
+      company.value.client = newModel;
+      console.log(newModel)
+    }
+    const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
+    company.value.client.company = this.companies[index];
+
+
+    let param = {
+      model: company.value.client,
+      operation: 'save',
+      dependants: [],
+      facilityId: this.selectedFacility._id,
+      company: this.companies[index].hmo
+    };
+    console.log(param);
+    this.companyCoverService.updateBeneficiaryList(param).then(payload => {
+      const comCoverId = company.value.companyPlanId;
+      this.companyCoverService.companycovers(this.selectedFacility._id, company.value.company, comCoverId).then(pay => {
+        console.log(pay);
+
+        let newPolicy: any = {};
+        let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
+        copyPatient = this.trimPerson(copyPatient);
+
+        newPolicy.personId = copyPatient.personDetails;
+
+        pay.body.company = this.companies[index].hmo;
+        newPolicy.companyCovers = [pay.body];
+
+
+        this.policyService.create(newPolicy).then(payload => {
+          console.log('new policy');
+          console.log(payload);
+        })
+
+
+      });
+    })
+  }
+  saveNullPolicyNullClientWithDependant(company) {
+    let newModel = {
+      catetory: 'DEPENDANT',
+      date: new Date(),
+      principalEmpID: company.value.companyPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.surname,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    if (company.value.client === undefined || company.value.client === null) {
+      company.value.client = {};
+      company.value.client = newModel;
+    }
+    const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
+    company.value.client.company = this.companies[index];
+
+
+    let param = {
+      model: undefined,
+      operation: 'save',
+      dependants: [company.value.client],
+      facilityId: this.selectedFacility._id,
+      company: this.companies[index].hmo
+    };
+    this.companyCoverService.updateBeneficiaryList(param).then(payload => {
+
+
+
+
+
+
+
+      const comCoverId = company.value.companyPlanId;
+      this.companyCoverService.companycovers(this.selectedFacility._id, company.value.company, comCoverId).then(pay => {
+        console.log(pay);
+
+        let newPolicy: any = {};
+        let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
+        copyPatient = this.trimPerson(copyPatient);
+
+        newPolicy.personId = copyPatient.personDetails;
+
+        pay.body.company = this.companies[index].hmo;
+        newPolicy.companyCovers = [pay.body];
+
+
+        this.policyService.create(newPolicy).then(payload => {
+          console.log('new policy');
+          console.log(payload);
+        })
+
+
+      });
+
+
+
+
+
+
+
+
+
+
+
+    })
+  }
+  saveNullPolicyClient(company, newPolicy, index) {
+    company.value.client.company = this.companies[index];
+    newPolicy.companyCovers = [company.value.client];
+
+
+    this.policyService.create(newPolicy).then(payload => {
+    })
+  }
+  savePolicyNullClientWithPrincipal(company) {
+    let newModel = {
+      catetory: 'STAFF',
+      date: new Date(),
+      principalEmpID: company.value.companyPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.surname,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    if (company.value.client === undefined || company.value.client === null) {
+      company.value.client = {};
+      company.value.client = newModel;
+    }
+    const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
+    company.value.client.company = this.companies[index];
+
+
+    let param = {
+      model: company.value.client,
+      operation: 'save',
+      dependants: [],
+      facilityId: this.selectedFacility._id,
+      company: this.companies[index].hmo
+    };
+    this.companyCoverService.updateBeneficiaryList(param).then(payload => {
+
+
+
+
+
+
+
+      const comCoverId = company.value.companyPlanId;
+      this.companyCoverService.companycovers(this.selectedFacility._id, company.value.company, comCoverId).then(pay => {
+        console.log(pay);
+
+
+
+        pay.body.company = this.companies[index].hmo;
+        if (this.selectedPatientPolicy.companyCovers === undefined) {
+          this.selectedPatientPolicy.companyCovers = []
+        }
+        this.selectedPatientPolicy.companyCovers.push(pay.body);
+
+
+        this.policyService.update(this.selectedPatientPolicy).then(payload => {
+          console.log('updated policy');
+          console.log(payload);
+        })
+
+
+      });
+
+
+
+
+
+
+
+
+
+
+    })
+  }
+  savePolicyNullClientWithDependant(company) {
+    let newModel = {
+      catetory: 'DEPENDANT',
+      date: new Date(),
+      principalEmpID: company.value.companyPlanId,
+      othernames: this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.otherNames,
+      principalGender: this.selectedPatient.personDetails.gender.name === 'Male' ? 'M' : 'F',
+      serial: 0,
+      surname: this.selectedPatient.personDetails.surname,
+      address: this.selectedPatient.personDetails.fullAddress,
+      email: this.selectedPatient.personDetails.email,
+      phone: this.selectedPatient.personDetails.phoneNumber,
+      principalstatus: 'Inactive'
+    }
+    if (company.value.client === undefined || company.value.client === null) {
+      company.value.clien = {};
+      company.value.client = newModel;
+    }
+    const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
+    company.value.client.company = this.companies[index];
+
+
+    let param = {
+      model: undefined,
+      operation: 'save',
+      dependants: [company.value.client],
+      facilityId: this.selectedFacility._id,
+      company: this.companies[index].hmo
+    };
+    this.companyCoverService.updateBeneficiaryList(param).then(payload => {
+      const comCoverId = company.value.companyPlanId;
+      this.getPersonPolicies();
+    })
+  }
+  savePolicyClient(company) {
+
+    const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
+    company.value.client.company = this.companies[index].hmo;
+    this.selectedPatientPolicy.companyCovers.push(company.value.client);
+
+
+    this.policyService.update(this.selectedPatientPolicy).then(payload => {
+    })
+  }
+
+
   onSubmitCompanyCover(company, i) {
     this.selectedHMO = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
       .controls[this.companyFormArrayIndex]).controls['readOnly'].setValue(true);
-    console.log(company)
+    //selected patient has no existing policy
+    if (this.selectedPatientPolicy === undefined) {
+      let newPolicy: any = {};
+      let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
+      copyPatient = this.trimPerson(copyPatient);
+
+      newPolicy.personId = copyPatient.personDetails;
+      const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
+      if (company.value.client === null) {
+        // selected patient has no existing policy and has no record in the company cover master file
+        // add him/her to master file
+        // add to company cover to policy and create;
+        if (company.value.isPrincipal) {
+          this.saveNullPolicyNullClientWithPrincipal(company);
+        } else {
+          this.saveNullPolicyNullClientWithDependant(company);
+        }
+      } else {
+        this.saveNullPolicyClient(company, newPolicy, index)
+      }
+    } else {
+      if (company.value.client === null) {
+        if (company.value.isPrincipal) {
+          this.savePolicyNullClientWithPrincipal(company)
+        } else {
+          this.savePolicyNullClientWithDependant(company);
+        }
+      } else {
+        this.savePolicyClient(company);
+      }
+
+    }
   }
   isLastChild(i) {
     const len = (<FormArray>this.insurancePlanForm.controls['insurancePlanArray']).controls.length;
@@ -242,6 +1031,13 @@ export class PatientPaymentPlanComponent implements OnInit {
   }
   isCompanyLastChild(i) {
     const len = (<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray']).controls.length;
+    if (i === (len - 1)) {
+      return true;
+    }
+    return false;
+  }
+  isFamilyLastChild(i) {
+    const len = (<FormArray>this.familyCoverPlanForm.controls['dependantArray']).controls.length;
     if (i === (len - 1)) {
       return true;
     }
@@ -266,7 +1062,6 @@ export class PatientPaymentPlanComponent implements OnInit {
   }
   companyFormArrayControlChanges(insurance, i) {
     this.companyFormArrayIndex = i;
-    console.log(i)
   }
   getRole(client) {
     if (client !== undefined) {

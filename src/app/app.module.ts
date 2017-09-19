@@ -1,3 +1,4 @@
+import { PolicyService } from './services/facility-manager/setup/policy.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -85,7 +86,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService, SetupService.ServerDateService,
-    SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService, SetupService.TemplateService
+    SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService, SetupService.TemplateService, PolicyService
   ],
   bootstrap: [AppComponent]
 })

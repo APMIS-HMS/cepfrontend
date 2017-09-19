@@ -16,11 +16,11 @@
                 <thead>
                     <tr class="table-bordered">
                         <th style="width: 5%">No</th>
-                        <th>Room(s)</th>
+                        <th>Room</th>
                         <th>Group</th>
                         <th>Service</th>
                         <th>No. of Bed(s)</th>
-                        <th>Action</th>
+                        <th style="width: 15%">Action</th>
                     </tr>
                 </thead>
                 <tbody class="custom-tbody">
@@ -34,33 +34,42 @@
                             No data available in table
                         </td>
                     </tr>
-                    <tr class="details-link" *ngFor="let room of rooms;let i = index">
+                    <tr class="details-link" *ngFor="let room of rooms; let i = index">
                         <td routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{i+1}}</td>
                         <td>
-                            <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.name}}</div>
-                            <input *ngIf="roomNameEditShow[i]" class="edit-control lhs" type="text" value="{{room.name}}" [formControl]="editRoomName">
+                            <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room?.name}}</div>
+                            <!-- <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room?.name}}</div> -->
+                            <!-- <input *ngIf="roomNameEditShow[i]" class="edit-control lhs" type="text" value="{{room?.name}}" [formControl]="editRoomName"> -->
                         </td>
                         <td>
-                            <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
-                                {{room.groupName}}
+                            <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                                {{room.groupId?.name}}
                             </div>
-                            <select *ngIf="roomNameEditShow[i]" [formControl]="editRoomGroup">
+                            <!-- <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                                {{room.groupId?.name}}
+                            </div> -->
+                            <!-- <select *ngIf="roomNameEditShow[i]" [formControl]="editRoomGroup">
                                 <option  value="" disabled selected>Select Room's Group</option>
                                 <option *ngFor="let item of roomGroupItems" value={{item._id}}>{{item?.name}}</option>
-                            </select>
+                            </select> -->
                         </td>
                         <td>
-                            <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
-                                {{room?.serviceName}} </div>
-                            <select *ngIf="roomNameEditShow[i]" [formControl]="editServicePrice">
+                            <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                                {{room?.serviceId?.name}}
+                            </div>
+                            <!-- <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                                {{room?.serviceId?.name}}
+                            </div> -->
+                            <!-- <select *ngIf="roomNameEditShow[i]" [formControl]="editServicePrice">
                                 <option  value="" disabled selected>Select Room's Group</option>
                                 <option *ngFor="let item of wardServicePriceTags" value={{item._id}}>{{item?.name}}</option>
-                            </select>
+                            </select> -->
                         </td>
                         <td class="" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</td>
                         <td>
-                            <i [hidden]="roomNameEditShow[i]" (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i *ngIf="roomNameEditShow[i]" (click)="roomNameEdit(i,room)" class="fa fa-check" aria-hidden="true"></i>
+                            <i (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <!-- <i [hidden]="roomNameEditShow[i]" (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
+                            <!-- <i *ngIf="roomNameEditShow[i]" (click)="roomNameEdit(i,room)" class="fa fa-check" aria-hidden="true"></i> -->
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </td>
                     </tr>

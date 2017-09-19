@@ -160,6 +160,9 @@ export class FcListComponent implements OnInit {
         }
       })
       this.newFamily = true;
+      if(!hasRecord){
+        this.addDependant();
+      }
     } else {
       this.frmNewBeneficiary.reset();
       const filNoLength = beneficiary.filNo.length;
@@ -188,7 +191,9 @@ export class FcListComponent implements OnInit {
               category: 'Dependant',
               readOnly: [true],
             }));
-            console.log((<FormArray>this.frmDependant.controls['dependantArray']))
+            if(!hasRecord){
+              this.addDependant();
+            }
         } else if (this.getRole(filter) === 'P') {
           this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);
           this.frmNewBeneficiary.controls['othernames'].setValue(filter.othernames);
