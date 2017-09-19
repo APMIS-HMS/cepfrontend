@@ -20,6 +20,9 @@ export class DocumentationComponent implements OnInit {
   addHistory_view = false;
   addVitals_view = false;
 
+  showDoc = true;
+  showOrderSet = false;
+
   selectedFacility: Facility = <Facility>{};
   selectedMiniFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -186,6 +189,15 @@ export class DocumentationComponent implements OnInit {
     this.addAllergy_view = false;
     this.addHistory_view = false;
     this.addVitals_view = false;
+  }
+
+  showOrderset_onClick(e){
+    this.showDoc = false;
+    this.showOrderSet = true;
+  }
+  showDoc_onClick(e){
+    this.showDoc = true;
+    this.showOrderSet = false;
   }
 
 }

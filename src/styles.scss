@@ -359,6 +359,11 @@ select {
     -moz-box-shadow: 0 8px 6px -6px #777;
     box-shadow: 0 8px 6px -6px #777;
 }
+.shadow-tb{
+    -webkit-box-shadow: 2px 16px 31px 0px #777;
+    -moz-box-shadow: 2px 16px 31px 0px #777;
+    box-shadow: 2px 16px 31px 0px #777;
+}
 
 .shadow-w {
     -webkit-box-shadow: 0 8px 6px -6px white;
@@ -384,7 +389,7 @@ select {
     z-index: 10;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(73, 73, 73, 0.27);
 }
 
 .frm-item-wrap {
@@ -394,7 +399,7 @@ select {
 
 .mat-select {
     padding: 1.29688em 0;
-    width: 90%;
+    width: 100%;
     font-size: 12px;
     height: 20px;
 }
@@ -491,6 +496,9 @@ select {
     padding: 50px;
     border-radius: 7px;
     box-sizing: border-box;
+    -webkit-box-shadow: 2px 16px 31px 0px rgba(0,0,0,0.54);
+    -moz-box-shadow: 2px 16px 31px 0px rgba(0,0,0,0.54);
+    box-shadow: 2px 16px 31px 0px rgba(0,0,0,0.54);
 }
 
 .modal-close-ico {

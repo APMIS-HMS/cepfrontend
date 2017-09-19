@@ -1,7 +1,7 @@
 <div class="modal-baseWrap animated pulse">
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <div class="facility-title">{{facilityObj.name}}</div>
+    <div class="facility-title">{{facility.name}}</div>
 
     <legend class="modal_title">Create Child Location</legend>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
@@ -64,7 +64,7 @@
         CREATE CHILD LOCATION
       </div>-->
             <div class="example-full-width" id="example-full-width">
-                <button (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" md-raised-button>{{ActionButton}}</button>
+                <button [disabled]="!frmNewSubLoc.valid && disableNewMinorLoc" (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" md-raised-button [innerHtml]="ActionButton"></button>
             </div>
         </form>
     </div>

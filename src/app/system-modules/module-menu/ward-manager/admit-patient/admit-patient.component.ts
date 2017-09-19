@@ -14,19 +14,19 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 })
 export class AdmitPatientComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	admitFormGroup: FormGroup;
 	@Input() inpatientItem: any;
-	wardLocationItems: any[] = [];
-	wardRoomLocationItems: any[] = [];
-	wardRoomBedLocationItems: any[] = [];
+	admitFormGroup: FormGroup;
 	facility: Facility = <Facility>{};
+	miniFacility: Facility = <Facility>{};
 	inPatient: InPatient = <InPatient>{};
 	_wardTransfer: WardTransfer = <WardTransfer>{};
-
-
+	wards: any[] = [];
+	rooms: any[] = [];
+	beds: any[] = [];
 	admitPatient = false;
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
+	admitBtnText: String = '<i class="fa fa-plus"></i> Admit Patient';
 
 	constructor(
 		private _wardAdmissionService: WardAdmissionService,
@@ -47,14 +47,16 @@ export class AdmitPatientComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.miniFacility = <Facility> this._locker.getObject('miniFacility');
 		this.admitFormGroup = this.fb.group({
-			// ward: ['', [<any>Validators.required]],
+			ward: [''],
 			room: ['', [<any>Validators.required]],
 			bed: ['', [<any>Validators.required]],
 			desc: ['', [<any>Validators.required]],
 		});
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.getwardRoomLocationItems();
+		this.getWardsDetails();
 	}
 
 
@@ -74,18 +76,17 @@ export class AdmitPatientComponent implements OnInit {
 	// }
 
 	onRoomChange(param) {
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
-				if (payload.data !== []) {
-					payload.data[0].locations.forEach(item => {
-						item.rooms.forEach(itm => {
-							if (itm._id.toString() === param.toString()) {
-								this.wardRoomBedLocationItems = itm.availableBed;
-							}
-						})
+		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } }).then(res => {
+			if (res.data !== []) {
+				res.data[0].locations.forEach(item => {
+					item.rooms.forEach(itm => {
+						if (itm._id.toString() === param.toString()) {
+							this.beds = itm.availableBed;
+						}
 					})
-				}
-			});
+				})
+			}
+		});
 	}
 
 	close_onClick() {
@@ -96,8 +97,11 @@ export class AdmitPatientComponent implements OnInit {
 		if (valid) {
 			this.mainErr = true;
 			if (this.inpatientItem.typeChecker === myGlobals.onAdmission) {
-				this._inPatientListService.find({ query: { facilityId: this.facility._id, employeeId: this.inpatientItem.employeeId, isAdmitted: false } })
-				.then(payload1 => {
+				this._inPatientListService.find({ query: {
+					facilityId: this.facility._id,
+					employeeId: this.inpatientItem.employeeId,
+					isAdmitted: false
+				}}).then(payload1 => {
 					payload1.data[0].isAdmitted = true;
 					payload1.data[0].admittedDate = new Date;
 					this._inPatientListService.update(payload1.data[0]).then(callback1 => {
@@ -149,22 +153,36 @@ export class AdmitPatientComponent implements OnInit {
 
 	getwardRoomLocationItems() {
 		if (this.inpatientItem.typeChecker === myGlobals.transfer) {
-			this._inPatientService.get(this.inpatientItem._id, {})
-				.then(payload => {
-					const rooms = payload.transfers[payload.lastIndex].proposeWard.ward.wardDetails.rooms;
-					this.wardRoomLocationItems = rooms;
-				});
+			this._inPatientService.get(this.inpatientItem._id, {}).then(payload => {
+				const rooms = payload.transfers[payload.lastIndex].proposeWard.ward.wardDetails.rooms;
+				console.log(rooms);
+				// this.wardRoomLocationItems = rooms;
+			});
 		} else if (this.inpatientItem.typeChecker === myGlobals.onAdmission) {
-			this._inPatientListService.get(this.inpatientItem._id, {})
-				.then(payload => {
-					this.wardRoomLocationItems = payload.wardDetails.wardDetails.rooms;
-				});
+			this._inPatientListService.get(this.inpatientItem._id, {}).then(payload => {
+				console.log(payload);
+				// this.wardRoomLocationItems = payload.wardId;
+			});
 		}
 	}
 
+	getWardsDetails() {
+		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } }).then(res => {
+			console.log(res);
+			// if (res.data !== []) {
+			// 	res.data[0].locations.forEach(item => {
+			// 		item.rooms.forEach(itm => {
+			// 			if (itm._id.toString() === param.toString()) {
+			// 				this.beds = itm.availableBed;
+			// 			}
+			// 		})
+			// 	})
+			// }
+		});
+	}
+
 	updateWardAdissionService() {
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
+		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } }).then(payload => {
 				if (payload.data !== []) {
 					payload.data[0].locations.forEach(item => {
 						item.rooms.forEach(itm => {

@@ -1,51 +1,4 @@
 @import "../../../../../globals/variables.scss";
-//@import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
-// .inPatients {
-//     position: relative;
-//     border: none;
-//     .patient-sex {
-//         text-align: left;
-//     }
-//     .btn-1 {
-//         padding: 5px;
-//         margin-top: 10px;
-//     }
-//     .moduleNav {
-//         position: absolute;
-//         top: -32px;
-//         right: 0;
-//         font-size: 14px;
-//         li {
-//             padding: 10px;
-//         }
-//     }
-//     .moduleNav-active {
-//         background: transparent;
-//         color: #0288D1;
-//         text-decoration: underline;
-//     }
-//     table {
-//         thead {
-//             background-color: #AED6F1;
-//         }
-//         tbody {
-//             border: 1px solid #ddd !important;
-//             tr {
-//                 td {
-//                     padding: 8px;
-//                     line-height: 1.42857143;
-//                 }
-//             }
-//             .tr-header-group {
-//                 background-color: #0288D1;
-//                 color: #fff;
-//                 &:hover {
-//                     cursor: pointer;
-//                 }
-//             }
-//         }
-//     }
-// }
 .tr-act-btn {
     width: auto;
     margin: 0;
@@ -76,7 +29,7 @@ th {
 
 td {
     vertical-align: center;
-    text-align: left;
+    text-align: center;
     padding: 2px;
 }
 

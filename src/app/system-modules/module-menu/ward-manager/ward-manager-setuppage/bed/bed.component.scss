@@ -4,28 +4,58 @@
     padding: 10px;
 }
 
-.add-action-box {
-    height: 40px;
-    .btn-1 {
-        float: right;
-    }
-}
-
+// .add-action-box {
+//     height: 40px;
+//     .btn-1 {
+//         float: right;
+//     }
+// }
+// .c-page-header {
+//     height: 40px;
+//     z-index: 2;
+//     .c-page-title {
+//         float: left;
+//     }
+//     .back-btn {
+//         padding: 10px;
+//         font-size: 16px;
+//         font-family: "Josefin Sans", sans-serif;
+//         color: #BDBDBD;
+//         margin: 0;
+//         z-index: 3;
+//         &:hover {
+//             cursor: pointer;
+//         }
+//     }
+// }
 .c-page-header {
     height: 40px;
     z-index: 2;
     .c-page-title {
+        text-align: left;
         float: left;
+        width: 60%;
     }
-    .back-btn {
-        padding: 10px;
-        font-size: 16px;
-        font-family: "Josefin Sans", sans-serif;
-        color: #BDBDBD;
-        margin: 0;
-        z-index: 3;
-        &:hover {
-            cursor: pointer;
+    .btn-box {
+        width: 40%;
+        .back-btn {
+            padding: 10px;
+            font-size: 16px;
+            font-family: "Josefin Sans", sans-serif;
+            color: #BDBDBD;
+            margin: 0;
+            z-index: 3;
+            float: right;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .add-action-box {
+            float: right;
+            height: 40px;
+            .btn {
+                color: #fff;
+            }
         }
     }
 }
@@ -38,43 +68,22 @@
             width: 130px;
         }
     }
-    .patient-sex {
-        text-align: left;
+    .table-content {
+        padding: 10px;
     }
-    .btn-1 {
+    .table-content-action {
         padding: 5px;
-        margin: 0;
-    }
-    table {
-        thead {
-            background-color: #AED6F1;
+        .fa {
+            font-size: 16px;
+            padding: 5px;
+            margin: 2px;
+            cursor: pointer;
         }
-        tbody {
-            border: 1px solid #ddd !important;
-            tr {
-                td {
-                    padding: 8px;
-                    line-height: 1.42857143;
-                    .fa {
-                        font-size: 16px;
-                        padding: 0 5px;
-                        margin: 0 10px;
-                    }
-                }
-            }
-            .tr-header-group {
-                background-color: #0288D1;
-                color: #fff;
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-            .details-link {
-                &:hover {
-                    background-color: #ccc;
-                    cursor: pointer;
-                }
-            }
+    }
+    .details-link {
+        &:hover {
+            background-color: #ccc;
+            cursor: pointer;
         }
     }
     .modal-overlay {

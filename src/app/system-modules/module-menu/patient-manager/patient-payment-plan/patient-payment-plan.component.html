@@ -1,6 +1,6 @@
 <div class="modal-baseWrap animated pulse">
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <legend class="modal_title">Payment Plans</legend>
+  <legend class="modal_title">Payment Plans - {{selectedPatient?.personDetails?.personFullName}}</legend>
   <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
   <div class="doc-mainWrap">
     <div class="tab-wrap">
@@ -26,35 +26,6 @@
       </div>
 
       <div *ngIf="tabInsurance">
-        <!-- <div class="plan">
-          <div class="plan-title">Insurance</div>
-          <div *ngIf="selectedHMOClient !== undefined">
-            {{selectedHMOClient?.surname}} {{selectedHMOClient?.firstName}} <span class="role">{{getRole()}}</span>
-          </div>
-          <div class="frm-item-wrap">
-            <md-select placeholder="HMO" [formControl]="hmo">
-              <md-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
-            </md-select>
-          </div>
-          <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-            </md-input-container>
-          </div>
-
-          <div class="frm-item-wrap">
-            <md-select [disabled]=true placeholder="Select Plan" [formControl]="hmoPlan">
-              <md-option *ngFor="let item of plans" [value]="item">{{item}}</md-option>
-            </md-select>
-          </div>
-          <button class="cta-1">Save</button>
-
-          <div class="another">Another Insurance</div>
-        </div> -->
-
-
-
-
 
         <!-- for array -->
         <form [formGroup]="insurancePlanForm" class="form-horizontal">
@@ -70,7 +41,7 @@
                     </div>
                     <div class="frm-item-wrap">
                       <md-select (change)="formArrayControlChanges(insurance, i)" placeholder="HMO" formControlName="hmo">
-                        <md-option  *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+                        <md-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
                       </md-select>
                     </div>
                     <div class="frm-item-wrap">
@@ -79,7 +50,11 @@
                       </md-input-container>
                       <md-error *ngIf="insurance.controls.hmoPlanId.hasError('idNotFound')">
                         <span style="font-size:10px">Insurance ID not found!</span>
-                    </md-error>
+                      </md-error>
+                    </div>
+                    <div class="addNew" *ngIf="insurance.controls.hmoPlanId.hasError('idNotFound') || insurance.controls.addInsuranceCondition.value">
+                      <md-checkbox class="example-margin" formControlName="addToHMOPlan">Add</md-checkbox>
+                      <md-checkbox *ngIf="insurance.controls.addToHMOPlan.value" class="example-margin" formControlName="isPrincipal">Principal</md-checkbox>
                     </div>
 
                     <div class="frm-item-wrap">
@@ -87,7 +62,7 @@
                         <md-option *ngFor="let item of insurance.controls.plans.value" [value]="item">{{item}}</md-option>
                       </md-select>
                     </div>
-                    <button [disabled]="!insurance.valid" (click)="onSubmit(insurance, i)"class="cta-1">Save</button>
+                    <button [disabled]="!insurance.valid" (click)="onSubmit(insurance, i)" class="cta-1">Save</button>
 
                     <div *ngIf="insurance.controls.readOnly.value && isLastChild(i)" (click)="pushNewInsurancePlan()" class="another">Another Insurance</div>
                   </div>
@@ -97,12 +72,18 @@
           </div>
         </form>
         <!-- end -->
-        </div>
+      </div>
 
-        <div *ngIf="tabCompany">
+      <!-- form array for company -->
+      <!-- <div *ngIf="tabCompany">
           <div class="plan">
             <div class="plan-title">Company Cover</div>
             <div class="frm-item-wrap">
+                <div class="frm-item-wrap">
+                    <md-select (change)="formArrayControlChanges(insurance, i)" placeholder="Company" formControlName="company">
+                      <md-option  *ngFor="let item of companies" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+                    </md-select>
+                  </div>
               <md-input-container class="example-full-width">
                 <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
               </md-input-container>
@@ -118,20 +99,150 @@
 
             <div class="another">Another Company</div>
           </div>
-        </div>
+        </div> -->
+      <div *ngIf="tabCompany">
+        <form [formGroup]="companyCoverPlanForm" class="form-horizontal">
+          <div formArrayName="companyCoverPlanArray" class="frmArrayWrap">
+            <div class="frmArray" *ngFor="let company of companyCoverPlanForm.controls['companyCoverPlanArray'].controls; let i = index;">
+              <div (click)="closeCompanyPlan(company, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+              <div formGroupName="{{i}}">
+                <div>
+                  <div class="plan">
+                    <div class="plan-title">Company Cover</div>
+                    <div *ngIf="company.controls.client.value !== null">
+                      {{company.controls.client?.value.surname}} {{company.controls.client?.value.firstName}} <span class="role">{{getRole(company.controls.client?.value)}}</span>
+                    </div>
+                    <div class="frm-item-wrap">
+                      <md-select (change)="companyFormArrayControlChanges(company, i)" placeholder="Company" formControlName="company">
+                        <md-option *ngFor="let item of companies" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
+                      </md-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                        <input (change)="companyFormArrayControlChanges(company, i)" mdInput md-error placeholder="Company Plan ID" formControlName="companyPlanId">
+                      </md-input-container>
+                      <md-error *ngIf="company.controls.companyPlanId.hasError('idNotFound')">
+                        <span style="font-size:10px">Company Cover ID not found!</span>
+                      </md-error>
+                    </div>
+                    <div class="addNew" *ngIf="company.controls.companyPlanId.hasError('idNotFound') || company.controls.addCompanyCondition.value">
+                      <md-checkbox class="example-margin" formControlName="addToCompanyPlan">Add</md-checkbox>
+                      <md-checkbox *ngIf="company.controls.addToCompanyPlan.value" class="example-margin" formControlName="isPrincipal">Principal</md-checkbox>
+                    </div>
 
-        <div *ngIf="tabFamily">
-          <div class="plan">
-            <div class="plan-title">Family Cover</div>
-            <div class="frm-item-wrap">
-              <md-input-container class="example-full-width">
-                <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
-              </md-input-container>
+                    <div class="frm-item-wrap">
+                      <md-select (change)="companyFormArrayControlChanges(company, i)" placeholder="Select Plan" formControlName="companyPlan">
+                        <md-option *ngFor="let item of company.controls.plans.value" [value]="item">{{item}}</md-option>
+                      </md-select>
+                    </div>
+                    <button *ngIf="!company.controls.readOnly.value" [disabled]="!company.valid" (click)="onSubmitCompanyCover(company, i)" class="cta-1">Save</button>
+
+                    <div *ngIf="company.controls.readOnly.value && isCompanyLastChild(i)" (click)="pushNewCompanyCoverPlan()" class="another">Another Company Cover</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button class="cta-1">Save</button>
-
           </div>
-        </div>
+        </form>
+      </div>
+      <!-- end form array for company -->
+
+      <!-- <div *ngIf="tabFamily"> -->
+      <!-- <div class="plan">
+          <div class="plan-title">Family Cover</div>
+          <div class="frm-item-wrap">
+            <md-input-container class="example-full-width">
+              <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+            </md-input-container>
+          </div>
+          <button class="cta-1">Save</button>
+
+        </div> -->
+
+
+
+
+
+
+
+
+      <div *ngIf="tabFamily">
+        <form [formGroup]="familyCoverPlanForm" class="form-horizontal">
+          <div formArrayName="dependantArray" class="frmArrayWrap">
+            <div class="frmArray" *ngFor="let dependant of familyCoverPlanForm.controls['dependantArray'].controls; let i = index;">
+              <div *ngIf="!dependant.value.readOnly" (click)="closeDependant(dependant, i)" class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+              <div formGroupName="{{i}}">
+                <div>
+                  <div class="plan">
+                    <div class="plan-title">Family Cover</div>
+                    <div class="frm-x2 frmArray">
+                      <div class="frm-item-wrap">
+                        <md-input-container>
+                          <input mdInput placeholder="Surname" formControlName="surname">
+                        </md-input-container>
+                      </div>
+                      <div class="frm-item-wrap">
+                        <md-input-container>
+                          <input mdInput placeholder="Othernames" formControlName="othernames">
+                        </md-input-container>
+                      </div>
+
+                      <div class="frm-item-wrap">
+                        <md-input-container class="example-full-width">
+                          <input type="email" mdInput md-error placeholder="Email" formControlName="email">
+                        </md-input-container>
+                      </div>
+
+                      <div class="frm-item-wrap">
+                        <md-input-container class="example-full-width">
+                          <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
+                        </md-input-container>
+                      </div>
+
+                      <div class="frm-item-wrap">
+                        <md-select placeholder="Gender" formControlName="gender">
+                          <md-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</md-option>
+                        </md-select>
+                      </div>
+                      <div class="frm-item-wrap">
+                        <md-select placeholder="Status" formControlName="status">
+                          <md-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</md-option>
+                        </md-select>
+                      </div>
+                    </div>
+                    <button *ngIf="!dependant.controls.readOnly.value" [disabled]="!dependant.valid" (click)="onSubmitCompanyCover(company, i)"
+                      class="cta-1">Save</button>
+
+                    <div *ngIf="dependant.controls.readOnly.value && isFamilyLastChild(i)" (click)="pushNewCompanyCoverPlan()" class="another">Another Company Cover</div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="frmNoteWrap">
+                <div class="">Add Dependant</div>
+                <div>
+    
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
     </div>
   </div>
+</div>

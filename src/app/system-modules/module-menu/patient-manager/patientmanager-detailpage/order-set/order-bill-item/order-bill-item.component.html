@@ -1,0 +1,49 @@
+<div class="billitem-wrap">
+  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <legend class="modal_title">Bill Item</legend>
+  <div class="sel-item">Paracetamol</div>
+  
+  <form [formGroup]="frm_billitem" novalidate>
+    <div class="ext-wrap">
+        <md-checkbox>External</md-checkbox>
+    </div>
+    <div class="frmArrWrap">
+
+      <div class="frm-item-wrap">
+        <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+      </div>
+
+      <div class="frm-x2">
+        <div class="frm-item-wrap">
+          <md-input-container>
+              <input type="number" mdInput formControlName="qty" placeholder="Quantity">
+          </md-input-container>
+        </div>
+        <div class="frm-item-wrap">
+          <div class="price-label-wrap">
+            <div class="price-label">Unit Price</div>
+            <div class="price-val"><span>&#x20a6;</span>13,000</div>
+          </div>
+          <div class="price-label-wrap">
+            <div class="price-label">Unit Price</div>
+            <div class="price-val"><span>&#x20a6;</span>13,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="btn-wrap">
+      <div (click)="close_onClick()" class="addDrugBtn btn-bill">
+          <i [hidden]="newTemplate" class="fa fa-money" aria-hidden="true"></i>
+          <span>BILL ITEM</span>
+      </div>
+      <div (click)="close_onClick()" class="addDrugBtn btn-cancel">
+          <i [hidden]="newTemplate" class="fa fa-times" aria-hidden="true"></i>
+          <span>CANCEL</span>
+      </div>
+    </div>
+    
+  </form>
+  
+  <i class="fa fa-caret-down billbox-pointer" aria-hidden="true"></i>
+</div>

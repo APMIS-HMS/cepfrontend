@@ -60,4 +60,11 @@ export class HmoService {
       .get(path)
       .query({ facilityId: facilityId, hmoId:hmoId, search:search });
   }
+  updateBeneficiaryList(formData) {
+    const host = this._restService.getHost();
+    const path = host + '/hmo-beneficiaries';
+    return request
+      .post(path)
+      .send(formData);
+  }
 }

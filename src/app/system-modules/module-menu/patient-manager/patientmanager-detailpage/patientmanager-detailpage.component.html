@@ -49,7 +49,7 @@
             </div>
             <div class="menu-sect">
                 <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
-                <div (click)="menuOrder_click()" [class.active-menuItem]="menuOrder" class="menu-item">Order Set</div>
+                <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatement Plan</div>
             </div>
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
@@ -66,13 +66,13 @@
     <div class="patientPage-contentArea">
         <app-patient-summary [patient]="patient" *ngIf="menuSummary && patient !== undefined"></app-patient-summary>
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
-        <app-order-set *ngIf="menuOrder"></app-order-set>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
         <app-lab-requests [isLaboratory]="false" [patientId]="patient._id" *ngIf="menuLab"></app-lab-requests>
         <app-payment [patient]="patient" *ngIf="menuPayment"></app-payment>
+        <app-treatement-plan *ngIf="menuTreatmentPlan"></app-treatement-plan>
     </div>
 
     <div *ngIf="addVitalsPop" class="modal-overlay">

@@ -1,0 +1,175 @@
+<div class="modal-baseWrap animated pulse">
+    
+  <div (click)="close_onClick()" class="modal-close-ico">X</div>
+  
+  <div class="frmOuter-wrap">
+    <div class="frmInner-wrap1">
+      <div class="modal_title">Add Diagnosis</div>
+
+      <div class="pop-tabs">
+        <div (click)="tabAll_click()" [class.popTab-active]="tab_all" class="pop-tab">All</div>
+        <div (click)="tabFavourite_click()" [class.popTab-active]="tab_favourite" class="pop-tab">Favourites</div>
+        <div (click)="tabPatient_click()" [class.popTab-active]="tab_patient" class="pop-tab">Patient</div>
+        <div  (click)="tabRecent_click()" [class.popTab-active]="tab_recent" class="pop-tab">Recently Used</div>
+      </div>
+
+      <div *ngIf="tab_all" class="popTab-item animated slideInRight">
+        <form [formGroup]="addDiagnosisForm" novalidate>
+          <div>
+            <div class="frm-item-wrap">
+                <md-select placeholder="Type" formControlName="type">
+                    <md-option [value]="1">Principal</md-option>
+                    <md-option [value]="1">Associated</md-option>
+                    <md-option [value]="1">Complication</md-option>
+                    <md-option [value]="1">Working</md-option>
+                    <md-option [value]="1">Rule Out</md-option>
+                </md-select>
+            </div>
+
+            <div class="frm-item-wrap">
+              <apmis-lookup formControlName="diagnosis" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            </div>
+          </div>
+        
+          <div class="addDrugBtn">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              <span>ADD DIAGNOSIS</span>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="tab_favourite" class="popTab-item animated slideInRight">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="frm-item-wrap">
+                      <md-select placeholder="Type" [formControl]="favorite_type">
+                          <md-option [value]="1">Principal</md-option>
+                          <md-option [value]="1">Associated</md-option>
+                          <md-option [value]="1">Complication</md-option>
+                          <md-option [value]="1">Working</md-option>
+                          <md-option [value]="1">Rule Out</md-option>
+                      </md-select>
+                  </div>
+                </td>
+                <td>
+                  <ul class="typeCat">
+                    <li>High Temprature</li>
+                    <li>Fever</li>
+                  </ul>
+                </td>
+                <td>1220A</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+
+      <div *ngIf="tab_patient" class="popTab-item animated slideInRight">
+          <table>
+            <tbody>
+              <tr>
+                <td>Principal</td>
+                <td>
+                  <ul class="typeCat">
+                    <li>High Temprature</li>
+                    <li>Fever</li>
+                  </ul>
+                </td>
+                <td>1220A</td>
+              </tr>
+              <tr>
+                <td>Associated</td>
+                <td>
+                  <ul>
+                    <li>High Temprature</li>
+                    <li>Fever</li>
+                  </ul>
+                </td>
+                <td>1220A</td>
+              </tr>
+              <tr>
+                <td>Complication</td>
+                <td>
+                  <ul>
+                    <li>High Temprature</li>
+                    <li>Fever</li>
+                  </ul>
+                </td>
+                <td>1220A</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+
+      <div *ngIf="tab_recent" class="popTab-item animated slideInRight">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="frm-item-wrap">
+                      <md-select placeholder="Type" [formControl]="recently_type">
+                          <md-option [value]="1">Principal</md-option>
+                          <md-option [value]="1">Associated</md-option>
+                          <md-option [value]="1">Complication</md-option>
+                          <md-option [value]="1">Working</md-option>
+                          <md-option [value]="1">Rule Out</md-option>
+                      </md-select>
+                  </div>
+                </td>
+                <td>
+                  <ul class="typeCat">
+                    <li>High Temprature</li>
+                    <li>Fever</li>
+                  </ul>
+                </td>
+                <td>1220A</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+
+    <div class="frmInner-wrap2" style="padding-left:0;">
+      <table>
+        <tbody>
+          <tr>
+            <td>Principal</td>
+            <td>
+              <ul class="typeCat">
+                <li>High Temprature</li>
+                <li>Fever</li>
+              </ul>
+            </td>
+            <td>1220A</td>
+            <td class="delItem"><i class="fa fa-trash" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>Associated</td>
+            <td>
+              <ul>
+                <li>High Temprature</li>
+                <li>Fever</li>
+              </ul>
+            </td>
+            <td>1220A</td>
+            <td class="delItem"><i class="fa fa-trash" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>Complication</td>
+            <td>
+              <ul>
+                <li>High Temprature</li>
+                <li>Fever</li>
+              </ul>
+            </td>
+            <td>1220A</td>
+            <td class="delItem"><i class="fa fa-trash" aria-hidden="true"></i></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="cta-1">DONE</button>
+    </div>
+  </div>
+</div>

@@ -8,10 +8,15 @@
 .frm-x2 .frm-item-wrap{
     width: 47%;
 }
+.tr{
+    width: 100%;
+    position: relative;
+}
 .doc-contentArea{
     width: 100%;
 }
 .med-sect {
+    position: relative;
     background: #fff;
     padding: 10px;
     box-sizing: border-box;
@@ -28,4 +33,32 @@
 .sect-remove{
     color: #ff2500;
     cursor: pointer;
+}
+.cta-1{
+    width: 184px;
+    height: 35px;
+}
+.cta-1:hover{
+    background: #0270AC;
+}
+.billItemWrap{
+    position: absolute;
+    bottom: 90%;
+    left: -39vw;
+    background: #fff;
+    border: 1px solid #bebebe;
+    padding: 10px;
+    width: 230px;
+}
+.add-link {
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    bottom: -13px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #0270AC;
+}
+.add-link:hover{
+    text-decoration: underline;
 }

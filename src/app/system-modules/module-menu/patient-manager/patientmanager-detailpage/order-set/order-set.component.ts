@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./order-set.component.scss']
 })
 export class OrderSetComponent implements OnInit {
+
+  @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
@@ -21,6 +23,8 @@ export class OrderSetComponent implements OnInit {
   popNursingCare = false;
   popPhysicianOrder = false;
   popProcedure = false;
+
+  showbill= false;
 
   constructor() { }
 
@@ -48,6 +52,13 @@ export class OrderSetComponent implements OnInit {
     this.popNursingCare = false;
     this.popPhysicianOrder = false;
     this.popProcedure = false;
+    this.showbill = false;
+  }
+  authorizerx(){
+    this.showDoc.emit(true);
+  }
+  showbill_click(){
+    this.showbill = true;
   }
 
 }

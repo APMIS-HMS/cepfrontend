@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="btn-group">
-                    <button md-raised-button [disabled]="!wardCheckin.valid" (click)="checkIn(wardCheckin.valid, wardCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText"> </button>
+                    <button md-raised-button [disabled]="!wardCheckin.valid || disableCheckIn" (click)="checkIn(wardCheckin.valid, wardCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText"> </button>
                     <button md-raised-button style="color: #fff; background-color: #B71C1C;">Cancel</button>
                 </div>
             </form>
@@ -57,7 +57,9 @@
                         <td class="tblMenu">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <ul class="popMenu">
-                                <li (click)="changeRoom(checkIn)">Switch To Room</li>
+                                <li>
+                                    <button [disabled]="disableSwitch" (click)="changeRoom(checkIn)" md-raised-button style="height:30px;line-height:1.5;padding:3px; color: #fff; background-color: blue;">{{switchBtnText}}</button>
+                                </li>
                                 <li><i class="fa fa-trash tblMenu" aria-hidden="true"></i> Delete History</li>
                             </ul>
                         </td>

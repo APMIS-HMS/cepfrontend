@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Employee, Facility, User } from '../../../../models/index';
+import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import { ClinicHelperService } from '../../../../system-modules/module-menu/clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -11,7 +12,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./ward-check-in.component.scss']
 })
 export class WardCheckInComponent implements OnInit {
-	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Input() loginEmployee: Employee;
   @Input() workSpace: any;
   facility: Facility = <Facility>{};
@@ -19,14 +20,18 @@ export class WardCheckInComponent implements OnInit {
   user: User = <User>{};
 	wardCheckin: FormGroup;
 	wards: any[] = [];
-	locations: any[] = [];
+  locations: any[] = [];
   checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
+  switchBtnText: String = 'Switch To Room';
+  disableSwitch: Boolean = false;
+  disableCheckIn: Boolean = false;
 
 	constructor(
 		public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
 		public facilityService: FacilitiesService,
-		public employeeService: EmployeeService,
+    public employeeService: EmployeeService,
+    private _wardEventEmitter: WardEmitterService,
 		public locker: CoolLocalStorage
 	) {
 
@@ -37,6 +42,7 @@ export class WardCheckInComponent implements OnInit {
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.miniFacility = <Facility>this.locker.getObject('miniFacility');
     this.user = <User>this.locker.getObject('auth');
+
 		if (this.loginEmployee.workSpaces !== undefined) {
 			this.loginEmployee.workSpaces.forEach(workspace => {
 				if (workspace.isActive && workspace.locations.length > 0) {
@@ -53,7 +59,7 @@ export class WardCheckInComponent implements OnInit {
 		this.wardCheckin = this.formBuilder.group({
 			location: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
-			isDefault: [false, [<any>Validators.required]]
+			isDefault: [true, [<any>Validators.required]]
     });
 
 		this.wardCheckin.controls['location'].valueChanges.subscribe(value => {
@@ -67,6 +73,7 @@ export class WardCheckInComponent implements OnInit {
 
 	checkIn(valid: Boolean, value: any) {
     if (valid) {
+      this.disableCheckIn = true;
       this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
       const checkIn: any = <any>{};
       checkIn.majorLocationId = value.location;
@@ -99,6 +106,8 @@ export class WardCheckInComponent implements OnInit {
         });
         const text = 'You have successfully checked into ' + value.room.name + ' ward';
         this._notification('Success', text);
+        this.disableCheckIn = false;
+        this._wardEventEmitter.announceWardChange({ typeObject: keepCheckIn, type: 'ward' });
         this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'ward' });
         this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
         this.close_onClick();
@@ -109,19 +118,26 @@ export class WardCheckInComponent implements OnInit {
   }
 
 	changeRoom(checkIn: any) {
-		let keepCheckIn;
+    this.disableSwitch = true;
+    let keepCheckIn;
+    this.switchBtnText = 'Switching...';
 		this.loginEmployee.wardCheckIn.forEach((itemi, i) => {
       itemi.isOn = false;
+      itemi.isDefault = false;
 			if (itemi.minorLocationId._id === checkIn.minorLocationId._id) {
         itemi.isOn = true;
-				keepCheckIn = itemi;
+        itemi.isDefault = true;
+        keepCheckIn = itemi;
 			}
     });
 
 		this.employeeService.update(this.loginEmployee).then(payload => {
       this.loginEmployee = payload;
+      this.switchBtnText = 'Switch To Room';
       const text = 'You have successfully changed ward to ' + checkIn.minorLocationId.name + ' ward';
       this._notification('Success', text);
+      this.disableSwitch = false;
+      this._wardEventEmitter.announceWardChange({ typeObject: keepCheckIn, type: 'ward' });
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'ward' });
 			this.close_onClick();
 		});
@@ -137,7 +153,6 @@ export class WardCheckInComponent implements OnInit {
   }
 
   close_onClick() {
-    // this._notification('Error', 'Please check into a ward');
 		this.closeModal.emit(true);
 	}
 }

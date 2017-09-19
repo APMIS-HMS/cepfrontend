@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import { WardAdmissionService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
@@ -11,13 +12,17 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class WardManagerListpageComponent implements OnInit {
 	facility: Facility = <Facility>{};
-	facilityWards: any[] = [];
+	wards: any[] = [];
+	loading: Boolean = true;
+	selectedIndex: Number = 0;
 
 	constructor(
+		private _route: Router,
 		private _wardEventEmitter: WardEmitterService,
 		private _wardAdmissionService: WardAdmissionService,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage) {
+		private _locker: CoolLocalStorage
+	) {
 		this._wardAdmissionService.listenerCreate.subscribe(payload => {
 			this.getFacilityWard();
 		});
@@ -28,17 +33,41 @@ export class WardManagerListpageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		// this is for the pageInView header
 		this._wardEventEmitter.setRouteUrl('Wards');
 		this.facility = <Facility>  this._locker.getObject('selectedFacility');
 		this.getFacilityWard();
 	}
 
 	getFacilityWard() {
-		this._facilitiesService.get(this.facility._id, {})
-			.then(payload => {
-				this.facilityWards = payload.wards;
-			});
+		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
+			this.loading = false;
+			let bedCount = 0;
+
+			if (res.data.length > 0) {
+				res.data[0].locations.forEach(ward => {
+					ward.rooms.forEach(room => {
+						if (room.beds.length > 0) {
+							room.beds.forEach(bed => {
+								if (bed.isAvailable) {
+									room.availableBeds = ++bedCount;
+								}
+							});
+						} else {
+							room.availableBeds = 0;
+						}
+					});
+				});
+				this.wards = res.data[0].locations;
+			}
+		});
+	}
+
+	goToFacility() {
+		this._route.navigate(['/dashboard/facility/locations']);
+	}
+
+	showDetails(index: Number) {
+		this.selectedIndex = index;
 	}
 
 }

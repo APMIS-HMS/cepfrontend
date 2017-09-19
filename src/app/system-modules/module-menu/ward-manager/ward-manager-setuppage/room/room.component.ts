@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { FacilitiesService, WardAdmissionService, RoomGroupService, FacilitiesServiceCategoryService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom } from '../../../../../models/index';
@@ -14,11 +14,12 @@ import { WardEmitterService } from '../../../../../services/facility-manager/war
 })
 
 export class RoomComponent implements OnInit {
+	@Output() selectedRoom: any;
 	addRoom = false;
 	wardId: string;
 	facility: Facility = <Facility>{};
 	wardDetail: any = <any>{};
-	roomItems: any[] = [];
+	rooms: any[] = [];
 	wardRoom: WardRoom = <WardRoom>{};
 	wardServicePriceTags = [];
 	roomNameEditShow: any;
@@ -26,6 +27,7 @@ export class RoomComponent implements OnInit {
 	editRoomGroup = new FormControl();
 	editRoomName = new FormControl();
 	editServicePrice = new FormControl();
+	loading: Boolean = true;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -50,7 +52,7 @@ export class RoomComponent implements OnInit {
 
 	ngOnInit() {
 		this._route.params.subscribe(params => {
-			this.wardId = params['wardid'];
+			this.wardId = params.wardId;
 		});
 		this._wardEventEmitter.setRouteUrl('Room Setup');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
@@ -59,18 +61,19 @@ export class RoomComponent implements OnInit {
 		this.getServicePriceTag();
 	}
 
-	roomNameEditToggle(indx) {
-		this.roomNameEditShow[indx] = !this.roomNameEditShow[indx];
+	editRoom(index: Number, selectedRoom: any) {
+		this.addRoom = true;
+		this.selectedRoom = selectedRoom;
+		// this.roomNameEditShow[index] = !this.roomNameEditShow[index];
 	}
 
 	roomNameEdit(indx, model) {
 		this.roomNameEditShow[indx] = !this.roomNameEditShow[indx];
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
+		this._wardAdmissionService.find({ query: { facilityId: this.facility._id }}).then(payload => {
 				payload.data[0].locations.forEach(item => {
-					if (item.minorLocationId.toString() === this.wardId.toString()) {
+					if (item.minorLocationId._id === this.wardId) {
 						item.rooms.forEach(itm => {
-							if (itm._id.toString() === model._id.toString()) {
+							if (itm._id === model._id) {
 								if (this.editRoomName.value != null || this.editRoomName.value !== undefined) {
 									itm.name = this.editRoomName.value;
 								}
@@ -84,46 +87,38 @@ export class RoomComponent implements OnInit {
 									this.close_onClick();
 								});
 							}
-						})
+						});
 					}
 				});
 			});
 	}
 
 	getServicePriceTag() {
-		this._facilitiesServiceCategoryService.find({query: {facilityId: this.facility._id}})
-			.then(payload => {
-				payload.data[0].categories.forEach(item => {
-					if (item.name === 'Ward') {
-						this.wardServicePriceTags = item.services;
-					}
-				});
+		this._facilitiesServiceCategoryService.find({query: {facilityId: this.facility._id}}).then(payload => {
+			payload.data[0].categories.forEach(item => {
+				if (item.name === 'Ward') {
+					this.wardServicePriceTags = item.services;
+				}
 			});
+		});
 	}
 
 	getWaitGroupItems() {
-		this._roomGroupService.findAll()
-			.then(payload => {
-				this.roomGroupItems = payload.data;
-			});
+		this._roomGroupService.findAll().then(payload => {
+			this.roomGroupItems = payload.data;
+		});
 	}
 
 	getWardRooomItems() {
-		this._facilitiesService.get(this.facility._id, {})
-			.then(payload => {
-				payload.wards.forEach(item => {
-					if (item._id.toString() === this.wardId.toString()) {
-						console.log(item.wardDetails);
-						if (item.wardDetails !== undefined) {
-							this.roomItems = item.wardDetails.rooms;
-						}
-						this.wardDetail = item;
-						this.roomNameEditShow = this.roomItems.map(i => false);
-					}
-				});
-			});
+		this._wardAdmissionService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
+			this.loading = false;
+			if (res.data.length > 0) {
+				const rooms = res.data[0].locations.filter(x => x.minorLocationId._id === this.wardId);
+				this.wardDetail = rooms[0];
+				this.rooms = rooms[0].rooms;
+			}
+		});
 	}
-
 
 	addRoomModal() {
 		this.addRoom = true;

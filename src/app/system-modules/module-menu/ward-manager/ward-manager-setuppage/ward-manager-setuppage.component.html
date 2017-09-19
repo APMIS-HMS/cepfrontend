@@ -1,6 +1,11 @@
 <div class="c-page-header">
-    <div routerLink="/dashboard/setup/locations" class="short-cut-link pull-right">
-        <i class="fa fa-arrow-circle-o-right"></i> Create Wards
+    <div class="top-button-box">
+        <ul class="topmenuwrap pull-right" (click)="goToFacility();">
+            <li tabindex="0">
+                <i class="fa fa-arrow-circle-o-right"></i>
+                <span>Create Ward</span>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="c-page-body">
@@ -10,19 +15,25 @@
                 <thead>
                     <tr class="table-bordered">
                         <th style="width: 5%">No</th>
-                        <th>Ward</th>
-                        <th>No. of Room(s)</th>
+                        <th style="width: 30%">Ward</th>
+                        <th style="width: 50%">Description</th>
+                        <th style="width: 15%">No. of Rooms</th>
                     </tr>
                 </thead>
                 <tbody class="custom-tbody">
-                    <tr *ngIf="facilityWards.length == 0">
-                        <td colspan="3"> No data available in table</td>
+                    <tr *ngIf="wards.length === 0 && !loading">
+                        <td class="table-content" colspan="4" style="text-align: center"> No data available in table</td>
                     </tr>
-                    <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{facilityWard._id}}" *ngFor="let facilityWard of facilityWards;let i = index">
-                        <td>{{i+1}}</td>
-                        <td>{{facilityWard.name}}</td>
-                        <td *ngIf="facilityWard?.wardDetails?.rooms?.length == null">0</td>
-                        <td *ngIf="facilityWard?.wardDetails?.rooms?.length">{{facilityWard?.wardDetails?.rooms?.length}}</td>
+                    <tr *ngIf="wards.length === 0 && loading">
+                        <td class="table-content" colspan="4" style="text-align: center">
+                            <md-spinner class='small-spinner'></md-spinner>
+                        </td>
+                    </tr>
+                    <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{ward.minorLocationId._id}}" *ngFor="let ward of wards; let i = index">
+                        <td class="table-content">{{i+1}}</td>
+                        <td class="table-content">{{ward.minorLocationId.name}}</td>
+                        <td class="table-content">{{ward.minorLocationId.description}}</td>
+                        <td class="table-content">{{ward?.rooms?.length}}</td>
                     </tr>
                 </tbody>
             </table>

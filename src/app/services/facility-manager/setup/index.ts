@@ -84,3 +84,4 @@ export * from './hmo.service';
 export * from './vital.service';
 export * from './template.service';
 export * from './facility-family-cover.service';
+export * from './policy.service';

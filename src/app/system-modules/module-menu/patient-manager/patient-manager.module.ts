@@ -1,3 +1,4 @@
+import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -46,6 +47,10 @@ import { EditInvestigationComponent } from './patientmanager-detailpage/order-se
 import { EditProcedureComponent } from './patientmanager-detailpage/order-set/edit-procedure/edit-procedure.component';
 import { EditNursingCareComponent } from './patientmanager-detailpage/order-set/edit-nursing-care/edit-nursing-care.component';
 import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-set/edit-physician-order/edit-physician-order.component';
+import { DocSymptomComponent } from './patientmanager-detailpage/documentation/doc-symptom/doc-symptom.component';
+import { DocDiagnosisComponent } from './patientmanager-detailpage/documentation/doc-diagnosis/doc-diagnosis.component';
+import { OrderBillItemComponent } from './patientmanager-detailpage/order-set/order-bill-item/order-bill-item.component';
+import { TreatementPlanComponent } from './patientmanager-detailpage/treatement-plan/treatement-plan.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -78,7 +83,11 @@ import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-s
         EditInvestigationComponent,
         EditProcedureComponent,
         EditNursingCareComponent,
-        EditPhysicianOrderComponent
+        EditPhysicianOrderComponent,
+        DocSymptomComponent,
+        DocDiagnosisComponent,
+        OrderBillItemComponent,
+        TreatementPlanComponent
     ],
     exports: [
     ],
@@ -89,7 +98,7 @@ import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-s
         ChartsModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
-        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService]
+        FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService, FacilityCompanyCoverService]
 })
 export class PatientManagerModule { }
 
