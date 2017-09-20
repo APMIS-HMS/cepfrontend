@@ -1,5 +1,5 @@
 <div class="head">
-  <div class="wallet-summary">
+  <div class="wallet-summary shadow">
     <div class="summary-item">
       <div class="item-label">Ledger Balance</div>
       <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.ledgerBalance}}</div>
@@ -14,11 +14,20 @@
       <div class="item-val available-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
     </div>
   </div>
-  <div class="head-others">
+  <div class="head-others shadow">
+    <div class="frm-item-wrap">
+      <md-input-container>
+        <input type="text" mdInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
+      </md-input-container>
+    </div>
     <ul class="topmenuwrap">
       <li (click)="fundWallet()">
         <i class="fa fa-credit-card" aria-hidden="true"></i>
-        <span>Fund Wallet</span>
+        <span>Cash</span>
+      </li>
+      <li (click)="fundWallet()">
+        <i class="fa fa-credit-card" aria-hidden="true"></i>
+        <span>Paystack</span>
       </li>
     </ul>
   </div>
@@ -74,38 +83,4 @@
 
     </tbody>
   </table>
-</div>
-
-
-
-<!-- wallet pop -->
-<div class="modal-overlay" *ngIf="fundPopShow">
-  <div class="form-modal center-center">
-    <div class="modal-baseWrap animated pulse">
-      <div class="modal-close-ico" aria-hidden="true" (click)="onClose()">X</div>
-      <legend class="modal_title">Fund Wallet</legend>
-      <div class="acc-bal">
-        <div class="acc-content survery">
-          <div class="alert alert-info text-center">
-            <strong>Account Bal: </strong><span>&#x20a6;</span> {{person?.wallet?.balance}}
-          </div>
-        </div>
-      </div>
-      <div class="form-container">
-        <form>
-          <md-select placeholder="Mode of Payment" [(ngModel)]="selectedValue" name="wallet">
-            <md-option *ngFor="let wallet of wallets" [value]="wallet.value">
-              {{wallet.viewValue}}
-            </md-option>
-          </md-select>
-          <md-input-container class="example-full-width">
-            <input type="number" mdInput placeholder="Enter Amount">
-          </md-input-container>
-          <div class="container-center">
-            <button (click)="save()" md-raised-button style="text-align:center;">Fund Wallet</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>

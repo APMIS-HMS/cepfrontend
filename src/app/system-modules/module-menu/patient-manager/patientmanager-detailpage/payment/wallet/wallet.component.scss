@@ -59,6 +59,23 @@
     position: static;
     top: auto;
     right: auto;
+    display: flex;
+    justify-content: space-between;
+}
+.head-others ul.topmenuwrap li{
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.head-others .mat-input-container {
+    width: 100%;
+}
+.head-others {
+    border: 1px solid #0288D1;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 7px;
 }
 .tbl-header{
     display: flex;
