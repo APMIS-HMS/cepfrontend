@@ -1,5 +1,5 @@
 <div class="c-page-header">
-    <h3 class="c-page-title">List of Rooms in {{wardDetail.name}}</h3>
+    <h3 class="c-page-title">List of Rooms in {{wardDetail.minorLocationId?.name}}</h3>
     <div class="pull-right btn-box">
         <div class="add-action-box">
             <button md-raised-button (click)="addRoomModal()" class="btn pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Room</button>
@@ -35,13 +35,13 @@
                         </td>
                     </tr>
                     <tr class="details-link" *ngFor="let room of rooms; let i = index">
-                        <td routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{i+1}}</td>
-                        <td>
+                        <td class="table-content" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{i+1}}</td>
+                        <td class="table-content">
                             <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room?.name}}</div>
                             <!-- <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room?.name}}</div> -->
                             <!-- <input *ngIf="roomNameEditShow[i]" class="edit-control lhs" type="text" value="{{room?.name}}" [formControl]="editRoomName"> -->
                         </td>
-                        <td>
+                        <td class="table-content">
                             <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
                                 {{room.groupId?.name}}
                             </div>
@@ -53,7 +53,7 @@
                                 <option *ngFor="let item of roomGroupItems" value={{item._id}}>{{item?.name}}</option>
                             </select> -->
                         </td>
-                        <td>
+                        <td class="table-content">
                             <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
                                 {{room?.serviceId?.name}}
                             </div>
@@ -65,9 +65,9 @@
                                 <option *ngFor="let item of wardServicePriceTags" value={{item._id}}>{{item?.name}}</option>
                             </select> -->
                         </td>
-                        <td class="" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</td>
-                        <td>
-                            <i (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <td class="table-content" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</td>
+                        <td class="table-content-action">
+                            <i (click)="editRoom(i, room)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <!-- <i [hidden]="roomNameEditShow[i]" (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
                             <!-- <i *ngIf="roomNameEditShow[i]" (click)="roomNameEdit(i,room)" class="fa fa-check" aria-hidden="true"></i> -->
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -77,7 +77,7 @@
             </table>
         </div>
         <div *ngIf="addRoom" class="modal-overlay">
-            <app-add-room (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-room>
+            <app-add-room [selectedRoom]="selectedRoom" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-room>
         </div>
     </div>
 </div>

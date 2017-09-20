@@ -9,8 +9,13 @@ input {
     background: #0288D1;
     color: #fff;
 }
+
 #example-full-width {
     text-align: center;
+}
+
+.mat-input-container {
+    width: 100%;
 }
 
 .modal-overlay {

@@ -13,7 +13,7 @@ import { WardEmitterService } from '../../../../services/facility-manager/ward-e
 export class WardManagerSetuppageComponent implements OnInit {
 	pageInView = 'Ward Setup';
 	facility: Facility = <Facility>{};
-	facilityWards: any[] = [];
+	wards: any[] = [];
 	facilityWardId = '';
 	loading: Boolean = true;
 
@@ -44,9 +44,17 @@ export class WardManagerSetuppageComponent implements OnInit {
 	}
 
 	getFacilityWard() {
-		this._facilitiesService.get(this.facility._id, {}).then(payload => {
+		// this._facilitiesService.get(this.facility._id, {}).then(res => {
+		// 	this.loading = false;
+		// 	console.log(res);
+		// 	this.facilityWards = res.wards;
+		// }).catch(err => console.log(err));
+		this._wardAdmissionService.find({query: {'facilityId._id': this.facility._id}}).then(res => {
 			this.loading = false;
-			this.facilityWards = payload.wards;
-		}).catch(err => console.log(err));
+			console.log(res);
+			if (res.data.length > 0) {
+				this.wards = res.data[0].locations;
+			}
+		});
 	}
 }
