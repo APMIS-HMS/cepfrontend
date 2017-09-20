@@ -17,7 +17,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
   person: any;
   transactions: any[] = [];
   search: FormControl;
-  fundPopShow = false;
+  fundAmount: FormControl;
   selectedValue: string;
 
   wallets = [
@@ -30,6 +30,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.fundAmount = new FormControl('', []);
     this.search = new FormControl('', []);
     this.search.valueChanges
       .debounceTime(300)
@@ -68,17 +69,12 @@ export class WalletComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     // crop();
-    if(this.fundPopShow){
-      console.log('after init')
-      crop();
-    }
+    
   }
   fundWallet() {
-    this.fundPopShow = true;
     crop();
   }
   onClose() {
-    this.fundPopShow = false;
   }
   save() {
     paystackInline();
