@@ -15,6 +15,7 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
 export class WardManagerAdmissionpageComponent implements OnInit {
 	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+	@Input() selectInpatient: any;
 	admitPatient = false;
 	transferReqShow = false;
 	transferInShow = false;
@@ -24,12 +25,12 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	_wardTransfer: WardTransfer = <WardTransfer>{};
 	selectedWard: any;
 	typeChecker: any = myGlobals;
-	selectInpatient: any;
 	listPatientAdmissionWaiting: any[] = [];
 	listPatientTransferWaiting: any[] = [];
 	listPatientDischarge: any[] = [];
 	facility: Facility = <Facility>{};
 	user: User = <User>{};
+	employeeDetails: any = <any>{};
 	newAdmissionLoading: Boolean = true;
 	transferInLoading: Boolean = true;
 	dischargeLoading: Boolean = true;
@@ -56,14 +57,23 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Admission waiting list');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.employeeDetails = this._locker.getObject('loginEmployee');
 		this.user = <User>this._locker.getObject('auth');
 
 		this._wardEventEmitter.announceWard.subscribe(val => {
-			console.log(val);
 			this.selectedWard = val;
 			this.getWaitingList(val);
 			// this.getDischargeList(val);
 		});
+
+		if (this.selectedWard === undefined) {
+			const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
+			const wardType = {
+				type: 'ward',
+				typeObject: wardCheckedIn
+			}
+			this.getWaitingList(wardType);
+		}
 	}
 
 	// newAdmissionTab() {
@@ -131,6 +141,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	}
 
 	getWaitingList(checkedInWard: any) {
+		console.log(checkedInWard);
 		this._inPatientListService.find({ query: {
 			'facilityId._id': this.facility._id,
 			'wardId._id': checkedInWard.typeObject.minorLocationId._id,
@@ -147,16 +158,15 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 			facilityId: this.facility._id,
 			statusId: myGlobals.transfer,
 			discharge: undefined
-		}})
-			.then(payload => {
-				this.transferInLoading = false;
-				console.log(payload.data);
-				if (payload.data.length !== 0) {
-					this.listPatientTransferWaiting = payload.data;
-				} else {
-					this.listPatientTransferWaiting = [];
-				}
-			});
+		}}).then(payload => {
+			this.transferInLoading = false;
+			console.log(payload.data);
+			if (payload.data.length !== 0) {
+				this.listPatientTransferWaiting = payload.data;
+			} else {
+				this.listPatientTransferWaiting = [];
+			}
+		});
 	}
 
 	getDischargeList(checkedInWard: any) {

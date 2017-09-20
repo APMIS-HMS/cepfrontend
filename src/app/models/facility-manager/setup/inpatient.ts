@@ -1,11 +1,11 @@
 import {WardTransfer} from './wardtransfer';
 import {WardDischarge} from './warddischarge'
 export interface InPatient {
-    facilityId: string;
-    patientId: string;
-    statusId: string;
+    facilityId: any;
+    patientId: any;
+    statusId: any;
     transfers: WardTransfer[];
     admissionDate: Date;
-    admitByEmployeeId:string,
+    admitByEmployeeId: any,
     discharge: WardDischarge;
 }

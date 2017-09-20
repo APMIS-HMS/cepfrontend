@@ -53,13 +53,6 @@ export class CheckoutPatientComponent implements OnInit {
 			desc: ['']
 		});
 
-		// Check is this patient has an appointment. If not, redirect the user to the appointment page
-		if (!!this.selectedAppointment && this.selectedAppointment._id === undefined) {
-			const text = 'Please set appointment for ' + this.patientDetails.personDetails.personFullName;
-			this._notification('Info', text);
-			this.closeModal.emit(true);
-		}
-
 		this.getAllWards();
 		this._CheckIfPatientIsAdmitted();
 	}
@@ -68,36 +61,56 @@ export class CheckoutPatientComponent implements OnInit {
 		if (valid) {
 			this.admitBtnText = 'Sending... <i class="fa fa-spinner fa-spin"></i>';
 			// Delete irrelevant data from employee
+			delete this.employeeDetails.workSpaces;
+			delete this.employeeDetails.department;
+			delete this.employeeDetails.professionObject;
+			delete this.employeeDetails.employeeFacilityDetails;
+			delete this.employeeDetails.units;
+			delete this.employeeDetails.consultingRoomCheckIn;
+			delete this.employeeDetails.storeCheckIn;
+			delete this.employeeDetails.workbenchCheckIn;
+			delete this.employeeDetails.wardCheckIn;
 			delete this.employeeDetails.employeeDetails.countryItem;
 			delete this.employeeDetails.employeeDetails.nationalityObject;
 			delete this.employeeDetails.employeeDetails.nationality;
+			delete this.employeeDetails.employeeDetails.homeAddress;
+			delete this.employeeDetails.employeeDetails.gender;
+			delete this.employeeDetails.employeeDetails.maritalStatus;
+			delete this.employeeDetails.employeeDetails.nextOfKin;
 
 			const patient = {
 				employeeId: this.employeeDetails,
 				patientId: this.patientDetails,
 				facilityId: this.miniFacility,
-				clinicId: this.selectedAppointment.clinicId,
+				clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : null,
 				unitId: this.employeeDetails.unitDetails[0],
 				wardId: value.ward,
 				description: value.desc
 			};
 
 			this._inPatientListService.create(patient).then(res => {
-				console.log(res);
 				// Get Appointment
 				this._appointmentService.find({ query: {
 					'facilityId._id': this.facility._id,
 					'patientId._id': this.patientDetails._id,
-					'clinicId._id': this.selectedAppointment.clinicId._id,
+					// 'clinicId._id': (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId._id : null,
 					isCheckedOut: false
 				}}).then(clinicRes => {
-					console.log(clinicRes);
-					let updateData = clinicRes.data[0];
-					updateData.isCheckedOut = true;
-					updateData.attendance.dateCheckOut = new Date();
+					if (clinicRes.length > 0) {
+						let updateData = clinicRes.data[0];
+						updateData.isCheckedOut = true;
+						updateData.attendance.dateCheckOut = new Date();
 
-					this._appointmentService.update(updateData).then(updateRes => {
-						console.log(updateRes);
+						this._appointmentService.update(updateData).then(updateRes => {
+							this.admitFormGroup.reset();
+							this.admitBtnText = 'Send <i class="fa fa-check-circle-o"></i>';
+							let text = this.patientDetails.personDetails.personFullName + ' has been sent to ' + value.ward.name + ' ward for admission';
+							res.isAdmitted = true;
+							res.msg = text;
+							this.admittedWard = res;
+							this._notification('Success', text);
+						}).catch(err => console.log(err));
+					} else {
 						this.admitFormGroup.reset();
 						this.admitBtnText = 'Send <i class="fa fa-check-circle-o"></i>';
 						let text = this.patientDetails.personDetails.personFullName + ' has been sent to ' + value.ward.name + ' ward for admission';
@@ -105,7 +118,7 @@ export class CheckoutPatientComponent implements OnInit {
 						res.msg = text;
 						this.admittedWard = res;
 						this._notification('Success', text);
-					}).catch(err => console.log(err));
+					}
 				}).catch(err => console.log(err));
 			}).catch(err => console.log(err));
 		} else {
@@ -118,7 +131,6 @@ export class CheckoutPatientComponent implements OnInit {
 			'facilityId._id': this.facility._id,
 			'patientId._id': this.patientDetails._id
 		}}).then(res => {
-			console.log(res);
 			this.loading = false;
 			if (res.data.length > 0) {
 				this._inpatientService.find({ query: {
@@ -126,7 +138,6 @@ export class CheckoutPatientComponent implements OnInit {
 					'patientId._id': this.patientDetails._id,
 					isDischarged: false
 				}}).then(resp => {
-					console.log(resp);
 					const patientName = this.patientDetails.personDetails.personFullName;
 					if (resp.data.length > 0) {
 						const locationIndex = (resp.data[0].transfers.length > 0) ? resp.data[0].transfers.length - 1 : resp.data[0].transfers.length;
@@ -148,7 +159,6 @@ export class CheckoutPatientComponent implements OnInit {
 					isDischarged: false
 				}}).then(resp => {
 					if (resp.data.length > 0) {
-						console.log(resp);
 						let text = this.patientDetails.personDetails.personFullName + ' has been admitted to ' + res.data[0].wardId.name + ' ward';
 						resp.data[0].isAdmitted = true;
 						resp.data[0].msg = text;

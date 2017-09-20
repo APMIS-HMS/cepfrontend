@@ -580,14 +580,14 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   checkoutPatient_show() {
     // Check is this patient has an appointment. If not, redirect the user to the appointment page
-		if (!!this.selectedAppointment && this.selectedAppointment._id !== undefined) {
+		// if (!!this.selectedAppointment && this.selectedAppointment._id !== undefined) {
       this.patientDetails = this.patient;
       this.checkoutPatient = true;
-		} else {
-      let text = 'Please set appointment for ' + this.patient.personDetails.personFullName + '';
+		// } else {
+    //   let text = 'Please set appointment for ' + this.patient.personDetails.personFullName + '';
 
-			this._notification('Info', text.concat(' before you can continue this process.'));
-    }
+		// 	this._notification('Info', text.concat(' before you can continue this process.'));
+    // }
   }
 
   // Notification
