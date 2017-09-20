@@ -38,7 +38,7 @@
                         <textarea class="edit-control lhs modal-textarea" formControlName="desc" placeholder="Description" autocomplete="off" style="width:90%; height:120px;"></textarea>-->
                     </div>
                     <div class="btn-box">
-                        <button md-raised-button [disabled]="!admitFormGroup.valid" (click)="onAdmit(admitFormGroup.value, admitFormGroup.valid);" class="btn" [innerHtml]="admitBtnText"></button>
+                        <button md-raised-button [disabled]="!admitFormGroup.valid && disableAdmitBtn" (click)="onAdmit(admitFormGroup.value, admitFormGroup.valid);" class="btn" [innerHtml]="admitBtnText"></button>
                     </div>
                 </form>
             </div>

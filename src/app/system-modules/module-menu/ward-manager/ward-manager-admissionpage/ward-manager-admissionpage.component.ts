@@ -63,7 +63,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.selectedWard = val;
 			this.getWaitingList(val);
-			// this.getDischargeList(val);
+			this.getTransferInList(val);
+			this.getDischargeList(val);
 		});
 
 		if (this.selectedWard === undefined) {
@@ -73,6 +74,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 				typeObject: wardCheckedIn
 			}
 			this.getWaitingList(wardType);
+			this.getTransferInList(wardType);
+			this.getDischargeList(wardType);
 		}
 	}
 
@@ -124,20 +127,17 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	}
 
 	onClickDeclineTransfer(inpatientItem) {
-		this._inPatientService.get(inpatientItem._id, {})
-			.then(payload => {
-				console.log(payload);
-				payload.statusId = myGlobals.onAdmission;
-				payload.transfers[payload.lastIndex].proposedWard = {};
-				// Update the checkOutDate of the last tranfer
-				this._inPatientService.update(payload)
-					.then(payload1 => {
-						this.getTransferInList(this.selectedWard);
-					})
-					.catch(err => {
-						console.log(err);
-					});
+		this._inPatientService.get(inpatientItem._id, {}).then(payload => {
+			console.log(payload);
+			payload.statusId = myGlobals.onAdmission;
+			payload.transfers[payload.lastIndex].proposedWard = {};
+			// Update the checkOutDate of the last tranfer
+			this._inPatientService.update(payload).then(payload1 => {
+				this.getTransferInList(this.selectedWard);
+			}).catch(err => {
+				console.log(err);
 			});
+		});
 	}
 
 	getWaitingList(checkedInWard: any) {
@@ -155,7 +155,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
 	getTransferInList(checkedInWard: any) {
 		this._inPatientService.find({ query: {
-			facilityId: this.facility._id,
+			'facilityId._id': this.facility._id,
 			statusId: myGlobals.transfer,
 			discharge: undefined
 		}}).then(payload => {
@@ -170,7 +170,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	}
 
 	getDischargeList(checkedInWard: any) {
-		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.discharge } })
+		this._inPatientService.find({ query: {'facilityId._id': this.facility._id, statusId: myGlobals.discharge }})
 			.then(payload => {
 				this.dischargeLoading = false;
 				if (payload.data.length !== 0) {
