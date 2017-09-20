@@ -14,13 +14,13 @@
                             </md-input-container>
                         </div>
                         <div class="frm-item-wrap">
-                            <md-select placeholder="Group" formControlName="group">
+                            <md-select placeholder="Group" formControlName="group" [(ngModel)]="groupId">
                                 <md-option *ngFor="let group of groups" [value]="group">{{group.name}}</md-option>
                             </md-select>
                         </div>
                         <div class="frm-item-wrap" style="margin-top: 30px;">
                             <md-select placeholder="Select Service" formControlName="service">
-                                <md-option *ngFor="let servicePriceTag of servicePriceTags" [value]="servicePriceTag">{{servicePriceTag.name}}</md-option>
+                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.name}}</md-option>
                             </md-select>
                         </div>
                         <div class="btn-box">

@@ -87,6 +87,8 @@ export class FacilitiesService {
     delete logEmp.unitDetails;
     delete logEmp.professionObject;
     delete logEmp.workSpaces;
+    delete logEmp.workbenchCheckIn;
+    delete logEmp.wardCheckIn;
     delete logEmp.employeeDetails.countryItem;
     delete logEmp.employeeDetails.homeAddress;
     delete logEmp.employeeDetails.gender;

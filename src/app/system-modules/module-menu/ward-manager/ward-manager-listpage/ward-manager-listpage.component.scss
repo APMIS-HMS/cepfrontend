@@ -5,6 +5,12 @@
     padding: 10px;
 }
 
+.top-button-box {
+    position: absolute;
+    right: 130px;
+    top: -25px;
+}
+
 .inPatients {
     border: none;
     .patient-sex {
@@ -18,33 +24,58 @@
         width: 150px;
         margin: 5px;
     }
-    table {
-        thead {
-            background-color: #AED6F1;
+    .tr-header-group {
+        background-color: #0288D1;
+        color: #fff;
+        td {
+            text-align: center;
         }
-        tbody {
-            border: 1px solid #ddd !important;
-            tr {
-                td {
-                    padding: 8px;
-                    line-height: 1.42857143;
-                }
-            }
-            .tr-header-group {
-                background-color: #0288D1;
-                color: #fff;
-                text-align: left;
-                &:hover {
-                    cursor: pointer;
-                }
-            }
+        &:hover {
+            cursor: pointer;
         }
     }
+    .table-content {
+        padding: 10px;
+        text-align: center;
+    }
+    .table-content-action {
+        padding: 5px;
+        .fa {
+            font-size: 16px;
+            padding: 5px;
+            margin: 2px;
+            cursor: pointer;
+        }
+    }
+    // table {
+    //     thead {
+    //         background-color: #AED6F1;
+    //     }
+    //     tbody {
+    //         border: 1px solid #ddd !important;
+    //         tr {
+    //             td {
+    //                 padding: 8px;
+    //                 line-height: 1.42857143;
+    //             }
+    //         }
+    //         .tr-header-group {
+    //             background-color: #0288D1;
+    //             color: #fff;
+    //             text-align: left;
+    //             &:hover {
+    //                 cursor: pointer;
+    //             }
+    //         }
+    //     }
+    // }
 }
+
 .topFilters {
     display: flex;
     justify-content: flex-end;
 }
+
 .filter-title {
     position: absolute;
     left: 0;

@@ -21,6 +21,9 @@ export class DocDiagnosisComponent implements OnInit {
   apmisLookupDisplayKey = '';
   apmisLookupText = '';
 
+  favorite_type = new FormControl();
+  recently_type = new FormControl();
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
