@@ -1,13 +1,18 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { PersonService } from '../../../../../../services/facility-manager/setup/index';
+// import  '../../../../../../../assets/libs/paystack.js';
+import crop from './paystack.js';
+import paystackInline from './paystack-inline.js';
+declare var paystack: any;
+// declare var callPayStack: any;
 @Component({
   selector: 'app-wallet',
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.scss']
 })
-export class WalletComponent implements OnInit {
+export class WalletComponent implements OnInit, AfterViewInit {
   @Input() patient;
   person: any;
   transactions: any[] = [];
@@ -20,7 +25,9 @@ export class WalletComponent implements OnInit {
     { value: 'paystack', viewValue: 'Paystack' }
   ];
 
-  constructor(private personService: PersonService) { }
+  constructor(private personService: PersonService) { 
+    // crop();
+  }
 
   ngOnInit() {
     this.search = new FormControl('', []);
@@ -56,15 +63,25 @@ export class WalletComponent implements OnInit {
         this.person = payload;
         this.transactions = payload.wallet.transactions;
       }
-    })
+    });
+    // paystack.func1();
+  }
+  ngAfterViewInit(): void {
+    // crop();
+    if(this.fundPopShow){
+      console.log('after init')
+      crop();
+    }
   }
   fundWallet() {
     this.fundPopShow = true;
+    crop();
   }
   onClose() {
     this.fundPopShow = false;
   }
   save() {
+    paystackInline();
     // const personId = this.person._id;
     // const transactionType = 'Dr';
     // const transactionSource = 'POS';
