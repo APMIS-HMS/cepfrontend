@@ -12,33 +12,35 @@ export class SurveyComponent implements OnInit {
     surveyModel: any;
     constructor(private shareService: SharedService, private documentationService: DocumentationService) {
         this.shareService.newFormAnnounced$.subscribe((payload: any) => {
-            console.log(payload);
-            this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(payload.json));
+            this.surveyModel = new Survey.ReactSurveyModel(payload.json);
             Survey.Survey.cssType = 'bootstrap';
-            Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+            // console.log(this.surveyModel);
+            // Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
             Survey.Survey.cssType = 'bootstrap';
             this.surveyModel.onComplete.add(() => {
                 this.surveyResult();
             });
             this.surveyModel.onValueChanged.add((a, b) => {
-                console.log(a);
-                console.log(b);
+                // console.log(a);
+                // console.log(b);
             });
         })
     }
 
     ngOnInit() {
-        console.log(this.json);
+        // console.log(this.json);
+
         this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
         Survey.Survey.cssType = 'bootstrap';
+        // console.log(this.surveyModel);
         Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
         Survey.Survey.cssType = 'bootstrap';
         this.surveyModel.onComplete.add(() => {
             this.surveyResult();
         });
         this.surveyModel.onValueChanged.add((a, b) => {
-            console.log(a);
-            console.log(b);
+            // console.log(a);
+            // console.log(b);
         });
 
     }

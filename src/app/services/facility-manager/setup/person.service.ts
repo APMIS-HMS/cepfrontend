@@ -1,3 +1,4 @@
+import { WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium } from './../../../models/facility-manager/setup/wallet-transaction';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -56,12 +57,20 @@ export class PersonService {
     return this._socket.remove(id, query);
   }
 
-  walletTransaction(personId, transactionType, transactionSource, amount, description) {
+  walletTransaction(walletTransaction: WalletTransaction) {
     const host = this._restService.getHost();
     const path = host + '/wallet-transaction';
     return request
       .get(path)
-      .query({ personId: personId, transactionType: transactionType, transactionSource: transactionSource, amount: amount, description: description }); // query string 
+      .query({
+        destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
+        transactionType: TransactionType[walletTransaction.transactionType],
+        transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+        amount: walletTransaction.amount, description: walletTransaction.description,
+        source: EntityType[walletTransaction.source],
+        destination: EntityType[walletTransaction.destination],
+        transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
+      }); // query string 
   }
 
 }
