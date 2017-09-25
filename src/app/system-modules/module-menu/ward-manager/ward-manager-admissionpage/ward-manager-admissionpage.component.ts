@@ -15,6 +15,7 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
 export class WardManagerAdmissionpageComponent implements OnInit {
 	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+	@Input() selectInpatient: any;
 	admitPatient = false;
 	transferReqShow = false;
 	transferInShow = false;
@@ -24,12 +25,12 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	_wardTransfer: WardTransfer = <WardTransfer>{};
 	selectedWard: any;
 	typeChecker: any = myGlobals;
-	selectInpatient: any;
 	listPatientAdmissionWaiting: any[] = [];
 	listPatientTransferWaiting: any[] = [];
 	listPatientDischarge: any[] = [];
 	facility: Facility = <Facility>{};
 	user: User = <User>{};
+	employeeDetails: any = <any>{};
 	newAdmissionLoading: Boolean = true;
 	transferInLoading: Boolean = true;
 	dischargeLoading: Boolean = true;
@@ -56,14 +57,26 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Admission waiting list');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.employeeDetails = this._locker.getObject('loginEmployee');
 		this.user = <User>this._locker.getObject('auth');
 
 		this._wardEventEmitter.announceWard.subscribe(val => {
-			console.log(val);
 			this.selectedWard = val;
 			this.getWaitingList(val);
-			// this.getDischargeList(val);
+			this.getTransferInList(val);
+			this.getDischargeList(val);
 		});
+
+		if (this.selectedWard === undefined) {
+			const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
+			const wardType = {
+				type: 'ward',
+				typeObject: wardCheckedIn
+			}
+			this.getWaitingList(wardType);
+			this.getTransferInList(wardType);
+			this.getDischargeList(wardType);
+		}
 	}
 
 	// newAdmissionTab() {
@@ -114,23 +127,21 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 	}
 
 	onClickDeclineTransfer(inpatientItem) {
-		this._inPatientService.get(inpatientItem._id, {})
-			.then(payload => {
-				console.log(payload);
-				payload.statusId = myGlobals.onAdmission;
-				payload.transfers[payload.lastIndex].proposedWard = {};
-				// Update the checkOutDate of the last tranfer
-				this._inPatientService.update(payload)
-					.then(payload1 => {
-						this.getTransferInList(this.selectedWard);
-					})
-					.catch(err => {
-						console.log(err);
-					});
+		this._inPatientService.get(inpatientItem._id, {}).then(payload => {
+			console.log(payload);
+			payload.statusId = myGlobals.onAdmission;
+			payload.transfers[payload.lastIndex].proposedWard = {};
+			// Update the checkOutDate of the last tranfer
+			this._inPatientService.update(payload).then(payload1 => {
+				this.getTransferInList(this.selectedWard);
+			}).catch(err => {
+				console.log(err);
 			});
+		});
 	}
 
 	getWaitingList(checkedInWard: any) {
+		console.log(checkedInWard);
 		this._inPatientListService.find({ query: {
 			'facilityId._id': this.facility._id,
 			'wardId._id': checkedInWard.typeObject.minorLocationId._id,
@@ -144,23 +155,22 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
 	getTransferInList(checkedInWard: any) {
 		this._inPatientService.find({ query: {
-			facilityId: this.facility._id,
+			'facilityId._id': this.facility._id,
 			statusId: myGlobals.transfer,
 			discharge: undefined
-		}})
-			.then(payload => {
-				this.transferInLoading = false;
-				console.log(payload.data);
-				if (payload.data.length !== 0) {
-					this.listPatientTransferWaiting = payload.data;
-				} else {
-					this.listPatientTransferWaiting = [];
-				}
-			});
+		}}).then(payload => {
+			this.transferInLoading = false;
+			console.log(payload.data);
+			if (payload.data.length !== 0) {
+				// this.listPatientTransferWaiting = payload.data;
+			} else {
+				// this.listPatientTransferWaiting = [];
+			}
+		});
 	}
 
 	getDischargeList(checkedInWard: any) {
-		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.discharge } })
+		this._inPatientService.find({ query: {'facilityId._id': this.facility._id, statusId: myGlobals.discharge }})
 			.then(payload => {
 				this.dischargeLoading = false;
 				if (payload.data.length !== 0) {

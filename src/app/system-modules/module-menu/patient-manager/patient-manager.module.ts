@@ -1,3 +1,4 @@
+import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
 import { NgModule } from '@angular/core';
@@ -97,7 +98,7 @@ import { TreatementPlanComponent } from './patientmanager-detailpage/treatement-
         MaterialModule,
         ChartsModule
     ],
-    providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService,
+    providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
         FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService, FacilityCompanyCoverService]
 })
 export class PatientManagerModule { }

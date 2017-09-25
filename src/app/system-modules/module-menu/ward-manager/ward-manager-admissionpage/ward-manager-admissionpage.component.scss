@@ -6,41 +6,36 @@
 
 .table-content {
     padding: 10px;
-}
-
-table {
-    width: 100%;
-    position: relative;
-    border-collapse: collapse;
-    font-size: 12px;
-    background: #fff;
-}
-
-table,
-td {
-    border: 0.5px solid $td-border;
-}
-
-th {
-    height: 50px;
-    background: $th-background;
-    border: 0.5px solid $th-border;
-}
-
-td {
-    vertical-align: center;
     text-align: center;
-    padding: 2px;
 }
 
-tr:hover {
-    background-color: $tr-hover
-}
-
-tr:nth-child(even) {
-    background-color: $tr-stripe
-}
-
+// table {
+//     width: 100%;
+//     position: relative;
+//     border-collapse: collapse;
+//     font-size: 12px;
+//     background: #fff;
+// }
+// table,
+// td {
+//     border: 0.5px solid $td-border;
+// }
+// th {
+//     height: 50px;
+//     background: $th-background;
+//     border: 0.5px solid $th-border;
+// }
+// td {
+//     vertical-align: center;
+//     text-align: center;
+//     padding: 2px;
+// }
+// tr:hover {
+//     background-color: $tr-hover
+// }
+// tr:nth-child(even) {
+//     background-color: $tr-stripe
+// }
 .modal-overlay {
     position: fixed;
     top: 0;

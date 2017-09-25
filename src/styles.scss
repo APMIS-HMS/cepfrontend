@@ -80,7 +80,10 @@ select {
 
 .text-red {
     color: red !important;
-    ;
+}
+
+.text-blue {
+    color: blue !important;
 }
 
 .padding {
@@ -359,7 +362,8 @@ select {
     -moz-box-shadow: 0 8px 6px -6px #777;
     box-shadow: 0 8px 6px -6px #777;
 }
-.shadow-tb{
+
+.shadow-tb {
     -webkit-box-shadow: 2px 16px 31px 0px #777;
     -moz-box-shadow: 2px 16px 31px 0px #777;
     box-shadow: 2px 16px 31px 0px #777;
@@ -496,9 +500,9 @@ select {
     padding: 50px;
     border-radius: 7px;
     box-sizing: border-box;
-    -webkit-box-shadow: 2px 16px 31px 0px rgba(0,0,0,0.54);
-    -moz-box-shadow: 2px 16px 31px 0px rgba(0,0,0,0.54);
-    box-shadow: 2px 16px 31px 0px rgba(0,0,0,0.54);
+    -webkit-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
+    -moz-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
+    box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
 }
 
 .modal-close-ico {
@@ -1423,8 +1427,6 @@ ul.topmenuwrap li:hover {
 //   transition: ease-out;
 //   transition-delay: .3s;
 // }
-   
-
 .search-wrap {
     position: relative;
     width: 96%;

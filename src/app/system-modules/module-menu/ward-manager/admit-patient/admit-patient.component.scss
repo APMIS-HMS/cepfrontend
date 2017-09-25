@@ -1,8 +1,15 @@
 .modal-baseWrap {
     position: relative;
+    height: auto;
+    min-height: 200px;
+    max-height: 400px;
     width: 650px;
-    height: 400px;
     padding: 20px;
+}
+
+.frm-item-wrap {
+    position: relative;
+    padding: 10px 0;
 }
 
 .lhs {
@@ -18,12 +25,20 @@
 
 .btn-box {
     text-align: center;
-    .btn {}
+    .btn {
+        color: #fff;
+    }
 }
 
 .mat-select,
 .mat-input-container {
     width: 100%;
+}
+
+.spinner-box {
+    padding: 50px 0;
+    width: 100%;
+    text-align: center;
 }
 
 input,
