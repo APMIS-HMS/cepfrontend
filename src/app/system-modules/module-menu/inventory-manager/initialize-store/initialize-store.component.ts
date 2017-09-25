@@ -70,9 +70,7 @@ export class InitializeStoreComponent implements OnInit {
       this.selectedProducts.splice(index, 1);
     }   
   }
-  addmoreProduct() {
-    return this.addProduct;
-}
+
   removeProduct(i: number){
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
