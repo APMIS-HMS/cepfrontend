@@ -71,10 +71,10 @@
         </div>
 
         <div *ngIf="dischargePatient" class="modal-overlay">
-            <app-discharge-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-discharge-patient>
+            <app-discharge-patient (closeModal)="close_onClick($event)" [selectedPatient]="selectedPatient" id="form-modal" class="form-modal center-center"></app-discharge-patient>
         </div>
         <div *ngIf="transferPatient" class="modal-overlay">
-            <app-transfer-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-transfer-patient>
+            <app-transfer-patient (closeModal)="close_onClick($event)" [selectedPatient]="selectedPatient" id="form-modal" class="form-modal center-center"></app-transfer-patient>
         </div>
     </div>
 </div>

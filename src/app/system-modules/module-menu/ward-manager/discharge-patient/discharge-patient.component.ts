@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import { WardDischargeTypesService, InPatientService, WardAdmissionService, BillingService } from '../../../../services/facility-manager/setup/index';
 import { ActivatedRoute } from '@angular/router';
-import { WardDischarge, Facility, BillModel, BillItem } from '../../../../models/index';
+import { WardDischarge, Facility, BillModel, BillItem, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
@@ -15,6 +15,7 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 })
 export class DischargePatientComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Input() selectedPatient: any;
 	dischargeFormGroup: FormGroup;
 	mainErr = true;
 	errMsg = 'you have unresolved errors';
@@ -22,6 +23,9 @@ export class DischargePatientComponent implements OnInit {
 	inPatientId: string;
 	discharge: any = <any>{};
 	facility: Facility = <Facility>{};
+	miniFacility: Facility = <Facility>{};
+	user: User = <User>{};
+	employeeDetails: any = <any>{};
 	bill: BillModel = <BillModel>{};
 
 	constructor(
@@ -35,60 +39,64 @@ export class DischargePatientComponent implements OnInit {
 		private _billingService: BillingService) { }
 
 	ngOnInit() {
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
+		this.miniFacility = <Facility>this._locker.getObject('miniFacility');
+		this.employeeDetails = this._locker.getObject('loginEmployee');
+		this.user = <User>this._locker.getObject('auth');
+
 		this.dischargeFormGroup = this.fb.group({
 			dischargeType: ['', [<any>Validators.required]],
 			comment: ['', [<any>Validators.required]]
 		});
-		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this._wardDischargeTypesService.findAll()
-			.then(payload => {
-				console.log(payload.data);
-				this.dischargeTypeItems = payload.data;
-			})
+
+		this._route.params.subscribe(params => {
+			this.inPatientId = params.id;
+		});
+
+		console.log(this.selectedPatient);
+		this._wardDischargeTypesService.findAll().then(payload => {
+			console.log(payload.data);
+			this.dischargeTypeItems = payload.data;
+		});
 	}
 
-	onDischarge(model: any, valid: boolean) {
+	onDischarge(value: any, valid: boolean) {
 		if (valid) {
-			this._route.params.subscribe(params => {
-				this.inPatientId = params['id'];
-				console.log(this.inPatientId);
+			this._inPatientService.get(this.inPatientId, {}).then(payload => {
+				const inPatientVal = payload;
+				this.discharge.dischargeTypeId = this.dischargeFormGroup.controls['dischargeType'].value;
+				this.discharge.Reason = this.dischargeFormGroup.controls['comment'].value;
+				payload.discharge = this.discharge;
+				payload.statusId = myGlobals.discharge;
+				payload.transfers[payload.lastIndex].checkOutDate = new Date();
+				this._inPatientService.update(payload).then(payload2 => {
+					this.close_onClick();
+					const currentWard = payload.transfers[payload.lastIndex];
+					this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id }}).then(payload3 => {
+							payload3.data[0].locations.forEach(location => {
+								if (location.minorLocationId._id === currentWard.minorLocationId) {
+									location.rooms.forEach(room => {
+										if (room.roomId._id === currentWard.roomId) {
+											room.beds.forEach(bed => {
+												if (bed.bedId._id === currentWard.bedId) {
+													bed.isAvailable = true;
+													bed.state = 'Available';
+													delete bed.occupant;
+													this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
+														// console.log("Complete");
+														this._router.navigate(['/dashboard/ward-manager/admitted']);
+													});
+												}
+											});
+										}
+									});
+								}
+							});
+						})
+				}, error => {
+					console.log(error)
+				});
 			});
-			this._inPatientService.get(this.inPatientId, {})
-				.then(payload => {
-					const inPatientVal = payload;
-					this.discharge.dischargeTypeId = this.dischargeFormGroup.controls['dischargeType'].value;
-					this.discharge.Reason = this.dischargeFormGroup.controls['comment'].value;
-					payload.discharge = this.discharge;
-					payload.statusId = myGlobals.discharge;
-					payload.transfers[payload.lastIndex].checkOutDate = new Date();
-					this._inPatientService.update(payload).then(payload2 => {
-						this.close_onClick();
-						const currentWard = payload.transfers[payload.lastIndex];
-						this._wardAdmissionService.find({ query: { facilityId: this.facility } })
-							.then(payload3 => {
-								payload3.data[0].locations.forEach(location => {
-									if (location.minorLocationId === currentWard.minorLocationId) {
-										location.rooms.forEach(room => {
-											if (room._id === currentWard.roomId) {
-												room.beds.forEach(bed => {
-													if (bed._id === currentWard.bedId) {
-														bed.isAvailable = true;
-														this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
-															// console.log("Complete");
-															this._router.navigate(['/dashboard/ward-manager/admitted']);
-														})
-													}
-												})
-											}
-										})
-									}
-								})
-
-							})
-					}, error => {
-						console.log(error)
-					})
-				})
 		}
 	}
 

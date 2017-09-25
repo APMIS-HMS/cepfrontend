@@ -11,8 +11,8 @@ export class TreatementTemplateComponent implements OnInit {
   public frmnewTemplate: FormGroup;
   newTemplate = false;
 
-  isOrderSet = true;
-  isDocumentation = false;
+  isOrderSet = false;
+  isDocumentation = true;
 
   showMedService = true;
   showLabService = false;

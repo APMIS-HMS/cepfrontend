@@ -162,9 +162,9 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 			this.transferInLoading = false;
 			console.log(payload.data);
 			if (payload.data.length !== 0) {
-				this.listPatientTransferWaiting = payload.data;
+				// this.listPatientTransferWaiting = payload.data;
 			} else {
-				this.listPatientTransferWaiting = [];
+				// this.listPatientTransferWaiting = [];
 			}
 		});
 	}
