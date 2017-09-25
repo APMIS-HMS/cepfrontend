@@ -74,7 +74,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     // this._payStackService.paystack(formData).then(payload => {
     //   console.log(payload);
     // })
-    this.verifyTransaction('T706272350859262');
+    // this.verifyTransaction('T706272350859262');
   }
   ngAfterViewInit(): void {
     // crop();

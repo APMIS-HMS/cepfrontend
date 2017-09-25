@@ -291,8 +291,11 @@ export class NewProductComponent implements OnInit {
         const service: any = <any>{};
         service.name = value.name;
         this.productDetails.ingredients = [];
+        console.log("undefine generic name 1");
+        console.log(value.genericName);
         this.productDetails.ingredients = this.ingredientForm.controls['ingredients'].value;
-        if (value.genericName === undefined) {
+        if (value.genericName === null) {
+          console.log("undefine generic name 2");
           value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
         }
         value.productDetail = this.productDetails;
