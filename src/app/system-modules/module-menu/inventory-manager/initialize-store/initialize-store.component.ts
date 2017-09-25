@@ -118,10 +118,9 @@ export class InitializeStoreComponent implements OnInit {
        this._inventoryService.create(this.inventoryModel).then(payload => {  
         console.log(payload);
         this.myForm.reset();
-        });
-     } else 
-       console.log ("this product has been initialize")
-     
+        }) .catch (error => alert("You can not initialize product twice"));
+        window.location.reload();
+     } 
     }
     
 }
