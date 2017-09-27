@@ -45,6 +45,7 @@ export class NewProductComponent implements OnInit {
 
   public frm_newProduct: FormGroup;
   public ingredientForm: FormGroup;
+  public variantsForm: FormGroup;
 
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
@@ -77,6 +78,7 @@ export class NewProductComponent implements OnInit {
     //     this.initIngredientsForm(),
     //   ])
     // })
+    this.initVariantForm();
     this.initIngredientsForm();
 
     this.populateProduct();
@@ -143,6 +145,19 @@ export class NewProductComponent implements OnInit {
   //     strengthUnit: ['']
   //   });
   // }
+
+  initVariantForm() {
+    this.variantsForm = this.formBuilder.group({
+      'variants': this.formBuilder.array([
+        this.formBuilder.group({
+          size: [''],
+          unit: ['']
+        })
+      ])
+    });
+    console.log(this.variantsForm)
+    this.variantsForm.controls['variants'] = this.formBuilder.array([]);
+  }
 
   initIngredientsForm() {
     this.ingredientForm = this.formBuilder.group({
@@ -246,6 +261,7 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['productTypeId'].setValue(this.selectedProduct.productTypeId);
       this.frm_newProduct.controls['categoryId'].setValue(this.selectedProduct.categoryId);
       this.setIngredientItem(this.selectedProduct.productDetail.ingredients);
+      this.setVariantItem(this.selectedProduct.variants)
     } else {
       this.createText = 'Create Product';
       this.frm_newProduct.reset();
@@ -291,15 +307,15 @@ export class NewProductComponent implements OnInit {
         const service: any = <any>{};
         service.name = value.name;
         this.productDetails.ingredients = [];
-        console.log("undefine generic name 1");
-        console.log(value.genericName);
         this.productDetails.ingredients = this.ingredientForm.controls['ingredients'].value;
+        value.variants = this.variantsForm.controls['variants'].value; 
         if (value.genericName === null) {
-          console.log("undefine generic name 2");
           value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
         }
         value.productDetail = this.productDetails;
+        
         console.log(value);
+
         this.productService.create(value).then(payload => {
           console.log(payload);
           this.selectedFacilityService.categories.forEach((item, i) => {
@@ -387,6 +403,19 @@ export class NewProductComponent implements OnInit {
 
   }
 
+  addVariant() {
+    const control = <FormArray>this.variantsForm.controls['variants'];
+    control.push(this.variantItem());
+
+  }
+
+  variantItem() {
+    return this.formBuilder.group({
+      size: [''],
+      unit: ['']
+    });
+  }
+
   ingredientItem() {
     return this.formBuilder.group({
       name: [''],
@@ -407,6 +436,17 @@ export class NewProductComponent implements OnInit {
     })
   }
 
+  setVariantItem(values: any[]) {
+    const control = <FormArray>this.variantsForm.controls['variants'];
+    values.forEach((item) => {
+      control.push(
+        this.formBuilder.group({
+          size: [item.size],
+          unit: [item.unit]
+        }));
+    })
+  }
+
   // day: ['', [<any>Validators.required]],
   //       startTime: [this.now, [<any>Validators.required]],
   //       endTime: [this.now, [<any>Validators.required]],
@@ -414,6 +454,11 @@ export class NewProductComponent implements OnInit {
   //       readOnly: [false]
 
   removeIngredient(i: number) {
+    const control = <FormArray>this.frm_newProduct.controls['ingredients'];
+    control.removeAt(i);
+  }
+
+  removeVariant(i: number) {
     const control = <FormArray>this.frm_newProduct.controls['ingredients'];
     control.removeAt(i);
   }

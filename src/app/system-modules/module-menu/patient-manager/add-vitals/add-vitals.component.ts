@@ -29,6 +29,7 @@ export class AddVitalsComponent implements OnInit {
   temperature: any = <any>{};
   heightWeight: any = <any>{};
   bloodPressure: any = <any>{};
+  abdominal: any = <any>{};
   bmi: number = <number>{};
   isWarning = false;
   bmiWarningMssg = "";
@@ -90,7 +91,9 @@ export class AddVitalsComponent implements OnInit {
       respiratoryRate: ['', []],
       temp: ['', []],
       height: ['', []],
-      weight: ['', []]
+      weight: ['', []],
+      spo2:['',[]],
+      girth:['',[]]
       //bmi: ['', []]
     });
 
@@ -203,7 +206,6 @@ export class AddVitalsComponent implements OnInit {
       this.disableSaveBtn = true;
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
       let isExisting = false;
-      console.log(this.patientDocumentation)
       const vitalValue: any = <any>{};
       this.pulseRate.pulseRateValue = this.frmAddVitals.controls['pulseRate'].value;
       this.pulseRate.location = this.frmAddVitals.controls['pulseLoc'].value;
@@ -217,12 +219,15 @@ export class AddVitalsComponent implements OnInit {
       this.bloodPressure.diastolic = this.frmAddVitals.controls['diastolicBp1'].value;
       this.bloodPressure.location = this.frmAddVitals.controls['diastolicBp1Loc'].value;
       this.bloodPressure.position = this.frmAddVitals.controls['diastolicBp1Pos'].value;
+      this.abdominal.spo2 = this.frmAddVitals.controls['spo2'].value;
+      this.abdominal.girth = this.frmAddVitals.controls['girth'].value;
 
       vitalValue.pulseRate = this.pulseRate;
       vitalValue.respiratoryRate = this.respiratoryRate;
       vitalValue.temperature = this.temperature;
       vitalValue.heightWeight = this.heightWeight;
       vitalValue.bloodPressure = this.bloodPressure;
+      vitalValue.abdominalCondition = this.abdominal;
       vitalValue.facilityObj = this._locker.getObject('miniFacility');
       vitalValue.employeeObj = this._facilityService.trimEmployee(this.loginEmployee);
       vitalValue.patientId = this.patient._id;

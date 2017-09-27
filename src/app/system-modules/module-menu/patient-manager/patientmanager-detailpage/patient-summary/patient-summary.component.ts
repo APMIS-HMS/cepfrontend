@@ -192,10 +192,12 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     }
 
     this._DocumentationService.listenerCreate.subscribe(payload => {
-      this.bindVitalsDataToChart();
+      //this.bindVitalsDataToChart();
+      window.location.reload();
     });
     this._DocumentationService.listenerUpdate.subscribe(payload => {
-      this.bindVitalsDataToChart();
+      //this.bindVitalsDataToChart();
+      window.location.reload();
     });
   }
 
