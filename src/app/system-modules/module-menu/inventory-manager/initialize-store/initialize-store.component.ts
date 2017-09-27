@@ -23,6 +23,7 @@ export class InitializeStoreComponent implements OnInit {
   InventoryTxnModel:InventoryTransaction=<InventoryTransaction>{};
   //initializePriduct: InitProduct[];
   errorMessage = 'an error occured';
+  addinside = false;
 
   constructor(
     private _fb: FormBuilder,
@@ -37,7 +38,6 @@ export class InitializeStoreComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
-
       ])
     });
     this.selectedFacility = <Facility> this._locker.getObject('selectedFacility');
@@ -49,8 +49,8 @@ export class InitializeStoreComponent implements OnInit {
       quantity: ['', Validators.required],
       product: ['']
     });
-    
   }
+
   addProduct(index: number, ischecked: boolean, data: any){
     if (ischecked) {
       this.selectedProducts.push(data);
@@ -70,7 +70,7 @@ export class InitializeStoreComponent implements OnInit {
       this.selectedProducts.splice(index, 1);
     }   
   }
- 
+
   removeProduct(i: number){
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
@@ -118,10 +118,9 @@ export class InitializeStoreComponent implements OnInit {
        this._inventoryService.create(this.inventoryModel).then(payload => {  
         console.log(payload);
         this.myForm.reset();
-        });
-     } else 
-       console.log ("this product has been initialize")
-     
+        }) .catch (error => alert("You can not initialize product twice"));
+        window.location.reload();
+     } 
     }
     
 }
