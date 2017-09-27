@@ -128,6 +128,31 @@
           </div>
 
         </div>
+
+        <div class="frmGroupWrap bpGroup bp">
+          <div class="frmGroupTitle">Abdominal Condition</div>
+          <div class="frm-row">
+            <div class="itemGrp">
+              <div class="frm-item">
+                <div class="frm-item-wrap">
+                  <!--<input type="text" formControlName="systolicBp1" autocomplete="off">-->
+                  <md-input-container class="example-full-width">
+                    <input placeholder="SPO" mdInput type="number" formControlName="spo2">
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="frm-item">
+                <div class="frm-item-wrap">
+                  <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
+                  <md-input-container class="example-full-width">
+                    <input placeholder="abdominal girth" mdInput type="number" formControlName="girth">
+                  </md-input-container>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <button [disabled]="!frmAddVitals.valid || diabledSaveBtn" (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1" [innerHtml]="saveBtnText"></button>

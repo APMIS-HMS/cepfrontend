@@ -127,6 +127,37 @@
             </form>
         </div>
 
+        <div class="clear"></div>
+
+        <div>
+            <div class="sectLabel">Variant</div>
+            <i class="fa fa-plus faplus pull-right" (click)="addVariant()"></i>
+        </div>
+        <div class="sec-3">
+            <div class="sec3-headWrap"></div>
+            <form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
+                <div formArrayName="variants">
+                    <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="variantsForm.controls['variants'].controls > 1" (click)="removeVariant(i)"></span>
+                        </div>
+                        <div class="frmArr-wrap" formGroupName="{{i}}">
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input mdInput md-error placeholder="Size" formControlName="size">
+                                </md-input-container>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input mdInput md-error placeholder="Max. Unit" formControlName="unit">
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
     </form>
 </div>

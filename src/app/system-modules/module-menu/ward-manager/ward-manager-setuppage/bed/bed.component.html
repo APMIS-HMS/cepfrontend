@@ -42,15 +42,20 @@
                                 <input mdInput placeholder="Edit {{bed.name}}" [value]="bed.name" [formControl]="editBedName">
                             </md-form-field>
                         </td>
-                        <td class="table-content ">
+                        <td class="table-content" style="padding: 0;">
                             <div *ngIf="bed.occupant === undefined"> No Occupant</div>
                             <div *ngIf="!!bed.occupant">
-                                <div class="empWrap">
+                                <div class="empWrap" style="text-align: center;">
                                     <div class="list-img">
-                                        <img *ngIf="bed?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                        <img class="shadow" *ngIf="bed?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(bed?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                        <div *ngIf="bed?.occupant?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="bed?.occupant?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="facilityService.transform(bed.occupant?.personDetails.profileImageObject?.thumbnail)"></div>
                                     </div>
-                                    <div>{{ bed?.patient?.personDetails?.personFullName}}</div>
+                                    <div>
+                                        <b>{{bed.occupant?.personDetails?.personFullName}}</b><br>
+                                        <small>{{bed.occupant?.personDetails?.gender.name}}, </small>
+                                        <small>{{bed.occupant?.personDetails?.age}} year(s) old, </small>
+                                        <small>{{bed.occupant?.personDetails?.phoneNumber}}</small>
+                                    </div>
                                 </div>
                             </div>
                         </td>

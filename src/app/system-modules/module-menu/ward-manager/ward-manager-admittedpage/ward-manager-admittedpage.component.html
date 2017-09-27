@@ -19,121 +19,67 @@
             </div>
         </div>
         <div class="">
-            <!--<div class="table-responsive">
-                <table id="admission-list-table" class="table table-striped no-margin" cellspacing="0" width="100%">
-                    <thead>
-                        <tr class="table-bordered">
-                            <th style="width: 5%">No</th>
-                            <th style="width: 10%">Image</th>
-                            <th style="width: 30%">Name</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Ward</th>
-                            <th>Room</th>
-                            <th>Bed</th>
-                            <th>Admitted Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="custom-tbody">
-                        <tr *ngIf="admittedPatient.length == 0">
-                            <td colspan="11"> No data available in table</td>
-                        </tr>
-                        <tr class="details-link" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" *ngFor="let admittedPatientItem of admittedPatient;let i = index">
-                            <td class="">{{i+1}}</td>
-                            <td class="patient-img text-center">
-                                <div><img [src]="_inPatientService.transform(admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
-                            </td>
-                            <td class="">{{admittedPatientItem?.patientDetails?.personDetails?.personFullName}}</td>
-                            <td class="">{{admittedPatientItem?.patientDetails?.personDetails?.age}}</td>
-                            <td class="">{{admittedPatientItem?.patientDetails?.personDetails?.gender?.name}}</td>
-                            <td class="">{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.name}}</td>
-                            <td class="">{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.room}}</td>
-                            <td class="">{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.bed}}</td>
-                            <td class="">{{admittedPatientItem?.admissionDate | date}}</td>
-                            <td class="">
-                                <div class="td-ctaWrap">
-                                    <div class="actionWrap"> Vitals </div>
-                                    <div class="actionWrap">
-                                        <span>Prescribe&nbsp;Drugs</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>-->
-
-            <table cellpadding="0" cellspacing="0" border="0.5">  
+            <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
-                        <th> 
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                            <span style="padding-left: 3px;">Patient</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                            <span style="padding-left: 3px;">Age</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                            <span style="padding-left: 3px;">Sex</span>
-                        </th>                            
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                            <span style="padding-left: 3px;">Ward</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                            <span style="padding-left: 3px;">Room</span>
-                        </th>
-                        <th>
-                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                            <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                            <span style="padding-left: 3px;">Bed</span>
-                        </th>
+                        <th><span style="padding-left: 3px;">S/N</span></th>
+                        <th><span style="padding-left: 3px;">Patient</span></th>
+                        <th><span style="padding-left: 3px;">Ward</span></th>
                         <th>Admitted Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr *ngIf="admittedPatient.length == 0">
-                        <td colspan="9"> No data available in table</td>
+                    <tr *ngIf="admittedPatient.length === 0 && loading">
+                        <td class="table-content " colspan="5" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
+                    </tr>
+                    <tr *ngIf="admittedPatient.length === 0 && !loading">
+                        <td class="table-content " colspan="5" style="text-align: center">
+                            No data available in table
+                        </td>
                     </tr>
 
-                    <tr routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" *ngFor="let admittedPatientItem of admittedPatient">
-                        <td (click)="navEpDetail(item)">                
+                    <tr *ngFor="let admittedPatientItem of admittedPatient; let i = index;">
+                        <td class="table-content" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">{{ i+1 }}</td>
+                        <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content" style="padding:0;">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientService.transform(admittedPatientItem?.patientDetails?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="admittedPatientItem?.patientId?.personDetails.profileImageObject?.thumbnail == undefined">
+                                        <img src="assets/images/users/default.png">
+                                    </div>
+                                    <div *ngIf="admittedPatientItem?.patientId?.personDetails.profileImageObject?.thumbnail != undefined">
+                                        <img [src]="_inPatientService.transform(admittedPatientItem?.patientId?.personDetails.profileImageObject?.thumbnail)">
+                                    </div>
                                 </div>
-                                <div>{{admittedPatientItem?.patientDetails?.personDetails?.personFullName}}</div>
+                                <div>
+                                    <b>{{admittedPatientItem.patientId?.personDetails?.personFullName}}</b><br>
+                                    <small>{{admittedPatientItem.patientId?.personDetails?.gender.name}}, </small>
+                                    <small>{{admittedPatientItem.patientId?.personDetails?.age}} year(s) old, </small>
+                                    <small>{{admittedPatientItem.patientId?.personDetails?.phoneNumber}}</small>
+                                </div>
                             </div>
                         </td>
-                        <td>{{admittedPatientItem?.patientDetails?.personDetails?.age}}</td>
-                        <td>{{admittedPatientItem?.patientDetails?.personDetails?.gender?.name}}</td>
-                        <td>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.name}}</td>
-                        <td>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.room}}</td>
-                        <td>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.bed}}</td>
-                        <td>{{admittedPatientItem?.admissionDate | date}}</td>
+                        <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
+                            <div>
+                                <b>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.name}}</b><br>
+                                <small><b>Room: </b>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.roomId.name}}, </small><br>
+                                <small><b>Bed: </b>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.bedId.name}} </small>
+                            </div>
+                        </td>
+                        <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
+                            <b>{{admittedPatientItem?.admissionDate | date }}</b><br>
+                            <small>{{admittedPatientItem?.admissionDate | amTimeAgo }}</small>
+                        </td>
                         <td>
                             <div class="tbl-actions-wrap">
                                 <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Vitals</div>
-                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Prescribe&nbsp;Drugs</div>
+                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Administer&nbsp;Drugs</div>
                             </div>
                         </td>
                     </tr>
-
-                    <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
-                    </div>
                 </tbody>
             </table>
         </div>

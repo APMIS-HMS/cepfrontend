@@ -253,6 +253,7 @@ export class AdmitPatientComponent implements OnInit {
 								if (bed._id === this.admitFormGroup.controls['bed'].value._id) {
 									bed.isAvailable = false;
 									bed.occupant = value.occupant;
+									bed.state = 'In-use';
 									this._wardAdmissionService.update(payload.data[0]).then(completed => {
 										this.admitBtnText = 'Admit';
 										this.disableAdmitBtn = false;

@@ -1,15 +1,17 @@
 <div class="modal-baseWrap animated pulse">
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Transfer Segun Alabi</legend>
+    <legend class="modal_title">Transfer {{ selectedPatient.patientId.personDetails.personFullName }}</legend>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <div class="padding"></div>
     <form [formGroup]="transferFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <md-select placeholder="Select Ward" (change)="onWardChange($event.value)" formControlName="ward">
-                <md-option *ngFor="let item of facilityWards" [value]="item._id">{{item.name}}</md-option>
+            <md-select placeholder="Select Ward" formControlName="ward">
+                <md-option *ngFor="let ward of wards" [value]="ward">{{ward.name}}</md-option>
             </md-select>
         </div>
-        <button class="cta-1" (click)="onTransfer(transferFormGroup.value, transferFormGroup.valid)"><i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Transfer Patient</button>
+        <div class="btn-box">
+            <button md-raised-button [disabled]="!transferFormGroup.valid && disableTransferBtn" class="btn" (click)="onTransfer(transferFormGroup.value, transferFormGroup.valid)" [innerHtml]="transferBtnText"></button>
+        </div>
     </form>
 </div>

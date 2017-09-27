@@ -41,49 +41,56 @@
         width: 150px;
         margin: 5px;
     }
+    .table-content {
+        padding: 10px;
+        text-align: center;
+        &:hover {
+            cursor: pointer;
+        }
+    }
     // .btn-1 {
     //     padding: 5px;
     //     margin: 5px auto;
     // }
-    table {
-        thead {
-            background-color: #AED6F1;
-        }
-        tbody {
-            border: 1px solid #ddd !important;
-            tr {
-                td {
-                    padding: 8px;
-                    line-height: 1.42857143;
-                }
-                .tbl-actionRow {
-                    justify-content: space-around;
-                    padding: 20px 0;
-                }
-                .tbl-actionRow .tbl-title {
-                    position: relative;
-                    left: auto;
-                }
-                .tbl-actionRow .tbl-search {
-                    position: relative;
-                    right: auto;
-                }
-            }
-            .tr-header-group {
-                background-color: #0288D1;
-                color: #fff;
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-            .details-link {
-                &:hover {
-                    // background-color: #ccc;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
+    // table {
+    //     thead {
+    //         background-color: #AED6F1;
+    //     }
+    //     tbody {
+    //         border: 1px solid #ddd !important;
+    //         tr {
+    //             td {
+    //                 padding: 8px;
+    //                 line-height: 1.42857143;
+    //             }
+    //             .tbl-actionRow {
+    //                 justify-content: space-around;
+    //                 padding: 20px 0;
+    //             }
+    //             .tbl-actionRow .tbl-title {
+    //                 position: relative;
+    //                 left: auto;
+    //             }
+    //             .tbl-actionRow .tbl-search {
+    //                 position: relative;
+    //                 right: auto;
+    //             }
+    //         }
+    //         .tr-header-group {
+    //             background-color: #0288D1;
+    //             color: #fff;
+    //             &:hover {
+    //                 cursor: pointer;
+    //             }
+    //         }
+    //         .details-link {
+    //             &:hover {
+    //                 // background-color: #ccc;
+    //                 cursor: pointer;
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 .modal-overlay {
@@ -91,13 +98,16 @@
     top: 0;
     left: 0;
 }
+
 .mat-input-wrapper {
     padding-bottom: 2.19688em;
 }
+
 .topFilters {
     display: flex;
     justify-content: flex-end;
 }
+
 .filter-title {
     position: absolute;
     left: 0;
@@ -105,6 +115,7 @@
     color: #8e8e8e;
     font-size: 10px;
 }
+
 .tr-act-btn {
     width: auto;
     margin: 0;

@@ -1,3 +1,6 @@
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium } from './../../../../../../models/facility-manager/setup/wallet-transaction';
+import { PayStackService } from './../../../../../../services/facility-manager/setup/paystack.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -5,6 +8,7 @@ import { PersonService } from '../../../../../../services/facility-manager/setup
 // import  '../../../../../../../assets/libs/paystack.js';
 import crop from './paystack.js';
 import paystackInline from './paystack-inline.js';
+import { Facility } from 'app/models';
 declare var paystack: any;
 // declare var callPayStack: any;
 @Component({
@@ -19,17 +23,17 @@ export class WalletComponent implements OnInit, AfterViewInit {
   search: FormControl;
   fundAmount: FormControl;
   selectedValue: string;
+  selectedFacility: Facility;
 
   wallets = [
     { value: 'cash', viewValue: 'Cash' },
     { value: 'paystack', viewValue: 'Paystack' }
   ];
 
-  constructor(private personService: PersonService) { 
-    // crop();
-  }
+  constructor(private personService: PersonService, private _payStackService: PayStackService, private _locker: CoolLocalStorage) { }
 
   ngOnInit() {
+    this.selectedFacility = <Facility>this._locker.getObject('miniFacility');
     this.fundAmount = new FormControl('', []);
     this.search = new FormControl('', []);
     this.search.valueChanges
@@ -65,28 +69,54 @@ export class WalletComponent implements OnInit, AfterViewInit {
         this.transactions = payload.wallet.transactions;
       }
     });
-    // paystack.func1();
+
+    // let formData = { type: 'customers' };
+    // this._payStackService.paystack(formData).then(payload => {
+    //   console.log(payload);
+    // })
+    // this.verifyTransaction('T706272350859262');
   }
   ngAfterViewInit(): void {
     // crop();
-    
+
   }
-  fundWallet() {
-    crop();
+  // fundWallet() {
+  //   crop();
+  // }
+  verifyTransaction(reference) {
+    let formData = { type: 'verifyTransaction', reference: reference };
+    this._payStackService.paystack(formData).then(payload => {
+      console.log(payload);
+    })
+  }
+  fundWithElectronic() {
+    console.log(this.patient);
+    let retVal = paystackInline(this.patient.personDetails.email, this.fundAmount.value, this.patient.personDetails.phoneNumber, this.paystackCallback, this);
   }
   onClose() {
   }
-  save() {
-    paystackInline();
-    // const personId = this.person._id;
-    // const transactionType = 'Dr';
-    // const transactionSource = 'POS';
-    // const amount = 500;
-    // const description = 'payment for investigation';
-
-    // this.personService.walletTransaction(personId, transactionType, transactionSource, amount, description).then(payload => {
-    //   this.person = payload.body;
-    //   this.transactions = this.person.wallet.transactions;
-    // })
+  paystackCallback(response) {
+    console.log(response);
+    // let that = this;
+    this.verifyTransaction(response.reference);
   }
+  fundWallet() {
+    let walletTransaction: WalletTransaction = {
+      transactionType: TransactionType.Cr,
+      transactionMedium: TransactionMedium.Wallet,
+      amount: this.fundAmount.value,
+      description: 'payment for investigation',
+      sourceId: this.selectedFacility._id,
+      destinationId:this.person._id,
+      source:EntityType.Facility,
+      destination:EntityType.Person,
+      transactionDirection:TransactionDirection.FacilityToPerson
+    };
+
+    this.personService.walletTransaction(walletTransaction).then(payload => {
+      this.person = payload.body;
+      this.transactions = this.person.wallet.transactions;
+    })
+  }
+
 }
