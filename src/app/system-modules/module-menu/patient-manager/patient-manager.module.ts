@@ -52,6 +52,7 @@ import { DocSymptomComponent } from './patientmanager-detailpage/documentation/d
 import { DocDiagnosisComponent } from './patientmanager-detailpage/documentation/doc-diagnosis/doc-diagnosis.component';
 import { OrderBillItemComponent } from './patientmanager-detailpage/order-set/order-bill-item/order-bill-item.component';
 import { TreatementPlanComponent } from './patientmanager-detailpage/treatement-plan/treatement-plan.component';
+import { FluidComponent } from './patientmanager-detailpage/fluid/fluid.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -88,7 +89,8 @@ import { TreatementPlanComponent } from './patientmanager-detailpage/treatement-
         DocSymptomComponent,
         DocDiagnosisComponent,
         OrderBillItemComponent,
-        TreatementPlanComponent
+        TreatementPlanComponent,
+        FluidComponent
     ],
     exports: [
     ],

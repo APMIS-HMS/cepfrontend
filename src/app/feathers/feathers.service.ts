@@ -72,11 +72,11 @@ export class RestService {
         .configure(authentication()); // Configure feathers-hooks
     }
   }
-  loginIntoApp() {
+  loginIntoApp(query) {
     return this._app.authenticate({
       type: 'local',
-      'email': 'info@uch.com',
-      'password': 'admin'
+      'email': query.email,
+      'password': query.password
     });
   }
   getService(value: any) {

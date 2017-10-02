@@ -21,6 +21,7 @@ export class PersonAccountComponent implements OnInit {
   genders: Gender[] = [];
   errMsg: string;
   mainErr = true;
+  success = false;
 
   public frmPerson: FormGroup;
 
@@ -57,6 +58,10 @@ export class PersonAccountComponent implements OnInit {
     this.frmPerson.controls['state'].valueChanges.subscribe((value: any) => {
       this.selectedState = value;
     })
+
+    this.frmPerson.valueChanges.subscribe(value =>{
+      this.success = false;
+    })
   }
 
 
@@ -78,34 +83,35 @@ export class PersonAccountComponent implements OnInit {
   }
 
   submit(valid, val) {
+    console.log(valid);
+    console.log(val)
     if (valid) {
-      if (this.frmPerson.controls['repassword'].value === this.frmPerson.controls['password'].value) {
-        const personModel = <any>{
-          firstName: this.frmPerson.controls['firstname'].value,
-          lastName: this.frmPerson.controls['lastname'].value,
-          otherNames: this.frmPerson.controls['othernames'].value,
-          genderId: this.genders[0]._id,
-          dateOfBirth: this.frmPerson.controls['dob'].value,
-          homeAddress: <Address>({
-            street: this.frmPerson.controls['address'].value,
-          }),
-          email: this.frmPerson.controls['email'].value,
-          phoneNumber: this.frmPerson.controls['phone'].value,
-          nationalityId: this.frmPerson.controls['nationality'].value,
-          stateOfOriginId: this.frmPerson.controls['state'].value._id,
-          lgaOfOriginId: this.frmPerson.controls['lga'].value
+      const personModel = <any>{
+        firstName: this.frmPerson.controls['firstname'].value,
+        lastName: this.frmPerson.controls['lastname'].value,
+        otherNames: this.frmPerson.controls['othernames'].value,
+        genderId: this.genders[0]._id,
+        dateOfBirth: this.frmPerson.controls['dob'].value,
+        homeAddress: <Address>({
+          street: this.frmPerson.controls['address'].value,
+        }),
+        email: this.frmPerson.controls['email'].value,
+        phoneNumber: this.frmPerson.controls['phone'].value,
+        nationalityId: this.frmPerson.controls['nationality'].value,
+        stateOfOriginId: this.frmPerson.controls['state'].value._id,
+        lgaOfOriginId: this.frmPerson.controls['lga'].value
+      };
+
+      this.personService.create(personModel).then((ppayload) => {
+        console.log('person created')
+        const userModel = <User>{
+          email: ppayload.apmisId
         };
-        
-        this.personService.create(personModel).then((ppayload) => {
-          const userModel = <User>{
-            email: ppayload.apmisId
-          };
-          userModel.personId = ppayload._id;
-          this.userService.create(userModel).then((upayload) => {
-          }, error => {
-            this.mainErr = false;
-            this.errMsg = 'An error has occured, please check and try again!';
-          });
+        userModel.personId = ppayload._id;
+        this.userService.create(userModel).then((upayload) => {
+          console.log('user created')
+          this.frmPerson.reset();
+          this.success = true;
           this.facilitiesService.announceNotification({
             type: 'Success',
             text: this.frmPerson.controls['firstname'].value + ' '
@@ -113,9 +119,12 @@ export class PersonAccountComponent implements OnInit {
             + this.frmPerson.controls['lastname'].value + ' '
             + 'added successful'
           });
-        }, err => {
+        }, error => {
+          this.mainErr = false;
+          this.errMsg = 'An error has occured, please check and try again!';
         });
-      }
+      }, err => {
+      });
     } else {
       this.mainErr = false;
       this.errMsg = 'An error has occured, please check and try again!';
