@@ -103,7 +103,7 @@
                 <div formArrayName="ingredients">
                     <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
                         <div class="panel-heading">
-                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls['ingredients'].controls > 1" (click)="removeIngredient(i)"></span>
+                            <span class="glyphicon glyphicon-remove pull-right" (click)="removeIngredient(i)"></span>
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
@@ -139,7 +139,7 @@
                 <div formArrayName="variants">
                     <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
                         <div class="panel-heading">
-                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="variantsForm.controls['variants'].controls > 1" (click)="removeVariant(i)"></span>
+                            <span class="glyphicon glyphicon-remove pull-right" (click)="removeVariant(i)"></span>
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
