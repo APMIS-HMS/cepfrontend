@@ -15,10 +15,10 @@ export class TreatementTemplateComponent implements OnInit {
   isDocumentation = true;
 
   showMedService = true;
-  showLabService = false;
-  showNursingCareService = false;
-  showPhysicianOrderService = false;
-  showProcedureService = false;
+  showLabService = true;
+  showNursingCareService = true;
+  showPhysicianOrderService = true;
+  showProcedureService = true;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -38,9 +38,20 @@ export class TreatementTemplateComponent implements OnInit {
       chkNursing: [''],
       chkPhysician: [''],
     });
+
+    this.frmnewTemplate.controls['type'].valueChanges.subscribe(value => {
+      console.log(value);
+      if (value === 'Documentation') {
+        this.isDocumentation = true;
+        this.isOrderSet = false;
+      } else {
+        this.isOrderSet = true;
+        this.isDocumentation = false;
+      }
+    })
   }
 
-  newTemplate_show(){
+  newTemplate_show() {
     this.newTemplate = !this.newTemplate;
   }
 
