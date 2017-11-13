@@ -5,7 +5,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {
     FacilitiesService, SchedulerService, AppointmentService, AppointmentTypeService, ProfessionService, EmployeeService,
-    WorkSpaceService, PatientService, FacilitiesServiceCategoryService, TimezoneService
+    WorkSpaceService, PatientService, FacilitiesServiceCategoryService, TimezoneService, SmsAlertService
 } from '../../../../../services/facility-manager/setup/index';
 import { LocationService, OrderStatusService } from '../../../../../services/module-manager/setup/index';
 import {
@@ -102,7 +102,8 @@ export class ScheduleFrmComponent implements OnInit {
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
         private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
-        private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
+        private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService,
+        private _smsAlertService: SmsAlertService) {
 
         appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
             this.appointment = payload;
@@ -197,6 +198,8 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+
         this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
         this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
             this.loginEmployee = employee;
@@ -527,6 +530,17 @@ export class ScheduleFrmComponent implements OnInit {
         return order ? order.name : order;
     }
 
+    setValueSmsAlert(personFullName, startDate, facility, clinic, email) {
+        let contentValue = "Hello " + personFullName + "an appointment was scheduled for "
+            + startDate + "at " + facility + " " + clinic;
+        let params = {
+            "content": contentValue,
+            "sender": "APMIS",
+            "receiver": email
+        };
+        this._smsAlertService.post({}, params);
+    }
+
     scheduleAppointment() {
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
             this.loadIndicatorVisible = true;
@@ -611,13 +625,21 @@ export class ScheduleFrmComponent implements OnInit {
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.
-                        setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value.value)
+                            setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value.value)
                             .then(meeting => {
                                 console.log(meeting)
                                 // this.appointmentService.patientAnnounced(this.patient);
                                 // this.loadIndicatorVisible = false;
                                 // this.newSchedule();
                                 // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+
+                                this.setValueSmsAlert(
+                                    patient.personDetails.personFullName,
+                                    this.appointment.startDate,
+                                    this.selectedFacility.name,
+                                    clinic.name,
+                                    patient.personDetails.email);
+
                                 this.addToast('Appointment updated successfully');
                                 this.router.navigate(['/dashboard/clinic/appointment']);
                             })
@@ -627,6 +649,12 @@ export class ScheduleFrmComponent implements OnInit {
                         this.newSchedule();
                         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
                         this.addToast('Appointment updated successfully');
+                        this.setValueSmsAlert(
+                            patient.personDetails.personFullName,
+                            this.appointment.startDate,
+                            this.selectedFacility.name,
+                            clinic.name,
+                            patient.personDetails.email);
                         this.router.navigate(['/dashboard/clinic/appointment']);
                     }
 
@@ -641,6 +669,12 @@ export class ScheduleFrmComponent implements OnInit {
                         this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
                             .then(meeting => {
                                 this.addToast('Appointment updated successfully');
+                                this.setValueSmsAlert(
+                                    patient.personDetails.personFullName,
+                                    this.appointment.startDate,
+                                    this.selectedFacility.name,
+                                    this.selectedClinic.name,
+                                    patient.personDetails.email);
                                 this.router.navigate(['/dashboard/clinic/appointment']);
                                 // console.log(meeting)
                                 // this.appointmentService.patientAnnounced(this.patient);
@@ -652,6 +686,12 @@ export class ScheduleFrmComponent implements OnInit {
                             })
                     } else {
                         this.addToast('Appointment scheduled successfully');
+                        this.setValueSmsAlert(
+                            patient.personDetails.personFullName,
+                            this.appointment.startDate,
+                            this.selectedFacility.name,
+                            clinic.name,
+                            patient.personDetails.email);
                         this.router.navigate(['/dashboard/clinic/appointment']);
                         // this.appointmentService.patientAnnounced(this.patient);
                         // this.loadIndicatorVisible = false;

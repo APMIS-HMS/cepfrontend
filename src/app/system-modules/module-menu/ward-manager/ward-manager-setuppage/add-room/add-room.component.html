@@ -20,7 +20,8 @@
                         </div>
                         <div class="frm-item-wrap" style="margin-top: 30px;">
                             <md-select placeholder="Select Service" formControlName="service">
-                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.name}}</md-option>
+                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" 
+                                [attr.serviceId]="service" [value]="service">{{service.name}}</md-option>
                             </md-select>
                         </div>
                         <div class="btn-box">
