@@ -31,6 +31,7 @@ export class InvoicesComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
       if (payload !== undefined) {
         this.checkingStore = payload;
         this.getInvoices();

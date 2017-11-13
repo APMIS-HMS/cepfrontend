@@ -87,3 +87,20 @@ a:hover, a.active {
 .mat-input-wrapper {
     margin-bottom: -20px !important;
 }
+
+.faplus {
+    border: 1px solid #8e8e8e;
+    color: #8e8e8e;
+    padding: 5px;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    border-radius: 100%;
+    cursor: pointer;
+    line-height: 27px;
+}
+
+.faplus:hover {
+    background: #8e8e8e;
+    color: #fff;
+}

@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { Facility,Inventory,InventoryTransaction} from '../../../../models/index';
+import { Facility, Inventory, InventoryTransaction } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import {StoreService, ProductService,InventoryService} from '../../../../services/facility-manager/setup/index';
+import { StoreService, ProductService, InventoryService, InventoryInitialiserService, VitalService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -14,13 +14,16 @@ export class InitializeStoreComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   saveAlert: true;
   products: any;
-  selectedProducts: any = <any>[];
+  selectedProduct: any = <any>{};
   myForm: FormGroup;
+  batchForm: FormGroup;
   ischeck: boolean;
   name: any;
+  isProcessing=false;
+  isItemselected = true;
   checkingObject: any = <any>{};
-  inventoryModel:Inventory = <Inventory>{};
-  InventoryTxnModel:InventoryTransaction=<InventoryTransaction>{};
+  inventoryModel: Inventory = <Inventory>{};
+  InventoryTxnModel: InventoryTransaction = <InventoryTransaction>{};
   //initializePriduct: InitProduct[];
   errorMessage = 'an error occured';
   addinside = false;
@@ -30,8 +33,10 @@ export class InitializeStoreComponent implements OnInit {
     private _locker: CoolLocalStorage,
     private _inventoryEventEmitter: InventoryEmitterService,
     private _productService: ProductService,
-    private _inventoryService: InventoryService) {
-   }
+
+    private _inventoryInitialiserService: InventoryInitialiserService,
+    private _vitalService: VitalService) {
+  }
 
   ngOnInit() {
     this.checkingObject = this._locker.getObject('checkingObject');
@@ -40,87 +45,80 @@ export class InitializeStoreComponent implements OnInit {
       initproduct: this._fb.array([
       ])
     });
-    this.selectedFacility = <Facility> this._locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.getProducts();
   }
-  initProduct() {
+
+
+  addBatch(i: number): void {
+    const control = <FormArray>this.myForm.controls['initproduct'];
+    control.push(this.createbatch());
+  }
+
+  createbatch(): FormGroup {
     return this._fb.group({
-      batchno: ['', Validators.required],
-      quantity: ['', Validators.required],
-      product: ['']
+      batchNumber: ['', Validators.required],
+      quantity: ['', Validators.required]
     });
   }
 
-  addProduct(index: number, ischecked: boolean, data: any){
-    if (ischecked) {
-      this.selectedProducts.push(data);
-      const control = <FormArray>this.myForm.controls['initproduct'];
-      control.push(
-        this._fb.group({
-          batchno: ['', Validators.required],
-          quantity: ['', Validators.required],
-          product: [data, Validators.required]
-        })
-      );
-      this.saveAlert = true;
-      //control.push(this.initProduct());
-      console.log(this.selectedProducts);
-    } else {
-      this.removeProduct(index);
-      this.selectedProducts.splice(index, 1);
-    }   
+  addProduct(product: any) {
+this.isItemselected = false;
+    this.myForm = this._fb.group({
+      initproduct: this._fb.array([
+      ])
+    });
+    this.selectedProduct = product;
+    console.log(this.selectedProduct)
+    const control = <FormArray>this.myForm.controls['initproduct'];
+    control.push(
+      this._fb.group({
+        batchNumber: ['', Validators.required],
+        quantity: ['', Validators.required]
+      })
+    );
   }
 
-  removeProduct(i: number){
+  removeBatch(i: number) {
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
   }
+
   getProducts() {
-    this._productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this._productService.find({ query: { facilityId: this.selectedFacility._id, isInventory: false } }).then(payload => {
       this.products = payload.data;
       console.log(this.products);
     });
   }
-//   searchProduct(){
-//     this._productService.find({ query: { name: this.products.name} }).then(payload => {
-//       this.name = payload.data;
-//       console.log(this.name);
-//     });
-// }
-   save(valid,value) {
-     if(valid){
-       console.log(value);
-      const transactionsArray = [];
-      let totalQuantity = 0;
-      value.initproduct.forEach(item => {
-          console.log(item);
-          let batchObject = {
-            batchNumber: item.batchno,
-            quantity: item.quantity,
-          }
-          totalQuantity += item.quantity;
-          transactionsArray.push(batchObject);
-          this.inventoryModel = <Inventory> {
-            facilityId: this.selectedFacility._id,
-            storeId: this.checkingObject.typeObject.storeId,
-            productId: item.product._id,
-             serviceId: item.product.serviceId,
-            categoryId: item.product.categoryId,
-            facilityServiceId: item.product.facilityServiceId,
-            transactions: transactionsArray,
-            reorderLevel: 0,
-            reorderQty: 0,
-            isOpen: false,
-          };
+
+
+  save(valid, value, product) {
+    if (valid) {
+      var batches = {
+        "batchItems": [],
+        "product": {},
+        "storeId": 0
+      };
+
+      batches.batchItems = value.initproduct;
+      batches.product = product;
+      batches.storeId = this.checkingObject.typeObject.storeId;
+      console.log(batches);
+      this.isProcessing = true;
+      this._inventoryInitialiserService.post(batches, {}).then(result => {
+        console.log(result);
+        if (result.body == true) {
+          this.getProducts();
+          this.myForm = this._fb.group({
+            initproduct: this._fb.array([
+            ])
+          });
+          this.isProcessing = false;
+        }
+      }, error => {
+        console.log(error);
       });
-       console.log(this.inventoryModel);
-       this.inventoryModel.totalQuantity = totalQuantity;
-       this._inventoryService.create(this.inventoryModel).then(payload => {  
-        console.log(payload);
-        this.myForm.reset();
-        }) .catch (error => alert("You can not initialize product twice"));
-        window.location.reload();
-     } 
     }
-    
+  }
+
 }

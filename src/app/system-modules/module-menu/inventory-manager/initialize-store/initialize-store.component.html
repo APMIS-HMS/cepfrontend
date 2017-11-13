@@ -1,81 +1,105 @@
 <div class="survery">
-        <div class="row">
-          <div class="col-sm-7">
-              <div class="panel" data-index="0">          
-                    <div class="panel-body">
-                     <div class="table-responsive">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="panel" data-index="0">
+                <div class="panel-body">
+                    <div class="table-responsive">
                         <table class="table table-bordered table-hover">
-                           <thead>
-                              <tr class="info">
-                                 <th></th>
-                                 <th>Products</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Search Product" [(ngModel)]="productname" name="productname" (keyup)="searchProduct.next($event)" />
-                                            </div>
-                                    </div>
-                                </td>
+                            <thead>
+                                <tr class="info">
+                                    <th></th>
+                                    <th>Products</th>
                                 </tr>
-                              <tr *ngFor = "let isProduct of products; let i = index">
-                                <td></td>
-                                <td><md-checkbox [(ngModel)]="isProduct.selected" (change)="addProduct(i, $event.checked, isProduct)">{{isProduct.name}}</md-checkbox></td>
-                              </tr>
-                           </tbody>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Search Product" [(ngModel)]="productname" name="productname" (keyup)="searchProduct.next($event)"
+                                                />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let product of products; let i = index">
+                                    <td></td>
+                                    <td (click)="addProduct(product)">
+                                        {{product.name}}
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
-                     </div>
-                  </div>
-               </div>
-          </div>
-          <div class="col-sm-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
             <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
-                    <div class="panel-heading ui-sortable-handle">
-                        <!--
+                <div class="panel-heading ui-sortable-handle">
+                    <!--
                       <div class="panel-title">
                           <h4>Products</h4>
                       </div>-->
-                    </div>
-                    <div class="alert alert-info" *ngIf ="!saveAlert ">
-                        <strong>Select product to initialize</strong>
-                    </div>
-                    
+                </div>
+                <div class="alert alert-info" *ngIf="!saveAlert ">
+                    <strong>Select product to initialize</strong>
+                </div>
+
                 <div class="panel-body">
-                    <form [formGroup]="myForm" novalidate >
-                         <div formArrayName="initproduct">
-                             <div *ngFor="let product of selectedProducts; let address of myForm.controls.initproduct.controls; let i=index;">
-                                  <div>
-                                      <span>{{ product.name }}</span>
-                                  </div>
-                                  <div  class="form-array" [formGroupName]="i">
-                                      <div class="col-sm-7">                                
-                                          <md-input-container class="example-full-width">
-                                              <input type="text" mdInput placeholder="Enter Batch No" formControlName="batchno" >
-                                          </md-input-container> 
-                                          <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchno.valid">
+                    <form [formGroup]="myForm" novalidate>
+                        <div formArrayName="initproduct">
+
+                            <div class="form-array" *ngFor="let batch of myForm.controls.initproduct.controls; let i=index;">
+                                <div [hidden]="i != 0">
+                                    <span>{{ selectedProduct?.name }}</span>
+                                </div>
+                                <div [formGroupName]="i">
+                                    <div class="col-sm-5">
+                                        <md-input-container class="example-full-width">
+                                            <input type="text" mdInput placeholder="Enter Batch No" formControlName="batchNumber">
+                                        </md-input-container>
+                                        <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchNumber.valid">
                                               Batchno Required
                                           </small>
-                                      </div>
-                                      <div class="col-sm-5">
-                                          <md-input-container class="example-full-width">
-                                              <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity" >
-                                          </md-input-container> 
-                                          <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <md-input-container class="example-full-width">
+                                            <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity">
+                                        </md-input-container>
+                                        <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
                                               Quantity Required
                                           </small>
-                                      </div>
-                                  </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-12 text-center">
-                              <a md-raised-button [disabled]="!myForm.valid" (click)="save(myForm.valid,myForm.value)">Save</a>
-                         </div>                            
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div [hidden]="i < myForm.controls.initproduct.controls.length - 1">
+                                            <a (click)="addBatch(i)">add</a>
+                                        </div>
+                                        <div class="col-sm-2 text-center">
+                                            <a (click)="removeBatch(i)">X</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            <a md-raised-button [hidden]="isItemselected" [disabled]="!myForm.valid" (click)="save(myForm.valid,myForm.value,selectedProduct)">
+                                <span>
+                                    <div [hidden] = "isProcessing">
+                                            Save
+                                    </div>
+                                    <div [hidden] = "!isProcessing">
+                                            Processing... <i class='fa fa-spinner fa-spin'></i>
+                                    </div>
+                                </span>
+                                
+                            </a>
+                        </div>
                     </form>
-                  </div>
+                </div>
             </div>
         </div>
-      </div>
+    </div>
