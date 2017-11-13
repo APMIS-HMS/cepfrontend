@@ -17,15 +17,18 @@
             <div class="frm-x2">
 
               <div class="frm-item-wrap">
+                <!-- <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+                      <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
+                  </md-select> -->
                 <md-select placeholder="Type" formControlName="type">
-                  <md-option>Documentation</md-option>
-                  <md-option>Order Set</md-option>
+                  <md-option value="Documentation" selected>Documentation</md-option>
+                  <md-option value="Order Set">Order Set</md-option>
                 </md-select>
               </div>
-              
+
               <div class="frm-item-wrap">
                 <md-input-container>
-                    <input mdInput placeholder="Template Name" formControlName="name">
+                  <input mdInput placeholder="Template Name" formControlName="name">
                 </md-input-container>
               </div>
 
@@ -48,7 +51,7 @@
               </div>
 
               <div class="frm-item-wrap chk-item" style="color:#777;font-size:12px;">
-                  <md-checkbox formControlName="isEditable">Editable By Others</md-checkbox>
+                <md-checkbox formControlName="isEditable">Editable By Others</md-checkbox>
               </div>
             </div>
 
@@ -70,25 +73,25 @@
               <md-radio-group>
                 <div class="frm-x3">
                   <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Medication</md-radio-button>
+                    <md-radio-button value="1">Medication</md-radio-button>
                   </div>
                   <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Laboratory Investigation</md-radio-button>
+                    <md-radio-button value="1">Laboratory Investigation</md-radio-button>
                   </div>
                   <!-- <div class="frm-item-wrap chk-item">
                       <md-radio-button value="1">Diagnostic</md-radio-button>
                   </div> -->
                   <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Procedure</md-radio-button>
+                    <md-radio-button value="1">Procedure</md-radio-button>
                   </div>
                   <!-- <div class="frm-item-wrap chk-item">
                       <md-radio-button value="1">Immunization</md-radio-button>
                   </div> -->
                   <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Nursing Care</md-radio-button>
+                    <md-radio-button value="1">Nursing Care</md-radio-button>
                   </div>
                   <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Physician Order</md-radio-button>
+                    <md-radio-button value="1">Physician Order</md-radio-button>
                   </div>
                 </div>
               </md-radio-group>
@@ -135,9 +138,9 @@
                       <th></th>
                     </tr>
                   </thead>
-      
+
                   <tbody>
-      
+
                     <!-- <tr>
                       <td colspan="10">
                         <div class="tbl-actionRow">
@@ -164,7 +167,7 @@
                         </div>
                       </td>
                     </tr> -->
-      
+
                     <tr>
                       <td>Paraetamol</td>
                       <td>Medication</td>
@@ -175,7 +178,7 @@
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <span>Edit Item</span>
                           </div>
-                        
+
                           <div class="action-item">
                             <i class="fa fa-times" aria-hidden="true"></i>
                             <span>Remove Item</span>
@@ -193,7 +196,7 @@
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <span>Edit Item</span>
                           </div>
-                        
+
                           <div class="action-item">
                             <i class="fa fa-times" aria-hidden="true"></i>
                             <span>Remove Item</span>
@@ -205,11 +208,11 @@
                 </table>
               </div>
             </div>
-            
+
             <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value)" class="cta-1">Save Template</button>
           </form>
         </div>
-        
+
         <div class="tblWrapa actSect">
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
@@ -283,7 +286,8 @@
                       <div (click)="showImageBrowseDlg()" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload Beneficiary List</span>
-                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;" #fileInput type="file" id="uploadResult" (change)="upload($event, hmo)">
+                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
+                          #fileInput type="file" id="uploadResult" (change)="upload($event, hmo)">
                       </div>
                     </form>
                     <div class="action-item">
