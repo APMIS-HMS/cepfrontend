@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
@@ -13,11 +13,14 @@ import {
 })
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	//@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
 
 	addBillForm: FormGroup;
 	drugs: any[] = [];
+	selectedDrug: string = '';
 	itemCost: number = 0;
 	title: string = '';
 	cost: number = 0; // Unit price for each drug.
@@ -53,7 +56,7 @@ export class BillPrescriptionComponent implements OnInit {
 
 		this.addBillForm = this._fb.group({
 			drug: ['', [<any>Validators.required]],
-			qty: [1, [<any>Validators.required]]
+			qty: [0, [<any>Validators.required]]
 		});
 
 		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
