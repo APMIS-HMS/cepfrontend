@@ -36,21 +36,12 @@ export class NewUnitComponent implements OnInit {
     this.frmNewUnit.controls['unitParent'].valueChanges.subscribe(payload => {
       this.frmNewUnit.controls['isClinic'].valueChanges.subscribe(value => {
         this.isClinic = value;
-<<<<<<< HEAD
-        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
-=======
         if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0 && this.unit._id !== undefined) {
->>>>>>> development
           this.addNew2();
         }
       })
     });
-<<<<<<< HEAD
-    // this.getFacility();
-    this.facilityObj = <Facility> this.facilityService.getSelectedFacilityId();
-=======
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
->>>>>>> development
     this.deptsObj = this.facilityObj.departments;
     this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
 
@@ -61,8 +52,6 @@ export class NewUnitComponent implements OnInit {
         this.mainErrClinic = true;
         this.errMsgClinic = '';
       });
-<<<<<<< HEAD
-=======
     if (this.unit !== undefined && this.unit._id !== undefined) {
       this.btnText = 'UPDATE UNIT';
       this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
@@ -87,17 +76,13 @@ export class NewUnitComponent implements OnInit {
       this.btnText = 'CREATE UNIT';
     }
     this.clinicsToDelele = [];
->>>>>>> development
   }
   addNew() {
     this.frmNewUnit = this.formBuilder.group({
       unitName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       unitAlias: ['', [<any>Validators.minLength(2)]],
       unitParent: ['', [<any>Validators.required]],
-<<<<<<< HEAD
-=======
       _id: [, []],
->>>>>>> development
       isClinic: [false, []],
       unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
     });
@@ -109,10 +94,6 @@ export class NewUnitComponent implements OnInit {
     this.clinicForm = this.formBuilder.group({
       'clinicArray': this.formBuilder.array([
         this.formBuilder.group({
-<<<<<<< HEAD
-          clinicLocation: ['', [<any>Validators.required]],
-=======
->>>>>>> development
           clinicName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
           clinicCapacity: [0, []],
           'readonly': [false],
@@ -122,10 +103,7 @@ export class NewUnitComponent implements OnInit {
   }
   onRemoveBill(clinic, i) {
     console.log(clinic);
-<<<<<<< HEAD
-=======
     this.clinicsToDelele.push(clinic.value);
->>>>>>> development
     console.log(i);
     (<FormArray>this.clinicForm.controls['clinicArray']).controls.splice(i, 1);
     if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
@@ -175,32 +153,6 @@ export class NewUnitComponent implements OnInit {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
       } else {
-<<<<<<< HEAD
-        const id = this.department._id;
-        const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
-        console.log(clinics);
-        const clinicList = [];
-        clinics.forEach((itemi, i) => {
-          clinicList.push(itemi.value);
-        });
-        this.facilityObj.departments.forEach(function (item, i) {
-          if (item._id === id) {
-            item.units.push({
-              name: val.unitName,
-              shortName: val.unitAlias,
-              description: val.unitDesc,
-              clinics: clinicList
-            });
-          }
-        });
-        this.facilityService.update(this.facilityObj).then((payload) => {
-          this.facilityObj = payload;
-          // this.addNew();
-          this.frmNewUnit.controls['isClinic'].reset(false);
-          this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
-          this.frmNewUnit.reset();
-        })
-=======
         if (this.unit._id === undefined) {
           const id = this.department._id;
           const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
@@ -270,7 +222,6 @@ export class NewUnitComponent implements OnInit {
                         realClinics.push(clinic)
                       }
                     })
->>>>>>> development
 
                     unit.clinics = realClinics;
                     console.log(unit.clinics);

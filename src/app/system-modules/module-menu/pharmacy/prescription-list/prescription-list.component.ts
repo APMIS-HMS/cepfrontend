@@ -16,14 +16,11 @@ export class PrescriptionListComponent implements OnInit {
 	walkinFormGroup: FormGroup;
 	status: string[];
 	prescriptionLists: any[] = [];
-<<<<<<< HEAD
-=======
 	noPrescriptionLists: any[] = [];
 	tempPrescriptionLists: any[] = [];
 	loading: Boolean = true;
 	noPresLoading: Boolean = true;
 	currentDate: Date = new Date();
->>>>>>> development
 
 	constructor(
 		private _fb: FormBuilder,
@@ -90,9 +87,6 @@ export class PrescriptionListComponent implements OnInit {
 		this._prescriptionService.find({ query: { facilityId : this.facility._id }})
 			.then(res => {
 				console.log(res);
-<<<<<<< HEAD
-				this.prescriptionLists = res.data;
-=======
 				this.loading = false;
 				res.data.forEach(element => {
 					if (!element.isDispensed) {
@@ -116,7 +110,6 @@ export class PrescriptionListComponent implements OnInit {
 						this.prescriptionLists.push(element);
 					}
 				});
->>>>>>> development
 			})
 			.catch(err => {
 				console.log(err);

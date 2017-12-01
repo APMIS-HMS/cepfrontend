@@ -42,48 +42,6 @@
                 </md-option>
               </md-select>
             </div>
-<<<<<<< HEAD
-        </div>
-        <table class="table table-striped text-center">
-            <thead>
-                <tr>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Name(Brand)</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Type</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Generic Name</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="8" class="td-col-span-8">
-                       
-                    </td>
-                </tr>
-                <tr *ngIf="products.length == 0">
-                    <td colspan="5"> No data available in table</td>
-                </tr>
-                <tr *ngFor="let product of products">
-                    <td>{{product.name}}</td>
-                    <td>{{product.productType?.name}}</td>
-                    <td>{{product.genericName}}</td>
-                    <td>
-                        <a class="action-btn" (click)="slideProductDetailsToggle(product, {})"><i class="fa fa-eye"></i></a>
-                        <a class="action-btn" (click)="onSelectProduct(product)"><i class="fa fa-pencil"></i></a>
-                        <a class="action-btn"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="">
-        <div (click)="addProductModal()" class="col-md-12">
-            <a id="floating-button">
-                <p class="plus">+</p>
-            </a>
-        </div>
-    </div>
-    <!-- float button -->
-=======
             <div class="col-sm-5">
               <md-input-container class="example-full-width">
                 <input mdInput placeholder="Search..." [formControl]="searchControl">
@@ -97,7 +55,6 @@
           </div>
         </td>
       </tr>
->>>>>>> development
 
       <tr *ngFor="let product of products">
         <td>{{product.name}}</td>

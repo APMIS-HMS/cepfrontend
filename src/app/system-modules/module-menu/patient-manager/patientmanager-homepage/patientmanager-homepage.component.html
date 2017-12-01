@@ -115,39 +115,6 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
-<<<<<<< HEAD
-                                    <legend  class="modal_title">Edit Patient</legend>
-                                    <form class="form form-signup" role="form">
-                                                <!--<input type="text" class="form-control" placeholder="Full Name" />-->
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="text" placeholder="Full Name">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Last Name">
-                                                </md-input-container>    
-                                                  <md-select placeholder="Gender" [(ngModel)]="selectedValue" name="food">
-                                                        <md-option *ngFor="let food of foods" [value]="food.value">
-                                                        {{food.viewValue}}
-                                                        </md-option>
-                                                   </md-select>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Age">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput placeholder="Address">
-                                                </md-input-container>
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="number" placeholder="Mobile Number">
-                                                </md-input-container>                        
-                                                    <md-input-container class="example-full-width">
-                                                        <input mdInput type="email" placeholder="Email">
-                                                    </md-input-container>
-                                                </form>
-                                            </div>
-                                <div class="example-full-width" id="example-full-width">
-                                        <button class="apmis-blue" md-raised-button> Save </button>
-                                </div>
-=======
                                     <legend class="modal_title">Edit Patient</legend>
                                     <form class="form form-signup" role="form" [formGroup]="patientEditForm">
                                         <md-tab-group style="padding: 10px;">
@@ -310,7 +277,6 @@
                                 <div class="example-full-width" id="example-full-width">
                                     <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" md-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
->>>>>>> development
                             </div>
                         </div>
                     </div>

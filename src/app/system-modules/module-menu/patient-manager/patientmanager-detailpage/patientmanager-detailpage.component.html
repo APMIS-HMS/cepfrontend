@@ -21,60 +21,6 @@
                         <div class="patient-phone">{{patient?.personDetails.phoneNumber}}</div>
                     </div>
                     <div class="patient-email">{{patient?.personDetails.email}}</div>
-<<<<<<< HEAD
-                    <div class="patientBanner-vitals">
-                        <div class="demo-table">
-                            <!--<div class="pbTableView-itemWrap item-height">
-                                <div class="itemLeft">Height</div>
-                                <div class="itemRight">
-                                    <div class="val1">72.00<span class="entry-unit">Inch</span></div>
-                                    <div class="val2">183<span class="entry-unit">cm</span></div>
-                                </div>
-                            </div>
-
-                            <div class="pbTableView-itemWrap item-weight">
-                                <div class="itemLeft">Weight</div>
-                                <div class="itemRight">
-                                    <div class="val1">136.7<span class="entry-unit">lbn</span></div>
-                                    <div class="val2">62<span class="entry-unit">kg</span></div>
-                                </div>
-                            </div>
-
-                            <div class="pbTableView-itemWrap item-bp">
-                                <div class="itemLeft">BP</div>
-                                <div class="itemRight">
-                                    <div class="val1">130/90</div>
-                                </div>
-                            </div>-->
-
-                            <table class="demo-table">
-                                <tr>
-                                    <th></th>
-                                    <th>Temp.</th>
-                                    <th>Pulse</th>
-                                    <th>BP</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <td>
-                                        
-                                    </td>
-                                    <td>
-                                        
-                                    </td>
-                                    <td>
-                                        
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="cta-wrap">
-                        <div class="pp-cta">Set Appointment</div>
-                    </div>
-=======
->>>>>>> development
 
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balance</span>
@@ -131,18 +77,6 @@
         <app-treatement-plan *ngIf="menuTreatmentPlan"></app-treatement-plan>
     </div>
 
-<<<<<<< HEAD
-        <div *ngIf="addVitalsPop" class="modal-overlay">
-            <!--<app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>-->
-            <app-add-vitals [patientId]="patient._id" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
-        </div>
-        <div *ngIf="addTagsPop" class="modal-overlay">
-            <app-add-tags (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-tags>
-        </div>
-        <div style="z-index: 1501;" *ngIf="checkoutPatient" class="modal-overlay">
-            <app-checkout-patient [employeeDetails]="employeeDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
-        </div>
-=======
     <div *ngIf="addVitalsPop" class="modal-overlay">
         <!--<app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>-->
         <app-add-vitals [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
@@ -155,6 +89,5 @@
     </div>
     <div *ngIf="changeUserImg" class="modal-overlay">
         <app-image-update [selectedPerson]="patient.personDetails" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-image-update>
->>>>>>> development
     </div>
 </div>

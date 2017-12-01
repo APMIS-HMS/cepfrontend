@@ -17,11 +17,8 @@ import { FacilitiesService, PrescriptionService, InventoryTransactionTypeService
 })
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
-<<<<<<< HEAD
-=======
 	@Output() isExternalPrescription: boolean = false;
 	@Input() employeeDetails: any;
->>>>>>> development
 	facility: Facility = <Facility>{};
 	user: User = <User>{};
 	selectedPrescription: PrescriptionItem = <PrescriptionItem>{};
@@ -209,12 +206,6 @@ export class PrescriptionComponent implements OnInit {
 	}
 
 	// Get all drugs from generic
-<<<<<<< HEAD
-	getPrescriptionDetails() {
-		this._prescriptionService.get(this.prescriptionId, {})
-			.then(res => {
-				console.log(res);
-=======
 	private _getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {}).then(res => {
 			console.log(res);
@@ -268,7 +259,6 @@ export class PrescriptionComponent implements OnInit {
 				// Filter the external prescriptions only
 				const external = res.prescriptionItems.filter(x => !x.isDispensed && (!!x.facilityId && x.isBilled && (x.facilityId === this.facility._id)) || x.isExternal);
 				res.prescriptionItems = external;
->>>>>>> development
 				this.prescriptionItems = res;
 
 				// Reset all the prescriptionItem.transactions to an empty array.

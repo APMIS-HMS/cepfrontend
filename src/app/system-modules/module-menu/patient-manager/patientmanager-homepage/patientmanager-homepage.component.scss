@@ -100,9 +100,6 @@ textarea.mat-input-element {
     }
 }
 
-<<<<<<< HEAD
-
-=======
 .next-of-kin {
     .mat-input-container {
         width: 49%;
@@ -141,7 +138,6 @@ textarea.mat-input-element {
         font-size: 12px;
     }
 }
->>>>>>> development
 
 // .survery .panel-body {
 //     padding: 50px;
@@ -151,52 +147,5 @@ textarea.mat-input-element {
 }
 .modal-overlay{
     position: fixed;
-<<<<<<< HEAD
-    z-index: 100;
-    top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
-    background-size: cover;
-    background-position: 50% 50%;
-    background-repeat: repeat;
-    background: rgba(0, 0, 0, 0.62);
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-  }
-
-/* end */
-.modal_title {
-    font-family: "Josefin Sans", sans-serif;
-    margin: 0px auto;
-    font-size: 20px;
-    color: #0D47A1;
-    border-bottom: 0;
-    text-align: center;
-}
-form {
-    margin: 0 auto;
-}
-.apmis-blue {
-    color: #fff;
-    background: #0288D1;
-    padding:7px;
-}
-.modal-close-ico {
-    position: absolute;
-    top: 8px;
-    right: 27px;
-    background-color: #ff2500;
-    color: #fff;
-    padding: 3px 7px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-}
-#example-full-width {
-    margin-bottom: 10px;
-=======
-    left: 0;
->>>>>>> development
 }

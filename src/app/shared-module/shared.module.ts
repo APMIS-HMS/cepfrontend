@@ -40,11 +40,7 @@ import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requ
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-<<<<<<< HEAD
-    MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule
-=======
     MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
->>>>>>> development
 } from '@angular/material';
 //import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
@@ -73,20 +69,8 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
-<<<<<<< HEAD
-        // MdNativeDateModule,
-        // MdDatepickerModule,
-        // MdButtonModule,
-        // MdCheckboxModule,
-        // MdProgressSpinnerModule,
-        // MdInputModule,
-        // MdOptionModule,
-        // MdSelectionModule,
-        // MdSelectModule
-=======
         // DragulaModule,
         // LabRequestsComponent, RequestDetailComponent
->>>>>>> development
     ],
     imports: [
         CommonModule,
@@ -99,19 +83,7 @@ import {
         InfiniteScrollModule,
         ImageCropperModule,
         MaterialModule,
-<<<<<<< HEAD
-        // MdNativeDateModule,
-        // MdDatepickerModule,
-        // MdButtonModule,
-        // MdCheckboxModule,
-        // MdProgressSpinnerModule,
-        // MdInputModule,
-        // MdOptionModule,
-        // MdSelectionModule,
-        // MdSelectModule
-=======
         // DragulaModule
->>>>>>> development
     ],
     providers: [StoreService]
 })

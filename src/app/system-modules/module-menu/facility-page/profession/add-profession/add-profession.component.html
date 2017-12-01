@@ -5,20 +5,10 @@
     <div class="mainErr animated shake" hidden="">you have unresolved errors</div>
 
     <div class="f_sg_1">
-<<<<<<< HEAD
-        <form [formGroup]="frm_profession" novalidate>
-            <div>
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Profession" formControlName="profession">
-                    <md-hint align="end" [hidden]="frm_profession.controls.profession.valid || frm_profession.controls.profession.pristine">
-                        Kindly supply a profession.
-                    </md-hint>
-=======
         <form>
             <div>
                 <md-input-container class="example-full-width">
                     <input mdInput placeholder="Profession" [formControl]="professionCtrl">
->>>>>>> development
                 </md-input-container>
             </div>
             <div>
@@ -34,11 +24,7 @@
                                     <span class="trash"><i (click)="onRemoveBill(cadre,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                                 </div>
                                 <div class="frm-item-wrap frm-item-inner-wrap">
-<<<<<<< HEAD
-                                    <div *ngIf="!cadre.value.readonly" class="btn-1 btn-blue btn-2" (click)="onAddHobby(cadre, cadreForm.valid)"> Add Cadre</div>
-=======
                                     <button *ngIf="!cadre.value.readonly" (click)="onAddHobby(cadre, cadreForm.valid)" md-mini-fab><i class="fa fa-plus"></i></button>
->>>>>>> development
                                 </div>
                             </div>
                         </div>
@@ -46,12 +32,6 @@
                 </form>
 
             </div>
-<<<<<<< HEAD
-            <!--<div class="cta-1">
-                Add
-            </div>-->
-=======
->>>>>>> development
             <div class="example-full-width" id="example-full-width">
                 <button (click)="save(frm_profession.valid, frm_profession.value)" class="apmis-blue" md-raised-button>Save Profession</button>
             </div>

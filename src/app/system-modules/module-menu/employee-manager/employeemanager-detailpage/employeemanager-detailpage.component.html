@@ -46,21 +46,6 @@
                     <div class="emp-name">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}}</div>
                     <div class="emp-apmisId">{{employee?.employeeDetails?.apmisId}}
                     </div>
-<<<<<<< HEAD
-                    <div *ngIf= "editDepartment" class="emp-dept">
-                        <div class="survery">
-                            <select>
-                                <option>Surgery Department</option>
-                                <option>Surgery Department</option>
-                                <option>Surgery Department</option>
-                            </select>
-                            <button class="btn btn-default">Save</button>
-                        </div>
-                    </div>
-                    <div *ngIf= "!editDepartment" class="emp-dept">{{employee?.department?.name}}
-                        <span (click)="toggleDepartmentShow()"  class="editButton">
-                        <i class="fa fa-edit"></i></span>
-=======
                     <div class="emp-dept">{{employee?.department?.name}}
                         <span *ngIf="!editDepartment" (click)="toggleDepartmentShow()" class="editButton">
                         <i class="fa fa-edit"></i></span>
@@ -72,7 +57,6 @@
                             </md-option>
                         </md-select>
                         <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
->>>>>>> development
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
@@ -102,17 +86,6 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
-<<<<<<< HEAD
-                        <div *ngIf = "biodatas" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="biodatas" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="Last Name" [(ngModel)]="employee.employeeDetails.lastName">
@@ -123,24 +96,12 @@
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="First Name" [(ngModel)]="employee.employeeDetails.firstName">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Gender</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
-                         <div *ngIf = "biodatas" class="survery rhs">
-                             <div class="survery">
-                            <select>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                            <button class="btn btn-default">Save</button>
-                            </div>
-=======
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
                             <md-select placeholder="Gender" [(ngModel)]="employee.employeeDetails.gender._id" name="food">
@@ -148,24 +109,12 @@
                                     {{gender.name}}
                                 </md-option>
                             </md-select>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Marital Status</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
-                         <div *ngIf = "biodatas" class="survery rhs">
-                             <div class="survery">
-                                <select>
-                                    <option>Single</option>
-                                    <option>Married</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
-=======
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
                             <md-select placeholder="Marital Status" [(ngModel)]="employee.employeeDetails.maritalStatus._id" name="food">
@@ -173,7 +122,6 @@
                                     {{marital.name}}
                                 </md-option>
                             </md-select>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -201,19 +149,6 @@
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                            <div *ngIf = "contacts" class="col-lg-6">
-                                <div class="survery">
-                                <select>
-                                    <option>Nigeria</option>
-                                    <option>Ghana</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <div *ngIf="contacts">
@@ -224,24 +159,12 @@
                                 </md-select>
                             </div>
                             <!-- /.col-lg-6 -->
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">State of Origin</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                              <div class="survery">
-                                <select>
-                                    <option>Kogi</option>
-                                    <option>Lagos</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
-=======
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <md-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.employeeDetails.stateOfOriginId" name="food">
@@ -249,26 +172,12 @@
                                     {{state.name}}
                                 </md-option>
                             </md-select>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">LGA</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
-                         <div class="survery rhs">
-                            <div *ngIf = "contacts" class="col-lg-6">
-                                 <div class="survery">
-                                <select>
-                                    <option>Mushin</option>
-                                    <option>Yaba</option>
-                                </select>
-                                <button class="btn btn-default">Save</button>
-                            </div>
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
                         <div class="survery rhs">
                             <div *ngIf="contacts" class="">
@@ -279,25 +188,12 @@
                                 </md-select>
                             </div>
                             <!-- /.col-lg-6 -->
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Home Address</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <md-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.employeeDetails.homeAddress.country" name="food">
@@ -318,55 +214,28 @@
                             <md-input-container class="example-full-width" name="street">
                                 <input mdInput placeholder="Street" [(ngModel)]="employee.employeeDetails.homeAddress.street">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
                         <div *ngIf="contacts" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input type="tel" mdInput placeholder="Phone Number" [(ngModel)]="employee.employeeDetails.phoneNumber">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email Address</div>
-<<<<<<< HEAD
-                        <div *ngIf = "!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
-                         <div *ngIf = "contacts" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input type="tel" mdInput placeholder="Email" [(ngModel)]="employee.employeeDetails.email">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -382,40 +251,16 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.fullName}} </div>
-<<<<<<< HEAD
-                         <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="nextofkin" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input type="text" mdInput placeholder="Full Name" [(ngModel)]="item.fullName">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Relationship</div>
-<<<<<<< HEAD
-                        <div *ngIf="!nextofkin" class="rhs"> Brother </div>
-                         <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="!nextofkin" class="rhs"> {{getRelationship(item.relationship)}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
                              <md-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
@@ -423,7 +268,6 @@
                                     {{relationship.name}}
                                 </md-option>
                             </md-select>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -431,22 +275,10 @@
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.phoneNumber}} </div>
-<<<<<<< HEAD
-                         <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="nextofkin" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="Phone Number" [(ngModel)]="item.phoneNumber">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -454,22 +286,10 @@
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Email</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.email}} </div>
-<<<<<<< HEAD
-                         <div *ngIf="nextofkin" class="survery rhs">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                <input type="text" class="form-control" placeholder="">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
-                                </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-=======
                         <div *ngIf="nextofkin" class="survery rhs">
                             <md-input-container class="example-full-width">
                                 <input mdInput placeholder="Email" [(ngModel)]="item.email">
                             </md-input-container>
->>>>>>> development
                         </div>
                         <div class="clear"></div>
                     </div>

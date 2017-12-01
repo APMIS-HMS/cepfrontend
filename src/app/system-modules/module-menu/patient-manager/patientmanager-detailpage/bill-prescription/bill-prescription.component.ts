@@ -3,11 +3,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
-<<<<<<< HEAD
-    FacilitiesService, ProductService, FacilityPriceService
-=======
     FacilitiesService, ProductService, FacilityPriceService, InventoryService, AssessmentDispenseService
->>>>>>> development
 } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -24,9 +20,6 @@ export class BillPrescriptionComponent implements OnInit {
 	drugs: any[] = [];
 	itemCost: number = 0;
 	title: string = '';
-<<<<<<< HEAD
-	price: number = 0;
-=======
 	cost: number = 0; // Unit price for each drug.
 	totalCost: number = 0; // Total price for each drug selected.
 	totalQuantity: number = 0;
@@ -38,7 +31,6 @@ export class BillPrescriptionComponent implements OnInit {
 	serviceId: string = '';
 	facilityServiceId: string = '';
 	categoryId: string = '';
->>>>>>> development
 
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
@@ -47,23 +39,15 @@ export class BillPrescriptionComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService,
-<<<<<<< HEAD
-		private _facilityPriceService: FacilityPriceService
-=======
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
 		private _assessmentDispenseService: AssessmentDispenseService
->>>>>>> development
 	) { }
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-<<<<<<< HEAD
-		console.log(this.prescriptionData);
-=======
 		this.user = this._locker.getObject('auth');
->>>>>>> development
 
 		this.getProductsForGeneric();
 
@@ -72,26 +56,6 @@ export class BillPrescriptionComponent implements OnInit {
 			qty: [1, [<any>Validators.required]]
 		});
 
-<<<<<<< HEAD
-		this.addBillForm.controls['drug'].valueChanges.subscribe(val => {
-			console.log(val);
-			let fsId: string = '';
-			let sId: string = '';
-			let cId: string = '';
-			// Get the service for the product
-			// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-			// 	.then(res => {
-			// 		console.log(res);
-			// 		if(res.data.length > 0) {
-			// 			if(res.data[0].price !== undefined) {
-			// 				this.price = res.data[0].price;
-			// 			}
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		console.log(err);
-			// 	})
-=======
 		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
 			if(val > 0) {
 				this.totalQuantity = val;
@@ -103,20 +67,12 @@ export class BillPrescriptionComponent implements OnInit {
 					text: 'Quantity should be greater than 0!'
 				});
 			}
->>>>>>> development
 		})
 	}
 
 	//
 	onClickSaveCost(value, valid) {
 		if(valid) {
-<<<<<<< HEAD
-			let index = this.prescriptionData.index;
-			this.prescriptionData.prescriptionItems[index].drugId = value.drug; 
-			this.prescriptionData.prescriptionItems[index].quantity = value.qty;
-			this.prescriptionData.prescriptionItems[index].isBilled = true;
-			console.log(this.prescriptionData);
-=======
 			if(this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
@@ -141,7 +97,6 @@ export class BillPrescriptionComponent implements OnInit {
 					text: 'Unit price or Quantity is less than 0!'
 				});
 			}
->>>>>>> development
 		} else {
 			this.mainErr = false;
 		}
@@ -167,44 +122,6 @@ export class BillPrescriptionComponent implements OnInit {
 	}
 
 	onClickCustomSearchItem(event, drugId) {
-<<<<<<< HEAD
-		//this.addBillForm.controls['product'].setValue(event.srcElement.innerText);
-		//this.selectedProductId = drugId.getAttribute('data-p-id');
-		let fsId = drugId.getAttribute('data-p-fsid');
-		let sId = drugId.getAttribute('data-p-sid');
-		let cId = drugId.getAttribute('data-p-cid');
-		// Get the service for the product
-		// this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		if(res.data.length > 0) {
-		// 			if(res.data[0].price !== undefined) {
-		// 				this.price = res.data[0].price;
-		// 			}
-		// 		}
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 	})
-	}
-
-	// Get the price for product selected
-	// getProductService() {
-	// 	// Get the service for the product
-	// 	this._facilityPriceService.find({ query : { facilityId : this.facility._id, facilityServiceId: fsId, serviceId: sId, categoryId: cId}})
-	// 		.then(res => {
-	// 			console.log(res);
-	// 			if(res.data.length > 0) {
-	// 				if(res.data[0].price !== undefined) {
-	// 					this.price = res.data[0].price;
-	// 				}
-	// 			}
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 		})
-	// }
-=======
 		this.selectedDrug = drugId.viewValue;
 		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
 		this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
@@ -218,6 +135,5 @@ export class BillPrescriptionComponent implements OnInit {
 	onClickClose(e) {
 		 this.closeModal.emit(true);
 	}
->>>>>>> development
 
 }

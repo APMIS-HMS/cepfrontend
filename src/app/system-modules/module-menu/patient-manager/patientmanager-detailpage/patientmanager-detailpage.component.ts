@@ -134,28 +134,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
-<<<<<<< HEAD
-    this.getForms();
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    // this.route.params.subscribe(params => {
-    //   this.routeId = +params['id'];
-    //   console.log(params['id']);
-    //    //this.routeId = +params['id']; // (+) converts string 'id' to a number
-    // });
-    this.route.data.subscribe(data => {
-      console.log(data);
-      data['patient'].subscribe(payload => {
-        this.patient = payload;
-        this.patientDetails = payload;
-        this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
-          this.documentations = payloadPatient.data;
-          this.setGraph();
-        }, error => {
-          console.log(error);
-        });
-        this.getCurrentUser();
-      });
-=======
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
 
@@ -165,7 +143,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.router.navigate(['/dashboard/patient-manager']);
     }
     this.getForms();
->>>>>>> development
 
 
 

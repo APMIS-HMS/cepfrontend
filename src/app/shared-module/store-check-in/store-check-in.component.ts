@@ -11,100 +11,6 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
-<<<<<<< HEAD
-
-  mainErr = true;
-  errMsg = 'you have unresolved errors';
-  @Input() loginEmployee: Employee = <Employee>{};
-
-  public storeCheckin: FormGroup;
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
-  stores: any[] = [];
-
-  constructor(public formBuilder: FormBuilder,
-    public clinicHelperService: ClinicHelperService,
-    public facilityService: FacilitiesService,
-    public consultingRoomService: ConsultingRoomService,
-    public employeeService: EmployeeService,
-    public storeService: StoreService
-  ) { }
-
-  ngOnInit() {
-    this.storeCheckin = this.formBuilder.group({
-      location: ['', []],
-      room: ['', []],
-      isDefault: [false, []]
-    });
-    this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
-      this.storeService.find({ query: { minorLocationId: value } }).then(payload => {
-        if (payload.data.length > 0) {
-          this.stores = payload.data;
-        } else {
-          this.stores = [];
-        }
-      });
-    });
-
-    this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
-    });
-  }
-  close_onClick() {
-    this.closeModal.emit(true);
-  }
-  checkIn(valid, value) {
-    const checkIn: any = <any>{};
-    checkIn.minorLocationId = value.location;
-    checkIn.storeId = value.room;
-    checkIn.lastLogin = new Date();
-    checkIn.isOn = true;
-    checkIn.isDefault = value.isDefault;
-    if (this.clinicHelperService.loginEmployee.storeCheckIn === undefined) {
-      this.clinicHelperService.loginEmployee.storeCheckIn = [];
-    }
-    this.clinicHelperService.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-      itemi.isOn = false;
-      if (value.isDefault === true) {
-        itemi.isDefault = false;
-      }
-    });
-    this.loginEmployee = this.clinicHelperService.loginEmployee;
-    this.loginEmployee.storeCheckIn.push(checkIn);
-    this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-      this.clinicHelperService.loginEmployee = payload;
-
-
-      let keepCheckIn;
-      this.clinicHelperService.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-        itemi.isOn = false;
-        if (itemi._id === checkIn._id) {
-          itemi.isOn = true;
-          keepCheckIn = itemi;
-        }
-      });
-
-
-      this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-
-      this.close_onClick();
-    });
-  }
-  changeRoom(checkIn: any) {
-    let keepCheckIn;
-    this.clinicHelperService.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-      itemi.isOn = false;
-      if (itemi._id === checkIn._id) {
-        itemi.isOn = true;
-        keepCheckIn = itemi;
-      }
-    });
-    this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-      this.clinicHelperService.loginEmployee = payload;
-      this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-      this.close_onClick();
-    });
-  }
-=======
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
 	@Input() loginEmployee: Employee;
@@ -218,5 +124,4 @@ export class StoreCheckInComponent implements OnInit {
 			this.close_onClick();
 		});
 	}
->>>>>>> development
 }

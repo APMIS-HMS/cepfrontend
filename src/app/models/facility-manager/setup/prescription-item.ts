@@ -1,18 +1,4 @@
 export interface PrescriptionItem {
-<<<<<<< HEAD
-    drugName?: string,
-    drugId?: string,
-    genericName: string,
-    frequency: string,
-    duration: string,
-    routeName: String,
-    quantity?: number,
-    patientInstruction: string,
-    isRefill?: Boolean,
-    refillCount: number,
-    initiateBill: boolean,
-    isBilled: boolean
-=======
     _id?: string;
     facilityId?: string;
     productName?: string;
@@ -59,5 +45,4 @@ export interface DispensedArray {
     storeName: string;
     unitBilledPrice: number;
     totalAmount: number;
->>>>>>> development
 }

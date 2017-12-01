@@ -38,17 +38,6 @@ export class NoprescriptionComponent implements OnInit {
 	prescription = {};
 	storeId: any = <any>{};
 	// search variables
-<<<<<<< HEAD
-	searchText: string = '';
-	cuDropdownLoading: boolean = false;
-	selectedProductId: string = "";
-	showCuDropdown: boolean = false;
-	price: number = 0;
-	itemPrice: number = 0;
-	itemQuantity: number = 0;
-	totalItemPrice: number = 0;
-	totalItemQuantity: number = 0;
-=======
 	searchText = '';
 	cuDropdownLoading = false;
 	selectedProductId = '';
@@ -66,7 +55,6 @@ export class NoprescriptionComponent implements OnInit {
 	selectedCId: string = '';
 	internalType: string = 'Department';
 	deptLocationShow: boolean = true;
->>>>>>> development
 
 	constructor(
 		private _fb: FormBuilder,
@@ -121,21 +109,8 @@ export class NoprescriptionComponent implements OnInit {
 		});
 
 		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
-<<<<<<< HEAD
-			if(val > 0) {
-				//this.itemPrice = this.price*val;
-				this.itemQuantity = val;
-				this.itemPrice = this.price*val;
-				this.noPrescriptionForm.controls['cost'].setValue(this.itemPrice);
-			} else {
-				this._facilityService.announceNotification({
-					type: "Error",
-					text: "Quantity should be greater than 0!"
-				});
-=======
 			if (val > 0) {
 				this.noPrescriptionForm.controls['cost'].setValue(this.price);
->>>>>>> development
 			}
 		});
 

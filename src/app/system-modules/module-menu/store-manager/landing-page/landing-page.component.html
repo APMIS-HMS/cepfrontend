@@ -1,28 +1,5 @@
 <div class="survery">
     <div class="">
-<<<<<<< HEAD
-        <div class="table-container">
-            <div class="row">
-            <div class="col-md-4">
-                    <select [formControl]="selMinorLocation" class="form-control">
-                        <option value="Select by location" disabled selected>Select by location</option>
-                        <option *ngFor="let minorLocation of minorLocations" value={{minorLocation._id}}>{{minorLocation.name}}</option>
-                    </select>
-            </div>
-            <div class="col-md-4">
-                <select [formControl]="selProductType" class="form-control">
-                    <option value="Select by product type" disabled selected>Select by product type</option>
-                    <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <input type="text" [formControl]="searchControl" placeholder="search here" class="searchInput" #inputsearch/>
-                <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
-            </div>
-        </div>
-        </div>
-=======
->>>>>>> development
         <table class="table table-striped text-center">
             <thead>
                 <tr>
@@ -37,10 +14,6 @@
             </thead>
             <tbody>
                 <tr>
-<<<<<<< HEAD
-                    <td colspan="7" class="td-col-span-8">
-                     
-=======
                     <td colspan="7">
                         <div class="table-container">
                             <div class="row" style="margin-left: 0; margin-right: 0">
@@ -66,7 +39,6 @@
                                 </div>
                             </div>
                         </div>
->>>>>>> development
                     </td>
                 </tr>
                 <tr *ngFor="let store of stores">

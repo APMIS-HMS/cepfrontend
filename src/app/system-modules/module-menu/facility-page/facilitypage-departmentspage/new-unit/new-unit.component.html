@@ -30,15 +30,7 @@
             </div>
 
             <div class="frm-item-wrap">
-<<<<<<< HEAD
-               <!-- <label>
-              <input style="width: auto; margin-right: 5px;" type="checkbox"  formControlName="isClinic"  [(ngModel)]="isClinic">
-              Clinic
-          </label>-->
-            <md-checkbox formControlName="isClinic" >Clinic</md-checkbox>
-=======
                 <md-checkbox formControlName="isClinic" >Clinic</md-checkbox>
->>>>>>> development
             </div>
             
             <form [formGroup]="clinicForm" class="form-horizontal clinic-section">
@@ -47,10 +39,6 @@
                         <div formGroupName="{{i}}">
                             <div class="mainErr animated shake" [hidden]="mainErrClinic || (clinicForm.controls['clinicArray'].value.length !== (i+1))">{{errMsgClinic}}</div>
                             <div class="valSpan">
-<<<<<<< HEAD
-                                <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
-                                    <input type="text" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
-=======
                                 <div>
                                     <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
                                         <md-input-container class="example-full-width">
@@ -62,7 +50,6 @@
                                             <input mdInput type="number" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicCapacity" min="1" placeholder="Daily  Capacity" autocomplete="off">
                                         </md-input-container>
                                     </div> 
->>>>>>> development
                                 </div>
                                 <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(clinic,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                             </div>

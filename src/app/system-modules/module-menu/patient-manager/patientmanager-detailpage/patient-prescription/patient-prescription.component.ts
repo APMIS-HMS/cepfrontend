@@ -175,11 +175,7 @@ export class PatientPrescriptionComponent implements OnInit {
                     duration: value.duration + ' ' + value.durationUnit,
                     startDate: value.startDate,
                     strength: value.strength,
-<<<<<<< HEAD
-                    patientInstruction: (value.specialInstruction == null) ? "" : value.specialInstruction,
-=======
                     patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
->>>>>>> development
                     refillCount: value.refillCount,
                     ingredients: this.selectedIngredients,
                     form: this.selectedForm,
@@ -238,29 +234,6 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.disableAuthorizeRx = true;
                 this.authorizeRx = 'Authorizing Rx... <i class="fa fa-spinner fa-spin"></i>';
                 this.prescriptions.priorityId = value.priority;
-<<<<<<< HEAD
-                console.log(this.prescriptions);
-                this._prescriptionService.create(this.prescriptions)
-                    .then(res => {
-                        this._facilityService.announceNotification({
-                            type: "Success",
-                            text: "Prescription has been sent!"
-                        });
-                        this.prescriptionItems = [];
-                        this.addPrescriptionForm.reset();
-                        this.addPrescriptionForm.controls['refillCount'].reset(0);
-                        this.addPrescriptionForm.controls['duration'].reset(0);
-                        this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                        this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                    })
-                    .catch(err => {
-                        this._facilityService.announceNotification({
-                            type: "Error",
-                            text: "There was an error creating prescription. Please try again later."
-                        });
-                        console.log(err);
-                    });
-=======
                 this.prescriptions.priorityObject = { id: value.priority, name: value.priority  };
                 this.prescriptions.totalCost = value.totalCost;
                 this.prescriptions.totalQuantity = value.totalQuantity;
@@ -316,7 +289,6 @@ export class PatientPrescriptionComponent implements OnInit {
                 //     // Else, if no item was billed, just save to the prescription table.
                 //     this._sendPrescription(this.prescriptions);
                 // }
->>>>>>> development
             }
         } else {
             this._notification('Info', 'Please use the "Add" button above to add prescription!');

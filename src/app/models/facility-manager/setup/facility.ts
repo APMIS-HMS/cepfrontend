@@ -24,10 +24,7 @@ export interface Facility {
     logoObject: any;
     description: string;
     facilityClassItem: any;
-<<<<<<< HEAD
-=======
     facilityOwnershipId: any;
     facilityModules: any;
     invitees: any;
->>>>>>> development
 }

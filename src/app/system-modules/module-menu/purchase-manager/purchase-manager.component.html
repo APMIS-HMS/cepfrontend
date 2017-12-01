@@ -9,19 +9,6 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
     <div class="facility-subTitle" (pageInView)="pageInViewLoader($event)">{{pageInView_subTitle}}</div>
-<<<<<<< HEAD
-    <div class="inner-menu1-wrap responsive_nav-group">
-        <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
-        <ul (focusout)="contentSecMenuToggle()" id="innerMenu-ul" *ngIf="contentSecMenuShow===true" class="innerMenu-ul shadow">
-            <li [routerLink]="['/dashboard/store/home']">Manage Store</li>
-            <li [routerLink]="['/dashboard/product-manager/products']">Manage Product</li>
-            <li [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
-            <li [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
-            <li (click)="onChangeCheckedIn()">Change CheckedIn Store</li>
-        </ul>
-    </div>
-=======
->>>>>>> development
     <div class="inner-page-wrap">
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>

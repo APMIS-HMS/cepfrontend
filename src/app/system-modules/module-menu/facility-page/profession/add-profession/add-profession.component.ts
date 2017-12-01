@@ -1,9 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-<<<<<<< HEAD
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-=======
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
->>>>>>> development
 import { FacilitiesService, ProfessionService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Profession } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -24,10 +20,7 @@ export class AddProfessionComponent implements OnInit {
   professions: Profession[] = [];
   cadreForm: FormGroup;
   facilityObj: Facility = <Facility>{};
-<<<<<<< HEAD
-=======
   professionCtrl:FormControl = new FormControl();
->>>>>>> development
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     public facilityService: FacilitiesService, private professionService: ProfessionService) { }
 
@@ -48,14 +41,6 @@ export class AddProfessionComponent implements OnInit {
       ])
     });
   }
-<<<<<<< HEAD
-  getProfessions() {
-    this.professionService.findAll().then(payload => {
-      this.professions = payload.data;
-    })
-  }
-=======
->>>>>>> development
   onRemoveBill(cadre, i) {
     console.log(cadre);
     console.log(i);
@@ -115,10 +100,7 @@ export class AddProfessionComponent implements OnInit {
           this.professionService.create(profession).then((payload) => {
             this.frm_profession.reset();
             this.cadreForm.controls['cadreArray'] = this.formBuilder.array([]);
-<<<<<<< HEAD
-=======
             this.addNewProfessionArray();
->>>>>>> development
           })
 
         this.mainErr = true;

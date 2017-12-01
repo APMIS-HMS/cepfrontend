@@ -18,17 +18,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   patientEditForm: FormGroup;
 
   editPatient = false;
-<<<<<<< HEAD
-  selectedValue: string;
-  foods = [
-    {value: 'steak-0', viewValue: 'male'},
-    {value: 'pizza-1', viewValue: 'female'},
-  ];
-
-   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-=======
   payPlan = false;
->>>>>>> development
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
 
@@ -208,12 +198,6 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
     this._populateAndSelectData(this.selectedPatient);
   }
-<<<<<<< HEAD
-  
-    close_onClick() {
-        this.closeModal.emit(true);
-    }
-=======
   updatePatient(value: any, valid: boolean) {
     this.updatePatientBtnText = 'Updating... <i class="fa fa-spinner fa-spin"></i>';
     const nextOfKinArray = [];
@@ -357,5 +341,4 @@ export class PatientmanagerHomepageComponent implements OnInit {
 			text: text
 		});
 	}
->>>>>>> development
 }

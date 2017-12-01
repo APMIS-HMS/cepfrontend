@@ -95,32 +95,7 @@
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
                     <div class="col-sm-6 col-md-6">
-<<<<<<< HEAD
-                        <div class="cu-search-box">
-                            <md-input-container>
-                                <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();"
-                                    (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
-                            </md-input-container>
-                            <!--<input type="text" formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Search...5 characters at least">-->
-                            <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
-                                <div class="cu-popover-arrow"></div>
-                                <div class="cu-header">
-                                    <p></p>
-                                </div>
-                                <ul class="cu-dropdown">
-                                    <li><a class="header">Select item</a></li>
-                                    <li *ngIf="drugs.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
-                                    <li *ngIf="drugs.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                                    <li *ngFor="let drug of drugs" #drugId [attr.data-drug-id]="drug.productId" (click)="onClickCustomSearchItem($event, drugId)"><a>{{ drug.details }}</a></li>
-                                </ul>
-                                <div class="cu-footer">
-                                    <button class="btn btn-default">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-=======
                         <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
->>>>>>> development
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <md-input-container>
@@ -225,17 +200,6 @@
                     </div>
                 </div> -->
                 <div class="row">
-<<<<<<< HEAD
-                    <div>
-                        <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top: -7px;">
-                            <label> Priority </label>
-                            <div>
-                                <!--<dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
-                                </dx-lookup>-->
-                            <select formControlName="priority">
-                                <option *ngFor="let item of priorities" placeholder="Priority"  value="{{item._id}}" >{{item.name}}</option>
-                            </select>
-=======
                     <div class="col-xs-12 no-padding">
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
@@ -246,7 +210,6 @@
                             </div>
                             <div class="col-sm-6 text-center">
                                 <button md-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
->>>>>>> development
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6 text-center">

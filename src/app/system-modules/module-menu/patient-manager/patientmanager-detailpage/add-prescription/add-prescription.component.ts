@@ -45,9 +45,6 @@ export class AddPrescriptionComponent implements OnInit {
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-<<<<<<< HEAD
-		console.log(this.prescriptionItems);
-=======
 		this.user = <User>this._locker.getObject('auth');
 		this.prescriptionItems.prescriptionItems = [];
 		
@@ -61,7 +58,6 @@ export class AddPrescriptionComponent implements OnInit {
 				}
 			});
 		}
->>>>>>> development
 	}
 
 	onClickDeleteItem(index: number, value: any) {
@@ -80,10 +76,7 @@ export class AddPrescriptionComponent implements OnInit {
 		this.isExternal = value;
 		this.billShowId = index;
 		this.prescriptionItems.prescriptionItems[index].initiateBill = !prescription.initiateBill;
-<<<<<<< HEAD
-=======
 		this.prescriptionItems.prescriptionItems[index].isExternal = value;
->>>>>>> development
 	}
 
 	// Bill toggel button
@@ -103,36 +96,6 @@ export class AddPrescriptionComponent implements OnInit {
 		}
 	}
 
-<<<<<<< HEAD
-	// This method is to save pricing for each drug
-	// onClickSaveCost(indexI, indexJ):void {
-	// 	console.log(indexI);
-	// 	console.log(indexJ);
-	// 	let control: FormArray = this.addBillForm.controls['bill'] as FormArray;
-	// 	let billFormGroup: FormGroup = control.at(indexJ) as FormGroup;
-	// 	let drugName: string = billFormGroup.controls['drug'].value;
-	// 	let qty: number = billFormGroup.controls['qty'].value;
-	// }
-
-	// addItem(): void {
-	// 	let control: FormArray  = <FormArray> this.addBillForm.controls['bill'];
-	// 	control.push(this.createItem());
-	// }
-
-	// createItem(): FormGroup {
-	// 	return this._fb.group({
-	// 		drug: [''],
-	// 		qty: [''],
-	// 	});
-	// }
-
-	// setItemValue(value) {
-	// 	return this._fb.group({
-	// 		drug: [value.drug],
-	// 		qty: [value.qty],
-	// 	})
-	// }
-=======
 	close_onClick(e) {
 		this.billShow = false;
 		this.totalCost = this.prescriptionData.totalCost;
@@ -147,5 +110,4 @@ export class AddPrescriptionComponent implements OnInit {
 			text: text
 		});
 	}
->>>>>>> development
 }

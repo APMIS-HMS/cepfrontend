@@ -160,57 +160,15 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-</div>-->
-<app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
-
-<div class="row margin-top-bottom">
-    <div class="col-sm-12 col-md-12 text-center">
-        <button class="btn bnt-default" (click)="onClickSavePrescription();"> Save </button>
-    </div>
-</div>
-<div class="sec-border">
-    <div class="table-head">
-        <div class="table-head-inner-content" id="drugs">
-            <p>Drugs</p>
-        </div>
-        <div class="table-head-inner-content" id="qt">
-            <p>Qty</p>
-        </div>
-        <div class="table-head-inner-content" id="batch">
-            <p>Batch</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Cost</p>
-=======
     <div class="row">
         <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:5px;height: 70px;">
             <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Quantity:</strong> <span> {{totalQuantity }}</span></p>
             <p class="pull-right" style="width: 100%; text-align: right;margin-top: -10px;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
->>>>>>> development
         </div>
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">
         <div class="col-sm-12 col-md-12 text-center">
             <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
         </div>
-<<<<<<< HEAD
-        <div class="table-data qt">
-            {{ prescription.quantity }}
-        </div>
-        <div class="table-data">
-            {{ prescription.batch }}
-        </div>
-        <div class="table-data">
-            <p style="color:red;">&#x20A6;{{ prescription.cost }}</p>
-        </div>
-    </div>
-</div>
-<div class="row margin-top-15">
-    <div class="col-sm-12 col-md-12 text-center">
-        <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
-        <!--<p class="total pull-right">&#x20A6;200</p>-->
-=======
->>>>>>> development
     </div>
 </div>

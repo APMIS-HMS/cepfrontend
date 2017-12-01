@@ -254,20 +254,14 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
       this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
       this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
-<<<<<<< HEAD
-=======
       console.log(this.selectedProduct.manufacturer);
->>>>>>> development
       this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
       this.frm_newProduct.controls['productTypeId'].setValue(this.selectedProduct.productTypeId);
       this.frm_newProduct.controls['categoryId'].setValue(this.selectedProduct.categoryId);
       this.setIngredientItem(this.selectedProduct.productDetail.ingredients);
-<<<<<<< HEAD
-=======
       this.setVariantItem(this.selectedProduct.variants)
->>>>>>> development
     } else {
       this.createText = 'Create Product';
       this.frm_newProduct.reset();

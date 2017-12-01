@@ -88,47 +88,6 @@ export class ClinicHelperService {
   getProfessions() {
     this.professionService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
-<<<<<<< HEAD
-        this.professions.push(itemi);
-      });
-    });
-  }
-  getClinicLocation() {
-    this.clinicLocations = [];
-    const inClinicLocations: MinorLocation[] = [];
-    const minors = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);
-    minors.forEach((itemi, i) => {
-      const minorLocation: MinorLocation = <MinorLocation>{};
-      minorLocation._id = itemi._id;
-      minorLocation.description = itemi.description;
-      minorLocation.locationId = itemi.locationId;
-      minorLocation.name = itemi.name;
-      minorLocation.shortName = itemi.shortName;
-      minorLocation.text = itemi.name;
-      inClinicLocations.push(minorLocation);
-    });
-    if (this.loginEmployee.professionObject !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
-      this.schedules.forEach((items, s) => {
-        this.loginEmployee.units.forEach((itemu, u) => {
-          if (itemu === items.locationType.unit._id) {
-            const res = inClinicLocations.filter(x => x._id === items.locationType.clinic.clinicLocation);
-            if (res.length > 0) {
-              this.clinicLocations.push(res[0]);
-            }
-          }
-        });
-      });
-    } else {
-      this.loginEmployee.workSpaces.forEach((itemw, w) => {
-        itemw.locations.forEach((iteml, l) => {
-          const res = inClinicLocations.filter(x => x._id === iteml.minorLocationId);
-          if (res.length > 0) {
-            this.clinicLocations.push(res[0]);
-          }
-        });
-      });
-    }
-=======
 				this.professions.push(itemi);
 			});
 		});
@@ -168,7 +127,6 @@ export class ClinicHelperService {
 			// 	});
 			// });
 		}
->>>>>>> development
 
   }
   getLoginEmployee() {
