@@ -1,7 +1,17 @@
+<div class="c-page-header">
+    <div class="top-button-box">
+        <ul class="topmenuwrap pull-right" (click)="goToFacility();">
+            <li tabindex="0">
+                <i class="fa fa-arrow-circle-o-right"></i>
+                <span>Create Ward</span>
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="c-page-body">
     <div class="inPatients">
         <div class="topFilters">
-            <div class="filter-title">FILTER BY</div>
+            <!-- <div class="filter-title">FILTER BY</div> -->
             <div class="filter-wrap dx-field">
                 <select class="filter-select" name="" id="">
                     <option value="">Select Ward</option>
@@ -15,25 +25,39 @@
                     <thead>
                         <tr class="table-bordered">
                             <th style="width: 5%">No</th>
-                            <th>Room</th>
-                            <th>Bed</th>
-                            <th>Available Bed</th>
+                            <th style="width: 55%">Room</th>
+                            <th style="width: 20%">Bed</th>
+                            <th style="width: 20%">Available Bed</th>
                         </tr>
                     </thead>
-                    <tbody class="custom-tbody" *ngIf="facilityWards.length === 0">
+                    <tbody class="custom-tbody" *ngIf="wards.length === 0 && !loading">
                         <tr>
-                            <td colspan="4"> No data available in table</td>
+                            <td class="table-content " colspan="4" style="text-align: center">
+                                No data available in table
+                            </td>
                         </tr>
                     </tbody>
-                    <tbody class="custom-tbody" *ngFor="let wardList of facilityWards">
-                        <tr class="tr-header-group">
-                            <td colspan="4">{{wardList.name}}</td>
+                    <tbody class="custom-tbody" *ngIf="wards.length === 0 && loading">
+                        <tr>
+                            <td class="table-content " colspan="4" style="text-align: center">
+                                <md-spinner class="small-spinner"></md-spinner>
+                            </td>
                         </tr>
-                        <tr *ngFor="let room of wardList?.wardDetails?.rooms; let i = index">
-                            <td>{{i+1}}</td>
-                            <td class="">{{room.name}}</td>
-                            <td class="">{{room.beds.length}}</td>
-                            <td class="">{{room.availableBedCount}}</td>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngFor="let ward of wards;let i=index">
+                        <tr class="tr-header-group" (click)="showDetails(i);">
+                            <td class="table-content" colspan="4">{{ward.minorLocationId?.name}}</td>
+                        </tr>
+                        <tr *ngIf="ward.rooms.length === 0 && (selectedIndex === i)">
+                            <td class="table-content " colspan="4 " style="text-align: center ">
+                                No added room and bed
+                            </td>
+                        </tr>
+                        <tr *ngFor="let room of ward?.rooms; let j=index;">
+                            <td *ngIf="selectedIndex === i" class="table-content">{{j+1}}</td>
+                            <td *ngIf="selectedIndex === i" class="table-content">{{room.name}}</td>
+                            <td *ngIf="selectedIndex === i" class="table-content">{{room.beds.length}}</td>
+                            <td *ngIf="selectedIndex === i" class="table-content">{{room.availableBeds}}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,0 +1,70 @@
+<div class="frmNoteWrap">
+    <legend class="modal_title">Clinical Note</legend>
+
+    <ul *ngIf="showDocument" class="links-ul">
+        <li (click)="docSymptom_show()">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span>Symptoms</span>
+        </li>
+    </ul>
+ 
+    <div class="docCard-header">
+        <div>
+            <md-input-container>
+                <input mdInput placeholder="Select Document" [mdAutocomplete]="autoForm" [formControl]="selectFormCtrl">
+            </md-input-container>
+
+            <md-autocomplete #autoForm="mdAutocomplete" [displayWith]="formDisplayFn">
+                <md-option *ngFor="let form of forms" [value]="form">
+                    {{ form.title }}
+                </md-option>
+            </md-autocomplete>
+        </div>
+
+        <div>
+            <div class="val-tag">Status</div>
+            <div class="list-label">Draft</div>
+        </div>
+
+        <div class="empWrap">
+            <div class="list-img">
+                <img *ngIf="patient?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                 <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div> 
+            </div>
+            <div>
+                <div class="val-tag">Patient</div>
+                <div class="list-label">{{patient.personDetails?.personFullName}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cont-wrap">
+        <div class="docCard-body">
+            <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 12px; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
+            <!--Load form here  -->
+            <div class="jsonFrnWrap" *ngIf="showDocument">
+                <survey [json]="json"></survey>
+
+                <div class="actWrappers-jsonFrm">
+                    <div (click)="docDiagnosis_show()" class="atch-orderSet">
+                        <i [hidden]="clinicalNote_view" class="fa fa-plus" aria-hidden="true"></i>
+                        <span>Diagnosis</span>
+                    </div>
+                    <div (click)="showOrderset_onClick()" class="atch-orderSet">
+                        <i [hidden]="clinicalNote_view" class="fa fa-plus" aria-hidden="true"></i>
+                        <span>Order Management</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="docSymptom_view" class="modal-overlay">
+    <app-doc-symptom (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>
+</div>
+<div *ngIf="docDiagnosis_view" class="modal-overlay">
+    <app-doc-diagnosis (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
+</div>

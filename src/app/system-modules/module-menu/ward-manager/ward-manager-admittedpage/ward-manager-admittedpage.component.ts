@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { WardAdmissionService, InPatientService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility } from './../../../../models/index';
+import { Facility, User } from './../../../../models/index';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 // import { globalConfig } from '../../../../shared-module/helpers/global-config';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
@@ -15,9 +15,12 @@ import * as myGlobals from '../../../../shared-module/helpers/global-config';
 
 export class WardManagerAdmittedpageComponent implements OnInit {
 	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+	public frmNewAdmit: FormGroup;
 	dischargePatient = false;
 	filterFormGroup: FormGroup;
 	facility: Facility = <Facility>{};
+	user: User = <User>{};
+	employeeDetails: any = <any>{};
 	admittedPatient: any[] = [];
 	filterAdmittedPatient: any[];
 	wardRoomLocationItems: any[] = [];
@@ -26,8 +29,8 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	wardVal = new FormControl();
 	roomVal = new FormControl();
 	searchControl = new FormControl();
-
-	public frmNewAdmit: FormGroup;
+	loading: Boolean = false;
+	selectedWard: any;
 
 	constructor(private fb: FormBuilder,
 		private _locker: CoolLocalStorage,
@@ -38,24 +41,38 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 		// private gvariable: globalConfig
 	) {
 		this._inPatientService.listenerCreate.subscribe(payload => {
-			this.getAdmittedItems();
+			this.getAdmittedItems(this.selectedWard);
 		});
 
 		this._inPatientService.listenerUpdate.subscribe(payload => {
-			this.getAdmittedItems();
+			this.getAdmittedItems(this.selectedWard);
 		});
 	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
+		this.employeeDetails = this._locker.getObject('loginEmployee');
 		this._wardEventEmitter.setRouteUrl('Admitted Patients');
-		console.log(this.facility);
 		// this.filterFormGroup = this.fb.group({
 		// 	ward: ['', [<any>Validators.required]],
 		// 	room: ['', [<any>Validators.required]]
 		// });
-		this.getAdmittedItems();
-		this.getwardLocationItems();
+
+		this._wardEventEmitter.announceWard.subscribe(val => {
+			this.selectedWard = val;
+			this.getAdmittedItems(val);
+			this.getwardLocationItems(val);
+		});
+
+		if (this.selectedWard === undefined) {
+			const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
+			const wardType = {
+				type: 'ward',
+				typeObject: wardCheckedIn
+			}
+			this.getAdmittedItems(wardType);
+			this.getwardLocationItems(wardType);
+		}
 
 		// this.searchControl.valueChanges.subscribe(searchText => {
 		// 	this.filterInPatientList(searchText);
@@ -64,95 +81,87 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 
 	onWardChange(param) {
 		this.filterAdmittedPatient = [];
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
-				if (payload.data !== []) {
-					this.admittedPatient = [];
-					payload.data[0].locations.forEach(item => {
-						if (item.minorLocationId.toString() === param.toString()) {
-							this.wardRoomLocationItems = item.rooms;
-							this._inPatientService.find({ query: { facilityId: this.facility._id } })
-								.then(payload2 => {
-									payload2.data.forEach(inPatientItem => {
-										inPatientItem.transfers.forEach(transferItem => {
-											if (transferItem.minorLocationId.toString() === param.toString()) {
-												this.filterAdmittedPatient.push(inPatientItem);
-											}
-										})
-										if (this.filterAdmittedPatient.length === 0) {
-											this.getAdmittedItems();
-										}
-										else {
-											this.admittedPatient = this.filterAdmittedPatient;
-										}
-									})
+		this._wardAdmissionService.find({ query: {'facilityId._id': this.facility._id }}).then(payload => {
+			console.log(payload);
+			if (payload.data.length > 0) {
+				this.admittedPatient = [];
+				payload.data[0].locations.forEach(item => {
+					if (item.minorLocationId === param) {
+						this.wardRoomLocationItems = item.rooms;
+						this._inPatientService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
+							res.data.forEach(inPatientItem => {
+								inPatientItem.transfers.forEach(transferItem => {
+									if (transferItem.minorLocationId === param) {
+										this.filterAdmittedPatient.push(inPatientItem);
+									}
 								})
-						}
-					})
-				}
-			});
+								if (this.filterAdmittedPatient.length === 0) {
+									this.getAdmittedItems(this.selectedWard);
+								}else {
+									this.admittedPatient = this.filterAdmittedPatient;
+								}
+							});
+						});
+					}
+				});
+			}
+		});
 	}
 
 	onRoomChange(param) {
 		this.filterAdmittedPatient = [];
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
-				if (payload.data !== []) {
-					this.admittedPatient = []
-					payload.data[0].locations.forEach(item => {
-						item.rooms.forEach(itm => {
-							if (itm._id.toString() === param.toString()) {
-								this.wardRoomBedLocationItems = itm.beds;
-								this._inPatientService.find({ query: { facilityId: this.facility._id } })
-									.then(payload2 => {
-										payload2.data.forEach(inPatientItem => {
-											inPatientItem.transfers.forEach(transferItem => {
-												if (transferItem.roomId.toString() === param.toString()) {
-													this.filterAdmittedPatient.push(inPatientItem);
-												}
-
-											})
-										})
-										if (this.filterAdmittedPatient.length === 0) {
-											this.getAdmittedItems();
+		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(payload => {
+			if (payload.data !== []) {
+				this.admittedPatient = []
+				payload.data[0].locations.forEach(item => {
+					item.rooms.forEach(itm => {
+						if (itm._id.toString() === param.toString()) {
+							this.wardRoomBedLocationItems = itm.beds;
+							this._inPatientService.find({ query: { facilityId: this.facility._id } }).then(payload2 => {
+								payload2.data.forEach(inPatientItem => {
+									inPatientItem.transfers.forEach(transferItem => {
+										if (transferItem.roomId.toString() === param.toString()) {
+											this.filterAdmittedPatient.push(inPatientItem);
 										}
-										else {
-											this.admittedPatient =
-												this.admittedPatient = this.filterAdmittedPatient;
-										}
+									});
+								});
 
-									})
-							}
-						})
-					})
-				}
-			});
+								if (this.filterAdmittedPatient.length === 0) {
+									this.getAdmittedItems(this.selectedWard);
+								} else {
+									this.admittedPatient =
+									this.admittedPatient = this.filterAdmittedPatient;
+								}
+							});
+						}
+					});
+				});
+			}
+		});
 	}
 
 	filterInPatientList(param) {
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
-			.then(payload => {
-				if (payload.data !== []) {
-					this.admittedPatient = []
-					payload.data[0].locations.forEach(item => {
-						item.rooms.forEach(itm => {
-							if (itm._id.toString() === this.roomVal.value.toString()) {
-								this.wardRoomBedLocationItems = itm.beds;
-								this._inPatientService.find({ query: { facilityId: this.facility._id } })
-									.then(payload2 => {
-										payload2.data.forEach(inPatientItem => {
-											if (inPatientItem.patientDetails.personDetails.personFullName.includes(param)
-												|| inPatientItem.patientDetails.personDetails.age.toString() === param
-												|| inPatientItem.patientDetails.personDetails.personFullName.gender.name === param) {
-												this.admittedPatient.push(inPatientItem);
-											}
-										})
-									})
-							}
-						})
-					})
-				}
-			});
+		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(payload => {
+			if (payload.data !== []) {
+				this.admittedPatient = []
+				payload.data[0].locations.forEach(item => {
+					item.rooms.forEach(itm => {
+						if (itm._id === this.roomVal.value) {
+							this.wardRoomBedLocationItems = itm.beds;
+							this._inPatientService.find({ query: { 'facilityId._id': this.facility._id } }).then(payload2 => {
+								payload2.data.forEach(inPatientItem => {
+									if (inPatientItem.patientDetails.personDetails.personFullName.includes(param)
+										|| inPatientItem.patientDetails.personDetails.age.toString() === param
+										|| inPatientItem.patientDetails.personDetails.personFullName.gender.name === param) {
+										this.admittedPatient.push(inPatientItem);
+									}
+								});
+							});
+						}
+					});
+				});
+			}
+		});
 	}
 
 	onClickDischargePatient() {
@@ -163,9 +172,10 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 		this.dischargePatient = false;
 	}
 
-	getAdmittedItems() {
-		this._inPatientService.find({ query: { facilityId: this.facility._id, statusId: myGlobals.onAdmission } })
+	getAdmittedItems(wardCheckedIn: any) {
+		this._inPatientService.find({ query: { 'facilityId._id': this.facility._id, statusId: myGlobals.onAdmission } })
 			.then(payload => {
+				this.loading = false;
 				if (payload.data.length !== 0) {
 					console.log(payload.data);
 					payload.data.forEach(item => {
@@ -186,13 +196,12 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 			});
 	}
 
-	getwardLocationItems() {
-		this._facilitiesService.find({ query: { _id: this.facility._id } })
-			.then(payload => {
-				if (payload.data.length !== 0) {
-					this.wardLocationItems = payload.data[0].wards;
-				}
-			});
+	getwardLocationItems(wardCheckedIn: any) {
+		this._facilitiesService.find({ query: { _id: this.facility._id }}).then(payload => {
+			if (payload.data.length !== 0) {
+				this.wardLocationItems = payload.data[0].wards;
+			}
+		});
 	}
 
 

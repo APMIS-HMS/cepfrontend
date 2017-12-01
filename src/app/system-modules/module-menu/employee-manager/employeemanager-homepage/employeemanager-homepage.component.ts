@@ -19,10 +19,10 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   employees: Employee[] = [];
   searchControl = new FormControl();
 
-  pageSize: number = 1;
-  limit: number = 100;
-  total: number = 0;
-  loadIndicatorVisible: boolean = false;
+  pageSize = 1;
+  limit = 100;
+  total = 0;
+  loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
     private personService: PersonService, private locker: CoolLocalStorage,
@@ -38,14 +38,16 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
 
-    let away = this.searchControl.valueChanges
+    const away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
-
-      .switchMap((term: Employee[]) => this.employeeService.searchEmployee(this.facility._id, this.searchControl.value, false));
+      .switchMap((term: Employee[]) => this.employeeService.searchEmployee(this.facility._id, this.searchControl.value, true));
 
 
     away.subscribe((payload: any) => {
+      console.log(this.searchControl.value);
+      console.log(this.facility._id);
+      console.log(payload);
       this.employees = payload.body;
     });
 
@@ -54,13 +56,15 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.data.subscribe(data => {
       data['employees'].subscribe((payload) => {
-        this.total = payload.total;
-        this.employees = payload.data;
-        console.log(this.employees);
+        if (payload !== null) {
+          this.total = payload.total;
+          this.employees = payload.data;
+        }
+
       });
     });
     this.pageInView.emit('Employee Manager');
-    this.facility = <Facility> this.locker.getObject('selectedFacility');
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
     // this.getEmployees(this.limit);
   }
   searchEmployees(searchText: string) {
@@ -70,8 +74,8 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     this.getByDepartment(department);
   }
   navEpDetail(val) {
-    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail']).then(result => {
-      this.employeeService.announceEmployee(val);
+    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', val._id]).then(result => {
+      // this.employeeService.announceEmployee(val);
     });
   }
   getByDepartment(departmentId: string) {
@@ -115,7 +119,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     });
   }
   contactEmployees(employeeData: Employee[]) {
-    let newEmployees: Employee[] = [];
+    const newEmployees: Employee[] = [];
     this.employees.forEach((employee, i) => {
       let found = false;
       let newEmp: Employee = <Employee>{};
@@ -134,7 +138,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, false);
     }
@@ -144,7 +148,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
-    let limit = this.limit * this.pageSize;
+    const limit = this.limit * this.pageSize;
 
     if (this.employees.length !== this.total) {
       this.getEmployees(limit, true);

@@ -1,0 +1,71 @@
+<div class="modal-baseWrap animated pulse">
+  
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Update Medication</legend>
+
+    <form class="survery" [formGroup]="addPrescriptionForm" novalidate>
+      <div class="frmArrWrap">
+        <div class="row padding-top-20px">
+          <div class="col-sm-6 col-md-6">
+              <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+          </div>
+          <div class="col-sm-3 col-md-3">
+              <md-input-container>
+                  <input mdInput formControlName="strength" placeholder="Strength">
+              </md-input-container>
+          </div>
+          <div class="col-sm-3 col-md-3">
+              <md-select formControlName="route" placeholder="Route" class="md-select">
+                  <md-option>Oral</md-option>
+              </md-select>
+          </div>
+        </div>
+        <div class="row padding-top-20px">
+          <div class="">
+              <div class="col-sm-3 col-md-3">
+                  <md-select formControlName="frequency" placeholder="Frequency" class="example-full-width md-select">
+                      <md-option>1 hourly</md-option>
+                  </md-select>
+              </div>
+              <div class="col-sm-4 col-md-4">
+                  <div class="input-bg cacaca">
+                      <div class="input-group">
+                          <md-input-container>
+                              <input mdInput type="number" formControlName="duration" placeholder="Duration">
+                          </md-input-container>
+                          <div class="input-group-btn">
+                              <md-select placeholder="Unit" formControlName="durationUnit" class="md-select">
+                                  <md-option>Days</md-option>
+                              </md-select>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-2 col-md-2">
+                  <md-input-container>
+                      <input type="number" mdInput formControlName="refillCount" placeholder="Refill Count">
+                  </md-input-container>
+              </div>
+              <div class="col-sm-3 col-md-3">
+                  <md-input-container>
+                      <input mdInput formControlName="startDate" [mdDatepicker]="picker" placeholder="Start Date">
+                      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                  </md-input-container>
+                  <md-datepicker #picker></md-datepicker>
+              </div>
+          </div>
+          <div class="col-sm-12 col-md-12">
+              <md-input-container>
+                  <textarea mdInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
+              </md-input-container>
+          </div>
+        </div>
+      </div>
+    
+      <div class="addDrugBtn">
+          <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+          <span>UPDATE MEDICATION</span>
+      </div>
+    </form>
+    
+</div>

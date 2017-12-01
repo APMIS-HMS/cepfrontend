@@ -1,12 +1,12 @@
 <div class="modal-baseWrap animated pulse">
 
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+  <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
   <legend class="modal_title">Facility Setup</legend>
   <div class="modal_mini_title">All Purpose Medical Information System</div>
 
   <div *ngIf="sg1_1_show" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied
     below</div>
     
-  <app-facility-info></app-facility-info>
+  <app-facility-info (closeModal)="close_onClick($event)"></app-facility-info>
 
 </div>

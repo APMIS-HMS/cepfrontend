@@ -1,13 +1,16 @@
 <div id="purchase-order">
     <div class="survery">
-         <div class="row margin-bottom">
-            <div class="col-sm-4 col-md-4 col-xs-12">
-                <dx-select-box [formControl]="frmSupplier" [items]="suppliers" placeholder="Filter By" [showClearButton]="true" displayExpr="name" valueExpr="_id">
-                </dx-select-box>
+         <div class="row">
+            <!--<div class="col-sm-4 col-md-4 col-xs-12">
+                   <md-select placeholder="Filter By" [formControl]="frmSupplier">
+                    <md-option *ngFor="let item of suppliers" [value]="item._id">{{item.name}}</md-option>
+                </md-select>
             </div>
             <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-                <dx-text-box value="Search"></dx-text-box>
-            </div>
+                   <md-input-container class="example-full-width">
+                    <input type="text" mdInput md-error placeholder="Search">
+                </md-input-container>
+            </div>-->
         </div>
         <table class="table table-striped text-center">
             <thead>
@@ -84,12 +87,10 @@
                                 <tbody>
                                     <tr>
                                         <th>Product</th>
-                                        <th>Strength</th>
                                         <th>Qty</th>
                                     </tr>
                                     <tr *ngFor="let product of selectedOrder.orderedProducts">
                                         <td>{{product.product?.name}}</td>
-                                        <td>{{product.strength?.name}}</td>
                                         <td>{{product.quantity}}</td>
                                     </tr>
                                 </tbody>

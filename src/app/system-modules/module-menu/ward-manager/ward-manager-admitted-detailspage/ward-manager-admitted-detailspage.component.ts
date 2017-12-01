@@ -29,22 +29,23 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 
 	ngOnInit() {
 		// this is for the pageInView header
-		this._wardEventEmitter.setRouteUrl("Admitted Patient Details");
+		this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
 		this.getAdmittedPatientItems();
+
+		this._route.params.subscribe(params => {
+			this.admittedPatientId = params.id;
+		});
 	}
 
 	getAdmittedPatientItems() {
-		this._route.params.subscribe(params => {
-			this.admittedPatientId = params['id'];
+		this._inPatientService.find({ query: { _id: this.admittedPatientId } }).then(res => {
+			console.log(res);
+			if (res.data.length !== 0) {
+				let wardDetails = res.data[0].transfers[res.data[0].lastIndex];
+				this.selectedPatient = res.data[0];
+				this.selectedPatient.wardItem = wardDetails;
+			}
 		});
-		this._inPatientService.find({ query: { _id: this.admittedPatientId } })
-			.then(payload => {
-				if (payload.data.length !== 0) {
-					let wardDetails = payload.data[0].transfers[payload.data[0].lastIndex];
-					this.selectedPatient = payload.data[0];
-					this.selectedPatient.wardItem = wardDetails;
-				}
-			});
 	}
 
 	onClickDischargePatient() {

@@ -18,4 +18,14 @@ export interface Person {
     nextOfKin: any[];
     dateOfBirth: Date;
     profileImageObject: any;
+    personFullName:any;
+}
+
+export interface nextOfKin {
+    fullName: string;
+    address: string;
+    nextOfKinApmisId?: string;
+    phoneNumber: string;
+    email: string;
+    relationship: string,
 }

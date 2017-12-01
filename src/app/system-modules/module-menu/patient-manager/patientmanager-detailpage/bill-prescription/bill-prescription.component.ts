@@ -3,7 +3,11 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
+<<<<<<< HEAD
     FacilitiesService, ProductService, FacilityPriceService
+=======
+    FacilitiesService, ProductService, FacilityPriceService, InventoryService, AssessmentDispenseService
+>>>>>>> development
 } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
@@ -14,26 +18,52 @@ import {
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
 	facility: Facility = <Facility>{};
+	user: any = <any>{};
 
 	addBillForm: FormGroup;
 	drugs: any[] = [];
 	itemCost: number = 0;
 	title: string = '';
+<<<<<<< HEAD
 	price: number = 0;
+=======
+	cost: number = 0; // Unit price for each drug.
+	totalCost: number = 0; // Total price for each drug selected.
+	totalQuantity: number = 0;
+	batchNumber: string = '';
+	qtyInStores: number = 0;
+	storeId: string = '';
+	stores: any = [];
+	loading: boolean = true;
+	serviceId: string = '';
+	facilityServiceId: string = '';
+	categoryId: string = '';
+>>>>>>> development
 
 	mainErr: boolean = true;
-	errMsg: string = 'You have unresolved errors';
+	errMsg = 'You have unresolved errors';
 
 	constructor(
 		private _fb: FormBuilder,
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService,
+<<<<<<< HEAD
 		private _facilityPriceService: FacilityPriceService
+=======
+		private _facilityService: FacilitiesService,
+		private _facilityPriceService: FacilityPriceService,
+		private _inventoryService: InventoryService,
+		private _assessmentDispenseService: AssessmentDispenseService
+>>>>>>> development
 	) { }
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
+<<<<<<< HEAD
 		console.log(this.prescriptionData);
+=======
+		this.user = this._locker.getObject('auth');
+>>>>>>> development
 
 		this.getProductsForGeneric();
 
@@ -42,6 +72,7 @@ export class BillPrescriptionComponent implements OnInit {
 			qty: [1, [<any>Validators.required]]
 		});
 
+<<<<<<< HEAD
 		this.addBillForm.controls['drug'].valueChanges.subscribe(val => {
 			console.log(val);
 			let fsId: string = '';
@@ -60,51 +91,83 @@ export class BillPrescriptionComponent implements OnInit {
 			// 	.catch(err => {
 			// 		console.log(err);
 			// 	})
+=======
+		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
+			if(val > 0) {
+				this.totalQuantity = val;
+				this.totalCost = this.cost * val;
+			} else {
+				this._facilityService.announceNotification({
+					users: [this.user._id],
+					type: 'Error',
+					text: 'Quantity should be greater than 0!'
+				});
+			}
+>>>>>>> development
 		})
 	}
 
-	// 
+	//
 	onClickSaveCost(value, valid) {
 		if(valid) {
+<<<<<<< HEAD
 			let index = this.prescriptionData.index;
 			this.prescriptionData.prescriptionItems[index].drugId = value.drug; 
 			this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 			this.prescriptionData.prescriptionItems[index].isBilled = true;
 			console.log(this.prescriptionData);
+=======
+			if(this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+				let index = this.prescriptionData.index;
+				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
+				this.prescriptionData.prescriptionItems[index].serviceId = this.serviceId; 
+				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.facilityServiceId; 
+				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId; 
+				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
+				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
+				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
+				this.prescriptionData.prescriptionItems[index].cost = this.cost;
+				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
+				this.prescriptionData.prescriptionItems[index].isBilled = true;
+				this.prescriptionData.prescriptionItems[index].facilityId = this.facility._id;
+				this.prescriptionData.totalCost += this.totalCost;
+				this.prescriptionData.totalQuantity += this.totalQuantity;
+
+				this.closeModal.emit(true);
+			} else {
+				this._facilityService.announceNotification({
+					users: [this.user._id],
+					type: 'Error',
+					text: 'Unit price or Quantity is less than 0!'
+				});
+			}
+>>>>>>> development
 		} else {
 			this.mainErr = false;
 		}
 	}
 
 	getProductsForGeneric() {
-		let index = this.prescriptionData.index;
+		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
-		let genericName = this.prescriptionData.prescriptionItems[index].genericName.split(' ');
-			//Get the list of products from a facility, and then search if the generic
-			//that was entered by the doctor in contained in the list of products
-			this._productService.find({ query: { facilityId : this.facility._id }})
-				.then(res => {
-					console.log(res);
-					let tempArray = [];
-					// Get all products in the facility, then search for the item you are looking for.
-					res.data.forEach(element => {
-						if(element.genericName.toLowerCase().includes(genericName[0].toLowerCase())) {
-							tempArray.push(element);
-						}
-					});
-					console.log(tempArray);
-					if(tempArray.length !== 0) {
-						this.drugs = tempArray;
-					} else {
-						this.drugs = [];
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
+		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
+
+		// Get the list of products from a facility, and then search if the generic
+		// that was entered by the doctor in contained in the list of products
+		this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }}).then(res => {
+			console.log(res);
+			this.loading = false;
+			if(res.length > 0) {
+				this.stores = res[0].availability;
+				this.drugs = res;
+			} else {
+				this.drugs = [];
+			}
+		}).catch(err => console.error(err));
 	}
 
 	onClickCustomSearchItem(event, drugId) {
+<<<<<<< HEAD
 		//this.addBillForm.controls['product'].setValue(event.srcElement.innerText);
 		//this.selectedProductId = drugId.getAttribute('data-p-id');
 		let fsId = drugId.getAttribute('data-p-fsid');
@@ -141,5 +204,20 @@ export class BillPrescriptionComponent implements OnInit {
 	// 			console.log(err);
 	// 		})
 	// }
+=======
+		this.selectedDrug = drugId.viewValue;
+		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
+		this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
+		this.facilityServiceId = drugId._element.nativeElement.getAttribute('data-p-fsid');
+		this.categoryId = drugId._element.nativeElement.getAttribute('data-p-cid');
+		this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
+		this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
+		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
+	}
+
+	onClickClose(e) {
+		 this.closeModal.emit(true);
+	}
+>>>>>>> development
 
 }

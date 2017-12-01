@@ -1,57 +1,42 @@
 <div class="primary-tab">
     <div class="inner-wrap inner-wrap-pri">
-        <div class="logo-wrap">
-            <img src="assets/images/app_logo/logo_outline2.png">
+        <div class="brand">
+            <div class="logo-wrap">
+                <img src="assets/images/app_logo/logo2.png">
+            </div>
+            <div class="apmis">APMIS</div>
         </div>
-
-        <ul class="menu-options">
-            <li (click)="facilityManager_onClick()" [class.menuOptionActive]="facilityManagerActive" [routerLink]="['/dashboard']">Facility Manager
-            </li>
-            <li (click)="moduleManager_onClick()" [class.menuOptionActive]="moduleManagerActive" [routerLink]="['/modules/module-manager']">Module Manager
-            </li>
-        </ul>
 
         <div class="top-right">
-            <input class="top-tab-search" type="search" placeholder="Search here..." [formControl]="searchControl">
-            <img (click)="dmenuShow()" *ngIf="selectedPerson?.profileImageObject !== undefined" class="profile-pic" [src]="facilityService.transform(selectedPerson?.profileImageObject?.thumbnail)">
-            <img (click)="dmenuShow()" class="profile-pic" *ngIf="selectedPerson?.profileImageObject === undefined" src="assets/images/users/default.png">
+            <div class="search-wrap">
+                <input class="top-tab-search" type="search" placeholder="Search here..." [formControl]="searchControl">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <!-- <div class="x">x</div> -->
+            </div>
+
+            <div class="top-icons-wrap">
+                <i [routerLink]="['/dashboard']" class="fa fa-home" aria-hidden="true"></i>
+                <i class="fa fa-cog" aria-hidden="true"></i> 
+                <i class="fa fa-bell-o" aria-hidden="true"></i> 
+                <span (click)="logOut()" class="logout">LOGOUT</span>
+            </div>
+
+            <div class="logged-in-as">
+                <div class="user-label">
+                    <div class="user-name">{{selectedPerson?.personFullName}}</div>
+                    <!-- <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</div>
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.storeObject?.name}}</div>
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.workbenchObject?.name}}</div> -->
+                </div>
+
+                <div class="user-imgWrap">
+                    <img *ngIf="selectedPerson?.profileImageObject !== undefined" [src]="facilityService.transform(selectedPerson?.profileImageObject?.thumbnail)">
+                    <img *ngIf="selectedPerson?.profileImageObject === undefined" src="assets/images/users/default.png">
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div *ngIf="dmenu == true" class="survery">
-    <ul class="d-menu">
-        <!-- User image -->
-        <li class="user-header">
-            <img *ngIf="selectedPerson?.profileImageObject != undefined" class="img-circle" [src]="facilityService.transform(selectedPerson?.profileImageObject?.thumbnail)">
-            <img class="img-circle" *ngIf="selectedPerson?.profileImageObject == undefined" src="assets/images/users/default.png">
-            <p>
-
-            </p>
-        </li>
-        <!-- Menu Footer-->
-        <li class="user-footer">
-            <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">Profile</a>
-            </div>
-            <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">Sign out</a>
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="fronting">
-    <div class="loggedIn-user"><span class="label">Hello!</span>
-        <span class="val">
-      {{authData.email}} ({{authData.person.lastName}} {{authData.person.firstName}})
-      <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'" class="inRoom">
-        <span  class="roomLabel">Checked Into:</span>
-        <span class="roomName">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</span>
-    </div>
-    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'" class="inRoom">
-        <span class="roomLabel">Checked Into:</span>
-        <span class="roomName">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.storeObject?.name}}</span>
-    </div>
-    </span>
-</div>
-</div>
-<!--<router-outlet></router-outlet>-->
+<div *ngIf="logoutConfirm_on" class="modal-overlay">
+    <app-logout-confirm (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logout-confirm>
+  </div>

@@ -41,7 +41,7 @@ export class TransactionHistoryComponent implements OnInit {
 
     this.getSuppliers();
     this.frmFilterSupplier.valueChanges.subscribe(payload => {
-      this.router.navigate(['/modules/product-manager/supplier-details', payload]);
+      this.router.navigate(['/dashboard/product-manager/supplier-details', payload]);
     });
   }
 

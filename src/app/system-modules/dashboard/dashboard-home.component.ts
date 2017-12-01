@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { FacilitiesService, UserService } from '../../services/facility-manager/setup/index';
-import { Facility } from '../../models/index';
+import { FacilitiesService, UserService, EmployeeService, WorkSpaceService } from '../../services/facility-manager/setup/index';
+import { Facility, Employee } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Observable, Subscription } from 'rxjs/Rx';
+
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
-  // tslint:disable-next-line:use-host-property-decorator
   host: { '(document:click)': 'hostClick($event)' },
   styleUrls: ['./dashboard-home.component.scss']
 })
@@ -16,6 +18,7 @@ export class DashboardHomeComponent implements OnInit {
   facilityObj: Facility = <Facility>{};
   facilityName = '';
   searchControl = new FormControl();
+
 
   modal_on = false;
   logoutConfirm_on = false;
@@ -38,13 +41,14 @@ export class DashboardHomeComponent implements OnInit {
   allModulesSubmenuActive = false;
   moduleAnalyticsSubmenuActive = false;
 
-  loadIndicatorVisible = true;
+  loadIndicatorVisible = false;
+  subscription: Subscription;
+  loginEmployee: Employee = <Employee>{};
+
+  checkedInObject: any = <any>{};
   constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
-    private router: Router,
-    public facilityService: FacilitiesService) {
-    this.facilityService.listner.subscribe(payload => {
-      this.facilityObj = payload;
-    });
+    private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
+    private workSpaceService: WorkSpaceService) {
     router.events.subscribe((routerEvent: Event) => {
       this.checkRouterEvent(routerEvent);
     });
@@ -60,35 +64,76 @@ export class DashboardHomeComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.searchControl.valueChanges.subscribe(value => {
-      // do something with value here
-    });
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
-    } else {
-      // this.getFacility();
-      // this.facilityObj = this.facilityService.getSelectedFacilityId();
-      // this.facilityName = this.facilityObj.name;
     }
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      this.checkedInObject = payload;
+    });
+    this.facilityService.listner.subscribe(pay => {
+      this.facilityName = pay.name;
+    })
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    const auth = <any>this.locker.getObject('auth');
+    if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+      return;
+    }
+    this.loadIndicatorVisible = true;
+
+    const emp$ = Observable.fromPromise(this.employeeService.find({
+      query: {
+        facilityId: this.facilityObj._id, personId: auth.data.personId, showbasicinfo: true
+      }
+    }));
+    this.subscription = emp$.mergeMap((emp: any) => {
+      if (emp.data.length > 0) {
+        return Observable.forkJoin(
+          [
+            Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+            Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
+            Observable.fromPromise(this.facilityService
+              .find({
+                query: {
+                  '_id': this.facilityObj._id,
+                  $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
+                }
+              }))
+          ])
+      } else {
+        this.loadIndicatorVisible = false;
+        return Observable.of({})
+      }
+    }
+    ).subscribe((results: any) => {
+      console.log(results[0]);
+      if (results[0] !== undefined) {
+        this.loginEmployee = results[0];
+        console.log(this.loginEmployee)
+        this.loginEmployee.workSpaces = results[1].data;
+        this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
+
+        if (results[2].data.length > 0) {
+          this.locker.setObject('miniFacility', results[2].data[0])
+        }
+
+        this.locker.setObject('loginEmployee', this.loginEmployee);
+      }
+
+      this.loadIndicatorVisible = false;
+    })
   }
-  // getFacility() {
-  //   let tokenObj: any = this.locker.getObject('auth');
-  //   this.facilityService.get(tokenObj.data.facilitiesRole[0].facilityId, {}).then((payload) => {
-  //     this.facilityObj = payload;
-  //     this.facilityName = this.facilityObj.name;
-  //   },
-  //     error => {
-  //       console.log(error);
-  //     })
-  // }
+  laboratorySubmenuShow() {
+    this.innerMenuShow = false;
+    this.router.navigate(['/dashboard/laboratory'])
+  }
 
   onSwitchAccount() {
     this.router.navigate(['/accounts']);
   }
   onHealthCoverage() {
     this.innerMenuShow = false;
-    this.router.navigate(['/modules/health-coverage']);
+    this.router.navigate(['/dashboard/health-coverage']);
   }
   facilityMenuShow() {
     this.facilityManagerActive = true;

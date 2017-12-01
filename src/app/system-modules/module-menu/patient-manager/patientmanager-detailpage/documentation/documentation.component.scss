@@ -1,0 +1,281 @@
+
+@import "../patientmanager-detailpage.component.scss";
+
+.doc-mainWrap{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    background: #f8f8f8;
+    margin-top: 4px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.doc-contentArea, .doc-rArea{
+    position: relative;
+    padding: 3px;
+}
+.doc-contentArea {
+    width: 75%;
+}
+.doc-rArea {
+    width: 23%;
+}
+.doc-cardWrap{
+    width: 100%;
+    margin-top: 10px;
+}
+.doc-card{
+    position: relative;
+    background: #fff;
+    width: 90%;
+    margin: 20px auto;
+    min-height: 150px;
+    max-height: 350px;
+    height: auto;
+    padding: 5px;
+    overflow: hidden;
+}
+.doc-card2{
+    position: relative;
+    background: #fff;
+    width: 90%;
+    margin: 20px auto;
+    min-height: 150px;
+    height: auto;
+    padding: 5px;
+    overflow: hidden;
+}
+.docCard-header, .docCard-body{
+    position: relative;
+    width: 99%;
+    margin: 0 auto;
+}
+.docCard-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 35px;
+    background: #f8f8f8;
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.actSect{
+    width: 90%;
+    margin: 0 auto;
+}
+.act-wrap{
+    width: 150px;
+    position: relative;
+    padding: 8px;
+    font-size: 12px;
+    text-align: center;
+    color: #bebebe;
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.act-wrap:hover{
+    border: 1px solid #bebebe;
+}
+ul.topmenuwrap{
+    position: relative;
+    top: auto;
+    right: auto;
+}
+.empWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    // margin: 5px;
+}
+.empWrap:hover{
+    .list-label{
+        text-decoration: underline;
+    }
+}
+.list-img{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+.list-img img{
+    width: 100%;
+}
+.val-tag {
+    font-size: 9px;
+    color: #0288D1;
+}
+.list-label{
+    font-size: 12px;
+    color: #bebebe;
+}
+.time{
+    color: #ff2500;
+}
+.docCard-ctaWrap{
+    position: absolute;
+    bottom: -22px;
+    right: 0;
+    font-size: 12px;
+}
+.docCard-ctaWrap i{
+    cursor: pointer;
+    margin-left: 5px;
+}
+.cardSect-wrap{
+    margin-bottom: 20px;
+}
+.card-sect{
+    margin-top: 20px;
+}
+.docCard-sectTitle {
+    margin-bottom: 3px;
+    font-size: 12px;
+    color: #000;
+    font-weight: bold;
+}
+.docCard-sectContent {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #474747;
+    letter-spacing: 0.3px;
+}
+.docCard-foot {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 21px;
+    padding-left: 10px;
+    color: #000;
+    background: #03A9F4;
+    border-top: 5px solid #fff;
+}
+.docCard-foot i:hover{
+    cursor: pointer;
+    color: #fff;
+}
+.rArea-card {
+    background: #fff;
+    margin-bottom: 15px;
+    padding: 5px;
+    height: auto;
+}
+.rAreaCard-header {
+    width: 97%;
+    margin: 0 auto;
+    padding: 3px;
+    background: #f8f8f8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-label {
+    font-size: 12px;
+}
+.header-cta {
+    cursor: pointer;
+    border: 1px solid #bebebe;
+    border-radius: 100%;
+    padding: 3px;
+    font-size: 10px;
+}
+.header-cta:hover{
+    background: #bebebe;
+    color: #fff;
+}
+.rAreaCard-body {
+    margin: 10px 0;
+}
+.rAreaCard-item {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    border-bottom: 1px solid #bebebe;
+    padding: 0 5px;
+    border-radius: 0 0 10px 0;
+    margin: 15px 0;
+}
+.rAreaCard-content{
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rAreaCard-status {
+    position: absolute;
+    top: -13px;
+    font-size: 9px;
+    width: 100%;
+    text-align: center;
+}
+.rAreaCard-active{
+    color: #0288D1;
+}
+.rAreaCard-inactive{
+    color: #ff2500;
+}
+.rAreaCard-detailWrap{
+    position: absolute;
+    bottom: 0px;
+    right: 40%;
+    display: none;
+    background: #fff;
+    padding: 10px;
+    width: auto;
+    border-radius: 10px;
+}
+.rAreaCard-item:hover{
+    .rAreaCard-detailWrap{
+        display: block;
+    }
+}
+.rAreaCard-detailWrap table, td { 
+    border: 0.5px solid #bebebe;
+}
+.rAreaCard-detailWrap tr:hover {background-color: #f3f3f3}
+.rAreaCard-detailWrap tr:nth-child(even) {background-color: #f9f9f9}
+.rAreaCard-detailWrap th {
+    height: 30px;
+    background: #f1f1f1;
+    border: 0.5px solid #bebebe;
+}
+.rAreaCard-detailWrap td {
+    vertical-align: center;
+    text-align: left;
+    padding: 5px;
+}
+.modal_title{
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    border-bottom: 0.5px solid #eee;
+    margin-bottom: 2px;
+}
+.sect-key {
+    font-size: 10px;
+    color: #0288D1;
+    margin-top: 20px;
+    text-decoration: underline;
+}
+.sect-value {
+    line-height: 1.7;
+    margin-left: 10px;
+}
+.doc-subtitle {
+    font-size: 12px;
+    color: #0288D1;
+    margin-bottom: 5px;
+}
+td .empWrap .list-img{
+    margin: 0;
+}

@@ -17,11 +17,11 @@ export class FacilitySetupComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
-  //uploader variables
+  // uploader variables
   private zone: NgZone;
-  private progress: number = 0;
+  private progress = 0;
   private response: any = {};
-  hasBaseDropZoneOver: boolean = true;
+  hasBaseDropZoneOver = true;
   sizeLimit = 2000000;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -43,11 +43,11 @@ export class FacilitySetupComponent implements OnInit {
   public frm_selectModules: FormGroup;
   public facilityForm4: FormGroup;
 
-  //public submitted: boolean; // keep track on whether form is submitted
+  // public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
-  selectedCountry_key = []; //states of the selected country load key
-  stateAvailable = false; //boolean variable to check if the list of user selected state exists in code
+  selectedCountry_key = []; // states of the selected country load key
+  stateAvailable = false; // boolean variable to check if the list of user selected state exists in code
 
   countries: any[] = [];
   titles: Title[] = [];
@@ -142,7 +142,7 @@ export class FacilitySetupComponent implements OnInit {
     });
     this.facilityForm1.controls['facilitycountry'].valueChanges.subscribe((value: any) => {
       this.stateAvailable = false;
-      let country = this.countries.find(item => item._id === value);
+      const country = this.countries.find(item => item._id === value);
       this.selectedCountry = country;
       if (this.selectedCountry.states.length > 0) {
         this.stateAvailable = true;
@@ -169,7 +169,7 @@ export class FacilitySetupComponent implements OnInit {
       }
     })
   }
-  
+
   // ---------------- Beggining of image methods ------------------
   handleUpload(data: any): void {
     this.zone.run(() => {
@@ -181,7 +181,6 @@ export class FacilitySetupComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
   beforeUpload(uploadingFile): void {
-    console.log(uploadingFile);
     this.getDataUri(uploadingFile.originalName, function (dataUri) {
       // Do whatever you'd like with the Data URI!
     });
@@ -194,13 +193,13 @@ export class FacilitySetupComponent implements OnInit {
   imageChange(fileInput: any) {
     this.previewFile(fileInput.target.files[0]);
     if (fileInput.target.files && fileInput.target.files[0]) {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = function (e: any) {
-        //console.log(e.target.result);
+        // console.log(e.target.result);
       };
       reader.onprogress = function (e: any) {
-        //console.log(e);
+        // console.log(e);
       };
 
       reader.readAsDataURL(fileInput.target.files[0]);
@@ -208,9 +207,9 @@ export class FacilitySetupComponent implements OnInit {
   }
 
   previewFile(value: File) {
-    let file = value;
-    let reader = new FileReader();
-    let facility = this.selectedFacility;
+    const file = value;
+    const reader = new FileReader();
+    const facility = this.selectedFacility;
     reader.addEventListener('load', function () {
       facility.logo = reader.result;
     }, false);
@@ -221,10 +220,10 @@ export class FacilitySetupComponent implements OnInit {
   }
 
   getDataUri(url, callback) {
-    let image = new Image();
+    const image = new Image();
 
     image.onload = function () {
-      let canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas');
       canvas.width = image.width; // or 'width' if you want a special/scaled size
       canvas.height = image.width; // or 'height' if you want a special/scaled size
 
@@ -273,11 +272,11 @@ export class FacilitySetupComponent implements OnInit {
   getModules() {
     this.facilityModuleService.findAll().then((payload) => {
       this.modules = payload.data;
-      let count: number = this.modules.length;
-      let partOne: number = Math.floor(count / 2);
-      let partTwo = count - partOne;
-      let partOneModule = this.modules.slice(0, partOne);
-      let partTwoModule = this.modules.slice(partOne);
+      const count: number = this.modules.length;
+      const partOne: number = Math.floor(count / 2);
+      const partTwo = count - partOne;
+      const partOneModule = this.modules.slice(0, partOne);
+      const partTwoModule = this.modules.slice(partOne);
 
       partOneModule.forEach((item, i) => {
         this.partOneModules.push({
@@ -299,13 +298,13 @@ export class FacilitySetupComponent implements OnInit {
 
   /* Component Events */
   onFacilityTypeChange(value: any) {
-    let facilityType = this.facilityTypes.find(item => item._id === value);
+    const facilityType = this.facilityTypes.find(item => item._id === value);
     this.selectedFacilityType = facilityType;
   }
   onStateChange(value: any) {
   }
   onChangeCountry(value: any) {
-    let country = this.countries.find(item => item._id === value);
+    const country = this.countries.find(item => item._id === value);
     this.selectedCountry = country;
   }
 
@@ -356,7 +355,7 @@ export class FacilitySetupComponent implements OnInit {
 
         this.mainErr = true;
 
-        let model: Facility = <Facility>{
+        const model: Facility = <Facility>{
           name: this.facilityForm1.controls['facilityname'].value,
           email: this.facilityForm1.controls['facilityemail'].value,
           contactPhoneNo: val.facilityphonNo,
@@ -378,7 +377,7 @@ export class FacilitySetupComponent implements OnInit {
         this.facilityService.create(model).then((payload) => {
           this.selectedFacility = payload;
           // create person and user
-          let personModel = <Person>{
+          const personModel = <Person>{
             titleId: this.titles[0]._id,
             firstName: this.facilityForm1_1.controls['contactFName'].value,
             lastName: this.facilityForm1_1.controls['contactLName'].value,
@@ -391,28 +390,24 @@ export class FacilitySetupComponent implements OnInit {
             email: model.email,
             maritalStatusId: this.maritalStatuses[0]._id
           };
-          let userModel = <User>{
+          const userModel = <User>{
             email: model.email,
             password: this.facilityForm1_1.controls['password'].value
           };
 
           this.personService.create(personModel).then((ppayload) => {
             userModel.personId = ppayload._id;
-            console.log("Person");
             if (userModel.facilitiesRole === undefined) {
               userModel.facilitiesRole = [];
-              console.log("facilitiesRole is undefine");
             }
             userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
             this.userService.create(userModel).then((upayload) => {
-              console.log("user created");
             });
 
 
           });
         },
           error => {
-            console.log(error);
           });
 
       }
@@ -458,11 +453,9 @@ export class FacilitySetupComponent implements OnInit {
     this.selectModules_show = true;
     this.sg4_show = false;
     this.selectedFacility.logo = this.response;
-    console.log(this.response);
     this.facilityService.update(this.selectedFacility).then(payload => { });
-    console.log(this.selectedFacility.logo);
     this.facilityService.update(this.selectedFacility).then(payload => {
-      if (payload != null && payload != undefined) {
+      if (payload != null && payload !== undefined) {
         this.sg3_show = false;
         this.sg2_show = false;
         this.sg1_show = false;
@@ -498,7 +491,7 @@ export class FacilitySetupComponent implements OnInit {
   }
 
   facilitySetup_finish(valid) {
-    this.close_onClick();
+    this.close_onClick(valid);
   }
 
   // go back buttons
@@ -543,7 +536,7 @@ export class FacilitySetupComponent implements OnInit {
     this.sg4_show = false;
   }
 
-  close_onClick() {
+  close_onClick(e) {
     this.closeModal.emit(true);
   }
 

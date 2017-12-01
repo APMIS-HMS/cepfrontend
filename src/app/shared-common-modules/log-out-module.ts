@@ -6,20 +6,12 @@ import { LogoutConfirmComponent } from '../system-modules/module-menu/logout-con
 
 @NgModule({
     declarations: [
-        // DxDateBoxComponent,
-        // UserAccountsHomeComponent,
-        // UserAccountsComponent,
-        // UserAccountsInnerPopupComponent,
         LogoutConfirmComponent
     ],
     exports: [
         LogoutConfirmComponent
     ],
     imports: [
-        // LogoutConfirmComponent
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
     ],
     providers: [
     ]

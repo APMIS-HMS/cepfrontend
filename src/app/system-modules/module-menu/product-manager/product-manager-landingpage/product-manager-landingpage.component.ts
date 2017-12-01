@@ -24,7 +24,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   slideProductDetails = false;
   selectedProduct: any = <any>{};
-
+  selectedValue: any = <any>{};
 
   productTypes: any[] = [];
   products: any[] = [];
@@ -44,32 +44,32 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
   ngOnInit() {
     this._productEventEmitter.setRouteUrl('Product Manager');
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getProducts();
     this.getProductTypes();
 
-    const subscribeForPerson = this.searchControl.valueChanges
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .switchMap((term: any[]) =>
-        this.productService.find({
-          query: {
-            name: { $regex: this.searchControl.value, '$options': 'i' },
-            facilityId: this.selectedFacility._id,
-            $limit: 30
-          }
-        })
-          .then(payload => {
-            this.products = payload.data;
-          }));
+    // const subscribeForPerson = this.searchControl.valueChanges
+    //   .debounceTime(200)
+    //   .distinctUntilChanged()
+    //   .switchMap((term: any[]) =>
+    //     this.productService.find({
+    //       query: {
+    //         name: { $regex: this.searchControl.value, '$options': 'i' },
+    //         facilityId: this.selectedFacility._id,
+    //         $limit: 30
+    //       }
+    //     })
+    //       .then(payload => {
+    //         this.products = payload.data;
+    //       }));
 
-    subscribeForPerson.subscribe((payload: any) => {
-    });
-    this.selProductType.valueChanges.subscribe(value => {
-      this.productService.find({ query: { facilityId: this.selectedFacility._id, productTypeId: value, $limit: 30 } }).then(payload => {
-        this.products = payload.data;
-      });
-    });
+    // subscribeForPerson.subscribe((payload: any) => {
+    // });
+    // this.selProductType.valueChanges.subscribe(value => {
+    //   this.productService.find({ query: { facilityId: this.selectedFacility._id, productTypeId: value, $limit: 30 } }).then(payload => {
+    //     this.products = payload.data;
+    //   });
+    // });
   }
   getProducts() {
     this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: 30 } }).then(payload => {

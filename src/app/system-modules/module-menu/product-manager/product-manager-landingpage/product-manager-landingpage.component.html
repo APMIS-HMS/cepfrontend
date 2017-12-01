@@ -1,18 +1,48 @@
-<div class="survery">
-    <div class="">
-        <div class="table-container">
-            <div class="row">
-                 <div class="col-sm-4">
-                            <select [formControl]="selProductType" class="form-control">
-                                <option value="" disabled selected>Select by type</option>
-                                <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
-                            </select>
-                </div>
-                <div class="col-sm-4 pull-right">
-                    <input [formControl]="searchControl" type="search" placeholder="Search..." class="searchInput" />
-                    <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
-                </div>
+<div class="page-title">Product</div>
+<div class="">
+  <table cellpadding="0" cellspacing="0" border="0.5">
+    <thead>
+      <tr>
+        <th>
+          <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+          <span style="padding-left: 3px;">Product</span>
+        </th>
+        <th>
+          <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+          <span style="padding-left: 3px;">Type</span>
+        </th>
+        <th>
+          <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+          <span style="padding-left: 3px;">Presentation</span>
+        </th>
+        <th>
+          <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+          <span style="padding-left: 3px;">Generic Name</span>
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngIf="products.length == 0">
+        <td colspan="5"> No data available in table</td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="survery table-container">
+            <div class="col-sm-5">
+              <md-select [formControl]="selProductType" placeholder="Select by type" [(ngModel)]="selectedValue" name="food">
+                <md-option value="" disabled selected>Select by type</md-option>
+                <md-option *ngFor="let productType of productTypes" value="{{productType._id}}">
+                  {{productType.name}}
+                </md-option>
+              </md-select>
             </div>
+<<<<<<< HEAD
         </div>
         <table class="table table-striped text-center">
             <thead>
@@ -53,67 +83,108 @@
         </div>
     </div>
     <!-- float button -->
+=======
+            <div class="col-sm-5">
+              <md-input-container class="example-full-width">
+                <input mdInput placeholder="Search..." [formControl]="searchControl">
+              </md-input-container>
+            </div>
+            <div class="col-sm-2">
+              <div style="margin-top:20px">
+                <a (click)="refresh()"><i class="fa fa-refresh"></i></a>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+>>>>>>> development
 
-    <!--end float button -->
-    <div *ngIf="addProduct" class="modal-overlay">
-        <app-new-product [selectedProduct]="selectedProduct" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-product>
+      <tr *ngFor="let product of products">
+        <td>{{product.name}}</td>
+        <td>{{product.productType?.name}}</td>
+        <td>{{product.presentation}}</td>
+        <td style="text-align:left;">{{product.genericName}}</td>
+        <td class="td-iconCta-wrap pointer">
+          <i (click)="slideProductDetailsToggle(product, {})" class="fa fa-eye"></i>
+          <i (click)="onSelectProduct(product)" class="fa fa-pencil"></i>
+          <i class="fa fa-trash"></i>
+        </td>
+      </tr>
+
+      <!--<div *ngIf="loadIndicatorVisible" class="div_loading">
+                <md-spinner></md-spinner>
+            </div>-->
+    </tbody>
+  </table>
+
+</div>
+<div class="col-md-12">
+  <div (click)="addProductModal()" class="col-md-12">
+    <a id="floating-button">
+      <p class="plus">+</p>
+    </a>
+  </div>
+</div>
+<!-- float button -->
+
+<!--end float button -->
+<div *ngIf="addProduct" class="modal-overlay">
+  <app-new-product [selectedProduct]="selectedProduct" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-product>
+</div>
+
+<div *ngIf="slideProductDetails" class="inPatient-activityTimeline shadow-RB animated slideInRight">
+  <div (click)="slideProductDetailsToggle(appointment, $event)" class="hide-actionWrap">
+    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+  </div>
+
+  <div class="timeline-headwrap">
+    <select name="" id="">
+            <option value="0">Select a product</option>
+        </select>
+  </div>
+  <div class="timeline-active">
+    <span *ngIf="selectedProduct?.isActive==true" class="text-green pull-right">Active</span>
+    <span *ngIf="selectedProduct?.isActive!=true" class="text-red pull-right">InActive</span>
+  </div>
+  <h4 class="title">{{selectedProduct?.name}}</h4>
+
+  <div class="product-details">
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Product Name(brand)</td>
+            <td>{{selectedProduct?.name}}</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>{{selectedProduct?.productType.name}}</td>
+          </tr>
+          <tr>
+            <td>Generic Name</td>
+            <td>{{selectedProduct?.genericName}}</td>
+          </tr>
+          <tr>
+            <td>Pack Size</td>
+            <td>{{selectedProduct?.packSize}}</td>
+          </tr>
+          <tr>
+            <td>Presentation</td>
+            <td>{{selectedProduct?.presentation}}</td>
+          </tr>
+          <tr>
+            <td>Manufacturer</td>
+            <td>{{selectedProduct?.manufacturer}}</td>
+          </tr>
+        </tbody>
+
+      </table>
     </div>
 
-    <div *ngIf="slideProductDetails" class="inPatient-activityTimeline shadow-RB animated slideInRight">
-        <div (click)="slideProductDetailsToggle(appointment, $event)" class="hide-actionWrap">
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-        </div>
-
-        <div class="timeline-headwrap">
-            <select name="" id="">
-                <option value="0">Select a product</option>
-            </select>
-        </div>
-        <div class="timeline-active">
-            <span *ngIf="selectedProduct?.isActive==true" class="text-green pull-right">Active</span>
-            <span *ngIf="selectedProduct?.isActive!=true" class="text-red pull-right">InActive</span>
-        </div>
-        <h4 class="title">{{selectedProduct?.name}}</h4>
-
-        <div class="product-details">
-            <div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Product Name(brand)</td>
-                            <td>{{selectedProduct?.name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Category</td>
-                            <td>{{selectedProduct?.productType.name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Generic Name</td>
-                            <td>{{selectedProduct?.genericName}}</td>
-                        </tr>
-                        <tr>
-                            <td>Pack Size</td>
-                            <td>{{selectedProduct?.packSize}}</td>
-                        </tr>
-                        <tr>
-                            <td>Presentation</td>
-                            <td>{{selectedProduct?.presentation}}</td>
-                        </tr>
-                        <tr>
-                            <td>Manufacturer</td>
-                            <td>{{selectedProduct?.manufacturer}}</td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
-            <div class="btn-container">
-                <button (click)="onEdit()" class="btn btn-primary">Edit</button>
-                <button (click)="onDeactivate(selectedProduct)" class="btn btn-primary">{{deactivateButton}}</button>
-                <button class="btn btn-primary">Delete</button>
-            </div>
-        </div>
+    <div class="btn-container">
+      <button (click)="onEdit()" class="btn btn-primary">Edit</button>
+      <button (click)="onDeactivate(selectedProduct)" class="btn btn-primary">{{deactivateButton}}</button>
+      <button class="btn btn-primary">Delete</button>
     </div>
-
+  </div>
 </div>

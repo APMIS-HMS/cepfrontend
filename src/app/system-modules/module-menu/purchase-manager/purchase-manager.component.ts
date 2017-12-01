@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
 import { Employee, Facility } from '../../../models/index';
-import { EmployeeService } from '../../../services/facility-manager/setup/index';
+import { EmployeeService, WorkSpaceService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
@@ -22,71 +22,128 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   purchaseEntryNavMenu = false;
   supplierNavMenu = false;
   modal_on = false;
+  closeWhenClick = true;
 
   loginEmployee: Employee = <Employee>{};
+  workSpace: any;
   selectedFacility: Facility = <Facility>{};
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
-    private _router: Router, private employeeService: EmployeeService, private locker: CoolLocalStorage) { }
-
-  ngOnInit() {
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe((payload) => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //     console.log(this.loginEmployee)
-    //   });
-    // });
+    private _router: Router, private employeeService: EmployeeService,
+    private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-      }
-    }));
-    emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-    ]))
-      .subscribe((results: any) => {
-        this.loginEmployee = results[0];
-        if ((this.loginEmployee.storeCheckIn === undefined
-          || this.loginEmployee.storeCheckIn.length === 0)) {
-          this.modal_on = true;
-        } else {
-          let isOn = false;
-          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-            if (itemr.isDefault === true) {
-              itemr.isOn = true;
-              itemr.lastLogin = new Date();
-              isOn = true;
-              let checkingObject = { typeObject: itemr, type: 'store' };
-              this.employeeService.announceCheckIn(checkingObject);
-              console.log('sent');
-              this.employeeService.update(this.loginEmployee).then(payload => {
-                this.loginEmployee = payload;
-                 checkingObject = { typeObject: itemr, type: 'store' };
-                this.employeeService.announceCheckIn(checkingObject);
-                this.locker.setObject('checkingObject', checkingObject);
-              });
-            }
-          });
-          if (isOn === false) {
-            this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-              if (r === 0) {
-                itemr.isOn = true;
-                itemr.lastLogin = new Date();
-                this.employeeService.update(this.loginEmployee).then(payload => {
-                  this.loginEmployee = payload;
-                  const checkingObject = { typeObject: itemr, type: 'store' };
-                  this.employeeService.announceCheckIn(checkingObject);
-                  this.locker.setObject('checkingObject', checkingObject);
-                });
-              }
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    console.log(this.loginEmployee);
 
+    if ((this.loginEmployee.storeCheckIn === undefined
+      || this.loginEmployee.storeCheckIn.length === 0)) {
+      console.log('is true')
+      this.modal_on = true;
+    } else {
+      console.log('is false')
+      let isOn = false;
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true) {
+          itemr.isOn = true;
+          itemr.lastLogin = new Date();
+          isOn = true;
+          let checkingObject = { typeObject: itemr, type: 'store' };
+          this.employeeService.announceCheckIn(checkingObject);
+          console.log(checkingObject)
+
+          console.log('sent');
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+            checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(checkingObject);
+            this.locker.setObject('checkingObject', checkingObject);
+          });
+        }
+      });
+      if (isOn === false) {
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (r === 0) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            this.employeeService.update(this.loginEmployee).then(payload => {
+              this.loginEmployee = payload;
+              const checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(checkingObject);
+              this.locker.setObject('checkingObject', checkingObject);
             });
           }
 
-        }
+        });
+      }
 
-      });
+    }
+
+  }
+
+  ngOnInit() {
+
+
+
+
+    // const emp$ = Observable.fromPromise(this.employeeService.find({
+    //   query: {
+    //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+    //   }
+    // }));
+    // emp$.mergeMap((emp: any) => Observable.forkJoin([
+    //   Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    //   Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } }))
+    // ]))
+    //   .subscribe((results: any) => {
+    //     if (results[1].data.length > 0) {
+    //       this.workSpace = results[1].data[0];
+    //     }
+
+    //     this.loginEmployee = results[0];
+    //     console.log(this.loginEmployee);
+    //     if ((this.loginEmployee.storeCheckIn === undefined
+    //       || this.loginEmployee.storeCheckIn.length === 0)) {
+    //       this.modal_on = true;
+    //     } else {
+    //       let isOn = false;
+    //       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+    //         if (itemr.isDefault === true) {
+    //           itemr.isOn = true;
+    //           itemr.lastLogin = new Date();
+    //           isOn = true;
+    //           let checkingObject = { typeObject: itemr, type: 'store' };
+    //           this.employeeService.announceCheckIn(checkingObject);
+    //           console.log('sent');
+    //           this.employeeService.update(this.loginEmployee).then(payload => {
+    //             this.loginEmployee = payload;
+    //             checkingObject = { typeObject: itemr, type: 'store' };
+    //             this.employeeService.announceCheckIn(checkingObject);
+    //             this.locker.setObject('checkingObject', checkingObject);
+    //           });
+    //         }
+    //       });
+    //       if (isOn === false) {
+    //         this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+    //           if (r === 0) {
+    //             itemr.isOn = true;
+    //             itemr.lastLogin = new Date();
+    //             this.employeeService.update(this.loginEmployee).then(payload => {
+    //               this.loginEmployee = payload;
+    //               const checkingObject = { typeObject: itemr, type: 'store' };
+    //               this.employeeService.announceCheckIn(checkingObject);
+    //               this.locker.setObject('checkingObject', checkingObject);
+    //             });
+    //           }
+
+    //         });
+    //       }
+
+    //     }
+
+    //   }, error => {
+    //     console.log(error);
+    //   });
     const page: string = this._router.url;
     this.checkPageUrl(page);
     this._purchaseEventEmitter.announcedUrl.subscribe(url => {
@@ -129,6 +186,8 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   }
   onChangeCheckedIn() {
     this.modal_on = true;
+    this.closeWhenClick = false;
+    this.contentSecMenuShow = false;
   }
   onClickInvoicesNavMenu() {
     this.purchaseHistoryNavMenu = true;
@@ -161,6 +220,43 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
 
   pageInViewLoader(title) {
     this.pageInView = title;
+  }
+
+  changeRoute(val) {
+    console.log(val);
+    if (val == '') {
+      this.purchaseHistoryNavMenu = false;
+      this.purchaseOrderNavMenu = true;
+      this.purchaseEntryNavMenu = false;
+      this.invoicesNavMenu = false;
+      this._purchaseEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == 'histories') {
+      this.purchaseHistoryNavMenu = true;
+      this.purchaseOrderNavMenu = false;
+      this.invoicesNavMenu = false;
+      this.purchaseEntryNavMenu = false;
+      this._purchaseEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == 'invoices') {
+      this.purchaseHistoryNavMenu = false;
+      this.purchaseOrderNavMenu = false;
+      this.invoicesNavMenu = true;
+      this.purchaseEntryNavMenu = false;
+      this._purchaseEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == 'purchase-entry') {
+      this.purchaseEntryNavMenu = true;
+      this.newpurchaseNavMenu = false;
+      this.purchaseHistoryNavMenu = false;
+      this.purchaseOrderNavMenu = false;
+      this.invoicesNavMenu = false;
+      this.pageInView = 'Purchase Entry';
+      this.pageInView_subTitle = 'Purchase Manager';
+    }
   }
 
   private checkPageUrl(param: string) {

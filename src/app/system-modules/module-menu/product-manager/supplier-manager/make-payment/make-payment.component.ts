@@ -12,6 +12,12 @@ export class MakePaymentComponent implements OnInit {
   loadIndicatorVisible = false;
   public frm_supplierPayment: FormGroup;
 
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder) {

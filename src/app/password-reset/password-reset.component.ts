@@ -13,7 +13,7 @@ export class PasswordResetComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   showInfo = true;
-  isTokenAvailable: boolean = false;
+  isTokenAvailable: Boolean = false;
   selectedPerson: Person = <Person>{};
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -30,10 +30,11 @@ export class PasswordResetComponent implements OnInit {
     private personService: PersonService) { }
 
   ngOnInit() {
+    const EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
     this.frm_pwdReset1 = this.formBuilder.group({
       apmisid: ['', [<any>Validators.required]],
-      email: ['', [<any>Validators.
-        pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      email: ['', [<any>Validators.pattern(EMAIL_REGEXP)]],
+      // email: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
     });
 
@@ -53,16 +54,14 @@ export class PasswordResetComponent implements OnInit {
   verify(valid, val) {
     if (valid) {
       this.isTokenAvailable = false;
-      let apmisId = this.frm_pwdReset1.controls['apmisid'].value;
-      let telephone = this.frm_pwdReset1.controls['phoneNo'].value;
+      const apmisId = this.frm_pwdReset1.controls['apmisid'].value;
+      const telephone = this.frm_pwdReset1.controls['phoneNo'].value;
       this.personService.find({ query: { apmisId: apmisId, phoneNumber: telephone } })
         .then(payload => {
-          console.log(payload.data);
           if (payload.data.length > 0) {
             this.selectedPerson = payload.data[0];
             this.userService.resetPassword({ personId: this.selectedPerson._id }).then(tokenPayload => {
               this.isTokenAvailable = tokenPayload.text;
-              console.log(this.isTokenAvailable);
               if (this.isTokenAvailable !== false) {
                 this.modal1_show = false;
                 this.modal2_show = true;
@@ -70,6 +69,7 @@ export class PasswordResetComponent implements OnInit {
                 this.mainErr = false;
                 this.errMsg = 'Error while generating isTokenAvailable, please try again!';
               }
+            }, error => {
             });
 
           } else {
@@ -85,12 +85,12 @@ export class PasswordResetComponent implements OnInit {
 
   }
 
-  reset(valid, val) {
+  reset(valid: Boolean, val: any) {
     this.userService.find({ query: { personId: this.selectedPerson._id } }).then(payload => {
       if (payload.length > 0) {
-        let user: User = payload[0];
-        let inputToken = this.frm_pwdReset2.controls['token'].value;
-        let realToken = user.passwordToken;
+        const user: User = payload[0];
+        const inputToken = this.frm_pwdReset2.controls['token'].value;
+        const realToken = user.passwordToken;
         if (inputToken === realToken) {
           this.userService.patch(user._id, { password: this.frm_pwdReset2.controls['password'].value }, {})
             .then(ppayload => {
@@ -99,12 +99,9 @@ export class PasswordResetComponent implements OnInit {
               this.close_onClick();
             });
         }
-
       }
     }, error => {
-      console.log(error);
     });
-
   }
 
   back_resetFrm1() {

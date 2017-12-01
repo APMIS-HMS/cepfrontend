@@ -1,0 +1,15 @@
+<form [formGroup]="addProcedureForm" novalidate>
+  <div class="frmArrWrap">
+    <div class="frm-x2">
+      <div class="frm-item-wrap">
+        <apmis-lookup formControlName="procedure" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Investigation" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+      </div>
+    </div>
+  </div>
+
+  <div class="addDrugBtn">
+      <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+      <span>ADD PROCEDURE</span>
+  </div>
+</form>
+  

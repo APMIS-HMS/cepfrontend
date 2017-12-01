@@ -34,16 +34,17 @@ h6,
 }
 
 .formWrap {
-    display: flex;
+    /*display: flex;*/
     justify-content: space-around;
+    display: flex;
 }
 
 .form-innerSect {
     border: 1px solid #eee;
     padding: 5px;
     width: 100%;
-    max-width: 500px;
-    height: 140px;
+    max-width: 572px;
+    height: 190px;
     margin-bottom: 2px;
     box-sizing: border-box;
     overflow: hidden;
@@ -100,7 +101,37 @@ h6,
 .on-create-btn {
     background-color: transparent;
     border: none;
-    float: left;
     padding: 7px;
     margin-left: 10px;
+    float: right;
+    position: absolute;
+    top: 237px;
+}
+#cover-select {
+     max-width: 100%;
+}
+/*
+#cover-select {
+    width: 96.9%;
+    display: table;
+}
+.survery .container {
+    padding:0;
+}
+*/
+@media only screen and (max-width:768px) {
+   /*.survery .container {
+       padding-left: 0;
+       width: 1179px;
+   }
+   #cover-select {
+    width: 40%;
+    display: block;
+   }*/
+   #cover-select {
+        max-width: 50%;
+   }
+   .formWrap {
+       display: block;
+   }
 }

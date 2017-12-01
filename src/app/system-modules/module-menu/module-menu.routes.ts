@@ -76,6 +76,14 @@ const MODULEMENU_ROUTES: Routes = [
             {
                 path: 'pharmacy',
                 loadChildren: './pharmacy/pharmacy-manager.module#PharmacyManagerModule'
+            },
+               {
+                path: 'laboratory',
+                loadChildren: './laboratory/laboratory.module#LaboratoryModule'
+            },
+               {
+                path: 'lab',
+                loadChildren: './lab/lab.module#LabModule'
             }
 
         ],

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -12,6 +12,10 @@ export class ChangePasswordComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+
+  show = false;
+
+  @ViewChild('showhideinput') input;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -53,12 +57,9 @@ export class ChangePasswordComponent implements OnInit {
       const oldpassword = this.frm_changePass.controls['oldPass'].value;
       const password = this.frm_changePass.controls['password'].value;
       this.userService.changePassword({ oldpassword: oldpassword, _id: id }).then(payload => {
-        console.log(payload.body);
         if (payload.body === true) {
-          console.log('in')
           this.userService.patch(id, { password: password }, {})
             .then(nPayload => {
-              console.log(nPayload);
               this.userService.logOut();
               this.userService.announceMission('out');
               this.userService.isLoggedIn = false;
@@ -71,6 +72,14 @@ export class ChangePasswordComponent implements OnInit {
   }
   close_onClick() {
     this.closeModal.emit(true);
+  }
+  toggleShow(e) {
+    this.show = !this.show;
+    if (this.show) {
+      this.input.nativeElement.type = 'text';
+    } else {
+      this.input.nativeElement.type = 'password';
+    }
   }
 
 }

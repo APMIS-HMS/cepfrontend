@@ -6,6 +6,7 @@ import {
 } from '../services/facility-manager/setup/index';
 import { Address, CorporateFacility, Gender, ModuleViewModel, User, Title, MaritalStatus, Person } from '../models/index';
 import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs/Rx'
 
 @Component({
   selector: 'app-corporate-signup',
@@ -45,11 +46,11 @@ export class CorporateSignupComponent implements OnInit {
   public frm_selectModules: FormGroup;
   public facilityForm4: FormGroup;
 
-  //public submitted: boolean; // keep track on whether form is submitted
+  // public submitted: boolean; // keep track on whether form is submitted
   public events: any[] = []; // use later to display form changes
 
-  selectedCountry_key = []; //states of the selected country load key
-  stateAvailable = false; //boolean variable to check if the list of user selected state exists in code
+  selectedCountry_key = []; // states of the selected country load key
+  stateAvailable = false; // boolean variable to check if the list of user selected state exists in code
 
   countries: any[] = [];
   titles: Title[] = [];
@@ -63,6 +64,11 @@ export class CorporateSignupComponent implements OnInit {
   selectedCountry: any = {};
   selectedFacility: CorporateFacility = <CorporateFacility>{};
   InputedToken: string;
+  closeSubscription: Subscription;
+  countDown = 10;
+  closeMsg = '';
+  isSuccessful = false;
+  isDuplicateEmail = false;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
@@ -80,7 +86,7 @@ export class CorporateSignupComponent implements OnInit {
 
     // ------------- End of image init values -----------------------
 
-    this.getCountries(); 
+    this.getCountries();
     this.getTitles();
     this.getGenders();
     this.getMaritalStatus();
@@ -103,12 +109,42 @@ export class CorporateSignupComponent implements OnInit {
       facilityaddress: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
       facilitylandmark: ['', [<any>Validators.required]],
 
-      contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
-      contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
+      contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
+      contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
       facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
       password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
       repass: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
     });
+
+    this.facilityForm1.controls['facilityemail'].valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .switchMap(value => this.corporateFacilityService.find({ query: { email: value } }))
+      .subscribe((payload: any) => {
+        if (payload.total > 0) {
+          this.isDuplicateEmail = true;
+          this.errMsg = 'Duplicate email detected, please use another email';
+          this.mainErr = false;
+        } else {
+          this.isDuplicateEmail = false;
+           this.errMsg = '';
+          this.mainErr = true;
+        }
+      });
+
+    //     const subscribeForTag = this.searchTag.valueChanges
+    //   .debounceTime(200)
+    //   .distinctUntilChanged()
+    //   .switchMap((term: Tag[]) => this._tagService.find({
+    //     query:
+    //     { search: this.searchTag.value, facilityId: this.facility._id }
+    //   }).
+    //     then(payload => {
+    //       this.tags = payload.data;
+    //     }));
+
+    // subscribeForTag.subscribe((payload: any) => {
+    // });
 
     this.frm_numberVerifier = this.formBuilder.group({
       txt_numberVerifier: ['', [<any>Validators.required, <any>Validators.minLength(6),
@@ -142,7 +178,6 @@ export class CorporateSignupComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
   beforeUpload(uploadingFile): void {
-    console.log(uploadingFile);
     this.getDataUri(uploadingFile.originalName, function (dataUri) {
       // Do whatever you'd like with the Data URI!
     });
@@ -158,10 +193,8 @@ export class CorporateSignupComponent implements OnInit {
       let reader = new FileReader();
 
       reader.onload = function (e: any) {
-        //console.log(e.target.result);
       };
       reader.onprogress = function (e: any) {
-        //console.log(e);
       };
 
       reader.readAsDataURL(fileInput.target.files[0]);
@@ -243,16 +276,19 @@ export class CorporateSignupComponent implements OnInit {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
       } else {
-
-        this.sg1_1_show = true;
-        this.sg1_1_1_show = true;
-        this.sg1_show = false;
-        this.sg2_show = false;
-        this.sg3_show = false;
-        this.selectModules_show = false;
-        this.sg4_show = false;
-        this.mainErr = true;
-
+        if (this.isDuplicateEmail === true) {
+          this.errMsg = 'Duplicate email detected, please use another email';
+          this.mainErr = false;
+        } else {
+          this.sg1_1_show = true;
+          this.sg1_1_1_show = true;
+          this.sg1_show = false;
+          this.sg2_show = false;
+          this.sg3_show = false;
+          this.selectModules_show = false;
+          this.sg4_show = false;
+          this.mainErr = true;
+        }
       }
     } else {
       this.mainErr = false;
@@ -351,15 +387,29 @@ export class CorporateSignupComponent implements OnInit {
           if (payload.data.length > 0) {
             this.mainErr = true;
             this.errMsg = '';
-            this.sg3_show = true;
-            this.sg2_show = false;
+            this.sg3_show = false;
+            this.sg2_show = true;
             this.sg1_show = false;
             this.sg1_1_show = false;
             this.selectModules_show = false;
             this.sg4_show = false;
 
             this.selectedFacility.isTokenVerified = true;
-            this.corporateFacilityService.update(this.selectedFacility).then(payload2 => { });
+            this.corporateFacilityService.update(this.selectedFacility).then(payload2 => {
+              // this.closeMsg = 'Your facility is set up completely, you will be taking to login page in ' + this.countDown + ' minutes'
+              // this.isSuccessful = true;
+              this.closeSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
+                this.closeMsg = 'Your facility completely set up, you will be redirected to login page in ' + this.countDown + ' seconds'
+                this.isSuccessful = true;
+                this.countDown = this.countDown - 1;
+                if (rx === 9) {
+                  // this.nextForm.emit(true);
+                  this.router.navigate(['/login']);
+                  this.closeSubscription.unsubscribe();
+                }
+
+              });
+            });
           } else {
             this.mainErr = false;
             this.errMsg = 'Wrong Token, try again.';

@@ -1,3 +1,5 @@
+import { PayStackService } from './services/facility-manager/setup/paystack.service';
+import { PolicyService } from './services/facility-manager/setup/policy.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +11,7 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { FacilitySetupModule } from './facility-setup/facility-setup.module';
+import {            } from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
@@ -23,13 +25,12 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { SignupComponent } from './signup/signup.component';
 import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/services/clinic-helper.service';
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
-import { PersonAccountComponent } from './person-account/person-account.component';
+// import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
 // tslint:disable-next-line:max-line-length
 import { ApmisCheckboxChildComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
 import { ApmisCheckboxComponent } from './system-modules/module-menu/patient-manager/patientmanager-detailpage/apmis-checkbox/apmis-checkbox.component';
-import { DxDateBoxComponent } from 'devextreme-angular';
 import { VerifyTokenComponent } from './facility-setup/verify-token/verify-token.component';
 import { LogoutConfirmComponent } from './system-modules/module-menu/logout-confirm/logout-confirm.component';
 import { FacilitySetupComponent } from './facility-setup/facility-setup.component';
@@ -39,7 +40,7 @@ import { FacilityInfoComponent } from './facility-setup/facility-info/facility-i
 import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
-
+import { MaterialModule } from './shared-common-modules/material-module';
 
 @NgModule({
   declarations: [
@@ -49,15 +50,18 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent
   ],
+  exports: [
+    // MaterialModule,
+  ],
   imports: [
-    SharedModule,
     BrowserModule,
-    FormsModule,
+    // FormsModule,
     Routing,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastModule.forRoot(),
-    CoolStorageModule,
+    // ToastModule.forRoot(),
+    // CoolStorageModule,
+    MaterialModule,
     SingUpAccountsSharedModule
   ],
   providers: [
@@ -78,9 +82,13 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
     SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
-    SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService, 
-    SetupService.FacilityPriceService, SetupService.ProductService
-
+    SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService,
+    SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
+    SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
+    SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
+    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService, SetupService.ServerDateService,
+    SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService, SetupService.TemplateService, PolicyService, PayStackService,
+    SetupService.InventoryInitialiserService,SetupService.SmsAlertService,
   ],
   bootstrap: [AppComponent]
 })

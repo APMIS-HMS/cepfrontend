@@ -1,95 +1,86 @@
 <div class="modal-baseWrap animated pulse">
 
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <div class="modal-userStrap">
-    <div class="strapImgWrap">
-      <img [src]="facilityService.transform(clinicHelperService.loginEmployee.employeeDetails.profileImageObject?.thumbnail)">
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <div class="modal-userStrap">
+        <div class="strapImgWrap">
+            <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+            <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
+        </div>
+        <div class="strapUser">{{loginEmployee.employeeDetails.lastName}} {{loginEmployee.employeeDetails.firstName}}</div>
     </div>
-    <div class="strapUser">{{clinicHelperService.loginEmployee.employeeDetails.lastName}} {{clinicHelperService.loginEmployee.employeeDetails.firstName}}</div>
-  </div>
 
-  <div class="postStrap-title">Check Into Consulting Room</div>
-  <div class="cont-wrap">
-    <div class="cont-item">
-      <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="postStrap-title">Check Into Consulting Room</div>
+    <div class="cont-wrap">
+        <div class="cont-item">
+            <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-      <form [formGroup]="roomCheckin" novalidate>
-        <div class="frm-item-wrap">
-          <i class="fa fa-building-o" aria-hidden="true"></i>
-          <!--<label>Location</label>
+            <form [formGroup]="roomCheckin" novalidate>
+                <div class="frm-item-wrap">
+                    <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
+                    <!--<label>Location</label>
           <select formControlName="location">
               <option value="" disabled selected>Select Location</option>
               <option *ngFor="let location of clinicHelperService.clinicLocations" value={{location._id}}>{{location.name}}</option>
             </select>-->
-            <md-select placeholder="Location" formControlName="location">
-              <md-option value="" disabled selected>Select Location</md-option>
-              <md-option *ngFor="let location of clinicHelperService.clinicLocations" value={{location._id}}>{{location.name}}</md-option>
-            </md-select>
-        </div>
+                    <md-select placeholder="Location" formControlName="location">
+                        <md-option value="" disabled selected>Select Location</md-option>
+                        <md-option *ngFor="let location of locations" value={{location._id}}>{{location.name}}</md-option>
+                    </md-select>
+                </div>
 
-        <div class="frm-item-wrap">
-          <i class="fa fa-circle-o" aria-hidden="true"></i>
-          <!--<label>Consulting Room</label>
+                <div class="frm-item-wrap">
+                    <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
+                    <!--<label>Consulting Room</label>
           <select formControlName="room">
               <option value="" disabled selected>Select Room</option>
               <option *ngFor="let room of selectedConsultingRoom.rooms" value={{room._id}}>{{room.name}}</option>
             </select>-->
-            <md-select placeholder="Room" formControlName="room">
-              <md-option value="" disabled selected>Select Room</md-option>
-              <md-option *ngFor="let room of selectedConsultingRoom.rooms" value={{room._id}}>{{room.name}}</md-option>
-            </md-select>
+                    <md-select placeholder="Room" formControlName="room">
+                        <md-option value="" disabled selected>Select Room</md-option>
+                        <md-option *ngFor="let room of selectedConsultingRoom.rooms" value={{room._id}}>{{room.name}}</md-option>
+                    </md-select>
+                </div>
+
+                <div class="set-default">
+                    <md-checkbox formControlName="isDefault">Set as default!</md-checkbox>
+                </div>
+
+                <div class="btn-group">
+                    <button [disabled]="!roomCheckin.valid" (click)="checkIn(roomCheckin.valid, roomCheckin.value)" class="apmis-blue" md-raised-button>Check In</button>
+                    <button class="apmis-danger" (click)="close_onClick()" md-raised-button>Cancel</button>
+                </div>
+
+            </form>
         </div>
 
-        <div class="set-default">
-          <!--<div>Set as default</div>
-          <div class="dx-field-value">
-            <dx-check-box formControlName="isDefault"></dx-check-box>
-          </div>-->
-          <md-checkbox formControlName="isDefault" >Set as default!</md-checkbox>
-        </div>
+        <div class="cont-item recent-rooms">
+            <div class="item-title">Recent Rooms</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Consulting Room</th>
+                        <th>Last Check-In</th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-        <div class="btn-group">
-          <!--<div (click)="checkIn(roomCheckin.valid, roomCheckin.value)" class="btn-1 btn-blue">
-            <i class="fa fa-check-circle" aria-hidden="true"></i> Check In
-          </div>-->
-            <button (click)="checkIn(roomCheckin.valid, roomCheckin.value)" class="apmis-blue" md-raised-button >Check In</button>
-            <button class="apmis-danger" (click)="close_onClick()" md-raised-button>Cancel</button>
-          <!--<div (click)="close_onClick()" class="btn-1 btn-red" aria-hidden="true">
-            <i class="fa fa-times-circle" aria-hidden="true"></i> Cancel
-          </div>-->
+                <tbody>
+                    <tr *ngFor="let checkIn of loginEmployee.consultingRoomCheckIn">
+                        <td>{{checkIn?.minorLocationObject?.name}}</td>
+                        <td>{{checkIn?.roomObject?.name}}</td>
+                        <td>{{checkIn?.lastLogin | date:'medium'}}</td>
+                        <td class="tblMenu">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            <ul class="popMenu">
+                                <li (click)="changeRoom(checkIn)">Switch To Room</li>
+                                <li><i class="fa fa-trash tblMenu" aria-hidden="true"></i> Delete History</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-      </form>
     </div>
-
-    <div class="cont-item recent-rooms">
-      <div class="item-title">Recent Rooms</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Location</th>
-            <th>Consulting Room</th>
-            <th>Last Check-In</th>
-            <th></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let checkIn of clinicHelperService.loginEmployee.consultingRoomCheckIn">
-            <td>{{checkIn?.minorLocationObject?.name}}</td>
-            <td>{{checkIn?.roomObject?.name}}</td>
-            <td>{{checkIn?.lastLogin | date:'medium'}}</td>
-            <td class="tblMenu">
-              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-              <ul class="popMenu">
-                <li (click)="changeRoom(checkIn)">Switch To Room</li>
-                <li><i class="fa fa-trash tblMenu" aria-hidden="true"></i> Delete History</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 
 </div>

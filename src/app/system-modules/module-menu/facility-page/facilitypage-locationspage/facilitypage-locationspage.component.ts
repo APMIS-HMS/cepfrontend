@@ -25,6 +25,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   locationsObj: Location[] = [];
 
   locationObj: Location = <Location>{};
+  subLocation: any = {};
   filteredMinorLocations: any[] = [];
 
   // Department icons nav switches
@@ -47,14 +48,16 @@ export class FacilitypageLocationspageComponent implements OnInit {
   sublocNameEdit = new FormControl();
   sublocshortNameEdit = new FormControl();
   sublocDescEdit = new FormControl();
-
+  isWardSelected: Boolean = false;
   facility: Facility = <Facility>{};
 
   constructor(private locationService: LocationService, private locker: CoolLocalStorage,
   public facilityService: FacilitiesService, private route: ActivatedRoute) {
     this.facilityService.listner.subscribe(payload => {
+      console.log('am received');
       this.facility = payload;
       this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      console.log(this.filteredMinorLocations);
     });
     this.locationService.listner.subscribe(payload => {
       this.getLocations();
@@ -64,6 +67,12 @@ export class FacilitypageLocationspageComponent implements OnInit {
 
   ngOnInit() {
     this.facility =   <Facility> this.facilityService.getSelectedFacilityId();
+    this.facilityService.listner.subscribe(payload => {
+      console.log('am received');
+      this.facility = payload;
+      this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      console.log(this.filteredMinorLocations);
+    });
     this.pageInView.emit('Locations');
 
     this.locationNameEdit.valueChanges.subscribe(value => {
@@ -103,7 +112,14 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationHomeContentArea = false;
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
+    if (model.name !== undefined && model.name.toLowerCase() == 'ward') {
+      this.isWardSelected = true;
+    } else {
+      this.isWardSelected = false;
+    }
+
     this.locationObj = model;
+
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
   }
 
@@ -153,6 +169,14 @@ export class FacilitypageLocationspageComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.modal_on = false;
     this.newSubLocModal_on = false;
+    this.newLocationModal_on = false;
+    this.subLocation = <any>{};
+  }
+  editMinorLoc(value) {
+    console.log(value);
+    this.subLocation = value;
+    this.modal_on = false;
+    this.newSubLocModal_on = true;
     this.newLocationModal_on = false;
   }
   innerMenuToggle() {

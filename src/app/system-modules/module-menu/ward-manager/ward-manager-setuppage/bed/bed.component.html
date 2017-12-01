@@ -1,48 +1,79 @@
 <div class="c-page-header">
     <h3 class="c-page-title">List of Beds in {{wardRoom.name}}</h3>
-
-    <div class="back-btn pull-right">
-        <span routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}"><i class="fa fa-arrow-circle-o-left"></i> Back to Room</span>
+    <div class="pull-right btn-box">
+        <div class="add-action-box">
+            <button md-raised-button (click)="addBedModal()" class="btn pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Bed</button>
+        </div>
+        <div class="back-btn">
+            <span routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}"><i class="fa fa-arrow-circle-o-left"></i> Back to Room Setup</span>
+        </div>
     </div>
 </div>
 <div class="c-page-body">
-    <div class="add-action-box">
-        <div (click)="addBedModal()" class="btn-1 btn-blue pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Bed</div>
-    </div>
     <div class="inPatients">
         <div class="table-responsive">
-            <table class="table table-striped no-margin" cellspacing="0" width="100%">
-                <thead>
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead class="table-background-color">
                     <tr class="table-bordered">
-                        <th style="width: 5%">No</th>
+                        <th style="width: 5%">S/N</th>
                         <th>Bed</th>
+                        <th>Occupant</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>State</th>
+                        <th style="width: 15%">Action</th>
                     </tr>
                 </thead>
                 <tbody class="custom-tbody">
-                    <tr *ngIf="bedItems.length == 0">
-                        <td colspan="4"> No data available in table</td>
+                    <tr *ngIf="beds.length === 0 && loading">
+                        <td class="table-content " colspan="6" style="text-align: center">
+                            <md-spinner class="small-spinner"></md-spinner>
+                        </td>
                     </tr>
-                    <tr *ngFor="let bed of bedItems;let i = index">
-                        <td>{{i+1}}</td>
-                        <td class="">
+                    <tr *ngIf="beds.length === 0 && !loading">
+                        <td class="table-content " colspan="6" style="text-align: center">
+                            No data available in table
+                        </td>
+                    </tr>
+                    <tr *ngFor="let bed of beds;let i = index">
+                        <td class="table-content ">{{i+1}}</td>
+                        <td class="table-content ">
                             <div [hidden]="bedNameEditShow[i]">{{bed.name}}</div>
-                            <input *ngIf="bedNameEditShow[i]" class="edit-control lhs" type="text" value="{{bed.name}}" [formControl]="editBedName">
-                            </td>
-                        <td class="">{{bed.state}}</td>
-                        <td>
-                            <i [hidden]="bedNameEditShow[i]" (click)="bedNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i *ngIf="bedNameEditShow[i]" (click)="bedNameEdit(i,bed)" class="fa fa-check" aria-hidden="true"></i>
+                            <md-form-field *ngIf="bedNameEditShow[i]">
+                                <input mdInput placeholder="Edit {{bed.name}}" [value]="bed.name" [formControl]="editBedName">
+                            </md-form-field>
+                        </td>
+                        <td class="table-content" style="padding: 0;">
+                            <div *ngIf="bed.occupant === undefined"> No Occupant</div>
+                            <div *ngIf="!!bed.occupant">
+                                <div class="empWrap" style="text-align: center;">
+                                    <div class="list-img">
+                                        <div *ngIf="bed?.occupant?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="bed?.occupant?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="facilityService.transform(bed.occupant?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    </div>
+                                    <div>
+                                        <b>{{bed.occupant?.personDetails?.personFullName}}</b><br>
+                                        <small>{{bed.occupant?.personDetails?.gender.name}}, </small>
+                                        <small>{{bed.occupant?.personDetails?.age}} year(s) old, </small>
+                                        <small>{{bed.occupant?.personDetails?.phoneNumber}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="table-content ">
+                            <div *ngIf="bed.isAvailable" style="color: green"> Available</div>
+                            <div *ngIf="!bed.isAvailable" style="color: blue"> Occupied</div>
+                        </td>
+                        <td class="table-content ">{{ bed.state }}</td>
+                        <td class="table-content-action">
+                            <i (click)="bedNameEdit(i, bed)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <i class="fa fa-trash" aria-hidden="true"></i>
-                        
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div *ngIf="addbed" class="modal-overlay">
-            <app-add-bed (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-bed>
+            <app-add-bed (closeModal)="close_onClick($event)" [selectedBed]="selectedBed" id="form-modal" class="form-modal center-center"></app-add-bed>
         </div>
     </div>
 </div>

@@ -1,0 +1,130 @@
+<div class="pg-subtitle">FLUID INTAKE/OUTPUT</div>
+
+<div class="doc-mainWrap">
+  <div class="doc-contentArea">
+    <div class="doc-cardWrap">
+
+      <div class="card2-exo">
+        <div class="doc-card2">
+          <div class="modal_title">Fluid Intake</div>
+
+          <div class="docCard-body">
+              <form [formGroup]="frmIntake" novalidate>
+                  
+                <div class="frm-item-wrap">
+                    <md-select placeholder="Fluid" formControlName="infusion">
+                      <md-option [value]="1">Drip</md-option>
+                    </md-select>
+                </div>
+          
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                      <input mdInput md-error placeholder="Volume" formControlName="infusion_volume">
+                  </md-input-container>
+                </div>
+          
+                <button class="cta-1">
+                  Add
+                </button>
+          
+              </form>            
+          </div>
+        </div>
+
+        <div class="doc-card2">
+          <div class="modal_title">Fluid Output</div>
+
+          <div class="docCard-body">
+              <form [formGroup]="frmOutput" novalidate>
+                  
+                <div class="frm-item-wrap">
+                    <md-select placeholder="Fluid" formControlName="fluid">
+                      <md-option [value]="1">Drip</md-option>
+                    </md-select>
+                </div>
+          
+                <div class="frm-item-wrap">
+                  <md-input-container>
+                      <input mdInput md-error placeholder="Volume" formControlName="output_volume">
+                  </md-input-container>
+                </div>
+          
+                <button class="cta-1">
+                  Add
+                </button>
+          
+              </form>   
+          </div>
+        </div>
+      </div>
+
+      <div class="card-tbl">
+        <table cellpadding="0" cellspacing="0" border="0.5">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Fluid</th>
+              <th>Volume</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+      
+          <tbody>
+            <tr>
+              <td>Intake</td>
+              <td>Drip</td>
+              <td>20ml</td>
+              <td>11th Sept, 2017. 10:17am</td>
+            </tr>
+      
+            <tr>
+              <td>Output</td>
+              <td>Drip</td>
+              <td>20ml</td>
+              <td>11th Sept, 2017. 10:17am</td>
+            </tr>
+
+            <tr>
+              <td>Intake</td>
+              <td>Drip</td>
+              <td>20ml</td>
+              <td>11th Sept, 2017. 10:17am</td>
+            </tr>
+
+            <tr>
+              <td>Intake</td>
+              <td>Drip</td>
+              <td>20ml</td>
+              <td>11th Sept, 2017. 10:17am</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="doc-rArea">
+    <app-right-tab [patient]="patient"
+        (addProblem)="addProblem_show($event)"
+        (addAllergy)="addAllergy_show($event)"
+        (addHistory)="addHistory_show($event)"
+        (addVitals)="addVitals_show($event)"
+        ></app-right-tab>
+  </div>
+
+  <div *ngIf="addProblem_view" class="modal-overlay">
+    <app-add-patient-problem [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
+  </div>
+
+  <div *ngIf="addAllergy_view" class="modal-overlay">
+    <app-add-allergy [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
+  </div>
+
+  <div *ngIf="addHistory_view" class="modal-overlay">
+    <app-add-history (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-history>
+  </div>
+
+  <div *ngIf="addVitals_view" class="modal-overlay">
+    <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" class="form-modal center-center"></app-add-vitals>
+  </div> -->
+</div>

@@ -11,17 +11,17 @@
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
+                    <md-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
+                        <md-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</md-option>
+                    </md-select>
+                </div>
+                <div class="frm-item-wrap">
                     <md-input-container class="example-full-width">
                         <input mdInput md-error placeholder="Name(Product)" formControlName="name">
                     </md-input-container>
                     <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
                         <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                     </div>
-                </div>
-                <div class="frm-item-wrap">
-                    <md-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
-                        <md-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</md-option>
-                    </md-select>
                 </div>
                 <div class="frm-item-wrap">
                     <md-input-container class="example-full-width">
@@ -89,7 +89,9 @@
         <div class="clear"></div>
 
         <div>
-            <div class="sectLabel">Active Ingrident</div>
+            <div class="sectLabel">Active
+                <!-- <Ingredient><s></s></Ingredient> -->
+            </div>
             <i class="fa fa-plus faplus pull-right" (click)="addIngredient()"></i>
         </div>
         <div class="sec-3">
@@ -101,7 +103,7 @@
                 <div formArrayName="ingredients">
                     <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
                         <div class="panel-heading">
-                            <span class="glyphicon glyphicon-remove pull-right" *ngIf="ingredientForm.controls['ingredients'].controls > 1" (click)="removeIngredient(i)"></span>
+                            <span class="glyphicon glyphicon-remove pull-right" (click)="removeIngredient(i)"></span>
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
@@ -125,15 +127,37 @@
             </form>
         </div>
 
+        <div class="clear"></div>
+
+        <div>
+            <div class="sectLabel">Variant</div>
+            <i class="fa fa-plus faplus pull-right" (click)="addVariant()"></i>
+        </div>
+        <div class="sec-3">
+            <div class="sec3-headWrap"></div>
+            <form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
+                <div formArrayName="variants">
+                    <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-remove pull-right" (click)="removeVariant(i)"></span>
+                        </div>
+                        <div class="frmArr-wrap" formGroupName="{{i}}">
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input mdInput md-error placeholder="Size" formControlName="size">
+                                </md-input-container>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <md-input-container class="example-full-width">
+                                    <input mdInput md-error placeholder="Max. Unit" formControlName="unit">
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
     </form>
-    <div *ngIf="isManufacturer">
-        <app-manufacturer-manager></app-manufacturer-manager>
-    </div>
-    <div *ngIf="isPresentation">
-        <app-presentation-manager></app-presentation-manager>
-    </div>
-    <div *ngIf="isStrength">
-        <app-strength-manager></app-strength-manager>
-    </div>
 </div>

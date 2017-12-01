@@ -1,18 +1,14 @@
-<div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
-    <div class="facility-title">{{pageInView}}</div>
+<ul class="pg-menuWrap">
+    <li (click)="navItemClick('appointment')" [class.pg-menuActive]="clinicApppointment" [routerLink]="['/dashboard/clinic/appointment']">Appointment</li>
+    <li (click)="navItemClick('checkin')" [class.pg-menuActive]="clinicCheckin" [routerLink]="['/dashboard/clinic/check-in']">Checked In Patients</li>
+    <li (click)="navItemClick('schedule')" [class.pg-menuActive]="clinicSchedule" [routerLink]="['/dashboard/clinic/clinic-schedule']">Clinic Schedule</li>
+    <li (click)="navItemClick('room')" [class.pg-menuActive]="clinicConsulting" [routerLink]="['/dashboard/clinic/consulting-room']">Consulting Room</li>
+    <li *ngIf="isDoctor==true" (click)="changeRoom('change')" [class.pg-menuActive]="clinicRoom" >Change Consulting Room</li>
+</ul>
 
+<div  class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>   
     <div class="inner-page-wrap">
-        <div class="inner-menu1-wrap">
-            <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
-                aria-hidden="true"></i>
-            <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/appointment']">Appointment</li>
-                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/check-in']">Checked In Patients</li>
-                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/clinic-schedule']">Clinic Schedule</li>
-                <li (click)="navItemClick()" [routerLink]="['/dashboard/clinic/consulting-room']">Consulting Room</li>
-                <li *ngIf="isDoctor==true" (click)="changeRoom()" >Change Consulting Room</li>
-            </ul>
-        </div>
 
         <div class="inner-page-contentArea">
             <router-outlet class="menuContent"></router-outlet>

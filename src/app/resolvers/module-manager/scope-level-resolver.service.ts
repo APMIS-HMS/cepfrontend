@@ -21,7 +21,6 @@ export class ScopeLevelResolverService implements Resolve<any> {
       }
       return Observable.of(null);
     }, error => {
-      console.log(error);
     });
   }
 }

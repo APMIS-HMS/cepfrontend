@@ -83,7 +83,6 @@ legend.modal-title {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    border: 1px solid #ccc;
     padding: 10px;
 }
 
@@ -96,7 +95,7 @@ infrmArr-wrap {
 }
 
 .frmArr-wrap .frm-item-wrap {
-    width: 30%;
+    width: 50%;
 }
 
 .sectLabel {
@@ -118,6 +117,7 @@ infrmArr-wrap {
     text-align: center;
     border-radius: 100%;
     cursor: pointer;
+    line-height: 27px;
 }
 
 .faplus:hover {

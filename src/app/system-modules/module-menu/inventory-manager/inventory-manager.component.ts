@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryEmitterService } from '../../../services/facility-manager/inventory-emitter.service';
 import { Employee, Facility } from '../../../models/index';
-import { EmployeeService } from '../../../services/facility-manager/setup/index';
+import { EmployeeService, WorkSpaceService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class InventoryManagerComponent implements OnInit, OnDestroy {
   pageInView: String = '';
+  initializeNavMenu = false;
   inventoryNavMenu = false;
   stockTakingNavMenu = false;
   stockTransferNavMenu = false;
@@ -24,74 +25,118 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   purchaseManagerNavMenu = false;
   modal_on = false;
 
+
   loginEmployee: Employee = <Employee>{};
+  workSpace: any;
   selectedFacility: Facility = <Facility>{};
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
-    private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService, private locker: CoolLocalStorage) { }
-
-  ngOnInit() {
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe((payload) => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //   });
-    // });
+    private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService,
+    private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-      }
-    }));
-    emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-    ]))
-      .subscribe((results: any) => {
-        this.loginEmployee = results[0];
-        if ((this.loginEmployee.storeCheckIn === undefined
-          || this.loginEmployee.storeCheckIn.length === 0)) {
-          this.modal_on = true;
-        } else {
-          let isOn = false;
-          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-            if (itemr.isDefault === true) {
-              itemr.isOn = true;
-              itemr.lastLogin = new Date();
-              isOn = true;
-              let checkingObject = { typeObject: itemr, type: 'store' };
-              this.employeeService.announceCheckIn(checkingObject);
-              this.employeeService.update(this.loginEmployee).then(payload => {
-                this.loginEmployee = payload;
-                checkingObject = { typeObject: itemr, type: 'store' };
-                this.employeeService.announceCheckIn(checkingObject);
-                this.locker.setObject('checkingObject', checkingObject);
-              });
-            }
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    if ((this.loginEmployee.storeCheckIn === undefined
+      || this.loginEmployee.storeCheckIn.length === 0)) {
+      this.modal_on = true;
+    } else {
+      let isOn = false;
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true) {
+          itemr.isOn = true;
+          itemr.lastLogin = new Date();
+          isOn = true;
+          let checkingObject = { typeObject: itemr, type: 'store' };
+          this.employeeService.announceCheckIn(checkingObject);
+          console.log(checkingObject)
+          this.locker.setObject('checkingObject', checkingObject);
+          console.log('sent');
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+            checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(checkingObject);
+            this.locker.setObject('checkingObject', checkingObject);
           });
-          if (isOn === false) {
-            this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-              if (r === 0) {
-                itemr.isOn = true;
-                itemr.lastLogin = new Date();
-                this.employeeService.update(this.loginEmployee).then(payload => {
-                  this.loginEmployee = payload;
-                  const checkingObject = { typeObject: itemr, type: 'store' };
-                  this.employeeService.announceCheckIn(checkingObject);
-                  this.locker.setObject('checkingObject', checkingObject);
-                });
-              }
-
+        }
+      });
+      if (isOn === false) {
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (r === 0) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            this.employeeService.update(this.loginEmployee).then(payload => {
+              this.loginEmployee = payload;
+              const checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(checkingObject);
+              this.locker.setObject('checkingObject', checkingObject);
             });
           }
 
-        }
-      });
+        });
+      }
 
+    }
+  }
 
+  ngOnInit() {
+    // const emp$ = Observable.fromPromise(this.employeeService.find({
+    //   query: {
+    //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+    //   }
+    // }));
+    // emp$.mergeMap((emp: any) => Observable.forkJoin([
+    //   Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    //   Observable.fromPromise(this.workSpaceService.find({ query: { employeeId: emp.data[0]._id } }))
+    // ]))
+    //   .subscribe((results: any) => {
+    //     if (results[1].data.length > 0) {
+    //       this.workSpace = results[1].data[0];
+    //     }
+    //     this.loginEmployee = results[0];
+    //     if ((this.loginEmployee.storeCheckIn === undefined
+    //       || this.loginEmployee.storeCheckIn.length === 0)) {
+    //       this.modal_on = true;
+    //     } else {
+    //       let isOn = false;
+    //       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+    //         if (itemr.isDefault === true) {
+    //           itemr.isOn = true;
+    //           itemr.lastLogin = new Date();
+    //           isOn = true;
+    //           let checkingObject = { typeObject: itemr, type: 'store' };
+    //           this.employeeService.announceCheckIn(checkingObject);
+    //           this.employeeService.update(this.loginEmployee).then(payload => {
+    //             this.loginEmployee = payload;
+    //             checkingObject = { typeObject: itemr, type: 'store' };
+    //             this.employeeService.announceCheckIn(checkingObject);
+    //             console.log(1)
+    //             this.locker.setObject('checkingObject', checkingObject);
+    //           });
+    //         }
+    //       });
+    //       if (isOn === false) {
+    //         this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+    //           if (r === 0) {
+    //             itemr.isOn = true;
+    //             itemr.lastLogin = new Date();
+    //             this.employeeService.update(this.loginEmployee).then(payload => {
+    //               this.loginEmployee = payload;
+    //               const checkingObject = { typeObject: itemr, type: 'store' };
+    //               this.employeeService.announceCheckIn(checkingObject);
+    //               console.log(2)
+    //               console.log(checkingObject);
+    //               this.locker.setObject('checkingObject', checkingObject);
+    //             });
+    //           }
 
+    //         });
+    //       }
 
-
+    //     }
+    //   });
 
     const page: string = this._router.url;
+    console.log(page);
     this.checkPageUrl(page);
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
@@ -103,6 +148,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   }
   onChangeCheckedIn() {
     this.modal_on = true;
+    this.contentSecMenuShow = false;
   }
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
@@ -114,81 +160,178 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickInventoryNavMenu() {
-    this.inventoryNavMenu = true;
-    this.stockTakingNavMenu = false;
-    this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickInventoryNavMenu() {
+  //   this.inventoryNavMenu = true;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
+  // onInitialiseNavMenu() {
+  //   this.stockTakingNavMenu = false;
+  //   this.inventoryNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = true;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
+  // onClickStockTakingNavMenu() {
+  //   this.stockTakingNavMenu = true;
+  //   this.inventoryNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickStockTakingNavMenu() {
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = true;
-    this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickStockTransferNavMenu() {
+  //   this.stockTransferNavMenu = true;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockHistoryNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
+  // onClickStockHistoryNavMenu() {
+  //   this.stockHistoryNavMenu = true;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickStockTransferNavMenu() {
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockHistoryNavMenu = false;
-    this.stockTransferNavMenu = true;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
-  onClickStockHistoryNavMenu() {
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.stockHistoryNavMenu = true;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickReceiveStockNavMenu() {
+  //   this.receiveStockNavMenu = true;
+  //   this.stockHistoryNavMenu = false;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.requisitionNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickReceiveStockNavMenu() {
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = true;
-    this.requisitionNavMenu = false;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
-  }
+  // onClickRequisitionNavMenu() {
+  //   this.requisitionNavMenu = true;
+  //   this.stockHistoryNavMenu = false;
+  //   this.inventoryNavMenu = false;
+  //   this.stockTakingNavMenu = false;
+  //   this.stockTransferNavMenu = false;
+  //   this.receiveStockNavMenu = false;
+  //   this.initializeNavMenu = false;
+  //   this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+  //     this.pageInView = url;
+  //   });
+  // }
 
-  onClickRequisitionNavMenu() {
-    this.inventoryNavMenu = false;
-    this.stockTakingNavMenu = false;
-    this.stockTransferNavMenu = false;
-    this.receiveStockNavMenu = false;
-    this.requisitionNavMenu = true;
-    this._inventoryEventEmitter.announcedUrl.subscribe(url => {
-      this.pageInView = url;
-    });
+  changeRoute(val) {
+    console.log(val);
+    if (val == '/dashboard/inventory-manager/inventory') {
+      this.inventoryNavMenu = true;
+      this.stockTakingNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/initialize-store') {
+      this.stockTakingNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = true;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/stock-transfer') {
+      this.stockTransferNavMenu = true;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/stock-history') {
+      this.stockHistoryNavMenu = true;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/receive-stock') {
+      this.receiveStockNavMenu = true;
+      this.stockHistoryNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val == '/dashboard/inventory-manager/requisition') {
+      this.requisitionNavMenu = true;
+      this.stockHistoryNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.initializeNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    }
   }
-
 
   private checkPageUrl(param: string) {
-    if (param.includes('inventory')) {
+    if (param.includes('inventory-manager/inventory')) {
       this.inventoryNavMenu = true;
+      this.stockTakingNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.requisitionNavMenu = false;
+      this.initializeNavMenu = false;
     } else if (param.includes('stock-taking')) {
       this.stockTakingNavMenu = true;
+    } else if (param.includes('initialize-store')) {
+      this.initializeNavMenu = true;
     } else if (param.includes('stock-transfer')) {
       this.stockTransferNavMenu = true;
     } else if (param.includes('receive-stock')) {

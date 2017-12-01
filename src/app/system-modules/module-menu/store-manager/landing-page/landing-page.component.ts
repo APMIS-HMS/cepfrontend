@@ -14,9 +14,8 @@ export class LandingPageComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedMinorLocation: MinorLocation = <MinorLocation>{};
   selectedStore: any = <any>{};
-
   newStore = false;
-
+  loading: boolean = true;
   minorLocations: MinorLocation[] = [];
   productTypes: any[] = [];
   stores: any[] = [];
@@ -30,13 +29,17 @@ export class LandingPageComponent implements OnInit {
       this.getStores();
     });
     this.selMinorLocation.valueChanges.subscribe(value => {
+      this.loading = true;
       this.storeService.find({ query: { minorLocationId: value } }).then(payload => {
+        this.loading = false;
         this.stores = payload.data;
       });
     });
 
     this.selProductType.valueChanges.subscribe(value => {
+      this.loading = true;
       this.storeService.find({ query: { 'productTypeId.productTypeId': value } }).then(payload => {
+        this.loading = false;
         this.stores = payload.data;
       });
     });
@@ -58,11 +61,10 @@ export class LandingPageComponent implements OnInit {
           name: this.searchControl.value,
           facilityId: this.selectedFacility._id
         }
-      })
-        .
-        then(payload => {
-          this.stores = payload.data;
-        }))
+      }).then(payload => {
+        this.loading = false;
+        this.stores = payload.data;
+      }));
 
     subscribeForPerson.subscribe((payload: any) => {
     });
@@ -83,19 +85,15 @@ export class LandingPageComponent implements OnInit {
   }
 
   getStores() {
-    // this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
-    //   this.stores = payload.data;
-    //   console.log(payload);
-    // }, error => {
-    //   console.log(error);
-    // });
-
-    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      if (payload.data.length != 0) {
-        this.stores = payload.data;
+    this.loading = true;
+    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
+      this.loading = false;
+      if (res.data.length != 0) {
+        this.stores = res.data;
+      } else {
+        this.stores = [];
       }
     });
-
   }
   getProductTypes() {
     this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
@@ -107,6 +105,6 @@ export class LandingPageComponent implements OnInit {
     this.newStore = true;
   }
   refresh(): void {
-    window.location.reload();
+    this.getStores();
   }
 }

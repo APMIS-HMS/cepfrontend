@@ -1,7 +1,7 @@
 export interface WorkSpace {
     _id: string;
     facilityId: string;
-    employeeId: string;
+    employeeId: any;
     locations: any[];
     isActive: boolean;
 }

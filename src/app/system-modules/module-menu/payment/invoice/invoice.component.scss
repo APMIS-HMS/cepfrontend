@@ -1,4 +1,5 @@
 @import "../payment.component.scss";
+@import "../bill-lookup/bill-lookup.component.scss";
 
 //.......................///
 
@@ -60,4 +61,8 @@ ul.invoices_ul {
 ul.invoices_ul li span{
     display: inline-block;
     width: 90px;
+}
+ul.topmenuwrap {
+    top: 18px;
+    right: 25px;
 }

@@ -1,49 +1,91 @@
+<div class="pg-subtitle">PRESCRIBE DRUG</div>
 <section id="prescription">
     <div class="survery">
         <div class="row">
             <div class="col-md-12 col-sm-12">
                 <div style="display: flex; float: right;">
                     <div class="medical-list" style="margin-left: 2px;margin-right:10px;">
-                        <a (click)="togglemedicalShow()" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Current Medication List</a>
+                        <a (click)="onClickMedicationShow('Current')" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Current Medication List</a>
                     </div>
                     <div class="medical-list">
-                        <a (click)="togglemedicalShow()" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Past Medication List</a>
+                        <a (click)="onClickMedicationShow('Past')" class="medical-list-btn"><i class="fa fa-long-arrow-left"></i> Past Medication List</a>
                     </div>
                 </div>
             </div>
-            <div *ngIf="medicalShow">
-                <!--<div class="col-sm-6 col-md-6 pull-right fly-out">
-                    <div class="wrap-th" id="th-color">
-                        <div class="pres-col" id="long-text">Drug</div>
-                        <div class="pres-col">Status</div>
-                        <div class="pres-col">Dispense</div>
-                        <div class="pres-col" id="action-long">Action</div>
-                    </div>
-                    <div class="wrap-tr" id="tr-color">
-                        <div class="pres-data" id="long-text">Syrup-novaquin 500mg</div>
-                        <div class="pres-data">Started</div>
-                        <div class="pres-data">11-03-20017</div>
-                        <div class="pres-data" id="action-long">
-                            <button class="btn btn-default">Discontinue</button>
-                        </div>
-                    </div>
-                </div>-->
-                <!-- end medical list slide-->
+            <div *ngIf="currentMedicationShow">
                 <table class="table table-bordered fly-out" id="table">
                     <thead>
                         <tr>
+                            <th>S/N</th>
                             <th>Drugs</th>
                             <th>Status</th>
                             <th>Dispense</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngFor="let medication of currentMedications;">
                         <tr>
-                            <td>Syrup-novaquin 500mg</td>
-                            <td>Started</td>
-                            <td>11-03-20017</td>
-                            <td><button class="btn btn-default">Discontinue</button></td>
+                            <td class="text-center" colspan="5">{{ medication.createdAt | date }}</td>
+                        </tr>
+                        <tr *ngFor="let med of medication.prescriptionItems; let i = index;">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                                {{ med.genericName }} - {{ med.frequency }} for {{ med.duration }}<br>
+                            </td>
+                            <td class="td-small">Started</td>
+                            <td class="td-small">{{ medication.createdAt | date }}</td>
+                            <td class="td-small"><button class="btn btn-default">Discontinue</button></td>
+                        </tr>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngIf="currentMedications.length === 0 && !currMedLoading">
+                        <tr>
+                            <td class="text-center" colspan="5"> No data available in table</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngIf="currentMedications.length === 0 && currMedLoading">
+                        <tr>
+                            <td class="text-center" colspan="5">
+                                <md-spinner class="small-spinner"></md-spinner>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="pastMedicationShow">
+                <table class="table table-bordered fly-out" id="table">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Drugs</th>
+                            <th>Status</th>
+                            <th>Dispense</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let medication of pastMedications;">
+                        <tr>
+                            <td class="text-center" colspan="5">{{ medication.createdAt | date }}</td>
+                        </tr>
+                        <tr *ngFor="let med of medication.prescriptionItems; let i = index;">
+                            <td>{{ i+1 }}</td>
+                            <td>
+                                {{ med.genericName }} - {{ med.frequency }} for {{ med.duration }}<br>
+                            </td>
+                            <td class="td-small">Started</td>
+                            <td class="td-small">{{ medication.createdAt | date }}</td>
+                            <td class="td-small"><button class="btn btn-default">Discontinue</button></td>
+                        </tr>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngIf="pastMedications.length === 0 && !pastMedLoading">
+                        <tr>
+                            <td class="text-center" colspan="5"> No data available in table</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="custom-tbody" *ngIf="pastMedications.length === 0 && pastMedLoading">
+                        <tr>
+                            <td class="text-center" colspan="5">
+                                <md-spinner class="small-spinner"></md-spinner>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -53,6 +95,7 @@
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
                     <div class="col-sm-6 col-md-6">
+<<<<<<< HEAD
                         <div class="cu-search-box">
                             <md-input-container>
                                 <input mdInput formControlName="drug" [attr.data-selected-drug-id]="selectedDrugId" class="cu-search" (keydown)="keyupSearch();"
@@ -75,6 +118,9 @@
                                 </div>
                             </div>
                         </div>
+=======
+                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+>>>>>>> development
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <md-input-container>
@@ -125,8 +171,8 @@
                         </div>
                         <div class="col-sm-3 col-md-3">
                             <md-input-container>
-                                <input mdInput formControlName="startDate" [mdDatepicker]="picker" placeholder="Choose a date">
-                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                <input mdInput formControlName="startDate" [mdDatepicker]="picker" placeholder="Start Date">
+                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                             </md-input-container>
                             <md-datepicker #picker></md-datepicker>
                         </div>
@@ -144,7 +190,7 @@
                 </div>
             </form>
 
-            <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+            <app-add-prescription [isDispensed]="isDispensed" [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
             <form [formGroup]="allPrescriptionsForm">
                 <!-- begin total bill-->
@@ -179,6 +225,7 @@
                     </div>
                 </div> -->
                 <div class="row">
+<<<<<<< HEAD
                     <div>
                         <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top: -7px;">
                             <label> Priority </label>
@@ -188,6 +235,18 @@
                             <select formControlName="priority">
                                 <option *ngFor="let item of priorities" placeholder="Priority"  value="{{item._id}}" >{{item.name}}</option>
                             </select>
+=======
+                    <div class="col-xs-12 no-padding">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <div class="col-sm-6" style="margin-top: 10px;">
+                                <md-select placeholder="Priority" formControlName="priority" class="md-select">
+                                    <md-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</md-option>
+                                </md-select>
+                            </div>
+                            <div class="col-sm-6 text-center">
+                                <button md-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
+>>>>>>> development
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6 text-center">

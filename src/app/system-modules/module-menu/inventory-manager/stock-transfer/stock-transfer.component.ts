@@ -52,16 +52,25 @@ export class StockTransferComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
-    this.route.data.subscribe(data => {
-      data['loginEmployee'].subscribe((payload) => {
-        this.loginEmployee = payload.loginEmployee;
-        this.newTransfer.facilityId = this.selectedFacility._id;
-        this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
-        this.newTransfer.inventoryTransferTransactions = [];
-        this.newTransfer.transferBy = this.loginEmployee._id;
-      });
-    });
+    console.log(this.checkingStore)
+
+    this.newTransfer.facilityId = this.selectedFacility._id;
+    this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
+    this.newTransfer.inventoryTransferTransactions = [];
+    this.newTransfer.transferBy = this.loginEmployee._id;
+
+
+    // this.route.data.subscribe(data => {
+    //   data['loginEmployee'].subscribe((payload) => {
+    //     this.loginEmployee = payload.loginEmployee;
+    //     this.newTransfer.facilityId = this.selectedFacility._id;
+    //     this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
+    //     this.newTransfer.inventoryTransferTransactions = [];
+    //     this.newTransfer.transferBy = this.loginEmployee._id;
+    //   });
+    // });
 
     this.addNewProductTables();
     this.getMyInventory();
@@ -84,7 +93,12 @@ export class StockTransferComponent implements OnInit {
         this.selectedInventoryTransactionType = typeResult.data[0];
         this.newTransfer.inventorytransactionTypeId = this.selectedInventoryTransactionType._id;
       }
-      this.stores = storeResult.data;
+      storeResult.data.forEach((store)=>{
+        if(store._id !== this.checkingStore.typeObject.storeId){
+          this.stores.push(store);
+        }
+      })
+      // this.stores = storeResult.data;
     });
   }
   getMyInventory() {
@@ -166,8 +180,12 @@ export class StockTransferComponent implements OnInit {
     });
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
-
-  onProductCheckChange(event, value) {
+  onStoreChanged() {
+    this.unCheckedProducts();
+    this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+    this.flyout = true;
+  }
+  onProductCheckChange(event, value, index?) {
     value.checked = event.checked;
     if (event.checked === true) {
       this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
@@ -191,18 +209,18 @@ export class StockTransferComponent implements OnInit {
       });
 
     } else {
-      let indexToRemove = 0;
-      (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
-        const productControlValue: any = (<any>item).controls['id'].value;
-        if (productControlValue === value._id) {
-          indexToRemove = i;
-        }
-      });
+      // let indexToRemove = 0;
+      // (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
+      //   const productControlValue: any = (<any>item).controls['id'].value;
+      //   if (productControlValue === value._id) {
+      //     indexToRemove = i;
+      //   }
+      // });
       const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
       if (count === 1) {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       } else {
-        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
       }
     }
   }
@@ -211,7 +229,7 @@ export class StockTransferComponent implements OnInit {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
-          this.onProductCheckChange({ checked: false }, value);
+          this.onProductCheckChange({ checked: false }, value, index);
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
           if (count === 1) {
             this.addNewProductTables();
@@ -270,7 +288,7 @@ export class StockTransferComponent implements OnInit {
   splitProduct($event, value, index, productId) {
     const product = (<FormArray>this.productTableForm.controls['productTableArray']).controls[index].value;
     ((<FormArray>this.productTableForm.controls['productTableArray'])
-      .push(
+      .insert(index,
       this.formBuilder.group({
         product: [product.product, [<any>Validators.required]],
         batchNo: [, [<any>Validators.required]],
@@ -313,7 +331,6 @@ export class StockTransferComponent implements OnInit {
       this.newTransfer.totalCostPrice = this.newTransfer.totalCostPrice + transferTransaction.lineCostPrice;
       this.newTransfer.inventoryTransferTransactions.push(transferTransaction);
     });
-    console.log(this.newTransfer);
 
     this.previewObject = <any>{};
     this.previewObject.products = [];
@@ -335,7 +352,6 @@ export class StockTransferComponent implements OnInit {
         this.previewObject.products.push({ product: filterProducts[0].name, cost: itemi.lineCostPrice, quantity: itemi.quantity });
       }
     });
-    console.log(this.previewObject);
   }
   previewShow() {
     this.populateInventoryTransferTransactions();
@@ -350,7 +366,6 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.inventoryTransferService.create(this.newTransfer).subscribe(payload => {
-      console.log(payload);
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
     });

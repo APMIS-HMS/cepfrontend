@@ -1,40 +1,83 @@
+<ul class="pg-menuWrap">
+    <li (click)="changeRoute('')" [class.pg-menuActive]="homeContentArea"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
+    <li (click)="changeRoute('modules')" [class.pg-menuActive]="modulesContentArea"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
+    <li (click)="changeRoute('departments')" [class.pg-menuActive]="departmentsContentArea"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
+    <li (click)="changeRoute('locations')" [class.pg-menuActive]="locationsContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
+    <li (click)="changeRoute('workspaces')" [class.pg-menuActive]="workspaceContentArea"><i class="fa fa-superpowers" aria-hidden="true"></i> Workspace</li>
+    <li (click)="changeRoute('options')" [class.pg-menuActive]="optionsContentArea"><i class="fa fa-filter" aria-hidden="true"></i> Options</li>
+    <li (click)="changeRoute('profession')" [class.pg-menuActive]="professionContentArea"><i class="fa fa-briefcase" aria-hidden="true"></i> Profession</li>
+</ul>
+
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
+    <div class="survery">
+        <div class="container" id="container">
+            <div class="completion-meter">
+                <div class="completion-meter_step">
+                    <div class="first-chenck">
+                        <span class="completion-meter_icon completion-meter_icon-first-gradient">
+                            <i class="fa fa-2x fa-check-circle-o"></i>
+                        </span>
+                        <div class="dropdown">
+                            <div class="dropdown-content">
+                                <ul>
+                                    <li><i class="fa fa-check"></i>Facility Profile</li>
+                                    <li>
+                                        <i *ngIf="!hasModules" class="fa fa-close"></i>
+                                        <i *ngIf="hasModules" class="fa fa-check"></i> Modules
+                                    </li>
+                                    <li>
+                                        <i *ngIf="!hasDepartments" class="fa fa-close"></i>
+                                        <i *ngIf="hasDepartments" class="fa fa-check"></i> Departments
+                                    </li>
+                                    <li>
+                                        <i *ngIf="!hasUnits" class="fa fa-close"></i>
+                                        <i *ngIf="hasUnits" class="fa fa-check"></i> Units
+                                    </li>
+                                    <li>
+                                        <i *ngIf="!hasMinorLocations" class="fa fa-close"></i>
+                                        <i *ngIf="hasMinorLocations" class="fa fa-check"></i> Locations
+                                    </li>
+                                    <li>
+                                        <i *ngIf="!hasAssignedEmployees" class="fa fa-close"></i>
+                                        <i *ngIf="hasAssignedEmployees" class="fa fa-check"></i> Assign Employee/Unit(s)
+                                    </li>
+                                    <li>
+                                        <i *ngIf="!hasWorkSpaces" class="fa fa-close"></i>
+                                        <i *ngIf="hasWorkSpaces" class="fa fa-check"></i> Workspace
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="completion-meter_step completion-meter-moving">
+                    <span class="completion-meter_icon_step completion-meter_icon-first-gradient">
+                            <i class="fa fa-2x fa-check-circle-o"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="inner-menu1-wrap responsive_nav-group">
-        <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
+        <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
+            aria-hidden="true"></i>
         <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
             <li (click)="changeRoute('')"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-            <li (click)="changeRoute('modules')"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
+            <li (click)="changeRoute('dashboard')"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
             <li (click)="changeRoute('departments')"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
             <li (click)="changeRoute('locations')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
             <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
             <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
-            <li [routerLink]="['/modules/employee-manager']">Employee</li>
         </ul>
     </div>
     <div class="inner-page-wrap">
-
-        <div class="lhs inner-page-menuTab">
-            <ul class="nav-group">
-                <li (click)="changeRoute('')" [class.navActive]="homeContentArea">Home</li>
-                <li (click)="changeRoute('modules')" [class.navActive]="modulesContentArea">Modules</li>
-                <li (click)="changeRoute('departments')" [class.navActive]="departmentsContentArea">Departments</li>
-                <li (click)="changeRoute('locations')" [class.navActive]="locationsContentArea">Locations</li>
-                <li (click)="changeRoute('workspaces')" [class.navActive]="workspaceContentArea">Workspace</li>
-                <li (click)="changeRoute('options')" [class.navActive]="optionsContentArea">Options</li>
-                <li (click)="changeRoute('profession')" [class.navActive]="professionContentArea">Profession</li>
-                <li [routerLink]="['/dashboard/employee-manager']">Employee</li>
-            </ul>
-        </div>
-        <div class="rhs inner-page-contentArea">
+        <div class="inner-page-contentArea">
             <router-outlet></router-outlet>
         </div>
-
-        <div class="clear"></div>
     </div>
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
-
+    <md-spinner></md-spinner>
 </div>

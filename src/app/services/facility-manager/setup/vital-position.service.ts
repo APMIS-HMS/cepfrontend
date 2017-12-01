@@ -2,8 +2,6 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable()
 export class VitalPositionService {

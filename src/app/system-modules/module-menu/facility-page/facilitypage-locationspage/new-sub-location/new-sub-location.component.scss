@@ -6,11 +6,16 @@ input {
 .mat-raised-button {
     max-width: 200px;
     text-align: center;
-    background: #153d70;
+    background: #0288D1;
     color: #fff;
 }
+
 #example-full-width {
     text-align: center;
+}
+
+.mat-input-container {
+    width: 100%;
 }
 
 .modal-overlay {

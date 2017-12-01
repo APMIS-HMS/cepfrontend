@@ -53,16 +53,20 @@ export class InventoryService {
     return this._socket.get(id, query);
   }
 
-  create(gender: any) {
-    return this._socket.create(gender);
+  create(inventory: any) {
+    return this._socket.create(inventory);
   }
 
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
 
+  patch(_id: any, data: any, param: any) {
+      return this._socket.patch(_id, data, param);
+  }
+
   update(inventory: any) {
     return this._socket.update(inventory._id, inventory);
   }
-
+  
 }

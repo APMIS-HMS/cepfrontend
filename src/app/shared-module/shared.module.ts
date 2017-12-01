@@ -12,18 +12,16 @@ import { AddFacilityModuleComponent } from '../facility-setup/add-facility-modul
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { ContactInfoComponent } from '../facility-setup/contact-info/contact-info.component';
 import { FacilitySetupComponent } from '../facility-setup/facility-setup.component';
+import { DragulaModule } from 'ng2-dragula';
 
 import { NgPipesModule } from 'ngx-pipes';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { NewTagComponent } from '../system-modules/module-menu/billing/services/new-tag/new-tag.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTagComponent } from '../system-modules/module-menu/add-tag/add-tag.component';
-import { DevExtremeModule, DxLoadIndicatorModule, DxLookupModule, DxDateBoxModule, DxSparklineModule } from 'devextreme-angular';
-// import 'devextreme-intl';
 import { MomentModule } from 'angular2-moment';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { NotificationComponent } from './notification/notification.component';
 import { AddVitalsComponent } from '../system-modules/module-menu/patient-manager/add-vitals/add-vitals.component';
 import { GlobalDialogComponent } from './global-dialog/global-dialog.component';
 import { SurveyComponent } from './form-generator/survey.component';
@@ -38,59 +36,44 @@ import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-
 import { BillPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/bill-prescription/bill-prescription.component';
 import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from '../shared-common-modules/material-module';
+import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
+import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
+<<<<<<< HEAD
     MdInputModule, MdOptionModule, MdSelectionModule, MdSelectModule
+=======
+    MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
+>>>>>>> development
 } from '@angular/material';
+//import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
+// import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
     declarations: [
-        BillPrescriptionComponent,
-        AddPrescriptionComponent,
-        LogoUpdateComponent,
-        ImageUpdateComponent,
-        GlobalPatientLookupComponent,
-        NewTagComponent,
-        AddTagComponent,
-        NotificationComponent,
-        AddVitalsComponent,
-        GlobalDialogComponent,
+        // NewTagComponent,
+        // AddTagComponent,
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
-        StoreCheckInComponent,
-        CreateWorkspaceComponent
+        //LabCheckInComponent,
+        // LabRequestsComponent, RequestDetailComponent
     ],
     exports: [
-        BillPrescriptionComponent,
-        AddPrescriptionComponent,
         LogoUpdateComponent,
-        ImageUpdateComponent,
-        ImageCropperModule,
         NgUploaderModule,
         NgPipesModule,
-        CurrencyMaskModule,
-        GlobalPatientLookupComponent,
-        NewTagComponent,
-        AddTagComponent,
-        DevExtremeModule,
-        DxLookupModule,
-        DxDateBoxModule,
-        DxSparklineModule,
-        DxLoadIndicatorModule,
+        // NewTagComponent,
+        // AddTagComponent,
         MomentModule,
         Ng2PaginationModule,
         InfiniteScrollModule,
-        NotificationComponent,
-        AddVitalsComponent,
-        GlobalDialogComponent,
         SurveyComponent,
         SurveyEditorComponent,
-        StoreCheckInComponent,
-        CreateWorkspaceComponent,
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
+<<<<<<< HEAD
         // MdNativeDateModule,
         // MdDatepickerModule,
         // MdButtonModule,
@@ -100,6 +83,10 @@ import {
         // MdOptionModule,
         // MdSelectionModule,
         // MdSelectModule
+=======
+        // DragulaModule,
+        // LabRequestsComponent, RequestDetailComponent
+>>>>>>> development
     ],
     imports: [
         CommonModule,
@@ -107,17 +94,12 @@ import {
         FormsModule,
         NgUploaderModule,
         NgPipesModule,
-        CurrencyMaskModule,
-        DevExtremeModule,
-        DxLoadIndicatorModule,
-        DxLookupModule,
-        DxDateBoxModule,
-        DxSparklineModule,
         MomentModule,
         Ng2PaginationModule,
         InfiniteScrollModule,
         ImageCropperModule,
         MaterialModule,
+<<<<<<< HEAD
         // MdNativeDateModule,
         // MdDatepickerModule,
         // MdButtonModule,
@@ -127,6 +109,9 @@ import {
         // MdOptionModule,
         // MdSelectionModule,
         // MdSelectModule
+=======
+        // DragulaModule
+>>>>>>> development
     ],
     providers: [StoreService]
 })

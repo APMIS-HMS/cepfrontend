@@ -43,7 +43,6 @@ export class ViewAccessComponent implements OnInit {
   }
   show(item: any) {
     this.selectedAccessControl = item;
-    console.log(this.selectedAccessControl);
   }
   isSelected(item: AccessControl) {
     return this.selectedAccessControl._id === item._id;

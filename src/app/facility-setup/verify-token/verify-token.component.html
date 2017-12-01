@@ -19,5 +19,5 @@
   </div>
 
 </form>
-<app-contact-info *ngIf="back_verify_show" [inputFacility]="inputFacility"></app-contact-info>
-<app-add-facility-logo *ngIf="sg3_show" class="f_sg3 animated zoomIn" [inputFacility]="inputFacility"></app-add-facility-logo>
+<app-contact-info *ngIf="back_verify_show" (closeModal)="close_onClick($event)" [inputFacility]="inputFacility"></app-contact-info>
+<app-add-facility-module *ngIf="sg3_show" (closeModal)="close_onClick($event)" class="f_sg3 animated zoomIn" [inputFacility]="inputFacility"></app-add-facility-module>

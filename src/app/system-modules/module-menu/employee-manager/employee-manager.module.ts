@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DxCheckBoxModule } from 'devextreme-angular';
-import { DatePickerModule } from 'ng2-datepicker';
 import { EmployeeManagerComponent } from './employee-manager.component';
 import { employeeManagerRoutes } from './employee-manager.routes';
 import { EmployeeManagerHomeComponent } from './employee-manager-home.component';
@@ -22,11 +20,8 @@ import { NewWorkspaceComponent } from './new-workspace/new-workspace.component';
 import { WorkspaceHistoryComponent } from './workspace-history/workspace-history.component';
 import { AssignUnitComponent } from './assign-unit/assign-unit.component';
 import { EmployeesResolverService, LoginEmployeeResolverService } from '../../../resolvers/module-menu/index'
+import { MaterialModule } from '../../../shared-common-modules/material-module';
 
-
-// should remove
-// tslint:disable-next-line:max-line-length
-import { DxLookupComponent, DevExtremeModule, DxLoadIndicatorModule, DxLookupModule, DxDateBoxModule, DxSparklineModule } from 'devextreme-angular';
 @NgModule({
     declarations: [
         EmployeeManagerComponent,
@@ -44,19 +39,13 @@ import { DxLookupComponent, DevExtremeModule, DxLoadIndicatorModule, DxLookupMod
         EditUserFeaturesComponent,
         NewWorkspaceComponent,
         WorkspaceHistoryComponent,
-        AssignUnitComponent,
-        // DxLookupComponent,
+        AssignUnitComponent
     ],
     exports: [
     ],
     imports: [
-        // DxCheckBoxModule,
-        SharedModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        // DatePickerModule,
-        employeeManagerRoutes
+        employeeManagerRoutes,
+        MaterialModule
     ],
     providers: [EmployeesResolverService, LoginEmployeeResolverService]
 })

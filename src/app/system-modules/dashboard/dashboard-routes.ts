@@ -55,10 +55,10 @@ const appRoutes: Routes = [
                 path: 'payment',
                 loadChildren: '../module-menu/payment/payment.module#PaymentModule'
             },
-            {
-                path: 'wallet',
-                loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
-            },
+            // {
+            //     path: 'wallet',
+            //     loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
+            // },
             {
                 path: 'clinic',
                 loadChildren: '../module-menu/clinic/clinic.module#ClinicModule'
@@ -86,6 +86,14 @@ const appRoutes: Routes = [
             {
                 path: 'pharmacy',
                 loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
+            },
+            // {
+            //     path: 'laboratory',
+            //     loadChildren: '../module-menu/laboratory/laboratory.module#LaboratoryModule'
+            // },
+            {
+                path: 'laboratory',
+                loadChildren: '../module-menu/lab/lab.module#LabModule'
             },
             {
                 path: 'corporate',

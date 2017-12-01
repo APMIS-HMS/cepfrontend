@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { FacilitiesService, PersonService, CorporateFacilityService } from '../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +15,16 @@ export class SignupComponent implements OnInit {
   pwdReset_on = false;
   login_on = false;
 
-  constructor() { }
+  constructor(private corporateFacilityService: CorporateFacilityService, private facilityService: FacilitiesService) {
+    // this.corporateFacilityService.listenerUpdate.subscribe(value => {
+    //   console.log(value);
+    //   this.facilityService.announceNotification({
+    //     type: 'Success',
+    //     text: 'Welcome ' + value.name,
+    //     users: [this.facilityService.getLoginUserId()]
+    //   })
+    // })
+  }
 
   ngOnInit() {
   }
@@ -52,6 +62,7 @@ export class SignupComponent implements OnInit {
     this.modal_on = false;
     this.personAccount_on = false;
     this.login_on = false;
+    this.corporateSignup_on = false;
   }
   login_show() {
     this.login_on = true;

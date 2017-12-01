@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { UserService, EmployeeService } from '../../../services/facility-manager/setup/index';
+import { UserService, EmployeeService, PatientService } from '../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -15,11 +15,25 @@ export class UserAccountsInnerPopupComponent implements OnInit {
   @Input() selectedFacility: any;
   @Input() loginEmployee: any;
 
+  selectedPatient: any = <any>{};
+  isPatient = false;
+  hasReturned = false;
+
   constructor(private router: Router, private locker: CoolLocalStorage,
-    private employeeService: EmployeeService,
+    private employeeService: EmployeeService, private patientService: PatientService,
     private userService: UserService) { }
 
   ngOnInit() {
+    // console.log(this.loginEmployee)
+    const auth: any = this.locker.getObject('auth');
+    console.log(auth)
+    this.patientService.find({ query: { personId: auth.data.personId } }).then(payload => {
+      if (payload.data.length > 0) {
+        this.selectedPatient = payload.data[0];
+        this.isPatient = true;
+      }
+      this.hasReturned = true;
+    })
   }
 
   close_onClick() {
@@ -32,10 +46,20 @@ export class UserAccountsInnerPopupComponent implements OnInit {
       return true;
     }
   }
+  isPatientInFacility() {
+    return this.isPatient;
+  }
   loadEmployeeRecord() {
+    console.log('go to dashboard')
     this.locker.setObject('selectedFacility', this.selectedFacility);
     this.router.navigate(['dashboard']).then(() => {
       this.userService.announceMission('in');
     });
+  }
+  loadPatientRecord() {
+    console.log(this.selectedPatient);
+    this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', this.selectedPatient.personId]).then(() => {
+      this.patientService.announcePatient(this.selectedPatient);
+    })
   }
 }

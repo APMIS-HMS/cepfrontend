@@ -1,0 +1,44 @@
+@import "../documentation/documentation.component.scss";
+
+.doc-contentArea {
+    width: 100%;
+}
+.tbl-listWrap{
+    background: #Fff;
+    padding: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.tbl-actn-btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #0288D1;
+    color: #0288D1;
+}
+.tbl-actn-btn:hover{
+    color: #fff;
+    background: #0288D1;
+}
+.tbl-actn-btn i{
+    padding-right: 3px;
+}
+.sect-title {
+    font-size: 14px;
+    color: #ff2500;
+}
+.buttom-sect {
+    width: 100%;
+    max-width: 405px;
+    float: right;
+}
+.cta-1{
+    width: 170px;
+    height: 37px;
+}
+.cta-1 i{
+    padding-right: 5px;
+}

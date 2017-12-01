@@ -8,7 +8,7 @@ export class CanActivateViaAuthGuardService implements CanActivate {
   constructor(private locker: CoolLocalStorage) { }
 
   canActivate() {
-    let auth = this.locker.getObject('auth');
+    const auth = this.locker.getObject('auth');
     if (auth !== undefined && auth != null) {
       return true;
     }

@@ -6,7 +6,6 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { LocationService } from '../../../../services/module-manager/setup/location.service';
 import { Observable } from 'rxjs/Observable';
 
-
 @Component({
   selector: 'app-create-workspace',
   templateUrl: './create-workspace.component.html',
@@ -54,12 +53,12 @@ export class CreateWorkspaceComponent implements OnInit {
       majorLoc: ['', [Validators.required]],
       minorLoc: ['', [Validators.required]]
     });
-    // this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
-    //   this.selectedDepartment = value;
-    //   this.units = value.units;
-    //   this.employees = [];
-    //   this.filteredEmployees = [];
-    // });
+    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
+      this.selectedDepartment = value;
+      this.units = value.units;
+      this.employees = [];
+      this.filteredEmployees = [];
+    });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
       this.selectedUnit = value;
       this.employees = [];
@@ -74,6 +73,7 @@ export class CreateWorkspaceComponent implements OnInit {
       // this.getWorkSpace();
     });
     this.frmNewEmp1.controls['minorLoc'].valueChanges.subscribe((value) => {
+      console.log(value);
       this.selectedMinorLocation = value;
       this.getWorkSpace();
     });
@@ -86,8 +86,8 @@ export class CreateWorkspaceComponent implements OnInit {
 
 
 
-    if (this.selectedEmployee !== undefined) {
-      console.log(1);
+    if (this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined) {
+      console.log(this.selectedEmployee);
       this.disableDepartment = true;
       const deptList = this.departments.filter(x => x._id === this.selectedEmployee.department._id);
       if (deptList.length > 0) {
@@ -98,13 +98,10 @@ export class CreateWorkspaceComponent implements OnInit {
         console.log(2);
         console.log(item);
         console.log(this.selectedEmployee.units);
-        const unitsList = this.selectedEmployee.units.filter(x => x === item._id);
-        console.log(unitsList);
-        console.log(unitsList.length);
+        const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
         if (unitsList.length > 0) {
-          console.log("Ok");
-          //this.units.push(unitsList[0]);
-          this.units.push(item);
+          console.log(i);
+          this.units.push(unitsList[0]);
         }
       });
       // this.units = this.frmNewEmp1.controls['dept'].value.units;
@@ -121,6 +118,7 @@ export class CreateWorkspaceComponent implements OnInit {
     });
   }
   getEmployees(dept: Department, unit: any) {
+    this.loadIndicatorVisible = true;
     this.employeeService.find({
       query: {
         facilityId: this.selectedFacility._id,
@@ -134,6 +132,9 @@ export class CreateWorkspaceComponent implements OnInit {
         itemi.isChecked = false;
       });
       this.filteredEmployees = this.employees;
+      this.loadIndicatorVisible = false;
+    }, error => {
+      this.loadIndicatorVisible = false;
     });
 
   }
@@ -155,10 +156,10 @@ export class CreateWorkspaceComponent implements OnInit {
     });
   }
   onValueChanged(e, employee: Employee) {
-    employee.isChecked = e.value;
+    employee.isChecked = e.checked;
   }
   getWorkSpace() {
-    if (this.selectedEmployee === undefined) {
+    if (this.selectedEmployee === undefined || this.selectedEmployee._id === undefined) {
       const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
       this.filteredEmployees = this.employees;
       this.checkAllEmployees(false);
@@ -168,14 +169,15 @@ export class CreateWorkspaceComponent implements OnInit {
           query:
           {
             facilityId: this.selectedFacility._id,
-            'locations.minorLocationId': minorLocationId, $limit: 100
+            'locations.minorLocationId._id': minorLocationId, $limit: 100
           }
         }).then(payload => {
+          console.log(payload);
           const filteredEmployee: Employee[] = [];
           this.filteredEmployees.forEach((emp, i) => {
             let workInSpace = false;
             payload.data.forEach((work, j) => {
-              if (work.employeeId === emp._id) {
+              if (work.employeeId._id === emp._id) {
                 workInSpace = true;
               }
             });
@@ -210,17 +212,20 @@ export class CreateWorkspaceComponent implements OnInit {
       this.loadIndicatorVisible = true;
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
+      console.log(employeesId);
       const createArrays: Employee[] = [];
       const updateArrays: Employee[] = [];
       this.workspaceService.find({
         query:
-        { facilityId: this.selectedFacility._id, employeeId: { $in: employeesId }, $limit: 100 }
+        { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
       }).then(payload => {
+        console.log(payload);
         filtered.forEach((iteme, e) => {
           let hasRecord = false;
-          if (payload.data.filter(x => x.employeeId === iteme._id).length > 0) {
+          if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
             hasRecord = true;
           }
+          console.log(hasRecord);
           if (hasRecord) {
             updateArrays.push(iteme);
           } else {
@@ -232,16 +237,18 @@ export class CreateWorkspaceComponent implements OnInit {
         {
           const workSpaces: WorkSpace[] = [];
           console.log(createArrays);
+          console.log(updateArrays);
           createArrays.forEach((emp, i) => {
             const space: WorkSpace = <WorkSpace>{};
-            space.employeeId = emp._id;
+            space.employeeId = emp;
             space.facilityId = this.selectedFacility._id;
             space.locations = [];
             const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value._id;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
+            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
             space.locations.push(locationModel);
             workSpaces.push(space);
+            console.log(workSpaces);
             workSpaces$.push(Observable.fromPromise(this.workspaceService.create(space)));
           });
         }
@@ -249,14 +256,15 @@ export class CreateWorkspaceComponent implements OnInit {
         {
           payload.data.forEach((work: WorkSpace, i) => {
             const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value._id;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
+            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
             work.locations.push(locationModel);
             workSpaces$.push(Observable.fromPromise(this.workspaceService.update(work)));
           });
         }
         Observable.forkJoin(workSpaces$).subscribe(results => {
           this.getWorkSpace();
+          this.loadIndicatorVisible = false;
         }, error => {
           this.loadIndicatorVisible = false;
         });

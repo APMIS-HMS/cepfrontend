@@ -28,7 +28,7 @@ export class RoomGroupService {
     return this._socket.get(id, query);
   }
 
-  create(wardGroup:any) {
+  create(wardGroup: any) {
     return this._socket.create(wardGroup);
   }
   update(wardGroup: any) {

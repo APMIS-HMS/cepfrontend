@@ -14,8 +14,8 @@ export class ApmisCheckboxComponent implements OnInit {
   @Input() selectedAccessControl = <AccessControl>{};
   @Input() feature;
   accessControlList: AccessControl[] = [];
-  expand: boolean = false;
-  expandMain: boolean = false;
+  expand = false;
+  expandMain = false;
   @Input() cruds: any[] = [];
   constructor(private featureModuleService: FeatureModuleService,
     private locker: CoolLocalStorage,
@@ -23,7 +23,7 @@ export class ApmisCheckboxComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
-    //this.getAccessList();
+    // this.getAccessList();
   }
   getAccessList() {
     this.accessControlService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {

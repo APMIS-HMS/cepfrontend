@@ -1,5 +1,6 @@
 <div class="survery">
     <div class="">
+<<<<<<< HEAD
         <div class="table-container">
             <div class="row">
             <div class="col-md-4">
@@ -20,6 +21,8 @@
             </div>
         </div>
         </div>
+=======
+>>>>>>> development
         <table class="table table-striped text-center">
             <thead>
                 <tr>
@@ -34,12 +37,37 @@
             </thead>
             <tbody>
                 <tr>
+<<<<<<< HEAD
                     <td colspan="7" class="td-col-span-8">
                      
+=======
+                    <td colspan="7">
+                        <div class="table-container">
+                            <div class="row" style="margin-left: 0; margin-right: 0">
+                                <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
+                                    <select [formControl]="selMinorLocation" class="form-control">
+                                        <option value="Select by location" disabled selected>Select by location</option>
+                                        <option *ngFor="let minorLocation of minorLocations" value={{minorLocation._id}}>{{minorLocation.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select [formControl]="selProductType" class="form-control">
+                                                <option value="Select by product type" disabled selected>Select by product type</option>
+                                                <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
+                                            </select>
+                                </div>
+                                <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
+                                    <div class="col-xs-10" style="padding-right: 0; padding-left: 0;">
+                                        <input type="text" [formControl]="searchControl" placeholder="search here" class="searchInput" #inputsearch/>
+                                    </div>
+                                    <div class="col-xs-2" style="padding-right: 0; padding-left: 0;">
+                                        <button md-raised-button (click)="refresh()" style="background: #FAFAFA;height: 35px;min-width:50px;"><i class="fa fa-refresh"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> development
                     </td>
-                </tr>
-                <tr *ngIf="stores.length === 0">
-                    <td colspan="7"> No data available in table</td>
                 </tr>
                 <tr *ngFor="let store of stores">
                     <td>{{store.name}}</td>
@@ -47,7 +75,7 @@
                     <td>{{store.description}}</td>
                     <td class="td-worspace">
                         <div class="workspace-count"> {{store.productTypeId.length}} Product Type(s)</div>
-                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                        <ul *ngIf="store.productTypeId.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
                             <li *ngFor="let storeType of store.productTypeId" class="workspace-listItem">
                                 <ng-container>
                                     <span>{{storeType?.details?.name}}</span>
@@ -68,6 +96,14 @@
                         <a (click)="onEditStore(store)" class="pull-right"><i class="fa fa-pencil"></i></a>
                         <a class="pull-right"><i class="fa  fa-trash"></i></a>
                     </td>
+                </tr>
+                <tr *ngIf="stores.length === 0 && loading">
+                    <td colspan="7">
+                        <md-spinner class='small-spinner'></md-spinner>
+                    </td>
+                </tr>
+                <tr *ngIf="stores.length === 0 && !loading">
+                    <td colspan="7"> No data available in table</td>
                 </tr>
             </tbody>
         </table>

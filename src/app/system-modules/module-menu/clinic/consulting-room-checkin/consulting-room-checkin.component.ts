@@ -1,8 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { ConsultingRoomModel, Employee } from '../../../../models/index';
+import { ConsultingRoomModel, Employee, User } from '../../../../models/index';
 import { ClinicHelperService } from '../services/clinic-helper.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-consulting-room-checkin',
@@ -14,6 +15,8 @@ export class ConsultingRoomCheckinComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   loginEmployee: Employee = <Employee>{};
+  locations: any[] = [];
+  user: User = <User>{};
 
   public roomCheckin: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -24,13 +27,21 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     public clinicHelperService: ClinicHelperService,
     public facilityService: FacilitiesService,
     private consultingRoomService: ConsultingRoomService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private locker: CoolLocalStorage
   ) { }
 
   ngOnInit() {
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.user = <User>this.locker.getObject('auth');
+    this.loginEmployee.workSpaces.forEach(work => {
+      work.locations.forEach(loc => {
+        this.locations.push(loc.minorLocationId);
+      })
+    })
     this.roomCheckin = this.formBuilder.group({
-      location: ['', []],
-      room: ['', []],
+      location: ['', [<any>Validators.required]],
+      room: ['', [<any>Validators.required]],
       isDefault: [false, []]
     });
     this.roomCheckin.controls['location'].valueChanges.subscribe(value => {
@@ -43,12 +54,13 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       });
     });
 
-     this.roomCheckin.controls['room'].valueChanges.subscribe(value => {
+    this.roomCheckin.controls['room'].valueChanges.subscribe(value => {
     });
   }
   close_onClick() {
     this.closeModal.emit(true);
   }
+
   checkIn(valid, value) {
     let checkIn: any = <any>{};
     checkIn.minorLocationId = value.location;
@@ -56,35 +68,59 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     checkIn.lastLogin = new Date();
     checkIn.isOn = true;
     checkIn.isDefault = value.isDefault;
-    if (this.clinicHelperService.loginEmployee.consultingRoomCheckIn === undefined) {
-      this.clinicHelperService.loginEmployee.consultingRoomCheckIn = [];
+    if (this.loginEmployee.consultingRoomCheckIn === undefined) {
+      this.loginEmployee.consultingRoomCheckIn = [];
     }
-    this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
+    this.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
       itemi.isOn = false;
       if (value.isDefault === true) {
         itemi.isDefault = false;
       }
     });
-    this.loginEmployee = this.clinicHelperService.loginEmployee;
     this.loginEmployee.consultingRoomCheckIn.push(checkIn);
-    this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-      this.clinicHelperService.loginEmployee = payload;
+    this.employeeService.update(this.loginEmployee).then(payload => {
+      this._notification('Success', 'You have successfully checked into consulting room.');
+      this.loginEmployee.consultingRoomCheckIn = payload.consultingRoomCheckIn;
+      const workspaces = <any>this.locker.getObject('workspaces');
+      this.loginEmployee.workSpaces = workspaces;
+      this.locker.setObject('loginEmployee', this.loginEmployee);
+      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true) {
+          itemr.isOn = true;
+          itemr.lastLogin = new Date();
+          this.employeeService.announceCheckIn({ typeObject: itemr, type: 'clinic' });
+        }
+      });
       this.close_onClick();
     });
   }
+
   changeRoom(checkIn: any) {
-    let keepCheckIn = undefined;
-    this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
+    let keepCheckIn;
+    this.loginEmployee.consultingRoomCheckIn.forEach((itemi, i) => {
       itemi.isOn = false;
       if (itemi._id === checkIn._id) {
         itemi.isOn = true;
         keepCheckIn = itemi;
       }
     });
-    this.employeeService.update(this.clinicHelperService.loginEmployee).then(payload => {
-      this.clinicHelperService.loginEmployee = payload;
+    this.employeeService.update(this.loginEmployee).then(payload => {
+      this._notification('Success', 'You have successfully changed consulting room.');
+      this.loginEmployee = payload;
+      const workspaces = <any>this.locker.getObject('workspaces');
+      this.loginEmployee.workSpaces = workspaces;
+      this.locker.setObject('loginEmployee', this.loginEmployee);
       this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'clinic' });
       this.close_onClick();
     });
   }
+
+  // Notification
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+        users: [this.user._id],
+        type: type,
+        text: text
+    });
+}
 }

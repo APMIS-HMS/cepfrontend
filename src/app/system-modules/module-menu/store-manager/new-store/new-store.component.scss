@@ -6,10 +6,12 @@
     color: #515151;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .modal-baseWrap {
-    width: 650px;
-    min-width: auto;
-    padding: 20px;
+
 }
 
 .modal_title {
@@ -52,6 +54,7 @@ textarea:focus {
 
 .sec-2 {
     width: 50%;
+    margin-bottom: 20px;
 }
 
 .checkbox-wrap {

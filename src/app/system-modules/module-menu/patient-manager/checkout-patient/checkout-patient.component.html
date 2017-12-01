@@ -7,11 +7,12 @@
         <div class="CTAs-wrap">
             <div class="checkoutBtn">No Futher Appointment</div>
             <div class="checkoutBtn">Follow-Up With Appointment</div>
-            <div (click)="checkoutWard()" class="checkoutBtn">Admit</div>
+            <div (click)="checkoutWard()" class="checkoutBtn">Send for Admission</div>
             <div class="checkoutBtn">Death</div>
         </div>
         <div class="rightsect">
             <div *ngIf="ward_checkout" class="selectedCheck">
+<<<<<<< HEAD
                 <form [formGroup]="admitFormGroup" novalidate>
                     <div class="frm-item-wrap">
                         <!--<label>Ward</label>
@@ -23,9 +24,38 @@
                         <small class="alert-label" [hidden]="admitFormGroup.controls.ward.valid || admitFormGroup.controls.ward.pristine">
 							Kindly search or select an option from the drop down.
 						</small>
+=======
+                <div *ngIf="!admittedWard.isAdmitted && !loading">
+                    <div class="sub-header">Send {{ patientDetails?.personDetails?.personFullName }} to be admitted</div>
+                    <form [formGroup]="admitFormGroup" novalidate>
+                        <div class="frm-item-wrap">
+                            <md-select placeholder="Ward" formControlName="ward">
+                                <md-option *ngFor="let ward of wards" [value]="ward">
+                                    {{ ward.name }}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <md-form-field>
+                                <textarea formControlName="desc" mdInput placeholder="Description (optional)"></textarea>
+                            </md-form-field>
+                        </div>
+                    </form>
+                    <div class="btn-box">
+                        <button md-raised-button [disabled]="!admitFormGroup.valid" class="btn" (click)="onClickAdmit(admitFormGroup.value, admitFormGroup.valid);" [innerHtml]="admitBtnText"></button>
+>>>>>>> development
                     </div>
-                    <div class="checkoutBtn" (click)="onClickAdmit(admitFormGroup.value, admitFormGroup.valid);">Checkout</div>
-                </form>
+                </div>
+                <div *ngIf="admittedWard.isAdmitted && !loading">
+                    <div style="width:100%;">
+                        <span style="padding:50px;">{{ admittedWard.msg }} </span>
+                    </div>
+                </div>
+                <div *ngIf="!admittedWard.isAdmitted && loading">
+                    <div>
+                        <span> Loading</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

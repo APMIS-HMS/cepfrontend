@@ -83,7 +83,6 @@ export class CorporateAccountComponent implements OnInit {
 		})
 			.then(payload => {
 				if (payload.data.length > 0) {
-					console.log(payload.data);
 					this.hasPending = true;
 				}
 			});
@@ -117,7 +116,6 @@ export class CorporateAccountComponent implements OnInit {
 		this.companyHealthCoverService.find({ query: { corporateFacilityId: this.selectedFacility._id, isAccepted: false } })
 			.then(payload => {
 				this.pendingHealthCovers = payload.data;
-				console.log(this.pendingHealthCovers);
 			});
 	}
 	logOutShow() {

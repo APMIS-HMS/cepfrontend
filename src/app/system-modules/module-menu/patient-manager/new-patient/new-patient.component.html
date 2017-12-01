@@ -6,7 +6,10 @@
     <div *ngIf="apmisId_show" class="newEmp-idWrap">
         <input type="text" placeholder="Patient's Apmis ID'" [formControl]="newEmpIdControl">
         <div class="gen_idWrap">Patient has no <strong>apmis ID</strong>? <span (click)="newPerson1_show()">Generate New ID</span></div>
-        <div (click)="empApmisID()" class="btn-1 btn-blue">Add Patient</div>
+        <!-- <div (click)="empApmisID()" class="btn-1 btn-blue">Add Patient</div> -->
+        <div class="btn-box">
+            <button class="small-btn" (click)="empApmisID();" md-raised-button>Add Patient</button>
+        </div>
     </div>
 
     <div *ngIf="frmNewPerson1_show">
@@ -140,9 +143,14 @@
 
             <div class="clear"></div>
 
-            <div (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+            <div class="back-btn-box">
+                <span (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</span>
+            </div>
 
-            <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div>
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp1.valid" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button>CONTINUE</button>
+            </div>
+            <!-- <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div> -->
         </form>
     </div>
 
@@ -171,7 +179,8 @@
                     </dx-date-box>-->
                     <md-input-container>
                         <input mdInput [mdDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                     </md-input-container>
                     <md-datepicker #picker></md-datepicker>
                 </div>
@@ -235,7 +244,11 @@
             </div>
             <div class="clear"></div>
             <div (click)="back_newPerson1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-            <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">CONTINUE</div>
+
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp2.valid" (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value);" md-raised-button>CONTINUE</button>
+            </div>
+            <!-- <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">CONTINUE</div> -->
         </form>
     </div>
 
@@ -306,7 +319,10 @@
                 <div (click)="back_newPerson2()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
                 <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
             </div>
-            <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div>
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp3.valid" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" md-raised-button>CONTINUE</button>
+            </div>
+            <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
         </form>
     </div>
 
@@ -314,7 +330,92 @@
         <form [formGroup]="frmNewEmp4" novalidate>
             <div class="clear"></div>
             <div (click)="back_newPerson3()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-            <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">Create Patient</div>
+            <!-- <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">Create Patient</div> -->
+            <div class="btn-box">
+                <button class="small-btn" [disabled]="!frmNewEmp4.valid" (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value);" md-raised-button>Create Patient</button>
+            </div>
         </form>
+    </div>
+
+    <div *ngIf="paymentPlan">
+        <div class="doc-mainWrap">
+            <div class="tab-wrap">
+              <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
+              <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
+              <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+              <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+            </div>
+        
+            <div class="tab-content">
+              <div *ngIf="tabWallet">
+                <div class="plan">
+                  <div class="plan-title">Out of Pocket</div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="walletPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+                </div>
+              </div>
+        
+              <div *ngIf="tabInsurance">
+                <div class="plan">
+                  <div class="plan-title">Insurance</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+                      </md-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="hmoPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+            
+                  <div class="another">Another Insurance</div>
+                </div>
+              </div>
+        
+              <div *ngIf="tabCompany">
+                <div class="plan">
+                  <div class="plan-title">Company Cover</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+                      </md-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                    <md-select placeholder="Select Plan" [formControl]="ccPlan">
+                      <md-option>Diamond</md-option>
+                      <md-option>Gold</md-option>
+                      <md-option>Bronze</md-option>
+                    </md-select>
+                  </div>
+                  <button class="cta-1">Save</button>
+            
+                  <div class="another">Another Company</div>
+                </div>
+              </div>
+        
+              <div *ngIf="tabFamily">
+                <div class="plan">
+                  <div class="plan-title">Family Cover</div>
+                  <div class="frm-item-wrap">
+                      <md-input-container class="example-full-width">
+                          <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
+                      </md-input-container>
+                  </div>
+                  <button class="cta-1">Save</button>
+        
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
 </div>

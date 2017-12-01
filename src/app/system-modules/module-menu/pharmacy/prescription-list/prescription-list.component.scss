@@ -1,5 +1,23 @@
+<<<<<<< HEAD
+=======
+.c-page-wrapper {
+    margin-top: -5px !important;
+    padding-left: 0 !important;
+}
+
+#presc-list {
+    //margin: 5px;
+}
+
+.search {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 7px;
+}
+>>>>>>> development
 
 
+<<<<<<< HEAD
 #presc-list {
     margin:5px;
 }
@@ -7,6 +25,30 @@
     float: none;
 }
 .table-head, .table-data {
+=======
+.filter-wrapper {
+    //position: absolute;
+    //top: -31px;
+}
+
+.table-wrapper {
+    border: 1px solid #cacaca;
+}
+
+.table-header {
+    color: #000;
+    th {
+        padding-left: 5px;
+    }
+}
+
+.table-content {
+    padding: 10px;
+}
+
+.table-head,
+.table-data {
+>>>>>>> development
     display: flex;
 }
 .table-head {
@@ -52,10 +94,30 @@
 .survery a:hover, .survery a:focus {
     cursor: pointer;
 }
+<<<<<<< HEAD
 .table-data:hover {
+=======
+
+.table-data:hover,
+.table-content:hover {
+>>>>>>> development
     background-color: #f5f5f5;
     cursor: pointer;
 }
 a:hover {
     text-decoration: none;
+}
+.backBtn {
+    position: absolute;
+    right: 9px;
+    z-index: 12;
+    font-size: 12px;
+    top: 23px;
+    color: #0288D1;
+}
+.backBtn:hover{
+    text-decoration: underline;
+}
+.fa-arrow-circle-o-right {
+    margin-left: 5px;
 }

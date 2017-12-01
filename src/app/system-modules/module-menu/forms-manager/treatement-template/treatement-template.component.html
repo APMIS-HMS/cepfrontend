@@ -1,0 +1,306 @@
+<div>
+  <div class="doc-mainWrap">
+    <div class="doc-contentArea">
+      <div class="clinicalNoteWrap">
+        <div class="actSect">
+          <div class="actSect-header">
+            <div (click)="newTemplate_show()" class="act-wrap">
+              <i *ngIf="newTemplate" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+              <span>New Template</span>
+            </div>
+          </div>
+
+          <form class="frmNoteWrap" *ngIf="newTemplate" [formGroup]="frmnewTemplate" novalidate>
+            <div class="frm-title">New Template</div>
+
+            <div class="frm-x2">
+
+              <div class="frm-item-wrap">
+                <!-- <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+                      <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
+                  </md-select> -->
+                <md-select placeholder="Type" formControlName="type">
+                  <md-option value="Documentation" selected>Documentation</md-option>
+                  <md-option value="Order Set">Order Set</md-option>
+                </md-select>
+              </div>
+
+              <div class="frm-item-wrap">
+                <md-input-container>
+                  <input mdInput placeholder="Template Name" formControlName="name">
+                </md-input-container>
+              </div>
+
+              <div class="frm-item-wrap">
+                <md-select placeholder="Select Diagnosis" formControlName="diagnosis">
+                  <md-option>Malaria</md-option>
+                  <md-option>Yellow Fever</md-option>
+                </md-select>
+              </div>
+
+              <div class="frm-item-wrap">
+                <md-select placeholder="Set Visibility" formControlName="visibility">
+                  <md-option>Personal</md-option>
+                  <md-option>Unit</md-option>
+                  <md-option>Department</md-option>
+                  <md-option>Facility</md-option>
+                  <md-option>Network</md-option>
+                  <md-option>Global</md-option>
+                </md-select>
+              </div>
+
+              <div class="frm-item-wrap chk-item" style="color:#777;font-size:12px;">
+                <md-checkbox formControlName="isEditable">Editable By Others</md-checkbox>
+              </div>
+            </div>
+
+            <div *ngIf="isDocumentation" class="template-sect animated fadeIn">
+              <div class="frm-item-wrap">
+                <md-select placeholder="Select Form" formControlName="docFrmList">
+                  <md-option>Malaria</md-option>
+                  <md-option>Yellow Fever</md-option>
+                </md-select>
+              </div>
+
+              <div class="docFrmArea">
+                <div style="width:100%;text-align:center;color:#777;padding:5px;font-size:10px;"> Load frm here</div>
+              </div>
+            </div>
+
+            <div *ngIf="isOrderSet" class="template-sect animated fadeIn">
+              <div class="frm-title">Category</div>
+              <md-radio-group>
+                <div class="frm-x3">
+                  <div class="frm-item-wrap chk-item">
+                    <md-radio-button value="1">Medication</md-radio-button>
+                  </div>
+                  <div class="frm-item-wrap chk-item">
+                    <md-radio-button value="1">Laboratory Investigation</md-radio-button>
+                  </div>
+                  <!-- <div class="frm-item-wrap chk-item">
+                      <md-radio-button value="1">Diagnostic</md-radio-button>
+                  </div> -->
+                  <div class="frm-item-wrap chk-item">
+                    <md-radio-button value="1">Procedure</md-radio-button>
+                  </div>
+                  <!-- <div class="frm-item-wrap chk-item">
+                      <md-radio-button value="1">Immunization</md-radio-button>
+                  </div> -->
+                  <div class="frm-item-wrap chk-item">
+                    <md-radio-button value="1">Nursing Care</md-radio-button>
+                  </div>
+                  <div class="frm-item-wrap chk-item">
+                    <md-radio-button value="1">Physician Order</md-radio-button>
+                  </div>
+                </div>
+              </md-radio-group>
+
+              <div *ngIf="showMedService" class="service-wrap">
+                <div class="frm-title">Medication</div>
+                <app-template-medication></app-template-medication>
+              </div>
+
+              <div *ngIf="showProcedureService" class="service-wrap">
+                <div class="frm-title">Procedure</div>
+                <app-template-procedure></app-template-procedure>
+              </div>
+
+              <div *ngIf="showPhysicianOrderService" class="service-wrap">
+                <div class="frm-title">Physician Order</div>
+                <app-template-physician-order></app-template-physician-order>
+              </div>
+
+              <div *ngIf="showLabService" class="service-wrap">
+                <div class="frm-title">Laboratory Investigation</div>
+                <app-template-lab></app-template-lab>
+              </div>
+
+              <div *ngIf="showNursingCareService" class="service-wrap">
+                <div class="frm-title">Nursing Care</div>
+                <app-template-nursing-care></app-template-nursing-care>
+              </div>
+
+              <div class="tblWrapa actSect">
+                <table cellpadding="0" cellspacing="0" border="0.5">
+                  <thead>
+                    <tr>
+                      <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Item</span>
+                      </th>
+                      <th>
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                        <span style="padding-left: 3px;">Service</span>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <!-- <tr>
+                      <td colspan="10">
+                        <div class="tbl-actionRow">
+                          <div class="frm-item-wrap">
+                                <apmis-lookup [(ngModel)]="apmisLookupText" 
+                                url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
+                                isSocket="false" displayKey="apmisLookupDisplayKey" 
+                                (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                              </div>
+      
+                              <div class="frm-item-wrap">
+                                <apmis-lookup [(ngModel)]="apmisLookupText" 
+                                    url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
+                                    isSocket="false" displayKey="apmisLookupDisplayKey" 
+                                    (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                              </div>
+      
+                              <div class="frm-item-wrap">
+                                <apmis-lookup [(ngModel)]="apmisLookupText" 
+                                    url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
+                                    isSocket="false" displayKey="apmisLookupDisplayKey" 
+                                    (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                              </div>
+                        </div>
+                      </td>
+                    </tr> -->
+
+                    <tr>
+                      <td>Paraetamol</td>
+                      <td>Medication</td>
+                      <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                          <div class="action-item">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <span>Edit Item</span>
+                          </div>
+
+                          <div class="action-item">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            <span>Remove Item</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Paraetamol</td>
+                      <td>Medication</td>
+                      <td class="action-placeholder" style="text-align:center;">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                          <div class="action-item">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <span>Edit Item</span>
+                          </div>
+
+                          <div class="action-item">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            <span>Remove Item</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value)" class="cta-1">Save Template</button>
+          </form>
+        </div>
+
+        <div class="tblWrapa actSect">
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Date</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Payment Mode</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Amount</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Recieved For</span>
+                </th>
+                <th>Invoice No.</th>
+                <th>Comment</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td colspan="10">
+                  <div class="tbl-actionRow">
+                    <!-- <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div> -->
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td (click)="show_beneficiaries()">11th Oct, 2016.</td>
+                <td>Paystack</td>
+                <td>&#x20a6; 25,000</td>
+                <td>Family Cover</td>
+                <td>AC2001</td>
+                <td>blah blah blah</td>
+                <td class="action-placeholder" style="text-align:center;">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <form>
+                      <div (click)="showImageBrowseDlg()" class="action-item">
+                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                        <span>Upload Beneficiary List</span>
+                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
+                          #fileInput type="file" id="uploadResult" (change)="upload($event, hmo)">
+                      </div>
+                    </form>
+                    <div class="action-item">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      <span>Update HMO</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

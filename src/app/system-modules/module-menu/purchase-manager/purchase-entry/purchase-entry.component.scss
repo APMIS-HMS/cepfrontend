@@ -15,6 +15,7 @@
     display: flex;
     justify-content: space-around;
     float: right;
+    margin: 0 auto;
 }
 .sec-c .frm-item-wrap{
     width: 200px;
@@ -41,4 +42,10 @@
 }
 .uploadWrap{
     width: 150px;
+}
+.mat-raised-button {
+    background: none;
+}
+.navActive {
+    border: 1px solid #fff;
 }

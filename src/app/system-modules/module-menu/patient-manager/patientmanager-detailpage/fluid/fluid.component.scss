@@ -1,0 +1,63 @@
+@import "../documentation/documentation.component.scss";
+
+.docCard-body{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.card2-exo{
+    display: flex;
+    justify-content: space-between;
+}
+.doc-card2{
+    width: 49.5%;
+    margin-top: 0;
+    margin-right: 3px;
+    min-height: 94px;
+}
+.doc-cardWrap{
+    margin-top: 0;
+}
+.body-divide{
+    width: 47%;
+}
+.modal_title{
+    position: relative;
+}
+.modal_title i{
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+}
+.modal_title i:hover{
+    color: #0288D1;
+}
+.doc-contentArea{
+    width: 100%;
+}
+form{
+    display: flex;
+}
+.cta-1{
+    height: 26px;
+    width: 68px;
+}
+.frm-item-wrap{
+    width: 33%;
+    margin-left: 10px;
+}
+.card-tbl{
+    padding: 5px;
+    background: #fff;
+    box-sizing: border-box;
+}
+td{
+    border: 0px solid transparent;
+}
+th{
+    font-size: 15px;
+    text-align: left;
+    font-weight: normal;
+    color: #ff2500;
+    border-bottom: 1px solid #ff2500;
+}

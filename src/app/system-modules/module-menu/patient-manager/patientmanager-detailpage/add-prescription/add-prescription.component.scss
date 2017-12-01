@@ -4,7 +4,25 @@
 }
 
 .btn {
+<<<<<<< HEAD
     padding: 5px !important;
+=======
+    padding: 0px 6px !important;
+}
+
+.trash-box {
+    display: block;
+    width: 20px;
+    color: #676a6c;
+    margin-right: 7px;
+    padding: 4px 10px 0 0;
+    height: 20px;
+    float: left;
+    .fa-trash,
+    .fa-edit {
+        font-size: 20px;
+    }
+>>>>>>> development
 }
 
 .text-center {
@@ -63,4 +81,26 @@
 
 .center {
     margin-top: 31px;
+}
+
+.table-header {
+    background-color: #4bb8ef;
+    color: #000;
+    .table-header-data {
+        padding: 10px;
+    }
+}
+
+.pres-data {
+    border: 0;
+}
+
+.action-long {
+    width: 100% !important;
+    padding: 0;
+}
+
+.table-content {
+    padding: 10px 10px;
+    text-align: left;
 }

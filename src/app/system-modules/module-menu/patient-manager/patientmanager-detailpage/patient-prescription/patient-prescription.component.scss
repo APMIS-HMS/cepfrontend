@@ -3,13 +3,17 @@
     width: 100%;
     box-sizing: border-box;
     border: 1px solid #cacaca;
-    border-radius: 5px;
     padding: 5px;
+}
+
+.text-center {
+    text-align: center;
+    padding: 10px;
 }
 
 #prescription {
     width: 100%;
-    margin-top: 30px;
+    margin-top: -22px;
     font-size: 12px;
 }
 
@@ -80,7 +84,7 @@
 }
 
 .pres-data {
-    width: 10%;
+    width: 15%;
     padding: 5px 10px;
     font-size: 12px;
     border-top: 1px solid #f4f4f4;
@@ -91,8 +95,13 @@
     color: #676a6c;
 }
 
+<<<<<<< HEAD
 #long-text {
     width: 60%;
+=======
+.long-text {
+    width: 70%;
+>>>>>>> development
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -175,8 +184,8 @@ a:hover {
 .fly-out {
     position: absolute;
     right: -12px;
-    top: 62px;
-    z-index: 99999;
+    top: 10px;
+    z-index: 8;
     background: #f5f5f5;
 }
 
@@ -283,11 +292,12 @@ select {
         margin-top: 20px;
         height: auto;
         z-index: 1501;
-        top: 35px;
+        top: 37px;
         border: 1px solid #ddd;
         background: #fff;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-        border-radius: 6px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
         color: #333;
         font-weight: normal;
         font-size: 14px;
@@ -374,6 +384,10 @@ select {
     padding: 2px 12px;
 }
 
+.td-small {
+    width: 10%;
+}
+
 label:hover {
     cursor: pointer;
 }
@@ -383,7 +397,7 @@ label:hover {
 }
 
 #table {
-    width: 50%;
+    width: 99%;
     float: right;
     margin-right: 15px;
     background: #f5f5f5;

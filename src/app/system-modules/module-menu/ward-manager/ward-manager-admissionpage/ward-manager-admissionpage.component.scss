@@ -1,58 +1,43 @@
 @import "../../../../../globals/variables.scss";
-@import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
-.inPatients {
-    position: relative;
-    border: none;
-    .patient-sex {
-        text-align: left;
-    }
-    .btn-1 {
-        padding: 5px;
-        margin-top: 10px;
-    }
-    .moduleNav {
-        position: absolute;
-        top: -32px;
-        right: 0;
-        font-size: 14px;
-        li {
-            padding: 10px;
-        }
-    }
-    .moduleNav-active{
-        background: transparent;
-        color: #0288D1;
-        text-decoration: underline;
-    }
-    table {
-        thead {
-            background-color: #AED6F1;
-        }
-        tbody {
-            border: 1px solid #ddd !important;
-            tr {
-                td {
-                    padding: 8px;
-                    line-height: 1.42857143;
-                }
-            }
-            .tr-header-group {
-                background-color: #0288D1;
-                color: #fff;
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-            tr {
-                td {
-                    line-height: 3;
-                }
-            }
-        }
-    }
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
+.tr-act-btn {
+    width: auto;
+    margin: 0;
+}
+
+.table-content {
+    padding: 10px;
+    text-align: center;
+}
+
+// table {
+//     width: 100%;
+//     position: relative;
+//     border-collapse: collapse;
+//     font-size: 12px;
+//     background: #fff;
+// }
+// table,
+// td {
+//     border: 0.5px solid $td-border;
+// }
+// th {
+//     height: 50px;
+//     background: $th-background;
+//     border: 0.5px solid $th-border;
+// }
+// td {
+//     vertical-align: center;
+//     text-align: center;
+//     padding: 2px;
+// }
+// tr:hover {
+//     background-color: $tr-hover
+// }
+// tr:nth-child(even) {
+//     background-color: $tr-stripe
+// }
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
 }

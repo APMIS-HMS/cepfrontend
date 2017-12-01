@@ -1,13 +1,19 @@
 <div class="inner-wrap-b body-wrap">
   <div class="facility-title">Bills/Payment</div>
   <div class="inner-page-wrap">
+    <ul class="topmenuwrap">
+        <li (click)="makePayment_show()">
+            <i class="fa fa-money" aria-hidden="true"></i>
+            <span>Make Payment</span>
+        </li>
+    </ul>
     <div class="megaPgWrap">
       <div class="feedsWrap leftCol">
         <!--<div class="feedbox">
           <div (click)="onSelectedInvoice(group)" class="existing-bill-group" *ngFor="let group of invoiceGroups">{{group.createdAt | date}}</div>
         </div>-->
         <div style="margin-top: -10px;" class="feedbox feedbox_x2 scrollable">
-          <div class="sideTab_title">Invoices</div>
+          <!-- <div class="sideTab_title">Invoices</div>
           <ul class="invoices_ul">
             <li class="invoice_header">
               <div>
@@ -23,7 +29,71 @@
                 <span>{{group.totalPrice | number:'1.2-2' }}</span>
               </div>
             </li>
-          </ul>
+          </ul> -->
+
+          <div class="pending-wrap">
+            <div class="pending-header">
+              <div class="pending-title">Invoices</div>
+              <div class="search-wrap">
+                <md-input-container>
+                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
+                </md-input-container>
+              </div>
+            </div>
+            <div class="pending-bills">
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="feedbox feedbox_x1"></div>
       </div>
@@ -163,6 +233,126 @@
           <div class="BillfooterTxt">All Purpose Medical Information System</div>
         </div>
       </div>
+
+      <div class="feedsWrap rightCol">
+         <div class="feedbox">
+          <div class="pending-wrap">
+            <div class="pending-header">
+              <div class="pending-title">Patient's Pending Bills</div>
+              <div class="search-wrap">
+                <md-input-container>
+                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
+                </md-input-container>
+              </div>
+            </div>
+            <div class="pending-bills">
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="empWrap">
+                <div class="list-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="list-labels">
+                  <div class="pending-name">Johnson Wade</div>
+                  <div class="oda">
+                    <div class="pending-date">11th October, 2017. 1200am</div>
+                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>   
+        </div> 
+      </div>
     </div>
   </div>
 
@@ -182,4 +372,8 @@
 
   <div *ngIf="priceItemDetailPopup" class="modal-overlay">
     <app-item-detail [selectedBillItem]="selectedBillItem" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
+  </div>
+
+  <div *ngIf="makePaymentPopup" class="modal-overlay">
+    <app-make-payment (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-make-payment>
   </div>

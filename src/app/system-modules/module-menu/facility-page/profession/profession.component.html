@@ -1,9 +1,22 @@
+<<<<<<< HEAD
 
  <div  class="module-menu rhs">
         <div  (click)="professionShow()" class="btn-1 btn-blue"><i aria-hidden="true" class="fa fa-plus-square"></i> Add Profession</div>
+=======
+<div class="top-opt-wrap">
+  <div class="topOptWrap-inner">
+    <div class="page-title">Professions</div>
+    <ul class="topmenuwrap">
+        <li (click)="professionShow()">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Add Profession</span>
+        </li>
+    </ul>
+  </div>
+>>>>>>> development
 </div>
-<div class="survery">
 
+<<<<<<< HEAD
 <div class="box">
             <div class="box-header">
               <h3 class="box-title">Professions</h3>
@@ -37,7 +50,32 @@
             </div>
             <!-- /.box-body -->
           </div>
+=======
+<table cellpadding="0" cellspacing="0" border="0.5"> 
+  <thead>
+      <tr>
+          <th>
+              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+              <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+              <span style="padding-left: 3px;">Profession</span>
+          </th>
+          <th>
+              <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+              <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+              <span style="padding-left: 3px;">Cadre</span>
+          </th>
+      </tr>
+  </thead>
 
-    <div *ngIf="newProfession" class="modal-overlay">
-      <app-add-profession (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-profession>
-    </div>
+  <tbody>
+      <tr *ngFor="let profession of professions">
+          <td>{{profession.name}}</td>
+          <td>{{profession.caders?.length}} <span *ngIf="profession.caders?.length > 0">Records</span></td>
+      </tr> 
+  </tbody>
+</table>
+>>>>>>> development
+
+<div *ngIf="newProfession" class="modal-overlay">
+  <app-add-profession (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-profession>
+</div>

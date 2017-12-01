@@ -1,0 +1,222 @@
+<div class="page-title">Schedule Appointment</div>
+
+<ul class="topmenuwrap">
+    <li [routerLink]="['/dashboard/clinic/appointment']">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+        <span>Appointments</span>
+    </li>
+</ul>
+
+<div class="clinic-running-days-wrap">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+    <div class="sect-title">Clinic Running Days <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span></div>
+    <div class="runningDays">
+        <div class="runningDay-wrap" *ngFor="let schedule of schedules">
+            <div class="running-day">{{schedule.day}} | {{schedule.location.name}}</div>
+            <div class="running-time">{{schedule.startTime | date:'shortTime'}} to {{schedule.endTime | date:'shortTime'}}</div>
+        </div>
+    </div>
+</div>
+
+<app-schedule-frm [selectedPatient]="selectedPatient"></app-schedule-frm>
+<div class="dr-wrap">
+    <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range>
+</div>
+<table cellpadding="0" cellspacing="0" border="0.5">
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Patient</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Date</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Time</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Clinic</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Provider</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Status</span>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <div class="tbl-actionRow">
+                    <div class="filter-xxx">
+                        <md-input-container>
+                            <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinicCtrl">
+                        </md-input-container>
+
+                        <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
+                            <md-option *ngFor="let clinic of filteredClinics | async " [value]="clinic">
+                                {{ clinic.clinicName }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div class="filter-xxx">
+                        <md-input-container>
+                            <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="providerCtrl">
+                        </md-input-container>
+                        <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
+                        <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
+                            <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+                                {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div>
+                        <md-input-container>
+                            <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="typeCtrl">
+                        </md-input-container>
+
+                        <md-autocomplete #autoType="mdAutocomplete" [displayWith]="appointmentTypeDisplayFn">
+                            <md-option *ngFor="let type of filteredAppointmentTypes | async" [value]="type">
+                                {{ type.name }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div>
+                        <md-input-container>
+                            <input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusCtrl">
+                        </md-input-container>
+
+                        <md-autocomplete #auto="mdAutocomplete">
+                            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                                {{ state }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div>
+                        <md-input-container>
+                            <input mdInput placeholder="Day Count" [mdAutocomplete]="auto" [formControl]="todayCtrl">
+                        </md-input-container>
+
+                        <md-autocomplete #auto="mdAutocomplete">
+                            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                                {{ state }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div class="tbl-search frm-item-wrap">
+                        <div class="searchInputWrap">
+                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr *ngIf="appointments.length == 0">
+            <td colspan="9"> No data available in table</td>
+        </tr>
+
+        <tr *ngFor="let appointment of appointments">
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                    </div>
+                    <div>{{appointment.patientId.personDetails.personFullName}}</div>
+                </div>
+            </td>
+            <td>{{appointment.startDate | date:'shortDate'}}</td>
+            <td> {{appointment.startDate | date:'shortTime'}}</td>
+            <td>{{appointment.clinicId?.clinicName}}</td>
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                    </div>
+                    <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
+                </div>
+            </td>
+            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId?.name}}</td>
+            <td *ngIf="appointment.attendance !== undefined">Checked In</td>
+            <td>
+                <div class="tbl-actions-wrap">
+                    <div *ngIf="appointment.attendance !== undefined" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
+                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="editAppointment(appointment)"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
+                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="sect-title2">Patient Appointment History</div>
+
+<table style="margin-bottom:240px;" cellpadding="0" cellspacing="0" border="0.5">
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Date/Time</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Clinic</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Provider</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Status</span>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngIf="pastAppointments.length == 0">
+            <td colspan="9"> No data available in table</td>
+        </tr>
+
+        <tr *ngFor="let appointment of pastAppointments">
+
+            <td>{{appointment.startDate | date}}</td>
+            <td>{{appointment.clinicId.clinicName}}</td>
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <!-- <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png"> -->
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                    </div>
+                    <div>{{appointment?.doctorId?.employeeDetails?.personFullName}}</div>
+                </div>
+            </td>
+            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId?.name}}</td>
+            <td *ngIf="appointment.attendance !== undefined">Checked In</td>
+        </tr>
+    </tbody>
+</table>

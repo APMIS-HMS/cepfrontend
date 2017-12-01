@@ -58,5 +58,5 @@
 
     </form>
 </div>
-<app-contact-info *ngIf="sg1_1_show" [inputFacility] = "inputFacility"></app-contact-info>
+<app-contact-info *ngIf="sg1_1_show" (closeModal)="close_onClick($event)" [inputFacility] = "inputFacility"></app-contact-info>
   

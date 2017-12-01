@@ -20,8 +20,8 @@ export class UserService {
         this._socket = _socketService.getService('users');
         this._socket.timeout = 30000;
         this._restLogin = _restService.getService('auth/local');
-        this._socket.on('created', function (user) {
-        });
+        // this._socket.on('created', function (user) {
+        // });
     }
     announceMission(mission: string) {
         this.missionAnnouncedSource.next(mission);
@@ -31,7 +31,7 @@ export class UserService {
         this._socketService.logOut();
     }
     login(query: any) {
-        return this._socketService.loginIntoApp(query);
+        return this._restService.loginIntoApp(query);
         // return this._restLogin.create(query);
     }
 

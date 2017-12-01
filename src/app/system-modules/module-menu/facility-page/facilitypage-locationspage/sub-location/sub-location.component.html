@@ -1,4 +1,4 @@
-<div class="headers headers2">
+<!-- <div class="headers headers2">
   <div class="block-title2">{{minorLocation.name}}</div>
 
   <div class="unit-ico-wrap">
@@ -8,11 +8,10 @@
 
 <div>
   <div class="dataMix-wrap color1">
-    <div>
+    <div class="display-flex">
       <div class="lhs">Name</div>
       <div class="rhs">
         <div [hidden]="sublocEditNameIcoShow" class="lhs"> {{minorLocation.name}} </div>
-        <!--<input *ngIf="sublocEditNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.name}}" [formControl]="sublocNameEdit">-->
         <md-input-container *ngIf="sublocEditNameIcoShow" class="example-full-width">
           <input mdInput value="{{minorLocation.name}}" [formControl]="sublocNameEdit">
         </md-input-container>
@@ -25,11 +24,10 @@
   </div>
 
   <div class="dataMix-wrap color2">
-    <div>
+    <div class="display-flex">
       <div class="lhs">Short Name</div>
       <div class="rhs">
         <div [hidden]="sublocEditShortNameIcoShow" class="lhs"> {{minorLocation.shortName}} </div>
-        <!--<input *ngIf="sublocEditShortNameIcoShow" class="edit-control lhs" type="text" value="{{minorLocation.shortName}}" [formControl]="sublocshortNameEdit">-->
         <md-input-container *ngIf="sublocEditShortNameIcoShow" class="example-full-width">
           <input mdInput value="{{minorLocation.shortName}}" [formControl]="sublocshortNameEdit">
         </md-input-container>
@@ -43,11 +41,10 @@
 </div>
 
 <div class="dataMix-wrap color1">
-  <div>
+  <div class="display-flex">
     <div class="lhs">Describtion</div>
     <div class="rhs">
       <div [hidden]="sublocEditDescIcoShow" class="lhs"> {{minorLocation.description}} </div>
-      <!--<textarea *ngIf="sublocEditDescIcoShow" class="edit-control lhs" value="{{minorLocation.description}}" [formControl]="sublocDescEdit"></textarea>-->
       <md-input-container *ngIf="sublocEditDescIcoShow" class="example-full-width">
          <textarea mdInput value="{{minorLocation.description}}" [formControl]="sublocDescEdit"></textarea>
       </md-input-container>
@@ -57,4 +54,4 @@
     </div>
     <div class="clear"></div>
   </div>
-</div>
+</div> -->

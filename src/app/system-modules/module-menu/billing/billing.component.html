@@ -1,5 +1,11 @@
 <div (click)="close_onClick($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
+    <!--
+    <div class="second-menu">
+          <a (click)="servicesShow()" [class.menuActive]="serviceStyle" class="btning"> Services</a>
+          <a (click)="pricelistShow()" [class.menuActive]="pricelistStyle" class="btning"> Price List</a>
+          <a  [routerLink]="['/dashboard/payment/bill']" class="btning"> Payment</a>
+      </div>-->
     <div class="inner-menu1-wrap">
       <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
         aria-hidden="true"></i>

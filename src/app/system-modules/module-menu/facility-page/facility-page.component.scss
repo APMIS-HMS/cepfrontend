@@ -1,5 +1,8 @@
 @import "../../../../globals/variables.scss";
-
+.page-title {
+    text-align: left;
+    position: absolute;
+}
 .inner-page-contentArea {
     padding: 0;
 }

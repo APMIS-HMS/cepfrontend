@@ -23,7 +23,7 @@ export class NewStoreComponent implements OnInit {
   errMsg = 'you have unresolved errors';
 
   public frm_newStore: FormGroup;
-  createText = 'Create';
+  createText = 'Create Store';
   loadIndicatorVisible = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -32,7 +32,7 @@ export class NewStoreComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frm_newStore = this.formBuilder.group({
       name: ['', [<any>Validators.required]],
       minorLocationId: ['', [<any>Validators.required]],
@@ -79,6 +79,8 @@ export class NewStoreComponent implements OnInit {
     } else {
       this.createText = 'Create';
       this.frm_newStore.reset();
+      this.frm_newStore.controls['canDespense'].setValue(false);
+      this.frm_newStore.controls['canReceivePurchaseOrder'].setValue(false);
       this.frm_newStore.controls['facilityId'].setValue(this.selectedFacility._id);
     }
   }
@@ -89,6 +91,8 @@ export class NewStoreComponent implements OnInit {
     productType.isChecked = e.value;
   }
   create(valid, value) {
+    console.log(valid)
+    console.log(value)
     if (valid) {
       this.mainErr = true;
       if (this.selectedStore._id === undefined) {

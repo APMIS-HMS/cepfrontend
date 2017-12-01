@@ -1,60 +1,74 @@
-@import "../../../../../globals/variables.scss";
-@import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
-.inner-page-contentArea {
-    padding: 10px;
-}
-
-.short-cut-link {
-    color: #153d70;
-    padding: 10px;
-    text-decoration: underline;
-    cursor: pointer;
-    width: 145px;
-    position: absolute;
-    top: -31px;
-    right: 0;
-}
-
-.inPatients {
-    border: none;
-    .filter-box {
-        padding: 10px 0;
-        .filter {
-            width: 130px;
-        }
+    @import "../../../../../globals/variables.scss";
+    @import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
+    .inner-page-contentArea {
+        padding: 10px;
     }
-    .patient-sex {
-        text-align: left;
+    
+    .topmenuwrap {
+        right: 130px;
     }
-    .btn-1 {
-        padding: 5px;
-        margin: 0;
+    
+    .short-cut-link {
+        color: #153d70;
+        padding: 10px;
+        text-decoration: underline;
+        cursor: pointer;
+        width: 145px;
+        position: absolute;
+        top: -31px;
+        right: 100px;
     }
-    table {
-        thead {
-            background-color: #AED6F1;
-        }
-        tbody {
-            border: 1px solid #ddd !important;
-            tr {
-                td {
-                    padding: 8px;
-                    line-height: 1.42857143;
-                }
-            }
-            .tr-header-group {
-                background-color: #0288D1;
-                color: #fff;
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-            .details-link {
-                &:hover {
-                    background-color: #ccc;
-                    cursor: pointer;
-                }
+    
+    .inPatients {
+        border: none;
+        .filter-box {
+            padding: 10px 0;
+            .filter {
+                width: 130px;
             }
         }
+        .table-content {
+            padding: 10px;
+            text-align: center;
+        }
+        .details-link {
+            &:hover {
+                background-color: #ccc;
+                cursor: pointer;
+            }
+        }
+        // .patient-sex {
+        //     text-align: left;
+        // }
+        // .btn-1 {
+        //     padding: 5px;
+        //     margin: 0;
+        // }
+        // table {
+        //     thead {
+        //         background-color: #AED6F1;
+        //     }
+        //     tbody {
+        //         border: 1px solid #ddd !important;
+        //         tr {
+        //             td {
+        //                 padding: 8px;
+        //                 line-height: 1.42857143;
+        //             }
+        //         }
+        //         .tr-header-group {
+        //             background-color: #0288D1;
+        //             color: #fff;
+        //             &:hover {
+        //                 cursor: pointer;
+        //             }
+        //         }
+        //         .details-link {
+        //             &:hover {
+        //                 background-color: #ccc;
+        //                 cursor: pointer;
+        //             }
+        //         }
+        //     }
+        // }
     }
-}

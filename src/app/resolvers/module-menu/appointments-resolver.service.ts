@@ -35,7 +35,6 @@ export class AppointmentsResolverService implements Resolve<Appointment> {
       return Observable.of(null);
     }, error => {
       this.router.navigateByUrl(this.previousUrl);
-      console.log(error);
     });
   }
 

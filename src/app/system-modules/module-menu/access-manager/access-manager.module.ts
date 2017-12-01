@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { AccessManagerComponent } from './access-manager.component';
 
 import { CreateAccessComponent } from './create-access/create-access.component';
@@ -9,7 +8,8 @@ import { ViewAccessComponent } from './view-access/view-access.component';
 
 import { AccessManagerHomeComponent } from './access-manager-home.component';
 import { accessManagerRoutes} from './access-manager.routes';
-import { SharedModule } from '../../../shared-module/shared.module';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
+// import { SharedModule } from '../../../shared-module/shared.module';
 
 @NgModule({
     declarations: [
@@ -21,12 +21,8 @@ import { SharedModule } from '../../../shared-module/shared.module';
     exports: [
     ],
     imports: [
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        DatePickerModule,
-        accessManagerRoutes,
-        SharedModule
+        MaterialModule,
+        accessManagerRoutes
     ],
     providers: []
 })

@@ -14,11 +14,11 @@ export class WorkspaceResolverService implements Resolve<WorkSpace> {
     private locker: CoolLocalStorage,
     private workspaceService: WorkSpaceService,
     private router: Router) {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
   }
 
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<WorkSpace> {
+    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     return this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 100 } })
       .then(payload => {
         const result = payload.data.filter(x => x.isActive === true || x.isActive === undefined);

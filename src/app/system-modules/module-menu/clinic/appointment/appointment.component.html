@@ -1,93 +1,143 @@
-<div class="page-title">
-	Appointment</div>
-<div class="topFilters">
-	<div class="filter-title">FILTER BY</div>
-	<div class="filter-wrap">
-		<span>Filter</span>
-		<div class="dx-field-value switch-left">
-			<dx-switch #switch [value]="filtered"></dx-switch>
-		</div>
-	</div>
-	<div class="filter-wrap dx-field">
-		<span>Doctor</span>
-		<dx-lookup #filterDoctor [width]="200" class="field-customization" [items]="employees" valueExpr="_id" displayExpr="employeeDetails.personFullName"
-		 valueExpr="_id" (onValueChanged)="onDoctorValueChanged($event)" title="Select doctor" fieldTemplate="Employee">
-			<div *dxTemplate="let item of 'Employee'">
-				<div class="custom-field">
-					<img *ngIf="selectedDoctor.length > 2" [src]="facilityService.transform(item?.employeeDetails.profileImageObject?.thumbnail)">
-					<div>{{item?.employeeDetails.personFullName }}</div>
-				</div>
-			</div>
-		</dx-lookup>
-	</div>
-	<div class="filter-wrap">
-		<span>Clinic</span>
-		<dx-select-box #filterClinic [items]="clinics" [width]="200" displayExpr="clinicName" valueExpr="_id" (onValueChanged)="onValueChanged($event)">
-		</dx-select-box>
-	</div>
-	<div class="filter-wrap">
-		<span>Location</span>
-		<dx-select-box #filterLocation [items]="clinicLocations" [width]="200" displayExpr="name" valueExpr="_id" (onValueChanged)="onLocationValueChanged($event)">
-		</dx-select-box>
-	</div>
-	<div class="filter-wrap">
-		<span>Units</span>
-		<!--<dx-select-box #filterUnit [items]="loginEmployee?.unitDetails" [width]="200" displayExpr="name" valueExpr="_id" (onValueChanged)="onUnitValueChanged($event)">
-		</dx-select-box>-->
-	</div>
+<div class="preTbl-topItems-wrap">
+    <div class="dr-wrap survery">
+        <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range> <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span>
+    </div>
+
+    <ul class="topmenuwrap">
+        <li [routerLink]="['/dashboard/clinic/schedule-appointment']">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <span>Schedule Appointment</span>
+        </li>
+    </ul>
 </div>
-<dx-scheduler id="scheduler" [dataSource]="appointmentData" [views]="['week', 'day', 'timelineDay', 'month']" currentView="day"
- [firstDayOfWeek]="0" [startDayHour]="9" [endDayHour]="23" [showAllDayPanel]="false" [groups]="clinicArray" [currentDate]="currentDate"
- [crossScrollingEnabled]="true" [cellDuration]="10" width="100%" [height]="600" appointmentTemplate="appointment-template"
- appointmentTooltipTemplate="tooltip-template" (onAppointmentAdded)="onAppointmentAdded($event)" (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
- (onAppointmentDblClick)="onAppointmentFormDoubleClick($event)" (onCellClick)="onCellClick($event)" (onAppointmentUpdated)="onAppointmentUpdated($event)">
 
-	<dxo-editing #editingOptions [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true" [allowResizing]="true" [allowDragging]="true"></dxo-editing>
+<table cellpadding="0" cellspacing="0" border="0.5">
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Patient</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Date</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Time</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Clinic</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Provider</span>
+            </th>
+            <th>
+                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                <span style="padding-left: 3px;">Status</span>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
 
-	<dxi-resource field="locationId" [dataSource]="minorLocations">
-	</dxi-resource>
-	<dxi-resource field="clinicId" [dataSource]="clinicResData">
-	</dxi-resource>
-	<dxi-resource field="doctorId" [dataSource]="doctResData">
-	</dxi-resource>
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <div class="tbl-actionRow">
+                    <div class="filter-xxx">
+                        <md-input-container>
+                            <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinicCtrl">
+                        </md-input-container>
 
+                        <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
+                            <md-option *ngFor="let clinic of clinics " [value]="clinic">
+                                {{ clinic.clinicName }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div class="filter-xxx">
+                        <md-input-container>
+                            <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="providerCtrl">
+                        </md-input-container>
+                        <span style="margin-left: -15px;" *ngIf="loadingProvider" class="fa fa-spinner fa-spin"></span>
+                        <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
+                            <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+                                {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                    <div>
+                        <md-input-container>
+                            <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="typeCtrl">
+                        </md-input-container>
 
+                        <md-autocomplete #autoType="mdAutocomplete" [displayWith]="appointmentTypeDisplayFn">
+                            <md-option *ngFor="let type of appointmentTypes" [value]="type">
+                                {{ type.name }}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
 
-	<div *dxTemplate="let showtime of 'appointment-template'">
-		<div class='showtime-preview'>
-			<div class='custom-field'>
-				<img *ngIf="showtime.patientDetails?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-				<img *ngIf="showtime.patientDetails?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(showtime?.patientDetails?.personDetails.profileImageObject?.thumbnail)">
-				<div>{{showtime?.patientDetails?.personDetails?.personFullName}}</div>
-			</div>
-			<div>
-				{{(showtime?.startDate | date:'shortTime') + ' - ' + (showtime?.endDate | date:'shortTime')}}
-			</div>
-			<!--<div class='avatar custom-field'>
-				<img [src]="employee.data.avatar" />
-				<img [src]="facilityService.transform(showtime?.employeeDetails?.employeeDetails.profileImageObject?.thumbnail)">
-			</div>-->
-		</div>
-	</div>
-
-	<div *dxTemplate="let showtime of 'tooltip-template'">
-		<div class='movie-tooltip'>
-			<!--<img [src]="getMovieById(showtime.movieId).image" />-->
-			<div class='movie-info'>
-				<div class='movie-title'>
-					{{showtime?.patientDetails?.personDetails.personFullName}}
-				</div>
-				<div>
-					Doctor: {{showtime.employeeDetails.employeeDetails.personFullName}}
-				</div>
-			</div><br />
-			<dx-button text='Edit Appointment' (onClick)='editDetails(showtime)'>
-			</dx-button>
-			<dx-button text='Cancel Appointment' (onClick)='deleteDetails(showtime)'></dx-button>
-			<dx-button text='Send Alert' (onClick)='deleteDetails(showtime)'></dx-button>
-		</div>
-	</div>
-</dx-scheduler>
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
-</div>
+                    <div class="tbl-search frm-item-wrap">
+                        <div class="searchInputWrap">
+                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr *ngIf="filteredAppointments.length === 0 && !loading">
+            <td class="table-content" colspan="8" style="text-align: center"> No data available in table</td>
+        </tr>
+        <tr *ngIf="filteredAppointments.length === 0 && loading">
+            <td class="table-content" colspan="8" style="text-align: center">
+                <md-spinner class='small-spinner'></md-spinner>
+            </td>
+        </tr>
+        <tr *ngFor="let appointment of filteredAppointments">
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                    </div>
+                    <div>{{appointment.patientId.personDetails.personFullName}}</div>
+                </div>
+            </td>
+            <td>{{appointment.startDate | date:'shortDate'}}</td>
+            <td> {{appointment.startDate | date:'shortTime'}}</td>
+            <td>{{appointment.clinicId?.clinicName}}</td>
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                    </div>
+                    <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
+                </div>
+            </td>
+            <td *ngIf="appointment.orderStatusId !== undefined">{{appointment?.orderStatusId?.name}}</td>
+            <td *ngIf="appointment.orderStatusId === undefined">Scheduled</td>
+            <td>
+                <div class="tbl-actions-wrap">
+                    <div *ngIf="appointment.attendance !== undefined" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
+                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
+                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
+                    <div *ngIf="appointment.zoom !== undefined && appointment.attendance === undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
+                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                        <span>TeleMedicine</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

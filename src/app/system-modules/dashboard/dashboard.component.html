@@ -1,386 +1,385 @@
 <div class="inner-wrap-b body-wrap">
-    <div class="facility-title">DASHBOARD</div> 
+    <div class="facility-title">DASHBOARD</div>
     <div class="db-wrap">
+        <div [routerLink]="['facility']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-building" aria-hidden="true"></i>
+                    <div class="dbItem-label">Facility</div>
+                </div>
+            </div>
 
-      <div class="db-item-wrap">
-        <div [routerLink]="['facility']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-building" aria-hidden="true"></i>
-            <div class="dbItem-label">Facility</div>
-          </div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">{{departments.length}}</div>
+                        <div class="stat-label">Departments</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">{{unitCount}}</div>
+                        <div class="stat-label">Units</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">{{clinicCount}}</div>
+                        <div class="stat-label">Clinics</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">10</div>
-              <div class="stat-label">Departments</div>
+        <div [routerLink]="['employee-manager']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-users fa-main" aria-hidden="true"></i>
+                    <div class="dbItem-label">Employee</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">30</div>
-              <div class="stat-label">Units</div>
-            </div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
 
-            <div class="stat">
-              <div class="stat-val">8</div>
-              <div class="stat-label">Clinics</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-      
-      <div class="db-item-wrap">
-        <div [routerLink]="['employee-manager']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-users fa-main" aria-hidden="true"></i>
-            <div class="dbItem-label">Employee</div>
-          </div>
-        </div>
+                    <div class="stat">
+                        <div class="stat-val">160</div>
+                        <div class="stat-label">Active</div>
+                    </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
-            </div>
+                    <div class="stat">
+                        <div class="stat-val">40</div>
+                        <div class="stat-label">Inactive</div>
+                    </div>
 
-            <div class="stat">
-              <div class="stat-val">160</div>
-              <div class="stat-label">Active</div>
-            </div>
+                    <div class="stat">
+                        <div class="stat-val">70</div>
+                        <div class="stat-label">Logged In</div>
+                    </div>
+                </div>
 
-            <div class="stat">
-              <div class="stat-val">40</div>
-              <div class="stat-label">Inactive</div>
             </div>
-
-            <div class="stat">
-              <div class="stat-val">70</div>
-              <div class="stat-label">Logged In</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['patient-manager']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-bed " aria-hidden="true"></i>
-            <div class="dbItem-label">Patient</div>
-          </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">1000</div>
-              <div class="stat-label">Registered</div>
+        <div [routerLink]="['patient-manager']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-bed " aria-hidden="true"></i>
+                    <div class="dbItem-label">Patient</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">400</div>
-              <div class="stat-label">Admited</div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">1000</div>
+                        <div class="stat-label">Registered</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">400</div>
+                        <div class="stat-label">Admited</div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['ward-manager']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-bed" aria-hidden="true"></i>
-            <div class="dbItem-label">Ward</div>
-          </div>
-        </div>
-
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">20</div>
-              <div class="stat-label">Wards</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-val">400</div>
-              <div class="stat-label">Beds</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-val">40</div>
-              <div class="stat-label">Available Beds</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['payment']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-money" aria-hidden="true"></i>
-            <div class="dbItem-label">Payment</div>
-          </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+        <div [routerLink]="['ward-manager']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-bed" aria-hidden="true"></i>
+                    <div class="dbItem-label">Ward</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">20</div>
+                        <div class="stat-label">Wards</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">400</div>
+                        <div class="stat-label">Beds</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">40</div>
+                        <div class="stat-label">Available Beds</div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['clinic']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-medkit" aria-hidden="true"></i>
-            <div class="dbItem-label">Clinic</div>
-          </div>
-        </div>
-
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Appointments</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-val">120</div>
-              <div class="stat-label">Checked In</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-val">20</div>
-              <div class="stat-label">Checked Out</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['store']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-tags" aria-hidden="true"></i>
-            <div class="dbItem-label">Store</div>
-          </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">80</div>
-              <div class="stat-label">Stores</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['pharmacy']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-plus-square" aria-hidden="true"></i>
-            <div class="dbItem-label">Pharmacy</div>
-          </div>
-        </div>
-
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">10</div>
-              <div class="stat-label">Pharmacies</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['pharmacy']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-flask" aria-hidden="true"></i>
-            <div class="dbItem-label">Laboratory</div>
-          </div>
-        </div>
-
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">10</div>
-              <div class="stat-label">Laboratories</div>
+        <div [routerLink]="['payment']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <div class="dbItem-label">Payment</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">55</div>
-              <div class="stat-label">Investigations</div>
-            </div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
 
-            <div class="stat">
-              <div class="stat-val">25</div>
-              <div class="stat-label">Results</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
 
-      <div class="db-item-wrap">
-        <div [routerLink]="['pharmacy']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-picture-o" aria-hidden="true"></i>
-            <div class="dbItem-label">Radiology</div>
-          </div>
+            </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+        <div [routerLink]="['clinic']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-medkit" aria-hidden="true"></i>
+                    <div class="dbItem-label">Clinic</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Appointments</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">120</div>
+                        <div class="stat-label">Checked In</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">20</div>
+                        <div class="stat-label">Checked Out</div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['pharmacy']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-tint" aria-hidden="true"></i>
-            <div class="dbItem-label">Blood Bank</div>
-          </div>
-        </div>
-
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-
-      <div class="db-item-wrap">
-        <div [routerLink]="['pharmacy']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-heartbeat" aria-hidden="true"></i>
-            <div class="dbItem-label">Theatre</div>
-          </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+        <div [routerLink]="['store']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    <div class="dbItem-label">Store</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">80</div>
+                        <div class="stat-label">Stores</div>
+                    </div>
+                </div>
 
-      <div class="db-item-wrap">
-        <div [routerLink]="['health-coverage']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-university" aria-hidden="true"></i>
-            <div class="dbItem-label">Health Coverage</div>
-          </div>
+            </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+        <div [routerLink]="['pharmacy']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    <div class="dbItem-label">Pharmacy</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">10</div>
+                        <div class="stat-label">Pharmacies</div>
+                    </div>
+                </div>
 
-      <div class="db-item-wrap">
-        <div [routerLink]="['access-manager']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-            <div class="dbItem-label">Access Control</div>
-          </div>
+            </div>
         </div>
 
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+        <div [routerLink]="['laboratory']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <div class="dbItem-label">Laboratory</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">10</div>
+                        <div class="stat-label">Laboratories</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">55</div>
+                        <div class="stat-label">Investigations</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">25</div>
+                        <div class="stat-label">Results</div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          
         </div>
-      </div>
 
-      <div class="db-item-wrap">
-        <div [routerLink]="['billing']" class="db-item">
-          <div class="dbItem-insider">
-            <i class="fa fa-file-text" aria-hidden="true"></i>
-            <div class="dbItem-label">Billing</div>
-          </div>
-        </div>
-
-        <div class="stats-wrap">
-          <div>
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+        <div [routerLink]="['pharmacy']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    <div class="dbItem-label">Radiology</div>
+                </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-val">200</div>
-              <div class="stat-label">Employees</div>
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          
         </div>
-      </div>
+
+        <div [routerLink]="['pharmacy']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                    <div class="dbItem-label">Blood Bank</div>
+                </div>
+            </div>
+
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div [routerLink]="['pharmacy']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                    <div class="dbItem-label">Theatre</div>
+                </div>
+            </div>
+
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div [routerLink]="['health-coverage']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <div class="dbItem-label">Health Coverage</div>
+                </div>
+            </div>
+
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div [routerLink]="['access-manager']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    <div class="dbItem-label">Access Control</div>
+                </div>
+            </div>
+
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div [routerLink]="['billing']" class="db-item-wrap">
+            <div class="db-item">
+                <div class="dbItem-insider">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <div class="dbItem-label">Billing</div>
+                </div>
+            </div>
+
+            <div class="stats-wrap">
+                <div>
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-val">200</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     </div>
 </div>

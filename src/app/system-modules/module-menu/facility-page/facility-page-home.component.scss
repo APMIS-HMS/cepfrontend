@@ -1,0 +1,108 @@
+
+.text-center {
+    text-align: center;
+}
+.completion-meter {
+    background: linear-gradient(90deg,#544bc2,#17afb8,#2f7b15);
+    height: 12px;
+    width: 100%;
+    position: relative;
+    border-radius: 2px;
+    margin:10px 0;
+}
+.completion-meter_step:first-child {
+    border: 0;
+}
+.completion-meter_step {
+    width: 14.28571%;
+    border-left: 2px solid #fff;
+    float: left;
+    z-index: 1;
+    position: relative;
+    height: calc(100% + 2px);
+    top: -1px;
+}
+.completion-meter_icon {
+    margin-bottom: 16px;
+}
+.completion-meter_icon--first-gradient {
+    color: #544bc2;
+    border-color: #544bc2;
+}
+.completion-meter_icon-first-child {
+    left: -1px;
+}
+.completion-meter_icon {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: -14px;
+    left: -4px;
+    border: 6px solid #fff;
+    //border-radius: 50%;
+    color: #7a8b98;
+    background-color: #fff;
+}
+.completion-meter_icon .fa{
+    color: #544bc2;
+    border-color: #544bc2;
+}
+#container {
+    padding-left:0;
+    margin-left:0;
+    width:99.5%;
+}
+.hover-progress {
+    position: relative;
+    width: 200px;
+    height: 250px;
+    background: #fff;
+    margin-top: 21px;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    margin-top: 6px;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content li {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+}
+
+.dropdown-content li:hover {
+    background-color: #f1f1f1;
+}
+
+.completion-meter_step:hover .dropdown-content {
+    display: block;
+    cursor: pointer;
+}
+.dropdown-content li .fa {
+    color: #333;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0 5px;
+}
+.completion-meter_icon_step {
+    position: absolute;
+     width: 26px;
+    height: 32px; 
+    top: -10px; 
+    left: -16px;
+    border: 0px solid #e1e9ee;
+    border-radius: 50%;
+    color: #544bc2;
+    background-color: #fff;
+}

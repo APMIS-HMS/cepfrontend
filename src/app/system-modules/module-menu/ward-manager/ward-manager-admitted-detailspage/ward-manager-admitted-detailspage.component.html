@@ -6,7 +6,8 @@
 <div class="c-page-body">
     <div class="inPatients">
         <div class="patient-img">
-            <img [src]="_inPatientService.transform(selectedPatient?.patientDetails?.personDetails.profileImageObject?.detailthumbnail)">
+            <img *ngIf="selectedPatient?.patientId?.personDetails.profileImageObject?.detailthumbnail !== undefined" [src]="_inPatientService.transform(selectedPatient?.patientId?.personDetails.profileImageObject?.detailthumbnail)">
+            <img *ngIf="selectedPatient?.patientId?.personDetails.profileImageObject?.detailthumbnail == undefined" src="assets/images/users/default.png">
             <div class="action-box">
                 <div class="btn-1 btn-blue" (click)="onClickDischargePatient();"><i class="fa fa-user-times" aria-hidden="true"></i> Discharge</div>
                 <div class="btn-1 btn-gray"><i class="fa fa-eye" aria-hidden="true"></i> Patient Documentation</div>
@@ -18,19 +19,19 @@
             <div class="detail-left">
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Full Name</div>
-                    <div class="subsect-val">{{selectedPatient?.patientDetails.personDetails.personFullName}}</div>
+                    <div class="subsect-val">{{selectedPatient?.patientId.personDetails.personFullName}}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Address</div>
-                    <div class="subsect-val">{{selectedPatient?.patientDetails.personDetails.fullAddress}}</div>
+                    <div class="subsect-val">{{selectedPatient?.patientId.personDetails.fullAddress}}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Mobile</div>
-                    <div class="subsect-val">{{selectedPatient?.patientDetails.personDetails.phoneNumber}}</div>
+                    <div class="subsect-val">{{selectedPatient?.patientId.personDetails.phoneNumber}}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Email</div>
-                    <div class="subsect-val">{{selectedPatient?.patientDetails.personDetails.email}}</div>
+                    <div class="subsect-val">{{selectedPatient?.patientId.personDetails.email}}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Diagnosis</div>
@@ -44,11 +45,11 @@
             <div class="detail-right">
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Admission Date</div>
-                    <div class="subsect-val">{{selectedPatient?.admissionDate}}</div>
+                    <div class="subsect-val">{{selectedPatient?.admissionDate | date }}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Drugs Administered</div>
-                    <div class="subsect-val">{{selectedPatient?.admissionDate}}</div>
+                    <div class="subsect-val">{{selectedPatient?.admissionDate | date}}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Ward</div>
@@ -56,24 +57,24 @@
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Room</div>
-                    <div class="subsect-val">{{selectedPatient?.wardItem.room}}</div>
+                    <div class="subsect-val">{{selectedPatient?.wardItem.roomId.name}}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Bed</div>
-                    <div class="subsect-val">{{selectedPatient?.wardItem.bed}}</div>
+                    <div class="subsect-val">{{selectedPatient?.wardItem.bedId.name }}</div>
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Number of days on admission</div>
-                    <div class="subsect-val">{{selectedPatient?.daysOnAdmission}}</div>
+                    <div class="subsect-val">{{selectedPatient?.admissionDate | amTimeAgo }}</div>
                 </div>
             </div>
         </div>
 
         <div *ngIf="dischargePatient" class="modal-overlay">
-            <app-discharge-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-discharge-patient>
+            <app-discharge-patient (closeModal)="close_onClick($event)" [selectedPatient]="selectedPatient" id="form-modal" class="form-modal center-center"></app-discharge-patient>
         </div>
         <div *ngIf="transferPatient" class="modal-overlay">
-            <app-transfer-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-transfer-patient>
+            <app-transfer-patient (closeModal)="close_onClick($event)" [selectedPatient]="selectedPatient" id="form-modal" class="form-modal center-center"></app-transfer-patient>
         </div>
     </div>
 </div>

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
+const request = require('superagent');
 
 @Injectable()
 export class AppointmentService {
@@ -15,6 +16,18 @@ export class AppointmentService {
 
   private timelineAnnouncedSource = new Subject<Object>();
   timelineAnnounced$ = this.timelineAnnouncedSource.asObservable();
+
+  private schedulesAnnouncedSource = new Subject<Object>();
+  schedulesAnnounced$ = this.schedulesAnnouncedSource.asObservable();
+
+  private patientAnnouncedSource = new Subject<Object>();
+  patientAnnounced$ = this.patientAnnouncedSource.asObservable();
+
+  private appointmentAnnouncedSource = new Subject<Object>();
+  appointmentAnnounced$ = this.appointmentAnnouncedSource.asObservable();
+
+  private clinicAnnouncedSource = new Subject<Object>();
+  clinicAnnounced$ = this.clinicAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
@@ -29,11 +42,27 @@ export class AppointmentService {
     this._socket.on('created', function (gender) {
     });
   }
-  hideTimelineAnnounced(show: true) {
+  hideTimelineAnnounced(show: boolean) {
     this.timelineAnnouncedSource.next(show);
   }
   hideTimelineReceived(): Observable<Object> {
     return this.timelineAnnouncedSource.asObservable();
+  }
+
+  schedulesAnnounced(shedules: any) {
+    this.schedulesAnnouncedSource.next(shedules);
+  }
+  schedulesReceived(): Observable<Object> {
+    return this.schedulesAnnouncedSource.asObservable();
+  }
+  patientAnnounced(patient: any) {
+    this.patientAnnouncedSource.next(patient);
+  }
+  appointmentAnnounced(appointment: any) {
+    this.appointmentAnnouncedSource.next(appointment);
+  }
+  clinicAnnounced(clinic: any) {
+    this.clinicAnnouncedSource.next(clinic);
   }
   find(query: any) {
     return this._socket.find(query);
@@ -60,5 +89,13 @@ export class AppointmentService {
 
   patch(_id: any, data: any, param: any) {
     return this._socket.patch(_id, data, param);
+  }
+
+  setMeeting(topic: string, startTime: Date, appointmentId, timezone) {
+    const host = this._restService.getHost();
+    const path = host + '/zoom-meeting';
+    return request
+      .post(path)
+      .send({ topic: topic, startTime: startTime, appointmentId: appointmentId, timezone: timezone }); // query string 
   }
 }

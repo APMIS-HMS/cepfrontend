@@ -1,0 +1,145 @@
+<div class="pg-subtitle">
+    WORKBENCH</div>
+<div>
+    <div class="doc-mainWrap">
+        <div class="doc-contentArea">
+
+            <div class="clinicalNoteWrap">
+                <div class="actSect">
+                    <div (click)="workbench_show()" class="act-wrap">
+                        <i *ngIf="workbench_view" class="fa fa-minus" aria-hidden="true"></i>
+                        <i [hidden]="workbench_view" class="fa fa-plus" aria-hidden="true"></i>
+                        <span>New Workbench</span>
+                    </div>
+
+                    <form class="frmNoteWrap" *ngIf="workbench_view" [formGroup]="frmNewWorkbench" novalidate>
+
+                        <div class="frm-wrap">
+                            <div class="frm-l">
+                                <div class="frm-item-wrap">
+                                    <div>
+                                        <md-input-container>
+                                            <input mdInput placeholder="Select Laboratory" [mdAutocomplete]="autoPatient" formControlName="minorLocation">
+                                        </md-input-container>
+                                        <md-autocomplete #autoPatient="mdAutocomplete" [displayWith]="patientDisplayFn">
+                                            <md-option *ngFor="let minor of minorLocations" [value]="minor">
+                                                {{ minor.name }}
+                                            </md-option>
+                                        </md-autocomplete>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="frm-r">
+                                <div class="frm-item-wrap">
+                                    <md-input-container>
+                                        <input mdInput placeholder="Bench Name" formControlName="benchName">
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!frmNewWorkbench.valid" (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="btn"> {{btnText}} </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tblWrapa" class="actSect">
+                    <table cellpadding="0" cellspacing="0" border="0.5">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Laboratory</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Bench Name</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                                    <span style="padding-left: 3px;">Status</span>
+                                </th>
+                                <th>Date Created</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="tbl-actionRow">
+
+                                        <!-- <div class="tbl-title">Employee Workspace</div> -->
+                                        <div class="frm-item-wrap">
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Bench Name" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                        </div>
+
+                                        <div class="frm-item-wrap">
+                                            <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                                        </div>
+
+                                        <div class="frm-item-wrap">
+                                            <md-select placeholder="Status">
+                                                <md-option [value]="Active">Active</md-option>
+                                                <md-option [value]="Inactive">Inactive</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="workbenches.length === 0 && !loading">
+                                <td class="table-content" colspan="5" style="text-align: center "> No data available in table</td>
+                            </tr>
+                            <tr *ngIf="workbenches.length === 0 && loading">
+                                <td class="table-content " colspan="5" style="text-align: center ">
+                                    <md-spinner class="small-spinner"></md-spinner>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let bench of workbenches">
+                                <td>{{bench.laboratoryId.name}} </td>
+                                <td>{{bench.name}}</td>
+                                <td>
+                                    <span *ngIf="bench.isActive">Active</span>
+                                    <span *ngIf="!bench.isActive">Disabled</span>
+                                </td>
+                                <td>{{bench.createdAt|date:'short'}}</td>
+                                <td class="action-placeholder">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    <div class="action-container shadow-RB">
+                                        <div (click)="editWorkBench(bench)" class="action-item">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                            <span>Edit</span>
+                                        </div>
+
+                                        <div class="action-item">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                            <span>Delete</span>
+                                        </div>
+
+                                        <div class="action-item" (click)="toggleActivate(bench)">
+                                            <i class="fa fa-ban" aria-hidden="true"></i>
+                                            <span *ngIf="bench.isActive">Deactivate</span>
+                                            <span *ngIf="!bench.isActive">Activate</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div *ngIf="reqDetail_view" class="modal-overlay">
+    <app-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
+</div>
+<div *ngIf="personAcc_view" class="modal-overlay">
+    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+</div>

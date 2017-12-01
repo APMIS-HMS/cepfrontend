@@ -4,6 +4,7 @@ export interface BillItem {
     serviceId: string;
     facilityId: string;
     patientId: string;
+    patientObject: any;
     description: string;
     quantity: number;
     totalPrice: number;
@@ -17,4 +18,6 @@ export interface BillItem {
     qty: number;
     amount: number;
     itemDesc: any;
+    unitDiscountedAmount?: number,
+  	totalDiscoutedAmount?: number,
 }

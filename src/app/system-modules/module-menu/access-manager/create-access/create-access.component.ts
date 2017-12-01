@@ -21,7 +21,7 @@ export class CreateAccessComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedAccessControl: AccessControl = <AccessControl>{};
 
-  modules: FeatureModule[] = [];
+  dashboard: FeatureModule[] = [];
   groups: FeatureModuleViewModel[] = [];
   superGroups: any[] = [];
   btnTitle = 'Create Access';
@@ -38,7 +38,7 @@ export class CreateAccessComponent implements OnInit {
     this.txtAccessName.valueChanges.subscribe(value => {
       // do something with value here
     });
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getModules();
     this.route.params.subscribe(params => {
       const id = params['id'];
@@ -57,7 +57,7 @@ export class CreateAccessComponent implements OnInit {
       this.superGroups.forEach((item, i) => {
         const group = <[FeatureModuleViewModel]>item;
         group.forEach((grp, j) => {
-          this.selectedAccessControl.featureList.forEach((iItem, j) => {
+          this.selectedAccessControl.featureList.forEach((iItem, jj) => {
             if (iItem._id === grp._id) {
               grp.checked = true;
             }
@@ -68,22 +68,22 @@ export class CreateAccessComponent implements OnInit {
   }
   getModules() {
     this.featureModuleService.findAll().then(payload => {
-      this.modules = payload.data;
+      this.dashboard = payload.data;
 
       let group: FeatureModuleViewModel[] = [];
-      const count = this.modules.length;
-      this.modules.forEach((item, i) => {
+      const count = this.dashboard.length;
+      this.dashboard.forEach((item, i) => {
         if (i === 0 || group.length === 5) {
           if (group.length === 5) {
             this.superGroups.push(group);
             group = [];
             group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
-          }else {
+          } else {
             group = [];
             group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
           }
 
-        }else {
+        } else {
           group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
           if ((count - 1) === i) {
             this.superGroups.push(group);
@@ -121,14 +121,14 @@ export class CreateAccessComponent implements OnInit {
               }
             });
           });
-          this.router.navigate(['/modules/access-manager/access']);
+          this.router.navigate(['/dashboard/access-manager/access']);
         },
         error => {
           console.log(error);
         });
-    }else {
+    } else {
       this.accessControlService.update(accessControl).then(payload => {
-        this.router.navigate(['/modules/access-manager/access']);
+        this.router.navigate(['/dashboard/access-manager/access']);
       });
     }
 

@@ -6,8 +6,7 @@ label {
 }
 
 .modal-baseWrap {
-    padding: 20px 20px;
-    width: 620px;
+    width: 720px;
 }
 
 .modal_title {
@@ -26,10 +25,11 @@ label {
 }
 
 .emp-wrap {
+    border: 1px solid #ccc;
     width: 600px;
     height: 200px;
-    background: #eee;
-    overflow-y: scroll;
+    /* background: #eee; */
+    overflow-y: auto;
     padding: 10px;
     margin-bottom: 20px;
 }
@@ -63,6 +63,7 @@ thead {
     tr {
         th {
             height: 35px;
+            border: none;
         }
     }
 }

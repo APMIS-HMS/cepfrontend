@@ -1,73 +1,166 @@
-<!--<div class="table-head">
-    <div class="table-head-inner-content">
-        <p>Date</p>
-    </div>
-    <div class="table-head-inner-content" id="drugs">
-        <p>Drugs</p>
-    </div>
-    <div class="table-head-inner-content">
-        <p>Refill</p>
-    </div>
-    <div class="table-head-inner-content">
-        <p>Start Date</p>
-    </div>
-    <div class="table-head-inner-content">
-        <p>Action</p>
-    </div>
-</div>
-<div class="table-inner">
-    <div class="table-data">
-        <p>11-12-2017</p>
-    </div>
-    <div class="table-data" id="drugs">
-        <p>drugs name</p>
-    </div>
-    <div class="table-data">
-        <p>---</p>
-    </div>
-    <div class="table-data">
-        <p>11-23-2017</p>
-    </div>
-    <div class="table-data text-center" id="table-data">
-        <a><i class="fa fa-pencil"></i></a>
-        <a><i class="fa fa-trash"></i></a>
-        <button (click)="billToggle()" class="btn btn-default bill">Bill</button>
-    </div>
-</div>
-<div *ngIf="billshow" class="inner-container">
-    <div class="row">
-        <div class="col-sm-4 col-md-4">
-            <label>Drugs</label>
-            <dx-lookup>
-            </dx-lookup>
+<div class="survey">
+    <div class="row patient-details">
+        <div class="col-xs-12" style="padding: 10px;width: 100%;">
+            <div class="col-xs-4" style="width:7%; float: left;">
+                <!-- <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
+                <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)"> -->
+                <img class="img-responsive" src="http://placeholder.pics/svg/30" />
+            </div>
+            <div class="col-xs-8" style="width:93%; float: left;">
+                <small>Patient Name: <b>{{ prescriptionItems?.patientName }}</b></small><br>
+                <small>Age: <b>42years</b></small><br>
+                <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                <small>Prescription Priotity: <b>{{ prescriptionItems?.priorityObject?.name}}</b></small>
+            </div>
         </div>
-        <div class="col-sm-3 col-md-3">
-            <label>Quantity</label>
-            <div class="input-bg cacaca">
-                <div class="input-group">
-                    <input type="text" class="form-control">
-                    <div class="input-group-btn">
-                        <i class="fa fa-caret-right pull-right" style="margin-top: 8px;"></i>
-                        <select>
-							<option>Cards</option>
-						</select>
+    </div>
+
+    <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
+        <b>Prescribed by {{ prescriptionItems?.employeeName }}</b>
+    </div>
+
+    <div class="row">
+        <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+    </div>
+
+    <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
+        <div class="col-sm-12 col-md-12 text-center">
+            <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
+        </div>
+    </div>
+    <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
+        <div class="col-sm-12 col-md-12" style="float: right; margin-top: -12px;">
+            <button class="refresh-payment btn btn-default" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
+        <b>Prescribed items to dispense</b>
+    </div>
+    <div class="sec-border">
+        <div class="prod-row prodParent-header">
+            <div class="prod-rowItem item1">
+                <span style="padding-left: 3px;">Drugs</span>
+            </div>
+            <div class="prod-rowItem item2">
+                <span style="padding-left: 3px;">&nbsp;&nbsp;Qty<br>Billed</span>
+            </div>
+            <div class="prod-rowItem item3">
+                <span style="padding-left: 3px;">&nbsp;&nbsp; Qty<br>Dispensed</span>
+            </div>
+            <div class="prod-rowItem item4">
+                <span style="padding-left: 3px;">Balance</span>
+            </div>
+            <div class="prod-rowItem item5">
+                <span style="padding-left: 3px;">Unit Price</span>
+            </div>
+            <div class="prod-rowItem item6">
+                <span style="padding-left: 3px;">Payment</span>
+            </div>
+            <div class="prod-rowItem item7">
+                <span style="padding-left: 3px;">Status</span>
+            </div>
+        </div>
+        <div class="prodParent-content">
+            <div class="prodWrap" *ngFor="let prescription of prescriptions; let i = index;">
+                <div class="prod-row" (click)="onClickEachPrescription(i, prescription);">
+                    <div class="prod-rowItem item1">
+                        <span *ngIf="!prescription.isBilled">
+                            {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
+                        </span>
+                        <span *ngIf="prescription.isBilled">
+                            Drug: <b>{{ prescription.productName }}</b>, Cost: <b>{{ prescription.totalCost }}</b>
+                        </span>
                     </div>
+                    <div class="prod-rowItem item2" style="text-align: right; display: block;">{{ prescription.quantity }}</div>
+                    <div class="prod-rowItem item3" style="text-align: right; display: block;">{{ prescription.quantityDispensed }}</div>
+                    <div class="prod-rowItem item4" style="text-align: right; display: block;">{{ prescription.quantity - prescription.quantityDispensed }}</div>
+                    <div class="prod-rowItem item5" style="text-align: right; display: block;">&#x20A6;{{ prescription.cost }}</div>
+                    <div class="prod-rowItem item6">
+                        <div *ngIf="prescription.isExternal">
+                            <span style="width:100%;">External</span>
+                        </div>
+                        <div *ngIf="!prescription.isExternal">
+                            <span *ngIf="prescription.paymentCompleted" style="width:100%; color:#2e7d32">Paid</span>
+                            <span *ngIf="!prescription.paymentCompleted" style="width:100%; color:red">Not paid</span>
+                        </div>
+                    </div>
+                    <div class="prod-rowItem item7">
+                        <div *ngIf="prescription.isExternal">
+                            <span style="width:100%;">External</span>
+                        </div>
+                        <div *ngIf="!prescription.isExternal">
+                            <span *ngIf="prescription.quantity - prescription.quantityDispensed === 0 && prescription.isBilled" style="width: 100%; color:#2e7d32">Dispensed</span>
+                            <span *ngIf="(prescription.quantityDispensed >= 1) && (prescription.quantity - prescription.quantityDispensed !== 0)" style="width: 100%; color:mediumblue">Partly Dispensed</span>
+                            <span *ngIf="prescription.quantityDispensed === 0" style="width: 100%; color:red">Not Dispensed</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="prescription.isOpen===true && (selectedPrescription._id === prescription._id)" class="prodBatch-wrap animated flipInX">
+                    <form #form="ngForm">
+                        <table>
+                            <thead>
+                                <tr class="" style="color: #000;">
+                                    <th>
+                                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                        <span style="padding-left: 3px;">Batch No</span>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                        <span style="padding-left: 3px;">Expiry Date</span>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                        <span style="padding-left: 3px;">&nbsp;&nbsp;Qty<br> in Store</span>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                        <span style="padding-left: 3px;">Qty</span>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                                        <span style="padding-left: 3px;">Action</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let transaction of viewTransactions; let j = index;">
+                                    <td class="table-content">{{transaction?.batchNumber}}</td>
+                                    <td class="table-content">{{transaction?.expiryDate | date:'shortDate'}}</td>
+                                    <td class="table-content">{{transaction?.quantity}}</td>
+                                    <td class="table-content">
+                                        <md-input-container class="example-full-width">
+                                            <input mdInput type="number" placeholder="Quantity" name="{{j}}" ngModel>
+                                        </md-input-container>
+                                    </td>
+                                    <td class="table-content">
+                                        <button md-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="viewTransactions.length === 0 && !batchLoading">
+                                    <td class="table-content" colspan="5" style="text-align: center"> No batch available, please bring items into store</td>
+                                </tr>
+                                <tr *ngIf="viewTransactions.length === 0 && batchLoading">
+                                    <td class="table-content" colspan="5" style="text-align: center">
+                                        <md-spinner class='small-spinner'></md-spinner>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && !loading">
+                <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
+            </div>
+            <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
+                <div style="width: 100%; padding: 10px; font-size: 13px;">
+                    <md-spinner class="small-spinner"></md-spinner>
                 </div>
             </div>
         </div>
-        <div class="col-sm-2 col-md-2">
-            <label style="margin-top:20px"></label>
-            <dx-check-box [value]="true" [width]="200" text="External?"></dx-check-box>
-        </div>
-        <div class="col-sm-1 col-ms-1">
-            <p style="color:red; margin-top:30px"><strong>N</strong>200</p>
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <div class="text-amount puul-right">
-                <button class="btn btn-default save-btn">Save</button>
-            </div>
-        </div>
     </div>
+<<<<<<< HEAD
 </div>-->
 <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
@@ -89,12 +182,19 @@
         </div>
         <div class="table-head-inner-content">
             <p>Cost</p>
+=======
+    <div class="row">
+        <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:5px;height: 70px;">
+            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Quantity:</strong> <span> {{totalQuantity }}</span></p>
+            <p class="pull-right" style="width: 100%; text-align: right;margin-top: -10px;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
+>>>>>>> development
         </div>
     </div>
-    <div class="table-inner" *ngFor="let prescription of prescriptions">
-        <div class="table-data drugs">
-            <p>{{ prescription.genericName }}</p>
+    <div class="row margin-top-15" style="margin-bottom: 40px;">
+        <div class="col-sm-12 col-md-12 text-center">
+            <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
         </div>
+<<<<<<< HEAD
         <div class="table-data qt">
             {{ prescription.quantity }}
         </div>
@@ -110,5 +210,7 @@
     <div class="col-sm-12 col-md-12 text-center">
         <button class="cta-1" (click)="onClickDispense();"> Dispense </button>
         <!--<p class="total pull-right">&#x20A6;200</p>-->
+=======
+>>>>>>> development
     </div>
 </div>

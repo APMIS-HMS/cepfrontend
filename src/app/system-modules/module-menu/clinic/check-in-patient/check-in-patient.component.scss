@@ -1,4 +1,4 @@
-.page-title{
+.page-title {
     text-align: center;
     position: relative;
     top: -20px;
@@ -6,53 +6,68 @@
     width: 100%;
     color: #A6ACAF;
 }
-.empWrap{
+
+.empWrap {
     display: flex;
     justify-content: space-around;
     align-items: center;
     cursor: pointer;
 }
+
 .loc-timeSpent {
     font-size: 10px;
     color: #ff2500;
 }
+
 span.timeLabel {
     color: #A6ACAF;
     font-size: 10px;
     padding-right: 5px;
     font-style: italic;
 }
-.actionWrap{
+
+.actionWrap {
     border: 1px solid #ddd;
     padding: 2px 5px;
     cursor: pointer;
     border-radius: 7px;
 }
-.actionWrap:hover{
+
+.actionWrap:hover {
     background: #ddd;
 }
-.caregiver-room{
+
+.caregiver-room {
     color: #A6ACAF;
     font-size: 10px;
     font-style: italic;
 }
-.tbl-actionRow{
+
+.tbl-actionRow {
     justify-content: space-around;
     padding: 20px 0;
 }
-.tbl-actionRow .tbl-title{
+
+.tbl-actionRow .tbl-title {
     position: relative;
     left: auto;
 }
+
 .tbl-actionRow .tbl-search {
     position: relative;
     right: auto;
 }
-.dx-field-value:not(.dx-switch):not(.dx-checkbox):not(.dx-button), .dx-field-value-static {
+
+.dx-field-value:not(.dx-switch):not(.dx-checkbox):not(.dx-button),
+.dx-field-value-static {
     width: 100%;
 }
-.searchInput{
-    margin-top: 10px;
+
+.searchInput {
+    width: 100%;
+    border-radius: 3px;
+    padding: 9px;
+    background-color: none;
 }
 
 .inPatient-activityTimeline {
@@ -69,9 +84,11 @@ span.timeLabel {
     padding: 30px 10px;
     border: 2px solid #eee;
 }
-.activity-listings{
+
+.activity-listings {
     margin-top: 40px;
 }
+
 .activity-listing {
     border-right: 2px solid #0288D1;
     position: relative;
@@ -79,14 +96,16 @@ span.timeLabel {
     text-align: right;
     padding: 10px;
 }
-.activity-listing i{
+
+.activity-listing i {
     position: absolute;
     top: -15px;
     right: -6px;
     color: #0288D1;
     font-weight: bold;
 }
-.activity-time{
+
+.activity-time {
     display: flex;
     position: absolute;
     top: -15px;
@@ -94,26 +113,32 @@ span.timeLabel {
     color: #0288D1;
     text-decoration: underline;
 }
+
 .activity-time .date {
     margin-right: 10px;
 }
-.activity-content .activity{
+
+.activity-content .activity {
     color: #7B7D7D;
 }
-.activity-detail div{
+
+.activity-detail div {
     margin-top: 10px;
 }
-.activity-actor{
+
+.activity-actor {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     cursor: pointer;
 }
-.activity-actor:hover{
+
+.activity-actor:hover {
     color: #0288D1;
     text-decoration: underline;
 }
-.actor-wrap{
+
+.actor-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,10 +149,12 @@ span.timeLabel {
     margin-left: 10px;
     margin-top: 10px;
 }
-.activity-actor img{
+
+.activity-actor img {
     width: 30px;
 }
-.hide-actionWrap{
+
+.hide-actionWrap {
     font-size: 20px;
     margin-left: 10px;
     color: #ff2500;
@@ -135,6 +162,7 @@ span.timeLabel {
     position: absolute;
     top: 12px;
 }
+
 .timelinePatient-imgWrap {
     display: flex;
     justify-content: center;
@@ -146,9 +174,11 @@ span.timeLabel {
     border: 10px solid #eee;
     background: #eee;
 }
-.timelinePatient-imgWrap img{
+
+.timelinePatient-imgWrap img {
     width: 100%;
 }
+
 .timeline-headwrap {
     position: relative;
     width: 100%;
@@ -161,19 +191,27 @@ span.timeLabel {
     border-radius: 10px;
     margin-top: 20px;
 }
+
 .timelinehead-contentWrap {
     display: flex;
     align-items: center;
     font-size: 14px;
 }
-.patientLabelGroup{
+
+.patientLabelGroup {
     text-align: center;
 }
-.patientLabelGroup .label{
+
+.patientLabelGroup .label {
     color: #B3B6B7;
     font-size: 10px;
 }
-.modal-overlay{
+
+.modal-overlay {
     position: fixed;
     left: 0;
+}
+
+.table-content {
+    padding: 10px;
 }

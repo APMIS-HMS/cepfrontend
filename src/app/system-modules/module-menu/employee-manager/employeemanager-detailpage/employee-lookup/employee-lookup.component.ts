@@ -25,9 +25,18 @@ export class EmployeeLookupComponent implements OnInit {
     private personService: PersonService,
     private locker: CoolLocalStorage) {
     employeeService.listner.subscribe(payload => {
-      this.getEmployees();
+      this.loadIndicatorVisible = true;
+      let index = -1;
+      this.employees.forEach((item, i) => {
+        if (item._id === payload._id) {
+          index = i;
+        }
+      })
+      this.employees[index] = payload;
+      this.loadIndicatorVisible = false;
     });
     personService.updateListener.subscribe(payload => {
+      console.log(payload);
       this.getEmployees();
     });
   }
@@ -67,7 +76,7 @@ export class EmployeeLookupComponent implements OnInit {
   getEmployees() {
     this.loadIndicatorVisible = true;
     this.employees = [];
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.employeeService.find({ query: { facilityId: this.selectedFacility._id, showbasicinfo: true } }).then(payload => {
       this.employees = payload.data;
       this.loadIndicatorVisible = false;

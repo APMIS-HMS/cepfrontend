@@ -6,10 +6,12 @@
 
     <form [formGroup]="addBedFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <md-input-container>
-                <input mdInput md-error placeholder="Enter room name" formControlName="bed">
-            </md-input-container>
+            <md-form-field>
+                <input mdInput placeholder="Enter Room Name" formControlName="bed">
+            </md-form-field>
         </div>
-        <button (click)="addbed(addBedFormGroup.value, addBedFormGroup.valid)" class="cta-1">Add Bed</button>
+        <div class="btn-box">
+            <button md-raised-button [disabled]="!addBedFormGroup.valid || disableAddBtn" (click)="addbed(addBedFormGroup.value, addBedFormGroup.valid)" class="btn" [innerHtml]="addBedBtnText"></button>
+        </div>
     </form>
 </div>

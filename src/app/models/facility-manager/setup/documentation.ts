@@ -1,8 +1,8 @@
+import {PatientDocumentation } from '../../../models/facility-manager/setup/patient-documentation';
 export interface Documentation {
     _id: string;
-    facilityId: string;
-    patientId: string;
-    document: any;
-    createdBy: string;
-    createdAt: Date;
+    personId: any,
+    documentations: PatientDocumentation[],
+    createdAt: Date,
+    updatedAt: Date
 }

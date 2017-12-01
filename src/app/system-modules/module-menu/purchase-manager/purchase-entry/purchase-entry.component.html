@@ -26,7 +26,8 @@
                     <md-input-container>
                         <input mdInput formControlName="deliveryDate" [mdDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
                     </md-input-container>
-                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                     <md-datepicker #picker></md-datepicker>
                 </div>
             </div>
@@ -52,10 +53,10 @@
 
         <div class="midwrapsect">
             <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
-            <div class="uploadWrap">
+            <!--<div class="uploadWrap">
                 <dx-file-uploader selectButtonText="Select photo" labelText="" accept="image/*" uploadMode="useForm">
                 </dx-file-uploader>
-            </div>
+            </div>-->
         </div>
         <div *ngIf="flyout" class="flyout animated slideOut">
             <div class="sec-b">
@@ -102,7 +103,7 @@
         </div>
 
         <div class="bottomwrap">
-            <div class="summaries">
+        <!--    <div class="summaries">
                 <div class="summary">
                     <div class="s-itemLabel">Invoice Amount</div>
                     <div class="s-divider">-</div>
@@ -126,7 +127,7 @@
                     <div class="s-divider">-</div>
                     <div class="s-itemVal">&#8358; 1,200,102.00</div>
                 </div>
-            </div>
+            </div>-->
 
             <div class="sec-c">
                 <div class="frm-item-wrap" style="width:50%">
@@ -154,9 +155,9 @@
                             <div class="prod-wrap">
 
                                 <div class="inputWrap-productDetail">
-                                    <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
+                                    <div (click)="removeProduct(i, schedule)" class="modal-close-ico" aria-hidden="true">X</div>
 
-                                    <div style="width: 45%;" class="frm-item-wrap">
+                                    <div style="width: 35%;" class="frm-item-wrap">
                                         <md-input-container class="example-full-width">
                                             <input mdInput md-error placeholder="Product" formControlName="product">
                                         </md-input-container>
@@ -166,13 +167,7 @@
                                             <input mdInput md-error placeholder="Batch No" formControlName="batchNo">
                                         </md-input-container>
                                     </div>
-
-                                    <div style="width: 15%;" class="frm-item-wrap">
-                                        <md-select class="example-full-width" placeholder="Strength" formControlName="strength">
-                                            <md-option *ngFor="let strength of strengths" [value]="strength._id">{{strength.strength}}</md-option>
-                                        </md-select>
-                                    </div>
-
+                                    
                                     <div style="width: 15%;" class="frm-item-wrap">
                                         <md-input-container class="example-full-width">
                                             <input [step]="0.01" (change)="getCostSummary(schedule)" mdInput md-error placeholder="Cost Price" formControlName="costPrice">
@@ -185,38 +180,34 @@
                                         </md-input-container>
                                     </div>
 
-                                    <div style="width: 15%;" class="frm-item-wrap">
-                                        <md-input-container>
-                                            <input mdInput formControlName="expiryDate" [mdDatepicker]="picker" placeholder="Expiry Date">
+                                    <div style="width: 10%;" class="frm-item-wrap">
+                                        <md-input-container class="example-full-width">
+                                            <input formControlName="total" mdInput md-error placeholder="Total Cost">
                                         </md-input-container>
-                                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                    </div>
+
+                                    <div style="width: 15%;" class="frm-item-wrap">
+                                        <input mdInput formControlName="expiryDate" [mdDatepicker]="picker" placeholder="Expiry Date">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                                         <md-datepicker #picker></md-datepicker>
-
-
-                                        <!--<small class="alert-label" [hidden]="schedule.controls.qty.valid || schedule.controls.qty.pristine">
-                                                    Kindly type something in the field.
-                                                </small>
-                                        <label>Expiry Date</label>
-                                        <dx-date-box formControlName="expiryDate" [value]="now" style="width: 130px;" type="date">
-                                        </dx-date-box>-->
                                     </div>
                                 </div>
                             </div>
-
-
-
-
                         </div>
-
-
                     </div>
                 </div>
             </form>
 
         </div>
+    </form>
+    <div class="" style="width: 100%;height: 50px; text-align: center;">
+        <button md-raised-button (click)="cancelAll();">Reset</button>
+        <button md-raised-button class="mat-lg-btn" (click)="create(frm_purchaseOrder.valid, frm_purchaseOrder.value)" style="line-height: 1;">Done</button>
+        <!-- <div (click)="cancelAll();" class="cta-1" st>
+            Cancel
+        </div>
         <div (click)="create(frm_purchaseOrder.valid, frm_purchaseOrder.value)" class="cta-1">
             Done
-        </div>
-
-    </form>
+        </div> -->
+    </div>
 </div>

@@ -45,9 +45,8 @@
             <img *ngIf="pending.facility?.logoObject != undefined" [src]="facilityService.transform(pending.facility?.logoObject?.thumbnail)">
             <div>
                 <div class="listedFacility">{{pending.facility?.name}}</div>
-                <div class="listedFacilityDesc">
-                    {{pending.facility.description | shorten: 200: '...':wordBreak:true}}
-                </div>
+                <div class="listedFacilityDesc">{{pending.facility.description}}</div>
+                <!--<div class="listedFacilityDesc">{{pending.facility.description | shorten: 200: '...':wordBreak:true}}</div>-->
                 <div class="listedFacilityLoc">
                     <span>{{pending.facility.countryItem?.name}} </span><strong>.</strong>
                     <span>{{getPendingState(pending.facility)}}</span><strong>.</strong>
@@ -75,7 +74,6 @@
             <div class="detailContentWrap">
                 <div>
                     <div class="listedFacility">{{selectedDetailFacility?.name}}</div>
-
                     <div class="listedFacilityDesc">
                         {{selectedDetailFacility.description}}
                     </div>

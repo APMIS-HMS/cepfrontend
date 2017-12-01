@@ -2,9 +2,9 @@
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, FacilitiesService, UserService,
-  PersonService, EmployeeService
+  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService,
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, User, Employee, Person, Country } from '../../../../models/index';
+import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -16,6 +16,11 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./employeemanager-detailpage.component.scss']
 })
 export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
+<<<<<<< HEAD
+=======
+  selectedValue: string;
+
+>>>>>>> development
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() employee: Employee;
@@ -37,15 +42,30 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedPerson: Person;
   selectedFacility: Facility = <Facility>{};
   searchControl = new FormControl();
+  countryControl = new FormControl();
+  stateControl = new FormControl();
+  homeCountryControl = new FormControl();
+  homeStateControl = new FormControl();
   employees: Employee[] = [];
-  homeAddress: string = '';
-  selectedUser: User = <User>{};
-  loadIndicatorVisible: boolean = false;
+  genders: Gender[] = [];
+  relationships: Relationship[] = [];
+  maritalStatuses: MaritalStatus[] = [];
+  countries: Country[] = [];
+  states: any[] = [];
+  lgs: any[] = [];
 
-  createWorkspace: boolean = false;
-  assignUnitPop: boolean = false;
+  homeCountries: Country[] = [];
+  homeStates: any[] = [];
+  homeCities: any[] = [];
+  homeAddress = '';
+  selectedUser: User = <User>{};
+  loadIndicatorVisible = false;
+
+  createWorkspace = false;
+  assignUnitPop = false;
 
   employeeSubscription: Subscription;
+  departments: any[] = [];
   constructor(private countryService: CountriesService,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -53,6 +73,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private personService: PersonService,
     private router: Router, private route: ActivatedRoute,
     private toastr: ToastsManager,
+    private genderService: GenderService,
+    private relationshipService: RelationshipService,
+    private maritalStatusService: MaritalStatusService,
     private locker: CoolLocalStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -66,26 +89,73 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
     this.employeeSubscription = this.employeeService.employeeAnnounced$.subscribe(employee => {
       this.getEmployee(employee);
+      console.log(employee);
     });
 
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.prime();
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.departments = this.selectedFacility.departments;
     // this.getEmployees();
-    this.searchControl.valueChanges.subscribe(value => {
+    this.countryControl.valueChanges.subscribe(value => {
+      console.log(value);
+      const countryFilter = this.countries.filter(x => x._id === value);
+      if (countryFilter.length > 0) {
+        this.states = countryFilter[0].states;
+      }
     });
+    this.stateControl.valueChanges.subscribe(value => {
+      const stateFilter = this.states.filter(x => x._id === value);
+      if (stateFilter.length > 0) {
+        this.lgs = stateFilter[0].lgs;
+      }
+    });
+
+
+    this.homeCountryControl.valueChanges.subscribe(value => {
+      console.log(value);
+      const countryFilter = this.homeCountries.filter(x => x._id === value);
+      if (countryFilter.length > 0) {
+        this.homeStates = countryFilter[0].states;
+      }
+    });
+    this.homeStateControl.valueChanges.subscribe(value => {
+      const stateFilter = this.homeStates.filter(x => x._id === value);
+      if (stateFilter.length > 0) {
+        this.homeCities = stateFilter[0].cities;
+      }
+    });
+
     this.loadRoute();
+
   }
-  getEmployee(employee) {
+  prime() {
+    const gender$ = Observable.fromPromise(this.genderService.findAll());
+    const relationship$ = Observable.fromPromise(this.relationshipService.findAll());
+    const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
+    const country$ = Observable.fromPromise(this.countryService.findAll());
+
+    Observable.forkJoin([gender$, relationship$, maritalStatus$, country$]).subscribe((results: any) => {
+      this.genders = results[0].data;
+      this.relationships = results[1].data;
+      this.maritalStatuses = results[2].data;
+      this.countries = results[3].data;
+      this.homeCountries = results[3].data;
+    })
+  }
+  getEmployee(id) {
     this.loadIndicatorVisible = true;
-    let employee$ = this.employeeService.get(employee._id, {});
-    let user$ = this.userService.find({ query: { personId: employee.personId } });
+    const auth = <any>this.locker.getObject('auth');
+    const employee$ = this.employeeService.get(id, {});
+    const user$ = this.userService.find({ query: { personId: auth.data.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};
       this.loadIndicatorVisible = false;
       this.employee = <any>results[0];
+      this.selectedValue = this.employee.departmentId;
       this.selectedPerson = this.employee.employeeDetails;
       this.getCurrentUser(results[1]);
     });
@@ -163,6 +233,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     //     }
     //   });
     // });
+    this.route.params.subscribe((params: any) => {
+      this.getEmployee(params.id);
+    })
   }
   navEpDetail(val: Employee) {
     this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', val.personId]);
@@ -171,6 +244,13 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.employeeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.employees = payload.data;
     });
+  }
+  getRelationship(id) {
+    const filterRel = this.relationships.filter(x => x._id === id);
+    if (filterRel.length > 0) {
+      return filterRel[0].name;
+    }
+    return '';
   }
   getSelectedState() {
     this.selectedNationality.states.forEach((item, i) => {
@@ -247,16 +327,46 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.employeeSubscription.unsubscribe();
   }
+  updateEmployee() {
+    this.employee.departmentId = this.selectedValue;
+    this.employeeService.update(this.employee).subscribe(value => {
+      this.employee = value;
+      console.log(value);
+      this.editDepartment = !this.editDepartment;
+    });
+  }
+  UpdatePerson() {
+    const person = this.employee.employeeDetails;
+    this.biodatas = !this.biodatas;
+    this.personService.update(person).subscribe(payload => {
+      console.log(payload);
+    });
+  }
+  UpdatePersonContact() {
+    const person = this.employee.employeeDetails;
+    this.contacts = !this.contacts;
+    this.personService.update(person).subscribe(payload => {
+      console.log(payload);
+    });
+  }
+  UpdatePersonNextOfKin() {
+    const person = this.employee.employeeDetails;
+    this.nextofkin = !this.nextofkin;
+    this.personService.update(person).subscribe(payload => {
+      console.log(payload);
+    });
+  }
   toggleDepartmentShow() {
     this.editDepartment = !this.editDepartment;
   }
   bioDataShow() {
     this.biodatas = !this.biodatas;
   }
-  contactShow(){
+
+  contactShow() {
     this.contacts = !this.contacts;
   }
-  nextofkinShow(){
-     this.nextofkin = !this.nextofkin;
+  nextofkinShow() {
+    this.nextofkin = !this.nextofkin;
   }
 }

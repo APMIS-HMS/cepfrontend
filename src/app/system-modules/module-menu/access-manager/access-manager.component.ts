@@ -14,11 +14,15 @@ import { Router } from '@angular/router';
 })
 export class AccessManagerComponent implements OnInit {
 
+  accessUsers = true;
+
   searchControl = new FormControl();
+
 
   innerMenuShow = false;
   selectedFacility: Facility = <Facility>{};
   users: any[] = [];
+  patients: any[] = [];
 
   pageSize = 1;
   limit = 100;
@@ -38,11 +42,9 @@ export class AccessManagerComponent implements OnInit {
     const facilityId = this.selectedFacility._id;
     this.userService.find({ query: { 'facilitiesRole.facilityId': facilityId, $limit: limit } }).then(payload => {
       this.users = payload.data;
-      console.log(payload);
     });
   }
   edit(item: any) {
-    console.log(item);
     this.router.navigate(['/dashboard/employee-manager/generate-user', item.person._id]);
   }
   empDetail(val: any) {
@@ -55,6 +57,9 @@ export class AccessManagerComponent implements OnInit {
     if (e.srcElement.id !== 'submenu_ico') {
       this.innerMenuShow = false;
     }
+  }
+  styleUsers() {
+    this.accessUsers = true;
   }
 
   // onScroll() {

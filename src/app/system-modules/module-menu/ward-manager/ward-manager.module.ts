@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePickerModule } from 'ng2-datepicker';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { wardManagerRoutes } from './ward-manager.routes';
 import { WardManagerAdmissionpageComponent } from './ward-manager-admissionpage/ward-manager-admissionpage.component';
@@ -20,6 +19,7 @@ import { TransferPatientComponent } from './transfer-patient/transfer-patient.co
 import { WardEmitterService } from '../../../services/facility-manager/ward-emitter.service';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-details/bill-details.component';
+import { WardCheckInComponent } from './ward-check-in/ward-check-in.component';
 
 @NgModule({
     declarations: [
@@ -36,17 +36,13 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
     AddBedComponent,
     DischargePatientComponent,
     TransferPatientComponent,
-    BillDetailsComponent],
+    BillDetailsComponent,
+    WardCheckInComponent],
     exports: [
     ],
     imports: [
-        SharedModule,
         MaterialModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
-        wardManagerRoutes,
-        // DatePickerModule
+        wardManagerRoutes
     ],
     providers: [WardEmitterService]
 })

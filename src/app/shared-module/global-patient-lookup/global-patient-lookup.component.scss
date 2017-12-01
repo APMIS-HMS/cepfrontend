@@ -4,7 +4,7 @@
     background: #E3F2FD;
     padding: 5px;
     border: 1px solid #03A9F4;
-    z-index: 1502;
+    z-index: 10;
     position: fixed;
     left: 10px;
     bottom: 10px;
@@ -21,9 +21,11 @@
 input{
     border: 1px solid #03A9F4;
     margin-top: 5px;
-    width: 100%;
+    width: 94%;
     font-size: 12px;
     border-radius: 20px;
+    padding: 5px;
+    outline: none;
 }
 ul.lookupListings {
     margin: 0;

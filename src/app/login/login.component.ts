@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
     });
   }
   login(valid) {
-    console.log('Login');
     if (valid) {
       this.loadIndicatorVisible = true;
       const query = {
@@ -67,7 +66,6 @@ export class LoginComponent implements OnInit {
         this.loadIndicatorVisible = false;
       },
         error => {
-          console.log(error);
           this.loadIndicatorVisible = false;
           this.mainErr = false;
           this.errMsg = 'wrong login credentials';
@@ -95,7 +93,7 @@ export class LoginComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
-  toggleShow(e) { 
+  toggleShow(e) {
     this.show = !this.show;
     if (this.show) {
       this.input.nativeElement.type = 'text';

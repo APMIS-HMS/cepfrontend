@@ -1,0 +1,98 @@
+<div class="pgSubtitle">
+  {{selectedHMO?.name}}
+</div>
+<div>
+  <div class="doc-mainWrap">
+    <div class="doc-contentArea">
+      <div class="clinicalNoteWrap">
+        <div class="tblWrapa" class="actSect">
+          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+            [pageSizeOptions]="pageSizeOptions">
+          </md-paginator>
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Name</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Gender</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Insurance ID</span>
+                </th>
+                <th>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                  <span style="padding-left: 3px;">Role</span>
+                </th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td colspan="10">
+                  <div class="tbl-actionRow">
+                    <!-- <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
+                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div>
+
+                        <div class="frm-item-wrap">
+                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
+                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        </div> -->
+                  </div>
+                </td>
+              </tr>
+
+
+
+
+              <!-- category : "STAFF" date : "2017-11-30T00:00:00.000Z" filNo : "ACN0439" firstName : "MICHAEL O." gender : "M" plan : "TOP-UP"
+              serial : 1 sponsor : "AERO CONTRACTORS CO. NIG LTD." surname : "ESEIGBE" type : "FEE-FOR-SERVICE" -->
+
+
+              <tr *ngFor="let beneficiary of filteredBeneficiaries">
+                <td>{{beneficiary?.surname}} {{beneficiary?.firstName}}</td>
+                <td>{{beneficiary?.gender}}</td>
+                <td>{{beneficiary?.filNo}}</td>
+                <td>
+                  <div class="role">{{getRole(beneficiary)}}</div>
+                </td>
+                <td>Active</td>
+                <td>{{beneficiary?.date | date:'shortDate'}}</td>
+              </tr>
+            </tbody>
+            <!-- <tfoot>
+
+            </tfoot> -->
+          </table>
+          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+            [pageSizeOptions]="pageSizeOptions">
+          </md-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

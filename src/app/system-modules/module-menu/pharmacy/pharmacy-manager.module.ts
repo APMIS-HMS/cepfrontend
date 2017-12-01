@@ -16,6 +16,9 @@ import { DispenseComponent } from './dispense/dispense.component';
 import { PrescriptionComponent } from './dispense/prescription/prescription.component';
 import { NoprescriptionComponent } from './dispense/noprescription/noprescription.component';
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
+import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { WalkInDetailsComponent } from './prescription-list/walk-in-details/walk-in-details.component';
+import { ExternalPrescriptionComponent } from './external-prescription/external-prescription.component';
 
 @NgModule({
     declarations: [
@@ -25,16 +28,19 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
         DispenseComponent,
         PrescriptionComponent,
         NoprescriptionComponent,
+        WalkInDetailsComponent,
+        ExternalPrescriptionComponent,
     ],
 
     exports: [
     ],
     imports: [
-        SharedModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        pharmacyManagerRoutes
+        // SharedModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        pharmacyManagerRoutes,
+        MaterialModule
     ],
     providers: [PharmacyEmitterService, StoreService, PresentationService,
         GenericService, ManufacturerService, RouteService, SupplierService, 

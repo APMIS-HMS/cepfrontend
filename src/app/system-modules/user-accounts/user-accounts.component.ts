@@ -43,8 +43,13 @@ export class UserAccountsComponent implements OnInit {
     this.route.data.subscribe(data => {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
-        this.listOfFacilities = payload.listOfFacilities;
         this.selectedPerson = payload.selectedPerson;
+        console.log(payload.listOfFacilities)
+        if (payload.listOfFacilities.length === 1) {
+          this.popListing(payload.listOfFacilities[0]);
+        } else {
+          this.listOfFacilities = payload.listOfFacilities;
+        }
       });
     });
     // let auth = this.locker.getObject('auth');
@@ -83,25 +88,27 @@ export class UserAccountsComponent implements OnInit {
   }
 
   popListing(item: any) {
-    const auth:any = this.locker.getObject('auth');
+    const auth: any = this.locker.getObject('auth');
     this.selectedFacility = item;
     if (this.selectedFacility.isTokenVerified === false) {
       this.popup_verifyToken = true;
       this.popup_listing = false;
     } else {
-      this.employeeService.find({
-        query: {
-          facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-        }
-      }).then((payload: any) => {
-        if (payload.data.length > 0) {
-          this.loginEmployee = payload.data[0];
-        } else {
-          this.loginEmployee = undefined;
-        }
-        this.popup_listing = true;
-        this.popup_verifyToken = false;
-      });
+      this.popup_listing = true;
+      this.popup_verifyToken = false;
+      // this.employeeService.find({
+      //   query: {
+      //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+      //   }
+      // }).then((payload: any) => {
+      //   if (payload.data.length > 0) {
+      //     this.loginEmployee = payload.data[0];
+      //   } else {
+      //     this.loginEmployee = undefined;
+      //   }
+      //   this.popup_listing = true;
+      //   this.popup_verifyToken = false;
+      // });
     }
     this.locker.setObject('selectedFacility', this.selectedFacility);
     this.logoutConfirm_on = false;

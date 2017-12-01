@@ -75,13 +75,13 @@ export class CorporateAccountLandingPageComponent implements OnInit {
           if (companyHealthCover.isAccepted === false) {
             this.hasPending = true;
           } else {
-            this.router.navigate(['/modules/corporate/covering-facility']);
+            this.router.navigate(['/dashboard/corporate/covering-facility']);
           }
         }
       });
   }
   deptsShow() {
-    this.router.navigate(['/modules/corporate/department'])
+    this.router.navigate(['/dashboard/corporate/department'])
   }
   homeShow() {
     this.logoutConfirm_on = false;
@@ -111,7 +111,6 @@ export class CorporateAccountLandingPageComponent implements OnInit {
     this.companyHealthCoverService.find({ query: { corporateFacilityId: this.selectedFacility._id, isAccepted: false } })
       .then(payload => {
         this.pendingHealthCovers = payload.data;
-        console.log(this.pendingHealthCovers);
       });
   }
   logOutShow() {
@@ -122,7 +121,6 @@ export class CorporateAccountLandingPageComponent implements OnInit {
   }
   getFacilities() {
     this.facilityService.findAll().then(payload => {
-      console.log(payload);
       this.facilities = payload.data;
     });
   }

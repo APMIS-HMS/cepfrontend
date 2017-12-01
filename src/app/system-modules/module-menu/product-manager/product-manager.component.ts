@@ -10,25 +10,25 @@ import { FacilitiesService } from '../../../services/facility-manager/setup/inde
 })
 
 export class ProductManagerComponent implements OnInit {
-	pageInView: String = "";
-	productNavMenu: boolean = false;
-	categoryNavMenu: boolean = false;
-	supplierNavMenu: boolean = false;
-	manufacturerNavMenu: boolean = false;
-	routeNavMenu: boolean = false;
-	genericNavMenu: boolean = false;
-	presentationNavMenu: boolean = false;
-	strengthNavMenu: boolean = false;
-	contentSecMenuShow: boolean = false;
+	pageInView: String = '';
+	productNavMenu: Boolean = false;
+	categoryNavMenu: Boolean = false;
+	supplierNavMenu: Boolean = false;
+	manufacturerNavMenu: Boolean = false;
+	routeNavMenu: Boolean = false;
+	genericNavMenu: Boolean = false;
+	presentationNavMenu: Boolean = false;
+	strengthNavMenu: Boolean = false;
+	contentSecMenuShow: Boolean = false;
 
-	//products page
-	addProduct: boolean = false;
-	productCat: boolean = false;
-	generic: boolean = false;
-	productRoute: boolean = false;
-	manufacturer: boolean = false;
-	presentation: boolean = false;
-	strength: boolean = false;
+	// products page
+	addProduct: Boolean = false;
+	productCat: Boolean = false;
+	generic: Boolean = false;
+	productRoute: Boolean = false;
+	manufacturer: Boolean = false;
+	presentation: Boolean = false;
+	strength: Boolean = false;
 
 	constructor(private _productEventEmitter: ProductEmitterService, private _router: Router,
 		public facilityService: FacilitiesService) {
@@ -46,7 +46,7 @@ export class ProductManagerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		let page: string = this._router.url;
+		const page: string = this._router.url;
 		this.checkPageUrl(page);
 		this._productEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
@@ -64,20 +64,20 @@ export class ProductManagerComponent implements OnInit {
 		}
 	}
 
-	onClickProductNavMenu() {
-		this.facilityService.announceSlider(false);
-		this.productNavMenu = true;
-		this.categoryNavMenu = false;
-		this.supplierNavMenu = false;
-		this.manufacturerNavMenu = false;
-		this.routeNavMenu = false;
-		this.genericNavMenu = false;
-		this.presentationNavMenu = false;
-		this.strengthNavMenu  = false;
-		this._productEventEmitter.announcedUrl.subscribe(url => {
-			this.pageInView = url;
-		});
-	}
+	// onClickProductNavMenu() {
+	// 	this.facilityService.announceSlider(false);
+	// 	this.productNavMenu = true;
+	// 	this.categoryNavMenu = false;
+	// 	this.supplierNavMenu = false;
+	// 	this.manufacturerNavMenu = false;
+	// 	this.routeNavMenu = false;
+	// 	this.genericNavMenu = false;
+	// 	this.presentationNavMenu = false;
+	// 	this.strengthNavMenu = false;
+	// 	this._productEventEmitter.announcedUrl.subscribe(url => {
+	// 		this.pageInView = url;
+	// 	});
+	// }
 
 	onClickCategoryNavMenu() {
 		this.productNavMenu = false;
@@ -87,25 +87,26 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu  = false;
+		this.strengthNavMenu = false;
 		this._productEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
 	}
 
-	onClickSupplierNavMenu() {
-		//this.facilityService.announceSlider(false);
-		this.categoryNavMenu = false;
-		this.supplierNavMenu = true;
-		this.manufacturerNavMenu = false;
-		this.routeNavMenu = false;
-		this.genericNavMenu = false;
-		this.presentationNavMenu = false;
-		this.strengthNavMenu  = false;
-		this._productEventEmitter.announcedUrl.subscribe(url => {
-			this.pageInView = url;
-		});
-	}
+	// onClickSupplierNavMenu() {
+	// 	// this.facilityService.announceSlider(false);
+	// 	this.productNavMenu = false;
+	// 	this.categoryNavMenu = false;
+	// 	this.supplierNavMenu = true;
+	// 	this.manufacturerNavMenu = false;
+	// 	this.routeNavMenu = false;
+	// 	this.genericNavMenu = false;
+	// 	this.presentationNavMenu = false;
+	// 	this.strengthNavMenu = false;
+	// 	this._productEventEmitter.announcedUrl.subscribe(url => {
+	// 		this.pageInView = url;
+	// 	});
+	// }
 
 	onClickManufacturerNavMenu() {
 		this.productNavMenu = false;
@@ -115,7 +116,7 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu  = false;
+		this.strengthNavMenu = false;
 		this._productEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
@@ -129,7 +130,7 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = true;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu  = false;
+		this.strengthNavMenu = false;
 		this._productEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
@@ -143,7 +144,7 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = true;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu  = false;
+		this.strengthNavMenu = false;
 		this._productEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
@@ -157,12 +158,12 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = true;
-		this.strengthNavMenu  = false;
+		this.strengthNavMenu = false;
 		this._productEventEmitter.announcedUrl.subscribe(url => {
-            this.pageInView = url;
-        });
+			this.pageInView = url;
+		});
 	}
-  
+
 	onClickStrengthNavMenu() {
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
@@ -171,7 +172,7 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu  = true;
+		this.strengthNavMenu = true;
 		this._productEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
@@ -180,7 +181,35 @@ export class ProductManagerComponent implements OnInit {
 	pageInViewLoader(title) {
 		this.pageInView = title;
 	}
+	changeRoute(val) {
+		if (val == 'products') {
+			this.facilityService.announceSlider(false);
+			this.productNavMenu = true;
+			this.categoryNavMenu = false;
+			this.supplierNavMenu = false;
+			this.manufacturerNavMenu = false;
+			this.routeNavMenu = false;
+			this.genericNavMenu = false;
+			this.presentationNavMenu = false;
+			this.strengthNavMenu = false;
+			this._productEventEmitter.announcedUrl.subscribe(url => {
+				this.pageInView = url;
+			});
+		} else if (val == 'suppliers') {
+			this.productNavMenu = false;
+			this.categoryNavMenu = false;
+			this.supplierNavMenu = true;
+			this.manufacturerNavMenu = false;
+			this.routeNavMenu = false;
+			this.genericNavMenu = false;
+			this.presentationNavMenu = false;
+			this.strengthNavMenu = false;
+			this._productEventEmitter.announcedUrl.subscribe(url => {
+				this.pageInView = url;
+			});
+		}
 
+	}
 	private checkPageUrl(param: string) {
 		if (param.includes('products')) {
 			this.productNavMenu = true;
@@ -198,7 +227,7 @@ export class ProductManagerComponent implements OnInit {
 			this.presentationNavMenu = true;
 		}
 	}
-	productCatSlide(){
+	productCatSlide() {
 		this.addProduct = false;
 		this.productCat = true;
 		this.generic = false;
@@ -206,6 +235,14 @@ export class ProductManagerComponent implements OnInit {
 		this.manufacturer = false;
 		this.presentation = false;
 		this.strength = false;
+		this.productNavMenu = false;
+		this.categoryNavMenu = true;
+		this.supplierNavMenu = false;
+		this.manufacturerNavMenu = false;
+		this.routeNavMenu = false;
+		this.genericNavMenu = false;
+		this.presentationNavMenu = false;
+		this.strengthNavMenu = false;
 	}
 	genericSlide() {
 		this.addProduct = false;
@@ -215,6 +252,14 @@ export class ProductManagerComponent implements OnInit {
 		this.manufacturer = false;
 		this.presentation = false;
 		this.strength = false;
+		this.productNavMenu = false;
+		this.categoryNavMenu = false;
+		this.supplierNavMenu = false;
+		this.manufacturerNavMenu = false;
+		this.routeNavMenu = false;
+		this.genericNavMenu = true;
+		this.presentationNavMenu = false;
+		this.strengthNavMenu = false;
 	}
 	presentationSlide() {
 		this.addProduct = false;
@@ -223,7 +268,15 @@ export class ProductManagerComponent implements OnInit {
 		this.productRoute = false;
 		this.manufacturer = false;
 		this.presentation = true;
-			this.strength = false;
+		this.strength = false;
+		this.productNavMenu = false;
+		this.categoryNavMenu = false;
+		this.supplierNavMenu = false;
+		this.manufacturerNavMenu = false;
+		this.routeNavMenu = false;
+		this.genericNavMenu = false;
+		this.presentationNavMenu = true;
+		this.strengthNavMenu = false;
 	}
 	routeSlide() {
 		this.addProduct = false;
@@ -233,6 +286,14 @@ export class ProductManagerComponent implements OnInit {
 		this.manufacturer = false;
 		this.presentation = false;
 		this.strength = false;
+		this.productNavMenu = false;
+		this.categoryNavMenu = false;
+		this.supplierNavMenu = false;
+		this.manufacturerNavMenu = false;
+		this.routeNavMenu = true;
+		this.genericNavMenu = false;
+		this.presentationNavMenu = false;
+		this.strengthNavMenu = false;
 	}
 	manufacturerSlide() {
 		this.addProduct = false;
@@ -242,6 +303,14 @@ export class ProductManagerComponent implements OnInit {
 		this.manufacturer = true;
 		this.presentation = false;
 		this.strength = false;
+		this.productNavMenu = false;
+		this.categoryNavMenu = false;
+		this.supplierNavMenu = false;
+		this.manufacturerNavMenu = true;
+		this.routeNavMenu = false;
+		this.genericNavMenu = false;
+		this.presentationNavMenu = false;
+		this.strengthNavMenu = false;
 	}
 
 	strengthSlide() {
@@ -251,7 +320,15 @@ export class ProductManagerComponent implements OnInit {
 		this.productRoute = false;
 		this.manufacturer = false;
 		this.presentation = false;
-		this.strength = true;
+		this.strength = !this.strength;
+		this.productNavMenu = false;
+		this.categoryNavMenu = false;
+		this.supplierNavMenu = false;
+		this.manufacturerNavMenu = false;
+		this.routeNavMenu = false;
+		this.genericNavMenu = false;
+		this.presentationNavMenu = false;
+		this.strengthNavMenu = true;
 	}
 
 }

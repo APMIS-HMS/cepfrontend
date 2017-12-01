@@ -48,7 +48,7 @@ td {
 }
 
 .td-worspace:hover {
-    .workspace-listWrap {
+    .workspace-listWrap { 
         display: block;
     }
 }
@@ -131,4 +131,8 @@ td {
     border: 1px solid #0288D1;
     background: #0288D1;
     color: #000;
+}
+.page-title {
+    text-align: left;
+    position: absolute;
 }

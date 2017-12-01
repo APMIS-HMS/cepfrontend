@@ -10,8 +10,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class ApmisCheckboxFeatureComponent implements OnInit {
   @Input() selectedFeature = <FeatureModuleViewModel>{};
-  expand: boolean = false;
-  expandMain: boolean = false;
+  expand = false;
+  expandMain = false;
   constructor(private featureModuleService: FeatureModuleService,
     private locker: CoolLocalStorage,
     private accessControlService: AccessControlService) { }

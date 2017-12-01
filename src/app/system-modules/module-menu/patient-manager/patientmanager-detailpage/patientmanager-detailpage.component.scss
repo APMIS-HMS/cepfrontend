@@ -5,7 +5,7 @@
     position: relative;
     width: 100%;
     background: #fff;
-    padding: 20px 10px 10px 10px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
@@ -24,6 +24,7 @@
     box-sizing: border-box;
     margin: 20px 5px;
     padding: 3px;
+    box-sizing: border-box;
 }
 
 .patientPage-contentArea .menuSummary {
@@ -33,16 +34,19 @@
 }
 
 .sideTab-header {
+    background: #f8f8f8;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.header-secA{
     position: relative;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: #eee;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
-.sideTab-header .patient-img div {
+.sideTab-header .patient-img .patient-img-wrap {
+    position: relative;
     width: 120px;
     height: 120px;
     overflow: hidden;
@@ -53,8 +57,58 @@
     margin-right: 10px;
 }
 
-.sideTab-header .patient-img div img {
+.sideTab-header .patient-img .patient-img-wrap img {
     width: 100%;
+}
+
+.patient-img-wrap:hover{
+    .pp-overlay{
+        display: flex;
+    }
+}
+
+.pp-overlay{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    font-size: 12px;
+}
+.emp-nameRow img{
+    width: 100%;
+    border-radius: 100%;
+    margin-right: 10px;
+    height: 100%;
+}
+.empData-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.empData-header .emp-data{
+    text-align: left;
+    margin-left: 16px;
+    margin-top: 52px;
+}
+.emp-data, .emp-img{
+    width: 50%;
+}
+.emp-img{
+    text-align: right;
+    padding-top: 20px;
+}
+.emp-img img{
+    width: 190px;
+    border-radius: 20px;
 }
 
 .headerDetail-wrap {
@@ -71,6 +125,8 @@
     display: flex;
     justify-content: space-between;
     color: #154360;
+    line-height: 2;
+    margin-bottom: 5px;
 }
 
 .patient-email {
@@ -79,13 +135,13 @@
 }
 
 .sideTab-nav {
-    background: #ddd;
+    background: #f4f4f4;
     padding: 10px;
     box-sizing: border-box;
 }
 
 .menu-sect {
-    border-bottom: 2px solid #aaa;
+    border-bottom: 2px solid #fff;
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
@@ -101,8 +157,8 @@
 
 .menu-item:hover,
 .active-menuItem {
-    border-left: 5px solid #aaa;
-    background: #ccc;
+    border-left: 5px solid #03A9F4;
+    background: rgba(0,0,0,0.05);
     font-weight: bold;
 }
 .pg-subtitle{
@@ -197,7 +253,7 @@
 }
 
 .accBal-val {
-    color: #068411;
+    color: #ff2500;
 }
 
 .entry-unit {
@@ -248,4 +304,24 @@ th {
 }
 .pp-cta:hover{
     text-decoration: underline;
+}
+ul.topmenuwrap {
+    position: relative;
+    top: auto;
+    right: auto;
+    font-size: 11px;
+    color: #0288D1;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+ul.topmenuwrap li{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 3px 12px;
+}
+ul.topmenuwrap li i{
+    padding-right: 5px;
 }

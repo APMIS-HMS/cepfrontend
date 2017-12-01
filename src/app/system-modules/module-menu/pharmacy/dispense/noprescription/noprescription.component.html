@@ -15,6 +15,11 @@
             <div *ngIf="individualShow">
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-input-container class="example-full-width">
+                        <input mdInput formControlName="phone" placeholder="Phone Number">
+                    </md-input-container>
+                </div>
+                <div class="col-sm-4 col-md-4 col-xs-12">
+                    <md-input-container class="example-full-width">
                         <input mdInput formControlName="lastName" placeholder="Last Name">
                     </md-input-container>
                 </div>
@@ -23,42 +28,51 @@
                         <input mdInput formControlName="firstName" placeholder="First Name">
                     </md-input-container>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="phone" placeholder="Phone Number">
-                    </md-input-container>
-                </div>
             </div>
             <!--end individual-->
             <!-- begin corporate -->
             <div *ngIf="corporateShow">
-                <div class="col-sm-8 col-md-8 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="companyName" placeholder="Company Name">
-                    </md-input-container>
-                </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-input-container class="example-full-width">
                         <input mdInput formControlName="companyPhone" placeholder="Company Phone">
                     </md-input-container>
                 </div>
+                <div class="col-sm-8 col-md-8 col-xs-12">
+                    <md-input-container class="example-full-width">
+                        <input mdInput formControlName="companyName" placeholder="Company Name">
+                    </md-input-container>
+                </div>
             </div>
             <!--end corporate-->
             <!-- begin Internal -->
+<<<<<<< HEAD
             <div *ngIf="internalShow">
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Department" formControlName="dept" class="example-full-width">
                         <md-option *ngFor="let dept of departments" [(value)]="dept._id">{{ dept.name }}</md-option>
+=======
+            <div *ngIf="internalShow" class="col-xs-12 no-padding" style="height: 100px;margin-bottom: 15px;">
+                <div class="col-xs-12" style="padding: 10px 0;">
+                    <label class="example-margin">Internal Type:</label>
+                    <md-radio-group [(ngModel)]="internalType" [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
+                        <md-radio-button class="example-margin" value="Department">Department/Unit</md-radio-button>
+                        <md-radio-button class="example-margin" value="Location">Location</md-radio-button>
+                    </md-radio-group>
+                </div>
+                <div class="col-sm-4 col-md-4 col-xs-12" *ngIf="deptLocationShow">
+                    <md-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
+                        <md-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</md-option>
+>>>>>>> development
                     </md-select>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Unit" formControlName="unit" class="example-full-width">
-                        <md-option *ngFor="let unit of units" [(value)]="unit._id">{{ unit.name }}</md-option>
+                        <md-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</md-option>
                     </md-select>
                 </div>
                 <div class="col-sm-4 col-md-4 col-xs-12">
                     <md-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
-                        <md-option *ngFor="let location of minorLocations" [(value)]="location._id">{{ location.name }}</md-option>
+                        <md-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</md-option>
                     </md-select>
                 </div>
             </div>
@@ -66,7 +80,7 @@
             <div class="col-sm-4 col-md-4 col-xs-12" style="margin-top: 20px;">
                 <div class="cu-search-box">
                     <md-input-container>
-                        <input mdInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug">
+                        <input mdInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
                     </md-input-container>
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
@@ -77,7 +91,7 @@
                             <li><a class="header">Select item</a></li>
                             <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                             <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions[product.transactions?.length - 1].batchNumber"
+                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-iid]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-batchNumber]="product.transactions[product.transactions?.length - 1].batchNumber"
                                 [attr.data-p-costPrice]="product.transactions[product.transactions?.length - 1].costPrice" (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.productObject.name }}</a></li>
                         </ul>
                         <div class="cu-footer">
@@ -86,14 +100,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top:2px;">
+                <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
+                    <md-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
+                    </md-option>
+                </md-select>
+            </div>
             <div class="col-sm-2 col-md-2 col-xs-12">
                 <md-input-container class="example-full-width">
                     <input mdInput type="number" formControlName="qty" placeholder="Quantity">
-                </md-input-container>
-            </div>
-            <div class="col-sm-3 col-md-3 col-xs-12">
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="batchNumber" placeholder="Batch Number">
                 </md-input-container>
             </div>
             <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 20px;">
@@ -107,59 +122,63 @@
 </form>
 <div class="row margin-top-bottom">
     <div class="col-sm-12 col-md-12 text-center">
-        <button md-raised-button (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);" class="btn btn-blue"> Save </button>
+        <button md-raised-button class="mat-lg-btn" (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);"> Save </button>
     </div>
 </div>
 <div class="sec-border">
-    <div class="table-head">
-        <div class="table-head-inner-content drugs">
-            <p>Drugs</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Qty</p>
-        </div>
-        <div class="table-head-inner-content batch">
-            <p>Batch</p>
-        </div>
-        <div class="table-head-inner-content unit-price">
-            <p>Unit Price</p>
-        </div>
-        <div class="table-head-inner-content cost-price">
-            <p>Cost</p>
-        </div>
-        <div class="table-head-inner-content">
-            <p>Action</p>
-        </div>
-    </div>
-    <div class="table-inner" *ngFor="let prescription of prescriptions; let i = index;">
-        <div class="table-data drugs">
-            <p>{{ prescription.productName }}</p>
-        </div>
-        <div class="table-data">
-            <p> {{ prescription.qty }}</p>
-        </div>
-        <div class="table-data batch">
-            <p> {{ prescription.batchNumber }}</p>
-        </div>
-        <div class="table-data unit-price">
-            <p><b>&#x20A6;{{ prescription.unitPrice }}</b></p>
-        </div>
-        <div class="table-data cost-price">
-            <p><b>&#x20A6;{{ prescription.cost }}</b></p>
-        </div>
-        <div class="table-data">
-            <p> <i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></p>
-        </div>
-    </div>
-    <div class="table-inner" *ngIf="prescriptions.length === 0">
-        <p class="text-center" style="width: 100%;">No data to display in table</p>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Drugs</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Qty</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Batch</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Unit Price</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Cost</span>
+                </th>
+                <th class="th-header">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <span style="padding-left: 3px;">Action</span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let prescription of prescriptions; let i = index;">
+                <td class="table-content">{{ prescription.productName }}</td>
+                <td class="table-content">{{ prescription.qty }}</td>
+                <td class="table-content">{{ prescription.batchNumber }}</td>
+                <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
+                <td class="table-content">&#x20A6;{{ prescription.qty * prescription.unitPrice }}</td>
+                <td class="table-content">
+                    <a style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
+                </td>
+            </tr>
+            <tr *ngIf="prescriptions.length === 0">
+                <td class="table-content" colspan="6" style="text-align: center"> No data to display in table</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div class="row" style="padding-right: 20px;">
-    <p class="pull-right"> <b>Total Cost: &#x20A6;{{ totalItemPrice }}</b></p>
+    <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Quantity: {{ totalQuantity }}</b></p>
+    <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Cost: &#x20A6;{{ totalPrice }}</b></p>
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-md-12 text-center">
-        <button class="mat-lg-btn" (click)="onClickDispense();" md-raised-button>Dispense</button>
+        <button class="mat-lg-btn" [disabled]="disableDispenseBtn" (click)="onClickDispense();" md-raised-button [innerHtml]="dispenseBtnText"></button>
     </div>
 </div>

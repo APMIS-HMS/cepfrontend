@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<div class="page-title">Employee Workspace</div>
+
+>>>>>>> development
 <ul class="topmenuwrap">
     <li (click)="createWorkspace_pop()">
         <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -10,27 +15,14 @@
         <tr>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Employee</span>
             </th>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Department</span>
             </th>
-            <!--<th>
-          <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-          <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
-          <span style="padding-left: 3px;">Unit</span>
-      </th>
-      <th>
-          <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-          <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
-          <span style="padding-left: 3px;">Location</span>
-      </th>-->
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                 <span style="padding-left: 3px;">Workspace</span>
             </th>
             <th>Actions</th>
@@ -41,7 +33,7 @@
         <tr>
             <td colspan="6">
                 <div class="tbl-actionRow">
-                    <div class="tbl-title">Employee Workspace</div>
+                    <!-- <div class="tbl-title">Employee Workspace</div> -->
                     <div class="tbl-search">
                         <div class="searchInputWrap">
                             <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
@@ -56,19 +48,19 @@
             <td>
                 <div class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="workSpace.employeeObject.employeeDetails.profileImageObject == undefined" src="assets/images/users/default.png">
-                        <img *ngIf="workSpace.employeeObject.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(workSpace.employeeObject.employeeDetails.profileImageObject.thumbnail)">
+                        <img *ngIf="workSpace.employeeId.employeeDetails.profileImageObject == undefined" src="assets/images/users/default.png">
+                        <img *ngIf="workSpace.employeeId.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(workSpace.employeeId.employeeDetails.profileImageObject.thumbnail)">
                     </div>
-                    <div>{{workSpace.employeeObject.employeeDetails.lastName}} {{workSpace.employeeObject.employeeDetails.firstName}}</div>
+                    <div>{{workSpace.employeeId.employeeDetails.lastName}} {{workSpace.employeeId.employeeDetails.firstName}}</div>
                 </div>
             </td>
-            <td>{{workSpace.employeeObject.department?.name}}</td>
+            <td>{{workSpace.employeeId.department?.name}}</td>
             <td class="td-worspace">
                 <div class="workspace-count">{{getActiveWorkSpaceCount(workSpace)}} workspaces</div>
                 <ul *ngIf="workSpace.locations !== undefined && workSpace.locations.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
                     <li [hidden]="location.isActive===false" *ngFor="let location of workSpace.locations; let i = index" class="workspace-listItem">
                         <ng-container *ngIf="location!== undefined">
-                            <span>{{location.minorLoactionDetails?.name}}</span>
+                            <span>{{location.minorLocationId?.name}}</span>
                             <i (click)="removeLocation(location, workSpace, i)" class="fa fa-trash" aria-hidden="true"></i>
                         </ng-container>
                     </li>
@@ -89,12 +81,7 @@
     <app-create-workspace (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
 </div>
 
-<app-notification class="notification-tag"></app-notification>
-
 <div *ngIf="globalDialog">
     <app-global-dialog (deleteRecord)="delete_onClick($event)" [gdTitle]="gdTitle" [gdItem]="gdItem" [gdComponent]="gdComponent"
         (closeModal)="close_onClick($event)"></app-global-dialog>
 </div>
-<!--<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
-</div>-->

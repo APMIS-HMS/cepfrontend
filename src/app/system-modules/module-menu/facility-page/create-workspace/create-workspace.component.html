@@ -8,6 +8,7 @@
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
+<<<<<<< HEAD
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <!--<label>Department</label>
                     <select formControlName="dept">
@@ -18,11 +19,17 @@
                         <md-option value="" disabled selected>Department</md-option>
                         <md-option  *ngFor="let department of departments" [value]="department">
                         {{department.name}}
+=======
+                    <md-select formControlName="dept" placeholder="Department">
+                        <md-option *ngFor="let department of departments" [value]="department">
+                            {{department.name}}
+>>>>>>> development
                         </md-option>
                     </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
+<<<<<<< HEAD
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <!--<label>Unit</label>
                         <select formControlName="unit">
@@ -33,12 +40,18 @@
                         <md-option value="" disabled selected>Unit</md-option>
                         <md-option *ngFor="let unit of units" [value]="unit.name">
                         {{unit.name}}
+=======
+                    <md-select formControlName="unit" placeholder="Unit" >
+                        <md-option *ngFor="let unit of units" [value]="unit">
+                            {{unit.name}}
+>>>>>>> development
                         </md-option>
                     </md-select>
                 </div>
             </div>
             <div class="sec-2">
                 <div class="frm-item-wrap">
+<<<<<<< HEAD
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <!--<label>Major Location</label>
                     <select formControlName="majorLoc">
@@ -49,11 +62,17 @@
                         <md-option value="" disabled selected>Major Location</md-option>
                         <md-option  *ngFor="let major of majorLocations" [value]="major">
                         {{major.name}}
+=======
+                    <md-select formControlName="majorLoc" placeholder ="Major Location" >
+                        <md-option *ngFor="let major of majorLocations" [value]="major">
+                            {{major.name}}
+>>>>>>> development
                         </md-option>
                     </md-select>
                 </div>
 
                 <div class="frm-item-wrap">
+<<<<<<< HEAD
                     <i class="fa fa-circle-o" aria-hidden="true"></i>
                     <!--<label>Minor Location</label>
                     <select formControlName="minorLoc">
@@ -64,6 +83,11 @@
                         <md-option value="" disabled selected>Minor Location</md-option>
                         <md-option  *ngFor="let minor of minorLocations" [value]="minor">
                         {{minor.name}}
+=======
+                    <md-select formControlName="minorLoc" placeholder="Minor Location" >
+                        <md-option *ngFor="let minor of minorLocations" [value]="minor">
+                            {{minor.name}}
+>>>>>>> development
                         </md-option>
                     </md-select>
                 </div>
@@ -74,25 +98,26 @@
                     <thead>
                         <tr>
                             <th class="sel-all">
+<<<<<<< HEAD
                                 <div class="dx-field">
                                     <div class="dx-field-value">
                                         <dx-check-box [formControl]="checkAll"></dx-check-box>
                                     </div>
                                 </div>
+=======
+                                <md-checkbox class="example-margin" [formControl]="checkAll">Check All</md-checkbox>
+>>>>>>> development
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                 <span style="padding-left: 3px;">Employee</span>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                 <span style="padding-left: 3px;">Telephone</span>
                             </th>
                             <th>
                                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                 <span style="padding-left: 3px;">Email</span>
                             </th>
                         </tr>
@@ -105,8 +130,14 @@
                                     <div class="tbl-title"></div>
                                     <div class="tbl-search">
                                         <div class="searchInputWrap">
+<<<<<<< HEAD
                                             <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search organizations">
                                             <i class="fa fa-search" aria-hidden="true"></i>
+=======
+                                            <md-input-container class="example-full-width">
+                                                <input mdInput [formControl]="searchControl" autofocus placeholder="search organizations">
+                                            </md-input-container>
+>>>>>>> development
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +148,7 @@
                             <td class="sel-all">
                                 <div class="dx-field">
                                     <div class="dx-field-value">
-                                        <dx-check-box (onValueChanged)="onValueChanged($event,employee)" [value]="employee.isChecked"></dx-check-box>
+                                        <md-checkbox (change)="onValueChanged($event,employee)" [checked]="employee.isChecked"></md-checkbox>
                                     </div>
                                 </div>
                             </td>
@@ -140,13 +171,22 @@
 
 
 
+<<<<<<< HEAD
         <button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
       Assign Workspace
     </button>
 
+=======
+        <!--<button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+      Assign Workspace
+    </button>-->
+        <div class="example-full-width" id="example-full-width">
+            <button class="apmis-bllue" [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button> Assign Workspace</button>
+        </div>
+>>>>>>> development
     </form>
 
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-    <dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>
+    <md-spinner></md-spinner>
 </div>

@@ -13,15 +13,15 @@ import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-d
 const WARDMANAGER_ROUTES: Routes = [
     {
         path: '', component: WardManagerComponent, children: [
-            { path: '', redirectTo: "admission", pathMatch: 'full' },
+            { path: '', redirectTo: 'admission', pathMatch: 'full' },
             { path: 'wards', component: WardManagerListpageComponent },
             { path: 'admitted', component: WardManagerAdmittedpageComponent },
             { path: 'admitted/:id', component: WardManagerAdmittedDetailspageComponent },
             { path: 'admitted/:id/bill-details', component: BillDetailsComponent },
             { path: 'admission', component: WardManagerAdmissionpageComponent },
             { path: 'setup', component: WardManagerSetuppageComponent },
-            { path: 'setup/ward/:wardid', component: RoomComponent },
-            { path: 'setup/ward/:wardid/room/:roomid', component: BedComponent }
+            { path: 'setup/ward/:wardId', component: RoomComponent },
+            { path: 'setup/ward/:wardId/room/:roomId', component: BedComponent }
         ]
     }
 ];

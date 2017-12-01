@@ -20,6 +20,7 @@ export class PersonAccountComponent implements OnInit {
   genders: Gender[] = [];
   errMsg: string;
   mainErr = true;
+  success = false;
 
   public frmPerson: FormGroup;
 
@@ -40,9 +41,15 @@ export class PersonAccountComponent implements OnInit {
       firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       othernames: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(200)]],
+<<<<<<< HEAD
       password: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
       repassword: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
       gender: [ [<any>Validators.minLength(2)]],
+=======
+      // password: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
+      // repassword: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
+      gender: [[<any>Validators.minLength(2)]],
+>>>>>>> development
       dob: [new Date(), [<any>Validators.required]],
       nationality: ['', [<any>Validators.required]],
 
@@ -51,6 +58,17 @@ export class PersonAccountComponent implements OnInit {
       email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phone: ['', [<any>Validators.required]]
     });
+<<<<<<< HEAD
+=======
+
+    this.frmPerson.controls['state'].valueChanges.subscribe((value: any) => {
+      this.selectedState = value;
+    })
+
+    this.frmPerson.valueChanges.subscribe(value =>{
+      this.success = false;
+    })
+>>>>>>> development
   }
 
   getGenders() {
@@ -71,7 +89,10 @@ export class PersonAccountComponent implements OnInit {
   }
 
   submit(valid, val) {
+    console.log(valid);
+    console.log(val)
     if (valid) {
+<<<<<<< HEAD
       if (this.frmPerson.controls['repassword'].value === this.frmPerson.controls['password'].value) {
         console.log('Started');
         const personModel = <any>{
@@ -89,10 +110,30 @@ export class PersonAccountComponent implements OnInit {
           stateOfOriginId: this.frmPerson.controls['state'].value
         };
         console.log(personModel);
+=======
+      const personModel = <any>{
+        firstName: this.frmPerson.controls['firstname'].value,
+        lastName: this.frmPerson.controls['lastname'].value,
+        otherNames: this.frmPerson.controls['othernames'].value,
+        genderId: this.genders[0]._id,
+        dateOfBirth: this.frmPerson.controls['dob'].value,
+        homeAddress: <Address>({
+          street: this.frmPerson.controls['address'].value,
+        }),
+        email: this.frmPerson.controls['email'].value,
+        phoneNumber: this.frmPerson.controls['phone'].value,
+        nationalityId: this.frmPerson.controls['nationality'].value,
+        stateOfOriginId: this.frmPerson.controls['state'].value._id,
+        lgaOfOriginId: this.frmPerson.controls['lga'].value
+      };
+
+      this.personService.create(personModel).then((ppayload) => {
+        console.log('person created')
+>>>>>>> development
         const userModel = <User>{
-          email: this.frmPerson.controls['email'].value,
-          password: this.frmPerson.controls['password'].value
+          email: ppayload.apmisId
         };
+<<<<<<< HEAD
         console.log(userModel);
         this.personService.create(personModel).then((ppayload) => {
           userModel.personId = ppayload._id;
@@ -100,6 +141,13 @@ export class PersonAccountComponent implements OnInit {
           this.userService.create(userModel).then((upayload) => {
             console.log('user created');
           });
+=======
+        userModel.personId = ppayload._id;
+        this.userService.create(userModel).then((upayload) => {
+          console.log('user created')
+          this.frmPerson.reset();
+          this.success = true;
+>>>>>>> development
           this.facilitiesService.announceNotification({
             type: 'Success',
             text: this.frmPerson.controls['firstname'].value + ' '
@@ -107,10 +155,19 @@ export class PersonAccountComponent implements OnInit {
             + this.frmPerson.controls['lastname'].value + ' '
             + 'added successful'
           });
-        }, err => {
-          console.log(err);
+        }, error => {
+          this.mainErr = false;
+          this.errMsg = 'An error has occured, please check and try again!';
         });
+<<<<<<< HEAD
       }
+=======
+      }, err => {
+      });
+    } else {
+      this.mainErr = false;
+      this.errMsg = 'An error has occured, please check and try again!';
+>>>>>>> development
     }
   }
 

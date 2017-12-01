@@ -20,7 +20,7 @@ export class LoginEmployeeResolverService implements Resolve<Employee> {
     private router: Router) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    const auth:any = this.locker.getObject('auth');
+    const auth: any = this.locker.getObject('auth');
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     return this.employeeService.find({
       query:
@@ -56,8 +56,8 @@ export class LoginEmployeeResolverService implements Resolve<Employee> {
 
                 this.schedules.forEach((items, s) => {
                   this.loginEmployee.units.forEach((itemu, u) => {
-                    if (itemu === items.locationType.unit._id) {
-                      const res = inClinicLocations.filter(x => x._id === items.locationType.clinic.clinicLocation);
+                    if (itemu === items.clinicObject.unit._id) {
+                      const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
                       if (res.length > 0) {
                         this.clinicLocations.push(res[0]);
                       }

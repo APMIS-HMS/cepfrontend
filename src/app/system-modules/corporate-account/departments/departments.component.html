@@ -6,8 +6,8 @@
         <div class="inner-menu1-wrap">
             <i id="contentSecMenuToggle" (click)="contentSecMenuToggle()" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v" aria-hidden="true"></i>
             <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-                <li routerLink="/modules/corporate/home"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-                <li routerLink="/modules/corporate/departments"><i class="fa fa-building-o" aria-hidden="true"></i> Departments</li>
+                <li routerLink="/dashboard/corporate/home"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
+                <li routerLink="/dashboard/corporate/departments"><i class="fa fa-building-o" aria-hidden="true"></i> Departments</li>
                 <li (click)="logOutShow()"><i class="fa fa-sign-out" aria-hidden="true"></i> Log Out</li>
             </ul>
         </div>

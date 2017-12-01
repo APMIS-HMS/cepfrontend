@@ -32,14 +32,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     frmNewPerson2_show = false;
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
+    paymentPlan = false;
 
     shouldMoveFirst: boolean = false;
+
+    tabWallet = true;
+    tabInsurance = false;
+    tabCompany = false;
+    tabFamily = false;
 
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
     public frmNewEmp2: FormGroup;
     public frmNewEmp3: FormGroup;
     public frmNewEmp4: FormGroup;
+
+    walletPlan = new FormControl('', Validators.required);
+    walletPlanCheck = new FormControl('');
+    hmoPlan = new FormControl('', Validators.required);
+    hmoPlanId = new FormControl('', Validators.required);
+    hmoPlanCheck = new FormControl('');
+    ccPlan = new FormControl('', Validators.required);
+    ccPlanId = new FormControl('', Validators.required);
+    ccPlanCheck = new FormControl('');
+    familyPlanId = new FormControl('', Validators.required);
+    familyPlanCheck = new FormControl('');
 
     @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('cropper', undefined)
@@ -70,7 +87,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     // ***
     uploadFile: any;
-    hasBaseDropZoneOver: boolean = false;
+    hasBaseDropZoneOver: Boolean = false;
     options: NgUploaderOptions = {
         url: 'http://localhost:3030/image',
         autoUpload: false,
@@ -115,10 +132,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         // this.uploadEvents = new EventEmitter();
     }
     fileChangeListener($event) {
-        let image: any = new Image();
-        let file: File = $event.target.files[0];
-        let myReader: FileReader = new FileReader();
-        let that = this;
+        const image: any = new Image();
+        const file: File = $event.target.files[0];
+        const myReader: FileReader = new FileReader();
+        const that = this;
         myReader.onloadend = function (loadEvent: any) {
             image.src = loadEvent.target.result;
             console.log(that.cropper);
@@ -151,7 +168,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         if (data && data.response) {
             console.log('am uploading 2')
             data = JSON.parse(data.response);
-            let file = data[0].file;
+            const file = data[0].file;
             if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
                 console.log('am uploading 3')
                 this.personService.get(this.selectedPerson._id, {}).then(payload => {
@@ -325,7 +342,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
             } else if (result.data.length > 0) {
-                this.errMsg = 'This APMIS ID is valid but has been previously used to generate an employee!';
+                this.errMsg = 'This APMIS ID is valid or has been previously used to generate an employee!';
                 this.mainErr = false;
             } else {
                 this.frmNewEmp4_show = true;
@@ -335,6 +352,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = false;
+                this.paymentPlan = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
                 this.shouldMoveFirst = true;
@@ -379,6 +397,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = true;
         this.mainErr = true;
     }
@@ -388,6 +407,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = false;
         this.shouldMoveFirst = false;
     }
@@ -405,6 +425,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson2_show = true;
                 this.frmNewPerson3_show = false;
                 this.frmNewEmp4_show = false;
+                this.paymentPlan = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
 
@@ -420,6 +441,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = false;
         this.mainErr = true;
     }
@@ -436,6 +458,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = true;
                 this.frmNewEmp4_show = false;
+                this.paymentPlan = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
 
@@ -450,14 +473,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.frmNewPerson2_show = true;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
+        this.paymentPlan = false;
         this.apmisId_show = false;
         this.mainErr = true;
     }
 
     savePerson() {
         {
-            let person: Person = <Person>{ nextOfKin: [] };
-            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value.momentObj;
+            const person: Person = <Person>{ nextOfKin: [] };
+            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
             person.genderId = this.frmNewEmp1.controls['empGender'].value;
@@ -497,6 +521,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     this.frmNewPerson2_show = false;
                     this.frmNewPerson3_show = false;
                     this.frmNewEmp4_show = true;
+                    this.paymentPlan = false;
                     this.apmisId_show = false;
                     this.mainErr = true;
                 });
@@ -520,6 +545,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     this.frmNewPerson2_show = false;
                     this.frmNewPerson3_show = false;
                     this.frmNewEmp4_show = true;
+                    this.paymentPlan = false;
                     this.apmisId_show = false;
                     this.mainErr = true;
                 }, error => {
@@ -545,7 +571,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.errMsg = 'you left out a required field';
                     } else {
                         this.mainErr = true;
-                        console.log('333');
                         this.savePerson();
                         this.closeModal.emit(true);
                     }
@@ -558,15 +583,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     skip_nok() {
         console.log('sking nok method');
-        this.frmNewPerson1_show = false;
-        this.frmNewPerson2_show = false;
-        this.frmNewPerson3_show = false;
-        this.frmNewEmp4_show = true;
+        // this.frmNewPerson1_show = false;
+        // this.frmNewPerson2_show = false;
+        // this.frmNewPerson3_show = false;
+        // this.frmNewEmp4_show = true;
         this.apmisId_show = false;
         this.mainErr = true;
         this.skipNok = true;
         this.savePerson();
-        this.closeModal.emit(true);
     }
     back_newPerson3() {
         if (this.shouldMoveFirst === true) {
@@ -574,6 +598,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = false;
             this.frmNewEmp4_show = false;
+            this.paymentPlan = false;
             this.apmisId_show = true;
             this.mainErr = true;
         } else {
@@ -581,6 +606,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = true;
             this.frmNewEmp4_show = false;
+            this.paymentPlan = false;
             this.apmisId_show = false;
             this.mainErr = true;
         }
@@ -591,7 +617,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         model.personId = this.selectedPerson._id;
         console.log(model);
         this.patientService.create(model).then(payload => {
-            this.close_onClick();
+            this.facilityService.announceNotification({
+                type: 'Success',
+                text: this.selectedPerson.personFullName + ' added successfully',
+                users: [this.facilityService.getLoginUserId()]
+            })
+            //this.close_onClick();
+            this.paymentPlan = true;
+            this.frmNewPerson1_show = false;
+            this.frmNewPerson2_show = false;
+            this.frmNewPerson3_show = false;
+            this.frmNewEmp4_show = false;
+            this.apmisId_show = false;
         }, error => {
             if (this.shouldMoveFirst !== true) {
                 this.personService.remove(this.selectedPerson._id, {}).subscribe(payload => {
@@ -608,32 +645,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     newEmp4(valid, val) {
         this.saveEmployee();
-        // if (valid) {
-        //     if (val.empDept === '' || val.empLoc === '' || val.empWorkEmail === '' || val.empWorkEmail === ' ') {
-        //         this.mainErr = false;
-        //         this.errMsg = 'you left out a required field';
-        //     } else {
-        //         if (this.skipNok) {
-        //             this.savePerson();
-        //         } else {
-        //             this.saveEmployee();
-
-        //         }
-
-        //         this.frmNewPerson1_show = false;
-        //         this.frmNewPerson2_show = false;
-        //         this.frmNewPerson3_show = false;
-        //         this.frmNewEmp4_show = false;
-        //         this.apmisId_show = false;
-        //         this.mainErr = true;
-
-        //         this.closeModal.emit(true);
-
-        //     }
-        // } else {
-        //     this.mainErr = false;
-        // }
-
+    }
+    payplans(){
+        this.close_onClick();
     }
 
     onEmpTitleChange(val) { }
@@ -665,6 +679,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             type: 'Info',
             text: 'This operation has been canceled!'
         });
+    }
+
+    tabWallet_click() {
+    this.tabWallet = true;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+    }
+    tabCompany_click() {
+    this.tabWallet = false;
+    this.tabCompany = true;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+    }
+    tabFamily_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = true;
+    this.tabInsurance = false;
+    }
+    tabInsurance_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = true;
     }
 
 }

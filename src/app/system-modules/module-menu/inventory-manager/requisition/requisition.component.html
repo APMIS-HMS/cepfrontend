@@ -1,12 +1,12 @@
 <div class="np-mainwrap">
     <div class="topItemsWrap">
-        <div class="frm-item-wrap" style="width: 100%;">
-            <md-select class="example-full-width" placeholder="Request From" [formControl]="productsControl">
+        <div class="frm-item-wrap" style="width: 50%;">
+            <md-select class="example-full-width" (change)="flyout_toggle($event)" placeholder="Request From" [formControl]="productsControl">
                 <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
             </md-select>
         </div>
 
-        <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
+       <!-- <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>-->
     </div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
@@ -61,12 +61,6 @@
                                         </md-input-container>
                                     </div>
 
-                                    <div style="width: 15%;" class="frm-item-wrap">
-                                        <md-select class="example-full-width" placeholder="Strength" formControlName="strength">
-                                            <md-option *ngFor="let strength of strengths" [value]="strength._id">{{strength.strength}}</md-option>
-                                        </md-select>
-                                    </div>
-
                                     <div style="width: 10%;" class="frm-item-wrap">
                                         <md-input-container class="example-full-width">
                                             <input type="number" min="0" mdInput md-error placeholder="Qantity" formControlName="qty">
@@ -90,11 +84,9 @@
                 </div>
             </div>
         </div>
-
         <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
             <div (click)="save()" class="cta-1">Save Progress</div>
             <div (click)="save()" class="cta-1">Send Requisition</div>
         </div>
-
     </form>
 </div>

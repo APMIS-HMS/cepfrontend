@@ -2,7 +2,7 @@ import { ClinicInteraction } from './clinicinteraction';
 export interface Appointment {
     _id: string;
     facilityId: string;
-    clinicId: string;
+    clinicId: any;
     appointmentTypeId: string;
     doctorId: string;
     startDate: Date;
@@ -16,6 +16,9 @@ export interface Appointment {
     appointmentReason: string;
     isActive: boolean;
     personDetails: any;
-    checkin: boolean;
+    checkIn: boolean;
     clinicInteractions: ClinicInteraction[];
+    category: any;
+    orderStatusId: any;
+    zoom: any;
 }

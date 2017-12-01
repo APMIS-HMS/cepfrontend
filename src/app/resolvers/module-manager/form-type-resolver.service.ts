@@ -21,7 +21,6 @@ export class FormTypeResolverService implements Resolve<any> {
       }
       return Observable.of(null);
     }, error => {
-      console.log(error);
     });
   }
 }

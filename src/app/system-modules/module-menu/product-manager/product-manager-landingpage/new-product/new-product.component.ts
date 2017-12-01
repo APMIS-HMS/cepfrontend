@@ -17,7 +17,7 @@ export class NewProductComponent implements OnInit {
 
   isManufacturer: boolean = false;
   isPresentation: boolean = false;
-  isStrength: boolean = false;
+  isStrength = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedProduct: any = <any>{};
@@ -45,6 +45,7 @@ export class NewProductComponent implements OnInit {
 
   public frm_newProduct: FormGroup;
   public ingredientForm: FormGroup;
+  public variantsForm: FormGroup;
 
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
@@ -76,7 +77,8 @@ export class NewProductComponent implements OnInit {
     //   ingredients: this.formBuilder.array([
     //     this.initIngredientsForm(),
     //   ])
-    //})
+    // })
+    this.initVariantForm();
     this.initIngredientsForm();
 
     this.populateProduct();
@@ -128,12 +130,12 @@ export class NewProductComponent implements OnInit {
       this.productSugestion = false;
     });
 
-    //this.getManufacturers();
-    //this.getGenerics();
-    //this.getPresentations();
+    // this.getManufacturers();
+    // this.getGenerics();
+    // this.getPresentations();
     this.getProductTypes();
     this.getServiceCategories();
-    this.getStrengths();
+    // this.getStrengths();
   }
 
   // initIngredientsForm() {
@@ -143,6 +145,19 @@ export class NewProductComponent implements OnInit {
   //     strengthUnit: ['']
   //   });
   // }
+
+  initVariantForm() {
+    this.variantsForm = this.formBuilder.group({
+      'variants': this.formBuilder.array([
+        this.formBuilder.group({
+          size: [''],
+          unit: ['']
+        })
+      ])
+    });
+    console.log(this.variantsForm)
+    this.variantsForm.controls['variants'] = this.formBuilder.array([]);
+  }
 
   initIngredientsForm() {
     this.ingredientForm = this.formBuilder.group({
@@ -174,17 +189,17 @@ export class NewProductComponent implements OnInit {
     });
   }
   subscribeToControls() {
-    let name = this.frm_newProduct.controls['name'].value;
-    let genericName = this.frm_newProduct.controls['genericName'].value;
+    const name = this.frm_newProduct.controls['name'].value;
+    const genericName = this.frm_newProduct.controls['genericName'].value;
     if (name !== null && name !== undefined && name.length > 0) {
-      let dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
+      const dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
         .distinctUntilChanged()
         .switchMap((dictionaries: any[]) => this.drugListApiService.find({
           query: {
             searchtext: this.frm_newProduct.controls['name'].value,
-            "po": false,
-            "brandonly": true,
-            "genericonly": false
+            'po': false,
+            'brandonly': true,
+            'genericonly': false
           }
         }));
       dictionaryObs.subscribe((payload: any) => {
@@ -192,7 +207,7 @@ export class NewProductComponent implements OnInit {
         if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
           this.dictionaries = payload;
           payload.forEach(element => {
-            var arrElements = element.details.split('(');
+            const arrElements = element.details.split('(');
             element.activeIngredient = arrElements[1].replace(')', '');
             this.dictionaries.push(element);
           });
@@ -226,7 +241,7 @@ export class NewProductComponent implements OnInit {
     //       this.ingridentSugestion = false;
     //     }
     //   });
-    // } 
+    // }
     // else {
     //   this.activeIngredients = [];
     //   this.ingridentSugestion = false;
@@ -239,12 +254,20 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
       this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
       this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
+<<<<<<< HEAD
+=======
+      console.log(this.selectedProduct.manufacturer);
+>>>>>>> development
       this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
       this.frm_newProduct.controls['productTypeId'].setValue(this.selectedProduct.productTypeId);
       this.frm_newProduct.controls['categoryId'].setValue(this.selectedProduct.categoryId);
       this.setIngredientItem(this.selectedProduct.productDetail.ingredients);
+<<<<<<< HEAD
+=======
+      this.setVariantItem(this.selectedProduct.variants)
+>>>>>>> development
     } else {
       this.createText = 'Create Product';
       this.frm_newProduct.reset();
@@ -277,9 +300,9 @@ export class NewProductComponent implements OnInit {
   }
 
   stringifyGeneric(values: any[]) {
-    let generic = "";
+    let generic = '';
     values.forEach((item) => {
-      generic += item.name + " " + item.strength + " " + item.strengthUnit + "/ ";
+      generic += item.name + ' ' + item.strength + ' ' + item.strengthUnit + '/ ';
     });
     return generic;
   }
@@ -287,19 +310,22 @@ export class NewProductComponent implements OnInit {
   create(valid, value) {
     if (valid) {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
-        let service: any = <any>{};
+        const service: any = <any>{};
         service.name = value.name;
         this.productDetails.ingredients = [];
         this.productDetails.ingredients = this.ingredientForm.controls['ingredients'].value;
-        if (value.genericName == undefined) {
+        value.variants = this.variantsForm.controls['variants'].value; 
+        if (value.genericName === null) {
           value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
         }
         value.productDetail = this.productDetails;
+        
         console.log(value);
+
         this.productService.create(value).then(payload => {
+          console.log(payload);
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
-              console.log("I here");
               item.services.push(service);
             }
           });
@@ -337,7 +363,7 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand + "-" + suggestion.activeIngredient);
+      this.frm_newProduct.controls['name'].setValue(payload.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);
       this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
@@ -383,6 +409,19 @@ export class NewProductComponent implements OnInit {
 
   }
 
+  addVariant() {
+    const control = <FormArray>this.variantsForm.controls['variants'];
+    control.push(this.variantItem());
+
+  }
+
+  variantItem() {
+    return this.formBuilder.group({
+      size: [''],
+      unit: ['']
+    });
+  }
+
   ingredientItem() {
     return this.formBuilder.group({
       name: [''],
@@ -392,13 +431,24 @@ export class NewProductComponent implements OnInit {
   }
 
   setIngredientItem(values: any[]) {
-    var control = <FormArray>this.ingredientForm.controls['ingredients'];
+    const control = <FormArray>this.ingredientForm.controls['ingredients'];
     values.forEach((item) => {
       control.push(
         this.formBuilder.group({
           name: [item.name],
           strength: [item.strength],
           strengthUnit: [item.strengthUnit]
+        }));
+    })
+  }
+
+  setVariantItem(values: any[]) {
+    const control = <FormArray>this.variantsForm.controls['variants'];
+    values.forEach((item) => {
+      control.push(
+        this.formBuilder.group({
+          size: [item.size],
+          unit: [item.unit]
         }));
     })
   }
@@ -410,6 +460,11 @@ export class NewProductComponent implements OnInit {
   //       readOnly: [false]
 
   removeIngredient(i: number) {
+    const control = <FormArray>this.frm_newProduct.controls['ingredients'];
+    control.removeAt(i);
+  }
+
+  removeVariant(i: number) {
     const control = <FormArray>this.frm_newProduct.controls['ingredients'];
     control.removeAt(i);
   }

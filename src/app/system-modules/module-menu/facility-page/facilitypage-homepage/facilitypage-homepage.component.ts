@@ -113,6 +113,13 @@ export class FacilitypageHomepageComponent implements OnInit {
       }
     });
 
+     this.facilityLandmarkEdit.valueChanges.subscribe(value => {
+      if (this.facilityLandmarkEdit.valid) {
+        this.facilityObj.address.landmark = this.facilityLandmarkEdit.value;
+        this.facilityService.update(this.facilityObj);
+      }
+    });
+
     this.facilityTypeEdit.valueChanges.subscribe(value => {
       if (this.facilityTypeEdit.valid) {
         this.facilityObj.facilityTypeId = this.facilityTypeEdit.value;

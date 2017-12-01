@@ -26,19 +26,18 @@
 
 <!--<div class="survery">-->
 <div class="container cotainer-width">
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="callout callout-info">
                 <h4>You have no product to transfer</h4>
                 <p>To transfer product <a (click)="flyout_toggle($event)"> click here.</a></p>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="row">
         <div class="col-md-4">
-            <br>
             <div class="frm-item-wrap">
-                <md-select class="example-full-width" placeholder="Choose Destination Stock" [formControl]="frmDestinationStore">
+                <md-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
                     <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
                 </md-select>
             </div><br>
@@ -61,7 +60,7 @@
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
                                     <md-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers" [formControl]="frmDestinationStore">
-                                        <md-option  *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</md-option>
+                                        <md-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</md-option>
                                     </md-select>
                                 </div>
                                 <div style="width: 10%;" class="frm-item-wrap">
@@ -77,9 +76,9 @@
                                 </div>
                                 <div style="width: 10%;" class="frm-item-wrap">
                                     <md-input-container class="example-full-width">
-                                        <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="0" type="number" [readOnly]="true" mdInput md-error placeholder="Quantity" [readOnly]="true" formControlName="qty">
+                                        <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="0" type="number" mdInput md-error placeholder="Quantity" [readOnly]="false" formControlName="qty">
                                     </md-input-container>
-                                    <a class="pull-right" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></a>
+                                    <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></div>
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
                                     <md-input-container class="example-full-width">
@@ -100,7 +99,7 @@
     </div>
 </div>
 <div *ngIf="preview" class="overlay">
-    <div class="paper">
+    <div class="survery paper">
         <div class="">
             <div (click)="previewShow()" class="modal-close-ico" aria-hidden="true">X</div>
             <div class="row">

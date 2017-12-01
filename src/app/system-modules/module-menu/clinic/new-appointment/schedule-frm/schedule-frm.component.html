@@ -1,0 +1,144 @@
+<div class="schedule-wrap">
+    <ng2-toasty [position]="'top-right'"></ng2-toasty>
+    <div class="frm-appointment">
+        <div class="sect-wrap">
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Patient" [mdAutocomplete]="autoPatient" [formControl]="patient">
+                </md-input-container>
+                <span style="margin-left: -15px;" *ngIf="loadingPatients" class="fa fa-spinner fa-spin"></span>
+                <md-autocomplete #autoPatient="mdAutocomplete" [displayWith]="patientDisplayFn">
+                    <md-option *ngFor="let patient of filteredPatients | async" [value]="patient">
+                        {{ patient.personDetails.lastName }} {{ patient.personDetails.firstName }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div>
+                <div class="survery">
+                    <!-- <md-input-container>
+                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'short'" [mdDatepicker]="picker" placeholder="Choose a date"
+                            readonly>
+                        <md-error *ngIf="dateCtrl.hasError('noValue')">
+                            {{clinicErrorMsg}}
+                        </md-error>
+                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    </md-input-container> -->
+                    <!-- <md-datepicker #picker></md-datepicker> -->
+                    <md-input-container>
+                        <input [formControl]="dateCtrl" [hourTime]="'12'" mdInput [value]="date | date: 'short'" dateTimePicker />
+                        <md-error *ngIf="dateCtrl.hasError('noValue')">
+                            {{clinicErrorMsg}}
+                        </md-error>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="type">
+                </md-input-container>
+
+                <md-autocomplete #autoType="mdAutocomplete" [displayWith]="appointmentTypeDisplayFn">
+                    <md-option *ngFor="let type of appointmentTypes" [value]="type">
+                        {{ type.name }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Status" [mdAutocomplete]="autoStatus" [formControl]="status">
+                </md-input-container>
+
+                <md-autocomplete #autoStatus="mdAutocomplete" [displayWith]="orderStatusDisplayFn">
+                    <md-option *ngFor="let order of orderStatuses" [value]="order">
+                        {{ order.name }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+
+        </div>
+        <div class="sect-wrap">
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinic">
+                </md-input-container>
+
+                <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
+                    <md-option *ngFor="let clinic of clinics" [value]="clinic">
+                        {{ clinic.clinicName }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div class="tr-act-btn tr-act-btn1">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <span>Next Available Date</span>
+            </div>
+
+            <div class="tr-act-btn2">
+                <md-checkbox [formControl]="checkIn">Check In</md-checkbox>
+            </div>
+
+            <div class="tr-act-btn3">
+                <md-checkbox [formControl]="teleMed">Tele Medicine Consultation</md-checkbox>
+            </div>
+
+        </div>
+
+        <div class="sect-wrap">
+            <div class="filter-xxx">
+                <md-input-container>
+                    <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="provider">
+                </md-input-container>
+                <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
+                <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
+                    <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+                        {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <input mdInput placeholder="Appointment Category" [mdAutocomplete]="categoryAuto" [formControl]="category">
+                </md-input-container>
+
+                <md-autocomplete #categoryAuto="mdAutocomplete" [displayWith]="categoryServiceDisplayFn">
+                    <md-option *ngFor="let category of categoryServices" [value]="category">
+                        {{ category.name }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div>
+                <md-input-container class="example-full-width">
+                    <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
+                </md-input-container>
+            </div>
+            <!-- 
+            <ng2-timezone-picker 
+                [timezone]="user.timezone"
+                (change)="changeTimezone($event)"
+                placeholder="Select timezone">
+            </ng2-timezone-picker> -->
+            <div *ngIf="showTimeZone">
+                <md-input-container>
+                    <input mdInput placeholder="Select Timezone" [mdAutocomplete]="timezoneAuto" [formControl]="timezone">
+                </md-input-container>
+
+                <md-autocomplete #timezoneAuto="mdAutocomplete" [displayWith]="timezoneDisplayFn">
+                    <md-option *ngFor="let timezone of timezones" [value]="timezone">
+                        {{ timezone.name }}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+        </div>
+    </div>
+
+    <div (click)="scheduleAppointment()" class="cta-1">{{btnText}}</div>
+
+</div>

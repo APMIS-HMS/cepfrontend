@@ -2,26 +2,34 @@
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">Add Room</legend>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <form [formGroup]="addRoomFormGroup" novalidate>
-        <div class="lhs padding-up">
-            <div class="frm-item-wrap">
-                <md-input-container>
-                    <input mdInput md-error placeholder="Room Name" formControlName="room">
-                </md-input-container>
+    <!-- <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div> -->
+    <div class="survery">
+        <div class="row">
+            <div class="col-xs-12">
+                <form [formGroup]="addRoomFormGroup" novalidate>
+                    <div class="padding-up">
+                        <div class="frm-item-wrap">
+                            <md-input-container>
+                                <input mdInput md-error placeholder="Room Name" formControlName="room">
+                            </md-input-container>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <md-select placeholder="Group" formControlName="group" [(ngModel)]="groupId">
+                                <md-option *ngFor="let group of groups" [value]="group">{{group.name}}</md-option>
+                            </md-select>
+                        </div>
+                        <div class="frm-item-wrap" style="margin-top: 30px;">
+                            <md-select placeholder="Select Service" formControlName="service">
+                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" 
+                                [attr.serviceId]="service" [value]="service">{{service.name}}</md-option>
+                            </md-select>
+                        </div>
+                        <div class="btn-box">
+                            <button md-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="frm-item-wrap">
-                <md-select placeholder="Group" formControlName="group">
-                    <md-option *ngFor="let item of roomGroupItems" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
-            </div>
-            <div class="frm-item-wrap">
-                <md-select placeholder="Select Service" formControlName="service">
-                    <md-option *ngFor="let item of wardServicePriceTags" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
-            </div>
-            <button (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="cta-1">Add Room</button>
         </div>
-    </form>
+    </div>
 </div>

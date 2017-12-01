@@ -45,9 +45,13 @@ export class FacilityInfoComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+<<<<<<< HEAD
 		this.getCountries();
 		this.getFacilityTypes();
 		this.getOwnerships();
+=======
+		this.prime();
+>>>>>>> development
 		this.facilityForm1 = this.formBuilder.group({
 
 			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
@@ -74,6 +78,12 @@ export class FacilityInfoComponent implements OnInit {
 		this.facilityForm1.controls['facilityemail'].valueChanges.subscribe(value => {
 			this.onCheckEmailAddress(value);
 		});
+<<<<<<< HEAD
+=======
+		this.facilityForm1.controls['facilitytype'].valueChanges.subscribe(value => {
+			this.selectedFacilityType = value;
+		})
+>>>>>>> development
 	}
 
 	onCheckEmailAddress(value) {
@@ -96,7 +106,10 @@ export class FacilityInfoComponent implements OnInit {
 				this.mainErr = false;
 				this.errMsg = 'you left out a required field';
 			} else {
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
 				this.inputFacility.name = this.facilityForm1.controls['facilityname'].value;
 				this.inputFacility.shortName = this.facilityForm1.controls['facilityalias'].value;
 				this.inputFacility.facilityTypeId = this.facilityForm1.controls['facilitytype'].value;

@@ -50,11 +50,13 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   locations: Location[] = [];
   selectedLocation: Location = <Location>{};
   minorLocations: MinorLocation[] = [];
+  selectedUnit: any = <any>{};
   constructor(public facilityService: FacilitiesService,
     private locationService: LocationService,
     private route: ActivatedRoute,
     private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
+      console.log(payload)
       this.facilityObj = payload;
       this.getCurrentDepartment();
       this.deptsObj = payload.departments;
@@ -70,6 +72,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       }
     });
     this.deptObj = deptObj;
+
   }
   updateFacility() {
     this.facilityService.update(this.facilityObj).then(payload => {
@@ -83,7 +86,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       this.locations.forEach(item => {
         if (item.name === 'Clinic') {
           this.selectedLocation = item;
-          const facility: Facility =  <Facility> this.locker.getObject('selectedFacility');
+          const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
           console.log(facility.minorLocations);
           facility.minorLocations.forEach((itemi: MinorLocation) => {
             if (itemi.locationId === this.selectedLocation._id) {
@@ -136,17 +139,19 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
 
     this.route.data.subscribe(data => {
       data['facility'].subscribe((payload: any) => {
-         this.facilityObj = payload;
-      this.deptsObj = this.facilityObj.departments;
+        this.facilityObj = payload;
+        this.deptsObj = this.facilityObj.departments;
       });
     });
+
+   
 
     // this.getFacility();
     // this.facilityObj = this.facilityService.getSelectedFacilityId();
     // this.deptsObj = this.facilityObj.departments;
   }
   getFacility() {
-    const facility =  <Facility> this.locker.getObject('selectedFacility');
+    const facility = <Facility>this.locker.getObject('selectedFacility');
     this.facilityService.get(facility._id, {}).then((payload) => {
       this.facilityObj = payload;
       this.deptsObj = this.facilityObj.departments;
@@ -162,6 +167,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.deptEditContentArea = false;
     this.innerMenuShow = false;
     this.deptObj = model;
+    console.log(this.deptObj);
   }
 
   deptHomeContentArea_show() {
@@ -208,6 +214,13 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.modal_on = false;
     this.newUnitModal_on = false;
     this.newDeptModal_on = false;
+    this.selectedUnit = <any>{};
+  }
+  editUnit(unit) {
+    this.selectedUnit = unit;
+    this.modal_on = false;
+    this.newUnitModal_on = true;
+    this.newDeptModal_on = false;
   }
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
@@ -217,5 +230,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       this.innerMenuShow = false;
     }
   }
-
+  getClinicCount(unit) {
+    return unit.clinics.length;
+  }
 }
