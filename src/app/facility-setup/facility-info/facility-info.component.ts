@@ -1,11 +1,12 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
 	CountriesService, FacilityTypesService, FacilitiesService
 } from '../../services/facility-manager/setup/index';
 import { FacilityOwnershipService } from '../../services/module-manager/setup/index';
 import { Facility } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx'
 
 @Component({
 	selector: 'app-facility-info',
@@ -61,7 +62,7 @@ export class FacilityInfoComponent implements OnInit {
 
 		this.facilityForm1.controls['facilitycountry'].valueChanges.subscribe((value: any) => {
 			this.stateAvailable = false;
-			let country = this.countries.find(item => item._id === value);
+			const country = this.countries.find(item => item._id === value);
 			this.selectedCountry = country;
 			if (this.selectedCountry.states.length > 0) {
 				this.stateAvailable = true;
@@ -81,8 +82,7 @@ export class FacilityInfoComponent implements OnInit {
 		this.facilityService.find({ query: { email: value } }).then(payload => {
 			if (payload.data.length > 0) {
 				this.isEmailExist = false;
-			}
-			else {
+			} else {
 				this.isEmailExist = true;
 			}
 		})
@@ -99,11 +99,15 @@ export class FacilityInfoComponent implements OnInit {
 			} else {
 				this.inputFacility.name = this.facilityForm1.controls['facilityname'].value;
 				this.inputFacility.shortName = this.facilityForm1.controls['facilityalias'].value;
-				this.inputFacility.facilityTypeId = this.facilityForm1.controls['facilitytype'].value;
+				this.inputFacility.facilityTypeId = this.facilityForm1.controls['facilitytype'].value._id;
 				this.inputFacility.facilityClassId = this.facilityForm1.controls['facilitycategory'].value;
 				this.inputFacility.email = this.facilityForm1.controls['facilityemail'].value;
 				this.inputFacility.website = this.facilityForm1.controls['facilitywebsite'].value;
-				this.inputFacility.address = {};
+				this.inputFacility.facilityOwnershipId = this.facilityForm1.controls['facilityownership'].value;
+				if (this.inputFacility.address === undefined) {
+					this.inputFacility.address = {};
+				}
+
 				this.inputFacility.address.country = this.facilityForm1.controls['facilitycountry'].value;
 
 				this.sg1_show = false;
@@ -116,26 +120,40 @@ export class FacilityInfoComponent implements OnInit {
 			this.mainErr = false;
 		}
 	}
+	prime() {
+		const ownership$ = Observable.fromPromise(this.facilityOwnershipService.findAll());
+		const country$ = Observable.fromPromise(this.countriesService.findAll());
+		const facilityType$ = Observable.fromPromise(this.facilityTypeService.findAll());
 
-	getOwnerships() {
-		this.facilityOwnershipService.findAll().then((payload) => {
-			this.ownerships = payload.data;
-		})
-	}
-	getCountries() {
-		this.countriesService.findAll().then((payload) => {
-			this.countries = payload.data;
-		})
+		Observable.forkJoin([ownership$, country$, facilityType$]).subscribe((results: any) => {
+			this.ownerships = results[0].data;
+			this.countries = results[1].data;
+			this.facilityTypes = results[2].data;
+
+			if (this.inputFacility.name !== undefined && this.inputFacility.name.length > 0) {
+				this.facilityForm1.controls['facilityname'].setValue(this.inputFacility.name);
+				this.facilityForm1.controls['facilityalias'].setValue(this.inputFacility.shortName)
+				if (this.facilityTypes.length > 0) {
+					const filterFacilityTypes = this.facilityTypes.filter(x => x._id === this.inputFacility.facilityTypeId);
+					if (filterFacilityTypes.length > 0) {
+						this.facilityForm1.controls['facilitytype'].setValue(filterFacilityTypes[0]);
+					}
+				}
+
+				this.facilityForm1.controls['facilitycategory'].setValue(this.inputFacility.facilityClassId);
+				this.facilityForm1.controls['facilityemail'].setValue(this.inputFacility.email);
+				this.facilityForm1.controls['facilitywebsite'].setValue(this.inputFacility.website);
+				this.facilityForm1.controls['facilityownership'].setValue(this.inputFacility.facilityOwnershipId);
+				// this.inputFacility.address = {};
+				this.facilityForm1.controls['facilitycountry'].setValue(this.inputFacility.address.country);
+			}
+		}
+		)
 	}
 
-	getFacilityTypes() {
-		this.facilityTypeService.findAll().then((payload) => {
-			this.facilityTypes = payload.data;
-		})
-	}
 
 	onFacilityTypeChange(value: any) {
-		let facilityType = this.facilityTypes.find(item => item._id === value);
+		const facilityType = this.facilityTypes.find(item => item._id === value);
 		this.selectedFacilityType = facilityType;
 	}
 
