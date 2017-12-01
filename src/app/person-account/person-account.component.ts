@@ -17,6 +17,7 @@ export class PersonAccountComponent implements OnInit {
 
   countries: any[] = [];
   selectedCountry: any = <any>{};
+  selectedState: any = <any>{};
   genders: Gender[] = [];
   errMsg: string;
   mainErr = true;
@@ -48,6 +49,7 @@ export class PersonAccountComponent implements OnInit {
       nationality: ['', [<any>Validators.required]],
 
       state: ['', [<any>Validators.required]],
+      lga: ['', [<any>Validators.required]],
       address: ['', [<any>Validators.required]],
       email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phone: ['', [<any>Validators.required]]
@@ -61,6 +63,7 @@ export class PersonAccountComponent implements OnInit {
       this.success = false;
     })
   }
+
 
   getGenders() {
     this.genderService.findAll().then((payload) => {
