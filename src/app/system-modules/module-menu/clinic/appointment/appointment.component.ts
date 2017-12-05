@@ -160,7 +160,7 @@ export class AppointmentComponent implements OnInit {
     }
 
     close_onClick(message: boolean): void {
-      
+      this.closeMenu.emit(true);
     }
 
     prime() {
