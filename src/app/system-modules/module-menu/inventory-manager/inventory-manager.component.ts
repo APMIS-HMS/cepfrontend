@@ -23,6 +23,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   contentSecMenuShow = false;
   stockHistoryNavMenu = false;
   purchaseManagerNavMenu = false;
+  productNavMenu = false;
   modal_on = false;
 
 

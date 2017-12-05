@@ -109,44 +109,31 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		this.pageInView = title;
 	}
 
-	onClickAdmissionNavMenu() {
-		this.admissionNavMenu = true;
-		this.admittedNavMenu = false;
-		this.wardNavMenu = false;
-		this.setupNavMenu = false;
-		this._wardEventEmitter.announcedUrl.subscribe(url => {
-			this.pageInView = url;
-		});
-	}
-
-	onClickAdmittedNavMenu() {
-		this.admissionNavMenu = false;
-		this.admittedNavMenu = true;
-		this.wardNavMenu = false;
-		this.setupNavMenu = false;
-		this._wardEventEmitter.announcedUrl.subscribe(url => {
-			this.pageInView = url;
-		});
-	}
-
-	onClickSetupNavMenu() {
-		this.admissionNavMenu = false;
-		this.admittedNavMenu = false;
-		this.setupNavMenu = true;
-		this.wardNavMenu = false;
-		this._wardEventEmitter.announcedUrl.subscribe(url => {
-			this.pageInView = url;
-		});
-	}
-
-	onClickWardNavMenu() {
-		this.admissionNavMenu = false;
+	onClickNavMenu(link: string, menu: string) {
+    this.admissionNavMenu = false;
 		this.admittedNavMenu = false;
 		this.setupNavMenu = false;
-		this.wardNavMenu = true;
+    this.wardNavMenu = false;
+
+		this._router.navigate([link]);
 		this._wardEventEmitter.announcedUrl.subscribe(url => {
-			this.pageInView = url;
-		});
+      this.pageInView = url;
+    });
+
+		switch (menu) {
+			case 'admission':
+			this.admissionNavMenu = true;
+			break;
+			case 'admitted':
+			this.admittedNavMenu = true;
+			break;
+			case 'setup':
+				this.setupNavMenu = true;
+			break;
+			case 'wards':
+				this.wardNavMenu = true;
+			break;
+		}
 	}
 
 	private checkPageUrl(param: string) {

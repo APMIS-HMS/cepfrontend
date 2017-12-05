@@ -52,6 +52,7 @@ export class FcListComponent implements OnInit {
       _id: 'Inactive'
     }
   ];
+  pageEvent:any;
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
     private familyCoverService: FacilityFamilyCoverService, private facilityService: FacilitiesService) { }

@@ -27,6 +27,8 @@ export class InitializeStoreComponent implements OnInit {
   //initializePriduct: InitProduct[];
   errorMessage = 'an error occured';
   addinside = false;
+  productname:any;
+  searchProduct:any;
 
   constructor(
     private _fb: FormBuilder,

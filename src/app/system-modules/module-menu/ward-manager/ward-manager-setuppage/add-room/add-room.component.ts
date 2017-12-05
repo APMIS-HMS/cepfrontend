@@ -19,6 +19,7 @@ export class AddRoomComponent implements OnInit {
 	addRoomFormGroup: FormGroup;
 	mainErr = true;
 	wardId: string;
+	groupId:any;
 	facility: Facility = <Facility>{};
 	miniFacility: Facility = <Facility>{};
 	wardDetail: WardDetail = <WardDetail>{};
@@ -31,7 +32,7 @@ export class AddRoomComponent implements OnInit {
 	groups: any[] = [];
 	errMsg = 'You have unresolved errors';
 	addRoomBtnText: String = '<i class="fa fa-plus"></i> Add Room';
-	disableAddRoomBtn: Boolean = false;
+	disableAddRoomBtn: boolean = false;
 
 	constructor(
 		private _route: ActivatedRoute,

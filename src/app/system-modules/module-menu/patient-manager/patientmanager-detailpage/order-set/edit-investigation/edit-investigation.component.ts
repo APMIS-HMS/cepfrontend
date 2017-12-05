@@ -16,6 +16,8 @@ export class EditInvestigationComponent implements OnInit {
   apmisLookupDisplayKey = '';
   apmisLookupText = '';
 
+  newTemplate = true;
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -27,5 +29,19 @@ export class EditInvestigationComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
-
+  apmisLookupHandleSelectedItem(value) {
+    this.apmisLookupText = value.name;
+    let isExisting = false;
+    // this.loginHMOListObject.companyCovers.forEach(item => {
+    //   if (item._id === value._id) {
+    //     isExisting = true;
+    //   }
+    // });
+    // if (!isExisting) {
+    //   this.selectedCompanyCover = value;
+    // } else {
+    //   this.selectedCompanyCover = <any>{};
+    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
+    // }
+  }
 }

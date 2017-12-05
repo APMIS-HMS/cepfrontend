@@ -22,7 +22,7 @@ export class TemplateComponent implements OnInit {
     selectedLab: any = <any>{};
     selectedScopeLevel: any = <any>{};
     scopeLevels: any = <any>[];
-    templates: LabTemplate = <any>[];
+    templates: LabTemplate[] = [];
     templateBtnText: String = 'Create Template';
     template_view: Boolean = false;
     loading: Boolean = true;

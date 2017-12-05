@@ -14,6 +14,7 @@ export class EditNursingCareComponent implements OnInit {
     apmisLookupUrl = '';
     apmisLookupDisplayKey = '';
     apmisLookupText = '';
+    newTemplate = true;
   
     addNursingCareForm: FormGroup;
     

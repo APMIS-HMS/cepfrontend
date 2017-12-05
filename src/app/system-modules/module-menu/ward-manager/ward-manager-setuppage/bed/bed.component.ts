@@ -23,6 +23,7 @@ export class BedComponent implements OnInit {
 	wardRoom: WardRoom = <WardRoom>{};
 	bedNameEditShow: any;
 	editBedName = new FormControl();
+	loading = false;
 
 	constructor(private _route: ActivatedRoute,
 		private router: Router,

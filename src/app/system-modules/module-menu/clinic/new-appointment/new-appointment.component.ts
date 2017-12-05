@@ -51,6 +51,7 @@ export class NewAppointmentComponent implements OnInit {
     selectedPatient: any = <any>{};
     selectedClinic: any = <any>{};
     dateRange: any;
+    filteredStates:any;
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
