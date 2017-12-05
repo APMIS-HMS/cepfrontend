@@ -8,7 +8,6 @@ import { clinicRoutes } from './clinic.routes';
 import { ClinicScheduleComponent } from './clinic-schedule/clinic-schedule.component';
 import { AppointmentComponent } from './appointment/appointment.component';
 import { CheckInPatientComponent } from './check-in-patient/check-in-patient.component';
-import {CheckoutPatientComponent} from './../patient-manager/checkout-patient/checkout-patient.component';
 import { Service } from '../../../services/facility-manager/setup/devexpress.service';
 import { ConsultingRoomComponent } from './consulting-room/consulting-room.component';
 import { ConsultingRoomCheckinComponent } from './consulting-room-checkin/consulting-room-checkin.component';

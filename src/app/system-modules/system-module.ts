@@ -5,6 +5,7 @@ import { systemModulesRoutes } from './system-module.routes';
 import { SystemModuleComponent } from './system-module.component';
 import { SharedModule } from '../shared-module/shared.module';
 
+
 @NgModule({
   declarations: [
     // SystemModuleComponent,

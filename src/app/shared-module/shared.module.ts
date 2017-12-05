@@ -27,11 +27,11 @@ import { GlobalDialogComponent } from './global-dialog/global-dialog.component';
 import { SurveyComponent } from './form-generator/survey.component';
 import { SurveyEditorComponent } from './form-generator/survey.editor.component';
 import { ProductSearchComponent } from './product-search/product-search.component';
+import { CheckoutPatientComponent } from './checkout-patient/checkout-patient.component';
 import { ProductService, StoreService } from '../services/facility-manager/setup/index';
 import { StoreCheckInComponent } from './store-check-in/store-check-in.component';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
 import { AppointmentComponent } from '../system-modules/module-menu/clinic/appointment/appointment.component';
-import {CheckoutPatientComponent} from '../system-modules/module-menu/patient-manager/checkout-patient/checkout-patient.component';
 // tslint:disable-next-line:max-line-length
 import { AddPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
 import { BillPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/bill-prescription/bill-prescription.component';
@@ -52,6 +52,7 @@ import {
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
+        CheckoutPatientComponent
         //LabCheckInComponent,
         // LabRequestsComponent, RequestDetailComponent
     ],
