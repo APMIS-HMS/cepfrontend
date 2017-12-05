@@ -381,6 +381,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     private _getAllPriorities() {
         this._priorityService.findAll().then(res => {
+            console.log(res);
             this.priorities = res.data;
             const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
             this.allPrescriptionsForm.controls['priority'].setValue(priority[0]._id);
