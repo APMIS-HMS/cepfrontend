@@ -68,7 +68,7 @@ export class AdmitPatientComponent implements OnInit {
 			ward: [''],
 			room: ['', [<any>Validators.required]],
 			bed: ['', [<any>Validators.required]],
-			desc: ['', [<any>Validators.required]],
+			desc: [''],
 		});
 
 		this.admitFormGroup.controls['ward'].valueChanges.subscribe(val => {
@@ -178,7 +178,6 @@ export class AdmitPatientComponent implements OnInit {
 							let text = 'You have successfully admitted ' + patient;
 							let wardRoom = ' into ' + value.bed.name + ' in ' + value.room.name;
 							const fullText = text + wardRoom;
-							console.log(fullText);
 							const msgObj = {
 								msg: fullText,
 								occupant: this.inPatientItem.patientId,

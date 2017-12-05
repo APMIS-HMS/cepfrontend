@@ -60,6 +60,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 		this.employeeDetails = this._locker.getObject('loginEmployee');
 		this.user = <User>this._locker.getObject('auth');
 
+		// Subscribe to the event when ward changes.
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.selectedWard = val;
 			this.getWaitingList(val);
@@ -68,14 +69,19 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 		});
 
 		if (this.selectedWard === undefined) {
-			const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
-			const wardType = {
-				type: 'ward',
-				typeObject: wardCheckedIn
-			}
-			this.getWaitingList(wardType);
-			this.getTransferInList(wardType);
-			this.getDischargeList(wardType);
+			if (this.employeeDetails.wardCheckIn.length > 0) {
+				const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
+
+				if (wardCheckedIn.length > 0) {
+					const wardType = {
+						type: 'ward',
+						typeObject: wardCheckedIn
+					}
+					this.getWaitingList(wardType);
+					this.getTransferInList(wardType);
+					this.getDischargeList(wardType);
+				}
+      		}
 		}
 	}
 
