@@ -17,6 +17,7 @@ import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
+import {OrderBillItemComponent} from './order-bill-item/order-bill-item.component';
 import { SharedModule } from './shared-module/shared.module';
 // tslint:disable-next-line:max-line-length
 import { UserAccountsInnerPopupComponent } from './system-modules/user-accounts/user-accounts-inner-popup/user-accounts-inner-popup.component';
@@ -48,7 +49,8 @@ import { MaterialModule } from './shared-common-modules/material-module';
     HomeComponent,
     PasswordResetComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent
+    ApmisCheckboxComponent,
+    OrderBillItemComponent
   ],
   exports: [
     // MaterialModule,
