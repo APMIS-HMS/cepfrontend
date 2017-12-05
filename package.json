@@ -9,12 +9,13 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer"    
+    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.0.0",
     "@angular/cdk": "^2.0.0-beta.10",
+    "@angular/cli": "^1.4.9",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
