@@ -6,7 +6,7 @@ import {
 import { FacilityOwnershipService } from '../../services/module-manager/setup/index';
 import { Facility } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
 	selector: 'app-facility-info',

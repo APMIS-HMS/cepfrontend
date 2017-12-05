@@ -6,7 +6,7 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({

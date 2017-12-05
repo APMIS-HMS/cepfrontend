@@ -5,7 +5,7 @@ import { ModuleViewModel, Facility } from '../../../../models/index';
 import { FormTypeService, ScopeLevelService } from '../../../../services/module-manager/setup/index';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-forms',
