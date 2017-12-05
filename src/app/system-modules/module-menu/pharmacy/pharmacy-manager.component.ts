@@ -40,6 +40,8 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		const url: String = this._router.url;
 		this.changeRoute(url);
 
+		console.log(this.loginEmployee);
+
 		if ((this.loginEmployee.storeCheckIn === undefined
 			|| this.loginEmployee.storeCheckIn.length === 0)) {
 			this.modal_on = true;
@@ -54,6 +56,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 					this._employeeService.announceCheckIn(checkingObject);
 					// Set page title
 					this.isStoreAvailable = true;
+					console.log(itemr);
 					this.storeTitle = itemr.minorLocationObject.name;
 					this._employeeService.update(this.loginEmployee).then(payload => {
 						this.loginEmployee = payload;
