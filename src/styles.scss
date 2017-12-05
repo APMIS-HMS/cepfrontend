@@ -565,7 +565,7 @@ select {
 .secondary-tab {
     position: relative;
     width: 100%;
-    background: #2f2f2f;
+    background: lighten($primaryColor, 5%);
     font-family: $font-titles;
     letter-spacing: 2px;
 }
@@ -1431,7 +1431,7 @@ ul.topmenuwrap li:hover {
     position: relative;
     width: 96%;
     margin: 0 auto;
-    margin-top: 10px;
+    // margin-top: 10px;
 }
 
 .search-wrap i {
@@ -1468,17 +1468,25 @@ ul.topmenuwrap li:hover {
 
 .pg-menuWrap li {
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 5px 20px;
     font-size: 12px;
-    margin: 0 5px;
+    margin: 0;
 }
 
 .pg-menuWrap li:hover,
 .pg-menuActive {
-    background: #009ADF;
+    background: lighten($primaryColor, 10%);
     color: #fff;
 }
 
 .pg-menuWrap li i {
     font-size: 16px;
+}
+.welcome-wrap{
+    background: lighten($primaryColor, 20%);
+    color: #fff;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
