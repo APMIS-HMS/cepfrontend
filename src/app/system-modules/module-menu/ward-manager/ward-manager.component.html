@@ -1,8 +1,8 @@
 <ul class="pg-menuWrap">
-    <li [class.pg-menuActive]="admissionNavMenu" (click)="onClickAdmissionNavMenu()" routerLink="/dashboard/ward-manager/admission"><i class="fa fa-list-alt" aria-hidden="true"></i> Admission List</li>
-    <li [class.pg-menuActive]="admittedNavMenu" (click)="onClickAdmittedNavMenu()" routerLink="/dashboard/ward-manager/admitted"><i class="fa fa-bed" aria-hidden="true"></i> Admitted Patients</li>
-    <li [class.pg-menuActive]="setupNavMenu" (click)="onClickSetupNavMenu()" routerLink="/dashboard/ward-manager/setup"><i class="fa fa-cog" aria-hidden="true"></i> Setup</li>
-    <li [class.pg-menuActive]="wardNavMenu" (click)="onClickWardNavMenu()" routerLink="/dashboard/ward-manager/wards"><i class="fa fa-building" aria-hidden="true"></i> Wards</li>
+    <li [class.pg-menuActive]="admissionNavMenu" (click)="onClickNavMenu('/dashboard/ward-manager/admission', 'admission')"><i class="fa fa-list-alt" aria-hidden="true"></i> Admission List</li>
+    <li [class.pg-menuActive]="admittedNavMenu" (click)="onClickNavMenu('/dashboard/ward-manager/admitted', 'admitted')"><i class="fa fa-bed" aria-hidden="true"></i> Admitted Patients</li>
+    <li [class.pg-menuActive]="setupNavMenu" (click)="onClickNavMenu('/dashboard/ward-manager/setup', 'setup')"><i class="fa fa-cog" aria-hidden="true"></i> Setup</li>
+    <li [class.pg-menuActive]="wardNavMenu" (click)="onClickNavMenu('/dashboard/ward-manager/wards', 'wards')"><i class="fa fa-building" aria-hidden="true"></i> Wards</li>
 </ul>
 <div class="inner-page-wrap">
     <div class="inner-wrap-b body-wrap">
