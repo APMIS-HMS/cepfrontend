@@ -31,7 +31,7 @@ export class AddBedComponent implements OnInit {
 	bed: Bed = <Bed>{};
 	wardRoom: WardRoom = <WardRoom>{};
 	addBedBtnText: String = '<i class="fa fa-plus"></i> Add Bed';
-	disableAddBtn: Boolean = false;
+	disableAddBtn: boolean = false;
 
 	wardGroupItems: any[] = [];
 

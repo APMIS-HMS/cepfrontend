@@ -8,8 +8,16 @@ import { Component, OnInit } from '@angular/core';
 export class TreatementPlanComponent implements OnInit {
 
   constructor() { }
-
+  patient:any;
   ngOnInit() {
   }
+  slideEdit(patient){
 
+  }
+  setAppointment(patient){
+
+  }
+  payPlanShow(patient){
+    
+  }
 }

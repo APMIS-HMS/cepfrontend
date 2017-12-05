@@ -20,7 +20,7 @@ export class HealthCoverageComponent implements OnInit {
   currentPath = '';
   contentSecMenuShow = false;
   recievePayment = false;
-  
+  makePayment = false;
 
   constructor(private router: Router, private route: ActivatedRoute) {
     router.events.subscribe((payload: any) => {

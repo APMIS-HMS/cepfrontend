@@ -27,7 +27,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   contacts = false;
   nextofkin = false;
 
+  externalContentArea = false;
   contentSecMenuShow = false;
+  reportContentArea = false
   modal_on = false;
   changeUserImg = false;
   logoutConfirm_on = false;

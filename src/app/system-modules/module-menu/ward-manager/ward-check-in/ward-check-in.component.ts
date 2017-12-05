@@ -23,8 +23,8 @@ export class WardCheckInComponent implements OnInit {
   locations: any[] = [];
   checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
   switchBtnText: String = 'Switch To Room';
-  disableSwitch: Boolean = false;
-  disableCheckIn: Boolean = false;
+  disableSwitch: boolean = false;
+  disableCheckIn: boolean = false;
 
 	constructor(
 		public formBuilder: FormBuilder,
@@ -71,7 +71,7 @@ export class WardCheckInComponent implements OnInit {
 		});
 	}
 
-	checkIn(valid: Boolean, value: any) {
+	checkIn(valid: boolean, value: any) {
     if (valid) {
       this.disableCheckIn = true;
       this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';

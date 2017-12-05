@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
   styleUrls: ['./treatement-template.component.scss']
 })
 export class TreatementTemplateComponent implements OnInit {
-
+  @ViewChild('fileInput') fileInput: ElementRef;
   public frmnewTemplate: FormGroup;
   newTemplate = false;
 
@@ -55,4 +55,52 @@ export class TreatementTemplateComponent implements OnInit {
     this.newTemplate = !this.newTemplate;
   }
 
+  showImageBrowseDlg() {
+    this.fileInput.nativeElement.click()
+  }
+  public upload(e) {
+    // console.log('am here')
+
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      const formData = new FormData();
+      formData.append("excelfile", fileBrowser.files[0]);
+      // formData.append("companyCoverId", companyCover._id);
+      // this.facilityService.upload(formData, this.selectedCompanyCover._id).then(res => {
+      //   console.log(res);
+      //   let enrolleeList: any[] = [];
+      //   if (res.body !== undefined && res.body.error_code === 0) {
+      //     res.body.data.Sheet1.forEach(row => {
+      //       let rowObj: any = <any>{};
+      //       rowObj.serial = row.A;
+      //       rowObj.surname = row.B;
+      //       rowObj.firstName = row.C;
+      //       rowObj.gender = row.D;
+      //       rowObj.filNo = row.E;
+      //       rowObj.category = row.F;
+      //       rowObj.date = this.excelDateToJSDate(row.G);
+      //       enrolleeList.push(rowObj);
+      //     });
+      //     console.log(enrolleeList);
+      //     const index = this.loginHMOListObject.companyCovers.findIndex(x => x._id === companyCover._id);
+      //     let facHmo = this.loginHMOListObject.companyCovers[index];
+      //     let enrolleeItem = {
+      //       month: new Date().getMonth() + 1,
+      //       year: new Date().getFullYear(),
+      //       enrollees: enrolleeList
+      //     }
+      //     facHmo.enrolleeList.push(enrolleeItem);
+      //     this.loginHMOListObject.companyCovers[index] = facHmo;
+      //     this.companyCoverService.update(this.loginHMOListObject).then(pay => {
+      //       this.getLoginHMOList();
+      //     })
+      //   }
+      // }).catch(err => {
+      //   this._notification('Error', "There was an error uploading the file");
+      // });
+    }
+  }
+  show_beneficiaries(){
+    
+  }
 }

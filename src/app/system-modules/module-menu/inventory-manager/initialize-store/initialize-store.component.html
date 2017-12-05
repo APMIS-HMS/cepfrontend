@@ -51,7 +51,7 @@
                     <form [formGroup]="myForm" novalidate>
                         <div formArrayName="initproduct">
 
-                            <div class="form-array" *ngFor="let batch of myForm.controls.initproduct.controls; let i=index;">
+                            <div class="form-array" *ngFor="let batch of myForm['controls'].initproduct['controls']; let i=index;">
                                 <div [hidden]="i != 0">
                                     <span>{{ selectedProduct?.name }}</span>
                                 </div>

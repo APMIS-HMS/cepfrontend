@@ -17,6 +17,7 @@ export class TemplateMedicationComponent implements OnInit {
   currentDate: Date = new Date();
   minDate: Date = new Date();
 
+  newTemplate = true;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -35,6 +36,22 @@ export class TemplateMedicationComponent implements OnInit {
 
 
   this.apmisLookupDisplayKey = 'details';
+  }
+
+  apmisLookupHandleSelectedItem(value) {
+    this.apmisLookupText = value.name;
+    let isExisting = false;
+    // this.loginHMOListObject.companyCovers.forEach(item => {
+    //   if (item._id === value._id) {
+    //     isExisting = true;
+    //   }
+    // });
+    // if (!isExisting) {
+    //   this.selectedCompanyCover = value;
+    // } else {
+    //   this.selectedCompanyCover = <any>{};
+    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
+    // }
   }
 
 }

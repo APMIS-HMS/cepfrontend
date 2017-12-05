@@ -21,6 +21,7 @@ export class CompanyBeneficiaryListComponent implements OnInit {
   beneficiary = new FormControl('', []);
   newBeneficiary = false;
 
+  pageEvent:any;
   selectedFacility: any = <any>{};
   beneficiaries: any[] = [];
   filteredBeneficiaries: any[] = [];
