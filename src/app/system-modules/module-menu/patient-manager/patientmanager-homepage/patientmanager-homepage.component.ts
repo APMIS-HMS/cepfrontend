@@ -162,11 +162,14 @@ export class PatientmanagerHomepageComponent implements OnInit {
     })
   }
   getPatients(limit) {
-    this.patientService.find({ query: { facilityId: this.facility._id, $limit: limit } }).then(payload => {
+    this.patientService.find({ 
+      query: { facilityId: this.facility._id, $limit: limit } 
+      }).then(payload => {
       console.log(payload);
       this.loading = false;
       if (payload.data.length > 0) {
         this.patients = payload.data;
+        console.log(this.patients)
       } else {
         this.patients = [];
       }

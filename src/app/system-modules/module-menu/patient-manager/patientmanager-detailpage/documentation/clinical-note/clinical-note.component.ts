@@ -6,7 +6,7 @@ import { FormsService, FacilitiesService, DocumentationService } from '../../../
 import { FormTypeService } from '../../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SharedService } from '../../../../../../shared-module/shared.service';
 
 
