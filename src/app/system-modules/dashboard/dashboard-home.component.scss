@@ -231,7 +231,7 @@
 .mainmenu-content .innerMenu-ul li {
     padding: 10px;
     border-bottom: 1px solid #bebebe;
-    color: #777;
+    color: #fff;
     font-size: 12px;
     cursor: pointer;
     min-width: 150px;
@@ -255,7 +255,7 @@
 
 .mainmenu-content .innerMenu-ul li:hover {
     background: #f8f8f8;
-    color: #0288D1;
+    color: $primaryColor;
 }
 
 .mainmenu-stripe .innerMenu-ul li:hover {
@@ -436,10 +436,11 @@
 .mainmenu-content {
     width: 20%;
     border-right: 1px solid #bebebe;
+    background: lighten($primaryColor, 5%);
 }
 
 .top-tab-search {
-    background-color: #fff;
+    background-color: #eee;
     border: 1px solid #777;
     padding: 7px 25px;
     font-size: 12px;
