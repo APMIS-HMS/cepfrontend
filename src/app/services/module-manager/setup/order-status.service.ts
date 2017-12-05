@@ -11,6 +11,7 @@ export class OrderStatusService {
   ) {
     this._rest = _restService.getService('orderstatuses');
     this._socket = _socketService.getService('orderstatuses');
+    this._socket.timeout = 30000;
   }
 
   find(query: any) {
