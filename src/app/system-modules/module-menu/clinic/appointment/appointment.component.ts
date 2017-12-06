@@ -144,7 +144,7 @@ export class AppointmentComponent implements OnInit {
         console.log(this.selectedFacility._id)
         this.appointmentService.find({
             query:
-                { 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
+                { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
