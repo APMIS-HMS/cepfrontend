@@ -58,9 +58,9 @@
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.age}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">
-                <span *ngIf="patient.personDetails.gender.name==='Male'">M</span>
-                <span *ngIf="patient.personDetails.gender.name==='Female'">F</span>
-                <span *ngIf="patient.personDetails.gender.name!='Female' && patient.personDetails.gender.name!='Male'">N</span>
+                <span *ngIf="patient.personDetails.gender?.name==='Male'">M</span>
+                <span *ngIf="patient.personDetails.gender?.name==='Female'">F</span>
+                <span *ngIf="patient.personDetails.gender?.name!='Female' && patient.personDetails.gender?.name!='Male'">N</span>
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.phoneNumber}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.email}}</td>

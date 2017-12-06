@@ -11,8 +11,9 @@ export class CountriesService {
   ) {
     this._rest = _restService.getService('countries');
     this._socket = _socketService.getService('countries');
-    this._socket.on('created', function (country) {
-    });
+    // this._socket.on('created', function (country) {
+    // });
+    this._socket.timeout = 10000;
   }
 
   find(query: any) {

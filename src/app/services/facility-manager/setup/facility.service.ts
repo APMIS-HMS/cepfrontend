@@ -93,7 +93,7 @@ export class FacilitiesService {
     delete logEmp.employeeDetails.homeAddress;
     delete logEmp.employeeDetails.gender;
     delete logEmp.employeeDetails.maritalStatus;
-    delete logEmp.employeeDetails.nationality;
+    delete logEmp.employeeDetails.countryItem;
     delete logEmp.employeeDetails.nationalityObject;
     delete logEmp.employeeDetails.nextOfKin;
     return logEmp;

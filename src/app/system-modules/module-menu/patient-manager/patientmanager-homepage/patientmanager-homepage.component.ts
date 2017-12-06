@@ -38,7 +38,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
   titles: any = [];
 
   pageSize = 1;
-  limit = 10;
+  limit = 20;
   updatePatientBtnText: string = 'Update';
 
   constructor(private patientService: PatientService, private personService: PersonService,
