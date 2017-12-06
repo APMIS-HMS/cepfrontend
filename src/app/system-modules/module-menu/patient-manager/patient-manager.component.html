@@ -2,7 +2,7 @@
     <div class="facility-title">{{pageInView}}</div>
 
     <div class="fullwidth-topActions">
-        <ul *ngIf="!homeContentArea" class="moduleNav">
+        <ul *ngIf="!homeContentArea" class="moduleNav"> 
             <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
         </ul>
         <div class="searchInputWrap">
@@ -11,11 +11,17 @@
                 <input mdInput placeholder="Search" [formControl]="searchControl" type="search" autofocus>
             </md-input-container> -->
         </div>
-        <div class="btn-box">
+        <!-- <div class="btn-box">
             <button class="small-btn" (click)="newEmpShow()" md-raised-button> <i class="fa fa-plus-square" aria-hidden="true"></i> New Patient</button>
-        </div>
+        </div> -->
         <!-- <div (click)="newEmpShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Patient</div> -->
     </div>
+
+    <!-- <div class="col-md-12">
+        <a (click)="newEmpShow()" id="floating-button">
+            <p class="plus">+</p>
+        </a>
+    </div> -->
 
     <div class="inner-page-wrap">
         <app-patientmanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea" class="fullwidth"></app-patientmanager-homepage>

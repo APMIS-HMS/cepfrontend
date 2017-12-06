@@ -78,11 +78,11 @@ export class BillPrescriptionComponent implements OnInit {
 		if(valid) {
 			if(this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
-				this.prescriptionData.prescriptionItems[index].productId = value.drug; 
-				this.prescriptionData.prescriptionItems[index].serviceId = this.serviceId; 
-				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.facilityServiceId; 
-				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId; 
-				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug; 
+				this.prescriptionData.prescriptionItems[index].productId = value.drug;
+				this.prescriptionData.prescriptionItems[index].serviceId = this.serviceId;
+				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
+				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId;
+				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug;
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
@@ -115,7 +115,7 @@ export class BillPrescriptionComponent implements OnInit {
 		this._assessmentDispenseService.find({ query: { ingredients: JSON.stringify(ingredients) }}).then(res => {
 			console.log(res);
 			this.loading = false;
-			if(res.length > 0) {
+			if (res.length > 0) {
 				this.stores = res[0].availability;
 				this.drugs = res;
 			} else {

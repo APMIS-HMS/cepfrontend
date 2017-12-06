@@ -24,6 +24,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
     this.authData = auth.data;
     return this.personService.get(this.authData.personId, {}).then(payloadp => {
       this.selectedPerson = payloadp;
+      console.log(payloadp)
       if (auth == null || auth === undefined) {
         this.router.navigate(['/']);
       } else if (auth.data.corporateOrganisationId == null || auth.data.corporateOrganisationId === undefined) {
@@ -33,8 +34,9 @@ export class SwitchUserResolverService implements Resolve<Facility> {
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);
         });
-        return this.facilityService.find({ query: { _id: { $in: facilityList } } })
+        return this.facilityService.find({ query: { _id: { $in: facilityList }, $select:['name', 'departments','logoObject'] } })
           .then(payload => {
+            console.log(payload)
             this.listOfFacilities = payload.data;
             if (this.listOfFacilities.length === 1) {
 

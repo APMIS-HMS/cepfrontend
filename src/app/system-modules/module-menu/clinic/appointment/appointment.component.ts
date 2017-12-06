@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit,Output,EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -20,6 +20,7 @@ import { IDateRange } from 'ng-pick-daterange';
 })
 export class AppointmentComponent implements OnInit {
 
+    @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
     selectedFacility: Facility = <Facility>{};
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};
@@ -36,6 +37,9 @@ export class AppointmentComponent implements OnInit {
     filteredAppointments: any[] = [];
     schedules: any[] = [];
     isDoctor = false;
+    isCheckoutPatient = false;
+    patientDetails ={};
+    selectedAppointment = {};
     loadIndicatorVisible = false;
     loadingProvider = false;
     subscription: Subscription;
@@ -140,12 +144,23 @@ export class AppointmentComponent implements OnInit {
         console.log(clinicIds)
         this.appointmentService.find({
             query:
-            { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
+                { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
             console.log(this.filteredAppointments);
         });
+    }
+
+
+    checkOutToWard(appointment) {
+        this.patientDetails = appointment.patientId.personDetails;
+        this.selectedAppointment = appointment;
+        this.isCheckoutPatient = true;
+    }
+
+    close_onClick(message: boolean): void {
+      this.closeMenu.emit(true);
     }
 
     prime() {
@@ -183,10 +198,12 @@ export class AppointmentComponent implements OnInit {
         this.loadingProvider = true;
         this.providers = [];
         if (this.isDoctor) {
-            this.employeeService.find({ query: {
-                facilityId: this.selectedFacility._id,
-                professionId: this.selectedProfession._id, units: { $in: this.loginEmployee.units }
-            }}).then(payload => {
+            this.employeeService.find({
+                query: {
+                    facilityId: this.selectedFacility._id,
+                    professionId: this.selectedProfession._id, units: { $in: this.loginEmployee.units }
+                }
+            }).then(payload => {
                 payload.data.forEach((itemi, i) => {
                     this.providers.push(itemi);
                     if (this.loginEmployee._id !== undefined && this.selectedProfession._id !== undefined) {
@@ -195,10 +212,12 @@ export class AppointmentComponent implements OnInit {
                 this.loadingProvider = false;
             });
         } else {
-            this.employeeService.find({ query: {
-                facilityId: this.selectedFacility._id,
-                professionId: this.selectedProfession._id
-            }}).then(payload => {
+            this.employeeService.find({
+                query: {
+                    facilityId: this.selectedFacility._id,
+                    professionId: this.selectedProfession._id
+                }
+            }).then(payload => {
                 payload.data.forEach((itemi, i) => {
                     this.providers.push(itemi);
                 });
@@ -207,6 +226,7 @@ export class AppointmentComponent implements OnInit {
         }
 
     }
+    
     setReturnValue(dateRange: IDateRange): any {
         this.dateRange = dateRange;
         this.appointmentService.find({
@@ -226,13 +246,13 @@ export class AppointmentComponent implements OnInit {
     }
     filterClinics(val: any) {
         this.filteredAppointments = val ? this.appointments
-        .filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
+            .filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
     }
     filterProviders(val: any) {
         this.filteredAppointments = val ? this.appointments
-        .filter(s => s.doctorId !== undefined ? s.doctorId : s.doctorId.employeeDetails.lastName.toLowerCase()
-        .indexOf(val.toLowerCase()) === 0
-            || s.doctorId.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
+            .filter(s => s.doctorId !== undefined ? s.doctorId : s.doctorId.employeeDetails.lastName.toLowerCase()
+                .indexOf(val.toLowerCase()) === 0
+                || s.doctorId.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
         return val ? this.providers.filter(s => s.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.providers;

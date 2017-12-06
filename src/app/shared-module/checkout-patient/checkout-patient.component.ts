@@ -4,8 +4,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
 	FacilitiesService, InPatientListService, InPatientService, AppointmentService
-} from '../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, User } from '../../../../models/index';
+} from './../../services/facility-manager/setup/index';
+import { Appointment, Facility, User } from './../../models/index';
 
 @Component({
 	selector: 'app-checkout-patient',

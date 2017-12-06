@@ -27,6 +27,7 @@ import { GlobalDialogComponent } from './global-dialog/global-dialog.component';
 import { SurveyComponent } from './form-generator/survey.component';
 import { SurveyEditorComponent } from './form-generator/survey.editor.component';
 import { ProductSearchComponent } from './product-search/product-search.component';
+import { CheckoutPatientComponent } from './checkout-patient/checkout-patient.component';
 import { ProductService, StoreService } from '../services/facility-manager/setup/index';
 import { StoreCheckInComponent } from './store-check-in/store-check-in.component';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
@@ -87,7 +88,7 @@ import {
     ],
     providers: [StoreService]
 })
-export class SharedModule { }
+export class SharedModule {}
 
 
 

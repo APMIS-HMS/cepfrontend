@@ -23,8 +23,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
-  @Output() patientDetails: any;
+  patientDetails: any;
   @Input() patient: Patient;
+
 
   user: User = <User>{};
   subsect_biodata = true;
