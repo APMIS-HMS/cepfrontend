@@ -46,50 +46,51 @@ import {
 //import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
-    declarations: [
-        // NewTagComponent,
-        // AddTagComponent,
-        SurveyComponent,
-        SurveyEditorComponent,
-        ProductSearchComponent,
-        CheckoutPatientComponent
-        //LabCheckInComponent,
-        // LabRequestsComponent, RequestDetailComponent
-    ],
-    exports: [
-        LogoUpdateComponent,
-        NgUploaderModule,
-        NgPipesModule,
-        // NewTagComponent,
-        // AddTagComponent,
-        MomentModule,
-        Ng2PaginationModule,
-        InfiniteScrollModule,
-        SurveyComponent,
-        SurveyEditorComponent,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SingUpAccountsSharedModule,
-        // DragulaModule,
-        // LabRequestsComponent, RequestDetailComponent
-    ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        NgUploaderModule,
-        NgPipesModule,
-        MomentModule,
-        Ng2PaginationModule,
-        InfiniteScrollModule,
-        ImageCropperModule,
-        MaterialModule,
-        // DragulaModule
-    ],
-    providers: [StoreService]
+  declarations: [
+    // NewTagComponent,
+    // AddTagComponent,
+    SurveyComponent,
+    SurveyEditorComponent,
+    ProductSearchComponent,
+    CheckoutPatientComponent
+    //LabCheckInComponent,
+    // LabRequestsComponent, RequestDetailComponent
+  ],
+  exports: [
+    LogoUpdateComponent,
+    NgUploaderModule,
+    NgPipesModule,
+    // NewTagComponent,
+    // AddTagComponent,
+    MomentModule,
+    Ng2PaginationModule,
+    InfiniteScrollModule,
+    SurveyComponent,
+    SurveyEditorComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    SingUpAccountsSharedModule,
+    CheckoutPatientComponent
+    // DragulaModule,
+    // LabRequestsComponent, RequestDetailComponent
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgUploaderModule,
+    NgPipesModule,
+    MomentModule,
+    Ng2PaginationModule,
+    InfiniteScrollModule,
+    ImageCropperModule,
+    MaterialModule
+    // DragulaModule
+  ],
+  providers: [StoreService]
 })
-export class SharedModule { }
+export class SharedModule {}
 
 
 
