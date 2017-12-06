@@ -387,7 +387,8 @@
 <div class="welcome-wrap">
     <div>
         <div class="img-wrap">
-            <img src="../../../assets/images/logos/default.jpg">
+            <img *ngIf="selectedFacility.logoObject != undefined" [src]="facilityService.transform(selectedFacility.logoObject.thumbnail)">
+            <img *ngIf="selectedFacility.logoObject == undefined" src="assets/images/logos/default.png">
         </div>
 
         <div class="facility-name-wrap">

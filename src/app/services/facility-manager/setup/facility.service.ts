@@ -46,7 +46,7 @@ export class FacilitiesService {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
   find(query: any) {
-    return this._socket.find(query);
+    return this._rest.find(query);
   }
 
   findAll() {

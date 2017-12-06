@@ -83,7 +83,7 @@ export class DashboardHomeComponent implements OnInit {
 
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
-        facilityId: this.facilityObj._id, personId: auth.data.personId, showbasicinfo: true
+        facilityId: this.facilityObj._id, personId: auth.data.personId, $select:['personId']
       }
     }));
     this.subscription = emp$.mergeMap((emp: any) => {
