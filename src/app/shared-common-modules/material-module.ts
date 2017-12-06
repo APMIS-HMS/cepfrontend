@@ -38,6 +38,7 @@ import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requ
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import { DragulaModule } from 'ng2-dragula';
 import { NgPipesModule } from 'ngx-pipes';
+import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/checkout-patient.component';
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
         LogoUpdateComponent,
@@ -53,7 +54,8 @@ import { NgPipesModule } from 'ngx-pipes';
         KeysPipe,
         // MdDatepickerToggle,
         PersonAccountComponent,
-        LabRequestsComponent, RequestDetailComponent
+        LabRequestsComponent, RequestDetailComponent,
+        CheckoutPatientComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -103,7 +105,9 @@ import { NgPipesModule } from 'ngx-pipes';
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
         DragulaModule,
-        NgPipesModule
+        NgPipesModule,
+        CheckoutPatientComponent
+
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
