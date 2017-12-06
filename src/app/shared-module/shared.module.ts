@@ -71,6 +71,7 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
+        CheckoutPatientComponent
         // DragulaModule,
         // LabRequestsComponent, RequestDetailComponent
     ],
