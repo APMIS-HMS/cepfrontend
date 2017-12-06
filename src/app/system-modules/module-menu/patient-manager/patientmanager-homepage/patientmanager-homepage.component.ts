@@ -94,7 +94,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.getPatients(this.limit);
-    this._getAllCountries();
+    // this._getAllCountries();
     this._getAllTitles();
 
     this.patientEditForm = this.formBuilder.group({
