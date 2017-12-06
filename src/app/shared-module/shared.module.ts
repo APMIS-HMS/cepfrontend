@@ -52,7 +52,7 @@ import {
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
-        CheckoutPatientComponent
+        // CheckoutPatientComponent
         //LabCheckInComponent,
         // LabRequestsComponent, RequestDetailComponent
     ],
@@ -71,7 +71,7 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
-        CheckoutPatientComponent
+        // CheckoutPatientComponent
         // DragulaModule,
         // LabRequestsComponent, RequestDetailComponent
     ],
