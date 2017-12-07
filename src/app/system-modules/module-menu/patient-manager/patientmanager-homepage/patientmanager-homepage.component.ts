@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnChanges, Input } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
@@ -12,7 +12,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   templateUrl: './patientmanager-homepage.component.html',
   styleUrls: ['./patientmanager-homepage.component.scss']
 })
-export class PatientmanagerHomepageComponent implements OnInit {
+export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   selectedValue: string;
   nextOfKinForm: FormGroup;
   patientEditForm: FormGroup;
@@ -21,6 +21,8 @@ export class PatientmanagerHomepageComponent implements OnInit {
   payPlan = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
+  @Input() resetData: Boolean;
+  @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   facility: Facility = <Facility>{};
   user: User = <User>{};
@@ -39,9 +41,9 @@ export class PatientmanagerHomepageComponent implements OnInit {
 
   pageSize = 1;
   index:any = 0;
-  limit:any = 10;
+  limit:any = 2;
   showLoadMore:Boolean = true;
-  total:any;
+  total:any = 0;
   updatePatientBtnText: string = 'Update';
 
   constructor(private patientService: PatientService, private personService: PersonService,
@@ -125,6 +127,15 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
 
   }
+
+  ngOnChanges(){
+    console.log(this.resetData);
+    if(this.resetData === true){
+      this.index = 0;
+      this.getPatients();
+      this.showLoadMore = true;
+    }
+  }
   
   sortPatientsByName() {
     const sortedPatient = this.patients;
@@ -175,8 +186,14 @@ export class PatientmanagerHomepageComponent implements OnInit {
       console.log(payload);
       this.loading = false;
       if (payload.data.length > 0) {
-        this.patients.push(...payload.data);
-        console.log(this.patients);
+        if(this.resetData !== true)
+        {
+          this.patients.push(...payload.data);
+        }else{
+          this.resetData = false;
+          this.resetDataNew.emit(this.resetData);
+          this.patients = payload.data;
+        }
         if(this.total <= this.patients.length){
           this.showLoadMore = false;
         }
