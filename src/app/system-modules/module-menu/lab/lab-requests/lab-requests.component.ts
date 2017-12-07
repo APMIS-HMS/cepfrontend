@@ -1,11 +1,15 @@
 import { Component, OnInit, Renderer, ElementRef, ViewChild, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, InvestigationService, LaboratoryRequestService,
-  BillingService } from '../../../../services/facility-manager/setup/index';
+import {
+  FacilitiesService, InvestigationService, LaboratoryRequestService,
+  BillingService
+} from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Investigation, InvestigationModel, Employee,
-  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest } from '../../../../models/index';
+import {
+  Facility, MinorLocation, Investigation, InvestigationModel, Employee,
+  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest
+} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -22,8 +26,14 @@ export class LabRequestsComponent implements OnInit {
   @Input() isLaboratory = true;
   @Input() patientId;
 
+  paramLabNo = "";
+  paramPersonFullName = "";
+  paramcLinicalInformation = "";
+  paramDiagnosis = "";
+
   selectedFacility: Facility = <Facility>{};
   apmisLookupUrl = 'patient';
+  isValidateForm = false;
   apmisLookupText = '';
   apmisLookupQuery: any = {};
   apmisLookupDisplayKey = 'personDetails.personFullName';
@@ -77,6 +87,7 @@ export class LabRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.requests = [];
+    console.log(this.patientId);
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
     this.selectedLab = <Facility>this.locker.getObject('workbenchCheckingObject');
     this.searchInvestigation = new FormControl('', []);
@@ -178,12 +189,22 @@ export class LabRequestsComponent implements OnInit {
           name: { $regex: value, '$options': 'i' },
         }
       }
+      this.validateForm();
+    })
+
+    this.frmNewRequest.valueChanges.subscribe(value => {
+      console.log("The way");
+      this.validateForm();
     })
 
     this.route.params.subscribe((params: any) => {
+      console.log(params.id);
+      console.log("I am here");
       if (params.id !== undefined && this.isLaboratory) {
+        console.log("----------------call the way---------------");
         this.isExternal = true;
         this.requestService.find({ query: { 'patientId.personDetails._id': params.id } }).then(payload => {
+          console.log("A");
           if (payload.data.length > 0) {
             this.frmNewRequest.controls['labNo'].setValue(payload.data[0].labNumber);
             this.frmNewRequest.controls['patient'].setValue(payload.data[0].patientId.personDetails.personFullName);
@@ -193,10 +214,14 @@ export class LabRequestsComponent implements OnInit {
 
           }
           let labId = '';
+          console.log("B");
           if (this.selectedLab !== undefined && this.selectedLab.typeObject !== undefined) {
+            console.log("new lab");
             labId = this.selectedLab.typeObject.minorLocationId;
+            this.paramLabNo = labId;
+            console.log(this.paramLabNo);
           }
-
+          console.log("C");
           // Filter investigations based on the laboratory Id
           payload.data.forEach(labRequest => {
             console.log(labRequest);
@@ -250,7 +275,10 @@ export class LabRequestsComponent implements OnInit {
           this.request_view = true;
         })
       } else {
-        // this.getLaboratoryRequest();
+        console.log("This is a selected Patient");
+        this.selectedPatient = this.patientId;
+        console.log(this.selectedPatient);
+
       }
 
     });
@@ -686,6 +714,25 @@ export class LabRequestsComponent implements OnInit {
   getPrice(workbenches) {
     return workbenches[0].price;
   }
+
+  validateForm() {
+    console.log(this.frmNewRequest.valid);
+    if (this.frmNewRequest.valid) {
+      console.log("valid")
+      this.isValidateForm =true;
+    } else if (this.selectedPatient._id != undefined && this.selectedPatient._id.length > 0) {
+      if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
+        console.log("alter")
+        this.isValidateForm = true;
+      }
+    }
+    else {
+      console.log("else")
+      this.isValidateForm = false;
+    }
+  }
+
+
   save(valid, value) {
     console.log(value);
     delete this.selectedPatient.appointments;
@@ -746,7 +793,7 @@ export class LabRequestsComponent implements OnInit {
       investigations: readyCollection,
       createdBy: logEmp
     }
-    // console.log(readyCollection);
+    console.log(request);
     const billGroup: BillIGroup = <BillIGroup>{};
     billGroup.discount = 0;
     billGroup.facilityId = selectedFacility._id;
@@ -793,6 +840,7 @@ export class LabRequestsComponent implements OnInit {
           delete item.serviceModifierOject
         });
         request.billingId = billing;
+        console.log(request);
         this.requestService.update(request).then(payload => {
           this.frmNewRequest.reset();
           this.bindInvestigations = [];
@@ -804,6 +852,7 @@ export class LabRequestsComponent implements OnInit {
 
       })
     } else {
+      console.log(request);
       this.requestService.create(request).then(payload => {
         this.frmNewRequest.reset();
         this.bindInvestigations = [];
@@ -811,6 +860,8 @@ export class LabRequestsComponent implements OnInit {
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
         this.addToast('Request sent successfully');
+      },err=>{
+        console.log(err);
       })
     }
   }
@@ -826,12 +877,12 @@ export class LabRequestsComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this.pendingRequests = [];
-    if (this.patientId !== undefined && this.patientId.length > 0 && !this.isExternal) {
+    if (this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
       console.log('have patient')
       this.request_view = true;
       this.requestService.find({
         query: {
-          'patientId._id': this.patientId,
+          'patientId._id': this.patientId._id,
         }
       }).then(res => {
         console.log(res);
@@ -897,7 +948,7 @@ export class LabRequestsComponent implements OnInit {
         });
         console.log(this.pendingRequests);
       }).catch(err => console.error(err));
-    } else if (this.patientId === undefined && !this.isExternal) {
+    } else if (this.patientId._id === undefined && !this.isExternal) {
       this.requestService.find({
         query: {
           'facilityId._id': this.selectedFacility._id
