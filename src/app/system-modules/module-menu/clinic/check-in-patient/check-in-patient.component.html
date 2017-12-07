@@ -89,9 +89,9 @@
             <tr *ngFor="let appointment of checkedInAppointments">
                 <td>
                     <div class="empWrap" (click)="goToPatientPage(appointment,false)">
-                        <div class="list-img" *ngIf="appointment.patientId.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                        <div class="list-img" *ngIf="appointment.patientId.personDetails?.profileImageObject !== undefined"> <img [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)"></div>
-                        <div>{{appointment.patientId.personDetails?.lastName}} {{appointment.patientId.personDetails?.firstName}}</div>
+                        <div class="list-img" *ngIf="appointment?.patientId?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
+                        <div class="list-img" *ngIf="appointment?.patientId?.personDetails?.profileImageObject !== undefined"> <img [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)"></div>
+                        <div>{{appointment?.patientId?.personDetails?.lastName}} {{appointment?.patientId?.personDetails?.firstName}}</div>
                     </div>
                 </td>
                 <td>{{appointment.clinicId?.clinicName}}</td>
@@ -103,8 +103,8 @@
                     Get Location
                     <div class="loc-timeSpent">12<span class="timeLabel">mins,</span>25<span class="timeLabel">secs.</span></div>
                 </td> -->
-                <td>{{appointment?.attendance.dateCheckIn | date:'shortTime'}}</td>
-                <td><span class="timeLabel">{{appointment?.attendance.dateCheckIn | amTimeAgo}}</span></td>
+                <td>{{appointment?.attendance?.dateCheckIn | date:'shortTime'}}</td>
+                <td><span class="timeLabel">{{appointment?.attendance?.dateCheckIn | amTimeAgo}}</span></td>
                 <td>
                     <div class="td-ctaWrap">
                         <div class="actionWrap" (click)="showVital(appointment)">
