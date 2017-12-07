@@ -43,6 +43,8 @@ import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
 } from '@angular/material';
+import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
+import { WindowRef } from '../services/facility-manager/setup/winref.service';
 //import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
@@ -52,7 +54,8 @@ import {
     SurveyComponent,
     SurveyEditorComponent,
     ProductSearchComponent,
-    CheckoutPatientComponent
+    CheckoutPatientComponent,
+    Angular4FlutterwaveComponent
     //LabCheckInComponent,
     // LabRequestsComponent, RequestDetailComponent
   ],
@@ -71,7 +74,8 @@ import {
     ReactiveFormsModule,
     FormsModule,
     SingUpAccountsSharedModule,
-    CheckoutPatientComponent
+    CheckoutPatientComponent,
+    Angular4FlutterwaveComponent
     // DragulaModule,
     // LabRequestsComponent, RequestDetailComponent
   ],
@@ -88,7 +92,7 @@ import {
     MaterialModule
     // DragulaModule
   ],
-  providers: [StoreService]
+  providers: [StoreService, WindowRef]
 })
 export class SharedModule {}
 

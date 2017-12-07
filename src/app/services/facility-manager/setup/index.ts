@@ -87,3 +87,4 @@ export * from './facility-family-cover.service';
 export * from './policy.service';
 export * from './inventory-initialiser.service';
 export * from './sms-alert.service';
+export * from './winref.service';
