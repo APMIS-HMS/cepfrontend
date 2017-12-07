@@ -2,39 +2,54 @@
     <div class="facility-title">{{pageInView}}</div>
 
     <div class="fullwidth-topActions">
-        <ul *ngIf="!homeContentArea" class="moduleNav">
-            <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
-        </ul>
-        <md-input-container style="width:30%;margin-right: 10px;" *ngIf="homeContentArea" class="example-full-width">
-              <input mdInput md-error type="search"  placeholder="Search for employee" [formControl]="searchControl">
+        <div class="filters-wraper">
+            <ul *ngIf="!homeContentArea" class="moduleNav">
+                <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
+            </ul>
+            <md-input-container style="width:200px;margin-right: 10px;" *ngIf="homeContentArea" class="example-full-width">
+                <input mdInput md-error type="search"  placeholder="Search for employee" [formControl]="searchControl">
             </md-input-container>
-        <div style="width:20%; margin-top:-15px;">
-            <md-select placeholder="Department" [formControl]="department">
-                <md-option *ngFor="let item of departments" [value]="item">{{item.name}}</md-option>
-            </md-select>
-        </div>
-        <div style="width:20%; margin-top:-15px;">
-            <md-select placeholder="Unit" [formControl]="unit">
-                <md-option *ngFor="let item of units" [value]="item.name">{{item.name}}</md-option>
-            </md-select>
+            <div class="sort-txt">
+                <div>
+                    <md-select placeholder="Department" [formControl]="department">
+                        <md-option *ngFor="let item of departments" [value]="item">{{item.name}}</md-option>
+                    </md-select>
+                </div>
+                <div>
+                    <md-select placeholder="Unit" [formControl]="unit">
+                        <md-option *ngFor="let item of units" [value]="item.name">{{item.name}}</md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div *ngIf="mobileSort" class="sort-txt-mobile shadow-RB">
+                <div (click)="sort_pop()" class="x">X</div>
+                <div>
+                    <md-select placeholder="Department" [formControl]="department">
+                        <md-option *ngFor="let item of departments" [value]="item">{{item.name}}</md-option>
+                    </md-select>
+                </div>
+                <div>
+                    <md-select placeholder="Unit" [formControl]="unit">
+                        <md-option *ngFor="let item of units" [value]="item.name">{{item.name}}</md-option>
+                    </md-select>
+                </div>
+            </div>
         </div>
         <ul class="topmenuwrap">
+            <li class="sort-btn" (click)="sort_pop()">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+                <span>Sort List</span>
+            </li>
             <li (click)="assignUnit_pop()">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>Assign Unit</span>
             </li>
-        </ul>
-        <!-- <ul class="topmenuwrap">
-            <li (click)="newEmpShow()">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>New Employee</span>
-            </li>
-        </ul> -->
-        <div class="col-md-12">
-            <span (click)="newEmpShow()" id="floating-button">
-                <div class="plus">+</div>
-            </span>
-        </div> 
+        </ul>         
+    </div>
+    <div class="col-md-12">
+        <span (click)="newEmpShow()" id="floating-button">
+            <div class="plus">+</div>
+        </span>
     </div>
 
     <div class="inner-page-wrap">

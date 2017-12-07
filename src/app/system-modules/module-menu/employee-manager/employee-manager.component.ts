@@ -17,6 +17,7 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   employeeDetailArea = false;
   assignUnitPop = false;
   newEmp = false;
+  mobileSort = false;
   employee: any;
   selectedFacility: any = <any>{};
 
@@ -89,5 +90,8 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
     this.homeContentArea = true;
     this.employeeDetailArea = false;
     this.pageInView = 'Employee Manager';
+  }
+  sort_pop(){
+    this.mobileSort = !this.mobileSort;
   }
 }

@@ -969,7 +969,7 @@ select {
 .fullwidth-topActions {
     position: relative;
     display: flex;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .ng2-imgcrop,
@@ -1153,6 +1153,8 @@ ul.topmenuwrap li {
     padding: 3px 5px;
     cursor: pointer;
     border-radius: 7px;
+    margin-left: 20px;
+    margin-top: 10px;
 }
 
 ul.topmenuwrap li:hover {
@@ -1486,10 +1488,21 @@ ul.topmenuwrap li:hover {
         border: 4px solid lighten($primaryColor, 20%);
     }
 }
+.filters-wraper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
 
 @media only screen and (max-width: 600px) {
     .user-label{
         display: none;
+    }
+}
+@media only screen and (max-width: 670px) {
+    .filters-wraper{
+        width: auto;
     }
 }
 @media only screen and (max-width: 700px) {
