@@ -14,7 +14,8 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
-  @Input() resetData: Boolean = false;
+  @Input() resetData: Boolean;
+  @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   facility: Facility = <Facility>{};
   employees: Employee[] = [];
@@ -76,6 +77,9 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
           this.total = payload.total;
           this.employees = payload.data;
           this.inde[0] = payload.index;
+          if(this.total <= this.employees.length){
+            this.showLoadMore = false;
+          }
           console.log(this.employees);
         }
 
@@ -143,6 +147,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
         this.employees.push(...payload.data);
       }else{
         this.resetData = false;
+        this.resetDataNew.emit(this.resetData);
         this.employees = payload.data;
       }
       if(this.total <= this.employees.length){

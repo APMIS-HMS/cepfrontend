@@ -159,7 +159,7 @@ export class AppointmentComponent implements OnInit {
         this.isCheckoutPatient = true;
     }
 
-    close_onClick(message: boolean): void {
+    close_onClick(message: boolean) {
       this.closeMenu.emit(true);
     }
 

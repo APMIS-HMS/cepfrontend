@@ -20,7 +20,7 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   mobileSort = false;
   employee: any;
   selectedFacility: any = <any>{};
-  resetData:Boolean;
+  resetData:Boolean = false;
 
   searchControl = new FormControl();
   department = new FormControl();
@@ -80,6 +80,10 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   }
   pageInViewLoader(title) {
     this.pageInView = title;
+  }
+  resetDataLoader(data){
+    this.resetData = data;
+    console.log(this.resetData);
   }
   empDetailShow(val) {
     this.homeContentArea = false;

@@ -18,6 +18,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   employeeDetailArea = false;
   newEmp = false;
   patient: any;
+  resetData:Boolean = false;
 
   searchControl = new FormControl();
 
@@ -55,6 +56,13 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   }
   newEmpShow() {
     this.newEmp = true;
+  }
+  reset(){
+    this.resetData = true;
+  }
+  resetDataLoader(data){
+    this.resetData = data;
+    console.log(this.resetData);
   }
   close_onClick(e) {
     this.newEmp = false;
