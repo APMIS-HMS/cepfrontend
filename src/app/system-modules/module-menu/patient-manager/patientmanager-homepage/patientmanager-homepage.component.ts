@@ -185,6 +185,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }).then(payload => {
       console.log(payload);
       this.loading = false;
+      this.total = payload.total;
       if (payload.data.length > 0) {
         if(this.resetData !== true)
         {
