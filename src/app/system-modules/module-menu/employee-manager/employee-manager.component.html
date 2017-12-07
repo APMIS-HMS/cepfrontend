@@ -58,7 +58,7 @@
 
     <div class="inner-page-wrap"> 
 
-        <app-employeemanager-homepage [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (reset) (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
+        <app-employeemanager-homepage [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
             class="fullwidth"></app-employeemanager-homepage> 
         <app-employeemanager-detailpage [employee]="employee" *ngIf="employeeDetailArea" class="fullwidth"></app-employeemanager-detailpage>
 
