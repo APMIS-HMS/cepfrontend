@@ -60,7 +60,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    overflow: hidden;
     width: 100px;
     height: 100px;
     border-radius: 100%;
@@ -68,7 +68,7 @@
     margin: 0 auto;
 }
 .listing-imgWrap img{
-    width: 80%;
+    width: 100%;
 }
 .listing-name{
     font-size: 16px;

@@ -318,6 +318,13 @@ select {
 .btn-1 i {
     padding-right: 7px;
 }
+.btn-center{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
 
 .inner-wrap {
     position: relative;
