@@ -50,6 +50,9 @@
         <thead>
             <tr>
                 <th>
+                    <span style="padding-left: 3px;">No</span>
+                </th>
+                <th>
                     <span style="padding-left: 3px;">Date</span>
                 </th>
                 <th>
@@ -74,7 +77,8 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let tx of transactions">
+            <tr *ngFor="let tx of transactions; let i=index;">
+                <td>{{ i+1 }}</td>
                 <td>{{tx.createdAt | date:'short'}}</td>
                 <td>{{tx.description}}</td>
                 <td>{{tx.refCode}}</td>
