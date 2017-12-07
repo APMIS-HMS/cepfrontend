@@ -10,7 +10,8 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
   previousUrl = '/';
   selectedFacility: Facility = <Facility>{};
   pageSize = 1;
-  limit = 100;
+  limit = 2;
+  index = 1;
   constructor(private employeeService: EmployeeService,
     private locker: CoolLocalStorage,
     private router: Router) {
@@ -30,11 +31,13 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     return this.employeeService.find({
       query: {
-        facilityId: this.selectedFacility._id, $limit: this.limit,
+        facilityId: this.selectedFacility._id, 
+        $limit: this.limit,
         showbasicinfo: true
       }
     }).then(payload => {
       if (payload.data.length > 0) {
+        payload.index = this.index;
         return Observable.of(payload);
       }
       return Observable.of(null);

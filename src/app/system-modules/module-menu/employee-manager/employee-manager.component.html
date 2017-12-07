@@ -44,6 +44,10 @@
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>Assign Unit</span>
             </li>
+            <li (click)="reset()">
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                <span>Reset</span>
+            </li>
         </ul>         
     </div>
     <div class="col-md-12">
@@ -52,9 +56,9 @@
         </span>
     </div>
 
-    <div class="inner-page-wrap">
+    <div class="inner-page-wrap"> 
 
-        <app-employeemanager-homepage (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
+        <app-employeemanager-homepage [resetData]="resetData" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
             class="fullwidth"></app-employeemanager-homepage>
         <app-employeemanager-detailpage [employee]="employee" *ngIf="employeeDetailArea" class="fullwidth"></app-employeemanager-detailpage>
 
