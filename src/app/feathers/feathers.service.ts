@@ -12,7 +12,7 @@ const RxJS = require('rxjs/Rx');
 
 const HOST = 'http://172.16.16.47:3030'; // Online
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
-//const HOST = 'http://localhost:3030'; // Local Server
+const HOST = 'http://localhost:3030'; // Local Server
 
 @Injectable()
 export class SocketService {
