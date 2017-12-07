@@ -118,7 +118,7 @@ select {
     }
 }
 
-// End 
+// End
 .cta-1 {
     display: -webkit-box;
     /* OLD - iOS 6-, Safari 3.1-6 */
@@ -232,6 +232,7 @@ select {
 }
 
 .btn-blue {
+    color: #fff;
     background: #0288D1;
     background: -webkit-gradient(linear, left top, right top, from(#0288D1), to(rgb(75, 184, 239)));
     background: -webkit-linear-gradient(left, #0288D1, rgb(75, 184, 239));
@@ -1386,7 +1387,7 @@ ul.topmenuwrap li:hover {
 //   background:#fff;
 //   padding:10px 10px;
 //   color:#1b1b1b;
-//   border: 1px solid #0288d1; 
+//   border: 1px solid #0288d1;
 //   cursor: pointer;
 //   transition: ease-out;
 //   transition-delay: .3s;
@@ -1446,7 +1447,8 @@ ul.topmenuwrap li:hover {
 .pg-menuWrap li i {
     font-size: 16px;
 }
-.welcome-wrap{
+
+.welcome-wrap {
     background: lighten($primaryColor, 20%);
     color: #fff;
     height: 90vh;

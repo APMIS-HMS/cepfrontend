@@ -141,6 +141,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
+      console.log(this.patient);
     } else {
       this.router.navigate(['/dashboard/patient-manager']);
     }

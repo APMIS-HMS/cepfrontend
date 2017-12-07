@@ -1,86 +1,89 @@
 <div class="head">
-  <div class="wallet-summary shadow">
-    <div class="summary-item">
-      <div class="item-label">Ledger Balance</div>
-      <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.ledgerBalance}}</div>
+    <div class="wallet-summary shadow">
+        <div class="summary-item">
+            <div class="item-label">Ledger Balance</div>
+            <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.ledgerBalance}}</div>
+        </div>
+        <div class="summary-item">
+            <div class="item-label">Balance</div>
+            <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
+        </div>
+        <hr>
+        <div class="summary-item">
+            <div class="item-label">Available Balance</div>
+            <div class="item-val available-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
+        </div>
     </div>
-    <div class="summary-item">
-      <div class="item-label">Balance</div>
-      <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
+    <div class="head-others shadow">
+        <div class="frm-item-wrap">
+            <md-input-container>
+                <input type="text" mdInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
+            </md-input-container>
+        </div>
+        <ul class="topmenuwrap">
+            <li (click)="fundWallet()">
+                <i class="fa fa-money" aria-hidden="true"></i>
+                <span>Cash</span>
+            </li>
+            <li (click)="onClickEPayment()">
+                <i class="fa fa-credit-card" aria-hidden="true"></i>
+                <span>e-Payment</span>
+            </li>
+        </ul>
+        <div class="epayment-box" *ngIf="ePayment">
+            <angular-4-flutterwave *ngIf="withPaystack" [amount]="fundAmount.value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
+                [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
+        </div>
     </div>
-    <hr>
-    <div class="summary-item">
-      <div class="item-label">Available Balance</div>
-      <div class="item-val available-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
-    </div>
-  </div>
-  <div class="head-others shadow">
-    <div class="frm-item-wrap">
-      <md-input-container>
-        <input type="text" mdInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
-      </md-input-container>
-    </div>
-    <ul class="topmenuwrap">
-      <li (click)="fundWallet()">
-        <i class="fa fa-money" aria-hidden="true"></i>
-        <span>Cash</span>
-      </li>
-      <li (click)="fundWithElectronic()">
-        <i class="fa fa-credit-card" aria-hidden="true"></i>
-        <span>Paystack</span>
-      </li>
-    </ul>
-  </div>
 </div>
 
 <div class="tbl-header">
-  <div class="pg-subtitle">Account Statement</div>
-  <div class="frm-item-wrap">
-    <md-input-container>
-      <input type="text" mdInput placeholder="search activities" [formControl]="search">
-    </md-input-container>
-  </div>
+    <div class="pg-subtitle">Account Statement</div>
+    <div class="frm-item-wrap">
+        <md-input-container>
+            <input type="text" mdInput placeholder="Search Activities" [formControl]="search">
+        </md-input-container>
+    </div>
 </div>
 <div class="content">
-  <table cellpadding="0" cellspacing="0" border="0.5">
-    <thead>
-      <tr>
-        <th>
-          <span style="padding-left: 3px;">Date</span>
-        </th>
-        <th>
-          <span style="padding-left: 3px;">Description</span>
-        </th>
-        <th>
-          <span style="padding-left: 3px; text-align:center;">Ref Code</span>
-        </th>
-        <th>
-          <span style="padding-left: 3px; text-align:center;">Transaction Type</span>
-        </th>
-        <th>
-          <span style="padding-left: 3px; text-align:center;">Amount</span>
-        </th>
-        <th>
-          <span style="padding-left: 3px; text-align:center;">Current Balance</span>
-        </th>
+    <table cellpadding="0" cellspacing="0" border="0.5">
+        <thead>
+            <tr>
+                <th>
+                    <span style="padding-left: 3px;">Date</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px;">Description</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Ref Code</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Transaction Type</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Amount</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Current Balance</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Available Balance</span>
+                </th>
+            </tr>
+        </thead>
 
-        <th>
-          <span style="padding-left: 3px; text-align:center;">Available Balance</span>
-        </th>
-      </tr>
-    </thead>
+        <tbody>
+            <tr *ngFor="let tx of transactions">
+                <td>{{tx.createdAt | date:'short'}}</td>
+                <td>{{tx.description}}</td>
+                <td>{{tx.refCode}}</td>
+                <td>{{ (tx.transactionType === 'Cr') ? 'Credit' : 'Debit' }}</td>
+                <td class="{{ (tx.transactionType === 'Cr') ? 'text-green' : 'text-green' }}"><span>&#x20a6;</span>{{tx.amount}}</td>
+                <td><span>&#x20a6;</span>{{tx.ledgerBalance}}</td>
+                <td><span>&#x20a6;</span>{{tx.balance}}</td>
+            </tr>
 
-    <tbody>
-      <tr *ngFor="let tx of transactions">
-        <td>{{tx.createdAt | date:'short'}}</td>
-        <td>{{tx.description}}</td>
-        <td>{{tx.refCode}}</td>
-        <td>{{tx.transactionType}}</td>
-        <td><span>&#x20a6;</span>{{tx.amount}}</td>
-        <td><span>&#x20a6;</span>{{tx.ledgerBalance}}</td>
-        <td><span>&#x20a6;</span>{{tx.balance}}</td>
-      </tr>
-
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </div>

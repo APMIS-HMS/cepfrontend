@@ -20,8 +20,10 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
 
   pageSize = 1;
+  index:any = 0;
   limit = 100;
   total = 0;
+  showLoadMore: Boolean = true;
   loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -104,19 +106,28 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       this.loadIndicatorVisible = false;
     });
   }
-  getEmployees(limit, isUp) {
-    let skip = this.employees.length;
-    if (isUp) {
-      limit = this.limit;
-      skip = 0;
-    }
-    this.employeeService.find({ query: { facilityId: this.facility._id, $limit: 100, showbasicinfo: true } }).then(payload => {
+  getEmployees(limit?, isUp?) {
+    //let skip = this.employees.length;
+    this.loadIndicatorVisible = true;
+    this.employeeService.find({ 
+      query: { 
+        facilityId: this.facility._id, 
+        $limit: this.limit, 
+        $skip: this.index * this.limit,
+        showbasicinfo: true 
+      } 
+    }).then(payload => {
       this.total = payload.total;
-      this.employees = payload.data;
+      this.employees.push(...payload.data);
       console.log(this.employees);
+      if(this.total < this.employees.length){
+        this.showLoadMore = false;
+      }
+      this.loadIndicatorVisible = false;
     }, error => {
       this.loadIndicatorVisible = false;
     });
+    this.index++;
   }
   contactEmployees(employeeData: Employee[]) {
     const newEmployees: Employee[] = [];
@@ -135,6 +146,9 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       }
     });
     this.employees.concat(newEmployees);
+  }
+  loadMore(){
+    this.getEmployees();
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
