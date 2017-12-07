@@ -11,20 +11,22 @@
                     </div>
                 </div>
                 <div class="headerDetail-wrap">
-                    <div class="modal_title">{{patient?.personDetails.lastName}} {{patient?.personDetails.firstName}} {{patient?.personDetails.title.name}}</div>
+                    <div class="modal_title">{{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}} {{patient?.personDetails?.title?.name}}</div>
                     <div class="headDetail-group">
-                        <div class="patient-gender">{{patient?.personDetails.gender.name}}</div>
-                        <div class="patient-apmisNo">{{patient?.personDetails.apmisId}}</div>
+                        <div class="patient-gender">{{patient?.personDetails?.gender?.name}}</div>
+                        <div class="patient-apmisNo">{{patient?.personDetails?.apmisId}}</div>
                     </div>
                     <div class="headDetail-group">
-                        <div class="patient-dob">{{patient?.personDetails.dateOfBirth | date}}</div>
-                        <div class="patient-phone">{{patient?.personDetails.phoneNumber}}</div>
+                        <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
+                        <div class="patient-phone">{{patient?.personDetails?.phoneNumber}}</div>
                     </div>
-                    <div class="patient-email">{{patient?.personDetails.email}}</div>
+                    <div class="patient-email">{{patient?.personDetails?.email}}</div>
 
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balance</span>
-                        <span class="accBal-val">&#8358; 20,000</span>
+                        <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
+                          &#8358; {{patient?.personDetails?.wallet?.balance}}
+                        </span>
                     </section>
                 </div>
             </div>

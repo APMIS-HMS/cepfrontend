@@ -38,7 +38,10 @@ export class PatientmanagerHomepageComponent implements OnInit {
   titles: any = [];
 
   pageSize = 1;
-  limit = 20;
+  index:any = 0;
+  limit:any = 10;
+  showLoadMore:Boolean = true;
+  total:any;
   updatePatientBtnText: string = 'Update';
 
   constructor(private patientService: PatientService, private personService: PersonService,
@@ -53,7 +56,7 @@ export class PatientmanagerHomepageComponent implements OnInit {
     });
     this.patientService.createListener.subscribe(payload => {
       console.log(payload);
-      this.getPatients(this.limit);
+      this.getPatients();
       this.toast.success(payload.personDetails.personFullName + ' created successfully!', 'Success!');
     });
 
@@ -161,19 +164,29 @@ export class PatientmanagerHomepageComponent implements OnInit {
       this.patientService.announcePatient(patient);
     })
   }
-  getPatients(limit) {
+  getPatients(limit?) {
     this.patientService.find({ 
-      query: { facilityId: this.facility._id, $limit: limit } 
-      }).then(payload => {
+      query: { 
+        facilityId: this.facility._id, 
+        $limit: this.limit,
+        $skip: this.index * this.limit 
+      } 
+    }).then(payload => {
       console.log(payload);
       this.loading = false;
       if (payload.data.length > 0) {
-        this.patients = payload.data;
-        console.log(this.patients)
+        this.patients.push(...payload.data);
+        console.log(this.patients);
+        if(this.total <= this.patients.length){
+          this.showLoadMore = false;
+        }
       } else {
         this.patients = [];
       }
+    }).catch(errr => {
+      console.log(errr);
     });
+    this.index++;
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
@@ -187,6 +200,9 @@ export class PatientmanagerHomepageComponent implements OnInit {
     }
     const limit = this.limit * this.pageSize;
     this.getPatients(limit);
+  }
+  loadMore(){
+    this.getPatients();
   }
   slideEdit(patient) {
     this.selectedPatient = patient.personDetails;
