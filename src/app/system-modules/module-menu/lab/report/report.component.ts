@@ -180,7 +180,9 @@ export class ReportComponent implements OnInit {
             const labRequest = res.data[0];
             const saveDocument = {
               documentType: this.selectedForm,
-              body: {}
+              body: {
+                laboratory: []
+              }
             };
 
             labRequest.investigations.forEach(investigation => {
@@ -190,17 +192,18 @@ export class ReportComponent implements OnInit {
                 investigation.isSaved = !isSaved;
 
                 // Build document to save in documentation
-                saveDocument.body = {
-                  'Conclusion': investigation.report.conclusion,
-                  'Recommendation': investigation.report.outcome,
-                  'Outcome': investigation.report.outcome,
-                  'Result': investigation.report.result,
-                  'Specimen': investigation.investigation.specimen.name,
-                  'Diagnosis': labRequest.diagnosis,
-                  'Clinical Information': labRequest.clinicalInformation,
-                  'Laboratory Number': labRequest.labNumber,
-                  'Test Name': investigation.investigation.name
-                }
+                saveDocument.body.laboratory.push({
+                  'conclusion': investigation.report.conclusion,
+                  'recommendation': investigation.report.outcome,
+                  'outcome': investigation.report.outcome,
+                  'result': investigation.report.result,
+                  'specimen': investigation.investigation.specimen.name,
+                  'diagnosis': labRequest.diagnosis,
+                  'clinicalInformation': labRequest.clinicalInformation,
+                  'labNumber': labRequest.labNumber,
+                  'investigation': investigation.investigation.name,
+                  
+                })
               }
             });
 
