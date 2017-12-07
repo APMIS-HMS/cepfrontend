@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnChanges, OnDestroy, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, EmployeeService, PersonService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee } from '../../../../models/index';
@@ -10,18 +10,23 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   templateUrl: './employeemanager-homepage.component.html',
   styleUrls: ['./employeemanager-homepage.component.scss']
 })
-export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
+export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
+  @Input() resetData: Boolean;
+  @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   facility: Facility = <Facility>{};
   employees: Employee[] = [];
   searchControl = new FormControl();
 
   pageSize = 1;
-  limit = 100;
+  index:any = 0;
+  inde:any = [];
+  limit = 2;
   total = 0;
+  showLoadMore: Boolean = true;
   loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -29,11 +34,13 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
     private toast: ToastsManager,
     private router: Router, private route: ActivatedRoute) {
     this.employeeService.listner.subscribe(payload => {
+      console.log(payload);
       this.getEmployees(this.limit, true);
     });
     this.employeeService.createListener.subscribe(payload => {
       // this.employees.push(payload);
       // console.log(this.employees.length);
+      console.log(payload);
       this.getEmployees(this.limit, true);
       this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
@@ -53,15 +60,33 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
 
   }
 
+  ngOnChanges(){
+    console.log(this.resetData);
+    if(this.resetData === true){
+      this.index = 0;
+      this.getEmployees();
+      this.showLoadMore = true;
+    }
+  }
+
   ngOnInit() {
     this.route.data.subscribe(data => {
+      console.log(data['employees']);
       data['employees'].subscribe((payload) => {
         if (payload !== null) {
           this.total = payload.total;
           this.employees = payload.data;
+          this.inde[0] = payload.index;
+          if(this.total <= this.employees.length){
+            this.showLoadMore = false;
+          }
+          console.log(this.employees);
         }
 
       });
+      this.index = this.inde[0];
+      console.log(this.inde[0]);
+      //this.getEmployees();
     });
     this.pageInView.emit('Employee Manager');
     this.facility = <Facility>this.locker.getObject('selectedFacility');
@@ -104,19 +129,35 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       this.loadIndicatorVisible = false;
     });
   }
-  getEmployees(limit, isUp) {
-    let skip = this.employees.length;
-    if (isUp) {
-      limit = this.limit;
-      skip = 0;
-    }
-    this.employeeService.find({ query: { facilityId: this.facility._id, $limit: 100, showbasicinfo: true } }).then(payload => {
+  getEmployees(limit?, isUp?) {
+    //let skip = this.employees.length;
+    console.log(this.limit, this.index);
+    this.loadIndicatorVisible = true;
+    this.employeeService.find({ 
+      query: { 
+        facilityId: this.facility._id, 
+        $limit: this.limit, 
+        $skip: this.index * this.limit,
+        showbasicinfo: true 
+      } 
+    }).then(payload => {
       this.total = payload.total;
-      this.employees = payload.data;
-      console.log(this.employees);
+      if(this.resetData !== true)
+      {
+        this.employees.push(...payload.data);
+      }else{
+        this.resetData = false;
+        this.resetDataNew.emit(this.resetData);
+        this.employees = payload.data;
+      }
+      if(this.total <= this.employees.length){
+        this.showLoadMore = false;
+      }
+      this.loadIndicatorVisible = false;
     }, error => {
       this.loadIndicatorVisible = false;
     });
+    this.index++;
   }
   contactEmployees(employeeData: Employee[]) {
     const newEmployees: Employee[] = [];
@@ -135,6 +176,9 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy {
       }
     });
     this.employees.concat(newEmployees);
+  }
+  loadMore(){
+    this.getEmployees();
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;

@@ -118,7 +118,7 @@ select {
     }
 }
 
-// End 
+// End
 .cta-1 {
     display: -webkit-box;
     /* OLD - iOS 6-, Safari 3.1-6 */
@@ -232,6 +232,7 @@ select {
 }
 
 .btn-blue {
+    color: #fff;
     background: #0288D1;
     background: -webkit-gradient(linear, left top, right top, from(#0288D1), to(rgb(75, 184, 239)));
     background: -webkit-linear-gradient(left, #0288D1, rgb(75, 184, 239));
@@ -317,10 +318,17 @@ select {
 .btn-1 i {
     padding-right: 7px;
 }
+.btn-center{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
 
 .inner-wrap {
     position: relative;
-    padding: 5px 20px;
+    padding: 5px 10px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -529,6 +537,7 @@ select {
     margin: 0px auto;
     font-size: 20px;
     color: #0D47A1;
+    text-align: center;
 }
 
 .modal_mini_title {
@@ -969,7 +978,7 @@ select {
 .fullwidth-topActions {
     position: relative;
     display: flex;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .ng2-imgcrop,
@@ -1153,50 +1162,14 @@ ul.topmenuwrap li {
     padding: 3px 5px;
     cursor: pointer;
     border-radius: 7px;
+    margin-left: 20px;
+    margin-top: 10px;
 }
 
 ul.topmenuwrap li:hover {
     border: 1px solid #0288D1;
     background: #0288D1;
     color: #000;
-}
-
-@media only screen and (max-width: 700px) {
-    .modal-baseWrap {
-        padding: 10px 20px;
-        min-width: 80%;
-        width: 80%;
-    }
-    form .lhs,
-    form .rhs {
-        float: none;
-    }
-    .frm-item-wrap {
-        padding-bottom: 15px;
-    }
-    .CTAs-wrap {
-        margin-top: 10px;
-    }
-    .cta-1 {
-        width: 80%;
-        height: 35px;
-        font-size: 13px;
-    }
-    .modal_mini_title {
-        display: none;
-    }
-    .modal_title {
-        margin-bottom: 10px;
-    }
-    .frm-item-wrap small,
-    .frm-singleItem-wrap small {
-        font-size: 8px;
-        bottom: 3px;
-    }
-    .mainErr {
-        margin-bottom: 2px;
-        font-size: 10px;
-    }
 }
 
 .sideTab_title {
@@ -1422,7 +1395,7 @@ ul.topmenuwrap li:hover {
 //   background:#fff;
 //   padding:10px 10px;
 //   color:#1b1b1b;
-//   border: 1px solid #0288d1; 
+//   border: 1px solid #0288d1;
 //   cursor: pointer;
 //   transition: ease-out;
 //   transition-delay: .3s;
@@ -1482,11 +1455,105 @@ ul.topmenuwrap li:hover {
 .pg-menuWrap li i {
     font-size: 16px;
 }
-.welcome-wrap{
+
+.welcome-wrap {
     background: lighten($primaryColor, 20%);
     color: #fff;
     height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.plus {
+    position: absolute;
+    top: auto;
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0;
+    margin: 0 !important;
+    line-height: 46px;
+    font-size: 38px;
+    font-weight: 300;
+    animation: plus-out 0.3s;
+    transition: all 0.3s;
+}
+
+#floating-button {
+    z-index: 3;
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    background: lighten($primaryColor, 20%);
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    border: 4px solid lighten($primaryColor, 10%);
+    box-shadow: 1px 1px 5px 9px rgba(0, 0, 0, 0.05);
+    &:hover {
+        background: lighten($primaryColor, 30%);
+        border: 4px solid lighten($primaryColor, 20%);
+    }
+}
+.filters-wraper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+@media only screen and (max-width: 600px) {
+    .user-label{
+        display: none;
+    }
+}
+@media only screen and (max-width: 670px) {
+    .filters-wraper{
+        width: auto;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .modal-baseWrap {
+        padding: 10px 20px;
+        min-width: 80%;
+        width: 80%;
+    }
+    form .lhs,
+    form .rhs {
+        float: none;
+    }
+    .frm-item-wrap {
+        padding-bottom: 15px;
+    }
+    .CTAs-wrap {
+        margin-top: 10px;
+    }
+    .cta-1 {
+        width: 80%;
+        height: 35px;
+        font-size: 13px;
+    }
+    .modal_mini_title {
+        display: none;
+    }
+    .modal_title {
+        margin-bottom: 10px;
+    }
+    .frm-item-wrap small,
+    .frm-singleItem-wrap small {
+        font-size: 8px;
+        bottom: 3px;
+    }
+    .mainErr {
+        margin-bottom: 2px;
+        font-size: 10px;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .search-wrap{
+        display: none;
+    }
 }

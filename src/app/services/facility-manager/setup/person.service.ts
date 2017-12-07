@@ -70,7 +70,40 @@ export class PersonService {
         source: EntityType[walletTransaction.source],
         destination: EntityType[walletTransaction.destination],
         transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
-      }); // query string 
+      }); // query string
+  }
+
+  fundWallet(walletTransaction: WalletTransaction) {
+    const host = this._restService.getHost();
+    const path = host + '/fund-wallet';
+    return new Promise((resolve, reject) => {
+      resolve(
+        request.get(path).query({
+          ref: walletTransaction.ref,
+          ePaymentMethod: walletTransaction.ePaymentMethod,
+          paymentMethod: walletTransaction.paymentMethod,
+          destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
+          transactionType: TransactionType[walletTransaction.transactionType],
+          transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+          amount: walletTransaction.amount, description: walletTransaction.description,
+          source: EntityType[walletTransaction.source],
+          destination: EntityType[walletTransaction.destination],
+          transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
+        })
+      );
+    });
+    // return request
+    //   .get(path)
+    //   .query({
+    //     paymentMethod: 'Cash',
+    //     destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
+    //     transactionType: TransactionType[walletTransaction.transactionType],
+    //     transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+    //     amount: walletTransaction.amount, description: walletTransaction.description,
+    //     source: EntityType[walletTransaction.source],
+    //     destination: EntityType[walletTransaction.destination],
+    //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
+    //   }); // query string
   }
 
 }
