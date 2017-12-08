@@ -13,7 +13,7 @@ const RxJS = require('rxjs/Rx');
 const HOST = 'http://13.84.217.251:8082'; // Online
 // const HOST = 'http://apmisnetworkapi.azurewebsites.net'; // Online
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
-// const HOST = 'http://localhost:3030'; // Local Server
+//const HOST = 'http://localhost:3030'; // Local Server
 
 @Injectable()
 export class SocketService {
