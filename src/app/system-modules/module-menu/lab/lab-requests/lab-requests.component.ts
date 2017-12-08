@@ -877,6 +877,7 @@ export class LabRequestsComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this.pendingRequests = [];
+    console.log(this.patientId);
     if (this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
       console.log('have patient')
       this.request_view = true;
