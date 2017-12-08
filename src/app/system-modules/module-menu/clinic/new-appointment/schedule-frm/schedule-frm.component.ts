@@ -92,6 +92,10 @@ export class ScheduleFrmComponent implements OnInit {
     days: any[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     selectedAppointment: Appointment = <Appointment>{};
     btnText = 'Schedule Appointment';
+    disableBtn = false;
+    saveAppointment = true;
+    savingAppointment = false;
+    updateAppointment = false;
     clinicErrorMsg = ' Clinic does not hold on the selected date!!!';
 
     user = {};
@@ -107,7 +111,9 @@ export class ScheduleFrmComponent implements OnInit {
 
         appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
             this.appointment = payload;
-            this.btnText = 'Update Appointment';
+            this.updateAppointment = true;
+            this.saveAppointment = false;
+            this.savingAppointment = false;
             const filterClinic = this.clinics.filter(x => x._id === payload.clinicId._id);
             if (filterClinic.length > 0) {
                 this.clinic.setValue(filterClinic[0]);
@@ -543,7 +549,11 @@ export class ScheduleFrmComponent implements OnInit {
 
     scheduleAppointment() {
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
-            this.loadIndicatorVisible = true;
+            // this.loadIndicatorVisible = true;
+            this.disableBtn = true;
+            this.updateAppointment = false;
+            this.saveAppointment = false;
+            this.savingAppointment = true;
             const patient = this.patient.value;
             const clinic = this.clinic.value;
             const provider = this.provider.value;
@@ -640,12 +650,20 @@ export class ScheduleFrmComponent implements OnInit {
                                     clinic.name,
                                     patient.personDetails.email);
 
+                                    this.disableBtn = true;
+                                    this.updateAppointment = false;
+                                    this.saveAppointment = true;
+                                    this.savingAppointment = false;
                                 this.addToast('Appointment updated successfully');
                                 this.router.navigate(['/dashboard/clinic/appointment']);
                             })
                     } else {
                         this.appointmentService.patientAnnounced(this.patient);
-                        this.loadIndicatorVisible = false;
+                        // this.loadIndicatorVisible = false;
+                        this.disableBtn = true;
+                        this.updateAppointment = false;
+                        this.saveAppointment = true;
+                        this.savingAppointment = false;
                         this.newSchedule();
                         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
                         this.addToast('Appointment updated successfully');
@@ -668,6 +686,10 @@ export class ScheduleFrmComponent implements OnInit {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
                             .then(meeting => {
+                              this.disableBtn = true;
+                              this.updateAppointment = false;
+                              this.saveAppointment = true;
+                              this.savingAppointment = false;
                                 this.addToast('Appointment updated successfully');
                                 this.setValueSmsAlert(
                                     patient.personDetails.personFullName,
@@ -685,6 +707,10 @@ export class ScheduleFrmComponent implements OnInit {
 
                             })
                     } else {
+                        this.disableBtn = true;
+                        this.updateAppointment = false;
+                        this.saveAppointment = true;
+                        this.savingAppointment = false;
                         this.addToast('Appointment scheduled successfully');
                         this.setValueSmsAlert(
                             patient.personDetails.personFullName,
@@ -706,10 +732,10 @@ export class ScheduleFrmComponent implements OnInit {
             }
         } else {
             console.log('error');
+
         }
-
-
     }
+
     getOthers(clinic: any) {
         this.schedules = [];
         if (clinic !== null) {

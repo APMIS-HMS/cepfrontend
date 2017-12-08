@@ -85,6 +85,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
   setAppointment(patient) {
+    console.log(patient);
+    console.log(this.loginEmployee)
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
