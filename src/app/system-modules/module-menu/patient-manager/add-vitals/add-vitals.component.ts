@@ -238,6 +238,8 @@ export class AddVitalsComponent implements OnInit {
         patientId: this.patient._id,
         personId: this.patient.personDetails._id
       }
+      console.log(vitalValue);
+      console.log(params);
       this._vitalService.post(vitalValue, params).then(payload => {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
