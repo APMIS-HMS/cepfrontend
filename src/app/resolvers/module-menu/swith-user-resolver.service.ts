@@ -34,7 +34,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);
         });
-        return this.facilityService.find({ query: { _id: { $in: facilityList }, $select:['name', 'departments','logoObject', 'facilitymoduleId','minorLocations'] } })
+        return this.facilityService.find({ query: { _id: { $in: facilityList }, $select: ['departments.name', 'name', 'logoObject', 'facilitymoduleId'] } })
           .then(payload => {
             console.log(payload)
             this.listOfFacilities = payload.data;

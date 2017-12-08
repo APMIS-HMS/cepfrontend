@@ -63,6 +63,9 @@ export class AddVitalsComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
+
+    console.log(this._locker.getObject('miniFacility'))
+    console.log(this.loginEmployee)
     this.getVitalLocation();
     this.getVitalPosition();
     this.getVitalRythm();

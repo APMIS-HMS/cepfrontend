@@ -147,7 +147,7 @@ export class FacilityPageHomeComponent implements OnInit {
     }
   }
   getMinorLocations() {
-    this.hasMinorLocations = this.selectedFacility.minorLocations.length > 0 ? true : false;
+    // this.hasMinorLocations = this.selectedFacility.minorLocations.length > 0 ? true : false;
   }
   getEmployees() {
     this.employeeService.find({ query: { $limit: 1 } }).then(payload => {
