@@ -194,7 +194,7 @@ export class AdmitPatientComponent implements OnInit {
 								room: value.room
 							}
 							this.updateWardAdissionService(msgObj);
-							this.close_onClick();
+              this.close_onClick();
 						});
 					});
 				});

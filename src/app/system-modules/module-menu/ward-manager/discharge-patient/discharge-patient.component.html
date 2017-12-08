@@ -6,7 +6,7 @@
 
     <form [formGroup]="dischargeFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <md-select placeholder="Facility LGA (Location)" (change)="onDischargeTypeChange($event.value)" formControlName="dischargeType">
+            <md-select placeholder="Discharge Type" (change)="onDischargeTypeChange($event.value)" formControlName="dischargeType">
                 <md-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge._id">{{discharge.name}}</md-option>
             </md-select>
         </div>

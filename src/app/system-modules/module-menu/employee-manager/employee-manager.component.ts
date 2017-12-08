@@ -21,7 +21,6 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   employee: any;
   selectedFacility: any = <any>{};
   resetData:Boolean = false;
-  resetNew:Boolean;
 
   searchControl = new FormControl();
   department = new FormControl();

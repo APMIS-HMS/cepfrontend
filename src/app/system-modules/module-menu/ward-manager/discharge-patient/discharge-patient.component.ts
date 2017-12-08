@@ -61,43 +61,44 @@ export class DischargePatientComponent implements OnInit {
 	}
 
 	onDischarge(value: any, valid: boolean) {
-		if (valid) {
-			this._inPatientService.get(this.inPatientId, {}).then(payload => {
-				const inPatientVal = payload;
-				this.discharge.dischargeTypeId = this.dischargeFormGroup.controls['dischargeType'].value;
-				this.discharge.Reason = this.dischargeFormGroup.controls['comment'].value;
-				payload.discharge = this.discharge;
-				payload.statusId = myGlobals.discharge;
-				payload.transfers[payload.lastIndex].checkOutDate = new Date();
-				this._inPatientService.update(payload).then(payload2 => {
-					this.close_onClick();
-					const currentWard = payload.transfers[payload.lastIndex];
-					this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id }}).then(payload3 => {
-							payload3.data[0].locations.forEach(location => {
-								if (location.minorLocationId._id === currentWard.minorLocationId) {
-									location.rooms.forEach(room => {
-										if (room.roomId._id === currentWard.roomId) {
-											room.beds.forEach(bed => {
-												if (bed.bedId._id === currentWard.bedId) {
-													bed.isAvailable = true;
-													bed.state = 'Available';
-													delete bed.occupant;
-													this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
-														// console.log("Complete");
-														this._router.navigate(['/dashboard/ward-manager/admitted']);
-													});
-												}
-											});
-										}
-									});
-								}
-							});
-						})
-				}, error => {
-					console.log(error)
-				});
-			});
-		}
+    console.log(value);
+		// if (valid) {
+		// 	this._inPatientService.get(this.inPatientId, {}).then(payload => {
+		// 		const inPatientVal = payload;
+		// 		this.discharge.dischargeTypeId = this.dischargeFormGroup.controls['dischargeType'].value;
+		// 		this.discharge.Reason = this.dischargeFormGroup.controls['comment'].value;
+		// 		payload.discharge = this.discharge;
+		// 		payload.statusId = myGlobals.discharge;
+		// 		payload.transfers[payload.lastIndex].checkOutDate = new Date();
+		// 		this._inPatientService.update(payload).then(payload2 => {
+		// 			this.close_onClick();
+		// 			const currentWard = payload.transfers[payload.lastIndex];
+		// 			this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id }}).then(payload3 => {
+		// 					payload3.data[0].locations.forEach(location => {
+		// 						if (location.minorLocationId._id === currentWard.minorLocationId) {
+		// 							location.rooms.forEach(room => {
+		// 								if (room.roomId._id === currentWard.roomId) {
+		// 									room.beds.forEach(bed => {
+		// 										if (bed.bedId._id === currentWard.bedId) {
+		// 											bed.isAvailable = true;
+		// 											bed.state = 'Available';
+		// 											delete bed.occupant;
+		// 											this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
+		// 												// console.log("Complete");
+		// 												this._router.navigate(['/dashboard/ward-manager/admitted']);
+		// 											});
+		// 										}
+		// 									});
+		// 								}
+		// 							});
+		// 						}
+		// 					});
+		// 				})
+		// 		}, error => {
+		// 			console.log(error)
+		// 		});
+		// 	});
+		// }
 	}
 
 	dischargeBillService() {
