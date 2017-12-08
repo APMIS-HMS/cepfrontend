@@ -118,8 +118,8 @@
                     <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
                 </md-input-container>
             </div>
-            <!-- 
-            <ng2-timezone-picker 
+            <!--
+            <ng2-timezone-picker
                 [timezone]="user.timezone"
                 (change)="changeTimezone($event)"
                 placeholder="Select timezone">
@@ -139,6 +139,13 @@
         </div>
     </div>
 
-    <div (click)="scheduleAppointment()" class="cta-1">{{btnText}}</div>
+    <div class="btn-box">
+        <button md-raised-button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" class="btn">
+          <span *ngIf="updateAppointment">Update Appointment</span>
+          <span *ngIf="saveAppointment">Schedule Appointment</span>
+          <span *ngIf="savingAppointment">Scheduling Appointment...<i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+        <!-- <button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" class="btn btn-primary">{{btnText}}</button> -->
+    </div>
 
 </div>
