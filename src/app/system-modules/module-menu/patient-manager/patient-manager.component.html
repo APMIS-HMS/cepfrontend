@@ -2,7 +2,7 @@
     <div class="facility-title">{{pageInView}}</div>
 
     <div class="fullwidth-topActions">
-        <ul *ngIf="!homeContentArea" class="moduleNav"> 
+        <ul *ngIf="!homeContentArea" class="moduleNav">
             <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
         </ul>
         <div class="searchInputWrap">
@@ -17,11 +17,11 @@
         <!-- <div (click)="newEmpShow()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Patient</div> -->
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12" style="text-align:right;">
         <span (click)="newEmpShow()" id="floating-button">
             <p class="plus">+</p>
         </span>
-        
+
         <span (click)="reset()">
             <i class="fa fa-times-circle" aria-hidden="true"></i>
             <span>Reset</span>

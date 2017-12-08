@@ -57,6 +57,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('also called');
     this._wardEventEmitter.setRouteUrl('Admission waiting list');
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.employeeDetails = this._locker.getObject('loginEmployee');
@@ -134,7 +135,9 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   }
 
   close_onClick() {
+    console.log('Called');
     this.admitPatient = false;
+    this.ngOnInit();
   }
 
   onClickDeclineTransfer(inpatientItem) {
