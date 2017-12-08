@@ -542,6 +542,11 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     scheduleAppointment() {
+      console.log(this.dateCtrl);
+      console.log(this.patient);
+      console.log(this.type);
+      console.log(this.category);
+      console.log(this.clinic);
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
             this.loadIndicatorVisible = true;
             const patient = this.patient.value;
@@ -706,10 +711,10 @@ export class ScheduleFrmComponent implements OnInit {
             }
         } else {
             console.log('error');
+
         }
-
-
     }
+
     getOthers(clinic: any) {
         this.schedules = [];
         if (clinic !== null) {
