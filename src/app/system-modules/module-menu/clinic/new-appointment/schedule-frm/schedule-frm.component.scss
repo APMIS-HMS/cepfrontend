@@ -3,37 +3,55 @@
     box-sizing: border-box;
     margin-bottom: 10px;
 }
-.frm-appointment{
+
+.btn-box {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.btn {
+    color: #fff;
+}
+
+.frm-appointment {
     display: flex;
     justify-content: space-between;
 }
-.sect-wrap{
+
+.sect-wrap {
     position: relative;
     width: 33%;
 }
+
 .sect-wrap .tr-act-btn {
     width: 180px;
     font-size: 12px;
 }
-.sect-wrap .tr-act-btn1{
+
+.sect-wrap .tr-act-btn1 {
     position: absolute;
     top: 92px;
 }
-.sect-wrap .tr-act-btn2{
+
+.sect-wrap .tr-act-btn2 {
     position: absolute;
     top: 160px;
 }
-.sect-wrap .tr-act-btn3{
+
+.sect-wrap .tr-act-btn3 {
     position: absolute;
     top: 226px;
 }
-.cta-1{
+
+.cta-1 {
     height: 35px;
     font-size: 14px;
 }
-.sect-wrap .frm-item-wrap{
+
+.sect-wrap .frm-item-wrap {
     width: 100%;
 }
+
 .mat-input-infix {
     border-top: 0em solid transparent !important;
 }
