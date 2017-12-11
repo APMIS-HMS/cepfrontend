@@ -18,11 +18,9 @@
                 <div class="wrapLabel">Don't have an account? <span [routerLink]="['/signup']" class="txtLink">Sign Up</span></div>
             </div>
         </div>
-
     </div>
     <div class="clear"></div>
 </div>
-
 <div *ngIf="login_on" class="modal-overlay">
     <app-login (closeModal)="close_onClick($event)" (pwordReset)="pwdReset_show($event)" id="form-modal" class="form-modal center-center"></app-login>
 </div>
