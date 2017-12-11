@@ -245,6 +245,7 @@ export class AddVitalsComponent implements OnInit {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
         this.saveBtnText = "Add Vitals";
+        this._notification('Success', 'Vitals saved successfully');
       })
 
       // this._ServerDateService.find({ query: {} }).then(datePayload => {
@@ -341,4 +342,12 @@ export class AddVitalsComponent implements OnInit {
   //     });
   //   }
   // }
+
+  private _notification(type: string, text: string): void {
+		this._facilityService.announceNotification({
+			users: [this.loginedUser._id],
+			type: type,
+			text: text
+		});
+	}
 }

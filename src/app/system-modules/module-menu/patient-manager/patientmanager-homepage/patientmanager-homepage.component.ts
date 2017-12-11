@@ -59,7 +59,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.patientService.createListener.subscribe(payload => {
       console.log(payload);
       this.getPatients();
-      this.toast.success(payload.personDetails.personFullName + ' created successfully!', 'Success!');
+      let msg = payload.personDetails.lastName +' '+ payload.personDetails.firstName + ' created successfully!';
+      this._notification('Success', msg);
+    }, error =>{
+    
     });
 
     const away = this.searchControl.valueChanges
