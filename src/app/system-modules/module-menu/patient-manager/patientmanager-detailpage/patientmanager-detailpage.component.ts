@@ -85,9 +85,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   timeVal: Date;
   routeId: any;
 
-
-
-
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
@@ -586,6 +583,5 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       });
     }
   }
-
 
 }

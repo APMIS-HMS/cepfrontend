@@ -3,12 +3,8 @@
 .userAcc-mainWrap{
     position: fixed;
     min-height:100vh;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url(../../../assets/images/bg/dna.jpg) no-repeat center center;
-    background-size:cover;
+    background: darken($primaryColor, 5%);
     width:100%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
 }
 .userAccs-pgHeader{
     text-align: center;
