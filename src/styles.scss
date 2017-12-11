@@ -1454,7 +1454,8 @@ ul.topmenuwrap li:hover {
 .welcome-wrap {
     background: lighten($primaryColor, 20%);
     color: #fff;
-    height: 90vh;
+    height: 100%;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
