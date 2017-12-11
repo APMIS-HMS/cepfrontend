@@ -115,7 +115,7 @@ export class RoomComponent implements OnInit {
 			if (res.data.length > 0) {
 				const rooms = res.data[0].locations.filter(x => x.minorLocationId._id === this.wardId);
 				this.wardDetail = rooms[0];
-				this.rooms = rooms[0].rooms;
+        this.rooms = rooms[0].rooms;
 			}
 		});
 	}
@@ -125,6 +125,7 @@ export class RoomComponent implements OnInit {
 	}
 
 	close_onClick() {
+    this.selectedRoom = undefined;
 		this.addRoom = false;
 	}
 

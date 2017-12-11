@@ -35,6 +35,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
   refKey: string;
   ePayment: boolean = false;
   ePaymentMethod: string = 'Flutterwave';
+  loading: boolean = true;
 
   wallets = [
     { value: 'cash', viewValue: 'Cash' },
@@ -57,6 +58,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
+        this.loading = false;
         if (value.length > 0) {
           const copiedTransactions = JSON.parse(
             JSON.stringify(this.person.wallet.transactions)
@@ -75,6 +77,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       });
 
     this.personService.get(this.patient.personId, {}).then(payload => {
+      this.loading = false;
       console.log(payload);
       if (payload.wallet === undefined) {
         payload.wallet = {
@@ -202,6 +205,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.personService
       .fundWallet(walletTransaction)
       .then((res: any) => {
+        this.loading = false;
         console.log(res);
         if (res.body.status === 'success') {
           this.ePayment = false;
