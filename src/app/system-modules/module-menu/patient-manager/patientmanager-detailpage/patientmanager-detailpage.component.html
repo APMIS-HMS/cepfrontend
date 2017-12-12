@@ -32,7 +32,7 @@
             </div>
 
             <ul class="topmenuwrap">
-                <li (click)="checkoutPatient_show()">
+                <li (click)="checkoutPatient_show()" *ngIf="checkedIn">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span>Checkout</span>
                 </li>
