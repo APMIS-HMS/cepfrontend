@@ -10,7 +10,7 @@ export interface WalletTransaction {
   description: string;
   destinationId?: string;
   destination: EntityType;
-  transactionStatus:string;
+  transactionStatus?:string;
   transactionDirection: TransactionDirection;
 }
 export enum TransactionType {
