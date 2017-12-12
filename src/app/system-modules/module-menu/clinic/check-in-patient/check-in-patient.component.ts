@@ -326,6 +326,8 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
           .then((payload) => {
+            this.locker.setObject('appointment', '');
+            this.locker.setObject('appointment', appointment);
             this.appointmentService.appointmentAnnounced(appointment);
           });
       } else {

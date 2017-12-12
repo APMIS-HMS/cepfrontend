@@ -46,6 +46,7 @@
     "feathers-socketio": "^1.4.2",
     "jquery": "^3.2.1",
     "localstorage-memory": "~1.0.2",
+    "lodash": "^4.17.4",
     "ng-pick-daterange": "^1.0.0",
     "ng-pick-datetime": "^4.3.2",
     "ng2-charts": "^1.6.0",

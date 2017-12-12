@@ -124,6 +124,21 @@ export class CheckoutPatientComponent implements OnInit {
 		} else {
 			this._notification('Error', 'Please select a ward for patient to be admitted into.');
 		}
+	} 
+
+	checkOutPatient(type){
+		//console.log(type);
+		if(type == "No Futher Appointment"){
+			console.log(type);
+			var checkoutData = {
+				type: 'NFA',
+				time: new Date(),
+				who: this.user._id
+			};
+			console.log(this.selectedAppointment);
+			
+			
+		}
 	}
 
 	private _CheckIfPatientIsAdmitted() {
