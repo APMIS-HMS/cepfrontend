@@ -163,6 +163,7 @@ export class AdmitPatientComponent implements OnInit {
 					delete this.inPatientItem.patientId.personDetails.nextOfKin;
 					delete this.inPatientItem.patientId.personDetails.genderId;
 					delete this.inPatientItem.patientId.personDetails.homeAddress;
+					delete this.inPatientItem.patientId.personDetails.wallet;
 
 					payload1.data[0].isAdmitted = true;
 					payload1.data[0].admittedDate = new Date();
