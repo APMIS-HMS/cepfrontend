@@ -1,7 +1,8 @@
 <div class="modal-baseWrap animated pulse">
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Add Room</legend>
+    <legend *ngIf="selectedRoom === undefined" class="modal_title">Add Room</legend>
+    <legend *ngIf="selectedRoom !== undefined" class="modal_title">Edit Room</legend>
     <!-- <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div> -->
     <div class="survery">
         <div class="row">
@@ -20,8 +21,7 @@
                         </div>
                         <div class="frm-item-wrap" style="margin-top: 30px;">
                             <md-select placeholder="Select Service" formControlName="service">
-                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" 
-                                [attr.serviceId]="service" [value]="service">{{service.name}}</md-option>
+                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.service.name}} &#x20A6;{{service.price}}</md-option>
                             </md-select>
                         </div>
                         <div class="btn-box">

@@ -83,6 +83,14 @@
         </thead>
 
         <tbody>
+            <tr *ngIf="transactions.length === 0 && !loading">
+                <td class="table-content " colspan="6" style="text-align: center "> No data available in table</td>
+            </tr>
+            <tr *ngIf="transactions.length === 0 && loading">
+                <td class="table-content " colspan="6" style="text-align: center ">
+                    <md-spinner class="small-spinner"></md-spinner>
+                </td>
+            </tr>
             <tr *ngFor="let tx of transactions; let i=index;">
                 <td>{{ i+1 }}</td>
                 <td>{{tx.createdAt | date:'short'}}</td>
@@ -93,7 +101,6 @@
                 <td><span>&#x20a6;</span>{{tx.ledgerBalance}}</td>
                 <td><span>&#x20a6;</span>{{tx.balance}}</td>
             </tr>
-
         </tbody>
     </table>
 </div>
