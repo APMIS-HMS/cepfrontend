@@ -83,7 +83,7 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onGenerateInvoice() {
-    this.isProcessing
+    this.isProcessing = true;
     const billGroup: Invoice = <Invoice>{ billingIds: [] };
     billGroup.facilityId = this.selectedFacility._id;
     billGroup.patientId = this.selectedPatient._id;
