@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
+var _ = require('lodash');
 
 import {
     FacilitiesService, SchedulerService, AppointmentService, PatientService, AppointmentTypeService, ProfessionService,
@@ -52,6 +53,16 @@ export class NewAppointmentComponent implements OnInit {
     selectedClinic: any = <any>{};
     dateRange: any;
     filteredStates:any;
+    sorter = {
+        // "sunday": 0, // << if sunday is first day of week
+        "monday": 1,
+        "tuesday": 2,
+        "wednesday": 3,
+        "thursday": 4,
+        "friday": 5,
+        "saturday": 6,
+        "sunday": 7
+    }
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
@@ -61,7 +72,7 @@ export class NewAppointmentComponent implements OnInit {
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private patientService: PatientService,
         private route: ActivatedRoute) {
 
-        route.params.subscribe(params => {
+        route.params.subscribe(params => { 
             console.log(params);
             if (params.id !== undefined) {
                 this.appointmentService.get(params.id, {}).subscribe(payload => {
@@ -78,9 +89,15 @@ export class NewAppointmentComponent implements OnInit {
             }
         });
 
-        this.appointmentService.schedulesAnnounced$.subscribe((payload: ScheduleRecordModel[]) => {
+        this.appointmentService.schedulesAnnounced$.subscribe((payload: any) => {
+            //this.schedules = payload;
+            var self = this;
+            payload.sort(function sortByDay(a, b) {
+                var day1 = a.day.toLowerCase();
+                var day2 = b.day.toLowerCase();
+                return self.sorter[day1] > self.sorter[day2];
+            });
             this.schedules = payload;
-            console.log(this.schedules)
         });
 
         this.appointmentService.patientAnnounced$.subscribe((payload: any) => {

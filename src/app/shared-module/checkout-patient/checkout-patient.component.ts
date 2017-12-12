@@ -124,7 +124,7 @@ export class CheckoutPatientComponent implements OnInit {
 		} else {
 			this._notification('Error', 'Please select a ward for patient to be admitted into.');
 		}
-	}
+	} 
 
 	private _CheckIfPatientIsAdmitted() {
 		this._inPatientListService.find({ query: {
