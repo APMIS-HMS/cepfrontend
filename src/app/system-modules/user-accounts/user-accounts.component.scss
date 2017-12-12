@@ -3,7 +3,8 @@
 .userAcc-mainWrap{
     position: fixed;
     min-height:100vh;
-    background: darken($primaryColor, 5%);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url(../../../assets/images/bg/hospital.jpg) no-repeat center center;
+    background-size:cover;
     width:100%;
 }
 .userAccs-pgHeader{
