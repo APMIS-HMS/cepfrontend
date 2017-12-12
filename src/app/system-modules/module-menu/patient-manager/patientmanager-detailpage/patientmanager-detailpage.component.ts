@@ -145,8 +145,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     }
     this.getForms();
 
-
-
     this.route.params.subscribe(payloadk => {
       if (payloadk['checkInId'] !== undefined) {
         let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
