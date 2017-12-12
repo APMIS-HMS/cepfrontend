@@ -25,14 +25,13 @@
                   <md-option value="Order Set">Order Set</md-option>
                 </md-select>
               </div>
-
               <div class="frm-item-wrap">
                 <md-input-container>
                   <input mdInput placeholder="Template Name" formControlName="name">
                 </md-input-container>
               </div>
 
-              <div class="frm-item-wrap">
+              <div *ngIf="isOrderSet" class="frm-item-wrap">
                 <md-select placeholder="Select Diagnosis" formControlName="diagnosis">
                   <md-option>Malaria</md-option>
                   <md-option>Yellow Fever</md-option>
