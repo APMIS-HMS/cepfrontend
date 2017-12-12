@@ -3,7 +3,7 @@
 
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <div class="facility-title">Make Payment</div>
-  <div class="total"><span>&#x20a6;</span> 20,000</div>
+  <div class="total">{{cost| currency:'NGN':true:'1.2-2'}}</div>
   <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
   <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
     <i class="fa fa-check" aria-hidden="true"></i>
@@ -12,21 +12,32 @@
   <div class="pay-wrap">
     <div class="frm-item-wrap">
       <md-select [formControl]="channel" placeholder="Payment Channel">
-        <md-option>Wallet</md-option>
-        <md-option>Cash</md-option>
-        <md-option>Transfer</md-option>
-        <md-option>Card</md-option>
+        <md-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</md-option>
       </md-select>
     </div>
 
-    <div class="frm-item-wrap">
+    <div class="frm-item-wrap" [hidden]="!isCash">
       <md-input-container>
           <input mdInput md-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
       </md-input-container>
     </div>
 
-    <button class="cta-1">
-      Make Payment
-    </button>
+    <div class="frm-item-wrap" [hidden]="!isCash">
+        <md-input-container>
+            <input mdInput md-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
+        </md-input-container>
+      </div>
+
+    <button md-raised-btn class="btn btn-primary" [disabled]="disableBtn" (click)="makePayment()">
+        <span>
+            <div [hidden]="isProcessing">
+                Make Payment
+            </div>
+            <div [hidden]="!isProcessing">
+                Processing...
+                <i class='fa fa-spinner fa-spin'></i>
+            </div>
+        </span>
+      </button>
   </div>
 </div>
