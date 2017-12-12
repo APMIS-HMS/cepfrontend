@@ -126,6 +126,21 @@ export class CheckoutPatientComponent implements OnInit {
 		}
 	} 
 
+	checkOutPatient(type){
+		//console.log(type);
+		if(type == "No Futher Appointment"){
+			console.log(type);
+			var checkoutData = {
+				type: 'NFA',
+				time: new Date(),
+				who: this.user._id
+			};
+			console.log(this.selectedAppointment);
+			
+			
+		}
+	}
+
 	private _CheckIfPatientIsAdmitted() {
 		this._inPatientListService.find({ query: {
 			'facilityId._id': this.facility._id,
