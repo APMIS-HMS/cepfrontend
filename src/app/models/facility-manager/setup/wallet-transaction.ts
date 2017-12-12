@@ -10,12 +10,17 @@ export interface WalletTransaction {
   description: string;
   destinationId?: string;
   destination: EntityType;
+  transactionStatus?:string;
   transactionDirection: TransactionDirection;
 }
 export enum TransactionType {
     Dr,
     Cr
 }
+export const TransactionStatus = {
+    'Incomplete': 'Incomplete',
+    'Complete': 'Incomplete'
+};
 export enum EntityType {
     Facility,
     Person,
@@ -35,3 +40,5 @@ export enum TransactionDirection {
     ThirdPartyToPerson,
     ThirdPartyToFacility
 }
+
+
