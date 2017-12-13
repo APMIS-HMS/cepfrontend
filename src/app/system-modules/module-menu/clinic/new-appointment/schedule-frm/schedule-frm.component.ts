@@ -707,6 +707,7 @@ export class ScheduleFrmComponent implements OnInit {
 
                             })
                     } else {
+                        console.log(payload);
                         this.disableBtn = true;
                         this.updateAppointment = false;
                         this.saveAppointment = true;

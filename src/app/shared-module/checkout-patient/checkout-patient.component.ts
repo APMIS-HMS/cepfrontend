@@ -1,8 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, Input, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import {
 	FacilitiesService, InPatientListService, InPatientService, AppointmentService
 } from './../../services/facility-manager/setup/index';
@@ -38,12 +37,8 @@ export class CheckoutPatientComponent implements OnInit {
 		private facilityService: FacilitiesService,
 		private _inPatientListService: InPatientListService,
 		private _inpatientService: InPatientService,
-		private _appointmentService: AppointmentService,
-		private toastr: ToastsManager,
-		private vcr: ViewContainerRef
-	) { 
-		this.toastr.setRootViewContainerRef(vcr);
-	}
+		private _appointmentService: AppointmentService
+	) { }
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
@@ -142,9 +137,14 @@ export class CheckoutPatientComponent implements OnInit {
 				person: this.user.data.person
 			};
 
+		}else if(type == "Follow-Up With Appointment"){
+			checkoutData = {
+				type: 'FUWA',
+				checkedOutTime: new Date(),
+				person: this.user.data.person
+			}
+			console.log(checkoutData);
 		}
-
-		console.log(this.selectedAppointment);
 		
 		this._appointmentService.find({ query: {
 			'_id': this.selectedAppointment._id
@@ -157,7 +157,10 @@ export class CheckoutPatientComponent implements OnInit {
 				console.log(updateData);
 				this._appointmentService.update(updateData).then((updateRes) => {
 					console.log(updateRes);
-					this.toastr.success('Patient Has Successfully Been Checked Out ', 'Success!');
+					this._notification('Patient Has Successfully Been Checked Out ', 'Success!');
+					if(checkoutData.type == "FUWA"){
+						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id, "checkedOut: true"]);
+					}
 				});
 			}
 		});
