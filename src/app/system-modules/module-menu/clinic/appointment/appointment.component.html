@@ -126,7 +126,7 @@
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
+                    <div>{{appointment.doctorId?.employeeDetails.firstName}} {{appointment.doctorId?.employeeDetails.lastName}}</div>
                 </div>
             </td>
             <td *ngIf="appointment.orderStatusId !== undefined">{{appointment?.orderStatusId?.name}}</td>

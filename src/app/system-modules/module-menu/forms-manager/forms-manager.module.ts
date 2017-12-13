@@ -1,3 +1,4 @@
+import { SharedService } from 'app/shared-module/shared.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +37,7 @@ import { TemplatePhysicianOrderComponent } from './treatement-template/template-
         formsManagerRoutes
     ],
     providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService,
-        ScopeLevelResolverService, FormTypeResolverService, FormsService]
+        ScopeLevelResolverService, FormTypeResolverService, FormsService, SharedService]
 })
 export class FormsManagerModule { }
 

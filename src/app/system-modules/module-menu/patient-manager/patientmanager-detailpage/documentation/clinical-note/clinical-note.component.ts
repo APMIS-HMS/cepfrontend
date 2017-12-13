@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -19,7 +19,8 @@ export class ClinicalNoteComponent implements OnInit {
   @Input() patient;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() showOrderset: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @ViewChild('surveyjs') surveyjs:any;
+  
   json: any
   selectFormCtrl: FormControl;
   filteredStates: any;
@@ -85,6 +86,9 @@ export class ClinicalNoteComponent implements OnInit {
     this.json = form.body;
     this.sharedService.announceNewForm({ json: this.json, form: this.selectedForm });
     this.showDocument = true;
+    if(this.surveyjs !== undefined){
+      this.surveyjs.ngOnInit();
+    }
   }
   close_onClick() {
     this.closeModal.emit(true);

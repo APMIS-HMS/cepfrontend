@@ -81,11 +81,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   getGender() {
     this.genderService.findAll().subscribe(payload => {
       this.genders = payload.data;
+    },error =>{
+      this.getGender();
     })
   }
   getRelationships() {
     this.relationshipService.findAll().subscribe(payload => {
       this.relationships = payload.data;
+    }, error =>{
+      this.getRelationships();
     })
   }
   setAppointment(patient) {
@@ -392,7 +396,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this._titleService.findAll()
       .then(res => {
         this.titles = res.data;
-      }).catch(err => console.log(err));
+      }).catch(err =>{
+        console.log(err)
+        this._getAllTitles();
+      });
   }
 
   // Notification

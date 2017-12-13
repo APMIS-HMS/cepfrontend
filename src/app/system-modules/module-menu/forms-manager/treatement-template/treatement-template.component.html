@@ -40,12 +40,7 @@
 
               <div class="frm-item-wrap">
                 <md-select placeholder="Set Visibility" formControlName="visibility">
-                  <md-option>Personal</md-option>
-                  <md-option>Unit</md-option>
-                  <md-option>Department</md-option>
-                  <md-option>Facility</md-option>
-                  <md-option>Network</md-option>
-                  <md-option>Global</md-option>
+                  <md-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</md-option>
                 </md-select>
               </div>
 
@@ -57,13 +52,14 @@
             <div *ngIf="isDocumentation" class="template-sect animated fadeIn">
               <div class="frm-item-wrap">
                 <md-select placeholder="Select Form" formControlName="docFrmList">
-                  <md-option>Malaria</md-option>
-                  <md-option>Yellow Fever</md-option>
+                  <md-option *ngFor="let item of forms" [value]="item">{{item.title}}</md-option>
                 </md-select>
               </div>
 
               <div class="docFrmArea">
-                <div style="width:100%;text-align:center;color:#777;padding:5px;font-size:10px;"> Load frm here</div>
+                <div class="jsonFrnWrap" *ngIf="showDocument">
+                  <survey  #surveyjs [isTemplate]="isTemplate" [json]="json"></survey>
+                </div>
               </div>
             </div>
 
