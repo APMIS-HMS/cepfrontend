@@ -121,8 +121,18 @@ export class BillLookupComponent implements OnInit {
       this.reCalculateBillTotal();
     });
 
+    this.billingService.updatelistner.subscribe(payload => {
+      this.getPatientBills();
+      this.selectedPatient = this.listedBillItems[0].patientItem;
+      console.log(this.listedBillItems);
+    });
+
     this._getAllPendingBills();
     this._getAllInvoices();
+  }
+
+  onPersonValueUpdated(person) {
+    this.selectedPatient.personDetails = person;
   }
 
 
@@ -139,6 +149,7 @@ export class BillLookupComponent implements OnInit {
 
     }
   }
+
   onGenerateInvoice() {
     this.isProcessing = true;
     const billGroup: Invoice = <Invoice>{ billingIds: [] };
@@ -174,7 +185,7 @@ export class BillLookupComponent implements OnInit {
                 console.log(filterCheckedBills);
                 console.log("This is verify");
                 if (x == 0) {
-                  let len4 = filterCheckedBills.length -1;
+                  let len4 = filterCheckedBills.length - 1;
                   for (var x4 = len4; x4 >= 0; x4--) {
                     this.billingService.update(filterCheckedBills[x4]).then(pd => {
                       console.log(pd);
@@ -187,10 +198,11 @@ export class BillLookupComponent implements OnInit {
         }
         this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
       }, error => {
-          console.log(error);
-        });
+        console.log(error);
+      });
     }
   }
+
   fixedGroup(bill: BillModel) {
     console.log(1);
     const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
@@ -233,6 +245,7 @@ export class BillLookupComponent implements OnInit {
       console.log(6);
     }
   }
+
   fixedGroupExisting(bill: BillItem) {
     const inBill: BillModel = <BillModel>{};
     inBill.amount = bill.totalPrice;
@@ -303,7 +316,7 @@ export class BillLookupComponent implements OnInit {
         payload.data.forEach((itemi, i) => {
           this.masterBillGroups.push(itemi);
           itemi.billItems.forEach((itemj, j) => {
-            if(itemj.isInvoiceGenerated == false || itemj.isInvoiceGenerated == undefined){
+            if (itemj.isInvoiceGenerated == false || itemj.isInvoiceGenerated == undefined) {
               this.fixedGroupExisting(itemj);
             }
           });

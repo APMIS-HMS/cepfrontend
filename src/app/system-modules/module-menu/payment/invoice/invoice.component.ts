@@ -59,6 +59,7 @@ export class InvoiceComponent implements OnInit {
         });
     }
     getPatientInvoices() {
+        console.log("Load invoices");
         this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id } })
             .then(payload => {
                 this.invoiceGroups = payload.data;

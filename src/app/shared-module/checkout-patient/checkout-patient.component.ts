@@ -19,7 +19,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	facility: Facility = <Facility>{};
 	miniFacility: Facility = <Facility>{};
-	user: User = <User>{};
+	user: any = <User>{};
 	employeeDetails: any = <any>{};
 	employeeId: String = '';
 	ward_checkout: Boolean = false;
@@ -44,7 +44,7 @@ export class CheckoutPatientComponent implements OnInit {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.miniFacility = <Facility>this._locker.getObject('miniFacility');
 		this.employeeDetails = this._locker.getObject('loginEmployee');
-		this.user = <User>this._locker.getObject('auth');
+		this.user = <any>this._locker.getObject('auth');
 
 		this.admittedWard.isAdmitted = false;
 
@@ -128,17 +128,43 @@ export class CheckoutPatientComponent implements OnInit {
 
 	checkOutPatient(type){
 		//console.log(type);
+		var checkoutData;
 		if(type == "No Futher Appointment"){
-			console.log(type);
-			var checkoutData = {
+
+			checkoutData = {
 				type: 'NFA',
-				time: new Date(),
-				who: this.user._id
+				checkOutTime: new Date(),
+				person: this.user.data.person
 			};
-			console.log(this.selectedAppointment);
 
-
+		}else if(type == "Follow-Up With Appointment"){
+			checkoutData = {
+				type: 'FUWA',
+				checkedOutTime: new Date(),
+				person: this.user.data.person
+			}
+			console.log(checkoutData);
 		}
+		
+		this._appointmentService.find({ query: {
+			'_id': this.selectedAppointment._id
+		}}).then(clinicRes => {
+			console.log(clinicRes);
+			if (clinicRes.data.length > 0) {
+				let updateData = clinicRes.data[0];
+				updateData.isCheckedOut = true;
+				updateData.checkedOut = checkoutData;
+				console.log(updateData);
+				this._appointmentService.update(updateData).then((updateRes) => {
+					console.log(updateRes);
+					this._notification('Patient Has Successfully Been Checked Out ', 'Success!');
+					if(checkoutData.type == "FUWA"){
+						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id], { queryParams: { checkedOut: true } });
+					}
+				});
+			}
+		});
+
 	}
 
 	private _CheckIfPatientIsAdmitted() {

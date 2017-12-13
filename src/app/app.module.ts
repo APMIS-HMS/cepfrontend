@@ -90,7 +90,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService
   ],
   bootstrap: [AppComponent]
 })

@@ -119,9 +119,8 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
 
     // });
 
-
-
   }
+
   getAppointments() {
     this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, $limit: 200 } })
       .then(payload => {
@@ -130,6 +129,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
         console.log(this.checkedInAppointments);
       });
   }
+
   getClinics() {
     this.clinics = [];
     this.selectedFacility.departments.forEach((itemi, i) => {
@@ -171,6 +171,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   close_onClick(e) {
     this.addVital = false;
   }
+
   sortPatientsByName() {
     this.checkedInAppointments.sort(function (x: any, y: any) {
       const xLastName = x.patientDetails.personDetails.lastName.toLowerCase();
@@ -184,6 +185,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       return 0;
     });
   }
+
   getCheckedInPatients() {
     this.appointmentService.find({ query: { facilityId: this.selectedFacility._id, attendance: { $exists: true } } })
       .then(payload => {
@@ -194,6 +196,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   getProfessions() {
     this.professionService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
@@ -201,6 +204,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       });
     });
   }
+  
   getEmployees() {
     this.employees = [];
     if (this.isDoctor) {

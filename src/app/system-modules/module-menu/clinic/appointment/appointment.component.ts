@@ -97,7 +97,7 @@ export class AppointmentComponent implements OnInit {
 
     getClinics() {
         this.clinics = [];
-        const clinicIds = [];
+        const clinicIds = []; 
 
         this.selectedFacility.departments.forEach((itemi, i) => {
             itemi.units.forEach((itemj, j) => {
@@ -148,7 +148,7 @@ export class AppointmentComponent implements OnInit {
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
-            console.log(payload.data);
+            console.log(payload.data, this.filteredAppointments);
         });
     }
 
