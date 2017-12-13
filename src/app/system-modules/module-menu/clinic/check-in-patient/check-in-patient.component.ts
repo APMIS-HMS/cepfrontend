@@ -122,7 +122,21 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
 
   getAppointments() {
-    this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, $limit: 200 } })
+    this.appointmentService.find({
+      query: {
+        'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, isCheckedOut: false,
+        $select: {
+          'facilityId': 0, 'attendance.employeeId': 0, 'appointmentTypeId': 0,
+          'category': 0, 'clinicInteractions': 0, 'encounters': 0, 'patientId.clientsNo': 0,
+          ' patientId.personDetails.gender': 0, 'patientId.personDetails.title': 0,
+          'patientId.personDetails.age': 0, 'patientId.personDetails.apmisId': 0,
+          'patientId.personDetails.dateOfBirth': 0, 'patientId.personDetails.genderId': 0,
+          'patientId.personDetails.email': 0, 'patientId.personDetails.firstName': 0,
+          'patientId.personDetails.lastName': 0, 'patientId.timeLines': 0,
+          'attendance.createdAt': 0, 'attendance.updateddAt': 0
+        },
+      }
+    })
       .then(payload => {
         this.loading = false;
         this.checkedInAppointments = payload.data;
@@ -204,7 +218,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       });
     });
   }
-  
+
   getEmployees() {
     this.employees = [];
     if (this.isDoctor) {

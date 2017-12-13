@@ -8,6 +8,7 @@ import { Facility, Patient, Employee, Documentation, PatientDocumentation, Docum
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { SharedService } from '../../../../../../shared-module/shared.service';
+import { DocumentationTemplateService } from 'app/services/facility-manager/setup/documentation-template.service';
 
 
 @Component({
@@ -44,7 +45,7 @@ export class ClinicalNoteComponent implements OnInit {
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
-    private facilityService: FacilitiesService) {
+    private facilityService: FacilitiesService, private documentationTemplateService:DocumentationTemplateService) {
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
@@ -89,6 +90,9 @@ export class ClinicalNoteComponent implements OnInit {
     if(this.surveyjs !== undefined){
       this.surveyjs.ngOnInit();
     }
+    this.documentationTemplateService.find({query:{
+      
+    }})
   }
   close_onClick() {
     this.closeModal.emit(true);

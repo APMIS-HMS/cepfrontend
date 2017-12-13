@@ -1,3 +1,4 @@
+import { DocumentationTemplateService } from './../../../../services/facility-manager/setup/documentation-template.service';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ScopeLevelService, FormTypeService } from 'app/services/module-manager/setup';
@@ -14,7 +15,7 @@ import { SharedService } from 'app/shared-module/shared.service';
 })
 export class TreatementTemplateComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
-  @ViewChild('surveyjs') surveyjs:any;
+  @ViewChild('surveyjs') surveyjs: any;
   public frmnewTemplate: FormGroup;
   newTemplate = false;
 
@@ -41,22 +42,28 @@ export class TreatementTemplateComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private scopeLevelService: ScopeLevelService,
     private formTypeService: FormTypeService, private formService: FormsService, private locker: CoolLocalStorage,
-    private sharedService: SharedService
+    private sharedService: SharedService, private documentationTemplateService: DocumentationTemplateService
   ) {
     this.sharedService.submitForm$.subscribe(payload => {
-      
+
       let isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
       let isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
       let isNameValid = this.frmnewTemplate.controls.name.valid;
-      if(isVisibilityValid && isFormValid && isNameValid){
+      if (isVisibilityValid && isFormValid && isNameValid) {
         let doc = {
           data: payload,
-          isEditable:this.frmnewTemplate.controls.isEditable.value,
-          name:this.frmnewTemplate.controls.name.value,
-          visibility:this.frmnewTemplate.controls.visibility.value,
-          form:this.frmnewTemplate.controls.docFrmList.value._id
+          isEditable: this.frmnewTemplate.controls.isEditable.value,
+          name: this.frmnewTemplate.controls.name.value,
+          visibility: this.frmnewTemplate.controls.visibility.value,
+          form: this.frmnewTemplate.controls.docFrmList.value._id
         }
-      }else{
+        this.documentationTemplateService.create(doc).then(payload =>{
+          console.log(payload);
+          this.frmnewTemplate.reset();
+        }).catch(err =>{
+          console.log(err);
+        })
+      } else {
         console.log('invalid')
         this.frmnewTemplate.controls.visibility.markAsTouched();
         this.frmnewTemplate.controls.visibility.markAsDirty();
@@ -144,7 +151,7 @@ export class TreatementTemplateComponent implements OnInit {
     this.json = form.body;
     this.sharedService.announceNewForm({ json: this.json, form: this.selectedForm });
     this.showDocument = true;
-    if(this.surveyjs !== undefined){
+    if (this.surveyjs !== undefined) {
       this.surveyjs.ngOnInit();
     }
   }

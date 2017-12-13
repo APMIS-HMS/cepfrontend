@@ -1,3 +1,4 @@
+import { DocumentationTemplateService } from './../../../services/facility-manager/setup/documentation-template.service';
 import { SharedService } from 'app/shared-module/shared.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -37,7 +38,7 @@ import { TemplatePhysicianOrderComponent } from './treatement-template/template-
         formsManagerRoutes
     ],
     providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService,
-        ScopeLevelResolverService, FormTypeResolverService, FormsService, SharedService]
+        ScopeLevelResolverService, FormTypeResolverService, FormsService, SharedService, DocumentationTemplateService]
 })
 export class FormsManagerModule { }
 
