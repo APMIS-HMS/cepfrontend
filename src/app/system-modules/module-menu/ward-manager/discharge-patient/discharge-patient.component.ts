@@ -68,8 +68,6 @@ export class DischargePatientComponent implements OnInit {
   }
 
   onDischarge(value: any, valid: boolean) {
-    console.log(valid);
-    console.log(value);
     if (valid) {
       this.disableBtn = true;
       this.dischargeText = false;
@@ -82,19 +80,18 @@ export class DischargePatientComponent implements OnInit {
       };
 
       this._inPatientService.discharge(payload).then(res => {
-          console.log(res);
-          if (res.status === 'success') {
-            this._notification('Success', 'Patient has been discharged successfully.');
-            setTimeout(e => {
-              this._router.navigate(['/dashboard/ward-manager/admitted']);
-            }, 2000);
-          } else {
-            this._notification('Error', 'There was a problem discharging patient. Please try again later.');
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        console.log(res);
+        if (res.status === 'success') {
+          this._notification('Success', 'Patient has been discharged successfully.');
+          setTimeout(e => {
+            this._router.navigate(['/dashboard/ward-manager/admitted']);
+          }, 2000);
+        } else {
+          this._notification('Error', 'There was a problem discharging patient. Please try again later.');
+        }
+      }).catch(err => {
+        console.log(err);
+      });
 
       // this._inPatientService.get(this.inPatientId, {}).then(payload => {
       // 	const inPatientVal = payload;

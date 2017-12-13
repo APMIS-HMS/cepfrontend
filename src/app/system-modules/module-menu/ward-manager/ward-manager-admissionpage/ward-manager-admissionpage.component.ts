@@ -212,16 +212,15 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   }
 
   getDischargeList(checkedInWard: any) {
-    this._inPatientService
-      .find({
+    this._inPatientService.find({
         query: {
           'facilityId._id': this.facility._id,
           statusId: myGlobals.discharge
         }
-      })
-      .then(payload => {
+      }).then(res => {
+        console.log(res);
         this.dischargeLoading = false;
-        this.listPatientDischarge = payload.data;
+        this.listPatientDischarge = res.data;
       });
   }
 

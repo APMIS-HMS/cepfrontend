@@ -193,9 +193,13 @@ export class AdmitPatientComponent implements OnInit {
 								occupant: this.inPatientItem.patientId,
 								bed: value.bed,
 								room: value.room
-							}
-							this.updateWardAdissionService(msgObj);
-              this.close_onClick();
+              }
+              this.admitBtnText = 'Navigating... <i class="fa fa-spinner fa-spin"></i>';
+              this.updateWardAdissionService(msgObj);
+              setTimeout(e => {
+                this.close_onClick();
+                this.router.navigate(['/dashboard/ward-manager/admitted']);
+              }, 2000);
 						});
 					});
 				});
