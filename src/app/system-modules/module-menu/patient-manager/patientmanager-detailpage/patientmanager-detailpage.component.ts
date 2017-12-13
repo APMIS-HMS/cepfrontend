@@ -13,7 +13,6 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-patientmanager-detailpage',
   templateUrl: './patientmanager-detailpage.component.html',
