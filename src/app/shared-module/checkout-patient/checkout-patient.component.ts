@@ -1,7 +1,8 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import {
 	FacilitiesService, InPatientListService, InPatientService, AppointmentService
 } from './../../services/facility-manager/setup/index';
@@ -19,7 +20,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	facility: Facility = <Facility>{};
 	miniFacility: Facility = <Facility>{};
-	user: User = <User>{};
+	user: any = <User>{};
 	employeeDetails: any = <any>{};
 	employeeId: String = '';
 	ward_checkout: Boolean = false;
@@ -37,14 +38,18 @@ export class CheckoutPatientComponent implements OnInit {
 		private facilityService: FacilitiesService,
 		private _inPatientListService: InPatientListService,
 		private _inpatientService: InPatientService,
-		private _appointmentService: AppointmentService
-	) { }
+		private _appointmentService: AppointmentService,
+		private toastr: ToastsManager,
+		private vcr: ViewContainerRef
+	) { 
+		this.toastr.setRootViewContainerRef(vcr);
+	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.miniFacility = <Facility>this._locker.getObject('miniFacility');
 		this.employeeDetails = this._locker.getObject('loginEmployee');
-		this.user = <User>this._locker.getObject('auth');
+		this.user = <any>this._locker.getObject('auth');
 
 		this.admittedWard.isAdmitted = false;
 
@@ -128,17 +133,35 @@ export class CheckoutPatientComponent implements OnInit {
 
 	checkOutPatient(type){
 		//console.log(type);
+		var checkoutData;
 		if(type == "No Futher Appointment"){
-			console.log(type);
-			var checkoutData = {
+
+			checkoutData = {
 				type: 'NFA',
-				time: new Date(),
-				who: this.user._id
+				checkOutTime: new Date(),
+				person: this.user.data.person
 			};
-			console.log(this.selectedAppointment);
-			
 			
 		}
+
+		console.log(this.selectedAppointment);
+		
+		this._appointmentService.find({ query: {
+			'_id': this.selectedAppointment._id
+		}}).then(clinicRes => {
+			console.log(clinicRes);
+			if (clinicRes.data.length > 0) {
+				let updateData = clinicRes.data[0];
+				updateData.isCheckedOut = true;
+				updateData.checkedOut = checkoutData;
+				console.log(updateData);
+				this._appointmentService.update(updateData).then((updateRes) => {
+					console.log(updateRes);
+					this.toastr.success('Patient Has Successfully Been Checked Out ', 'Success!');
+				});
+			}
+		});
+
 	}
 
 	private _CheckIfPatientIsAdmitted() {
