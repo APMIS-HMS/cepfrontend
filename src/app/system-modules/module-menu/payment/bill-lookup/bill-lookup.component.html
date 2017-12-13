@@ -364,7 +364,7 @@
 </div>
 
 <div *ngIf="makePayment" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems" [cost]="total" [subTotal]="subTotal" [discount]="discount" id="form-modal" class="form-modal center-center"></app-make-payment>
+    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems" [cost]="total" [subTotal]="subTotal" [discount]="discount" id="form-modal" class="form-modal center-center"></app-make-payment>
 </div>
 
 <div *ngIf="addModefierPopup" class="modal-overlay">

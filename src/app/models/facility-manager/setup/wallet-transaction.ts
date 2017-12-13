@@ -19,7 +19,7 @@ export enum TransactionType {
 }
 export const TransactionStatus = {
     'Incomplete': 'Incomplete',
-    'Complete': 'Incomplete'
+    'Complete': 'Complete'
 };
 export enum EntityType {
     Facility,
