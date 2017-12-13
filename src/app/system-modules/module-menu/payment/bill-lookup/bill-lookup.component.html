@@ -23,7 +23,8 @@
                                     <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.personFullName }}</div>
                                     <div class="oda">
                                         <div class="pending-date">{{ pendingBill?.updatedAt | date }}</div>
-                                        <div class="pending-amount"><span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
+                                        <div class="pending-amount">
+                                            <span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
                                     </div>
                                 </div>
                             </li>
@@ -60,7 +61,8 @@
                                     <div class="pending-name">Johnson Wade</div>
                                     <div class="oda">
                                         <div class="pending-date">11th October, 2017. 1200am</div>
-                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                        <div class="pending-amount">
+                                            <span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
                             </li>
@@ -73,7 +75,8 @@
                                     <div class="pending-name">Johnson Wade</div>
                                     <div class="oda">
                                         <div class="pending-date">11th October, 2017. 1200am</div>
-                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                        <div class="pending-amount">
+                                            <span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
                             </li>
@@ -86,7 +89,8 @@
                                     <div class="pending-name">Johnson Wade</div>
                                     <div class="oda">
                                         <div class="pending-date">11th October, 2017. 1200am</div>
-                                        <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                                        <div class="pending-amount">
+                                            <span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
                             </li>
@@ -100,8 +104,14 @@
                     <div class="topsecInnerWrap">
                         <div>
                             <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
+                            <div class="clientName">
+                                <span class="{{ selectedPatient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
+                                    &#8358; {{selectedPatient?.personDetails?.wallet?.balance}}
+                                </span>
+                            </div>
                             <div class="clientAddress">
-                                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}}, {{selectedPatient?.country}}
+                                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}},
+                                    {{selectedPatient?.country}}
                                 </div>
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
@@ -134,7 +144,9 @@
 
                             <tbody *ngFor="let group of billGroups">
                                 <tr class="tdMasterCategories">
-                                    <td colspan="1"><input type="checkbox" (change)="checkGroup($event,group)" [checked]="group.isChecked" [formControl]="select1"></td>
+                                    <td colspan="1">
+                                        <input type="checkbox" (change)="checkGroup($event,group)" [checked]="group.isChecked" [formControl]="select1">
+                                    </td>
                                     <td (click)="toggleCurrentCategory(group)" colspan="5">{{group.category}}</td>
                                     <td (click)="toggleCurrentCategory(group)" colspan="1" class="data">{{group.total | currency:'NGN':true:'4.2-2'}}</td>
                                 </tr>
@@ -148,17 +160,20 @@
                                             <div class="itemName">{{bill.itemName}}</div>
                                         </td>
                                         <td>
-                                            <div class="topTotal"><span>&#8358;</span> {{bill.unitPrice | number:'1.2-2'}}</div>
+                                            <div class="topTotal">
+                                                <span>&#8358;</span> {{bill.unitPrice | number:'1.2-2'}}</div>
                                         </td>
                                         <td>
                                             <span [hidden]="isCurrentBill(bill, group)"> {{bill.qty}}</span>
                                             <input *ngIf="isCurrentBill(bill, group)" min="0" class="edit-control" type="number" [value]="bill.qty" [formControl]="itemQtyEdit">
                                         </td>
                                         <td>
-                                            <div class="topTotal"><span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
+                                            <div class="topTotal">
+                                                <span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
                                         </td>
                                         <td>
-                                            <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o"
+                                                aria-hidden="true"></i>
                                             <i *ngIf="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-check" aria-hidden="true"></i>
                                             <i (click)="onRemoveBill(bill,group)" class="fa fa-trash" aria-hidden="true"></i>
                                             <div (click)="lineModifier_show(bill)" class="cta-1 btn-addItem">
@@ -188,7 +203,8 @@
                                 <tr class="summaryItem">
                                     <td class="label">Discount</td>
                                     <td class="data"> {{discount | currency:'NGN':true:'1.2-2'}}</td>
-                                    <td class="remove-link"><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
+                                    <td class="remove-link">
+                                        <i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</td>
                                 </tr>
                             </div>
                             <tr class="grandTotalWrap">
@@ -200,7 +216,17 @@
                     </div>
                     <div class="generateInvoiceWrap">
                         <button md-raised-button class="mat-lg-btn" (click)="makePayment_onclick()" style="background-color: green !important; padding: 15px 30px !important;">Make Payment</button>
-                        <button md-raised-button class="mat-lg-btn" style="padding: 15px 30px !important;">Generate Bill</button>
+                        <button md-raised-button class="mat-lg-btn" [disabled]="isProcessing" (click)="onGenerateInvoice()" style="padding: 15px 30px !important;">
+                            <span>
+                                <div [hidden]="isProcessing">
+                                    Generate Bill
+                                </div>
+                                <div [hidden]="!isProcessing">
+                                    Processing...
+                                    <i class='fa fa-spinner fa-spin'></i>
+                                </div>
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -338,7 +364,7 @@
 </div>
 
 <div *ngIf="makePayment" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-make-payment>
+    <app-make-payment (closeModal)="close_onClick($event)" [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems" [cost]="total" [subTotal]="subTotal" [discount]="discount" id="form-modal" class="form-modal center-center"></app-make-payment>
 </div>
 
 <div *ngIf="addModefierPopup" class="modal-overlay">

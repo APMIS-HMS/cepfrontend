@@ -64,9 +64,9 @@
                         </td>
                         <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
                             <div>
-                                <b>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.name}}</b><br>
-                                <small><b>Room: </b>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.roomId.name}}, </small><br>
-                                <small><b>Bed: </b>{{admittedPatientItem?.transfers[admittedPatientItem.lastIndex]?.bedId.name}} </small>
+                                <b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.name}}</b><br>
+                                <small><b>Room: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.roomId.name}}, </small><br>
+                                <small><b>Bed: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.bedId.name}} </small>
                             </div>
                         </td>
                         <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
