@@ -55,6 +55,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     // FormsModule,
     Routing,
     // ReactiveFormsModule,
@@ -86,9 +87,10 @@ import { MaterialModule } from './shared-common-modules/material-module';
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
-    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService, SetupService.ServerDateService,
-    SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService, SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService,SetupService.SmsAlertService,
+    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
+    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
+    SetupService.TemplateService, PolicyService, PayStackService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,
   ],
   bootstrap: [AppComponent]
 })

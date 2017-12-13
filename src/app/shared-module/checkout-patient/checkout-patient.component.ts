@@ -19,7 +19,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	facility: Facility = <Facility>{};
 	miniFacility: Facility = <Facility>{};
-	user: User = <User>{};
+	user: any = <User>{};
 	employeeDetails: any = <any>{};
 	employeeId: String = '';
 	ward_checkout: Boolean = false;
@@ -44,7 +44,7 @@ export class CheckoutPatientComponent implements OnInit {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.miniFacility = <Facility>this._locker.getObject('miniFacility');
 		this.employeeDetails = this._locker.getObject('loginEmployee');
-		this.user = <User>this._locker.getObject('auth');
+		this.user = <any>this._locker.getObject('auth');
 
 		this.admittedWard.isAdmitted = false;
 
@@ -126,18 +126,61 @@ export class CheckoutPatientComponent implements OnInit {
 		}
 	}
 
+	checkOutPatient(type){
+		//console.log(type);
+		var checkoutData;
+		if(type == "No Futher Appointment"){
+
+			checkoutData = {
+				type: 'NFA',
+				checkOutTime: new Date(),
+				person: this.user.data.person
+			};
+
+		}else if(type == "Follow-Up With Appointment"){
+			checkoutData = {
+				type: 'FUWA',
+				checkedOutTime: new Date(),
+				person: this.user.data.person
+			}
+			console.log(checkoutData);
+		}
+		
+		this._appointmentService.find({ query: {
+			'_id': this.selectedAppointment._id
+		}}).then(clinicRes => {
+			console.log(clinicRes);
+			if (clinicRes.data.length > 0) {
+				let updateData = clinicRes.data[0];
+				updateData.isCheckedOut = true;
+				updateData.checkedOut = checkoutData;
+				console.log(updateData);
+				this._appointmentService.update(updateData).then((updateRes) => {
+					console.log(updateRes);
+					this._notification('Patient Has Successfully Been Checked Out ', 'Success!');
+					if(checkoutData.type == "FUWA"){
+						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id, "checkedOut: true"]);
+					}
+				});
+			}
+		});
+
+	}
+
 	private _CheckIfPatientIsAdmitted() {
 		this._inPatientListService.find({ query: {
 			'facilityId._id': this.facility._id,
 			'patientId._id': this.patientDetails._id
 		}}).then(res => {
-			this.loading = false;
+      this.loading = false;
+      console.log(res);
 			if (res.data.length > 0) {
 				this._inpatientService.find({ query: {
 					'facilityId._id': this.facility._id,
 					'patientId._id': this.patientDetails._id,
 					isDischarged: false
 				}}).then(resp => {
+          console.log(resp);
 					const patientName = this.patientDetails.personDetails.personFullName;
 					if (resp.data.length > 0) {
 						const locationIndex = (resp.data[0].transfers.length > 0) ? resp.data[0].transfers.length - 1 : resp.data[0].transfers.length;
@@ -145,12 +188,13 @@ export class CheckoutPatientComponent implements OnInit {
 						resp.data[0].isAdmitted = true;
 						resp.data[0].msg = text;
 						this.admittedWard = resp.data[0];
-					} else {
-						let text = patientName + ' has been sent to ' + res.data[0].wardId.name + ' ward for admission.';
-						res.data[0].isAdmitted = true;
-						res.data[0].msg = text;
-						this.admittedWard = res.data[0];
-					}
+          }
+          //  else {
+					// 	let text = patientName + ' has been sent to ' + res.data[0].wardId.name + ' ward for admission.';
+					// 	res.data[0].isAdmitted = true;
+					// 	res.data[0].msg = text;
+					// 	this.admittedWard = res.data[0];
+					// }
 				}).catch(err => this._notification('Error', 'There was a problem getting admitted patient. Please try again later.'));
 			} else {
 				this._inpatientService.find({ query: {

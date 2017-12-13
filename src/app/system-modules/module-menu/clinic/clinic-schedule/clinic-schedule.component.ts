@@ -30,6 +30,17 @@ export class ClinicScheduleComponent implements OnInit {
   scheduleManagers: ScheduleRecordModel[] = [];
   loading: Boolean = true;
 
+  sorter = {
+    // "sunday": 0, // << if sunday is first day of week
+    "monday": 1,
+    "tuesday": 2,
+    "wednesday": 3,
+    "thursday": 4,
+    "friday": 5,
+    "saturday": 6,
+    "sunday": 7
+  }
+
   days: any[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   constructor(private formBuilder: FormBuilder,
@@ -41,7 +52,7 @@ export class ClinicScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribToFormControls();
+    this.subscribToFormControls(); 
     this.getClinicMajorLocation();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
@@ -67,6 +78,20 @@ export class ClinicScheduleComponent implements OnInit {
     this.clearAllSchedules();
     this.schedulerService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.loading = false;
+      //this.scheduleManagers = payload.data;
+      var self = this;
+
+      //this.scheduleManagers = payload.data;
+      for(let i=0; i<payload.data.length; i++){
+        
+        payload.data[i].schedules.sort(function sortByDay(a, b) {
+            var day1 = a.day.toLowerCase();
+            var day2 = b.day.toLowerCase();
+            console.log(day1, day2);
+            return self.sorter[day1] > self.sorter[day2];
+        });
+
+      }
       this.scheduleManagers = payload.data;
     });
   }

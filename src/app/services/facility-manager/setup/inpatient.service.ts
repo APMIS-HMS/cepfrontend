@@ -1,4 +1,5 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -21,7 +22,8 @@ export class InPatientService {
   constructor(
     private _socketService: SocketService,
     private sanitizer: DomSanitizer,
-    private _restService: RestService
+    private _restService: RestService,
+    private _http: Http
   ) {
     this._rest = _restService.getService('inpatients');
     this._socket = _socketService.getService('inpatients');
@@ -29,7 +31,6 @@ export class InPatientService {
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
-
   }
   transform(url) {
     url = this._restService.getHost() + '/' + url + '?' + new Date().getTime();
@@ -63,6 +64,57 @@ export class InPatientService {
 
   getAnnounceMission() {
     return this.inPatientItem;
-
   }
+
+  public discharge(discharge): Promise<any> {
+    const host = this._restService.getHost() + '/discharge-patient';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this._http.post(host, discharge, { headers: headers }).toPromise()
+      .then((res) => this.extractData(res)).catch(error => this.handleErrorPromise(error));
+  }
+
+  private extractData(res: Response) {
+    console.log(res);
+	  let body = res.json();
+    return body || {};
+  }
+
+  private handleErrorObservable (error: Response | any) {
+	  console.error(error.message || error);
+	  let errMsg: string;
+    if (error instanceof Response) {
+      console.log(error);
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} ${error.statusText || ''} - ${err}`;
+    } else {
+      console.log(error);
+      errMsg = error.message ? error.message : error.toString();
+    }
+    return Observable.throw(errMsg);
+  }
+
+  private handleErrorPromise (error: Response | any) {
+    console.error(error.message || error);
+    let errMsg: string;
+    if (error instanceof Response) {
+      console.log(error);
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} ${error.statusText || ''} - ${err}`;
+    } else {
+      console.log(error);
+      errMsg = error.message ? error.message : error.toString();
+    }
+    return Promise.reject(errMsg);
+  }
+
+  // discharge(discharge) {
+  //   const host = this._restService.getHost() + '/discharge-patient';
+  //   return new Promise((resolve, reject) => {
+  //     resolve(request.get(path).query(dischage));
+  //   });
+  // }
 }

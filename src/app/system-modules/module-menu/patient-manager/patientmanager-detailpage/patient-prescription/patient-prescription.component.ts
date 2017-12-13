@@ -89,7 +89,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this.user = <User> this._locker.getObject('auth');
         this.employeeDetails = this._locker.getObject('loginEmployee');
         // Remove this when you are done
-        // this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
+        this.selectedAppointment.clinicId = '58b700cb636560168c61568d';
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;

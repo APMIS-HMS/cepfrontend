@@ -163,6 +163,7 @@ export class AdmitPatientComponent implements OnInit {
 					delete this.inPatientItem.patientId.personDetails.nextOfKin;
 					delete this.inPatientItem.patientId.personDetails.genderId;
 					delete this.inPatientItem.patientId.personDetails.homeAddress;
+					delete this.inPatientItem.patientId.personDetails.wallet;
 
 					payload1.data[0].isAdmitted = true;
 					payload1.data[0].admittedDate = new Date();
@@ -192,9 +193,13 @@ export class AdmitPatientComponent implements OnInit {
 								occupant: this.inPatientItem.patientId,
 								bed: value.bed,
 								room: value.room
-							}
-							this.updateWardAdissionService(msgObj);
-              this.close_onClick();
+              }
+              this.admitBtnText = 'Navigating... <i class="fa fa-spinner fa-spin"></i>';
+              this.updateWardAdissionService(msgObj);
+              setTimeout(e => {
+                this.close_onClick();
+                this.router.navigate(['/dashboard/ward-manager/admitted']);
+              }, 2000);
 						});
 					});
 				});

@@ -234,6 +234,10 @@
                         </th>
                         <th>
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                            <span style="padding-left: 3px;">Admitted Date</span>
+                        </th>
+                        <th>
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                             <span style="padding-left: 3px;">Discharge Date</span>
                         </th>
                     </tr>
@@ -267,7 +271,8 @@
                             </div>
                         </td>
                         <td class="table-content">{{inPatientWaitingItem.transfers[0].name}}</td>
-                        <td class="table-content">{{inPatientWaitingItem.updatedAt}}</td>
+                        <td class="table-content">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkInDate | date:'medium'}}</td>
+                        <td class="table-content">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkOutDate | date:'medium' }}</td>
                     </tr>
                 </tbody>
             </table>

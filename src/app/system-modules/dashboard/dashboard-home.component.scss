@@ -434,9 +434,32 @@
 }
 
 .mainmenu-content {
-    border-right: 1px solid #bebebe;
-    background: lighten($primaryColor, 5%);
+    border-right: 1px solid #11315b;
+    background: #194985;
+    height: 90vh;
+    overflow-y: auto;
+    width: 265px;
 }
+#style-1::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #256cc6;
+}
+
+#style-1::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #256cc6;
+}
+
+#style-1::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #11315b;
+}
+
 
 .top-tab-search {
     background-color: #eee;
@@ -454,12 +477,12 @@
     position: fixed;
 }
 .footer {
-    
     right: 0;
     bottom: 0;
     left: 0;
     padding: 1rem;
-    background-color: #efefef;
+    background-color: #11315b;
     text-align: center;
     font-size: 11px;
+    color: #fff;
   }
