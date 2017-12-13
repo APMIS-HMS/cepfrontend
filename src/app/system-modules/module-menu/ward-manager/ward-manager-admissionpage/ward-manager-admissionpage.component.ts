@@ -125,6 +125,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   admitPatient_onClick(value: any, typeChecker = myGlobals) {
     this.selectInpatient = value;
     this.selectInpatient.typeChecker = typeChecker.onAdmission;
+    // Pass the loggedInWard to the selectedInpatient.
+    this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
     this.admitPatient = true;
   }
 

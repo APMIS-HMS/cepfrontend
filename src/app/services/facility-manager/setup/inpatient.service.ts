@@ -66,6 +66,15 @@ export class InPatientService {
     return this.inPatientItem;
   }
 
+  public transfer(transfer): Promise<any> {
+    const host = this._restService.getHost() + '/transfer-patient';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this._http.post(host, transfer, { headers: headers }).toPromise()
+      .then((res) => this.extractData(res)).catch(error => this.handleErrorPromise(error));
+  }
+
   public discharge(discharge): Promise<any> {
     const host = this._restService.getHost() + '/discharge-patient';
     const headers = new Headers();
