@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {
@@ -101,13 +101,16 @@ export class ScheduleFrmComponent implements OnInit {
     user = {};
     placeholderString = 'Select timezone';
 
+    checkoutDisable:any;
+
     constructor(private scheduleService: SchedulerService, private locker: CoolLocalStorage,
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
         private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService,
-        private _smsAlertService: SmsAlertService) {
+        private _smsAlertService: SmsAlertService,
+        private route: ActivatedRoute) {
 
         appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
             this.appointment = payload;
@@ -218,7 +221,19 @@ export class ScheduleFrmComponent implements OnInit {
         })
         this.getPatients();
         this.getTimezones();
+
+        this.route.queryParams.subscribe((params) => {
+            console.log(params);
+            if(params.checkedOut){
+                this.patient.disable();
+                this.type.disable();
+                this.clinic.disable();
+                this.category.disable();
+                this.provider.disable();
+            }
+        });
     }
+
     getTimezones() {
         this.timeZoneService.findAll().then(payload => {
             this.timezones = payload.data;
