@@ -5,16 +5,15 @@
           <img src="assets/images/logos/logo.png">
       </div>
 
-      <div>
-          <img src="assets/images/logos/nigeria.png">
-      </div>
+    <div class="logo-wrap">
+        <img src="assets/images/app_logo/apmis_vector.svg">
     </div>
 
     <div class="nav-right-content home-wrap">
         <div class="signin-upWrap">
 
-            <div class="txt1">Tertiary Healthcare Network</div>
-            <div class="txt2">Connected Health Platform</div>
+            <div class="txt1">APMIS</div>
+            <div class="txt2">Connected Healthcare Platform</div>
             <div class="CTAs-wrap">
                 <!--<div class="cta-1" (click)="login_show()">Log In</div>-->
                 <div id="button-cover">
@@ -28,7 +27,6 @@
     <div class="apmis-label">Powered By APMIS</div>
   </div>
 </div>
-
 <div *ngIf="login_on" class="modal-overlay">
     <app-login (closeModal)="close_onClick($event)" (pwordReset)="pwdReset_show($event)" id="form-modal" class="form-modal center-center"></app-login>
 </div>

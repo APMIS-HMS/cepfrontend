@@ -97,7 +97,7 @@ export class AppointmentComponent implements OnInit {
 
     getClinics() {
         this.clinics = [];
-        const clinicIds = [];
+        const clinicIds = []; 
 
         this.selectedFacility.departments.forEach((itemi, i) => {
             itemi.units.forEach((itemj, j) => {

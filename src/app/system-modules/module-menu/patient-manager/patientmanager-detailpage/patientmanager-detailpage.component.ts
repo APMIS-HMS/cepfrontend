@@ -83,9 +83,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   pRChart: any[] = [];
   timeVal: Date;
   routeId: any;
-
-
-
+  checkedIn:any;
 
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
@@ -147,15 +145,15 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     }
     this.getForms();
 
-
-
     this.route.params.subscribe(payloadk => {
       if (payloadk['checkInId'] !== undefined) {
         let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
         if (isOnList.length > 0) {
           const isOnObj = isOnList[0];
           isOnObj.isOn = true;
-
+          let coo = <any>this.locker.getObject('appointment');
+          console.log(coo.isCheckedOut);
+          this.checkedIn = !coo.isCheckedOut;
           this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
             this.loginEmployee = payloadu;
             if (this.selectedAppointment !== undefined) {
@@ -586,6 +584,5 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       });
     }
   }
-
 
 }
