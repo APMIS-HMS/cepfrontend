@@ -166,8 +166,8 @@ export class BillLookupComponent implements OnInit {
 
     if (billGroup.billingIds.length > 0) {
       billGroup.totalDiscount = this.discount;
-      billGroup.totalPrice = this.subTotal;
-      billGroup.grandAmount = this.total;
+      billGroup.subTotal = this.subTotal;
+      billGroup.totalPrice = this.total;
       console.log(billGroup);
       console.log(this.checkBillitems);
       console.log(this.listedBillItems);

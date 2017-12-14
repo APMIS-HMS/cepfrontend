@@ -12,6 +12,7 @@ export interface Invoice {
     grandTotal: number;
     subTotal: number;
     discount: number;
+    paymentCompleted:boolean;
 }
 
 

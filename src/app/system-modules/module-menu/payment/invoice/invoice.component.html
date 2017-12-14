@@ -51,7 +51,7 @@
                     <div class="oda">
                       <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
                       <div class="pending-amount">
-                        <span>&#x20a6;</span>{{invoice.totalPrice|number}}
+                        <span>&#x20a6;</span>{{invoice.totalPrice|numberThr}}
                       </div>
                     </div>
                     <div class="pay-status pending-amount">
@@ -117,60 +117,61 @@
               </div>
               <div class="rhsSectB">
                 <div>TOTAL AMOUNT</div>
-                <div class="topTotal">{{selectedInvoiceGroup.grandTotal | currency:'NGN':true:'4.2-2'}}</div>
+                <div class="topTotal">
+                  <span>&#x20a6;</span>{{selectedInvoiceGroup.totalPrice | numberThr}}</div>
               </div>
             </div>
             <div class="clear"></div>
           </div>
-
-          <div class="billContentSect">
-            <!--<div *ngIf="selectedPatient._id != undefined" (click)="addItem_show()" class="cta-1 btn-addItem">
-              Add Item
-            </div>-->
-            <i (click)="print()" class="fa fa-print printIco" aria-hidden="true"></i>
-            <table class="tblBg">
-              <thead>
-                <tr>
-                  <th class="col1">Item Description</th>
-                  <th class="col2">Unit Price</th>
-                  <th class="col3">Quantity</th>
-                  <th class="col4">Total Price</th>
-                  <!--<th class="col5">Actions</th>-->
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr *ngFor="let billItem of selectedInvoiceGroup.billingIds">
-                  <td (click)="itemDetail(billItem)" class="col1">
-                    <div class="itemName">{{billItem.billingItems?.facilityServiceObject.service}}</div>
-                    <div class="itemDesc">{{billItem.billingItems?.description}}</div>
-                  </td>
-                  <td class="col2">
-                    <div class="topTotal" [hidden]="itemEditShow">
-                      <span>&#8358;</span> {{billItem.billingItems?.unitPrice}}</div>
-                    <input currencyMask [options]="{ prefix: '&#8358; '}" *ngIf="itemEditShow" class="edit-control" value="{{itemAmount}}" [formControl]="itemEdit">
-                  </td>
-                  <td class="col3">
-                    <span [hidden]="itemEditShow">{{billItem.billingItems?.quantity}}</span>
-                    <input *ngIf="itemEditShow" class="edit-control" type="number" value="{{itemQty}}" [formControl]="itemQtyEdit">
-                  </td>
-                  <td class="col4">
-                    <div class="topTotal">
-                      <span>&#8358;</span> {{billItem.billingItems?.totalPrice}}</div>
-                  </td>
-                  <!--<td class="col5">
-                    <i [hidden]="itemEditShow" (click)="itemEditToggle()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    <i *ngIf="itemEditShow" (click)="itemEditToggle()" class="fa fa-check" aria-hidden="true"></i>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    <div (click)="lineModifier_show()" class="cta-1 btn-addItem">
-                      Add Modifier
-                    </div>
-                  </td>-->
-                </tr>
-              </tbody>
-            </table>
+          <div class="{{ !isPaidClass ? 'invoice unpaid': 'invoice paid' }}">
+              <div class="billContentSect">
+                  <!--<div *ngIf="selectedPatient._id != undefined" (click)="addItem_show()" class="cta-1 btn-addItem">
+                    Add Item
+                  </div>-->
+                  <i (click)="print()" class="fa fa-print printIco" aria-hidden="true"></i>
+                  <table class="tblBg">
+                    <thead>
+                      <tr>
+                        <th class="col1">Item Description</th>
+                        <th class="col2">Unit Price</th>
+                        <th class="col3">Quantity</th>
+                        <th class="col4">Total Price</th>
+                        <!--<th class="col5">Actions</th>-->
+                      </tr>
+                    </thead>
+      
+                    <tbody>
+                      <tr *ngFor="let billItem of selectedInvoiceGroup.billingIds">
+                        <td (click)="itemDetail(billItem)" class="col1">
+                          <div class="itemName">{{billItem.billingItem?.facilityServiceObject.service}}</div>
+                          <div class="itemDesc">{{billItem.billingItem?.description}}</div>
+                        </td>
+                        <td class="col2">
+                          <div class="topTotal" [hidden]="itemEditShow">
+                            <span>&#8358;</span> {{billItem.billingItem?.unitPrice|number}}</div>
+                          <input currencyMask [options]="{ prefix: '&#8358; '}" *ngIf="itemEditShow" class="edit-control" value="{{itemAmount}}" [formControl]="itemEdit">
+                        </td>
+                        <td class="col3">
+                          <span [hidden]="itemEditShow">{{billItem.billingItem?.quantity|number}}</span>
+                          <input *ngIf="itemEditShow" class="edit-control" type="number" value="{{itemQty}}" [formControl]="itemQtyEdit">
+                        </td>
+                        <td class="col4">
+                          <div class="topTotal">
+                            <span>&#8358;</span>{{billItem.billingItem?.totalPrice|numberThr}}</div>
+                        </td>
+                        <!--<td class="col5">
+                          <i [hidden]="itemEditShow" (click)="itemEditToggle()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          <i *ngIf="itemEditShow" (click)="itemEditToggle()" class="fa fa-check" aria-hidden="true"></i>
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                          <div (click)="lineModifier_show()" class="cta-1 btn-addItem">
+                            Add Modifier
+                          </div>
+                        </td>-->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
           </div>
-
           <div class="billSummarySect">
             <div class="lhs">
               <!--<div (click)="addModefier()" class="cta-1">
@@ -181,18 +182,21 @@
               <div class="summaryItems">
                 <tr class="summaryItem">
                   <td class="label">Sub Total</td>
-                  <td class="data">{{selectedInvoiceGroup.subTotal | currency:'NGN':true:'4.2-2' }}</td>
+                  <td class="data">
+                    <span>&#x20a6;</span>{{selectedInvoiceGroup?.subTotal | numberThr}}</td>
                   <td></td>
                 </tr>
                 <tr class="summaryItem">
                   <td class="label">Discount</td>
-                  <td class="data">{{selectedInvoiceGroup.discount | currency:'NGN':true:'4.2-2'}}</td>
+                  <td class="data">
+                    <span>&#x20a6;</span>{{selectedInvoiceGroup.totalDiscount | numberThr}}</td>
                   <td></td>
                 </tr>
               </div>
               <tr class="grandTotalWrap">
                 <td class="label">GRAND TOTAL</td>
-                <td class="data">{{selectedInvoiceGroup.grandTotal | currency:'NGN':true:'4.2-2'}}</td>
+                <td class="data">
+                  <span>&#x20a6;</span>{{selectedInvoiceGroup.totalPrice | numberThr}}</td>
                 <td></td>
               </tr>
             </table>
@@ -217,26 +221,26 @@
               </div>
             </div>
             <div class="pending-bills">
-                <div [hidden]="otherInvoiceGroups.length>0">
-                    <i class='fa fa-spinner fa-spin'></i>
+              <div [hidden]="otherInvoiceGroups.length>0">
+                <i class='fa fa-spinner fa-spin'></i>
+              </div>
+              <div [hidden]="otherInvoiceGroups.length==0">
+                <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups">
+                  <div class="list-img">
+                    <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
+                    <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                   </div>
-                  <div [hidden]="otherInvoiceGroups.length==0">
-                      <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups">
-                          <div class="list-img">
-                            <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                            <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
-                          </div>
-                          <div class="list-labels">
-                            <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
-                            <div class="oda">
-                              <div class="pending-date">{{otherInvoice.createdAt}}</div>
-                              <div class="pending-amount">
-                                <span>&#x20a6;</span>{{otherInvoice.totalPrice}}</div>
-                            </div>
-                          </div>
-                        </div>
+                  <div class="list-labels">
+                    <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
+                    <div class="oda">
+                      <div class="pending-date">{{otherInvoice.createdAt}}</div>
+                      <div class="pending-amount">
+                        <span>&#x20a6;</span>{{otherInvoice.totalPrice|numberThr}}</div>
+                    </div>
                   </div>
                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

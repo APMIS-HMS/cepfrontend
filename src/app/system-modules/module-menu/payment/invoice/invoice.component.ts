@@ -21,6 +21,7 @@ export class InvoiceComponent implements OnInit {
     addLineModefierPopup = false;
     priceItemDetailPopup = false;
     makePaymentPopup = false;
+    isPaidClass = false;
     addItem = false;
     itemEditShow = false;
     itemEditShow2 = false;
@@ -46,7 +47,7 @@ export class InvoiceComponent implements OnInit {
         private billingService: BillingService,
         private route: ActivatedRoute,
         private patientService: PatientService) {
-        this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.patientService.receivePatient().subscribe((payload: Patient) => {
             this.selectedPatient = payload;
             this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
@@ -61,18 +62,18 @@ export class InvoiceComponent implements OnInit {
     }
     getPatientInvoices() {
         console.log("Load invoices");
-        this.invoiceService.find({ query: { patientId: this.selectedPatient._id,facilityId: this.selectedFacility._id,$sort: { createdAt: -1 },$limit:5}})
+        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { createdAt: -1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
                 console.log(this.invoiceGroups);
             });
 
-            this.invoiceService.find({ query: { patientId:{$ne: this.selectedPatient._id}, facilityId: this.selectedFacility._id,paymentCompleted:false,$sort: { createdAt: -1 },$limit:10 } })
+        this.invoiceService.find({ query: { patientId: { $ne: this.selectedPatient._id }, facilityId: this.selectedFacility._id, paymentCompleted: false, $sort: { createdAt: -1 }, $limit: 10 } })
             .then(payload => {
                 this.otherInvoiceGroups = payload.data;
                 console.log(this.otherInvoiceGroups);
             });
-            
+
     }
     ngOnInit() {
         this.frmAddItem = this.formBuilder.group({
@@ -94,6 +95,11 @@ export class InvoiceComponent implements OnInit {
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
         console.log(this.selectedInvoiceGroup)
+        if (this.selectedInvoiceGroup.paymentCompleted == true) {
+            this.isPaidClass = true;
+        } else {
+            this.isPaidClass = false;
+        }
     }
 
     addModefier() {
