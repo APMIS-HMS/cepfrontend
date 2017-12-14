@@ -50,10 +50,10 @@
                       <span>&#x20a6;</span>{{invoice.totalPrice|number}}
                     </div>
                   </div>
-                  <div class="pending-amount">
-                      <span class="Green" *ngIf="invoice.paymentCompleted">PAID</span>
-                      <span class="Red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
-                    </div>
+                  <div class="pay-status pending-amount">
+                    <span class="badge-green" *ngIf="invoice.paymentCompleted">PAID</span>
+                    <span class="badge-red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
+                  </div> 
                 </div>
               </div>
             </div>

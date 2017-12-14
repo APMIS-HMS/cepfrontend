@@ -27,17 +27,20 @@
         <input mdInput md-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
       </md-input-container>
     </div> -->
-    
-    <button md-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
-      <span>
-        <div [hidden]="isProcessing">
-          Make Payment
-        </div>
-        <div [hidden]="!isProcessing">
-          Processing...
-          <i class='fa fa-spinner fa-spin'></i>
-        </div>
-      </span>
-    </button>
+    <div class="btn-group">
+      <button md-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
+        <span>
+          <div [hidden]="isProcessing">
+            Make Payment
+          </div>
+          <div [hidden]="!isProcessing">
+            Processing...
+            <i class='fa fa-spinner fa-spin'></i>
+          </div>
+        </span>
+      </button>
+
+      <button class="btn btn-red">Cancel</button>
+    </div>
   </div>
 </div>
