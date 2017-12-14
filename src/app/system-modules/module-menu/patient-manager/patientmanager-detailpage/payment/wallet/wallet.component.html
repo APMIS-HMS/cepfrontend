@@ -2,16 +2,16 @@
     <div class="wallet-summary shadow">
         <div class="summary-item">
             <div class="item-label">Ledger Balance</div>
-            <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.ledgerBalance}}</div>
+            <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.ledgerBalance|numberThr}}</div>
         </div>
         <div class="summary-item">
             <div class="item-label">Balance</div>
-            <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
+            <div class="item-val other-bal"><span>&#x20a6;</span> {{person?.wallet?.balance|numberThr}}</div>
         </div>
         <hr>
         <div class="summary-item">
             <div class="item-label">Available Balance</div>
-            <div class="item-val available-bal"><span>&#x20a6;</span> {{person?.wallet?.balance}}</div>
+            <div class="item-val available-bal"><span>&#x20a6;</span> {{person?.wallet?.balance|numberThr}}</div>
         </div>
     </div>
     <div class="head-others shadow">

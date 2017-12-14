@@ -173,7 +173,7 @@
                         <div class="val-tag">Account Balance</div>
                         <div class="list-label">
                             <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
-                          &#8358; {{patient?.personDetails?.wallet?.balance}}
+                          &#8358; {{patient?.personDetails?.wallet?.balance|numberThr}}
                         </span>
                         </div>
                     </div>

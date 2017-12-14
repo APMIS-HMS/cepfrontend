@@ -66,3 +66,13 @@ ul.topmenuwrap {
     top: 18px;
     right: 25px;
 }
+.pending-bills .list-labels{
+    position: relative;
+    width: 100%;
+}
+.pay-status{
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 10px;
+}

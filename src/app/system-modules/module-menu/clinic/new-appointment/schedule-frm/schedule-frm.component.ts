@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {
@@ -101,13 +101,15 @@ export class ScheduleFrmComponent implements OnInit {
     user = {};
     placeholderString = 'Select timezone';
 
+
     constructor(private scheduleService: SchedulerService, private locker: CoolLocalStorage,
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
         private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService,
-        private _smsAlertService: SmsAlertService) {
+        private _smsAlertService: SmsAlertService,
+        private route: ActivatedRoute) {
 
         appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
             this.appointment = payload;
@@ -218,7 +220,18 @@ export class ScheduleFrmComponent implements OnInit {
         })
         this.getPatients();
         this.getTimezones();
+
+        this.route.queryParams.subscribe((params) => {
+            console.log(params);
+            if(params.checkedOut){
+                this.patient.disable();
+                this.type.disable();
+                this.clinic.disable();
+                this.category.disable();
+            }
+        });
     }
+
     getTimezones() {
         this.timeZoneService.findAll().then(payload => {
             this.timezones = payload.data;
@@ -228,6 +241,7 @@ export class ScheduleFrmComponent implements OnInit {
             }
         })
     }
+
     primeComponent() {
         const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
         const appointmentTypes$ = Observable.fromPromise(this.appointmentTypeService.findAll());
@@ -309,6 +323,7 @@ export class ScheduleFrmComponent implements OnInit {
             });
         });
     }
+
     getClinics() {
         const clinicIds = [];
         this.clinics = [];
@@ -369,6 +384,7 @@ export class ScheduleFrmComponent implements OnInit {
         }
         this.loadIndicatorVisible = false;
     }
+
     getClinicLocation() {
         this.clinicLocations = [];
         const inClinicLocations: MinorLocation[] = [];
@@ -406,6 +422,7 @@ export class ScheduleFrmComponent implements OnInit {
         }
 
     }
+
     getSchedules() {
         this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } })
             .subscribe(payload => {
@@ -442,6 +459,7 @@ export class ScheduleFrmComponent implements OnInit {
                 }
             });
     }
+
     getEmployees() {
         this.loadingProviders = true;
         this.providers = [];
@@ -481,22 +499,26 @@ export class ScheduleFrmComponent implements OnInit {
         }
 
     }
+
     getAppointmentTypes() {
         this.appointmentTypeService.findAll().subscribe(payload => {
             this.appointmentTypes = payload.data;
         })
     }
+
     filterClinics(val: any) {
         return val ? this.clinics.filter(s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.clinics;
 
     }
+
     filterPatients(val: any) {
         console.log(val);
         return val ? this.patients.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.patients;
     }
+
     filterProviders(val: any) {
         return val ? this.providers.filter(s => s.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
@@ -598,6 +620,7 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.facilityId = <any>facility;
             this.appointment.patientId = patient;
             this.appointment.startDate = this.date;
+            console.log(this.appointment);
             if (checkIn === true) {
                 const logEmp: any = this.loginEmployee;
                 delete logEmp.department;
@@ -631,6 +654,7 @@ export class ScheduleFrmComponent implements OnInit {
                 }
             }
             if (this.appointment._id !== undefined) {
+                console.log(this.appointment);
                 this.appointmentService.update(this.appointment).then(payload => {
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
@@ -681,7 +705,9 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                 })
             } else {
+                console.log("else");
                 this.appointmentService.create(this.appointment).then(payload => {
+                    console.log(payload);
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)

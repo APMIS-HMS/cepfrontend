@@ -74,11 +74,11 @@
 }
 
 .pending-bills li:hover {
-    background-color: #eee
+    background-color: #eee;
 }
 
 .pending-bills li:nth-child(even) {
-    background-color: #f8f8f8
+    background-color: #f8f8f8;
 }
 
 .empWrap {
@@ -90,6 +90,9 @@
     box-sizing: border-box;
     margin-bottom: 5px;
     cursor: pointer;
+}
+.empWrap:nth-child(even) {
+    background-color: #f8f8f8;
 }
 
 .list-img {
@@ -114,6 +117,7 @@
 
 .pending-amount {
     color: #ff2500;
+    font-size: 14px;
 }
 
 .megaPgWrap {
@@ -611,4 +615,69 @@ td:hover {
     font-size: 22px;
     width: 100%;
     text-align: center;
+}
+
+div.invoice
+{
+  width:100%;
+  display:inline-block;
+  vertical-align:top;
+  box-sizing:border-box;
+  padding:10px;
+  color:#999;
+  position:relative;
+}
+
+div.invoice.paid:after
+{
+    content:"PAID";
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:1;
+    font-family:Arial,sans-serif;
+    -webkit-transform: rotate(-45deg); /* Safari */
+    -moz-transform: rotate(-45deg); /* Firefox */
+    -ms-transform: rotate(-45deg); /* IE */
+    -o-transform: rotate(-45deg); /* Opera */
+    transform: rotate(-45deg);
+    font-size:40px;
+    color:#c00;
+    background:#fff;
+    border:solid 4px #c00;
+    padding:5px;
+    border-radius:5px;
+    zoom:1;
+    filter:alpha(opacity=20);
+    opacity:0.2;
+    -webkit-text-shadow: 0 0 2px #c00;
+    text-shadow: 0 0 2px #c00;
+    box-shadow: 0 0 2px #c00;
+}
+
+div.invoice.unpaid:after
+{
+    content:"UNPAID";
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:1;
+    font-family:Arial,sans-serif;
+    -webkit-transform: rotate(-45deg); /* Safari */
+    -moz-transform: rotate(-45deg); /* Firefox */
+    -ms-transform: rotate(-45deg); /* IE */
+    -o-transform: rotate(-45deg); /* Opera */
+    transform: rotate(-45deg);
+    font-size:40px;
+    color:#c00;
+    background:#fff;
+    border:solid 4px #c00;
+    padding:5px;
+    border-radius:5px;
+    zoom:1;
+    filter:alpha(opacity=20);
+    opacity:0.2;
+    -webkit-text-shadow: 0 0 2px #c00;
+    text-shadow: 0 0 2px #c00;
+    box-shadow: 0 0 2px #c00;
 }

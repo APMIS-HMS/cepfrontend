@@ -32,6 +32,7 @@ import { CoolStorageModule } from 'angular2-cool-storage';
 import { ToastyModule } from 'ng2-toasty';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import { KeysPipe } from './keypipe';
+import { ThousandDecimalPipe } from './thousand-pipe';
 import { PersonAccountComponent } from '../person-account/person-account.component';
 
 import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
@@ -52,6 +53,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         ImageUpdateComponent,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
+        ThousandDecimalPipe,
         // MdDatepickerToggle,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
@@ -102,6 +104,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         ToastyModule,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
+        ThousandDecimalPipe,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
         DragulaModule,

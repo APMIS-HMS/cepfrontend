@@ -90,6 +90,13 @@
                 </div>
 
                 <div class="frm-item-wrap">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    <md-input-container class="example-full-width">
+                        <input mdInput type="email" placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
+                    </md-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
                     <i class="fa fa-phone" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
                         <input mdInput type="tel" placeholder="Contact Number" formControlName="empPhonNo">
@@ -135,17 +142,15 @@
                         <md-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
-
-            </div>
-
-            <div class="rhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                     <md-select placeholder="City (Residence)" formControlName="empCity">
                         <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
+            </div>
 
+            <div class="rhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
@@ -159,6 +164,18 @@
                         <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                     </md-input-container>
                     <md-datepicker #picker></md-datepicker>
+                </div>
+                <div class="frm-item-wrap">
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>                  
+                    <md-select placeholder="Select security question" formControlName="secQst">
+                        <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
+                    </md-select>
+                </div>
+                <div class="frm-item-wrap">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                    <md-input-container class="example-full-width">
+                        <input mdInput md-error placeholder="Answer" formControlName="secAns">
+                    </md-input-container>
                 </div>
 
                 <!--<div class="frm-item-wrap">

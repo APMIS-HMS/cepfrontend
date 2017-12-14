@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
-import { Patient, Facility, BillItem, BillIGroup, Invoice } from '../../../../models/index';
+import { Patient, Facility, BillItem, BillIGroup, Invoice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -21,12 +21,14 @@ export class InvoiceComponent implements OnInit {
     addLineModefierPopup = false;
     priceItemDetailPopup = false;
     makePaymentPopup = false;
+    isPaidClass = false;
     addItem = false;
     itemEditShow = false;
     itemEditShow2 = false;
     itemEditShow3 = false;
     itemAmount = '20,000.00';
     itemQty = 2;
+    user: any = <any>{};
 
     searchPendingInvoice = new FormControl('', []);
     searchPendingBill = new FormControl('', []);
@@ -36,16 +38,21 @@ export class InvoiceComponent implements OnInit {
     selectedBillItem: BillItem = <BillItem>{};
     invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
     selectedInvoiceGroup: Invoice = <Invoice>{};
+    isLoadingInvoice = false;
+    isLoadingOtherInvoice = false;
     invoiceGroups: Invoice[] = [];
+    otherInvoiceGroups: Invoice[] = [];
     subscription: Subscription;
     constructor(private formBuilder: FormBuilder,
         private locker: CoolLocalStorage,
         public facilityService: FacilitiesService,
         private invoiceService: InvoiceService,
         private billingService: BillingService,
+        private router: Router,
         private route: ActivatedRoute,
         private patientService: PatientService) {
-        this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+        this.user = <User>this.locker.getObject('auth');
+        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.patientService.receivePatient().subscribe((payload: Patient) => {
             this.selectedPatient = payload;
             this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
@@ -59,11 +66,21 @@ export class InvoiceComponent implements OnInit {
         });
     }
     getPatientInvoices() {
-        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id } })
+        console.log("Load invoices");
+        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { createdAt: -1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
+                this.isLoadingInvoice = true;
                 console.log(this.invoiceGroups);
             });
+
+        this.invoiceService.find({ query: { patientId: { $ne: this.selectedPatient._id }, facilityId: this.selectedFacility._id, paymentCompleted: false, $sort: { createdAt: -1 }, $limit: 10 } })
+            .then(payload => {
+                this.otherInvoiceGroups = payload.data;
+                this.isLoadingOtherInvoice = true;
+                console.log(this.otherInvoiceGroups);
+            });
+
     }
     ngOnInit() {
         this.frmAddItem = this.formBuilder.group({
@@ -75,6 +92,7 @@ export class InvoiceComponent implements OnInit {
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
+                    console.log(this.selectedPatient);
                     this.getPatientInvoices();
                 });
             }
@@ -84,6 +102,26 @@ export class InvoiceComponent implements OnInit {
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
         console.log(this.selectedInvoiceGroup)
+        if (this.selectedInvoiceGroup.paymentCompleted == true) {
+            this.isPaidClass = true;
+        } else {
+            this.isPaidClass = false;
+        }
+    }
+
+    onPersonValueUpdated(person) {
+        this.selectedPatient.personDetails = person;
+        this.isLoadingInvoice = false;
+        this.isLoadingOtherInvoice = false;
+        this.isPaidClass = false;
+        this.getPatientInvoices();
+    }
+
+    onSelectedOtherPatientInvoice(invoice) {
+        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
+            this.isLoadingInvoice = false;
+            this.isLoadingOtherInvoice = false;
+        });
     }
 
     addModefier() {
@@ -96,14 +134,35 @@ export class InvoiceComponent implements OnInit {
         this.addItem = true;
     }
     makePayment_show() {
-        this.makePaymentPopup = true;
+        if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
+            if (this.selectedInvoiceGroup.paymentCompleted == false) {
+                if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+                    this._notification('Info', "You donot have sufficient balance to make this payment");
+                } else {
+                    this.makePaymentPopup = true;
+                }
+            } else {
+                this._notification('Info', "Selected invoice is paid");
+            }
+        } else {
+            this._notification('Info', "You cannot make payment for a Zero cost service, please select an invoice");
+        }
+
     }
+
     close_onClick(e) {
         this.addModefierPopup = false;
         this.addLineModefierPopup = false;
         this.addItem = false;
         this.priceItemDetailPopup = false;
         this.makePaymentPopup = false;
+    }
+    private _notification(type: String, text: String): void {
+        this.facilityService.announceNotification({
+            users: [this.user._id],
+            type: type,
+            text: text
+        });
     }
     itemEditToggle() {
         this.itemEditShow = !this.itemEditShow;
