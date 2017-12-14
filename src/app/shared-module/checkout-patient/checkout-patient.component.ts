@@ -23,7 +23,9 @@ export class CheckoutPatientComponent implements OnInit {
 	employeeDetails: any = <any>{};
 	employeeId: String = '';
 	ward_checkout: Boolean = false;
+	death_checkout: Boolean = false;
 	admitFormGroup: FormGroup;
+	deathFormGroup: FormGroup;
 	wards: any[] = [];
 	admittedWard: any = <any>{};
 	admitBtnText: String = 'Send <i class="fa fa-check-circle-o"></i>';
@@ -50,6 +52,11 @@ export class CheckoutPatientComponent implements OnInit {
 
 		this.admitFormGroup = this._fb.group({
 			ward: ['', [<any>Validators.required]],
+			desc: ['']
+		});
+
+		this.deathFormGroup = this._fb.group({
+			deathTime: [new Date(), [<any>Validators.required]],
 			desc: ['']
 		});
 
@@ -126,8 +133,9 @@ export class CheckoutPatientComponent implements OnInit {
 		}
 	}
 
-	checkOutPatient(type){
+	checkOutPatient(type, formData?, formDataValid?){
 		//console.log(type);
+		this.loading = true;
 		var checkoutData;
 		if(type == "No Futher Appointment"){
 
@@ -144,6 +152,17 @@ export class CheckoutPatientComponent implements OnInit {
 				person: this.user.data.person
 			}
 			console.log(checkoutData);
+		}else if(type == "death"){
+			if(formDataValid){
+				console.log(formData);
+				checkoutData = {
+					type: 'Death',
+					checkedOutTime: new Date(),
+					person: this.user.data.person,
+					deathTime: formData.deathTime,
+					desc: formData.desc
+				}
+			}
 		}
 		
 		this._appointmentService.find({ query: {
@@ -157,10 +176,15 @@ export class CheckoutPatientComponent implements OnInit {
 				console.log(updateData);
 				this._appointmentService.update(updateData).then((updateRes) => {
 					console.log(updateRes);
-					this._notification('Patient Has Successfully Been Checked Out ', 'Success!');
+					this._notification('Success', 'Patient Has Successfully Been Checked Out ');
 					if(checkoutData.type == "FUWA"){
 						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id], { queryParams: { checkedOut: true } });
+					}else{
+						this._router.navigate(['/dashboard/clinic/appointment']).then(() => {
+							console.log('checking...');
+						});
 					}
+					this.loading = false;
 				});
 			}
 		});
@@ -223,6 +247,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	// Notification
 	private _notification(type: String, text: String): void {
+		console.log(text);
 		this.facilityService.announceNotification({
 			users: [this.user._id],
 			type: type,
@@ -231,7 +256,13 @@ export class CheckoutPatientComponent implements OnInit {
 	}
 
 	checkoutWard() {
+		this.death_checkout = false;
 		this.ward_checkout = true;
+	}
+
+	deathCheckout(){
+		this.death_checkout = true;
+		this.ward_checkout = false;
 	}
 
 	close_onClick() {
