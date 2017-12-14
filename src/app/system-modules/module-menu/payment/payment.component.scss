@@ -74,11 +74,11 @@
 }
 
 .pending-bills li:hover {
-    background-color: #eee
+    background-color: #eee;
 }
 
 .pending-bills li:nth-child(even) {
-    background-color: #f8f8f8
+    background-color: #f8f8f8;
 }
 
 .empWrap {
@@ -90,6 +90,9 @@
     box-sizing: border-box;
     margin-bottom: 5px;
     cursor: pointer;
+}
+.empWrap:nth-child(even) {
+    background-color: #f8f8f8;
 }
 
 .list-img {
