@@ -39,7 +39,7 @@ export class AppointmentComponent implements OnInit {
     schedules: any[] = [];
     isDoctor = false;
     isCheckoutPatient = false;
-    patientDetails ={};
+    patientDetails = {};
     selectedAppointment = {};
     loadIndicatorVisible = false;
     loadingProvider = false;
@@ -142,18 +142,44 @@ export class AppointmentComponent implements OnInit {
             });
         });
         this.loadIndicatorVisible = false;
-        console.log(this.selectedFacility._id)
-        this.appointmentService.find({
-            query:
-                { isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds }, $limit: 200 }
-        }).subscribe(payload => {
-            this.loading = false;
-            this.filteredAppointments = this.appointments = payload.data;
-            console.log(payload.data, this.filteredAppointments);
-        });
+        this._getAppointments(clinicIds);
     }
 
 
+    // patientId.personDetails.gender
+    // patientId.personDetails.title
+    // patientId.personDetails.age
+    // patientId.personDetails.apmisId
+    // patientId.personDetails.dateOfBirth
+    // patientId.personDetails.genderId
+    // patientId.personDetails.email
+    // patientId.personDetails.firstName
+    // patientId.personDetails.lastName
+    _getAppointments(clinicIds: any) {
+        this.appointmentService.find({
+            query:
+                {
+                    isFuture: true, 'facilityId._id': this.selectedFacility._id, 'clinicId._id': { $in: clinicIds },
+                    $select: {
+                        'facilityId': 0, 'attendance.employeeId': 0, 'appointmentTypeId': 0,
+                        'category': 0, 'clinicInteractions': 0, 'encounters': 0, 'patientId.clientsNo': 0,
+                        ' patientId.personDetails.gender': 0, 'patientId.personDetails.title': 0,
+                        'patientId.personDetails.age': 0, 'patientId.personDetails.apmisId': 0,
+                        'patientId.personDetails.dateOfBirth': 0, 'patientId.personDetails.genderId': 0,
+                        'patientId.personDetails.email': 0, 'patientId.personDetails.firstName': 0,
+                        'patientId.personDetails.lastName': 0, 'patientId.timeLines': 0, 'attendance.dateCheckIn': 0,
+                        'attendance.createdAt': 0, 'attendance.updateddAt': 0
+                    },
+                    $sort: { 'createdAt': -1 }
+                }
+        }).subscribe(payload => {
+            this.loading = false;
+            this.filteredAppointments = this.appointments = payload.data;
+            console.log(payload.data);
+        }, error => {
+            this._getAppointments(clinicIds);
+        });
+    }
     checkOutToWard(appointment) {
         this.patientDetails = appointment.patientId.personDetails;
         this.selectedAppointment = appointment;
@@ -161,39 +187,46 @@ export class AppointmentComponent implements OnInit {
     }
 
     close_onClick(message: boolean) {
-      this.closeMenu.emit(true);
+        this.closeMenu.emit(true);
     }
 
     prime() {
-        if (this.loginEmployee._id !== undefined) {
-            this.loadIndicatorVisible = true;
-            this.getClinics();
-            this.subscription = Observable.forkJoin(
-                [
-                    Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
-                    Observable.fromPromise(this.appointmentTypeService.findAll()),
-                    Observable.fromPromise(this.professionService.findAll()),
-                    Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }))
-                ])
-                .subscribe((results: any) => {
-                    this.loginEmployee.workSpaces = results[0].data;
-                    this.appointmentTypes = results[1].data;
-                    const professions = results[2].data;
-                    this.schedules = results[3].data;
-                    const filteredProfessions = professions.filter(x => x.name === 'Doctor');
-                    if (filteredProfessions.length > 0) {
-                        this.selectedProfession = filteredProfessions[0];
-                    }
-                    if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
-                        // this.selectedProfession = this.loginEmployee.professionObject;
-                        if (this.loginEmployee.professionObject.name === 'Doctor') {
-                            this.isDoctor = true;
+        try {
+            if (this.loginEmployee._id !== undefined) {
+                this.loadIndicatorVisible = true;
+                this.getClinics();
+                this.subscription = Observable.forkJoin(
+                    [
+                        Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
+                        Observable.fromPromise(this.appointmentTypeService.find({})),
+                        Observable.fromPromise(this.professionService.find({})),
+                        Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }))
+                    ])
+                    .subscribe((results: any) => {
+                        this.loginEmployee.workSpaces = results[0].data;
+                        this.appointmentTypes = results[1].data;
+                        const professions = results[2].data;
+                        this.schedules = results[3].data;
+                        const filteredProfessions = professions.filter(x => x.name === 'Doctor');
+                        if (filteredProfessions.length > 0) {
+                            this.selectedProfession = filteredProfessions[0];
                         }
-                        // this.getClinics();
-                        this.getEmployees();
-                    }
-                });
+                        if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
+                            // this.selectedProfession = this.loginEmployee.professionObject;
+                            if (this.loginEmployee.professionObject.name === 'Doctor') {
+                                this.isDoctor = true;
+                            }
+                            // this.getClinics();
+                            this.getEmployees();
+                        }
+                    }, error => {
+                        this.prime();
+                    });
+            }
+        } catch (error) {
+            console.log(error);
         }
+
     }
     getEmployees() {
         this.loadingProvider = true;
@@ -211,6 +244,8 @@ export class AppointmentComponent implements OnInit {
                     }
                 });
                 this.loadingProvider = false;
+            }).catch(error => {
+                this.getEmployees();
             });
         } else {
             this.employeeService.find({
@@ -223,11 +258,13 @@ export class AppointmentComponent implements OnInit {
                     this.providers.push(itemi);
                 });
                 this.loadingProvider = false;
+            }).catch(error => {
+                this.getEmployees();
             });
         }
 
     }
-    
+
     setReturnValue(dateRange: IDateRange): any {
         this.dateRange = dateRange;
         this.appointmentService.find({

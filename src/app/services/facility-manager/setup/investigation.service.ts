@@ -14,7 +14,7 @@ export class InvestigationService {
   ) {
     this._rest = _restService.getService('investigations');
     this._socket = _socketService.getService('investigations');
-     this._socket.timeout = 90000;
+     this._socket.timeout = 10000;
     this._socket.on('created', function (investigations) {
 
     });

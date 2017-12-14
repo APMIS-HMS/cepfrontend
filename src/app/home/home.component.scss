@@ -25,7 +25,6 @@
     overflow: hidden;     
 }
 .home-wrap{
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,7 +33,7 @@
 }
 .txt1{
     font-family: $font-titles;
-    font-size: 60px;
+    font-size: 38px;
     font-weight: bold;
     color: #fff;
     text-align: center;
@@ -46,13 +45,17 @@
     text-align: center;
     width: 100%;
 }
+.home-logoWrap{
+    width: 144px;
+}
 .logo-wrap{
     position: absolute;
     top: 20px;
     left: 20px;
+    width: 50px;
 }
 .logo-wrap img{
-    width: 70px;
+    width: 100%;
 }
 .signin-upWrap {
     border-top: 2px solid #fff;
@@ -60,6 +63,12 @@
     text-align: center;
     background: rgba(0,0,0,0.5);
     padding: 20px;
+}
+.logos-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .CTAs-wrap{
     display: block;
@@ -97,6 +106,15 @@
     padding: 25px;
     background: rgba(0,0,0,0.5);
 }*/
+.apmis-label {
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    position: absolute;
+    bottom: 20px;
+}
 @media only screen and (max-width: 800px){
     .base-wrap{
         display: flex;

@@ -5,6 +5,7 @@ import { Facility, Employee } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 @Component({
   selector: 'app-employeemanager-homepage',
   templateUrl: './employeemanager-homepage.component.html',
@@ -32,15 +33,11 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
     private facilityService: FacilitiesService,
     private personService: PersonService, private locker: CoolLocalStorage,
     private toast: ToastsManager,
-    private router: Router, private route: ActivatedRoute) {
+    private router: Router, private route: ActivatedRoute, private systemService:SystemModuleService) {
     this.employeeService.listner.subscribe(payload => {
-      console.log(payload);
       this.getEmployees(this.limit, true);
     });
     this.employeeService.createListener.subscribe(payload => {
-      // this.employees.push(payload);
-      // console.log(this.employees.length);
-      console.log(payload);
       this.getEmployees(this.limit, true);
       this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
@@ -52,16 +49,12 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
 
 
     away.subscribe((payload: any) => {
-      console.log(this.searchControl.value);
-      console.log(this.facility._id);
-      console.log(payload);
       this.employees = payload.body;
     });
 
   }
 
   ngOnChanges(){
-    console.log(this.resetData);
     if(this.resetData === true){
       this.index = 0;
       this.getEmployees();
@@ -71,7 +64,6 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      console.log(data['employees']);
       data['employees'].subscribe((payload) => {
         if (payload !== null) {
           this.total = payload.total;
@@ -80,13 +72,10 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
           if(this.total <= this.employees.length){
             this.showLoadMore = false;
           }
-          console.log(this.employees);
         }
 
       });
       this.index = this.inde[0];
-      console.log(this.inde[0]);
-      //this.getEmployees();
     });
     this.pageInView.emit('Employee Manager');
     this.facility = <Facility>this.locker.getObject('selectedFacility');
@@ -105,6 +94,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
   }
   getByDepartment(departmentId: string) {
     this.loadIndicatorVisible = true;
+    this.systemService.on();
     this.employeeService.find({ query: { facilityId: this.facility._id, departmentId: departmentId, showbasicinfo: true, $limit: 100 } })
       .then(payload => {
         this.total = payload.total;
@@ -112,6 +102,9 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
         this.loadIndicatorVisible = false;
       }, error => {
         this.loadIndicatorVisible = false;
+        this.systemService.off();
+      }).catch(err =>{
+        this.systemService.off();
       });
   }
   getByUnit(departmentId: string, unitId: string) {
@@ -131,7 +124,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
   }
   getEmployees(limit?, isUp?) {
     //let skip = this.employees.length;
-    console.log(this.limit, this.index);
+    this.systemService.on();
     this.loadIndicatorVisible = true;
     this.employeeService.find({ 
       query: { 
@@ -154,8 +147,10 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
         this.showLoadMore = false;
       }
       this.loadIndicatorVisible = false;
+      this.systemService.off();
     }, error => {
       this.loadIndicatorVisible = false;
+      this.systemService.off();
     });
     this.index++;
   }

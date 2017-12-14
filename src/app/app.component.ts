@@ -1,3 +1,4 @@
+import { SystemModuleService } from './services/module-manager/setup/system-module.service';
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -8,6 +9,7 @@ import { Facility, Employee, ClinicModel, AppointmentType, Appointment, Professi
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,7 +24,8 @@ export class AppComponent implements OnInit {
 
   constructor(router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
     private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
-    private facilityService: FacilitiesService, private locker: CoolLocalStorage) {
+    private facilityService: FacilitiesService, private locker: CoolLocalStorage,
+    private systemModuleService: SystemModuleService, private loadingService: LoadingBarService, ) {
     this.toastr.setRootViewContainerRef(vcr);
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
       if (obj.users !== undefined && obj.users.length > 0) {
@@ -37,7 +40,7 @@ export class AppComponent implements OnInit {
               this.error(obj.text);
             } else if (obj.type === 'Info') {
               this.info(obj.text);
-            }else if(obj.type ==='Warning'){
+            } else if (obj.type === 'Warning') {
               this.warning(obj.text);
             }
           }
@@ -45,6 +48,14 @@ export class AppComponent implements OnInit {
       }
 
     });
+
+    this.systemModuleService.loadingAnnounced$.subscribe((value: any) => {
+      if (value.status === 'On') {
+        this.loadingService.start();
+      } else {
+        this.loadingService.complete();
+      }
+    })
   }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -59,17 +70,17 @@ export class AppComponent implements OnInit {
   info(text) {
     this.toastr.info(text, 'Info');
   }
-  warning(text){
+  warning(text) {
     this.toastr.warning(text, 'Warning');
   }
-  checkRouterEvent(routerEvent: Event): void {
-    if (routerEvent instanceof NavigationStart) {
-      this.loadIndicatorVisible = true;
-    }
-    if (routerEvent instanceof NavigationEnd ||
-      routerEvent instanceof NavigationCancel ||
-      routerEvent instanceof NavigationError) {
-      this.loadIndicatorVisible = false;
-    }
-  }
+  // checkRouterEvent(routerEvent: Event): void {
+  //   if (routerEvent instanceof NavigationStart) {
+  //     this.loadIndicatorVisible = true;
+  //   }
+  //   if (routerEvent instanceof NavigationEnd ||
+  //     routerEvent instanceof NavigationCancel ||
+  //     routerEvent instanceof NavigationError) {
+  //     this.loadIndicatorVisible = false;
+  //   }
+  // }
 }
