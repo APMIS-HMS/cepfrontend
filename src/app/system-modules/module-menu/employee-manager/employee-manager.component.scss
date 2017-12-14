@@ -66,6 +66,43 @@ ul.topmenuwrap li:hover{
 .fullwidth-topActions {
     align-items: center;
     justify-content: space-between;
-    margin-left: 20px;
-    margin-bottom: -17px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+}
+.sort-btn{
+    display: none;
+}
+.sort-txt{
+    margin-top:-15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+}
+.sort-txt-mobile{
+    position: relative;
+    margin-top:-15px;
+    display: none;
+    width: 50%;
+    border: 1px solid #eee;
+    padding: 10px;
+}
+.x {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}
+.x:hover {
+    color: #ff2500;
+}
+@media only screen and (max-width: 670px) {
+    .sort-btn{
+        display: block;
+    }
+    .sort-txt{
+        display: none;
+    }
+    .sort-txt-mobile{
+        display: block;
+    }
 }

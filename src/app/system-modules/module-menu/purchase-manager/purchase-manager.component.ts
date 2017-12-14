@@ -23,6 +23,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   supplierNavMenu = false;
   modal_on = false;
   closeWhenClick = true;
+  productNavMenu = false;
 
   loginEmployee: Employee = <Employee>{};
   workSpace: any;

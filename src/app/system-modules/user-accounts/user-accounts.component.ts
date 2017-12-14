@@ -89,29 +89,19 @@ export class UserAccountsComponent implements OnInit {
 
   popListing(item: any) {
     const auth: any = this.locker.getObject('auth');
-    this.selectedFacility = item;
-    if (this.selectedFacility.isTokenVerified === false) {
-      this.popup_verifyToken = true;
-      this.popup_listing = false;
-    } else {
-      this.popup_listing = true;
-      this.popup_verifyToken = false;
-      // this.employeeService.find({
-      //   query: {
-      //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-      //   }
-      // }).then((payload: any) => {
-      //   if (payload.data.length > 0) {
-      //     this.loginEmployee = payload.data[0];
-      //   } else {
-      //     this.loginEmployee = undefined;
-      //   }
-      //   this.popup_listing = true;
-      //   this.popup_verifyToken = false;
-      // });
-    }
-    this.locker.setObject('selectedFacility', this.selectedFacility);
-    this.logoutConfirm_on = false;
+    this.facilityService.get(item._id,{}).then(payload =>{
+      this.selectedFacility = payload;
+      if (this.selectedFacility.isTokenVerified === false) {
+        this.popup_verifyToken = true;
+        this.popup_listing = false;
+      } else {
+        this.popup_listing = true;
+        this.popup_verifyToken = false;
+      }
+      this.locker.setObject('selectedFacility', this.selectedFacility);
+      this.logoutConfirm_on = false;
+    })
+
   }
   close_onClick(e) {
     this.popup_listing = false;

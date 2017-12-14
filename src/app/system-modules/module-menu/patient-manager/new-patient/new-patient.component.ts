@@ -294,31 +294,43 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getProfessions() {
         this.professionService.findAll().then(payload => {
             this.professions = payload.data;
+        }).catch(err =>{
+            
         });
     }
     getRelationships() {
         this.relationshipService.findAll().then(payload => {
             this.relationships = payload.data;
-        });
+        }).catch(err =>{
+            
+        });;
     }
     getMaritalStatus() {
         this.maritalStatusService.findAll().then(payload => {
             this.maritalStatuses = payload.data;
-        });
+        }).catch(err =>{
+            
+        });;
     }
     getGenders() {
         this.genderService.findAll().then(payload => {
             this.genders = payload.data;
+        }).catch(err =>{
+
         });
     }
     getTitles() {
         this.titleService.findAll().then(payload => {
             this.titles = payload.data;
+        }).catch(err =>{
+            
         });
     }
     getCountries() {
         this.countryService.findAll().then(payload => {
             this.countries = payload.data;
+        }).catch(err =>{
+            
         });
     }
     empApmisID() {
@@ -670,6 +682,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             } else {
                 this.isEmailExist = true;
             }
+        }).catch(error =>{
+            console.log(error)
         });
     }
 

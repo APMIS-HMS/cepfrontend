@@ -6,6 +6,7 @@ import {
 } from '../../services/facility-manager/setup/index';
 import { Address, Role, Facility, Gender, ModuleViewModel, User, Title, MaritalStatus, Person } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'app-contact-info',

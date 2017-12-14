@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { systemModulesRoutes } from './system-module.routes';
 import { SystemModuleComponent } from './system-module.component';
 import { SharedModule } from '../shared-module/shared.module';
+import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
+
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { SharedModule } from '../shared-module/shared.module';
     // ReactiveFormsModule,
     // FormsModule,
     systemModulesRoutes,
-    SharedModule
+    SharedModule,
+    LoadingBarHttpModule
 
   ],
   providers: []

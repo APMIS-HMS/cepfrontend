@@ -12,7 +12,6 @@ import {
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-patientmanager-detailpage',
   templateUrl: './patientmanager-detailpage.component.html',
@@ -22,8 +21,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
-  @Output() patientDetails: any;
+  patientDetails: any;
   @Input() patient: Patient;
+
 
   user: User = <User>{};
   subsect_biodata = true;
@@ -82,9 +82,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   pRChart: any[] = [];
   timeVal: Date;
   routeId: any;
-
-
-
+  checkedIn:any;
 
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
@@ -128,6 +126,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     })
   }
   setAppointment() {
+    console.log(this.selectedAppointment);
     if (this.patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
     }
@@ -139,12 +138,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
+      console.log(this.patient);
     } else {
       this.router.navigate(['/dashboard/patient-manager']);
     }
     this.getForms();
-
-
 
     this.route.params.subscribe(payloadk => {
       if (payloadk['checkInId'] !== undefined) {
@@ -152,7 +150,9 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
         if (isOnList.length > 0) {
           const isOnObj = isOnList[0];
           isOnObj.isOn = true;
-
+          let coo = <any>this.locker.getObject('appointment');
+          console.log(coo.isCheckedOut);
+          this.checkedIn = !coo.isCheckedOut;
           this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
             this.loginEmployee = payloadu;
             if (this.selectedAppointment !== undefined) {
