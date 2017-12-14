@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
-import { Patient, Facility, BillItem, BillIGroup, Invoice } from '../../../../models/index';
+import { Patient, Facility, BillItem, BillIGroup, Invoice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -28,6 +28,7 @@ export class InvoiceComponent implements OnInit {
     itemEditShow3 = false;
     itemAmount = '20,000.00';
     itemQty = 2;
+    user: any = <any>{};
 
     searchPendingInvoice = new FormControl('', []);
     searchPendingBill = new FormControl('', []);
@@ -48,6 +49,7 @@ export class InvoiceComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private patientService: PatientService) {
+        this.user = <User>this.locker.getObject('auth');
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.patientService.receivePatient().subscribe((payload: Patient) => {
             this.selectedPatient = payload;
@@ -103,6 +105,10 @@ export class InvoiceComponent implements OnInit {
         }
     }
 
+    onPersonValueUpdated(person) {
+        this.selectedPatient.personDetails = person;
+    }
+
     onSelectedOtherPatientInvoice(invoice) {
         this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
             this.invoiceGroups = [];
@@ -120,7 +126,11 @@ export class InvoiceComponent implements OnInit {
         this.addItem = true;
     }
     makePayment_show() {
-        this.makePaymentPopup = true;
+        if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+            this._notification('Info', "You donot have sufficient balance to make this payment")
+        } else {
+            this.makePaymentPopup = true;
+        }
     }
     close_onClick(e) {
         this.addModefierPopup = false;
@@ -128,6 +138,13 @@ export class InvoiceComponent implements OnInit {
         this.addItem = false;
         this.priceItemDetailPopup = false;
         this.makePaymentPopup = false;
+    }
+    private _notification(type: String, text: String): void {
+        this.facilityService.announceNotification({
+            users: [this.user._id],
+            type: type,
+            text: text
+        });
     }
     itemEditToggle() {
         this.itemEditShow = !this.itemEditShow;
