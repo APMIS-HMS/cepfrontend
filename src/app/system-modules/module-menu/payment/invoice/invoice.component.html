@@ -41,19 +41,25 @@
               </div>
             </div>
             <div class="pending-bills">
-              <div class="empWrap" *ngFor="let invoice of invoiceGroups">
-                <div class="list-labels">
-                  <div class="pending-name">{{invoice.invoiceNo}}</div>
-                  <div class="oda">
-                    <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>{{invoice.totalPrice|number}}
+              <div [hidden]="invoiceGroups.length>0">
+                Processing...
+                <i class='fa fa-spinner fa-spin'></i>
+              </div>
+              <div [hidden]="invoiceGroups.length==0">
+                <div class="empWrap" *ngFor="let invoice of invoiceGroups">
+                  <div class="list-labels">
+                    <div class="pending-name">{{invoice.invoiceNo}}</div>
+                    <div class="oda">
+                      <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
+                      <div class="pending-amount">
+                        <span>&#x20a6;</span>{{invoice.totalPrice|number}}
+                      </div>
+                    </div>
+                    <div class="pay-status pending-amount">
+                      <span class="badge-green" *ngIf="invoice.paymentCompleted">PAID</span>
+                      <span class="badge-red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
                     </div>
                   </div>
-                  <div class="pay-status pending-amount">
-                    <span class="badge-green" *ngIf="invoice.paymentCompleted">PAID</span>
-                    <span class="badge-red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
-                  </div> 
                 </div>
               </div>
             </div>
@@ -207,12 +213,12 @@
               <div class="pending-title">Patient's Pending Bills</div>
               <div class="search-wrap">
                 <md-input-container>
-                  <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
+                  <input mdInput placeholder="search for InvoiceNo" [formControl]="searchPendingBill">
                 </md-input-container>
               </div>
             </div>
             <div class="pending-bills">
-              <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups">
+              <div class="empWrap" *ngFor="let otherInvoice of distint_otherInvoiceGroups">
                 <div class="list-img">
                   <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
                   <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">

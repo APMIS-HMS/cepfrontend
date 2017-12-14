@@ -72,6 +72,7 @@ export class InvoiceComponent implements OnInit {
                 this.otherInvoiceGroups = payload.data;
                 console.log(this.otherInvoiceGroups);
             });
+            
     }
     ngOnInit() {
         this.frmAddItem = this.formBuilder.group({
