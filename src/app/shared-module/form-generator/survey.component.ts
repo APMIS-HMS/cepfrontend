@@ -27,16 +27,21 @@ export class SurveyComponent implements OnInit, OnDestroy {
                 // console.log(b);
             });
         })
+
+        this.shareService.announceTemplate$.subscribe((payload: any) => {
+            this.surveyModel.data = payload.data;
+            Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+        })
     }
 
     ngOnInit() {
         this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
         Survey.Survey.cssType = 'bootstrap';
 
-        this.surveyModel.data = { "Physician's Name": "Ojo", "General Comments": "Lanre" };
+        // this.surveyModel.data = { "Physician's Name": "Ojo", "General Comments": "Lanre" };
         Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
         Survey.Survey.cssType = 'bootstrap';
-       
+
         this.surveyModel.onComplete.add(() => {
             this.surveyResult();
         });

@@ -6,6 +6,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-patientmanager-homepage',
@@ -51,9 +52,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
-    private _countryService: CountriesService,
+    private _countryService: CountriesService, private systemService:SystemModuleService,
     private _titleService: TitleService
   ) {
+    this.systemService.on();
     this.patientService.listner.subscribe(payload => {
       this.getPatients(this.limit);
     });
@@ -191,6 +193,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
   getPatients(limit?) {
+    this.loading = true;
+    this.systemService.on();
     this.patientService.find({
       query: {
         facilityId: this.facility._id,
@@ -199,7 +203,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         $sort:{createdAt: -1 }
       }
     }).then(payload => {
-      this.loading = false;
       this.total = payload.total;
       if (payload.data.length > 0) {
         if (this.resetData !== true) {
@@ -216,8 +219,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.patients = [];
       }
       this.getShowing();
+      this.systemService.off();
+      this.loading = false;
     }).catch(errr => {
       console.log(errr);
+      this.systemService.off();
+      this.loading = false;
     });
     this.index++;
   }

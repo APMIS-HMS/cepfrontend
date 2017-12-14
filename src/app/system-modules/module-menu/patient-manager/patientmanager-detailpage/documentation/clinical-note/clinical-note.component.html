@@ -21,6 +21,12 @@
             </md-autocomplete>
         </div>
 
+        <div class="frm-item-wrap">
+            <md-select placeholder="Select Template" [formControl]="templateFormCtrl">
+              <md-option *ngFor="let item of templates" [value]="item">{{item.name}}</md-option>
+            </md-select>
+          </div>
+
         <div>
             <div class="val-tag">Status</div>
             <div class="list-label">Draft</div>

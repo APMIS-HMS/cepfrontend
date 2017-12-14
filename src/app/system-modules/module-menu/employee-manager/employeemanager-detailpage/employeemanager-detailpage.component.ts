@@ -1,4 +1,5 @@
-﻿import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
+﻿import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, FacilitiesService, UserService,
@@ -75,6 +76,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private genderService: GenderService,
     private relationshipService: RelationshipService,
     private maritalStatusService: MaritalStatusService,
+    private systemService:SystemModuleService,
     private locker: CoolLocalStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -131,6 +133,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
   }
   prime() {
+    this.systemService.on();
     const gender$ = Observable.fromPromise(this.genderService.findAll());
     const relationship$ = Observable.fromPromise(this.relationshipService.findAll());
     const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
@@ -142,15 +145,17 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.maritalStatuses = results[2].data;
       this.countries = results[3].data;
       this.homeCountries = results[3].data;
+      this.systemService.off();
+    },error =>{
+      this.systemService.off();
     })
   }
   getEmployee(id) {
-    this.loadIndicatorVisible = true;
+    this.systemService.on();
     const auth = <any>this.locker.getObject('auth');
     const employee$ = this.employeeService.get(id, {});
     const user$ = this.userService.find({ query: { personId: auth.data.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
-      console.log(results)
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};
       this.loadIndicatorVisible = false;
@@ -158,29 +163,17 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.selectedValue = this.employee.departmentId;
       this.selectedPerson = this.employee.employeeDetails;
       this.getCurrentUser(results[1]);
+      this.systemService.off();
+    }, error =>{
+      this.systemService.off();
     });
-    // this.employeeService.get(employee._id, {}).subscribe(payload => {
-    //   console.log(payload);
-    //   this.employee = payload;
-    //   this.selectedPerson = this.employee.employeeDetails;
-    //   this.getCurrentUser();
-    // });
   }
   getCurrentUser(payload) {
-    // this.userService.reload();
     if (payload.data.length > 0) {
       this.selectedUser = payload.data[0];
     } else {
       this.selectedUser = <User>{};
     }
-    // this.userService.find({ query: { personId: this.employee.personId } }).then(payload => {
-    //   console.log(payload);
-    //   if (payload.data.length > 0) {
-    //     this.selectedUser = payload.data[0];
-    //   } else {
-    //     this.selectedUser = <User>{};
-    //   }
-    // });
   }
 
   generateWorkSpace() {
@@ -190,49 +183,6 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.assignUnitPop = !this.assignUnitPop;
   }
   loadRoute() {
-    // this.route.params.subscribe(payload => {
-    //   console.log(payload);
-    //   if (payload.id !== undefined) {
-    //     // this.employeeService.announceEmployee()
-    //   }
-    // })
-    // this.route.params.subscribe((params: any) => {
-    //   this.employeeService.find({ query: { personId: params.id, facilityId: this.selectedFacility._id } }).then(payload => {
-    //     if (payload.data.length > 0) {
-    //       this.employee = payload.data[0];
-    //       this.selectedPerson = this.employee.employeeDetails;
-    //       this.getCurrentUser();
-    //       this.employee.employeeFacilityDetails.departments.forEach((item, i) => {
-    //         if (item._id === this.employee.departmentId) {
-    //           this.selectedDepartment = item;
-    //         }
-    //       });
-    //       this.selectedNationality = this.employee.employeeDetails.nationality;
-    //       this.getSelectedState();
-    //       this.countryService.get(this.employee.employeeDetails.homeAddress.country, {}).then((countryPayload: Country) => {
-    //         let countryName = countryPayload.name;
-    //         let stateName = '';
-    //         let cityName = '';
-    //         let inEmployee = this.employee;
-
-    //         countryPayload.states.forEach((item, i) => {
-    //           if (item._id === inEmployee.employeeDetails.homeAddress.state) {
-    //             stateName = item.name;
-    //             let cities: [any] = item.cities;
-    //             cities.forEach((cityItem, j) => {
-    //               if (cityItem._id === inEmployee.employeeDetails.homeAddress.city) {
-    //                 cityName = cityItem.name;
-    //                 this.homeAddress = inEmployee.employeeDetails.homeAddress.street + ', ' + cityName + ', '
-    //                   + stateName + ', ' + countryName;
-    //               }
-    //             });
-    //           }
-    //         });
-
-    //       });
-    //     }
-    //   });
-    // });
     this.route.params.subscribe((params: any) => {
       this.getEmployee(params.id);
     })

@@ -30,20 +30,20 @@ export class FacilityPageHomeComponent implements OnInit {
   hasWorkSpaces = false;
 
   constructor(private router: Router, private locker: CoolLocalStorage, private employeeService: EmployeeService) {
-    router.events.subscribe((routerEvent: Event) => {
-      this.checkRouterEvent(routerEvent);
-    });
+    // router.events.subscribe((routerEvent: Event) => {
+    //   this.checkRouterEvent(routerEvent);
+    // });
   }
-  checkRouterEvent(routerEvent: Event): void {
-    if (routerEvent instanceof NavigationStart) {
-      this.loadIndicatorVisible = true;
-    }
-    if (routerEvent instanceof NavigationEnd ||
-      routerEvent instanceof NavigationCancel ||
-      routerEvent instanceof NavigationError) {
-      this.loadIndicatorVisible = false;
-    }
-  }
+  // checkRouterEvent(routerEvent: Event): void {
+  //   if (routerEvent instanceof NavigationStart) {
+  //     this.loadIndicatorVisible = true;
+  //   }
+  //   if (routerEvent instanceof NavigationEnd ||
+  //     routerEvent instanceof NavigationCancel ||
+  //     routerEvent instanceof NavigationError) {
+  //     this.loadIndicatorVisible = false;
+  //   }
+  // }
   ngOnInit() {
     const page: string = this.router.url;
     this.checkPageUrl(page);
