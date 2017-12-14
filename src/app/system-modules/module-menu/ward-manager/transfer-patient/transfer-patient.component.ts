@@ -58,9 +58,11 @@ export class TransferPatientComponent implements OnInit {
 			console.log(value);
 			this.disableTransferBtn = true;
 			this.transferBtnText = 'Transfering... <i class="fa fa-spinner fa-spin"></i>';
-			this._inPatientService.find({ query: { _id: this.inPatientId }}).then(payload => {
-				payload.data[0].statusId = myGlobals.transfer;
-				this._inPatientService.update(payload.data[0]).then(payload2 => {
+			this._inPatientService.get(this.inPatientId, {}).then(payload => {
+        console.log(payload);
+        payload.statusId = myGlobals.transfer;
+        payload.proposedWard = value.ward;
+				this._inPatientService.update(payload).then(payload2 => {
 					this.disableTransferBtn = false;
 					this.transferBtnText = '<i class="fa fa-share" aria-hidden="true"></i> Transfer Patient';
 					const name = this.selectedPatient.patientId.personDetails.personFullName;

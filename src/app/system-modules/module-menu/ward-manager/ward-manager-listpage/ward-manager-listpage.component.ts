@@ -40,23 +40,25 @@ export class WardManagerListpageComponent implements OnInit {
 
 	getFacilityWard() {
 		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-			this.loading = false;
-			let bedCount = 0;
+      this.loading = false;
 			if (res.data.length > 0) {
-				res.data[0].locations.forEach(ward => {
-					ward.rooms.forEach(room => {
+        res.data[0].locations.forEach(ward => {
+          ward.rooms.forEach(room => {
+            let bedCount = 0;
 						if (room.beds.length > 0) {
-							room.beds.forEach(bed => {
+              room.beds.forEach(bed => {
 								if (bed.isAvailable) {
 									room.availableBeds = ++bedCount;
-								}
+								} else {
+                  room.availableBeds = 0;
+                }
 							});
 						} else {
 							room.availableBeds = 0;
 						}
 					});
 				});
-				this.wards = res.data[0].locations;
+        this.wards = res.data[0].locations;
 			}
 		});
 	}
