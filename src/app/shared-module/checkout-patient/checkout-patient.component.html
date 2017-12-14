@@ -8,7 +8,7 @@
             <div class="checkoutBtn" (click)='checkOutPatient("No Futher Appointment")'>No Futher Appointment</div> 
             <div class="checkoutBtn" (click)='checkOutPatient("Follow-Up With Appointment")'>Follow-Up With Appointment</div>
             <div (click)="checkoutWard()" class="checkoutBtn">Send for Admission</div>
-            <div class="checkoutBtn">Death</div>
+            <div (click)="deathCheckout()" class="checkoutBtn">Death</div>
         </div>
         <div class="rightsect">
             <div *ngIf="ward_checkout" class="selectedCheck">
@@ -30,6 +30,38 @@
                     </form>
                     <div class="btn-box">
                         <button md-raised-button [disabled]="!admitFormGroup.valid" class="btn" (click)="onClickAdmit(admitFormGroup.value, admitFormGroup.valid);" [innerHtml]="admitBtnText"></button>
+                    </div>
+                </div>
+                <div *ngIf="admittedWard.isAdmitted && !loading">
+                    <div style="width:100%;">
+                        <span style="padding:50px;">{{ admittedWard.msg }} </span>
+                    </div>
+                </div>
+                <div *ngIf="!admittedWard.isAdmitted && loading">
+                    <div>
+                        <span> Loading</span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="death_checkout" class="selectedCheck">
+                <div *ngIf="!admittedWard.isAdmitted && !loading">
+                    <div class="sub-header">Checkout {{ patientDetails?.personDetails?.personFullName }} since he/she is Dead</div>
+                    <form [formGroup]="deathFormGroup" novalidate>
+                        <div class="frm-item-wrap">
+                            <md-form-field>
+                                <input formControlName="deathTime" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                <md-datepicker #picker></md-datepicker>
+                            </md-form-field>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <md-form-field>
+                                <textarea formControlName="desc" mdInput placeholder="Description (optional)"></textarea>
+                            </md-form-field>
+                        </div>
+                    </form>
+                    <div class="btn-box">
+                        <button md-raised-button [disabled]="!deathFormGroup.valid || loading" class="btn" (click)="checkOutPatient('death', deathFormGroup.value, deathFormGroup.valid);" [innerHtml]="admitBtnText"></button>
                     </div>
                 </div>
                 <div *ngIf="admittedWard.isAdmitted && !loading">

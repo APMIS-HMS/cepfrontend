@@ -2,7 +2,7 @@
 
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <div class="facility-title">Make Payment</div>
-  <div class="total">{{cost| currency:'NGN':true:'1.2-2'}}</div>
+  <div class="total">&#x20a6;{{cost| number}}</div>
   <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
   <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
     <i class="fa fa-check" aria-hidden="true"></i>
@@ -27,17 +27,20 @@
         <input mdInput md-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
       </md-input-container>
     </div> -->
-    
-    <button md-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
-      <span>
-        <div [hidden]="isProcessing">
-          Make Payment
-        </div>
-        <div [hidden]="!isProcessing">
-          Processing...
-          <i class='fa fa-spinner fa-spin'></i>
-        </div>
-      </span>
-    </button>
+    <div class="btn-group">
+      <button md-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
+        <span>
+          <div [hidden]="isProcessing">
+            Make Payment
+          </div>
+          <div [hidden]="!isProcessing">
+            Processing...
+            <i class='fa fa-spinner fa-spin'></i>
+          </div>
+        </span>
+      </button>
+
+      <button class="btn btn-red">Cancel</button>
+    </div>
   </div>
 </div>
