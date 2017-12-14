@@ -69,7 +69,17 @@ select {
     min-height: 100vh;
 }
 
-// Added by Chisimdi
+.badge-green{
+    color: #fff;
+    background: green;
+    padding: 3px 5px;
+}
+.badge-red{
+    color: #fff;
+    background: #ff2500;
+    padding: 3px 5px;
+}
+
 .bg-green {
     background-color: green !important;
 }
@@ -303,6 +313,7 @@ select {
     background: -moz-linear-gradient(left, #B71C1C, #F44336);
     background: -ms-linear-gradient(left, #B71C1C, #F44336);
     background: -o-linear-gradient(left, #B71C1C, #F44336);
+    color: #fff;
 }
 
 .btn-red:hover {

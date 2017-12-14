@@ -1,4 +1,3 @@
-
 <div class="modal-baseWrap animated pulse">
 
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
@@ -10,7 +9,8 @@
     <span>{{successMsg}}</span>
   </div>
   <div class="pay-wrap">
-    <div class="frm-item-wrap">
+
+    <!-- <div class="frm-item-wrap">
       <md-select [formControl]="channel" placeholder="Payment Channel">
         <md-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</md-option>
       </md-select>
@@ -18,26 +18,29 @@
 
     <div class="frm-item-wrap" [hidden]="!isCash">
       <md-input-container>
-          <input mdInput md-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
+        <input mdInput md-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
       </md-input-container>
     </div>
 
     <div class="frm-item-wrap" [hidden]="!isCash">
-        <md-input-container>
-            <input mdInput md-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
-        </md-input-container>
-      </div>
-
-    <button md-raised-btn class="btn btn-primary" [disabled]="disableBtn" (click)="makePayment()">
+      <md-input-container>
+        <input mdInput md-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
+      </md-input-container>
+    </div> -->
+    <div class="btn-group">
+      <button md-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
         <span>
-            <div [hidden]="isProcessing">
-                Make Payment
-            </div>
-            <div [hidden]="!isProcessing">
-                Processing...
-                <i class='fa fa-spinner fa-spin'></i>
-            </div>
+          <div [hidden]="isProcessing">
+            Make Payment
+          </div>
+          <div [hidden]="!isProcessing">
+            Processing...
+            <i class='fa fa-spinner fa-spin'></i>
+          </div>
         </span>
       </button>
+
+      <button class="btn btn-red">Cancel</button>
+    </div>
   </div>
 </div>

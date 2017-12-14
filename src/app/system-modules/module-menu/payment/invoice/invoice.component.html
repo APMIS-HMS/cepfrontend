@@ -2,10 +2,10 @@
   <div class="facility-title">Bills/Payment</div>
   <div class="inner-page-wrap">
     <ul class="topmenuwrap">
-        <li (click)="makePayment_show()">
-            <i class="fa fa-money" aria-hidden="true"></i>
-            <span>Make Payment</span>
-        </li>
+      <li (click)="makePayment_show()">
+        <i class="fa fa-money" aria-hidden="true"></i>
+        <span>Make Payment</span>
+      </li>
     </ul>
     <div class="megaPgWrap">
       <div class="feedsWrap leftCol">
@@ -36,60 +36,24 @@
               <div class="pending-title">Invoices</div>
               <div class="search-wrap">
                 <md-input-container>
-                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
+                  <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
                 </md-input-container>
               </div>
             </div>
             <div class="pending-bills">
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
+              <div class="empWrap" *ngFor="let invoice of invoiceGroups">
                 <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
+                  <div class="pending-name">{{invoice.invoiceNo}}</div>
                   <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>{{invoice.totalPrice|number}}
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
+                  <div class="pay-status pending-amount">
+                    <span class="badge-green" *ngIf="invoice.paymentCompleted">PAID</span>
+                    <span class="badge-red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
+                  </div> 
                 </div>
               </div>
             </div>
@@ -177,7 +141,8 @@
                     <div class="itemDesc">{{billItem.billingItems?.description}}</div>
                   </td>
                   <td class="col2">
-                    <div class="topTotal" [hidden]="itemEditShow"><span>&#8358;</span> {{billItem.billingItems?.unitPrice}}</div>
+                    <div class="topTotal" [hidden]="itemEditShow">
+                      <span>&#8358;</span> {{billItem.billingItems?.unitPrice}}</div>
                     <input currencyMask [options]="{ prefix: '&#8358; '}" *ngIf="itemEditShow" class="edit-control" value="{{itemAmount}}" [formControl]="itemEdit">
                   </td>
                   <td class="col3">
@@ -185,7 +150,8 @@
                     <input *ngIf="itemEditShow" class="edit-control" type="number" value="{{itemQty}}" [formControl]="itemQtyEdit">
                   </td>
                   <td class="col4">
-                    <div class="topTotal"><span>&#8358;</span> {{billItem.billingItems?.totalPrice}}</div>
+                    <div class="topTotal">
+                      <span>&#8358;</span> {{billItem.billingItems?.totalPrice}}</div>
                   </td>
                   <!--<td class="col5">
                     <i [hidden]="itemEditShow" (click)="itemEditToggle()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -235,123 +201,131 @@
       </div>
 
       <div class="feedsWrap rightCol">
-         <div class="feedbox">
+        <div class="feedbox">
           <div class="pending-wrap">
             <div class="pending-header">
               <div class="pending-title">Patient's Pending Bills</div>
               <div class="search-wrap">
                 <md-input-container>
-                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
+                  <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
                 </md-input-container>
               </div>
             </div>
             <div class="pending-bills">
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
 
               <div class="empWrap">
                 <div class="list-img">
-                    <img src="assets/images/users/default.png">
+                  <img src="assets/images/users/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
                   <div class="oda">
                     <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
+                    <div class="pending-amount">
+                      <span>&#x20a6;</span>30,000</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>   
-        </div> 
+          </div>
+        </div>
       </div>
     </div>
   </div>

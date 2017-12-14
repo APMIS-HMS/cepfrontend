@@ -436,8 +436,9 @@
 .mainmenu-content {
     border-right: 1px solid #11315b;
     background: #194985;
-    height: 90vh;
-    overflow-y: auto;
+    min-height: 90vh;
+    height: 100%;
+    // overflow-y: auto;
     width: 265px;
 }
 #style-1::-webkit-scrollbar-track

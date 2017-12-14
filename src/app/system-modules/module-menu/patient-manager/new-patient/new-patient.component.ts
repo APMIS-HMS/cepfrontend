@@ -226,6 +226,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empState: ['', [<any>Validators.required]],
             empLga: ['', [<any>Validators.required]],
             empEmail: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$')]],
+            confirmEmpEmail: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$')]],
             empPhonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 
         });
@@ -245,7 +246,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empContactState: ['', [<any>Validators.required]],
             empCity: ['', [<any>Validators.required]],
             empHomeAddress: ['', [<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]],
-            empDOB: [new Date(), [<any>Validators.required]]
+            empDOB: [new Date(), [<any>Validators.required]],
+            secQst: ['',[]],
+            secAns: ['',[]]
 
         });
         this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
