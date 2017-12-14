@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer --vendor-chunk --named-chunks",
+    "config": "ts-node ./src/set-env.ts",
+    "start": "npm run config -- --environment=prod.apmis && ng serve --environment=prod.apmis",
     "build": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer --vendor-chunk --named-chunks",
     "test": "ng test",
     "lint": "ng lint",

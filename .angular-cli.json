@@ -31,8 +31,9 @@
         ],
         "environmentSource": "environments/environment.ts",
         "environments": {
-            "dev": "environments/environment.ts",
-            "prod": "environments/environment.prod.ts"
+            "dev": "environments/environment.dev.ts",
+            "prod.apmis": "environments/environment.prod.apmis.ts",
+            "prod.tertiary": "environments/environment.prod.tertiary.ts"
         }
     }],
     "e2e": {

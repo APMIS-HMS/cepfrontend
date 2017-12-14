@@ -42,7 +42,7 @@
 }
 .txt1{
     font-family: $font-titles;
-    font-size: 60px;
+    font-size: 38px;
     font-weight: bold;
     color: #fff;
     text-align: center;
@@ -54,13 +54,17 @@
     text-align: center;
     width: 100%;
 }
+.home-logoWrap{
+    width: 144px;
+}
 .logo-wrap{
     position: absolute;
     top: 20px;
     left: 20px;
+    width: 50px;
 }
 .logo-wrap img{
-    width: 175px;
+    width: 100%;
 }
 .signin-upWrap {
     border-top: 2px solid #fff;

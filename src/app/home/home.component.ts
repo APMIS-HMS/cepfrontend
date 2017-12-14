@@ -1,4 +1,6 @@
+import { environment } from './../../environments/environment';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +11,19 @@ export class HomeComponent implements OnInit {
 
   login_on = false;
   pwdReset_on = false;
+  platformName = '';
+  platformLogo = '';
+  secondaryLogo;
+  title;
 
-  constructor() { }
+  constructor(private titleService:Title) {
+    this.title = environment.title;
+    this.titleService.setTitle(this.title);
+    this.platformName = environment.platform;
+    this.platformLogo = environment.logo;
+    this.secondaryLogo = environment.secondary_logo;
+    console.log(environment)
+  }
 
   ngOnInit() {
   }
