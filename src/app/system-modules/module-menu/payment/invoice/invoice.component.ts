@@ -104,7 +104,10 @@ export class InvoiceComponent implements OnInit {
     }
 
     onSelectedOtherPatientInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]);
+        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
+            this.invoiceGroups = [];
+            this.otherInvoiceGroups = [];
+        });
     }
 
     addModefier() {
