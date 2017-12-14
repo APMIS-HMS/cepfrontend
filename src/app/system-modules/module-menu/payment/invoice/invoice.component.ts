@@ -37,6 +37,7 @@ export class InvoiceComponent implements OnInit {
     invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
     selectedInvoiceGroup: Invoice = <Invoice>{};
     invoiceGroups: Invoice[] = [];
+    otherInvoiceGroups: Invoice[] = [];
     subscription: Subscription;
     constructor(private formBuilder: FormBuilder,
         private locker: CoolLocalStorage,
@@ -60,10 +61,16 @@ export class InvoiceComponent implements OnInit {
     }
     getPatientInvoices() {
         console.log("Load invoices");
-        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id } })
+        this.invoiceService.find({ query: { patientId: this.selectedPatient._id,facilityId: this.selectedFacility._id,$sort: { createdAt: -1 },$limit:5}})
             .then(payload => {
                 this.invoiceGroups = payload.data;
                 console.log(this.invoiceGroups);
+            });
+
+            this.invoiceService.find({ query: { patientId:{$ne: this.selectedPatient._id}, facilityId: this.selectedFacility._id,$sort: { createdAt: -1 },$limit:10 } })
+            .then(payload => {
+                this.otherInvoiceGroups = payload.data;
+                console.log(this.otherInvoiceGroups);
             });
     }
     ngOnInit() {
@@ -76,6 +83,7 @@ export class InvoiceComponent implements OnInit {
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
+                    console.log(this.selectedPatient);
                     this.getPatientInvoices();
                 });
             }

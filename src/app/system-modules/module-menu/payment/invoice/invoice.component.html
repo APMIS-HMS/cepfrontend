@@ -51,9 +51,9 @@
                     </div>
                   </div>
                   <div class="pending-amount">
-                      <span class="Green" *ngIf="invoice.paymentCompleted">PAID</span>
-                      <span class="Red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
-                    </div>
+                    <span class="badge Green" *ngIf="invoice.paymentCompleted==true">PAID</span>
+                    <span class="badge Red" *ngIf="invoice.paymentCompleted==false">UNPAID</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -212,107 +212,10 @@
               </div>
             </div>
             <div class="pending-bills">
-              <div class="empWrap">
+              <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups">
                 <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                  <img src="assets/images/users/default.png">
+                  <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
+                  <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                 </div>
                 <div class="list-labels">
                   <div class="pending-name">Johnson Wade</div>
