@@ -42,7 +42,6 @@
             </div>
             <div class="pending-bills">
               <div [hidden]="invoiceGroups.length>0">
-                Processing...
                 <i class='fa fa-spinner fa-spin'></i>
               </div>
               <div [hidden]="invoiceGroups.length==0">
@@ -218,21 +217,26 @@
               </div>
             </div>
             <div class="pending-bills">
-              <div class="empWrap" *ngFor="let otherInvoice of distint_otherInvoiceGroups">
-                <div class="list-img">
-                  <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                  <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount">
-                      <span>&#x20a6;</span>30,000</div>
+                <div [hidden]="otherInvoiceGroups.length>0">
+                    <i class='fa fa-spinner fa-spin'></i>
+                  </div>
+                  <div [hidden]="otherInvoiceGroups.length==0">
+                      <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups">
+                          <div class="list-img">
+                            <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
+                            <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
+                          </div>
+                          <div class="list-labels">
+                            <div class="pending-name">Johnson Wade</div>
+                            <div class="oda">
+                              <div class="pending-date">11th October, 2017. 1200am</div>
+                              <div class="pending-amount">
+                                <span>&#x20a6;</span>30,000</div>
+                            </div>
+                          </div>
+                        </div>
                   </div>
                 </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
