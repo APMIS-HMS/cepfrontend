@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, BillIGroup, Invoice } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -45,6 +45,7 @@ export class InvoiceComponent implements OnInit {
         public facilityService: FacilitiesService,
         private invoiceService: InvoiceService,
         private billingService: BillingService,
+        private router: Router,
         private route: ActivatedRoute,
         private patientService: PatientService) {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -100,6 +101,13 @@ export class InvoiceComponent implements OnInit {
         } else {
             this.isPaidClass = false;
         }
+    }
+
+    onSelectedOtherPatientInvoice(invoice) {
+        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
+            this.invoiceGroups = [];
+            this.otherInvoiceGroups = [];
+        });
     }
 
     addModefier() {

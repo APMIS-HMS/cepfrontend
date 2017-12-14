@@ -225,7 +225,7 @@
                 <i class='fa fa-spinner fa-spin'></i>
               </div>
               <div [hidden]="otherInvoiceGroups.length==0">
-                <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups">
+                <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups" (click)="onSelectedOtherPatientInvoice(otherInvoice)">
                   <div class="list-img">
                     <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
                     <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
