@@ -29,7 +29,7 @@ export class MakePaymentComponent implements OnInit {
   @Input() discount: any = <any>{};
   @Input() subTotal: any = <any>{};
   @Input() invoice: any = <any>{};
-  @Input() isVoicePage: boolean = <boolean>{};
+  @Input() isInvoicePage: any = <any>{};
 
 
   paymentChannels = PaymentChannel;
@@ -89,8 +89,9 @@ export class MakePaymentComponent implements OnInit {
   }
 
   makePayment() {
-    if (this.isVoicePage == false) {
-      this.isProcessing = true;
+    this.isProcessing = true;
+    console.log(this.isInvoicePage);
+    if (this.isInvoicePage == false) {
       var paymantObj = {
         "inputedValue": {
           "channel": TransactionMedium[TransactionMedium.Wallet],
@@ -104,7 +105,8 @@ export class MakePaymentComponent implements OnInit {
         "discount": this.discount,
         "subTotal": this.subTotal,
         "checkBillitems": this.checkBillitems,
-        "listedBillItems": this.listedBillItems
+        "listedBillItems": this.listedBillItems,
+        "isInvoicePage":true
       }
 
       this._makePaymentService.create(paymantObj).then(payload => {
@@ -115,18 +117,24 @@ export class MakePaymentComponent implements OnInit {
         this._notification('Success', 'Payment successfull.');
       });
     } else {
-      this.checkBillitems.paymentCompleted = true;
-      this.checkBillitems.payments.push({
-        "transactionType": TransactionType[TransactionType.Dr],
-        "amount": this.cost,
-        "transactionMedium": TransactionMedium[TransactionMedium.Wallet],
-        "transactionStatus": TransactionStatus.Complete
+      var paymantObj2 = {
+        "inputedValue": {
+          "channel": TransactionMedium[TransactionMedium.Wallet],
+          "txnType": TransactionType[TransactionType.Dr],
+          "txnStatus": TransactionStatus.Complete,
+          "cost": this.cost
+        },
+        "invoice": this.invoice,
+        "selectedPatient": this.selectedPatient,
+        "isInvoicePage":true
+      }
+      this._makePaymentService.create(paymantObj2).then(payload => {
+        console.log(payload);
+        this.personValueChanged.emit(payload.data);
+        this.isProcessing = false;
+        this.close_onClick();
+        this._notification('Success', 'Payment successfull.');
       });
-      this._invoiceService.update(this.checkBillitems).then(payload => {
-        this._notification('Success', "Payment for invoice: " + payload.invoiceNo + " was successfull");
-      }, err => {
-        this._notification('Error', err)
-      })
     }
   }
 

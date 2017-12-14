@@ -41,7 +41,7 @@
               </div>
             </div>
             <div class="pending-bills">
-              <div [hidden]="invoiceGroups.length>0">
+              <div [hidden]="isLoadingInvoice">
                 <i class='fa fa-spinner fa-spin'></i>
               </div>
               <div [hidden]="invoiceGroups.length==0">
@@ -221,7 +221,7 @@
               </div>
             </div>
             <div class="pending-bills">
-              <div [hidden]="otherInvoiceGroups.length>0">
+              <div [hidden]="isLoadingOtherInvoice">
                 <i class='fa fa-spinner fa-spin'></i>
               </div>
               <div [hidden]="otherInvoiceGroups.length==0">
@@ -266,5 +266,5 @@
   </div>
 
   <div *ngIf="makePaymentPopup" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedPatient?.personDetails?.wallet.balance" [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isVoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
+    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.totalPrice" [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
   </div>

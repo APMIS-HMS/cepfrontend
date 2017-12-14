@@ -38,6 +38,8 @@ export class InvoiceComponent implements OnInit {
     selectedBillItem: BillItem = <BillItem>{};
     invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
     selectedInvoiceGroup: Invoice = <Invoice>{};
+    isLoadingInvoice = false;
+    isLoadingOtherInvoice = false;
     invoiceGroups: Invoice[] = [];
     otherInvoiceGroups: Invoice[] = [];
     subscription: Subscription;
@@ -68,12 +70,14 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { createdAt: -1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
+                this.isLoadingInvoice = true;
                 console.log(this.invoiceGroups);
             });
 
         this.invoiceService.find({ query: { patientId: { $ne: this.selectedPatient._id }, facilityId: this.selectedFacility._id, paymentCompleted: false, $sort: { createdAt: -1 }, $limit: 10 } })
             .then(payload => {
                 this.otherInvoiceGroups = payload.data;
+                this.isLoadingOtherInvoice = true;
                 console.log(this.otherInvoiceGroups);
             });
 
@@ -107,12 +111,16 @@ export class InvoiceComponent implements OnInit {
 
     onPersonValueUpdated(person) {
         this.selectedPatient.personDetails = person;
+        this.isLoadingInvoice = false;
+        this.isLoadingOtherInvoice = false;
+        this.isPaidClass = false;
+        this.getPatientInvoices();
     }
 
     onSelectedOtherPatientInvoice(invoice) {
         this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
-            this.invoiceGroups = [];
-            this.otherInvoiceGroups = [];
+            this.isLoadingInvoice = false;
+            this.isLoadingOtherInvoice = false;
         });
     }
 
@@ -126,18 +134,22 @@ export class InvoiceComponent implements OnInit {
         this.addItem = true;
     }
     makePayment_show() {
-        console.log(this.selectedInvoiceGroup.totalPrice);
-        if(this.selectedInvoiceGroup.totalPrice!=0 && this.selectedInvoiceGroup.totalPrice!=undefined){
-            if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
-                this._notification('Info', "You donot have sufficient balance to make this payment");
+        if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
+            if (this.selectedInvoiceGroup.paymentCompleted == false) {
+                if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+                    this._notification('Info', "You donot have sufficient balance to make this payment");
+                } else {
+                    this.makePaymentPopup = true;
+                }
             } else {
-                this.makePaymentPopup = true;
+                this._notification('Info', "Selected invoice is paid");
             }
-        }else{
+        } else {
             this._notification('Info', "You cannot make payment for a Zero cost service, please select an invoice");
         }
-        
+
     }
+
     close_onClick(e) {
         this.addModefierPopup = false;
         this.addLineModefierPopup = false;
