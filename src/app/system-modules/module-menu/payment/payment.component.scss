@@ -619,8 +619,7 @@ td:hover {
 
 div.invoice
 {
-  width:200px;
-  height:200px;
+  width:100%;
   display:inline-block;
   vertical-align:top;
   box-sizing:border-box;
@@ -633,8 +632,8 @@ div.invoice.paid:after
 {
     content:"PAID";
     position:absolute;
-    top:70px;
-    left:10px;
+    top:40%;
+    left:40%;
     z-index:1;
     font-family:Arial,sans-serif;
     -webkit-transform: rotate(-45deg); /* Safari */
@@ -660,8 +659,8 @@ div.invoice.unpaid:after
 {
     content:"UNPAID";
     position:absolute;
-    top:70px;
-    left:10px;
+    top:40%;
+    left:40%;
     z-index:1;
     font-family:Arial,sans-serif;
     -webkit-transform: rotate(-45deg); /* Safari */
