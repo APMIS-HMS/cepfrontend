@@ -549,7 +549,15 @@ export class BillLookupComponent implements OnInit {
     this.priceItemDetailPopup = true;
   }
   makePayment_onclick() {
-    this.makePayment = true;
+    if (this.total != 0 && this.total != undefined) {
+      if (this.selectedPatient.personDetails.wallet.balance < this.total) {
+        this._notification('Info', "You donot have sufficient balance to make this payment")
+      } else {
+        this.makePayment = true;
+      }
+    } else {
+      this._notification('Info', "You cannot make payment for a Zero cost service, please select bill");
+    }
   }
   close_onClick(e) {
     this.addModefierPopup = false;
