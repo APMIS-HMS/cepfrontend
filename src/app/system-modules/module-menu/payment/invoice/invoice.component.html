@@ -227,7 +227,7 @@
                             <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                           </div>
                           <div class="list-labels">
-                            <div class="pending-name">Johnson Wade</div>
+                            <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
                             <div class="oda">
                               <div class="pending-date">11th October, 2017. 1200am</div>
                               <div class="pending-amount">
