@@ -8,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 export class BillingService {
   public _socket;
   private _rest;
+  public updatelistner;
 
   private billingAnnouncedSource = new Subject<Object>();
   billingAnnounced$ = this.billingAnnouncedSource.asObservable();
@@ -18,6 +19,7 @@ export class BillingService {
   ) {
     this._rest = _restService.getService('billings');
     this._socket = _socketService.getService('billings');
+    this.updatelistner = Observable.fromEvent(this._socket, 'updated');
      this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
 

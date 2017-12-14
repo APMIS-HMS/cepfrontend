@@ -57,11 +57,13 @@
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Room</div>
-                    <div class="subsect-val">{{selectedPatient?.wardItem?.roomId?.name}}</div>
+                    <div class="subsect-val">{{selectedPatient?.transfers[selectedPatient?.transfers.length -1]?.roomId.name}}</div>
+                    <!-- <div class="subsect-val">{{selectedPatient?.wardItem?.roomId?.name}}</div> -->
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Bed</div>
-                    <div class="subsect-val">{{selectedPatient?.wardItem?.bedId?.name }}</div>
+                    <div class="subsect-val">{{selectedPatient?.transfers[selectedPatient?.transfers.length -1]?.bedId.name}}</div>
+                    <!-- <div class="subsect-val">{{selectedPatient?.wardItem?.bedId?.name }}</div> -->
                 </div>
                 <div class="subsect-itemWrap">
                     <div class="subsect-label">Number of days on admission</div>
