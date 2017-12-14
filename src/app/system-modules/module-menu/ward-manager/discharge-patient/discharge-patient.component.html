@@ -1,20 +1,24 @@
 <div class="modal-baseWrap animated pulse">
-
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Discharge Segun Alabi</legend>
+    <legend class="modal_title">Discharge {{ selectedPatient?.patientId?.personDetails?.personFullName }}</legend>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form [formGroup]="dischargeFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <md-select placeholder="Facility LGA (Location)" (change)="onDischargeTypeChange($event.value)" formControlName="dischargeType">
-                <md-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge._id">{{discharge.name}}</md-option>
+            <md-select placeholder="Discharge Type" formControlName="dischargeType">
+                <md-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge">{{discharge.name}}</md-option>
             </md-select>
         </div>
         <div class="frm-item-wrap">
             <md-input-container>
-                <textarea mdInput formControlName="comment" placeholder="Comment"></textarea>
+                <textarea mdInput formControlName="comment" placeholder="Reason for discharge"></textarea>
             </md-input-container>
         </div>
-        <button class="cta-1" (click)="onDischarge(dischargeFormGroup.value, dischargeFormGroup.valid)"> Discharge Patient</button>
     </form>
+    <div class="btn-box">
+        <button md-raised-button [disabled]="disableBtn || !dischargeFormGroup.valid" (click)="onDischarge(dischargeFormGroup.value, dischargeFormGroup.valid)" class="btn">
+          <span *ngIf="dischargeText">Discharge Patient</span>
+          <span *ngIf="dischargingText">Discharge Patient...<i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+    </div>
 </div>

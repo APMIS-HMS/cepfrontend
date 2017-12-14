@@ -6,7 +6,7 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -63,6 +63,9 @@ export class AddVitalsComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
+
+    console.log(this._locker.getObject('miniFacility'))
+    console.log(this.loginEmployee)
     this.getVitalLocation();
     this.getVitalPosition();
     this.getVitalRythm();
@@ -238,10 +241,13 @@ export class AddVitalsComponent implements OnInit {
         patientId: this.patient._id,
         personId: this.patient.personDetails._id
       }
+      console.log(vitalValue);
+      console.log(params);
       this._vitalService.post(vitalValue, params).then(payload => {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
         this.saveBtnText = "Add Vitals";
+        this._notification('Success', 'Vitals saved successfully');
       })
 
       // this._ServerDateService.find({ query: {} }).then(datePayload => {
@@ -338,4 +344,12 @@ export class AddVitalsComponent implements OnInit {
   //     });
   //   }
   // }
+
+  private _notification(type: string, text: string): void {
+		this._facilityService.announceNotification({
+			users: [this.loginedUser._id],
+			type: type,
+			text: text
+		});
+	}
 }

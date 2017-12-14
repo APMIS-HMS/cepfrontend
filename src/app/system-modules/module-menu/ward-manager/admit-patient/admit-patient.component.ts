@@ -68,7 +68,7 @@ export class AdmitPatientComponent implements OnInit {
 			ward: [''],
 			room: ['', [<any>Validators.required]],
 			bed: ['', [<any>Validators.required]],
-			desc: ['', [<any>Validators.required]],
+			desc: [''],
 		});
 
 		this.admitFormGroup.controls['ward'].valueChanges.subscribe(val => {
@@ -84,9 +84,15 @@ export class AdmitPatientComponent implements OnInit {
 		});
 
 		if (!!this.inPatientItem) {
-			setTimeout(e => {
-				this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.wardId._id);
-			}, 1000);
+      if (!!this.inPatientItem.wardId) {
+        setTimeout(e => {
+          this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.wardId._id);
+        }, 1000);
+      } else {
+        setTimeout(e => {
+          this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.transfers[0].minorLocationId);
+        }, 1000);
+      }
 		}
 
 		this.admitFormGroup.controls['room'].valueChanges.subscribe(val => {
@@ -145,6 +151,7 @@ export class AdmitPatientComponent implements OnInit {
 					'patientId._id': this.inPatientItem.patientId._id,
 					isAdmitted: false
 				}}).then(payload1 => {
+          console.log(payload1);
 					// Delete Items that are not relevant in the room
 					delete value.room.beds;
 
@@ -156,6 +163,7 @@ export class AdmitPatientComponent implements OnInit {
 					delete this.inPatientItem.patientId.personDetails.nextOfKin;
 					delete this.inPatientItem.patientId.personDetails.genderId;
 					delete this.inPatientItem.patientId.personDetails.homeAddress;
+					delete this.inPatientItem.patientId.personDetails.wallet;
 
 					payload1.data[0].isAdmitted = true;
 					payload1.data[0].admittedDate = new Date();
@@ -171,22 +179,27 @@ export class AdmitPatientComponent implements OnInit {
 						this._wardTransfer.checkInDate = new Date();
 						this.inPatient.transfers = [];
 						this.inPatient.transfers.push(this._wardTransfer);
-						this.inPatient.admissionDate = new Date();
+            this.inPatient.admissionDate = new Date();
+            this.inPatient.prevWard = callback1.wardId;
 						this._inPatientService.create(this.inPatient).then(callback => {
-							console.log(callback);
+              console.log(callback);
+              console.log(value);
 							let patient = this.inPatientItem.patientId.personDetails.personFullName;
 							let text = 'You have successfully admitted ' + patient;
 							let wardRoom = ' into ' + value.bed.name + ' in ' + value.room.name;
 							const fullText = text + wardRoom;
-							console.log(fullText);
 							const msgObj = {
 								msg: fullText,
 								occupant: this.inPatientItem.patientId,
 								bed: value.bed,
 								room: value.room
-							}
-							this.updateWardAdissionService(msgObj);
-							this.close_onClick();
+              }
+              this.admitBtnText = 'Navigating... <i class="fa fa-spinner fa-spin"></i>';
+              this.updateWardAdissionService(msgObj);
+              setTimeout(e => {
+                this.close_onClick();
+                this.router.navigate(['/dashboard/ward-manager/admitted']);
+              }, 2000);
 						});
 					});
 				});

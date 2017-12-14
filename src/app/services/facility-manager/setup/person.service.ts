@@ -1,4 +1,6 @@
-import { WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium } from './../../../models/facility-manager/setup/wallet-transaction';
+import {
+  WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium
+} from './../../../models/facility-manager/setup/wallet-transaction';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -43,7 +45,7 @@ export class PersonService {
     return this._socket.find();
   }
   get(id: string, query: any) {
-    return this._socket.get(id, query);
+    return this._rest.get(id, query);
   }
 
   create(person: any) {
@@ -60,17 +62,54 @@ export class PersonService {
   walletTransaction(walletTransaction: WalletTransaction) {
     const host = this._restService.getHost();
     const path = host + '/wallet-transaction';
-    return request
-      .get(path)
-      .query({
-        destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
-        transactionType: TransactionType[walletTransaction.transactionType],
-        transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
-        amount: walletTransaction.amount, description: walletTransaction.description,
-        source: EntityType[walletTransaction.source],
-        destination: EntityType[walletTransaction.destination],
-        transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
-      }); // query string 
+    return request.get(path).query({
+      destinationId: walletTransaction.destinationId,
+      sourceId: walletTransaction.sourceId,
+      transactionType: TransactionType[walletTransaction.transactionType],
+      transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+      amount: walletTransaction.amount,
+      description: walletTransaction.description,
+      source: EntityType[walletTransaction.source],
+      destination: EntityType[walletTransaction.destination],
+      transactionDirection:
+        TransactionDirection[walletTransaction.transactionDirection]
+    }); // query string
   }
 
+  fundWallet(walletTransaction: WalletTransaction) {
+    const host = this._restService.getHost();
+    const path = host + '/fund-wallet';
+    return new Promise((resolve, reject) => {
+      resolve(
+        request.get(path).query({
+          ref: walletTransaction.ref,
+          ePaymentMethod: walletTransaction.ePaymentMethod,
+          paymentMethod: walletTransaction.paymentMethod,
+          destinationId: walletTransaction.destinationId,
+          sourceId: walletTransaction.sourceId,
+          transactionType: TransactionType[walletTransaction.transactionType],
+          transactionMedium:
+            TransactionMedium[walletTransaction.transactionMedium],
+          amount: walletTransaction.amount,
+          description: walletTransaction.description,
+          source: EntityType[walletTransaction.source],
+          destination: EntityType[walletTransaction.destination],
+          transactionDirection:
+            TransactionDirection[walletTransaction.transactionDirection]
+        })
+      );
+    });
+    // return request
+    //   .get(path)
+    //   .query({
+    //     paymentMethod: 'Cash',
+    //     destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
+    //     transactionType: TransactionType[walletTransaction.transactionType],
+    //     transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+    //     amount: walletTransaction.amount, description: walletTransaction.description,
+    //     source: EntityType[walletTransaction.source],
+    //     destination: EntityType[walletTransaction.destination],
+    //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
+    //   }); // query string
+  }
 }

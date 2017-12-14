@@ -28,7 +28,7 @@
 </div>
 
 <div class="menu-content-wrap">
-  <div class="mainmenu-stripe">
+  <!-- <div class="mainmenu-stripe">
     <ul id="innerMenu-ul" class="innerMenu-ul">
 
       <li (click)="facilitySubmenuShow()" [routerLink]="['facility']"><i class="fa fa-building" aria-hidden="true"></i></li>
@@ -63,15 +63,15 @@
       <li (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i></li>
       <li (click)="formsSubmenuShow()" [routerLink]="['forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i></li>
     </ul>
-  </div>
+  </div> -->
   <div class="mc-wrap">
-    <div *ngIf="innerMenuShow" class="mainmenu-content animated slideInLeft">
+    <div *ngIf="innerMenuShow" id="style-1" class="mainmenu-content animated slideInLeft">
 
-      <div class="search-wrap">
+      <!-- <div class="search-wrap">
         <input class="top-tab-search" type="search" placeholder="Search here..." [formControl]="searchControl">
         <i class="fa fa-search" aria-hidden="true"></i>
         <div class="x">x</div>
-      </div>
+      </div> -->
 
       <ul id="innerMenu-ul" class="innerMenu-ul">
 

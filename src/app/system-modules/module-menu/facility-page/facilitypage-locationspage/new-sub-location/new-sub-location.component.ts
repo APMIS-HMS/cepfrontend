@@ -19,7 +19,7 @@ export class NewSubLocationComponent implements OnInit {
   @Input() subLocation: MinorLocation = <MinorLocation>{};
   ActionButton: String = 'Create';
   mainErr = true;
-  disableNewMinorLoc: Boolean = false;
+  disableNewMinorLoc: boolean = false;
   errMsg = 'You have unresolved errors';
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();

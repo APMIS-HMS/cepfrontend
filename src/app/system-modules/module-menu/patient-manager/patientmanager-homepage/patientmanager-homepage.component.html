@@ -14,7 +14,7 @@
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                 <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Sex</span>
+                <span style="padding-left: 3px;">Gender</span>
             </th>
             <th>
                 <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -58,9 +58,9 @@
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.age}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">
-                <span *ngIf="patient.personDetails.gender.name==='Male'">M</span>
-                <span *ngIf="patient.personDetails.gender.name==='Female'">F</span>
-                <span *ngIf="patient.personDetails.gender.name!='Female' && patient.personDetails.gender.name!='Male'">N</span>
+                <span *ngIf="patient.personDetails.gender?.name==='Male'">M</span>
+                <span *ngIf="patient.personDetails.gender?.name==='Female'">F</span>
+                <span *ngIf="patient.personDetails.gender?.name!='Female' && patient.personDetails.gender?.name!='Male'">N</span>
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.phoneNumber}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.email}}</td>
@@ -90,11 +90,11 @@
         <tr *ngIf="patients.length === 0 && !loading">
             <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
         </tr>
-        <tr *ngIf="patients.length === 0 && loading">
+        <!-- <tr *ngIf="patients.length === 0 && loading">
             <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
                 <md-spinner class="small-spinner"></md-spinner>
             </td>
-        </tr>
+        </tr> -->
 
         <!--<div *ngIf="loadIndicatorVisible" class="div_loading">
             <md-spinner></md-spinner>
@@ -102,6 +102,10 @@
     </tbody>
 </table>
 
+<div class="btn-center">
+    <button (click)="loadMore()" class="apmis-blue" md-raised-button *ngIf="showLoadMore" >Load More</button>  
+</div>
+<div style="text-align:center; margin-top:20px;" *ngIf="total > 0">{{loadMoreText}} </div>  
 <div *ngIf="editPatient">
     <!--<div class="slidePage">
         <p>whoopy</p>

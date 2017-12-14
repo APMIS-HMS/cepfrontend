@@ -13,6 +13,7 @@ export class BillAddItemComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
 
+  services:any;
   public frmAddItem: FormGroup;
   success = false;
   constructor(private formBuilder: FormBuilder) {
@@ -34,6 +35,17 @@ export class BillAddItemComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+  }
+
+  addItem(val: any, valid: boolean) {
+    const unitPrice = this.frmAddItem.controls['unitPrice'].value;
+    const amount = this.frmAddItem.controls['amount'].value;
+    val.unitPrice = unitPrice;
+    val.amount = amount;
+    // val.facilityServiceObject = this.selectedService;
+    // this.items.push(val);
+    this.frmAddItem.reset();
+    this.success = true;
   }
 
 }

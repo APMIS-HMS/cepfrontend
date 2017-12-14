@@ -1,17 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../services/module-manager/setup/index';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SharedService } from '../../../../../shared-module/shared.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
   styleUrls: ['./documentation.component.scss']
 })
-export class DocumentationComponent implements OnInit {
+export class DocumentationComponent implements OnInit, OnDestroy {
   @Input() patient;
   docDetail_view = false;
   clinicalNote_view = false;
@@ -31,6 +32,8 @@ export class DocumentationComponent implements OnInit {
   patientDocumentation: Documentation = <Documentation>{};
   documents: PatientDocumentation[] = [];
 
+  subscription:Subscription;
+
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
@@ -39,7 +42,7 @@ export class DocumentationComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
-    this.sharedService.submitForm$.subscribe(payload => {
+    this.subscription = this.sharedService.submitForm$.subscribe(payload => {
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.document = {
         documentType: this.selectedForm,
@@ -199,5 +202,7 @@ export class DocumentationComponent implements OnInit {
     this.showDoc = true;
     this.showOrderSet = false;
   }
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

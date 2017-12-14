@@ -10,7 +10,7 @@ export class BillAddLineModefierComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-
+  modifiers:any;
   mainErr = true;
   errMsg = 'you have unresolved errors';
   
@@ -31,4 +31,23 @@ export class BillAddLineModefierComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
+  addModifier(value: any, valid: boolean) {
+    // console.log(value);
+    // if (this.selectedModifier.modifierType === 'Percentage') {
+    //   const percent = this.selectedModifier.modifierValue;
+    //   const unitPrice = this.selectedServiceBill.unitPrice;
+    //   const percentUnitPrice = (percent / 100) * unitPrice;
+    //   this.selectedServiceBill.unitPrice = percentUnitPrice;
+    //   this.selectedServiceBill.amount = this.selectedServiceBill.unitPrice * this.selectedServiceBill.qty;
+    // } else {
+    //   this.selectedServiceBill.unitPrice = this.selectedModifier.modifierValue;
+    //   this.selectedServiceBill.amount = this.selectedServiceBill.unitPrice * this.selectedServiceBill.qty;
+    // }
+    // this.selectedServiceBill.isModified = true;
+    // if (this.selectedServiceBill.modifiers === undefined) {
+    //   this.selectedServiceBill.modifiers = [];
+    // }
+    // this.selectedServiceBill.modifiers.push(this.selectedModifier);
+    // this.invoiceService.announceInvoice([this.selectedServiceBill]);
+  }
 }

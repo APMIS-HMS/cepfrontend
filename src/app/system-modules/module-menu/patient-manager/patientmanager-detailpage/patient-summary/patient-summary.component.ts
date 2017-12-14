@@ -12,7 +12,7 @@ import {
 } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-patient-summary',
@@ -234,24 +234,27 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
         payload.data[0].documentations.forEach(documentItem => {
           if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
             vitalsObjArray = documentItem.document.body.vitals;
-            vitalsObjArray.forEach(item => {
-              this.lineChartData[0].data.push(item.bloodPressure.systolic);
-              this.lineChartData[0].label = "Systolic";
-              this.lineChartData[1].data.push(item.bloodPressure.diastolic);
-              this.lineChartData[1].label = "Diastolic";
-              this.lineChartData[2].data.push(item.temperature);
-              this.lineChartData[2].label = "Temperature";
-              this.lineChartData[3].data.push(item.bodyMass.height);
-              this.lineChartData[3].label = "Height";
-              this.lineChartData[4].data.push(item.bodyMass.weight);
-              this.lineChartData[4].label = "Weight";
-              this.lineChartData[5].data.push(item.bodyMass.bmi);
-              this.lineChartData[5].label = "BMI";
-              const d = new Date(item.updatedAt);
-              let dt = this.dateFormater(d);
-              this.lineChartLabels.push(dt);
-            });
-            this.lineChartData =  this.refreshVitalsGraph(this.lineChartData);
+            if(vitalsObjArray !== undefined){
+              vitalsObjArray.forEach(item => {
+                this.lineChartData[0].data.push(item.bloodPressure.systolic);
+                this.lineChartData[0].label = "Systolic";
+                this.lineChartData[1].data.push(item.bloodPressure.diastolic);
+                this.lineChartData[1].label = "Diastolic";
+                this.lineChartData[2].data.push(item.temperature);
+                this.lineChartData[2].label = "Temperature";
+                this.lineChartData[3].data.push(item.bodyMass.height);
+                this.lineChartData[3].label = "Height";
+                this.lineChartData[4].data.push(item.bodyMass.weight);
+                this.lineChartData[4].label = "Weight";
+                this.lineChartData[5].data.push(item.bodyMass.bmi);
+                this.lineChartData[5].label = "BMI";
+                const d = new Date(item.updatedAt);
+                let dt = this.dateFormater(d);
+                this.lineChartLabels.push(dt);
+              });
+              this.lineChartData =  this.refreshVitalsGraph(this.lineChartData);
+            }
+
           }
         });
       }

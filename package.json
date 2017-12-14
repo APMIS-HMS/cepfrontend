@@ -4,8 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "config": "ts-node ./src/set-env.ts",
+    "start": "npm run config -- --environment=prod.apmis && ng serve --environment=prod.apmis",
+    "build": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer --vendor-chunk --named-chunks",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -13,7 +14,8 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.0.0",
-    "@angular/cdk": "^2.0.0-beta.10",
+    "@angular/cdk": "^2.0.0-beta.12",
+    "@angular/cli": "^1.4.9",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
@@ -24,6 +26,8 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.27",
+    "@ngx-loading-bar/http": "^1.0.0-rc.1",
+    "@ngx-loading-bar/router": "^1.0.0-rc.1",
     "@types/crypto-js": "^3.1.35",
     "@types/date-fns": "^2.6.0",
     "@types/knockout": "~3.4.41",
@@ -45,6 +49,7 @@
     "feathers-socketio": "^1.4.2",
     "jquery": "^3.2.1",
     "localstorage-memory": "~1.0.2",
+    "lodash": "^4.17.4",
     "ng-pick-daterange": "^1.0.0",
     "ng-pick-datetime": "^4.3.2",
     "ng2-charts": "^1.6.0",
@@ -65,7 +70,7 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@angular/cli": "1.1.2",
+    "@angular/cli": "1.4.9",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.0.0",
     "@types/jasmine": "2.5.45",

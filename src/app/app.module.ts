@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
 import { PolicyService } from './services/facility-manager/setup/policy.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -41,6 +42,8 @@ import { AddFacilityModuleComponent } from './facility-setup/add-facility-module
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from './shared-common-modules/material-module';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     // FormsModule,
     Routing,
     // ReactiveFormsModule,
@@ -62,7 +66,9 @@ import { MaterialModule } from './shared-common-modules/material-module';
     // ToastModule.forRoot(),
     // CoolStorageModule,
     MaterialModule,
-    SingUpAccountsSharedModule
+    SingUpAccountsSharedModule,
+    LoadingBarHttpModule,
+    LoadingBarRouterModule
   ],
   providers: [
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
@@ -86,9 +92,10 @@ import { MaterialModule } from './shared-common-modules/material-module';
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
-    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService, SetupService.ServerDateService,
-    SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService, SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService,SetupService.SmsAlertService,
+    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
+    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
+    SetupService.TemplateService, PolicyService, PayStackService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SystemModuleService
   ],
   bootstrap: [AppComponent]
 })

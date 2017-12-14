@@ -23,7 +23,7 @@ export class TransferPatientComponent implements OnInit {
 	mainErr = true;
 	errMsg = 'you have unresolved errors';
 	wards: any[];
-	disableTransferBtn: Boolean = false;
+	disableTransferBtn: boolean = false;
 	transferBtnText: String = '<i class="fa fa-share" aria-hidden="true"></i> Transfer Patient';
 
 	constructor(

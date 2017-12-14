@@ -11,7 +11,7 @@
     <i class="fa fa-info-circle" aria-hidden="true"></i>
     <div class="sect-title">Clinic Running Days <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span></div>
     <div class="runningDays">
-        <div class="runningDay-wrap" *ngFor="let schedule of schedules">
+        <div class="runningDay-wrap" *ngFor="let schedule of schedules"> 
             <div class="running-day">{{schedule.day}} | {{schedule.location.name}}</div>
             <div class="running-time">{{schedule.startTime | date:'shortTime'}} to {{schedule.endTime | date:'shortTime'}}</div>
         </div>

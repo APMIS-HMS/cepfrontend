@@ -27,6 +27,7 @@ import { GlobalDialogComponent } from './global-dialog/global-dialog.component';
 import { SurveyComponent } from './form-generator/survey.component';
 import { SurveyEditorComponent } from './form-generator/survey.editor.component';
 import { ProductSearchComponent } from './product-search/product-search.component';
+import { CheckoutPatientComponent } from './checkout-patient/checkout-patient.component';
 import { ProductService, StoreService } from '../services/facility-manager/setup/index';
 import { StoreCheckInComponent } from './store-check-in/store-check-in.component';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
@@ -42,7 +43,10 @@ import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
 } from '@angular/material';
-//import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
+import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
+import { WindowRef } from '../services/facility-manager/setup/winref.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+// import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
     declarations: [
@@ -51,7 +55,8 @@ import {
         SurveyComponent,
         SurveyEditorComponent,
         ProductSearchComponent,
-        //LabCheckInComponent,
+        Angular4FlutterwaveComponent
+        // LabCheckInComponent,
         // LabRequestsComponent, RequestDetailComponent
     ],
     exports: [
@@ -69,6 +74,7 @@ import {
         ReactiveFormsModule,
         FormsModule,
         SingUpAccountsSharedModule,
+        Angular4FlutterwaveComponent
         // DragulaModule,
         // LabRequestsComponent, RequestDetailComponent
     ],
@@ -85,9 +91,9 @@ import {
         MaterialModule,
         // DragulaModule
     ],
-    providers: [StoreService]
+    providers: [StoreService, WindowRef, SystemModuleService]
 })
-export class SharedModule { }
+export class SharedModule {}
 
 
 

@@ -11,6 +11,7 @@ import {SharedModule } from '../../shared-module/shared.module';
 import { ChangePasswordComponent } from '../../system-modules/module-menu/change-password/change-password.component';
 import { SystemModuleComponent } from '../system-module.component';
 import { MaterialModule } from '../../shared-common-modules/material-module';
+import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -23,6 +24,7 @@ import { MaterialModule } from '../../shared-common-modules/material-module';
     imports: [
         LogOutConfirmModule,
         MaterialModule,
+        LoadingBarHttpModule,
         // SharedModule,
         Routing
     ],

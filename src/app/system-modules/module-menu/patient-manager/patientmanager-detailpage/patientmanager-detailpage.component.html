@@ -6,31 +6,33 @@
                 <div class="patient-img">
                     <div class="patient-img-wrap">
                         <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
-                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
+                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
                         <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
                     </div>
                 </div>
                 <div class="headerDetail-wrap">
-                    <div class="modal_title">{{patient?.personDetails.lastName}} {{patient?.personDetails.firstName}} {{patient?.personDetails.title.name}}</div>
+                    <div class="modal_title">{{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}} {{patient?.personDetails?.title?.name}}</div>
                     <div class="headDetail-group">
-                        <div class="patient-gender">{{patient?.personDetails.gender.name}}</div>
-                        <div class="patient-apmisNo">{{patient?.personDetails.apmisId}}</div>
+                        <div class="patient-gender">{{patient?.personDetails?.gender?.name}}</div>
+                        <div class="patient-apmisNo">{{patient?.personDetails?.apmisId}}</div>
                     </div>
                     <div class="headDetail-group">
-                        <div class="patient-dob">{{patient?.personDetails.dateOfBirth | date}}</div>
-                        <div class="patient-phone">{{patient?.personDetails.phoneNumber}}</div>
+                        <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
+                        <div class="patient-phone">{{patient?.personDetails?.phoneNumber}}</div>
                     </div>
-                    <div class="patient-email">{{patient?.personDetails.email}}</div>
+                    <div class="patient-email">{{patient?.personDetails?.email}}</div>
 
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balance</span>
-                        <span class="accBal-val">&#8358; 20,000</span>
+                        <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
+                          &#8358; {{patient?.personDetails?.wallet?.balance}}
+                        </span>
                     </section>
                 </div>
             </div>
 
             <ul class="topmenuwrap">
-                <li (click)="checkoutPatient_show()">
+                <li (click)="checkoutPatient_show()" *ngIf="checkedIn">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span>Checkout</span>
                 </li>
@@ -72,7 +74,7 @@
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
-        <app-lab-requests [isLaboratory]="false" [patientId]="patient._id" *ngIf="menuLab"></app-lab-requests>
+        <app-lab-requests [isLaboratory]="false" [patientId]="patient" *ngIf="menuLab"></app-lab-requests>
         <app-payment [patient]="patient" *ngIf="menuPayment"></app-payment>
         <app-treatement-plan *ngIf="menuTreatmentPlan"></app-treatement-plan>
     </div>

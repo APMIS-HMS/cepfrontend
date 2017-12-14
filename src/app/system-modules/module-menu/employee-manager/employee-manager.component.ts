@@ -5,6 +5,7 @@ import { EmployeeService, FacilitiesService } from '../../../services/facility-m
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { EmployeemanagerHomepageComponent } from './employeemanager-homepage/employeemanager-homepage.component'
 import { Facility } from '../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 @Component({
   selector: 'app-employee-manager',
   templateUrl: './employee-manager.component.html',
@@ -17,8 +18,10 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   employeeDetailArea = false;
   assignUnitPop = false;
   newEmp = false;
+  mobileSort = false;
   employee: any;
   selectedFacility: any = <any>{};
+  resetData:Boolean = false;
 
   searchControl = new FormControl();
   department = new FormControl();
@@ -30,7 +33,7 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   units: any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private employeeService: EmployeeService,
-    private locker: CoolLocalStorage) { }
+    private locker: CoolLocalStorage, private systemService:SystemModuleService) { }
   ngAfterViewInit() {
     this.searchControl.valueChanges
     .debounceTime(400)
@@ -69,12 +72,19 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   newEmpShow() {
     this.newEmp = true;
   }
+  reset(){
+    this.resetData = true;
+  }
   close_onClick(e) {
     this.newEmp = false;
     this.assignUnitPop = false;
   }
   pageInViewLoader(title) {
     this.pageInView = title;
+  }
+  resetDataLoader(data){
+    this.resetData = data;
+    console.log(this.resetData);
   }
   empDetailShow(val) {
     this.homeContentArea = false;
@@ -89,5 +99,8 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
     this.homeContentArea = true;
     this.employeeDetailArea = false;
     this.pageInView = 'Employee Manager';
+  }
+  sort_pop(){
+    this.mobileSort = !this.mobileSort;
   }
 }

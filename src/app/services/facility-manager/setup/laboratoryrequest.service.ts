@@ -40,6 +40,6 @@ export class LaboratoryRequestService {
   }
 
   update(laboratoryrequest: any) {
-    return this._socket.update(laboratoryrequest._id, laboratoryrequest);
+    return this._rest.update(laboratoryrequest._id, laboratoryrequest);
   }
 }

@@ -42,7 +42,6 @@ export class WardManagerListpageComponent implements OnInit {
 		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
 			this.loading = false;
 			let bedCount = 0;
-
 			if (res.data.length > 0) {
 				res.data[0].locations.forEach(ward => {
 					ward.rooms.forEach(room => {

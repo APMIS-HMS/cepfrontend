@@ -1,9 +1,9 @@
 @import "../../globals/variables.scss";
 .primary-tab {
   position: relative;
-  background: #000;
+  background: darken($primaryColor, 5%);
   width: 100%;
-  z-index: 10;
+  z-index: 10; 
 }
 
 .inner-wrap-pri {
@@ -117,7 +117,7 @@
 
 .search-wrap i {
   position: absolute;
-  color: #fff;
+  color: $primaryColor;
   top: 20%;
   left: 5px;
   font-size: 16px
@@ -137,12 +137,12 @@
 }
 
 .top-tab-search {
-  background-color: #555;
+  background-color: #eee;
   border: 0;
   margin-right: 10px;
   padding: 5px 30px;
   font-size: 12px;
-  color: #fff;
+  color: $primaryColor;
   width: 278px;
 }
 
@@ -202,7 +202,7 @@
 }
 
 .top-icons-wrap span:hover {
-  color: #ff2500;
+  color: #03A9F4;
 }
 
 .fronting {
@@ -250,12 +250,6 @@
   font-size: 9px;
   padding-right: 5px;
   color: #eee;
-}
-
-@media only screen and (max-width: 700px) {
-  .logo-wrap {
-    margin-left: 20px;
-  }
 }
 
 

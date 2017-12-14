@@ -25,14 +25,13 @@
                   <md-option value="Order Set">Order Set</md-option>
                 </md-select>
               </div>
-
               <div class="frm-item-wrap">
                 <md-input-container>
                   <input mdInput placeholder="Template Name" formControlName="name">
                 </md-input-container>
               </div>
 
-              <div class="frm-item-wrap">
+              <div *ngIf="isOrderSet" class="frm-item-wrap">
                 <md-select placeholder="Select Diagnosis" formControlName="diagnosis">
                   <md-option>Malaria</md-option>
                   <md-option>Yellow Fever</md-option>
@@ -41,12 +40,7 @@
 
               <div class="frm-item-wrap">
                 <md-select placeholder="Set Visibility" formControlName="visibility">
-                  <md-option>Personal</md-option>
-                  <md-option>Unit</md-option>
-                  <md-option>Department</md-option>
-                  <md-option>Facility</md-option>
-                  <md-option>Network</md-option>
-                  <md-option>Global</md-option>
+                  <md-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</md-option>
                 </md-select>
               </div>
 
@@ -58,13 +52,14 @@
             <div *ngIf="isDocumentation" class="template-sect animated fadeIn">
               <div class="frm-item-wrap">
                 <md-select placeholder="Select Form" formControlName="docFrmList">
-                  <md-option>Malaria</md-option>
-                  <md-option>Yellow Fever</md-option>
+                  <md-option *ngFor="let item of forms" [value]="item">{{item.title}}</md-option>
                 </md-select>
               </div>
 
               <div class="docFrmArea">
-                <div style="width:100%;text-align:center;color:#777;padding:5px;font-size:10px;"> Load frm here</div>
+                <div class="jsonFrnWrap" *ngIf="showDocument">
+                  <survey  #surveyjs [isTemplate]="isTemplate" [json]="json"></survey>
+                </div>
               </div>
             </div>
 
@@ -287,7 +282,7 @@
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload Beneficiary List</span>
                         <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
-                          #fileInput type="file" id="uploadResult" (change)="upload($event, hmo)">
+                          #fileInput type="file" id="uploadResult" (change)="upload($event)">
                       </div>
                     </form>
                     <div class="action-item">

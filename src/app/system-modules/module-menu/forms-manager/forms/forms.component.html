@@ -34,7 +34,7 @@
              <form [formGroup]="frm_checkboxGroup" novalidate>
                 <div class="form-innerSect">
                     <div class="checkbox-wrap">
-                        <div *ngFor="let control of frm_checkboxGroup.controls['myValues'].controls; let i=index" class="checkbox-itemWrap">
+                        <div *ngFor="let control of frm_checkboxGroup['controls'].myValues['controls']; let i=index" class="checkbox-itemWrap">
                             <div class="dx-field">
                                 <div class="checkbox-label"></div>
                                  <md-checkbox (change)="onValueChanged($event,modules[i])" [value]="modules[i].checked"   [formControl]="control">{{modules[i].name}}</md-checkbox>
