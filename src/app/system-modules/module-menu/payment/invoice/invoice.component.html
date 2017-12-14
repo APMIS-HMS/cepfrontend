@@ -117,7 +117,7 @@
               </div>
               <div class="rhsSectB">
                 <div>TOTAL AMOUNT</div>
-                <div class="topTotal">{{selectedInvoiceGroup.grandTotal | currency:'NGN':true:'4.2-2'}}</div>
+                <div class="topTotal">{{selectedInvoiceGroup.totalPrice | currency:'NGN':true:'4.2-2'}}</div>
               </div>
             </div>
             <div class="clear"></div>
@@ -181,18 +181,18 @@
               <div class="summaryItems">
                 <tr class="summaryItem">
                   <td class="label">Sub Total</td>
-                  <td class="data">{{selectedInvoiceGroup.subTotal | currency:'NGN':true:'4.2-2' }}</td>
+                  <td class="data">{{selectedInvoiceGroup.subTotal | currency:'NGN'}}</td>
                   <td></td>
                 </tr>
                 <tr class="summaryItem">
                   <td class="label">Discount</td>
-                  <td class="data">{{selectedInvoiceGroup.discount | currency:'NGN':true:'4.2-2'}}</td>
+                  <td class="data">{{selectedInvoiceGroup.discount | currency:'NGN'}}</td>
                   <td></td>
                 </tr>
               </div>
               <tr class="grandTotalWrap">
                 <td class="label">GRAND TOTAL</td>
-                <td class="data">{{selectedInvoiceGroup.grandTotal | currency:'NGN':true:'4.2-2'}}</td>
+                <td class="data">{{selectedInvoiceGroup.totalPrice | number}}</td>
                 <td></td>
               </tr>
             </table>
