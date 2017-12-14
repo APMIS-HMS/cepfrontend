@@ -123,11 +123,13 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   // }
 
   admitPatient_onClick(value: any, typeChecker = myGlobals) {
-    this.selectInpatient = value;
-    this.selectInpatient.typeChecker = typeChecker.onAdmission;
-    // Pass the loggedInWard to the selectedInpatient.
-    this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
-    this.admitPatient = true;
+    if (!!this.selectedWard && !!this.selectedWard.typeObject) {
+      this.selectInpatient = value;
+      this.selectInpatient.typeChecker = typeChecker.onAdmission;
+      // Pass the loggedInWard to the selectedInpatient.
+      this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
+      this.admitPatient = true;
+    }
   }
 
   transferAdmitPatient_onClick(model: any, typeChecker = myGlobals) {
@@ -181,8 +183,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       .find({
         query: {
           'facilityId._id': this.facility._id,
-          'transfers.minorLocationId':
-            checkedInWard.typeObject.minorLocationId._id,
+          'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
           statusId: myGlobals.transfer,
           discharge: undefined
         }
@@ -200,8 +201,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       .find({
         query: {
           'facilityId._id': this.facility._id,
-          'prevWard._id':
-            checkedInWard.typeObject.minorLocationId._id,
+          'prevWard._id': checkedInWard.typeObject.minorLocationId._id,
           statusId: myGlobals.transfer,
           discharge: undefined
         }

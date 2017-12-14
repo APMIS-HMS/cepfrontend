@@ -66,8 +66,8 @@ export class InPatientService {
     return this.inPatientItem;
   }
 
-  public transfer(transfer): Promise<any> {
-    const host = this._restService.getHost() + '/transfer-patient';
+  public admit(transfer): Promise<any> {
+    const host = this._restService.getHost() + '/admit-patient';
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
