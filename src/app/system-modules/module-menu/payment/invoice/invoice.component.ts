@@ -67,7 +67,7 @@ export class InvoiceComponent implements OnInit {
                 console.log(this.invoiceGroups);
             });
 
-            this.invoiceService.find({ query: { patientId:{$ne: this.selectedPatient._id}, facilityId: this.selectedFacility._id,$sort: { createdAt: -1 },$limit:10 } })
+            this.invoiceService.find({ query: { patientId:{$ne: this.selectedPatient._id}, facilityId: this.selectedFacility._id,paymentCompleted:false,$sort: { createdAt: -1 },$limit:10 } })
             .then(payload => {
                 this.otherInvoiceGroups = payload.data;
                 console.log(this.otherInvoiceGroups);
