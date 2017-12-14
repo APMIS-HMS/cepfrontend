@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit,Output,EventEmitter,Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -21,6 +21,7 @@ import { IDateRange } from 'ng-pick-daterange';
 export class AppointmentComponent implements OnInit {
 
     @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Input() closeModal: Boolean;
     selectedFacility: Facility = <Facility>{};
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};

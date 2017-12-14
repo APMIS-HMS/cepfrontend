@@ -101,7 +101,6 @@ export class ScheduleFrmComponent implements OnInit {
     user = {};
     placeholderString = 'Select timezone';
 
-    checkoutDisable:any;
 
     constructor(private scheduleService: SchedulerService, private locker: CoolLocalStorage,
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
@@ -229,7 +228,6 @@ export class ScheduleFrmComponent implements OnInit {
                 this.type.disable();
                 this.clinic.disable();
                 this.category.disable();
-                this.provider.disable();
             }
         });
     }
@@ -243,6 +241,7 @@ export class ScheduleFrmComponent implements OnInit {
             }
         })
     }
+
     primeComponent() {
         const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
         const appointmentTypes$ = Observable.fromPromise(this.appointmentTypeService.findAll());
@@ -324,6 +323,7 @@ export class ScheduleFrmComponent implements OnInit {
             });
         });
     }
+
     getClinics() {
         const clinicIds = [];
         this.clinics = [];
@@ -384,6 +384,7 @@ export class ScheduleFrmComponent implements OnInit {
         }
         this.loadIndicatorVisible = false;
     }
+
     getClinicLocation() {
         this.clinicLocations = [];
         const inClinicLocations: MinorLocation[] = [];
@@ -421,6 +422,7 @@ export class ScheduleFrmComponent implements OnInit {
         }
 
     }
+
     getSchedules() {
         this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } })
             .subscribe(payload => {
@@ -457,6 +459,7 @@ export class ScheduleFrmComponent implements OnInit {
                 }
             });
     }
+
     getEmployees() {
         this.loadingProviders = true;
         this.providers = [];
@@ -496,22 +499,26 @@ export class ScheduleFrmComponent implements OnInit {
         }
 
     }
+
     getAppointmentTypes() {
         this.appointmentTypeService.findAll().subscribe(payload => {
             this.appointmentTypes = payload.data;
         })
     }
+
     filterClinics(val: any) {
         return val ? this.clinics.filter(s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.clinics;
 
     }
+
     filterPatients(val: any) {
         console.log(val);
         return val ? this.patients.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.patients;
     }
+
     filterProviders(val: any) {
         return val ? this.providers.filter(s => s.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
@@ -613,6 +620,7 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.facilityId = <any>facility;
             this.appointment.patientId = patient;
             this.appointment.startDate = this.date;
+            console.log(this.appointment);
             if (checkIn === true) {
                 const logEmp: any = this.loginEmployee;
                 delete logEmp.department;
@@ -646,6 +654,7 @@ export class ScheduleFrmComponent implements OnInit {
                 }
             }
             if (this.appointment._id !== undefined) {
+                console.log(this.appointment);
                 this.appointmentService.update(this.appointment).then(payload => {
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
@@ -696,7 +705,9 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                 })
             } else {
+                console.log("else");
                 this.appointmentService.create(this.appointment).then(payload => {
+                    console.log(payload);
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
