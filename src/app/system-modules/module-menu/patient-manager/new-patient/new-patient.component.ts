@@ -374,16 +374,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.errMsg = 'This APMIS ID is valid or has been previously used to generate an employee!';
                 this.mainErr = false;
             } else {
-                this.frmNewEmp4_show = true;
-                this.apmisId_show = false;
+                this.frmNewEmp4_show = false;
+                this.apmisId_show = true;
                 this.mainErr = true;
-                this.frmNewEmp4_show = true;
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = false;
                 this.paymentPlan = false;
-                this.apmisId_show = false;
-                this.mainErr = true;
                 this.shouldMoveFirst = true;
                 console.log(this.shouldMoveFirst);
             }
@@ -432,11 +429,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     newPerson1_show() {
-        this.frmNewPerson1_show = true;
+        this.frmNewPerson1_show = false;
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
-        this.paymentPlan = false;
+        this.paymentPlan = true;
         this.apmisId_show = false;
         this.shouldMoveFirst = false;
     }
@@ -651,8 +648,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 text: this.selectedPerson.personFullName + ' added successfully',
                 users: [this.facilityService.getLoginUserId()]
             })
-            //this.close_onClick();
-            this.paymentPlan = true;
+            this.close_onClick();
+            this.paymentPlan = false;
             this.frmNewPerson1_show = false;
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = false;
@@ -676,7 +673,21 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.saveEmployee();
     }
     payplans(){
-        this.close_onClick();
+        this.paymentPlan = false;
+        this.frmNewPerson1_show = true;
+        this.frmNewPerson2_show = false;
+        this.frmNewPerson3_show = false;
+        this.frmNewEmp4_show = false;
+        this.apmisId_show = false;
+    }
+    back_payplans() {
+        this.frmNewPerson1_show = false;
+        this.frmNewPerson2_show = false;
+        this.frmNewPerson3_show = false;
+        this.frmNewEmp4_show = false;
+        this.paymentPlan = true;
+        this.apmisId_show = false;
+        this.mainErr = true;
     }
 
     onEmpTitleChange(val) { }
