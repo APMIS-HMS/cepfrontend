@@ -46,7 +46,7 @@
               </div>
               <div [hidden]="invoiceGroups.length==0">
                 <div class="empWrap" *ngFor="let invoice of invoiceGroups">
-                  <div class="list-labels">
+                  <div class="list-labels" (click)="onSelectedInvoice(invoice)">
                     <div class="pending-name">{{invoice.invoiceNo}}</div>
                     <div class="oda">
                       <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
