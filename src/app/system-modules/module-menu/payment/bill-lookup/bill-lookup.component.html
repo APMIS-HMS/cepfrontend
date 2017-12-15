@@ -117,9 +117,12 @@
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
                             </div>
                         </div>
-                        <div class="patientImgWrap">
-                            <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                            <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.detailthumbnail)">
+                        <div>
+                            <div class="patientImgWrap">
+                                <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.detailthumbnail)">
+                            </div>
+                            <button (click)="fundWallet_pop()">Fund Wallet</button>
                         </div>
                     </div>
                 </div>
@@ -233,131 +236,46 @@
             <div class="contentCol emptySet" *ngIf="selectedPatient._id === undefined">
                 <span>Kindly select a patient from the lookup below</span>
             </div>
-
-            <!-- <div class="feedsWrap rightCol">
-         <div class="feedbox">
-          <div class="pending-wrap">
-            <div class="pending-header">
-              <div class="pending-title">Invoices</div>
-              <div class="search-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
-                </md-input-container>
-              </div>
-            </div>
-            <div class="pending-bills">
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div class="list-labels">
-                  <div class="pending-name">Johnson Wade</div>
-                  <div class="oda">
-                    <div class="pending-date">11th October, 2017. 1200am</div>
-                    <div class="pending-amount"><span>&#x20a6;</span>30,000</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>   
-        </div> 
-      </div> -->
         </div>
     </div>
 </div>
 
 <!-- <app-global-patient-lookup></app-global-patient-lookup> -->
+<div *ngIf="makePayment_modal" class="modal-overlay">
+    <div class="modal-baseWrap animated pulse">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Fund Wallet</legend>
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+        <div style="width:100%;">
+            <div class="frm-item-wrap">
+                <md-input-container>
+                    <input type="text" mdInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
+                </md-input-container>
+            </div>
+            <ul class="topmenuwrap">
+                <li (click)="fundWallet()">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span>Cash</span>
+                </li>
+                <li (click)="onClickEPayment()">
+                    <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    <span>e-Payment</span>
+                </li>
+            </ul>
+            <div class="epayment-box" *ngIf="ePayment">
+                <!-- <div>
+                    <angular-4-flutterwave *ngIf="withPaystack" [amount]="fundAmount.value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
+                        [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
+                </div> -->
+                <!-- <div>
+                    <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
+                        (callback)="paymentDone($event)">e-Payment</angular4-paystack>
+                </div> -->
+            </div>
+        </div> 
+    </div>
+</div>
 
 <div *ngIf="addItem" class="modal-overlay">
     <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>

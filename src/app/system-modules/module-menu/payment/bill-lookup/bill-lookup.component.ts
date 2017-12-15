@@ -16,6 +16,8 @@ export class BillLookupComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
+  fundAmount: FormControl;
+  
   public frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
   itemQtyEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
@@ -40,6 +42,8 @@ export class BillLookupComponent implements OnInit {
   cat1 = false;
   cat2 = false;
   cat3 = false;
+
+  makePayment_modal = false;
 
   selectedPatient: Patient = <Patient>{};
   selectedFacility: Facility = <Facility>{};
@@ -557,5 +561,9 @@ export class BillLookupComponent implements OnInit {
     this.addItem = false;
     this.priceItemDetailPopup = false;
     this.makePayment = false;
+    this.makePayment_modal = false;
+  }
+  fundWallet_pop(){
+    this.makePayment_modal = true;
   }
 }
