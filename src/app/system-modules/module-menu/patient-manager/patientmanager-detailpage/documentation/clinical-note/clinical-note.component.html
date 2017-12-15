@@ -21,6 +21,12 @@
             </md-autocomplete>
         </div>
 
+        <div class="frm-item-wrap">
+            <md-select placeholder="Select Template" [formControl]="templateFormCtrl">
+              <md-option *ngFor="let item of templates" [value]="item">{{item.name}}</md-option>
+            </md-select>
+          </div>
+
         <div>
             <div class="val-tag">Status</div>
             <div class="list-label">Draft</div>
@@ -43,7 +49,7 @@
             <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 12px; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
             <!--Load form here  -->
             <div class="jsonFrnWrap" *ngIf="showDocument">
-                <survey [json]="json"></survey>
+                <survey #surveyjs [json]="json"></survey>
 
                 <div class="actWrappers-jsonFrm">
                     <div (click)="docDiagnosis_show()" class="atch-orderSet">

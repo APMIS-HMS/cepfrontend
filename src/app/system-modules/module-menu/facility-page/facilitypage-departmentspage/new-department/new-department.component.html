@@ -46,7 +46,7 @@
         CREATE DEPARTMENT
       </div>-->
        <div class="example-full-width" id="example-full-width">
-          <button (click)="newDept(frmNewDept.valid, frmNewDept.value)" md-raised-button>CREATE DEPARTMENT</button>
+          <button [disabled]="!frmNewDept.valid || isBusy" (click)="newDept(frmNewDept.valid, frmNewDept.value)" md-raised-button>CREATE DEPARTMENT</button>
       </div>
     </form>
   </div>

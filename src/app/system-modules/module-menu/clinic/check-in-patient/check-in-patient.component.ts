@@ -122,7 +122,21 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
 
   getAppointments() {
-    this.appointmentService.find({ query: { 'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, $limit: 200 } })
+    this.appointmentService.find({
+      query: {
+        'facilityId._id': this.selectedFacility._id, isToday: true, isCheckedIn: true, isCheckedOut: false,
+        $select: {
+          'facilityId': 0, 'attendance.employeeId': 0, 'appointmentTypeId': 0,
+          'category': 0, 'clinicInteractions': 0, 'encounters': 0, 'patientId.clientsNo': 0,
+          ' patientId.personDetails.gender': 0, 'patientId.personDetails.title': 0,
+          'patientId.personDetails.age': 0, 'patientId.personDetails.apmisId': 0,
+          'patientId.personDetails.dateOfBirth': 0, 'patientId.personDetails.genderId': 0,
+          'patientId.personDetails.email': 0, 'patientId.personDetails.firstName': 0,
+          'patientId.personDetails.lastName': 0, 'patientId.timeLines': 0,
+          'attendance.createdAt': 0, 'attendance.updateddAt': 0
+        },
+      }
+    })
       .then(payload => {
         this.loading = false;
         this.checkedInAppointments = payload.data;
@@ -204,7 +218,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       });
     });
   }
-  
+
   getEmployees() {
     this.employees = [];
     if (this.isDoctor) {
@@ -326,6 +340,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
+        console.log(1)
         this.locker.setObject('patient', appointment.patientId);
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
@@ -335,10 +350,12 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
             this.appointmentService.appointmentAnnounced(appointment);
           });
       } else {
+        console.log(2)
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { appId: appointment._id }]);
       }
     } else {
+      console.log(3)
       this.locker.setObject('patient', appointment.patientId);
       this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
         appointment.patientId.personDetails._id]);

@@ -1,5 +1,12 @@
+import { DocumentationTemplateService } from './../../../../services/facility-manager/setup/documentation-template.service';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ScopeLevelService, FormTypeService } from 'app/services/module-manager/setup';
+import { Observable } from 'rxjs/Observable';
+import { FormsService } from 'app/services/facility-manager/setup';
+import { Facility } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SharedService } from 'app/shared-module/shared.service';
 
 @Component({
   selector: 'app-treatement-template',
@@ -8,6 +15,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 export class TreatementTemplateComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('surveyjs') surveyjs: any;
   public frmnewTemplate: FormGroup;
   newTemplate = false;
 
@@ -19,16 +27,61 @@ export class TreatementTemplateComponent implements OnInit {
   showNursingCareService = true;
   showPhysicianOrderService = true;
   showProcedureService = true;
+  isTemplate = true;
 
-  constructor(private formBuilder: FormBuilder) { }
+  json: any
+  showDocument = false;
+
+  selectedFacility: Facility = <Facility>{};
+  selectedForm: any = <any>{};
+
+
+  scopeLevels: any[] = [];
+  forms: any[] = [];
+
+
+  constructor(private formBuilder: FormBuilder, private scopeLevelService: ScopeLevelService,
+    private formTypeService: FormTypeService, private formService: FormsService, private locker: CoolLocalStorage,
+    private sharedService: SharedService, private documentationTemplateService: DocumentationTemplateService
+  ) {
+    this.sharedService.submitForm$.subscribe(payload => {
+
+      let isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
+      let isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
+      let isNameValid = this.frmnewTemplate.controls.name.valid;
+      if (isVisibilityValid && isFormValid && isNameValid) {
+        let doc = {
+          data: payload,
+          isEditable: this.frmnewTemplate.controls.isEditable.value,
+          name: this.frmnewTemplate.controls.name.value,
+          visibility: this.frmnewTemplate.controls.visibility.value,
+          form: this.frmnewTemplate.controls.docFrmList.value._id
+        }
+        this.documentationTemplateService.create(doc).then(payload =>{
+          console.log(payload);
+          this.frmnewTemplate.reset();
+        }).catch(err =>{
+          console.log(err);
+        })
+      } else {
+        console.log('invalid')
+        this.frmnewTemplate.controls.visibility.markAsTouched();
+        this.frmnewTemplate.controls.visibility.markAsDirty();
+        this.frmnewTemplate.controls.visibility.markAsPristine();
+        this.frmnewTemplate.controls.docFrmList.markAsTouched();
+        this.frmnewTemplate.controls.name.markAsTouched();
+      }
+    });
+  }
 
   ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmnewTemplate = this.formBuilder.group({
       name: ['', [Validators.required]],
       diagnosis: [''],
       visibility: [''],
       isEditable: [''],
-      type: ['', [<any>Validators.required]],
+      type: ['Documentation', [<any>Validators.required]],
       docFrmList: [''],
       chkLab: [''],
       chkMed: [''],
@@ -39,8 +92,10 @@ export class TreatementTemplateComponent implements OnInit {
       chkPhysician: [''],
     });
 
+    this._getScopeLevels();
+    this._getForms();
+
     this.frmnewTemplate.controls['type'].valueChanges.subscribe(value => {
-      console.log(value);
       if (value === 'Documentation') {
         this.isDocumentation = true;
         this.isOrderSet = false;
@@ -48,11 +103,57 @@ export class TreatementTemplateComponent implements OnInit {
         this.isOrderSet = true;
         this.isDocumentation = false;
       }
-    })
+    });
+
+    this.frmnewTemplate.controls['docFrmList'].valueChanges.subscribe(value => {
+      this._setSelectedForm(value);
+    });
   }
 
   newTemplate_show() {
     this.newTemplate = !this.newTemplate;
+  }
+
+  _getScopeLevels() {
+    this.scopeLevelService.find({}).then(payload => {
+      this.scopeLevels = payload.data;
+    }).catch(err => {
+
+    })
+  }
+
+  _getForms() {
+    try {
+      const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
+      formType$.mergeMap(((formTypes: any) =>
+        Observable.fromPromise(this.formService.find({
+          query: {
+            $limit: 200, facilityId: this.selectedFacility._id,
+            typeOfDocumentId: formTypes.data[0]._id,
+            isSide: false
+          }
+        }))
+      ))
+        .subscribe((results: any) => {
+          this.forms = results.data;
+        }, error => {
+          console.log(error)
+          this._getForms();
+        })
+    } catch (error) {
+      this._getForms();
+    }
+  }
+
+  _setSelectedForm(form) {
+    this.selectedForm = form;
+    this.showDocument = false;
+    this.json = form.body;
+    this.sharedService.announceNewForm({ json: this.json, form: this.selectedForm });
+    this.showDocument = true;
+    if (this.surveyjs !== undefined) {
+      this.surveyjs.ngOnInit();
+    }
   }
 
   showImageBrowseDlg() {
@@ -65,42 +166,9 @@ export class TreatementTemplateComponent implements OnInit {
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();
       formData.append("excelfile", fileBrowser.files[0]);
-      // formData.append("companyCoverId", companyCover._id);
-      // this.facilityService.upload(formData, this.selectedCompanyCover._id).then(res => {
-      //   console.log(res);
-      //   let enrolleeList: any[] = [];
-      //   if (res.body !== undefined && res.body.error_code === 0) {
-      //     res.body.data.Sheet1.forEach(row => {
-      //       let rowObj: any = <any>{};
-      //       rowObj.serial = row.A;
-      //       rowObj.surname = row.B;
-      //       rowObj.firstName = row.C;
-      //       rowObj.gender = row.D;
-      //       rowObj.filNo = row.E;
-      //       rowObj.category = row.F;
-      //       rowObj.date = this.excelDateToJSDate(row.G);
-      //       enrolleeList.push(rowObj);
-      //     });
-      //     console.log(enrolleeList);
-      //     const index = this.loginHMOListObject.companyCovers.findIndex(x => x._id === companyCover._id);
-      //     let facHmo = this.loginHMOListObject.companyCovers[index];
-      //     let enrolleeItem = {
-      //       month: new Date().getMonth() + 1,
-      //       year: new Date().getFullYear(),
-      //       enrollees: enrolleeList
-      //     }
-      //     facHmo.enrolleeList.push(enrolleeItem);
-      //     this.loginHMOListObject.companyCovers[index] = facHmo;
-      //     this.companyCoverService.update(this.loginHMOListObject).then(pay => {
-      //       this.getLoginHMOList();
-      //     })
-      //   }
-      // }).catch(err => {
-      //   this._notification('Error', "There was an error uploading the file");
-      // });
     }
   }
-  show_beneficiaries(){
-    
+  show_beneficiaries() {
+
   }
 }
