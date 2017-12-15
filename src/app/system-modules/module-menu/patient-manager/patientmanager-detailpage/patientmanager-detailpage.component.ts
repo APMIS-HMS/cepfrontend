@@ -13,7 +13,6 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-patientmanager-detailpage',
   templateUrl: './patientmanager-detailpage.component.html',
@@ -128,6 +127,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     })
   }
   setAppointment() {
+    console.log(this.selectedAppointment);
     if (this.patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
     }

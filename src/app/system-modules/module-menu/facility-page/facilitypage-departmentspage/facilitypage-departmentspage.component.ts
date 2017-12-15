@@ -1,10 +1,12 @@
+
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FacilitiesService, DepartmentService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Department, MinorLocation, Location } from '../../../../models/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-facilitypage-departmentspage',
@@ -20,7 +22,6 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   newUnitModal_on = false;
 
   innerMenuShow = false;
-  departmentService: DepartmentService;
   deptsObj: Department[] = [];
   deptObj: Department = <Department>{};
 
@@ -54,6 +55,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   constructor(public facilityService: FacilitiesService,
     private locationService: LocationService,
     private route: ActivatedRoute,
+    private systemService: SystemModuleService,
     private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
       console.log(payload)
@@ -144,7 +146,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       });
     });
 
-   
+
 
     // this.getFacility();
     // this.facilityObj = this.facilityService.getSelectedFacilityId();
@@ -178,7 +180,14 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   }
 
   deptDetalContentArea_remove(model: Department) {
-    this.departmentService.remove(model._id, model);
+    this.systemService.on();
+    let index = this.facilityObj.departments.findIndex(x => x._id === model._id);
+    this.facilityObj.departments.splice(index);
+    this.facilityService.update(this.facilityObj).then(payload =>{
+      this.systemService.off();
+    }).catch(err =>{
+      this.systemService.off();
+    });
   }
   deptEditNameToggle() {
     this.deptEditNameIcoShow = !this.deptEditNameIcoShow;

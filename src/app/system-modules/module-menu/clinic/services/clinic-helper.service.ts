@@ -72,6 +72,8 @@ export class ClinicHelperService {
         //     }
         //   });
         // });
+      }).catch(err =>{
+        this.getConsultingRoom();
       });
   }
   getClinicMajorLocation() {

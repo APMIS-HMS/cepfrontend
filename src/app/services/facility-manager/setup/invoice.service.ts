@@ -49,8 +49,11 @@ export class InvoiceService {
     return this._socket.get(id, query);
   }
 
-  create(gender: any) {
-    return this._socket.create(gender);
+  create(invoice: any) {
+    return this._socket.create(invoice);
+  }
+  update(invoice: any) {
+    return this._socket.update(invoice._id, invoice);
   }
 
   remove(id: string, query: any) {

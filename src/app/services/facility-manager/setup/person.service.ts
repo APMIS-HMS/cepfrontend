@@ -45,7 +45,7 @@ export class PersonService {
     return this._socket.find();
   }
   get(id: string, query: any) {
-    return this._socket.get(id, query);
+    return this._rest.get(id, query);
   }
 
   create(person: any) {

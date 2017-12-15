@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -8,6 +8,7 @@ import { Facility, Patient, Employee, Documentation, PatientDocumentation, Docum
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { SharedService } from '../../../../../../shared-module/shared.service';
+import { DocumentationTemplateService } from 'app/services/facility-manager/setup/documentation-template.service';
 
 
 @Component({
@@ -19,9 +20,11 @@ export class ClinicalNoteComponent implements OnInit {
   @Input() patient;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() showOrderset: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('surveyjs') surveyjs: any;
 
   json: any
   selectFormCtrl: FormControl;
+  templateFormCtrl: FormControl;
   filteredStates: any;
   filteredForms: any;
   showDocument = false;
@@ -35,6 +38,7 @@ export class ClinicalNoteComponent implements OnInit {
   states: any[] = [];
   forms: any[] = [];
   documents: Document[] = [];
+  templates: any[] = [];
 
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -43,13 +47,20 @@ export class ClinicalNoteComponent implements OnInit {
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
-    private facilityService: FacilitiesService) {
+    private facilityService: FacilitiesService, private documentationTemplateService: DocumentationTemplateService) {
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
     this.selectFormCtrl = new FormControl();
     this.selectFormCtrl.valueChanges.subscribe(form => {
       this.setSelectedForm(form)
+    })
+
+    this.templateFormCtrl = new FormControl();
+    this.templateFormCtrl.valueChanges.subscribe(temp => {
+      // console.log(temp)
+      // this.surveyjs.surveyModel.data  = temp.data;
+      this.sharedService.announceTemplate(temp);
     })
 
 
@@ -62,6 +73,14 @@ export class ClinicalNoteComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getForms();
+    this.getTemplates();
+  }
+  getTemplates() {
+    this.documentationTemplateService.find({}).then(payload => {
+      this.templates = payload.data;
+    }).catch(errr => {
+
+    })
   }
   getForms() {
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
@@ -77,6 +96,8 @@ export class ClinicalNoteComponent implements OnInit {
       .subscribe((results: any) => {
         this.forms = results.data;
         console.log(this.forms)
+      }, error =>{
+        this.getForms();
       })
   }
   setSelectedForm(form) {
@@ -85,6 +106,14 @@ export class ClinicalNoteComponent implements OnInit {
     this.json = form.body;
     this.sharedService.announceNewForm({ json: this.json, form: this.selectedForm });
     this.showDocument = true;
+    if (this.surveyjs !== undefined) {
+      this.surveyjs.ngOnInit();
+    }
+    this.documentationTemplateService.find({
+      query: {
+
+      }
+    })
   }
   close_onClick() {
     this.closeModal.emit(true);
@@ -103,10 +132,10 @@ export class ClinicalNoteComponent implements OnInit {
   formDisplayFn(form: any): string {
     return form ? form.title : form;
   }
-  docSymptom_show(){
+  docSymptom_show() {
     this.docSymptom_view = true;
   }
-  docDiagnosis_show(){
+  docDiagnosis_show() {
     this.docDiagnosis_view = true;
   }
 

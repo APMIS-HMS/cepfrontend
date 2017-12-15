@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PatientService, PersonService, InvoiceService, BillingService, MakePaymentService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { InvoiceService, MakePaymentService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import {
   WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium, TransactionStatus
 } from './../../../../models/facility-manager/setup/wallet-transaction';
@@ -28,6 +28,8 @@ export class MakePaymentComponent implements OnInit {
   @Input() cost: any = <any>{};
   @Input() discount: any = <any>{};
   @Input() subTotal: any = <any>{};
+  @Input() invoice: any = <any>{};
+  @Input() isInvoicePage: any = <any>{};
 
 
   paymentChannels = PaymentChannel;
@@ -52,14 +54,10 @@ export class MakePaymentComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
-    private _patientService: PatientService,
-    private _personService: PersonService,
     private _invoiceService: InvoiceService,
-    private _billingService: BillingService,
     private toastr: ToastsManager,
     private _makePaymentService: MakePaymentService,
-    private facilityService:FacilitiesService,
-    private router: Router) {
+    private facilityService: FacilitiesService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
@@ -92,29 +90,52 @@ export class MakePaymentComponent implements OnInit {
 
   makePayment() {
     this.isProcessing = true;
-    var paymantObj = {
-      "inputedValue": {
-        "channel": TransactionMedium[TransactionMedium.Wallet],
-        "txnType": TransactionType[TransactionType.Dr],
-        "txnStatus": TransactionStatus.Complete,
-        "cost": this.cost
-      },
-      "billGroups": this.billGroups,
-      "selectedPatient": this.selectedPatient,
-      "selectedFacility": this.selectedFacility,
-      "discount": this.discount,
-      "subTotal": this.subTotal,
-      "checkBillitems": this.checkBillitems,
-      "listedBillItems": this.listedBillItems
-    }
+    console.log(this.isInvoicePage);
+    if (this.isInvoicePage == false) {
+      var paymantObj = {
+        "inputedValue": {
+          "channel": TransactionMedium[TransactionMedium.Wallet],
+          "txnType": TransactionType[TransactionType.Dr],
+          "txnStatus": TransactionStatus.Complete,
+          "cost": this.cost
+        },
+        "billGroups": this.billGroups,
+        "selectedPatient": this.selectedPatient,
+        "selectedFacility": this.selectedFacility,
+        "discount": this.discount,
+        "subTotal": this.subTotal,
+        "checkBillitems": this.checkBillitems,
+        "listedBillItems": this.listedBillItems,
+        "isInvoicePage":true
+      }
 
-    this._makePaymentService.create(paymantObj).then(payload => {
-      console.log(payload);
-      this.personValueChanged.emit(payload.data);
-      this.isProcessing = false;
-      this.close_onClick();
-      this._notification('Success', 'Payment successfull.');
-    });
+      this._makePaymentService.create(paymantObj).then(payload => {
+        console.log(payload);
+        this.personValueChanged.emit(payload.data);
+        this.isProcessing = false;
+        this.close_onClick();
+        this._notification('Success', 'Payment successfull.');
+      });
+    } else {
+      var paymantObj2 = {
+        "inputedValue": {
+          "channel": TransactionMedium[TransactionMedium.Wallet],
+          "txnType": TransactionType[TransactionType.Dr],
+          "txnStatus": TransactionStatus.Complete,
+          "cost": this.cost
+        },
+        "invoice": this.invoice,
+        "selectedPatient": this.selectedPatient,
+        "isInvoicePage":true
+      }
+      this._makePaymentService.create(paymantObj2).then(payload => {
+        console.log(payload);
+        this.personValueChanged.emit(payload.data);
+        this.isProcessing = false;
+        this.close_onClick();
+        this._notification('Success', 'Payment successfull.');
+      });
+    }
   }
 
   private _notification(type: String, text: String): void {

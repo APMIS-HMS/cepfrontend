@@ -49,20 +49,20 @@ export class DashboardHomeComponent implements OnInit {
   constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
     private workSpaceService: WorkSpaceService) {
-    router.events.subscribe((routerEvent: Event) => {
-      this.checkRouterEvent(routerEvent);
-    });
+    // router.events.subscribe((routerEvent: Event) => {
+    //   this.checkRouterEvent(routerEvent);
+    // });
   }
-  checkRouterEvent(routerEvent: Event): void {
-    if (routerEvent instanceof NavigationStart) {
-      this.loadIndicatorVisible = true;
-    }
-    if (routerEvent instanceof NavigationEnd ||
-      routerEvent instanceof NavigationCancel ||
-      routerEvent instanceof NavigationError) {
-      this.loadIndicatorVisible = false;
-    }
-  }
+  // checkRouterEvent(routerEvent: Event): void {
+  //   if (routerEvent instanceof NavigationStart) {
+  //     this.loadIndicatorVisible = true;
+  //   }
+  //   if (routerEvent instanceof NavigationEnd ||
+  //     routerEvent instanceof NavigationCancel ||
+  //     routerEvent instanceof NavigationError) {
+  //     this.loadIndicatorVisible = false;
+  //   }
+  // }
   ngOnInit() {
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
@@ -83,7 +83,7 @@ export class DashboardHomeComponent implements OnInit {
 
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
-        facilityId: this.facilityObj._id, personId: auth.data.personId, showbasicinfo: true
+        facilityId: this.facilityObj._id, personId: auth.data.personId, $select:['personId']
       }
     }));
     this.subscription = emp$.mergeMap((emp: any) => {
