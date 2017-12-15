@@ -108,3 +108,12 @@
 .txt2 {
     font-size: 12px;
 }
+
+// Loading 
+
+.loading_screen{
+    background:rgba(0,0,0,0.8);
+    position: absolute;
+    top: 0; 
+    z-index: 999999999999;
+}

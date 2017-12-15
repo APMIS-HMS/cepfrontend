@@ -45,6 +45,7 @@ import {
 } from '@angular/material';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 // import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
@@ -90,7 +91,7 @@ import { WindowRef } from '../services/facility-manager/setup/winref.service';
         MaterialModule,
         // DragulaModule
     ],
-    providers: [StoreService, WindowRef]
+    providers: [StoreService, WindowRef, SystemModuleService]
 })
 export class SharedModule {}
 

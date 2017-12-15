@@ -6,6 +6,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-patientmanager-homepage',
@@ -40,26 +41,31 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   titles: any = [];
 
   pageSize = 1;
-  index:any = 0;
-  limit:any = 2;
-  showLoadMore:Boolean = true;
-  total:any = 0;
+  index: any = 0;
+  limit: any = 5;
+  showLoadMore: Boolean = true;
+  total: any = 0;
   updatePatientBtnText: string = 'Update';
+  loadMoreText = '';
 
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
-    private _countryService: CountriesService,
+    private _countryService: CountriesService, private systemService:SystemModuleService,
     private _titleService: TitleService
   ) {
+    this.systemService.on();
     this.patientService.listner.subscribe(payload => {
       this.getPatients(this.limit);
     });
     this.patientService.createListener.subscribe(payload => {
       console.log(payload);
       this.getPatients();
-      this.toast.success(payload.personDetails.personFullName + ' created successfully!', 'Success!');
+      let msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
+      this._notification('Success', msg);
+    }, error => {
+
     });
 
     const away = this.searchControl.valueChanges
@@ -77,14 +83,20 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   getGender() {
     this.genderService.findAll().subscribe(payload => {
       this.genders = payload.data;
+    },error =>{
+      this.getGender();
     })
   }
   getRelationships() {
     this.relationshipService.findAll().subscribe(payload => {
       this.relationships = payload.data;
+    }, error =>{
+      this.getRelationships();
     })
   }
   setAppointment(patient) {
+    console.log(patient);
+    console.log(this.loginEmployee)
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
@@ -106,8 +118,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       title: ['', [<any>Validators.required]],
       firstName: ['', [<any>Validators.required]],
       lastName: ['', [<any>Validators.required]],
-      email: [{value: '', disabled: true}, [<any>Validators.required]],
-      phoneNumber: [{value: '', disabled: true}, [<any>Validators.required]],
+      email: [{ value: '', disabled: true }, [<any>Validators.required]],
+      phoneNumber: [{ value: '', disabled: true }, [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
       country: ['', [<any>Validators.required]],
       state: ['', [<any>Validators.required]],
@@ -118,25 +130,30 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
 
     this.patientEditForm.controls['country'].valueChanges.subscribe(val => {
-      this.states = this.countries.filter(x => x._id === val._id)[0].states;
+      if (val !== null && val !== undefined) {
+        this.states = this.countries.filter(x => x._id === val._id)[0].states;
+      }
+
     });
 
     this.patientEditForm.controls['state'].valueChanges.subscribe(val => {
-      this.lgas = this.states.filter(x => x._id === val._id)[0].lgs;
-      this.cities = this.states.filter(x => x._id === val._id)[0].cities;
+      if (val !== null && val !== undefined) {
+        this.lgas = this.states.filter(x => x._id === val._id)[0].lgs;
+        this.cities = this.states.filter(x => x._id === val._id)[0].cities;
+      }
     });
 
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     console.log(this.resetData);
-    if(this.resetData === true){
+    if (this.resetData === true) {
       this.index = 0;
       this.getPatients();
       this.showLoadMore = true;
     }
   }
-  
+
   sortPatientsByName() {
     const sortedPatient = this.patients;
     sortedPatient.sort(function (x, y) {
@@ -176,35 +193,48 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
   getPatients(limit?) {
-    this.patientService.find({ 
-      query: { 
-        facilityId: this.facility._id, 
+    this.loading = true;
+    this.systemService.on();
+    this.patientService.find({
+      query: {
+        facilityId: this.facility._id,
         $limit: this.limit,
-        $skip: this.index * this.limit 
-      } 
+        $skip: this.index * this.limit,
+        $sort:{createdAt: -1 }
+      }
     }).then(payload => {
-      console.log(payload);
-      this.loading = false;
       this.total = payload.total;
       if (payload.data.length > 0) {
-        if(this.resetData !== true)
-        {
+        if (this.resetData !== true) {
           this.patients.push(...payload.data);
-        }else{
+        } else {
           this.resetData = false;
           this.resetDataNew.emit(this.resetData);
           this.patients = payload.data;
         }
-        if(this.total <= this.patients.length){
+        if (this.total <= this.patients.length) {
           this.showLoadMore = false;
         }
       } else {
         this.patients = [];
       }
+      this.getShowing();
+      this.systemService.off();
+      this.loading = false;
     }).catch(errr => {
       console.log(errr);
+      this.systemService.off();
+      this.loading = false;
     });
     this.index++;
+  }
+  getShowing() {
+    let ret = this.index * this.limit
+    if (ret >= this.total && this.index > 0) {
+      this.loadMoreText = 'Showing ' + this.total + ' of '+this.total + ' records';
+      return;
+    }
+    this.loadMoreText = 'Showing ' + ret + ' of '+this.total + ' records';
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
@@ -212,35 +242,36 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getPatients(limit);
   }
   onScrollUp() {
-    console.log(this.pageSize);
     if (this.pageSize > 1) {
       this.pageSize = this.pageSize - 1;
     }
     const limit = this.limit * this.pageSize;
     this.getPatients(limit);
   }
-  loadMore(){
+  loadMore() {
     this.getPatients();
   }
   slideEdit(patient) {
-    this.selectedPatient = patient.personDetails;
-    console.log(this.selectedPatient);
-    this.editPatient = true;
-    if (this.selectedPatient.nextOfKin.length > 0) {
-      const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
-      this.selectedPatient.nextOfKin.forEach((nextOfKin, i) => {
-        nextOfKincontrol.push(this._populateNextOfKin(nextOfKin));
-      });
-    }
+    this.patientService.get(patient._id, {}).then(payload => {
+      this.selectedPatient = payload.personDetails;
+      console.log(this.selectedPatient);
+      this.editPatient = true;
+      if (this.selectedPatient.nextOfKin.length > 0) {
+        const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
+        this.selectedPatient.nextOfKin.forEach((nextOfKin, i) => {
+          nextOfKincontrol.push(this._populateNextOfKin(nextOfKin));
+        });
+      }
 
-    this._populateAndSelectData(this.selectedPatient);
+      this._populateAndSelectData(this.selectedPatient);
+    })
   }
   updatePatient(value: any, valid: boolean) {
     this.updatePatientBtnText = 'Updating... <i class="fa fa-spinner fa-spin"></i>';
     const nextOfKinArray = [];
     this.selectedPatient['firstName'] = value.firstName;
     this.selectedPatient['lastName'] = value.lastName;
-    this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName ;
+    this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName;
     this.selectedPatient['gender'] = value.gender;
     this.selectedPatient['genderId'] = value.gender._id;
     this.selectedPatient['nationalityObject'] = {
@@ -257,7 +288,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     };
     this.selectedPatient['fullAddress'] = value.street + ', ' + value.city.name + ', ' + value.state.name + ', ' + value.country.name;
 
-    if(value.nextOfKin.length > 0) {
+    if (value.nextOfKin.length > 0) {
       value.nextOfKin.forEach(element => {
         nextOfKinArray.push(element);
       });
@@ -265,51 +296,56 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
 
+    console.log(this.selectedPatient)
     this.personService.update(this.selectedPatient).then(res => {
       this.updatePatientBtnText = 'Update';
       this.close_onClick();
       this._notification('Success', 'Patient details has been updated successfully.');
     }).catch(err => {
       this.updatePatientBtnText = 'Update';
+      console.log(err);
       this._notification('Error', 'There was an error updating user record, Please try again later.');
     });
   }
 
   private _populateAndSelectData(value: any) {
+    // this.patientEditForm.reset();
     this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
-    
+
     this.titles.forEach(item => {
-      if(item._id === value.title._id) {
+      if (item._id === value.titleId) {
         this.patientEditForm.controls['title'].setValue(item);
       }
     });
 
     this.genders.forEach(item => {
-      if(item._id === value.gender._id) {
+      if (item._id === value.gender._id) {
         this.patientEditForm.controls['gender'].setValue(item);
       }
     });
 
     this.countries.forEach(item => {
-      if(item._id === value.homeAddress.country) {
+      if (item._id === value.homeAddress.country) {
         this.patientEditForm.controls['country'].setValue(item);
       }
     });
 
     this.states.forEach(item => {
-      if(item._id === value.homeAddress.state) {
+      if (item._id === value.homeAddress.state) {
         this.patientEditForm.controls['state'].setValue(item);
       }
     });
-    
+
+    console.log(this.cities)
     this.cities.forEach(item => {
-      if(item._id === value.homeAddress.city) {
+      if (item._id === value.homeAddress.city) {
         this.patientEditForm.controls['city'].setValue(item);
       }
     });
-    
+
     this.lgas.forEach(item => {
-      if(item._id === value.homeAddress.lga) {
+      this.patientEditForm.controls['lga'].reset();
+      if (item._id === value.homeAddress.lga) {
         this.patientEditForm.controls['lga'].setValue(item);
       }
     });
@@ -367,15 +403,18 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this._titleService.findAll()
       .then(res => {
         this.titles = res.data;
-      }).catch(err => console.log(err));
+      }).catch(err =>{
+        console.log(err)
+        this._getAllTitles();
+      });
   }
 
   // Notification
-	private _notification(type: string, text: string): void {
-		this.facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
 }

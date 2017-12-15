@@ -839,15 +839,18 @@ export class LabRequestsComponent implements OnInit {
           delete item.paments;
           delete item.serviceModifierOject
         });
-        request.billingId = billing;
-        console.log(request);
-        this.requestService.update(request).then(payload => {
+        results[0].billingId = billing;
+        console.log(results[0]);
+        this.requestService.update(results[0]).then(payload => {
           this.frmNewRequest.reset();
+         this._getAllPendingRequests();
           this.bindInvestigations = [];
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
           this.addToast('Request sent successfully');
+        }).catch(ex =>{
+          console.log(ex)
         })
 
       })
@@ -877,8 +880,7 @@ export class LabRequestsComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this.pendingRequests = [];
-    console.log(this.patientId);
-    if (this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
+    if (this.patientId !== undefined && this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
       console.log('have patient')
       this.request_view = true;
       this.requestService.find({
@@ -889,7 +891,7 @@ export class LabRequestsComponent implements OnInit {
         console.log(res);
         this.loading = false;
         let labId = '';
-        if (this.selectedLab !== undefined && this.selectedLab.typeObject !== undefined) {
+        if ((this.selectedLab !== undefined && this.selectedLab !== null) && this.selectedLab.typeObject !== undefined) {
           labId = this.selectedLab.typeObject.minorLocationId;
         }
 
@@ -949,7 +951,7 @@ export class LabRequestsComponent implements OnInit {
         });
         console.log(this.pendingRequests);
       }).catch(err => console.error(err));
-    } else if (this.patientId._id === undefined && !this.isExternal) {
+    } else {
       this.requestService.find({
         query: {
           'facilityId._id': this.selectedFacility._id

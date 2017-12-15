@@ -47,20 +47,20 @@ export class ModuleMenuComponent implements OnInit {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     });
-    router.events.subscribe((routerEvent: Event) => {
-      this.checkRouterEvent(routerEvent);
-    });
+    // router.events.subscribe((routerEvent: Event) => {
+    //   this.checkRouterEvent(routerEvent);
+    // });
   }
-  checkRouterEvent(routerEvent: Event): void {
-    if (routerEvent instanceof NavigationStart) {
-      this.loadIndicatorVisible = true;
-    }
-    if (routerEvent instanceof NavigationEnd ||
-      routerEvent instanceof NavigationCancel ||
-      routerEvent instanceof NavigationError) {
-      this.loadIndicatorVisible = false;
-    }
-  }
+  // checkRouterEvent(routerEvent: Event): void {
+  //   if (routerEvent instanceof NavigationStart) {
+  //     this.loadIndicatorVisible = true;
+  //   }
+  //   if (routerEvent instanceof NavigationEnd ||
+  //     routerEvent instanceof NavigationCancel ||
+  //     routerEvent instanceof NavigationError) {
+  //     this.loadIndicatorVisible = false;
+  //   }
+  // }
   ngOnInit() {
     this.searchControl.valueChanges.subscribe(value => {
       // do something with value here

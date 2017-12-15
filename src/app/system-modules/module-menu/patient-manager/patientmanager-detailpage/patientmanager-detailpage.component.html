@@ -6,7 +6,7 @@
                 <div class="patient-img">
                     <div class="patient-img-wrap">
                         <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
-                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)">
+                        <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
                         <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balance</span>
                         <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
-                          &#8358; {{patient?.personDetails?.wallet?.balance}}
+                          &#8358; {{patient?.personDetails?.wallet?.balance|numberThr}}
                         </span>
                     </section>
                 </div>

@@ -151,55 +151,59 @@ export class BillLookupComponent implements OnInit {
   }
 
   onGenerateInvoice() {
-    this.isProcessing = true;
-    const billGroup: Invoice = <Invoice>{ billingIds: [] };
-    billGroup.facilityId = this.selectedFacility._id;
-    billGroup.patientId = this.selectedPatient._id;
-
-    this.billGroups.forEach((itemg, g) => {
-      itemg.bills.forEach((itemb: BillModel, b) => {
-        if (itemb.isChecked) {
-          billGroup.billingIds.push({ billingId: itemb._id });
-        }
+    if (this.checkBillitems.length > 0) { 
+      this.isProcessing = true;
+      const billGroup: Invoice = <Invoice>{ billingIds: [] };
+      billGroup.facilityId = this.selectedFacility._id;
+      billGroup.patientId = this.selectedPatient._id;
+  
+      this.billGroups.forEach((itemg, g) => {
+        itemg.bills.forEach((itemb: BillModel, b) => {
+          if (itemb.isChecked) {
+            billGroup.billingIds.push({ billingId: itemb._id });
+          }
+        });
       });
-    });
-
-    if (billGroup.billingIds.length > 0) {
-      billGroup.totalDiscount = this.discount;
-      billGroup.totalPrice = this.subTotal;
-      billGroup.grandAmount = this.total;
-      console.log(billGroup);
-      console.log(this.checkBillitems);
-      console.log(this.listedBillItems);
-      this.invoiceService.create(billGroup).then(payload => {
-        var len = this.checkBillitems.length - 1;
-        var len2 = this.listedBillItems.length - 1;
-        var filterCheckedBills = [];
-        for (var x = len; x >= 0; x--) {
-          for (var x2 = len2; x2 >= 0; x2--) {
-            let len3 = this.listedBillItems[x2].billItems.length - 1;
-            for (var x3 = len3; x3 >= 0; x3--) {
-              if (this.listedBillItems[x2].billItems[x3]._id == this.checkBillitems[x]) {
-                this.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
-                filterCheckedBills.push(this.listedBillItems[x2]);
-                console.log(filterCheckedBills);
-                console.log("This is verify");
-                if (x == 0) {
-                  let len4 = filterCheckedBills.length - 1;
-                  for (var x4 = len4; x4 >= 0; x4--) {
-                    this.billingService.update(filterCheckedBills[x4]).then(pd => {
-                      console.log(pd);
-                    });
+  
+      if (billGroup.billingIds.length > 0) {
+        billGroup.totalDiscount = this.discount;
+        billGroup.subTotal = this.subTotal;
+        billGroup.totalPrice = this.total;
+        console.log(billGroup);
+        console.log(this.checkBillitems);
+        console.log(this.listedBillItems);
+        this.invoiceService.create(billGroup).then(payload => {
+          var len = this.checkBillitems.length - 1;
+          var len2 = this.listedBillItems.length - 1;
+          var filterCheckedBills = [];
+          for (var x = len; x >= 0; x--) {
+            for (var x2 = len2; x2 >= 0; x2--) {
+              let len3 = this.listedBillItems[x2].billItems.length - 1;
+              for (var x3 = len3; x3 >= 0; x3--) {
+                if (this.listedBillItems[x2].billItems[x3]._id == this.checkBillitems[x]) {
+                  this.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
+                  filterCheckedBills.push(this.listedBillItems[x2]);
+                  console.log(filterCheckedBills);
+                  console.log("This is verify");
+                  if (x == 0) {
+                    let len4 = filterCheckedBills.length - 1;
+                    for (var x4 = len4; x4 >= 0; x4--) {
+                      this.billingService.update(filterCheckedBills[x4]).then(pd => {
+                        console.log(pd);
+                      });
+                    }
                   }
                 }
               }
             }
           }
-        }
-        this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
-      }, error => {
-        console.log(error);
-      });
+          this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
+        }, error => {
+          console.log(error);
+        });
+      }
+    } else { 
+      this._notification('Info',"No bill selected")
     }
   }
 
@@ -549,7 +553,15 @@ export class BillLookupComponent implements OnInit {
     this.priceItemDetailPopup = true;
   }
   makePayment_onclick() {
-    this.makePayment = true;
+    if (this.total != 0 && this.total != undefined) {
+      if (this.selectedPatient.personDetails.wallet.balance < this.total) {
+        this._notification('Info', "You donot have sufficient balance to make this payment")
+      } else {
+        this.makePayment = true;
+      }
+    } else {
+      this._notification('Info', "You cannot make payment for a Zero cost service, please select bill");
+    }
   }
   close_onClick(e) {
     this.addModefierPopup = false;

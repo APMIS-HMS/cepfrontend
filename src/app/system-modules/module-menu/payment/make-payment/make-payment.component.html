@@ -2,7 +2,7 @@
 
   <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
   <div class="facility-title">Make Payment</div>
-  <div class="total">{{cost| currency:'NGN':true:'1.2-2'}}</div>
+  <div class="total">&#x20a6;{{cost| number}}</div>
   <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
   <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
     <i class="fa fa-check" aria-hidden="true"></i>

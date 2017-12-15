@@ -12,7 +12,15 @@ export class SharedService {
   private submitFormSource = new Subject<Object>();
   submitForm$ = this.submitFormSource.asObservable();
 
+  
+  private announceTemplateSource = new Subject<Object>();
+  announceTemplate$ = this.announceTemplateSource.asObservable();
+
   constructor() { }
+
+  announceTemplate(temp: Object) {
+    this.announceTemplateSource.next(temp);
+  }
 
   announceNewForm(form: Object) {
     this.newFormAnnouncedSource.next(form);

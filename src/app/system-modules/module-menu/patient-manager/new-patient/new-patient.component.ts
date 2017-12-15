@@ -323,31 +323,43 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getProfessions() {
         this.professionService.findAll().then(payload => {
             this.professions = payload.data;
+        }).catch(err =>{
+            
         });
     }
     getRelationships() {
         this.relationshipService.findAll().then(payload => {
             this.relationships = payload.data;
-        });
+        }).catch(err =>{
+            
+        });;
     }
     getMaritalStatus() {
         this.maritalStatusService.findAll().then(payload => {
             this.maritalStatuses = payload.data;
-        });
+        }).catch(err =>{
+            
+        });;
     }
     getGenders() {
         this.genderService.findAll().then(payload => {
             this.genders = payload.data;
+        }).catch(err =>{
+
         });
     }
     getTitles() {
         this.titleService.findAll().then(payload => {
             this.titles = payload.data;
+        }).catch(err =>{
+            
         });
     }
     getCountries() {
         this.countryService.findAll().then(payload => {
             this.countries = payload.data;
+        }).catch(err =>{
+            
         });
     }
     empApmisID() {
@@ -374,16 +386,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.errMsg = 'This APMIS ID is valid or has been previously used to generate an employee!';
                 this.mainErr = false;
             } else {
-                this.frmNewEmp4_show = true;
-                this.apmisId_show = false;
+                this.frmNewEmp4_show = false;
+                this.apmisId_show = true;
                 this.mainErr = true;
-                this.frmNewEmp4_show = true;
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = false;
                 this.paymentPlan = false;
-                this.apmisId_show = false;
-                this.mainErr = true;
                 this.shouldMoveFirst = true;
                 console.log(this.shouldMoveFirst);
             }
@@ -432,11 +441,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     newPerson1_show() {
-        this.frmNewPerson1_show = true;
+        this.frmNewPerson1_show = false;
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
-        this.paymentPlan = false;
+        this.paymentPlan = true;
         this.apmisId_show = false;
         this.shouldMoveFirst = false;
     }
@@ -651,8 +660,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 text: this.selectedPerson.personFullName + ' added successfully',
                 users: [this.facilityService.getLoginUserId()]
             })
-            //this.close_onClick();
-            this.paymentPlan = true;
+            this.close_onClick();
+            this.paymentPlan = false;
             this.frmNewPerson1_show = false;
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = false;
@@ -676,7 +685,21 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.saveEmployee();
     }
     payplans(){
-        this.close_onClick();
+        this.paymentPlan = false;
+        this.frmNewPerson1_show = true;
+        this.frmNewPerson2_show = false;
+        this.frmNewPerson3_show = false;
+        this.frmNewEmp4_show = false;
+        this.apmisId_show = false;
+    }
+    back_payplans() {
+        this.frmNewPerson1_show = false;
+        this.frmNewPerson2_show = false;
+        this.frmNewPerson3_show = false;
+        this.frmNewEmp4_show = false;
+        this.paymentPlan = true;
+        this.apmisId_show = false;
+        this.mainErr = true;
     }
 
     onEmpTitleChange(val) { }
@@ -699,6 +722,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             } else {
                 this.isEmailExist = true;
             }
+        }).catch(error =>{
+            console.log(error)
         });
     }
 
