@@ -44,6 +44,8 @@ export class ContactInfoComponent implements OnInit {
 	back_key_show = false;
 	next_key_show = false;
 
+	isEmailExist: Boolean;
+
 	public facilityForm1_1: FormGroup;
 
 	constructor(
@@ -75,6 +77,7 @@ export class ContactInfoComponent implements OnInit {
 
 			contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
 			contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
+			contactEmail: ['', [<any>Validators.required, <any>Validators.minLength(4)]],
 			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
 			password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
 			repass: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
@@ -110,13 +113,13 @@ export class ContactInfoComponent implements OnInit {
 				val.facilitycity === '' || val.facilitycity === ' ' || val.facilityaddress === ' ' ||
 				val.facilityaddress === '' || val.facilitylandmark === ' ' || val.facilitylandmark === '' || val.contactFName === ''
 				|| val.contactFName === ' ' || val.contactLName === ''
-				|| val.contactLName === ' ' || val.facilityphonNo === '' || val.facilityphonNo === ' ' || val.password === '' ||
+				|| val.contactLName === ' ' || val.contactEmail === '' || val.facilityphonNo === '' || val.facilityphonNo === ' ' || val.password === '' ||
 				val.password === ' ' || val.repass === '' || val.repass === ' ') {
 				this.mainErr = false;
 				this.errMsg = 'you left out a required field';
 			} else if (val.password !== val.repass) {
 				this.mainErr = false;
-				this.errMsg = 'your passwords do not match';
+				this.errMsg = 'your passwords do not match'; 
 			} else {
 				if (this.inputFacility._id === undefined) {
 					const model: Facility = <Facility>{
@@ -154,11 +157,11 @@ export class ContactInfoComponent implements OnInit {
 							lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
 							nationalityId: this.inputFacility.address.country,
 							stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
-							email: model.email,
+							email: this.facilityForm1_1.controls['contactEmail'].value,
 							maritalStatusId: this.maritalStatuses[0]._id
 						};
 						const userModel = <User>{
-							email: model.email,
+							email: this.facilityForm1_1.controls['contactEmail'].value,
 							password: this.facilityForm1_1.controls['password'].value
 						};
 
@@ -197,6 +200,29 @@ export class ContactInfoComponent implements OnInit {
 			this.mainErr = false;
 		}
 	}
+
+	onCheckEmailAddress(value) {
+		//console.log(value);
+		if(value.length > 4){
+			let email = this.facilityForm1_1.controls['facilityemail'];
+			if(value.includes("@")){
+				this.facilityService.find({ query: { email: value } }).then(payload => {
+					if (payload.data.length > 0) {
+						//this.isEmailExist = false;
+						email.setErrors({duplicate: true});
+						this.mainErr = false;
+						this.errMsg = 'Email already exist, please try another email';
+					} else {
+						//this.isEmailExist = true;
+					}
+				});
+			}else{
+				email.setErrors({invalid: true});
+			}
+		}
+	}
+
+
 	prime() {
 
 		const title$ = Observable.fromPromise(this.titleService.findAll());
