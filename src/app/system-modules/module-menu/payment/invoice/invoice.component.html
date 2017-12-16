@@ -123,7 +123,7 @@
             </div>
             <div class="clear"></div>
           </div>
-          <div class="{{ !isPaidClass ? 'invoice unpaid': 'invoice paid' }}">
+          <div *ngIf="this.selectedInvoiceGroup.paymentCompleted != undefined" class="{{ !isPaidClass ? 'invoice unpaid': 'invoice paid' }}">
               <div class="billContentSect">
                   <!--<div *ngIf="selectedPatient._id != undefined" (click)="addItem_show()" class="cta-1 btn-addItem">
                     Add Item

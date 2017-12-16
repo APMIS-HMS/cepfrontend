@@ -210,8 +210,6 @@ export class ContactInfoComponent implements OnInit {
 					if (payload.data.length > 0) {
 						//this.isEmailExist = false;
 						email.setErrors({duplicate: true});
-						this.mainErr = false;
-						this.errMsg = 'Email already exist, please try another email';
 					} else {
 						//this.isEmailExist = true;
 					}
