@@ -29,6 +29,11 @@
               <input mdInput md-error placeholder="Major Landmark" formControlName="facilitylandmark" value="inputFacility.address.landmark">
           </md-input-container>
       </div>
+      <div class="frm-item-wrap">
+        <md-input-container class="example-full-width">
+            <input type="email" mdInput md-error placeholder="Contact Email" formControlName="contactEmail">
+        </md-input-container>
+      </div>
 
     </div>
     <div class="rhs">
@@ -68,9 +73,9 @@
 
     <div (click)="back_facilityForm1_1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
 
-    <div (click)="facilitySetup1_1(facilityForm1_1.valid, facilityForm1_1.value)" class="cta-1">
+    <button (click)="facilitySetup1_1(facilityForm1_1.valid, facilityForm1_1.value)" [disabled]="!facilityForm1_1.valid" class="cta-1">
       CONTINUE
-    </div>
+    </button>
 
   </form>
 </div>

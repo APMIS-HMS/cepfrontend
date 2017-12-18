@@ -34,7 +34,7 @@
         </div>
         <div class="frm-item-wrap">
             <md-input-container class="example-full-width">
-                <input type="email" mdInput md-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email">
+                <input type="email" mdInput md-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email" (keyup)="onCheckEmailAddress($event.target.value)">
             </md-input-container>
         </div>
         <div class="frm-item-wrap">
@@ -52,9 +52,9 @@
 
       <div class="clear"></div>
 
-      <div (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" class="cta-1">
+      <button (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" [disabled]="!facilityForm1.valid" class="cta-1">
         CONTINUE
-      </div>
+      </button>
 
     </form>
 </div>
