@@ -9,6 +9,7 @@ import { PatientPortalHomeComponent } from './patient-portal-home.component';
 import { SystemModuleComponent } from '../system-module.component';
 import { ChangePasswordComponent } from '../../system-modules/module-menu/change-password/change-password.component';
 import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
+import { PpHomeComponent } from './pp-home/pp-home.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module'
     PatientPortalComponent,
     PatientPortalHomeComponent,
     SystemModuleComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    PpHomeComponent
   ]
 })
 
