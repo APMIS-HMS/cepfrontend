@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientPortalComponent implements OnInit {
 
+  innerMenuShow = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  innerMenuToggle() {
+    this.innerMenuShow = !this.innerMenuShow;
   }
 
 }

@@ -1,1 +1,51 @@
 @import "../system-module.component.scss";
+@import "../dashboard/dashboard-home.component.scss";
+
+.menubar-wrap{
+    position: relative;
+    background: #194985;
+    width: 100%;
+    border: 0; 
+}
+.menubar-wrap i{
+    position: absolute;
+    left: 10px;
+}
+.menubar-wrap i:hover{
+    color: #0288D1;
+}
+.pg-title {
+    font-size: 14px;
+}
+.portal-wrap{
+    background: #f1f1f1;
+    min-height: 100vh;
+}
+.content-sect{
+    width: 100%;
+    display: flex;
+}
+.content-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.side-sect{
+    width: 25%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.mid-sect{
+    width: 50%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+}
+.pp-card{
+    background: #fff;
+    width: 100%;
+    min-height: 100px;
+}
+.mainmenu-content{
+    width: 190px;
+}
