@@ -60,14 +60,12 @@ export class PaymentComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingInvoice = true;
-                console.log(value);
                 var facility = {
                     "_id": this.selectedFacility._id,
                     "isQuery": true,
                     "name": value
                 }
                 this._todayInvoiceService.get(facility).then(payload => {
-                    console.log(payload);
                     this.invoiceGroups = payload.data.invoices;
                     this.isLoadingInvoice = true;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -85,7 +83,6 @@ export class PaymentComponent implements OnInit {
                 }
                 this._pendingBillService.get(facility)
                     .then(res => {
-                        console.log(res);
                         this.pendingBills = res.data.bills;
                         this.loadingPendingBills = false;
                     }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -99,7 +96,6 @@ export class PaymentComponent implements OnInit {
             "isQuery": false
         }
         this._todayInvoiceService.get(facility).then(payload => {
-            console.log(payload);
             this.invoiceGroups = payload.data.invoices;
             this.totalAmountReceived = payload.data.amountReceived;
             this._getLocAmountAccrued();
@@ -114,12 +110,10 @@ export class PaymentComponent implements OnInit {
         }
         this._pendingBillService.get(facility)
             .then(res => {
-                console.log(res);
                 this.pendingBills = res.data.bills;
                 this.totalAmountBilled = res.data.amountBilled;
                 this.loadingPendingBills = false;
             }).catch(err => {
-                console.log(err);
                 this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
             });
     }
@@ -132,13 +126,11 @@ export class PaymentComponent implements OnInit {
         this._locSummaryCashService.get(facility)
             .then(payload2 => {
                 this.barChartLabels = payload2.data.barChartLabels;
-                console.log(this.barChartLabels);
                 this.barChartData.splice(0, 1);
                 for (let k = 0; k < payload2.data.barChartData.length; k++) {
                     this.barChartData.push({ "data": [0], "label": "" });
                 }
                 for (let i = 0; i < payload2.data.barChartData.length; i++) {
-                    console.log("jhgd");
                     for (let j = 0; j < payload2.data.barChartData[i].data.length; j++) {
                         this.barChartData[i].data.push(payload2.data.barChartData[i].data[j]);
                     }
