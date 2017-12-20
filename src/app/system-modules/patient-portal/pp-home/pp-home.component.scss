@@ -1,1 +1,65 @@
 @import "../patient-portal.component.scss";
+@import "../../../../globals/variables.scss";
+
+.patient-img-wrap{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    background: #f1f1f1;
+}
+.patient-img-wrap img{
+    width: 100%;
+}
+.basic-info-name{
+    font-family: $font-titles;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    color: #777;
+}
+.basic-info-others {
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+    color: #194985;
+}
+.basic-info-others i{
+    padding-right: 10px;
+}
+.card-seperator{
+    width: 100%;
+    border-bottom: 1px solid rgb(224, 224, 224);
+    padding-bottom: 20px;
+}
+.facility-count-sect{
+    position: relative;
+}
+.facility-count {
+    color: #194985;
+    font-size: 26px;
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+}
+.clickable-sect:hover{
+    background: #194985;
+    cursor: pointer;
+    .facility-count{
+        color: #fff;
+    }
+    .count-label{
+        color: #99c9ff;
+    }
+}
+.count-label{
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+    color: #194985;
+    font-weight: bold;
+    padding-top: 5px;
+}
