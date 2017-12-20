@@ -4,7 +4,7 @@ import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper'
 import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService,
     TitleService, CountriesService, PatientService, PersonService, EmployeeService, FacilitiesService, FacilitiesServiceCategoryService,
-    BillingService, ServicePriceService
+    BillingService, ServicePriceService, HmoService
 } from '../../../../services/facility-manager/setup/index';
 import {
     Facility, FacilityService, Patient, Address, Profession, Relationship, Person,
@@ -115,7 +115,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private personService: PersonService,
         private employeeService: EmployeeService,
         private facilityService: FacilitiesService,
-        private billingService: BillingService, private servicePriceService: ServicePriceService
+        private billingService: BillingService, private servicePriceService: ServicePriceService,
+        private hmoService: HmoService
     ) {
         // this.uploadEvents = new EventEmitter();
         this.cropperSettings = new CropperSettings();
@@ -227,13 +228,24 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         .distinctUntilChanged()
         .switchMap((term: any) => this.employeeService.find({
             query: {
-                facilityId: this.facility._id,
-                "employeeDetails.apmisId": this.ccPlanId.value
+                facilityId: this.facility._id/* ,
+                "employeeDetails.apmisId": this.ccPlanId.value */
             }
 
         }));
-  
         away.subscribe((payload: any) => {
+            console.log(payload);
+        });
+
+        const insur = this.hmoPlanId.valueChanges
+        .debounceTime(400)
+        .distinctUntilChanged()
+        .switchMap((term:any) => this.hmoService.find({
+            query: {
+                facilityId: this.facility._id
+            }
+        }));
+        insur.subscribe((payload: any) => {
             console.log(payload);
         });
 
