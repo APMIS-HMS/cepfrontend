@@ -42,78 +42,77 @@
         </div> -->
         <div class="epayment-box">
             <div *ngIf="flutterwavePayment">
-                <angular-4-flutterwave *ngIf="withPaystack" [amount]="paymentFormGroup.controls['fundAmount'].value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'"
-                    [custom_title]="'APMIS'" [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
+                <angular-4-flutterwave [amount]="paymentFormGroup.controls['fundAmount'].value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
+                    [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
             </div>
             <div *ngIf="paystackPayment">
-                <!-- <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
-                    (callback)="paymentDone($event)">e-Payment</angular4-paystack> -->
+                <angular4-paystack [key]="paystackClientKey" [email]="patient.personDetails.email" [amount]="paymentFormGroup.controls[ 'fundAmount'].value*100" [ref]="refKey" [class]=" 'btn btn-primary btn-medium btn-blue' " (close)="paymentCancel() " (callback)="paymentDone($event) ">Paystack</angular4-paystack>
             </div>
-            <div *ngIf="cashPayment">
-                <button (click)="fundWalletViaCashPayment(paymentFormGroup.valid, paymentFormGroup.value);" [disabled]="disableBtn" class="btn btn-primary">
-                  <span *ngIf="cashPaymentPay">Pay</span>
-                  <span *ngIf="cashPaymentPaying">Paying... <i class="fa fa-spinner fa-spin"></i></span>
+            <div *ngIf="cashPayment ">
+                <button (click)="fundWalletViaCashPayment(paymentFormGroup.valid, paymentFormGroup.value); " [disabled]="disableBtn " class="btn btn-primary ">
+                  <span *ngIf="cashPaymentPay ">Pay</span>
+                  <span *ngIf="cashPaymentPaying ">Paying... <i class="fa fa-spinner fa-spin "></i></span>
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="tbl-header">
-    <div class="pg-subtitle">Account Statement</div>
-    <div class="frm-item-wrap">
+<div class="tbl-header ">
+    <div class="pg-subtitle ">Account Statement</div>
+    <div class="frm-item-wrap ">
         <md-input-container>
-            <input type="text" mdInput placeholder="Search Activities" [formControl]="search">
+            <input type="text " mdInput placeholder="Search Activities " [formControl]="search ">
         </md-input-container>
     </div>
 </div>
-<div class="content">
-    <table cellpadding="0" cellspacing="0" border="0.5">
+<div class="content ">
+    <table cellpadding="0 " cellspacing="0 " border="0.5 ">
         <thead>
             <tr>
                 <th>
-                    <span style="padding-left: 3px;">No</span>
+                    <span style="padding-left: 3px; ">No</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px;">Date</span>
+                    <span style="padding-left: 3px; ">Date</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px;">Description</span>
+                    <span style="padding-left: 3px; ">Description</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px; text-align:center;">Ref Code</span>
+                    <span style="padding-left: 3px; text-align:center; ">Ref Code</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px; text-align:center;">Transaction Type</span>
+                    <span style="padding-left: 3px; text-align:center; ">Transaction Type</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px; text-align:center;">Amount</span>
+                    <span style="padding-left: 3px; text-align:center; ">Amount</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px; text-align:center;">Current Balance</span>
+                    <span style="padding-left: 3px; text-align:center; ">Current Balance</span>
                 </th>
                 <th>
-                    <span style="padding-left: 3px; text-align:center;">Available Balance</span>
+                    <span style="padding-left: 3px; text-align:center; ">Available Balance</span>
                 </th>
             </tr>
         </thead>
 
         <tbody>
-            <tr *ngIf="transactions.length === 0 && !loading">
-                <td class="table-content " colspan="8" style="text-align: center "> No data available in table</td>
+            <tr *ngIf="transactions.length===0 && !loading ">
+                <td class="table-content " colspan="8 " style="text-align: center "> No data available in table</td>
             </tr>
-            <tr *ngIf="transactions.length === 0 && loading">
-                <td class="table-content " colspan="8" style="text-align: center ">
-                    <md-spinner class="small-spinner"></md-spinner>
+            <tr *ngIf="transactions.length===0 && loading ">
+                <td class="table-content " colspan="8 " style="text-align: center ">
+                    <md-spinner class="small-spinner "></md-spinner>
                 </td>
             </tr>
-            <tr *ngFor="let tx of transactions; let i=index;">
+            <tr *ngFor="let tx of transactions; let i=index; ">
                 <td>{{ i+1 }}</td>
                 <td>{{tx.createdAt | date:'short'}}</td>
                 <td>{{tx.description}}</td>
                 <td>{{tx.refCode}}</td>
                 <td>{{ (tx.transactionType === 'Cr') ? 'Credit' : 'Debit' }}</td>
-                <td class="{{ (tx.transactionType === 'Cr') ? 'text-green' : 'text-green' }}"><span>&#x20a6;</span>{{tx.amount}}</td>
+                <td class="{{ (tx.transactionType==='Cr' ) ? 'text-green' : 'text-green' }} "><span>&#x20a6;</span>{{tx.amount}}</td>
                 <td><span>&#x20a6;</span>{{tx.ledgerBalance}}</td>
                 <td><span>&#x20a6;</span>{{tx.balance}}</td>
             </tr>

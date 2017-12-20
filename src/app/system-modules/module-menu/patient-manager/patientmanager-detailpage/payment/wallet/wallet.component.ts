@@ -151,7 +151,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
         });
       } else {
         this.person = payload;
-        this.transactions = payload.wallet.transactions.reverse().slice(0, 5);
+        this.transactions = payload.wallet.transactions.reverse().slice(0, 10);
       }
     });
 
@@ -241,7 +241,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
           this.flutterwavePayment = false;
           this.paystackPayment = false;
           this.person = res.body.data;
-          this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
+          this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
           const text = 'Your facility\'s wallet has been debited and patient\'s wallet has been credited successfully.';
           this._notification('Success', text);
         } else {
@@ -260,27 +260,31 @@ export class WalletComponent implements OnInit, AfterViewInit {
   // Flutterwave Payment
   paymentDone(paymentRes) {
     console.log(paymentRes);
+    let flutterwaveRes;
+    const ePaymentMethod = this.paymentFormGroup.controls['paymentType'].value
     const desc = 'Funded wallet via ' + this.paymentFormGroup.controls['paymentType'].value;
-    let flutterwaveRes = {
-      data: paymentRes.data.data,
-      tx: {
-        charged_amount: paymentRes.tx.charged_amount,
-        customer: paymentRes.tx.customer,
-        flwRef: paymentRes.tx.flwRef,
-        txRef: paymentRes.tx.txRef,
-        orderRef: paymentRes.tx.orderRef,
-        paymentType: paymentRes.tx.paymentType,
-        raveRef: paymentRes.tx.raveRef,
-        status: paymentRes.tx.status
-      }
-    };
+    if (ePaymentMethod === 'Flutterwave') {
+      flutterwaveRes = {
+        data: paymentRes.data.data,
+        tx: {
+          charged_amount: paymentRes.tx.charged_amount,
+          customer: paymentRes.tx.customer,
+          flwRef: paymentRes.tx.flwRef,
+          txRef: paymentRes.tx.txRef,
+          orderRef: paymentRes.tx.orderRef,
+          paymentType: paymentRes.tx.paymentType,
+          raveRef: paymentRes.tx.raveRef,
+          status: paymentRes.tx.status
+        }
+      };
+    }
 
     let walletTransaction: WalletTransaction = {
-      ref: this.ePaymentMethod === 'Flutterwave' ? flutterwaveRes : paymentRes,
+      ref: (ePaymentMethod === 'Flutterwave') ? flutterwaveRes : paymentRes,
       paymentMethod: 'e-Payment',
-      ePaymentMethod: 'Flutterwave',
+      ePaymentMethod: ePaymentMethod,
       transactionType: TransactionType.Cr,
-      transactionMedium: TransactionMedium.Flutterwave,
+      transactionMedium: (ePaymentMethod === 'Flutterwave') ? TransactionMedium.Flutterwave : TransactionMedium.PayStack,
       amount: parseFloat(this.paymentFormGroup.controls['fundAmount'].value),
       description: desc,
       sourceId: this.person._id,
@@ -302,7 +306,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
         this.flutterwavePayment = false;
         this.paystackPayment = false;
         this.person = res.body.data;
-        this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
+        this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
         this._notification('Success', 'Your wallet has been credited successfully.');
       } else {
         console.log(res.body.message);
@@ -312,15 +316,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
       console.log(err);
     });
   }
-
-  // onClickEPayment() {
-  //   if (this.fundAmount.valid && parseFloat(this.fundAmount.value) >= 500) {
-  //     this.ePayment = !this.ePayment;
-  //   } else {
-  //     let text = 'Please enter amount above 500 naira';
-  //     this._notification('Info', text);
-  //   }
-  // }
 
   paymentCancel() {
     console.log('Cancelled');
