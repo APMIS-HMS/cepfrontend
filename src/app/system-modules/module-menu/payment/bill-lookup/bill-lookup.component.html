@@ -20,16 +20,16 @@
                                     <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.personFullName }}</div>
+                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.FirstName }}  {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{ pendingBill?.updatedAt | date }}</div>
+                                        <div class="pending-date">{{ pendingBill?.createAt | date:'medium' }}</div>
                                         <div class="pending-amount">
-                                            <span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
+                                            <span>&#x20a6;</span>{{pendingBill?.grandTotalExcludeInvoice|numberThr  }}</div>
                                     </div>
                                 </div>
                             </li>
 
-                            <li *ngIf="pendingBills.length === 0 && loadingPendingBills" class="empWrap">
+                            <li *ngIf="loadingPendingBills" class="empWrap">
                                 <div class="text-center">
                                     <md-spinner class='small-spinner'></md-spinner>
                                 </div>
@@ -42,55 +42,39 @@
                     </div>
                 </div>
 
+
                 <div class="feedbox">
                     <div class="pending-wrap">
                         <div class="pending-header">
                             <div class="pending-title">Invoices</div>
-                            <!-- <div class="search-wrap">
+                            <div class="search-wrap">
                                 <md-input-container>
                                     <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
                                 </md-input-container>
-                            </div> -->
+                            </div>
                         </div>
-                        <ul class="pending-bills">
-                            <li class="empWrap">
-                                <div class="list-img">
-                                    <img src="assets/images/users/default.png">
-                                </div>
-                                <div class="list-labels">
-                                    <div class="pending-name">Johnson Wade</div>
-                                    <div class="oda">
-                                        <div class="pending-date">11th October, 2017. 1200am</div>
-                                        <div class="pending-amount">
-                                            <span>&#x20a6;</span>30,000</div>
-                                    </div>
+                        <div>
+                            <li *ngIf="isLoadingInvoice" class="empWrap">
+                                <div class="text-center">
+                                    <md-spinner class='small-spinner'></md-spinner>
                                 </div>
                             </li>
-
-                            <li class="empWrap">
-                                <div class="list-img">
-                                    <img src="assets/images/users/default.png">
-                                </div>
-                                <div class="list-labels">
-                                    <div class="pending-name">Johnson Wade</div>
-                                    <div class="oda">
-                                        <div class="pending-date">11th October, 2017. 1200am</div>
-                                        <div class="pending-amount">
-                                            <span>&#x20a6;</span>30,000</div>
-                                    </div>
-                                </div>
+                            <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
+                                <div>No data available in table</div>
                             </li>
-
+                        </div>
+                        <ul class="pending-bills" *ngFor="let invoice of invoiceGroups">
                             <li class="empWrap">
                                 <div class="list-img">
-                                    <img src="assets/images/users/default.png">
+                                    <img *ngIf="invoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.personDetails.profileImageObject.thumbnail)">
+                                    <img *ngIf="invoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="pending-name">{{ invoice?.personDetails?.personDetails?.firstName }} {{ invoice?.personDetails?.personDetails?.lastName}}</div>
                                     <div class="oda">
-                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
                                         <div class="pending-amount">
-                                            <span>&#x20a6;</span>30,000</div>
+                                            <span>&#x20a6;</span>{{ invoice?.totalPrice|numberThr }}</div>
                                     </div>
                                 </div>
                             </li>
@@ -158,7 +142,7 @@
                                         <td>
                                             <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
                                         </td>
-                                        <td>11th October, 2017. 10:00am</td>
+                                        <td>{{bill.billObject.createdAt|date:'medium'}}</td>
                                         <td (click)="itemDetail(bill)">
                                             <div class="itemName">{{bill.itemName}}</div>
                                         </td>
@@ -273,7 +257,7 @@
                         (callback)="paymentDone($event)">e-Payment</angular4-paystack>
                 </div> -->
             </div>
-        </div> 
+        </div>
     </div>
 </div>
 
@@ -282,7 +266,9 @@
 </div>
 
 <div *ngIf="makePayment" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [isInvoicePage]="false" [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems" [cost]="total" [subTotal]="subTotal" [discount]="discount" id="form-modal" class="form-modal center-center"></app-make-payment>
+    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [isInvoicePage]="false"
+        [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems"
+        [cost]="total" [subTotal]="subTotal" [discount]="discount" id="form-modal" class="form-modal center-center"></app-make-payment>
 </div>
 
 <div *ngIf="addModefierPopup" class="modal-overlay">
