@@ -3,15 +3,16 @@ export interface WalletTransaction {
   paymentMethod?: string;
   ePaymentMethod?: string;
   sourceId?: string;
-  source: EntityType;
+  sourceType?: EntityType;
   transactionType: TransactionType;
   transactionMedium: TransactionMedium;
   amount: number;
   description: string;
   destinationId?: string;
-  destination: EntityType;
-  transactionStatus?:string;
+  destinationType?: EntityType;
+  transactionStatus?: string;
   transactionDirection: TransactionDirection;
+  paidBy?: any;
 }
 export enum TransactionType {
     Dr,
@@ -30,7 +31,10 @@ export enum TransactionMedium {
     POS,
     Wallet,
     Cash,
-    PayStack
+    PayStack,
+    Flutterwave,
+    Transfer,
+    Cheque
 }
 export enum TransactionDirection {
     PersonToPerson,

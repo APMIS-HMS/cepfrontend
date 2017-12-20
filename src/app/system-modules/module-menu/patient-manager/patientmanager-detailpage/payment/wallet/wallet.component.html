@@ -15,13 +15,20 @@
         </div>
     </div>
     <div class="head-others shadow">
-        <div class="frm-item-wrap">
-            <md-input-container>
-                <input type="text" mdInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
-            </md-input-container>
-        </div>
-        <ul class="topmenuwrap">
-            <li (click)="fundWallet()">
+        <form [formGroup]="paymentFormGroup">
+            <div class="frm-item-wrap">
+                <md-input-container>
+                    <input type="number" mdInput placeholder="Amount(&#x20a6;)" formControlName="fundAmount">
+                </md-input-container>
+            </div>
+            <div class="frm-item-wrap">
+                <md-select formControlName="paymentType" placeholder="Payment Type" class="md-select">
+                    <md-option *ngFor="let paymentChannel of paymentChannels" [(value)]="paymentChannel.name"> {{ paymentChannel.name }}</md-option>
+                </md-select>
+            </div>
+        </form>
+        <!-- <ul class="topmenuwrap" *ngIf="!makingPayment">
+            <li (click)="fundWalletViaCashPayment()">
                 <i class="fa fa-money" aria-hidden="true"></i>
                 <span>Cash</span>
             </li>
@@ -30,17 +37,26 @@
                 <span>e-Payment</span>
             </li>
         </ul>
-        <div class="epayment-box" *ngIf="ePayment">
-            <div>
-                <angular-4-flutterwave *ngIf="withPaystack" [amount]="fundAmount.value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
-                    [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
+        <div class="text-center" *ngIf="makingPayment">
+            <span>Making Payment... <i class="fa fa-spinner fa-spin"></i></span>
+        </div> -->
+        <div class="epayment-box">
+            <div *ngIf="flutterwavePayment">
+                <angular-4-flutterwave *ngIf="withPaystack" [amount]="paymentFormGroup.controls['fundAmount'].value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'"
+                    [custom_title]="'APMIS'" [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
             </div>
-            <!-- <div>
-                <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
-                    (callback)="paymentDone($event)">e-Payment</angular4-paystack>
-            </div> -->
+            <div *ngIf="paystackPayment">
+                <!-- <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
+                    (callback)="paymentDone($event)">e-Payment</angular4-paystack> -->
+            </div>
+            <div *ngIf="cashPayment">
+                <button (click)="fundWalletViaCashPayment(paymentFormGroup.valid, paymentFormGroup.value);" [disabled]="disableBtn" class="btn btn-primary">
+                  <span *ngIf="cashPaymentPay">Pay</span>
+                  <span *ngIf="cashPaymentPaying">Paying... <i class="fa fa-spinner fa-spin"></i></span>
+                </button>
+            </div>
         </div>
-    </div> 
+    </div>
 </div>
 
 <div class="tbl-header">
@@ -84,10 +100,10 @@
 
         <tbody>
             <tr *ngIf="transactions.length === 0 && !loading">
-                <td class="table-content " colspan="6" style="text-align: center "> No data available in table</td>
+                <td class="table-content " colspan="8" style="text-align: center "> No data available in table</td>
             </tr>
             <tr *ngIf="transactions.length === 0 && loading">
-                <td class="table-content " colspan="6" style="text-align: center ">
+                <td class="table-content " colspan="8" style="text-align: center ">
                     <md-spinner class="small-spinner"></md-spinner>
                 </td>
             </tr>
