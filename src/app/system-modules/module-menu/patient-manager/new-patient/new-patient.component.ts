@@ -87,9 +87,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     croppedWidth: number;
     croppedHeight: number;
 
-    cashPlans:FacilityService[] = [];
-    insurancePlans:any = [];
-    planInput:any;
+    cashPlans: FacilityService[] = [];
+    insurancePlans: any = [];
+    planInput: any;
 
     // ***
     uploadFile: any;
@@ -213,7 +213,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        
+
         // this.uploadEvents = new EventEmitter();
         this.facility = <Facility>this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
@@ -222,18 +222,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // do something with value here
         });
 
+        // facilityId: this.facility._id,
+        // "employeeDetails.apmisId": this.ccPlanId.value
         const away = this.ccPlanId.valueChanges
-        .debounceTime(400)
-        .distinctUntilChanged()
-        .switchMap((term: any) => this.employeeService.find({
-            query: {
-                facilityId: this.facility._id,
-                "employeeDetails.apmisId": this.ccPlanId.value
-            }
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .switchMap((term: any) => this.employeeService.searchEmployee(this.facility._id, this.ccPlanId.value, false));
 
-        }));
-  
         away.subscribe((payload: any) => {
+            console.log(this.ccPlanId.value);
             console.log(payload);
         });
 
@@ -270,8 +267,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empCity: ['', [<any>Validators.required]],
             empHomeAddress: ['', [<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]],
             empDOB: [new Date(), [<any>Validators.required]],
-            secQst: ['',[]],
-            secAns: ['',[]]
+            secQst: ['', []],
+            secAns: ['', []]
 
         });
         this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
@@ -341,31 +338,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         });
 
         this.zone = new NgZone({ enableLongStackTrace: false });
-    
+
         this.getCashPlans();
     }
 
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
-          query:
-          { searchCategory: "Medical Records", facilityId: this.facility._id }
+            query:
+                { searchCategory: "Medical Records", facilityId: this.facility._id }
         }).
-        then(payload => {
-            //this.filterOutCategory(payload);
-            //this.categories = [];
-            let cat: any = [];
-            payload.data.forEach((itemi, i) => {
-                itemi.categories.forEach((itemj, j) => {
-                    if (itemi.facilityId !== undefined) {
-                        cat.push(itemj);
-                        this.cashPlans = cat[0].services;
-                    }
+            then(payload => {
+                //this.filterOutCategory(payload);
+                //this.categories = [];
+                let cat: any = [];
+                payload.data.forEach((itemi, i) => {
+                    itemi.categories.forEach((itemj, j) => {
+                        if (itemi.facilityId !== undefined) {
+                            cat.push(itemj);
+                            this.cashPlans = cat[0].services;
+                        }
+                    });
                 });
             });
-        });
     }
 
-    employeeChecking(value){
+    employeeChecking(value) {
         console.log(value);
         /* this.employeeService.find({
             query : {
@@ -377,8 +374,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }); */
     }
 
-    next(data){
-        if(this.paymentPlan === true){
+    next(data) {
+        if (this.paymentPlan === true) {
             this.planInput = data;
             console.log(this.planInput);
             this.frmNewEmp4_show = false;
@@ -392,43 +389,43 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getProfessions() {
         this.professionService.findAll().then(payload => {
             this.professions = payload.data;
-        }).catch(err =>{
-            
+        }).catch(err => {
+
         });
     }
     getRelationships() {
         this.relationshipService.findAll().then(payload => {
             this.relationships = payload.data;
-        }).catch(err =>{
-            
+        }).catch(err => {
+
         });;
     }
     getMaritalStatus() {
         this.maritalStatusService.findAll().then(payload => {
             this.maritalStatuses = payload.data;
-        }).catch(err =>{
-            
+        }).catch(err => {
+
         });;
     }
     getGenders() {
         this.genderService.findAll().then(payload => {
             this.genders = payload.data;
-        }).catch(err =>{
+        }).catch(err => {
 
         });
     }
     getTitles() {
         this.titleService.findAll().then(payload => {
             this.titles = payload.data;
-        }).catch(err =>{
-            
+        }).catch(err => {
+
         });
     }
     getCountries() {
         this.countryService.findAll().then(payload => {
             this.countries = payload.data;
-        }).catch(err =>{
-            
+        }).catch(err => {
+
         });
     }
     empApmisID() {
@@ -626,29 +623,29 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.personService.create(person).then(payload => {
                     console.log(payload);
 
-                    let patient:any = {
+                    let patient: any = {
                         personId: payload.data._id,
                         facilityId: this.facility._id,
                         paymentPlan: [this.planInput]
-                    } 
+                    }
                     this.patientService.create(patient).then(payl => {
                         // this.uploadButton();
                         this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } })
-                        .then(payloadPrice => {
-                            //this.prices = payload.data;
-                            console.log(payloadPrice);
-                            /* let billing:any = {
-                                discount: 0,
-                                facilityId: this.facility._id,
-                                grandTotal: 500,
-                                patientId: ObjectId('59a51e3919370a0f240e2585'),
-                            }
-                            this.billingService.create() */
-                        }).catch(err => {
-                          console.log(err);
-                        });
+                            .then(payloadPrice => {
+                                //this.prices = payload.data;
+                                console.log(payloadPrice);
+                                /* let billing:any = {
+                                    discount: 0,
+                                    facilityId: this.facility._id,
+                                    grandTotal: 500,
+                                    patientId: ObjectId('59a51e3919370a0f240e2585'),
+                                }
+                                this.billingService.create() */
+                            }).catch(err => {
+                                console.log(err);
+                            });
                         console.log(payl);
-                        
+
                         this.frmNewPerson1_show = false;
                         this.frmNewPerson2_show = false;
                         this.frmNewPerson3_show = false;
@@ -671,40 +668,40 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.personService.create(person).then(payload => {
                     console.log('save person');
                     console.log(payload);
-                    let patient:any = {
+                    let patient: any = {
                         personId: payload._id,
                         facilityId: this.facility._id,
                         paymentPlan: [this.planInput]
-                    } 
+                    }
                     this.patientService.create(patient).then(payl => {
                         this.selectedPerson = payload;
                         console.log(payl);
                         this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } })
-                        .then(payloadPrice => {
-                            //this.prices = payload.data;
-                            console.log(payloadPrice);
-                            /* let billing:any = {
-                                discount: 0,
-                                facilityId: this.facility._id,
-                                grandTotal: 500,
-                                patientId: ObjectId('59a51e3919370a0f240e2585'),
-                            }
-                            this.billingService.create() */
-                            this.uploadButton();
-                            if (this.skipNok) {
-                                this.saveEmployee();
-                            }
-                            this.frmNewPerson1_show = false;
-                            this.frmNewPerson2_show = false;
-                            this.frmNewPerson3_show = false;
-                            this.frmNewEmp4_show = true;
-                            this.paymentPlan = false;
-                            this.apmisId_show = false;
-                            this.mainErr = true;
-                        }).catch(err => {
-                          console.log(err);
-                        });
-                        
+                            .then(payloadPrice => {
+                                //this.prices = payload.data;
+                                console.log(payloadPrice);
+                                /* let billing:any = {
+                                    discount: 0,
+                                    facilityId: this.facility._id,
+                                    grandTotal: 500,
+                                    patientId: ObjectId('59a51e3919370a0f240e2585'),
+                                }
+                                this.billingService.create() */
+                                this.uploadButton();
+                                if (this.skipNok) {
+                                    this.saveEmployee();
+                                }
+                                this.frmNewPerson1_show = false;
+                                this.frmNewPerson2_show = false;
+                                this.frmNewPerson3_show = false;
+                                this.frmNewEmp4_show = true;
+                                this.paymentPlan = false;
+                                this.apmisId_show = false;
+                                this.mainErr = true;
+                            }).catch(err => {
+                                console.log(err);
+                            });
+
                     });
                 }, error => {
                     console.log(error);
@@ -804,7 +801,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     newEmp4(valid, val) {
         this.saveEmployee();
     }
-    payplans(){
+    payplans() {
         this.paymentPlan = false;
         this.frmNewPerson1_show = true;
         this.frmNewPerson2_show = false;
@@ -842,7 +839,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             } else {
                 this.isEmailExist = true;
             }
-        }).catch(error =>{
+        }).catch(error => {
             console.log(error)
         });
     }
@@ -856,28 +853,28 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     tabWallet_click() {
-    this.tabWallet = true;
-    this.tabCompany = false;
-    this.tabFamily = false;
-    this.tabInsurance = false;
+        this.tabWallet = true;
+        this.tabCompany = false;
+        this.tabFamily = false;
+        this.tabInsurance = false;
     }
     tabCompany_click() {
-    this.tabWallet = false;
-    this.tabCompany = true;
-    this.tabFamily = false;
-    this.tabInsurance = false;
+        this.tabWallet = false;
+        this.tabCompany = true;
+        this.tabFamily = false;
+        this.tabInsurance = false;
     }
     tabFamily_click() {
-    this.tabWallet = false;
-    this.tabCompany = false;
-    this.tabFamily = true;
-    this.tabInsurance = false;
+        this.tabWallet = false;
+        this.tabCompany = false;
+        this.tabFamily = true;
+        this.tabInsurance = false;
     }
     tabInsurance_click() {
-    this.tabWallet = false;
-    this.tabCompany = false;
-    this.tabFamily = false;
-    this.tabInsurance = true;
+        this.tabWallet = false;
+        this.tabCompany = false;
+        this.tabFamily = false;
+        this.tabInsurance = true;
     }
 
 }
