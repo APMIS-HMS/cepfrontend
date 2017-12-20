@@ -8,9 +8,8 @@ export class LocSummaryCashService {
     this._rest = _restService.getService('loc-summary-cash');
   }
 
-  get(obj: any) {
+  get(obj:any) {
     return this._rest.create(obj);
   }
-
 }
 

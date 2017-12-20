@@ -20,11 +20,11 @@
                                     <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.firstName }} {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
+                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.personFullName }}</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{ pendingBill?.createAt | date }}</div>
+                                        <div class="pending-date">{{ pendingBill?.updatedAt | date }}</div>
                                         <div class="pending-amount">
-                                            <span>&#x20a6;</span>{{ pendingBill?.grandTotalExcludeInvoice|numberThr }}</div>
+                                            <span>&#x20a6;</span>{{ pendingBill?.grandTotal }}</div>
                                     </div>
                                 </div>
                             </li>
@@ -46,34 +46,51 @@
                     <div class="pending-wrap">
                         <div class="pending-header">
                             <div class="pending-title">Invoices</div>
-                            <div class="search-wrap">
+                            <!-- <div class="search-wrap">
                                 <md-input-container>
                                     <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
                                 </md-input-container>
-                            </div>
+                            </div> -->
                         </div>
-                        <div>
-                            <li *ngIf="invoiceGroups.length === 0 && isLoadingInvoice" class="empWrap">
-                                <div class="text-center">
-                                    <md-spinner class='small-spinner'></md-spinner>
-                                </div>
-                            </li>
-                            <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
-                                <div>No data available in table</div>
-                            </li>
-                        </div>
-                        <ul class="pending-bills" *ngFor="let invoice of invoiceGroups">
+                        <ul class="pending-bills">
                             <li class="empWrap">
                                 <div class="list-img">
-                                    <img *ngIf="invoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                                    <img *ngIf="invoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
-                                  </div>
-                                  <div class="list-labels">
-                                    <div class="pending-name">{{invoice?.personDetails.personDetails.firstName}} {{invoice?.personDetails?.personDetails?.lastName}}</div>
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
                                         <div class="pending-amount">
-                                            <span>&#x20a6;</span>{{invoice.totalPrice|numberThr}}</div>
+                                            <span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount">
+                                            <span>&#x20a6;</span>30,000</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="empWrap">
+                                <div class="list-img">
+                                    <img src="assets/images/users/default.png">
+                                </div>
+                                <div class="list-labels">
+                                    <div class="pending-name">Johnson Wade</div>
+                                    <div class="oda">
+                                        <div class="pending-date">11th October, 2017. 1200am</div>
+                                        <div class="pending-amount">
+                                            <span>&#x20a6;</span>30,000</div>
                                     </div>
                                 </div>
                             </li>

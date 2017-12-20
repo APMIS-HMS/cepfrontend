@@ -13,7 +13,6 @@ export interface Invoice {
     subTotal: number;
     discount: number;
     paymentCompleted:boolean;
-    personDetails:any
 }
 
 

@@ -32,7 +32,7 @@ export class SystemModuleComponent implements OnInit {
     private router: Router, private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
-      if (facility!== null && facility._id === payload._id) {
+      if (facility._id === payload._id) {
         this.locker.setObject('selectedFacility', payload);
       }
     });

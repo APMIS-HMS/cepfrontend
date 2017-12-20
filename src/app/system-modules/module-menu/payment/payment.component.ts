@@ -33,8 +33,7 @@ export class PaymentComponent implements OnInit {
     public barChartLabels: String[] = [];
     public barChartType: String = 'bar';
     public barChartLegend: Boolean = true;
-
-    public barChartData: any[] = [{data:[],label:''}];
+    public barChartData: any[] = [{ "data": [0], "label": "" }];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -55,6 +54,7 @@ export class PaymentComponent implements OnInit {
 
         this._getBills();
         this._getInvoices();
+
         this.searchPendingInvoices.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
@@ -118,7 +118,10 @@ export class PaymentComponent implements OnInit {
                 this.pendingBills = res.data.bills;
                 this.totalAmountBilled = res.data.amountBilled;
                 this.loadingPendingBills = false;
-            }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            }).catch(err => {
+                console.log(err);
+                this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
+            });
     }
 
     private _getLocAmountAccrued() {
@@ -129,29 +132,25 @@ export class PaymentComponent implements OnInit {
         this._locSummaryCashService.get(facility)
             .then(payload2 => {
                 this.barChartLabels = payload2.data.barChartLabels;
-                this.barChartData = new Array(payload2.data.barChartData.length);
-                for (let k = 0; k < this.barChartData.length; k++) {
-                    this.barChartData.push({ data: [], label: '' });
+                console.log(this.barChartLabels);
+                this.barChartData.splice(0, 1);
+                for (let k = 0; k < payload2.data.barChartData.length; k++) {
+                    this.barChartData.push({ "data": [0], "label": "" });
                 }
-                console.log(this.barChartData.length);
                 for (let i = 0; i < payload2.data.barChartData.length; i++) {
                     console.log("jhgd");
                     for (let j = 0; j < payload2.data.barChartData[i].data.length; j++) {
-                        console.log(payload2.data.barChartData[i].data[j]);
                         this.barChartData[i].data.push(payload2.data.barChartData[i].data[j]);
                     }
                     this.barChartData[i].label = payload2.data.barChartData[i].label;
                 }
-
-                console.log(this.barChartData);
-                console.log(this.barChartLabels);
-                this.loadingLocAmountAccrued = false;
+                this.loadingLocAmountAccrued=false;
             }).catch(err => {
-                console.log(err);
                 this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
             });
     }
 
+    
     // Notification
     private _notification(type: string, text: string): void {
         this.facilityService.announceNotification({

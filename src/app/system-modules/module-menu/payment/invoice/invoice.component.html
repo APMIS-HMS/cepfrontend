@@ -2,7 +2,7 @@
   <div class="facility-title">Bills/Payment</div>
   <div class="inner-page-wrap">
     <ul class="topmenuwrap">
-      <li (click)="makePayment_show()" [hidden]="this.selectedInvoiceGroup.paymentCompleted || this.selectedInvoiceGroup.paymentCompleted == undefined">
+      <li (click)="makePayment_show()">
         <i class="fa fa-money" aria-hidden="true"></i>
         <span>Make Payment</span>
       </li>
@@ -41,16 +41,10 @@
               </div>
             </div>
             <div class="pending-bills">
-              <li *ngIf="isLoadingInvoice" class="empWrap">
-                <div class="text-center">
-                    <md-spinner class='small-spinner'></md-spinner>
-                </div>
-            </li>
-
-            <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
-                <div>No data available in table</div>
-            </li>
-            <div [hidden]="invoiceGroups.length==0">
+              <div [hidden]="isLoadingInvoice">
+                <i class='fa fa-spinner fa-spin'></i>
+              </div>
+              <div [hidden]="invoiceGroups.length==0">
                 <div class="empWrap" *ngFor="let invoice of invoiceGroups">
                   <div class="list-labels" (click)="onSelectedInvoice(invoice)">
                     <div class="pending-name">{{invoice.invoiceNo}}</div>
@@ -219,25 +213,17 @@
         <div class="feedbox">
           <div class="pending-wrap">
             <div class="pending-header">
-              <div class="pending-title">Pending Invoices</div>
+              <div class="pending-title">Patient's Unpaid Invoices</div>
               <div class="search-wrap">
-                  <md-input-container>
-                      <input mdInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
-                  </md-input-container>
-                </div>
+                <md-input-container>
+                  <input mdInput placeholder="search by patient name" [formControl]="searchPendingBill">
+                </md-input-container>
               </div>
-            <div>
-                <li *ngIf="isLoadingOtherInvoice" class="empWrap">
-                    <div class="text-center">
-                        <md-spinner class='small-spinner'></md-spinner>
-                    </div>
-                </li>
-    
-                <li *ngIf="otherInvoiceGroups.length === 0 && !isLoadingOtherInvoice" class="empWrap">
-                    <div>No data available in table</div>
-                </li>
             </div>
             <div class="pending-bills">
+              <div [hidden]="isLoadingOtherInvoice">
+                <i class='fa fa-spinner fa-spin'></i>
+              </div>
               <div [hidden]="otherInvoiceGroups.length==0">
                 <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups" (click)="onSelectedOtherPatientInvoice(otherInvoice)">
                   <div class="list-img">
@@ -245,13 +231,13 @@
                     <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                   </div>
                   <div class="list-labels">
-                    <div class="pending-name">{{otherInvoice?.personDetails?.personDetails?.firstName}} {{ otherInvoice?.personDetails?.personDetails?.lastName}}</div>
+                    <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
                     <div class="oda">
-                        <div class="pending-date">{{ otherInvoice.createdAt | date :'medium'}}</div>
-                        <div class="pending-amount" *ngIf="otherInvoice.totalPrice!=0">
-                            <span>&#x20a6;</span>{{ otherInvoice?.totalPrice|numberThr }}</div>
+                      <div class="pending-date">{{otherInvoice.createdAt}}</div>
+                      <div class="pending-amount">
+                        <span>&#x20a6;</span>{{otherInvoice.totalPrice|numberThr}}</div>
                     </div>
-                </div>
+                  </div>
                 </div>
               </div>
             </div>
