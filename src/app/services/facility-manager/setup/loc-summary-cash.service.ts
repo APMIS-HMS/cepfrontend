@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class LocSummaryCashService {
   private _rest;
   constructor(private _restService: RestService) {
-    this._rest = _restService.getService('today-invoices');
+    this._rest = _restService.getService('loc-summary-cash');
   }
 
   get(obj: any) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService,LocSummaryCashService } from '../../../services/facility-manager/setup/index';
+import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -30,18 +30,11 @@ export class PaymentComponent implements OnInit {
         scaleShowVerticalLines: false,
         responsive: true
     };
-    public barChartLabels: String[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    public barChartLabels: String[] = [];
     public barChartType: String = 'bar';
     public barChartLegend: Boolean = true;
 
-    public barChartData: any[] = [
-        { data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40], label: 'Registration' },
-        { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Appointment' },
-        { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Ward' },
-        { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Clinic' },
-        { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Pharmacy' },
-        { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Lab' }
-    ];
+    public barChartData: any[] = [{data:[],label:''}];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -51,8 +44,9 @@ export class PaymentComponent implements OnInit {
         private _pendingBillService: PendingBillService,
         private locker: CoolLocalStorage,
         private _todayInvoiceService: TodayInvoiceService,
-        private _locSummaryCashService:LocSummaryCashService
+        private _locSummaryCashService: LocSummaryCashService
     ) {
+
     }
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -61,7 +55,6 @@ export class PaymentComponent implements OnInit {
 
         this._getBills();
         this._getInvoices();
-
         this.searchPendingInvoices.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
@@ -88,7 +81,7 @@ export class PaymentComponent implements OnInit {
                 var facility = {
                     "_id": this.selectedFacility._id,
                     "isQuery": true,
-                    "name":value
+                    "name": value
                 }
                 this._pendingBillService.get(facility)
                     .then(res => {
@@ -97,7 +90,7 @@ export class PaymentComponent implements OnInit {
                         this.loadingPendingBills = false;
                     }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });
-        }
+    }
 
     private _getInvoices() {
         this.isLoadingInvoice = true;
@@ -109,6 +102,7 @@ export class PaymentComponent implements OnInit {
             console.log(payload);
             this.invoiceGroups = payload.data.invoices;
             this.totalAmountReceived = payload.data.amountReceived;
+            this._getLocAmountAccrued();
         }).catch(err => this._notification('Error', 'There was a problem getting invoices, Please try again later!'));
     }
 
@@ -127,16 +121,35 @@ export class PaymentComponent implements OnInit {
             }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
     }
 
-    private _getLocAmountAccrued(){
+    private _getLocAmountAccrued() {
         this.loadingLocAmountAccrued = true;
         var facility = {
             "_id": this.selectedFacility._id
         }
         this._locSummaryCashService.get(facility)
-            .then(res => {
-                this.locAmountAccrued = res.data;
+            .then(payload2 => {
+                this.barChartLabels = payload2.data.barChartLabels;
+                this.barChartData = new Array(payload2.data.barChartData.length);
+                for (let k = 0; k < this.barChartData.length; k++) {
+                    this.barChartData.push({ data: [], label: '' });
+                }
+                console.log(this.barChartData.length);
+                for (let i = 0; i < payload2.data.barChartData.length; i++) {
+                    console.log("jhgd");
+                    for (let j = 0; j < payload2.data.barChartData[i].data.length; j++) {
+                        console.log(payload2.data.barChartData[i].data[j]);
+                        this.barChartData[i].data.push(payload2.data.barChartData[i].data[j]);
+                    }
+                    this.barChartData[i].label = payload2.data.barChartData[i].label;
+                }
+
+                console.log(this.barChartData);
+                console.log(this.barChartLabels);
                 this.loadingLocAmountAccrued = false;
-            }).catch(err => this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!'));
+            }).catch(err => {
+                console.log(err);
+                this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
+            });
     }
 
     // Notification
