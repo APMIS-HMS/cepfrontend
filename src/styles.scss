@@ -78,8 +78,10 @@ select {
     background: green;
     padding: 3px 5px;
 }
-
-.badge-red {
+.badge-rounded{
+    border-radius: 100%;
+}
+.badge-red{
     color: #fff;
     background: #ff2500;
     padding: 3px 5px;
