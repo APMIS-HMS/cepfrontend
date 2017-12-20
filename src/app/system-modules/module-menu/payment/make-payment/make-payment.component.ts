@@ -32,7 +32,7 @@ export class MakePaymentComponent implements OnInit {
   @Input() isInvoicePage: any = <any>{};
 
 
-  paymentChannels = PaymentChannel;
+  paymentChannels = PaymentChannels;
   selectedFacility: Facility = <Facility>{};
   selectedBillItem: BillModel = <BillModel>{};
   user: any = <any>{};
