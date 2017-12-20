@@ -174,7 +174,6 @@ export class ServicesComponent implements OnInit {
             });
           });
         });
-        console.log(this.globalCategories);
       });
   }
 
@@ -184,7 +183,6 @@ export class ServicesComponent implements OnInit {
       { searchCategory: "Medical Records", facilityId: this.facility._id }
     }).
     then(payload => {
-      console.log(payload);
       //this.filterOutCategory(payload);
       //this.categories = [];
       let cat: any = [];
@@ -195,7 +193,6 @@ export class ServicesComponent implements OnInit {
           }
         });
       });
-      console.log(cat[0].services);
     });
   }
 

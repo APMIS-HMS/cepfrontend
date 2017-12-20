@@ -39,7 +39,6 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
     .debounceTime(400)
     .distinctUntilChanged()
     .subscribe(searchText => {
-      console.log(searchText);
       this.employeeManagerComponent.searchEmployees(searchText);
     });
   }
@@ -49,7 +48,6 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
     this.departments = this.selectedFacility.departments;
     this.department.valueChanges.subscribe(value => {
       this.units = value.units;
-      console.log(value);
       this.employeeManagerComponent.getByDepartment(value._id);
     });
     this.unit.valueChanges.subscribe(value => {
@@ -61,7 +59,6 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
     //     facilityId: this.selectedFacility._id, showbasicinfo: true
     //   }
     // }).then((payload: any) => {
-    //   console.log(payload);
     // });
   }
 
@@ -84,7 +81,6 @@ export class EmployeeManagerComponent implements OnInit, AfterViewInit {
   }
   resetDataLoader(data){
     this.resetData = data;
-    console.log(this.resetData);
   }
   empDetailShow(val) {
     this.homeContentArea = false;

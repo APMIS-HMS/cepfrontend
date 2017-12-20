@@ -36,21 +36,16 @@ export class RecievePaymentComponent implements OnInit {
   }
 
   public upload(e) {
-    // console.log('am here')
 
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
-      // console.log(fileBrowser.files);
       const formData = new FormData();
       formData.append("excelfile", fileBrowser.files[0]);
       // formData.append("hmoId", hmo._id);
-      // console.log(formData)
       // this.facilityService.upload(formData, this.selectedHMO._id).then(res => {
       //   // do stuff w/my uploaded file
-      //   // console.log(res);
       //   let enrolleeList: any[] = [];
       //   if (res.body !== undefined && res.body.error_code === 0) {
-      //     // console.log(res.body.data.Sheet1);
       //     res.body.data.Sheet1.forEach(row => {
       //       let rowObj: any = <any>{};
       //       rowObj.serial = row.A;
@@ -65,7 +60,6 @@ export class RecievePaymentComponent implements OnInit {
       //       rowObj.date = this.excelDateToJSDate(row.J);
       //       enrolleeList.push(rowObj);
       //     });
-      //     // console.log(enrolleeList);
       //     const index = this.loginHMOListObject.hmos.findIndex(x => x._id === hmo._id);
       //     let facHmo = this.loginHMOListObject.hmos[index];
       //     let enrolleeItem = {
@@ -73,16 +67,12 @@ export class RecievePaymentComponent implements OnInit {
       //       year: new Date().getFullYear(),
       //       enrollees: enrolleeList
       //     }
-      //     console.log(enrolleeItem);
 
       //     facHmo.enrolleeList.push(enrolleeItem);
-      //     console.log(facHmo);
       //     this.loginHMOListObject.hmos[index] = facHmo;
 
 
-      //     console.log(this.loginHMOListObject);
       //     this.hmoService.update(this.loginHMOListObject).then(pay => {
-      //       console.log(pay);
       //       this.getLoginHMOList();
       //     })
       //   }

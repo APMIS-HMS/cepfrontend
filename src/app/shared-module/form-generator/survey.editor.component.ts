@@ -29,7 +29,6 @@ export class SurveyEditorComponent implements OnInit {
     }
 
     saveMySurvey = () => {
-        // console.log(JSON.stringify(this.editor.text));
         this.formsService.announceFormCreation(this.editor.text);
     }
 }

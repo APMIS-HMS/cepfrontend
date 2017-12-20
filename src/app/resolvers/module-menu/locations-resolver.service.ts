@@ -22,7 +22,6 @@ export class LocationsResolverService implements Resolve<Location> {
       return Observable.of(null);
     }, error => {
       this.router.navigateByUrl(this.previousUrl);
-      console.log(error);
     });
   }
 

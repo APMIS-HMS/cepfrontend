@@ -56,7 +56,6 @@ export class Angular4FlutterwaveComponent implements OnInit {
         return _this.close.emit();
       },
       callback: function(res) {
-        console.log('This is the response returned after a charge');
         return _this.callback.emit(res);
       }
     });
@@ -64,7 +63,6 @@ export class Angular4FlutterwaveComponent implements OnInit {
 
   onClickCallback(response) {
     this.callback.emit(response);
-    console.log('This is the response returned after a charge', response);
     // if (response.tx.chargeResponse === '00' || response.tx.chargeResponse === '0') {
     //   // redirect to a success page
     // } else {
@@ -73,7 +71,6 @@ export class Angular4FlutterwaveComponent implements OnInit {
   }
 
   onClickOpen() {
-    console.log('Clicked');
     this.btnTitle = 'Paying...';
     this.disableBtn = true;
   }

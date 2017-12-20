@@ -99,7 +99,6 @@ export class LandingpageComponent implements OnInit {
     if (value !== null && value !== undefined && value.productId !== undefined) {
       this.productService.get(value.productId, {}).subscribe(payload => {
         this.selectedProduct = payload;
-        console.log(payload);
       });
     }
   }

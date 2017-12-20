@@ -133,7 +133,6 @@ export class ScheduleFrmComponent implements OnInit {
                 this.checkIn.disable()
             }
             if (payload.zoom !== undefined) {
-                console.log(payload.zoom)
                 this.teleMed.setValue(true);
                 this.timezone.setValue(payload.zoom.timezone);
             }
@@ -195,10 +194,8 @@ export class ScheduleFrmComponent implements OnInit {
             timeout: 5000,
             theme: 'default',
             onAdd: (toast: ToastData) => {
-                console.log('Toast ' + toast.id + ' has been added!');
             },
             onRemove: function (toast: ToastData) {
-                console.log('Toast ' + toast.id + ' has been removed!');
             }
         };
 
@@ -215,14 +212,12 @@ export class ScheduleFrmComponent implements OnInit {
         })
         this.patientService.patientAnnounced$.subscribe(value => {
             this.selectedPatient = value;
-            console.log(this.selectedPatient);
             this.patient.setValue(this.selectedPatient);
         })
         this.getPatients();
         this.getTimezones();
 
         this.route.queryParams.subscribe((params) => {
-            console.log(params);
             if(params.checkedOut){
                 this.patient.disable();
                 this.type.disable();
@@ -513,7 +508,6 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     filterPatients(val: any) {
-        console.log(val);
         return val ? this.patients.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.patients;
@@ -620,7 +614,6 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.facilityId = <any>facility;
             this.appointment.patientId = patient;
             this.appointment.startDate = this.date;
-            console.log(this.appointment);
             if (checkIn === true) {
                 const logEmp: any = this.loginEmployee;
                 delete logEmp.department;
@@ -654,14 +647,12 @@ export class ScheduleFrmComponent implements OnInit {
                 }
             }
             if (this.appointment._id !== undefined) {
-                console.log(this.appointment);
                 this.appointmentService.update(this.appointment).then(payload => {
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.
                             setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value.value)
                             .then(meeting => {
-                                console.log(meeting)
                                 // this.appointmentService.patientAnnounced(this.patient);
                                 // this.loadIndicatorVisible = false;
                                 // this.newSchedule();
@@ -705,9 +696,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                 })
             } else {
-                console.log("else");
                 this.appointmentService.create(this.appointment).then(payload => {
-                    console.log(payload);
                     if (this.teleMed.value === true) {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
@@ -724,7 +713,6 @@ export class ScheduleFrmComponent implements OnInit {
                                     this.selectedClinic.name,
                                     patient.personDetails.email);
                                 this.router.navigate(['/dashboard/clinic/appointment']);
-                                // console.log(meeting)
                                 // this.appointmentService.patientAnnounced(this.patient);
                                 // this.loadIndicatorVisible = false;
                                 // this.newSchedule();
@@ -733,7 +721,6 @@ export class ScheduleFrmComponent implements OnInit {
 
                             })
                     } else {
-                        console.log(payload);
                         this.disableBtn = true;
                         this.updateAppointment = false;
                         this.saveAppointment = true;
@@ -758,8 +745,6 @@ export class ScheduleFrmComponent implements OnInit {
                 })
             }
         } else {
-            console.log('error');
-
         }
     }
 

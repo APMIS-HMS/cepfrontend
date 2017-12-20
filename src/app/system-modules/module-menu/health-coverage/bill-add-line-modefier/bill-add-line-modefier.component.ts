@@ -32,7 +32,6 @@ export class BillAddLineModefierComponent implements OnInit {
   }
 
   addModifier(value: any, valid: boolean) {
-    // console.log(value);
     // if (this.selectedModifier.modifierType === 'Percentage') {
     //   const percent = this.selectedModifier.modifierValue;
     //   const unitPrice = this.selectedServiceBill.unitPrice;

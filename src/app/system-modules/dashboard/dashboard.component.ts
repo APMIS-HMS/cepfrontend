@@ -64,21 +64,17 @@ export class DashboardComponent implements OnInit {
       // this.facilityName = pay.name;
     })
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    console.log(this.loginEmployee)
     const auth = <any>this.locker.getObject('auth');
     if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
       return;
     }
     this.loadIndicatorVisible = true;
-    console.log(this.facilityObj._id);
-    console.log(auth.data.personId)
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
         facilityId: this.facilityObj._id, personId: auth.data.personId, $select:[]
       }
     }));
     this.subscription = emp$.mergeMap((emp: any) => {
-      console.log(emp)
       if (emp.data.length > 0) {
         return Observable.forkJoin(
           [
@@ -98,10 +94,8 @@ export class DashboardComponent implements OnInit {
       }
     }
     ).subscribe((results: any) => {
-      console.log(results);
       if (results[0] !== undefined) {
         this.loginEmployee = results[0];
-        console.log(this.loginEmployee)
         this.loginEmployee.workSpaces = results[1].data;
         this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
 
@@ -113,7 +107,6 @@ export class DashboardComponent implements OnInit {
       }
 
       this.loadIndicatorVisible = false;
-      console.log('can move')
     })
   }
 

@@ -45,7 +45,6 @@ export class ChangePasswordComponent implements OnInit {
       //     this.userService.announceMission('out');
       //     this.userService.isLoggedIn = false;
       //   }, error => {
-      //     console.log(error);
       //   });
       //   this.close_onClick();
       // } else {
@@ -66,7 +65,6 @@ export class ChangePasswordComponent implements OnInit {
             });
         }
       }, error => {
-        console.log(error);
       });
     }
   }
