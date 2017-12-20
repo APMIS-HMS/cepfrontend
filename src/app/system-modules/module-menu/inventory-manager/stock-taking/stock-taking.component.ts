@@ -73,7 +73,6 @@ export class StockTakingComponent implements OnInit {
     this.inventoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       payload.data.forEach((item, i) => {
         this.products.push(item.productObject);
-        console.log(this.products);
       });
       this.getProductTables(this.products);
     });
@@ -120,8 +119,6 @@ export class StockTakingComponent implements OnInit {
     return obj;
   }
   onProductCheckChange(event, value) {
-    console.log(event);
-    console.log(value);
     value.checked = event.checked;
     if (event.checked === true) {
       (<FormArray>this.productTableForm.controls['productTableArray'])

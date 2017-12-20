@@ -71,7 +71,6 @@ this.isItemselected = false;
       ])
     });
     this.selectedProduct = product;
-    console.log(this.selectedProduct)
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.push(
       this._fb.group({
@@ -89,7 +88,6 @@ this.isItemselected = false;
   getProducts() {
     this._productService.find({ query: { facilityId: this.selectedFacility._id, isInventory: false } }).then(payload => {
       this.products = payload.data;
-      console.log(this.products);
     });
   }
 
@@ -105,10 +103,8 @@ this.isItemselected = false;
       batches.batchItems = value.initproduct;
       batches.product = product;
       batches.storeId = this.checkingObject.typeObject.storeId;
-      console.log(batches);
       this.isProcessing = true;
       this._inventoryInitialiserService.post(batches, {}).then(result => {
-        console.log(result);
         if (result.body == true) {
           this.getProducts();
           this.myForm = this._fb.group({
@@ -118,7 +114,6 @@ this.isItemselected = false;
           this.isProcessing = false;
         }
       }, error => {
-        console.log(error);
       });
     }
   }

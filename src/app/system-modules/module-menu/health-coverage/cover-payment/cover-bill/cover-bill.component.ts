@@ -95,7 +95,6 @@ export class CoverBillComponent implements OnInit {
     });
 
     this.invoiceService.receiveInvoice().subscribe((payload: any) => {
-      console.log(payload);
       payload.forEach((itemi, i) => {
         if (itemi.isModified !== undefined) {
           this.fixedModifiedBill(itemi);
@@ -107,7 +106,6 @@ export class CoverBillComponent implements OnInit {
     });
 
     this.coverTypeFormControl.valueChanges.subscribe(value => {
-      console.log(value);
       this.selectedCoverType = value;
     })
   }
@@ -141,11 +139,9 @@ export class CoverBillComponent implements OnInit {
       billGroup.totalDiscount = this.discount;
       billGroup.totalPrice = this.subTotal;
       billGroup.grandAmount = this.total;
-      console.log(billGroup);
       this.invoiceService.create(billGroup).then(payload => {
         this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
       }, error => {
-        console.log(error);
       });
     }
   }
@@ -165,14 +161,12 @@ export class CoverBillComponent implements OnInit {
   }
 
   fixedGroup(bill: BillModel) {
-    console.log(1);
     const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
     if (existingGroupList.length > 0) {
       const existingGroup = existingGroupList[0];
       if (existingGroup.isChecked) {
         bill.isChecked = true;
       }
-      console.log(2);
       const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
       if (existingBills.length > 0) {
         const existingBill = existingBills[0];
@@ -182,16 +176,13 @@ export class CoverBillComponent implements OnInit {
         // existingGroup.total = existingGroup.total + bill.amount;
         this.subTotal = this.subTotal + existingGroup.total;
         this.total = this.subTotal - this.discount;
-        console.log(3);
       } else {
         existingGroup.bills.push(bill);
         this.subTotal = this.subTotal + existingGroup.total;
         this.total = this.subTotal - this.discount;
-        console.log(4);
       }
       existingGroup.isOpened = false;
       this.toggleCurrentCategory(existingGroup);
-      console.log(5);
     } else {
       const group = {
         isChecked: false, total: 0, isOpened: false,
@@ -203,7 +194,6 @@ export class CoverBillComponent implements OnInit {
       this.total = this.subTotal - this.discount;
       group.isOpened = false;
       this.toggleCurrentCategory(group);
-      console.log(6);
     }
   }
   fixedGroupExisting(bill: BillItem) {
@@ -400,7 +390,6 @@ export class CoverBillComponent implements OnInit {
     if (!this.itemEditShow) {
       this.selectedBillItem = <BillModel>{};
     }
-    console.log(this.selectedBillItem);
     if (!this.itemEditShow) {
       this.masterBillGroups.forEach((itemi, i) => {
         itemi.billItems.forEach((itemy, y) => {

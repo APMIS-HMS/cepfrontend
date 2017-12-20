@@ -46,7 +46,6 @@ export class ExternalInvestigationsComponent implements OnInit {
               ]
             }
           }).then(payload => {
-            console.log(payload);
             payload.data.forEach(element => {
               element.investigations.forEach(item => {
                 if (item.isExternal) {
@@ -66,14 +65,12 @@ export class ExternalInvestigationsComponent implements OnInit {
               })
 
             });
-            console.log(this.extRequests);
           })
         }
     });
 
     this.extRequestFormGroup.controls['date'].valueChanges.subscribe(value => {
       this._laboratoryRequestService.find({ query: { dateExternalInvestigation: true, date: value } }).then(payload => {
-        console.log(payload);
       })
     });
   }

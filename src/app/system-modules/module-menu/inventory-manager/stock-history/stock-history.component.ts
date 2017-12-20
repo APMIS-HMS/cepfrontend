@@ -55,7 +55,6 @@ export class StockHistoryComponent implements OnInit {
       }
     }).then(payload => {
       this.transferHistories = payload.data;
-      console.log(this.transferHistories);
     });
   }
   onClickViewHistoryDetails(value, event) {

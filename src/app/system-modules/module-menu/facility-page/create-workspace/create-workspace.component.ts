@@ -73,7 +73,6 @@ export class CreateWorkspaceComponent implements OnInit {
       // this.getWorkSpace();
     });
     this.frmNewEmp1.controls['minorLoc'].valueChanges.subscribe((value) => {
-      console.log(value);
       this.selectedMinorLocation = value;
       this.getWorkSpace();
     });
@@ -87,20 +86,14 @@ export class CreateWorkspaceComponent implements OnInit {
 
 
     if (this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined) {
-      console.log(this.selectedEmployee);
       this.disableDepartment = true;
       const deptList = this.departments.filter(x => x._id === this.selectedEmployee.department._id);
       if (deptList.length > 0) {
         this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
       }
-      console.log(this.selectedEmployee);
       this.frmNewEmp1.controls['dept'].value.units.forEach((item, i) => {
-        console.log(2);
-        console.log(item);
-        console.log(this.selectedEmployee.units);
         const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
         if (unitsList.length > 0) {
-          console.log(i);
           this.units.push(unitsList[0]);
         }
       });
@@ -172,7 +165,6 @@ export class CreateWorkspaceComponent implements OnInit {
             'locations.minorLocationId._id': minorLocationId, $limit: 100
           }
         }).then(payload => {
-          console.log(payload);
           const filteredEmployee: Employee[] = [];
           this.filteredEmployees.forEach((emp, i) => {
             let workInSpace = false;
@@ -212,20 +204,17 @@ export class CreateWorkspaceComponent implements OnInit {
       this.loadIndicatorVisible = true;
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
-      console.log(employeesId);
       const createArrays: Employee[] = [];
       const updateArrays: Employee[] = [];
       this.workspaceService.find({
         query:
         { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
       }).then(payload => {
-        console.log(payload);
         filtered.forEach((iteme, e) => {
           let hasRecord = false;
           if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
             hasRecord = true;
           }
-          console.log(hasRecord);
           if (hasRecord) {
             updateArrays.push(iteme);
           } else {
@@ -236,8 +225,6 @@ export class CreateWorkspaceComponent implements OnInit {
         const workSpaces$ = [];
         {
           const workSpaces: WorkSpace[] = [];
-          console.log(createArrays);
-          console.log(updateArrays);
           createArrays.forEach((emp, i) => {
             const space: WorkSpace = <WorkSpace>{};
             space.employeeId = emp;
@@ -248,7 +235,6 @@ export class CreateWorkspaceComponent implements OnInit {
             locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
             space.locations.push(locationModel);
             workSpaces.push(space);
-            console.log(workSpaces);
             workSpaces$.push(Observable.fromPromise(this.workspaceService.create(space)));
           });
         }
@@ -269,7 +255,6 @@ export class CreateWorkspaceComponent implements OnInit {
           this.loadIndicatorVisible = false;
         });
       }, error => {
-        console.log(error);
       });
     } else {
       this.mainErr = false;

@@ -49,9 +49,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           isOn = true;
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
-          console.log(checkingObject)
           this.locker.setObject('checkingObject', checkingObject);
-          console.log('sent');
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
             checkingObject = { typeObject: itemr, type: 'store' };
@@ -110,7 +108,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //             this.loginEmployee = payload;
     //             checkingObject = { typeObject: itemr, type: 'store' };
     //             this.employeeService.announceCheckIn(checkingObject);
-    //             console.log(1)
     //             this.locker.setObject('checkingObject', checkingObject);
     //           });
     //         }
@@ -124,8 +121,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //               this.loginEmployee = payload;
     //               const checkingObject = { typeObject: itemr, type: 'store' };
     //               this.employeeService.announceCheckIn(checkingObject);
-    //               console.log(2)
-    //               console.log(checkingObject);
     //               this.locker.setObject('checkingObject', checkingObject);
     //             });
     //           }
@@ -137,7 +132,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //   });
 
     const page: string = this._router.url;
-    console.log(page);
     this.checkPageUrl(page);
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
@@ -250,7 +244,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   // }
 
   changeRoute(val) {
-    console.log(val);
     if (val == '/dashboard/inventory-manager/inventory') {
       this.inventoryNavMenu = true;
       this.stockTakingNavMenu = false;

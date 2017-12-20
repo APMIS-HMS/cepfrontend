@@ -54,7 +54,6 @@ export class FacilitypageModulespageComponent implements OnInit {
       this.facilityModules = payload.facilityModules;
     },
       error => {
-        console.log(error);
       })
   }
 

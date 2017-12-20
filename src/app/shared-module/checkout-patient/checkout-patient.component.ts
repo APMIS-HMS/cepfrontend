@@ -134,7 +134,6 @@ export class CheckoutPatientComponent implements OnInit {
 	}
 
 	checkOutPatient(type, formData?, formDataValid?){
-		//console.log(type);
 		this.loading = true;
 		var checkoutData;
 		if(type == "No Futher Appointment"){
@@ -151,10 +150,8 @@ export class CheckoutPatientComponent implements OnInit {
 				checkedOutTime: new Date(),
 				person: this.user.data.person
 			}
-			console.log(checkoutData);
 		}else if(type == "death"){
 			if(formDataValid){
-				console.log(formData);
 				checkoutData = {
 					type: 'Death',
 					checkedOutTime: new Date(),
@@ -168,20 +165,16 @@ export class CheckoutPatientComponent implements OnInit {
 		this._appointmentService.find({ query: {
 			'_id': this.selectedAppointment._id
 		}}).then(clinicRes => {
-			console.log(clinicRes);
 			if (clinicRes.data.length > 0) {
 				let updateData = clinicRes.data[0];
 				updateData.isCheckedOut = true;
 				updateData.checkedOut = checkoutData;
-				console.log(updateData);
 				this._appointmentService.update(updateData).then((updateRes) => {
-					console.log(updateRes);
 					this._notification('Success', 'Patient Has Successfully Been Checked Out ');
 					if(checkoutData.type == "FUWA"){
 						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id], { queryParams: { checkedOut: true } });
 					}else{
 						this._router.navigate(['/dashboard/clinic/appointment']).then(() => {
-							console.log('checking...');
 						});
 					}
 					this.loading = false;
@@ -197,14 +190,12 @@ export class CheckoutPatientComponent implements OnInit {
 			'patientId._id': this.patientDetails._id
 		}}).then(res => {
       this.loading = false;
-      console.log(res);
 			if (res.data.length > 0) {
 				this._inpatientService.find({ query: {
 					'facilityId._id': this.facility._id,
 					'patientId._id': this.patientDetails._id,
 					isDischarged: false
 				}}).then(resp => {
-          console.log(resp);
 					const patientName = this.patientDetails.personDetails.personFullName;
 					if (resp.data.length > 0) {
 						const locationIndex = (resp.data[0].transfers.length > 0) ? resp.data[0].transfers.length - 1 : resp.data[0].transfers.length;
@@ -247,7 +238,6 @@ export class CheckoutPatientComponent implements OnInit {
 
 	// Notification
 	private _notification(type: String, text: String): void {
-		console.log(text);
 		this.facilityService.announceNotification({
 			users: [this.user._id],
 			type: type,

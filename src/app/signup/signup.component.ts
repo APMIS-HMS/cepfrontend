@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit {
 
   constructor(private corporateFacilityService: CorporateFacilityService, private facilityService: FacilitiesService) {
     // this.corporateFacilityService.listenerUpdate.subscribe(value => {
-    //   console.log(value);
+    //  
     //   this.facilityService.announceNotification({
     //     type: 'Success',
     //     text: 'Welcome ' + value.name,

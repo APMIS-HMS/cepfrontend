@@ -150,7 +150,6 @@ export class CorporateAccountComponent implements OnInit {
 			this.alertMsg = 'Your request for corporate health cover has been sent';
 			this.successAlert = true;
 		}, error => {
-			console.log(error);
 		});
 
 	}

@@ -210,7 +210,6 @@ export class FacilitypageHomepageComponent implements OnInit {
         this.getCountries();
       },
         error => {
-          console.log(error);
         });
     }
 

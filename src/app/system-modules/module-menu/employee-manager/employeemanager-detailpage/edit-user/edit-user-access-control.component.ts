@@ -16,12 +16,10 @@ export class EditUserAccessControlComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit() {
-    // console.log(this.selectedRole);
     // if (this.selectedRole.feature !== undefined) {
     //   let feature = this.selectedRole.feature;
     //   this.getAccessControl(feature.accessControlId, feature.featureId);
     // }
-    // console.log(this.selectedAccessControl);
     this.getUser(this.selectedAccessControl, this.selectedUser);
     this.getAccessControl(this.selectedAccessControl);
   }

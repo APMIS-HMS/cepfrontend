@@ -82,15 +82,11 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.getEmployees();
     });
     this.personService.updateListener.subscribe(payload => {
-      // this.loadRoute();
-      console.log(payload);
       this.getEmployee(this.employee);
-      console.log(this.employee);
     });
 
     this.employeeSubscription = this.employeeService.employeeAnnounced$.subscribe(employee => {
       this.getEmployee(employee);
-      console.log(employee);
     });
 
   }
@@ -101,7 +97,6 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.departments = this.selectedFacility.departments;
     // this.getEmployees();
     this.countryControl.valueChanges.subscribe(value => {
-      console.log(value);
       const countryFilter = this.countries.filter(x => x._id === value);
       if (countryFilter.length > 0) {
         this.states = countryFilter[0].states;
@@ -116,7 +111,6 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
 
     this.homeCountryControl.valueChanges.subscribe(value => {
-      console.log(value);
       const countryFilter = this.homeCountries.filter(x => x._id === value);
       if (countryFilter.length > 0) {
         this.homeStates = countryFilter[0].states;
@@ -261,7 +255,6 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.employee = payload;
     },
       error => {
-        console.log(error);
       });
     this.contentSecMenuShow = false;
   }
@@ -281,7 +274,6 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.employee.departmentId = this.selectedValue;
     this.employeeService.update(this.employee).subscribe(value => {
       this.employee = value;
-      console.log(value);
       this.editDepartment = !this.editDepartment;
     });
   }
@@ -289,21 +281,18 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     const person = this.employee.employeeDetails;
     this.biodatas = !this.biodatas;
     this.personService.update(person).subscribe(payload => {
-      console.log(payload);
     });
   }
   UpdatePersonContact() {
     const person = this.employee.employeeDetails;
     this.contacts = !this.contacts;
     this.personService.update(person).subscribe(payload => {
-      console.log(payload);
     });
   }
   UpdatePersonNextOfKin() {
     const person = this.employee.employeeDetails;
     this.nextofkin = !this.nextofkin;
     this.personService.update(person).subscribe(payload => {
-      console.log(payload);
     });
   }
   toggleDepartmentShow() {

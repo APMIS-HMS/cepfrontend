@@ -124,7 +124,6 @@ export class CreateAccessComponent implements OnInit {
           this.router.navigate(['/dashboard/access-manager/access']);
         },
         error => {
-          console.log(error);
         });
     } else {
       this.accessControlService.update(accessControl).then(payload => {

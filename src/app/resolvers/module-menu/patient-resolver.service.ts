@@ -27,7 +27,6 @@ export class PatientResolverService implements Resolve<Patient> {
       }
       return Observable.of(null);
     }, error => {
-      console.log(error);
     });
   }
 }
