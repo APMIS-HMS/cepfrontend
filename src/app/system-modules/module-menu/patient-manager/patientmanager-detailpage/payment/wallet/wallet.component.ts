@@ -8,16 +8,15 @@ import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FLUTTERWAVE_PUBLIC_KEY, PAYSTACK_CLIENT_KEY, PaymentChannels } from '../../../../../../shared-module/helpers/global-config';
 import { PersonService, FacilitiesService } from '../../../../../../services/facility-manager/setup/index';
-// import  '../../../../../../../assets/libs/paystack.js';
 import crop from './paystack.js';
 import paystackInline from './paystack-inline.js';
 import { Facility, User } from 'app/models';
 declare var paystack: any;
-// declare var callPayStack: any;
+
 @Component({
-  selector: "app-wallet",
-  templateUrl: "./wallet.component.html",
-  styleUrls: ["./wallet.component.scss"]
+  selector: 'app-wallet',
+  templateUrl: './wallet.component.html',
+  styleUrls: ['./wallet.component.scss']
 })
 export class WalletComponent implements OnInit, AfterViewInit {
   paymentFormGroup: FormGroup;
@@ -25,17 +24,17 @@ export class WalletComponent implements OnInit, AfterViewInit {
   person: any;
   transactions: any[] = [];
   search: FormControl;
-  fundAmount: FormControl;
+  // fundAmount: FormControl;
   selectedValue: string;
   selectedFacility: Facility;
   user: any = <any>{};
-  withPaystack: boolean = true;
-  withFlutterwave: boolean = true;
+  // withPaystack: boolean = true;
+  // withFlutterwave: boolean = true;
   flutterwaveClientKey: string = FLUTTERWAVE_PUBLIC_KEY;
   paystackClientKey: string = PAYSTACK_CLIENT_KEY;
   refKey: string;
-  ePayment: boolean = false;
-  ePaymentMethod: string = 'Flutterwave';
+  // ePayment: boolean = false;
+  // ePaymentMethod: string = 'Flutterwave';
   loading: boolean = true;
   paymentChannels = PaymentChannels;
   cashPayment = false;
@@ -45,10 +44,10 @@ export class WalletComponent implements OnInit, AfterViewInit {
   cashPaymentPay = true;
   cashPaymentPaying = false;
 
-  wallets = [
-    { value: 'cash', viewValue: 'Cash' },
-    { value: 'paystack', viewValue: 'Paystack' }
-  ];
+  // wallets = [
+  //   { value: 'cash', viewValue: 'Cash' },
+  //   { value: 'paystack', viewValue: 'Paystack' }
+  // ];
 
   constructor(
     private _fb: FormBuilder,
@@ -71,7 +70,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.paymentFormGroup.controls['paymentType'].valueChanges.subscribe(val => {
         const amount = this.paymentFormGroup.controls['fundAmount'].value;
         if (amount !== 0 && amount >= 500) {
-          if (val === 'Cash' || val === 'Cheque' || val === 'POS') {
+          if (val === 'Cash' || val === 'Cheque' || val === 'POS' || val === 'Transfer') {
             this.cashPayment = true;
             this.flutterwavePayment = false;
             this.paystackPayment = false;
@@ -131,9 +130,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
           );
         });
       } else {
-        this.transactions = this.person.wallet.transactions
-          .reverse()
-          .slice(0, 5);
+        this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
       }
     });
 
@@ -157,8 +154,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     console.log(this.user);
 
-    this.refKey =
-      (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
+    this.refKey = (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
 
     // let formData = { type: 'customers' };
     // this._payStackService.paystack(formData).then(payload => {
@@ -173,29 +169,29 @@ export class WalletComponent implements OnInit, AfterViewInit {
   //   crop();
   // }
 
-  verifyTransaction(reference) {
-    let formData = { type: 'verifyTransaction', reference: reference };
-    this._payStackService.paystack(formData).then(payload => {
-      console.log(payload);
-    });
-  }
+  // verifyTransaction(reference) {
+  //   let formData = { type: 'verifyTransaction', reference: reference };
+  //   this._payStackService.paystack(formData).then(payload => {
+  //     console.log(payload);
+  //   });
+  // }
 
-  fundWithElectronic() {
-    console.log(this.patient);
-    let retVal = paystackInline(
-      this.patient.personDetails.email,
-      this.fundAmount.value,
-      this.patient.personDetails.phoneNumber,
-      this.paystackCallback
-    );
-  }
-  onClose() {}
+  // fundWithElectronic() {
+  //   console.log(this.patient);
+  //   let retVal = paystackInline(
+  //     this.patient.personDetails.email,
+  //     this.fundAmount.value,
+  //     this.patient.personDetails.phoneNumber,
+  //     this.paystackCallback
+  //   );
+  // }
+  // onClose() {}
 
-  paystackCallback(response) {
-    console.log(response);
-    // let that = this;
-    this.verifyTransaction(response.reference);
-  }
+  // paystackCallback(response) {
+  //   console.log(response);
+  //   // let that = this;
+  //   this.verifyTransaction(response.reference);
+  // }
 
   fundWalletViaCashPayment(valid: boolean, value: any) {
     console.log(valid);
