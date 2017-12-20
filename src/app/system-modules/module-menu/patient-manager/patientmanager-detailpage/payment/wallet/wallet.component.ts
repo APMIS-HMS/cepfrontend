@@ -6,7 +6,7 @@ import { PayStackService } from './../../../../../../services/facility-manager/s
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FLUTTERWAVE_PUBLIC_KEY, PAYSTACK_CLIENT_KEY, PaymentChannels } from '../../../../../../shared-module/helpers/global-config';
+import { FLUTTERWAVE_PUBLIC_KEY, PAYSTACK_CLIENT_KEY } from '../../../../../../shared-module/helpers/global-config';
 import { PersonService, FacilitiesService } from '../../../../../../services/facility-manager/setup/index';
 // import  '../../../../../../../assets/libs/paystack.js';
 import crop from './paystack.js';
@@ -16,11 +16,10 @@ declare var paystack: any;
 // declare var callPayStack: any;
 @Component({
   selector: "app-wallet",
-  templateUrl: "./wallet.component.html",
-  styleUrls: ["./wallet.component.scss"]
+  templateUrl: './wallet.component.html',
+  styleUrls: ['./wallet.component.scss']
 })
 export class WalletComponent implements OnInit, AfterViewInit {
-  paymentFormGroup: FormGroup;
   @Input() patient;
   person: any;
   transactions: any[] = [];
@@ -37,13 +36,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
   ePayment: boolean = false;
   ePaymentMethod: string = 'Flutterwave';
   loading: boolean = true;
-  paymentChannels = PaymentChannels;
-  cashPayment = false;
-  flutterwavePayment = false;
-  paystackPayment = false;
-  disableBtn = false;
-  cashPaymentPay = true;
-  cashPaymentPaying = false;
 
   wallets = [
     { value: 'cash', viewValue: 'Cash' },
@@ -51,91 +43,38 @@ export class WalletComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
-    private _fb: FormBuilder,
     private personService: PersonService,
     private _payStackService: PayStackService,
     private _locker: CoolLocalStorage,
-    private _facilityService: FacilitiesService,
-    private _personService: PersonService
+    private _facilityService: FacilitiesService
   ) {}
 
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('miniFacility');
     this.user = <User>this._locker.getObject('auth');
-
-    this.paymentFormGroup = this._fb.group({
-      fundAmount: [0, [<any>Validators.required]],
-      paymentType: ['', [<any>Validators.required]]
-    });
-
-    this.paymentFormGroup.controls['paymentType'].valueChanges.subscribe(val => {
-        const amount = this.paymentFormGroup.controls['fundAmount'].value;
-        if (amount !== 0 && amount >= 500) {
-          if (val === 'Cash' || val === 'Cheque' || val === 'POS') {
-            this.cashPayment = true;
-            this.flutterwavePayment = false;
-            this.paystackPayment = false;
-          } else if (val === 'Flutterwave') {
-            this.cashPayment = false;
-            this.flutterwavePayment = true;
-            this.paystackPayment = false;
-          } else if (val === 'Paystack') {
-            this.cashPayment = false;
-            this.flutterwavePayment = false;
-            this.paystackPayment = true;
-          }
-        } else {
-          this.cashPayment = false;
-          this.flutterwavePayment = false;
-          this.paystackPayment = false;
-        }
-      }
-    );
-
-    this.paymentFormGroup.controls['fundAmount'].valueChanges.subscribe(val => {
-      const amount = this.paymentFormGroup.controls['fundAmount'].value;
-      if (amount !== 0 && amount >= 500) {
-        if (val === 'Cash' || val === 'Cheque' || val === 'POS') {
-          this.cashPayment = true;
-          this.flutterwavePayment = false;
-          this.paystackPayment = false;
-        } else if (val === 'Flutterwave') {
-          this.cashPayment = false;
-          this.flutterwavePayment = true;
-          this.paystackPayment = false;
-        } else if (val === 'Paystack') {
-          this.cashPayment = false;
-          this.flutterwavePayment = false;
-          this.paystackPayment = true;
-        }
-      } else {
-        this.cashPayment = false;
-        this.flutterwavePayment = false;
-        this.paystackPayment = false;
-      }
-    });
-
+    this.fundAmount = new FormControl(0, [<any>Validators.required]);
     this.search = new FormControl('', []);
-    this.search.valueChanges.debounceTime(300).distinctUntilChanged().subscribe(value => {
-      this.loading = false;
-      if (value.length > 0) {
-        const copiedTransactions = JSON.parse(
-          JSON.stringify(this.person.wallet.transactions)
-        );
-        this.transactions = copiedTransactions.filter(function(el) {
-          return (
-            el.amount === value ||
-            el.refCode === value ||
-            el.description.toLowerCase().includes(value.toLowerCase()) ||
-            el.transactionType.toLowerCase() === value.toLowerCase()
+    this.search.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.loading = false;
+        if (value.length > 0) {
+          const copiedTransactions = JSON.parse(
+            JSON.stringify(this.person.wallet.transactions)
           );
-        });
-      } else {
-        this.transactions = this.person.wallet.transactions
-          .reverse()
-          .slice(0, 5);
-      }
-    });
+          this.transactions = copiedTransactions.filter(function(el) {
+            return (
+              el.amount === value ||
+              el.refCode === value ||
+              el.description.toLowerCase().includes(value.toLowerCase()) ||
+              el.transactionType.toLowerCase() === value.toLowerCase()
+            );
+          });
+        } else {
+          this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
+        }
+      });
 
     this.personService.get(this.patient.personId, {}).then(payload => {
       this.loading = false;
@@ -151,14 +90,11 @@ export class WalletComponent implements OnInit, AfterViewInit {
         });
       } else {
         this.person = payload;
-        this.transactions = payload.wallet.transactions.reverse().slice(0, 10);
+        this.transactions = payload.wallet.transactions.reverse().slice(0, 5);
       }
     });
 
-    console.log(this.user);
-
-    this.refKey =
-      (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
+    this.refKey = (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
 
     // let formData = { type: 'customers' };
     // this._payStackService.paystack(formData).then(payload => {
@@ -172,21 +108,20 @@ export class WalletComponent implements OnInit, AfterViewInit {
   // fundWallet() {
   //   crop();
   // }
-
   verifyTransaction(reference) {
     let formData = { type: 'verifyTransaction', reference: reference };
     this._payStackService.paystack(formData).then(payload => {
       console.log(payload);
     });
   }
-
   fundWithElectronic() {
     console.log(this.patient);
     let retVal = paystackInline(
       this.patient.personDetails.email,
       this.fundAmount.value,
       this.patient.personDetails.phoneNumber,
-      this.paystackCallback
+      this.paystackCallback,
+      this
     );
   }
   onClose() {}
@@ -197,124 +132,104 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.verifyTransaction(response.reference);
   }
 
-  fundWalletViaCashPayment(valid: boolean, value: any) {
-    console.log(valid);
-    console.log(value);
-    if (valid && parseFloat(value.fundAmount) >= 500) {
-      this.disableBtn = true;
-      this.cashPaymentPay = false;
-      this.cashPaymentPaying = true;
-      const desc = 'Funded wallet via ' + value.paymentType;
-
-      let medium;
-      if (value.paymentType === 'Cash') {
-        medium = TransactionMedium.Cash;
-      } else if (value.paymentType === 'Cheque') {
-        medium = TransactionMedium.Cheque;
-      } else if (value.paymentType === 'Transfer') {
-        medium = TransactionMedium.Transfer;
-      } else if (value.paymentType === 'POS') {
-        medium = TransactionMedium.POS;
-      }
-      // Wallet model.
+  fundWallet() {
+    console.log(this.fundAmount);
+    if (this.fundAmount.valid && this.fundAmount.value >= 500) {
       let walletTransaction: WalletTransaction = {
-        paymentMethod: value.paymentType,
+        paymentMethod: 'Cash',
         transactionType: TransactionType.Cr,
-        transactionMedium: medium,
-        amount: parseFloat(value.fundAmount),
-        description: desc,
-        sourceId: this.selectedFacility._id,
+        transactionMedium: TransactionMedium.Wallet,
+        amount: this.fundAmount.value,
+        description: 'Funding wallet via cash payment',
+        sourceId: this.user.data.personId,
         destinationId: this.person._id,
-        sourceType: EntityType.Facility,
-        destinationType: EntityType.Person,
-        transactionDirection: TransactionDirection.FacilityToPerson,
-        paidBy: this.user.data.person._id
+        source: EntityType.Person,
+        destination: EntityType.Person,
+        transactionDirection: TransactionDirection.PersonToPerson
       };
 
-      this.personService.fundWallet(walletTransaction).then((res: any) => {
-        console.log(res);
-        if (res.body.status === 'success') {
-          this.paymentFormGroup.reset();
-          this.paymentFormGroup.controls['fundAmount'].setValue(0);
-          this.disableBtn = false;
-          this.cashPayment = false;
-          this.flutterwavePayment = false;
-          this.paystackPayment = false;
-          this.person = res.body.data;
-          this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
-          const text = 'Your facility\'s wallet has been debited and patient\'s wallet has been credited successfully.';
-          this._notification('Success', text);
-        } else {
-          console.log(res.body.message);
-          this._notification('Error', res.body.message);
-        }
-      }).catch(err => {
-        console.log(err);
-      });
+      console.log(walletTransaction);
+
+      this.personService
+        .fundWallet(walletTransaction)
+        .then((res: any) => {
+          console.log(res);
+          if (res.body.status === 'success') {
+            this.person = res.body.data;
+            this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
+          } else {
+            console.log(res.body.message);
+            this._notification('Error', res.body.message);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } else {
-      let text = 'Please enter amount above 500 naira and also select payment type';
+      let text = 'Please enter amount above 500 naira';
       this._notification('Info', text);
     }
   }
 
-  // Flutterwave Payment
   paymentDone(paymentRes) {
     console.log(paymentRes);
-    let flutterwaveRes;
-    const ePaymentMethod = this.paymentFormGroup.controls['paymentType'].value
-    const desc = 'Funded wallet via ' + this.paymentFormGroup.controls['paymentType'].value;
-    if (ePaymentMethod === 'Flutterwave') {
-      flutterwaveRes = {
-        data: paymentRes.data.data,
-        tx: {
-          charged_amount: paymentRes.tx.charged_amount,
-          customer: paymentRes.tx.customer,
-          flwRef: paymentRes.tx.flwRef,
-          txRef: paymentRes.tx.txRef,
-          orderRef: paymentRes.tx.orderRef,
-          paymentType: paymentRes.tx.paymentType,
-          raveRef: paymentRes.tx.raveRef,
-          status: paymentRes.tx.status
-        }
-      };
-    }
-
-    let walletTransaction: WalletTransaction = {
-      ref: (ePaymentMethod === 'Flutterwave') ? flutterwaveRes : paymentRes,
-      paymentMethod: 'e-Payment',
-      ePaymentMethod: ePaymentMethod,
-      transactionType: TransactionType.Cr,
-      transactionMedium: (ePaymentMethod === 'Flutterwave') ? TransactionMedium.Flutterwave : TransactionMedium.PayStack,
-      amount: parseFloat(this.paymentFormGroup.controls['fundAmount'].value),
-      description: desc,
-      sourceId: this.person._id,
-      destinationId: this.person._id,
-      sourceType: EntityType.Person,
-      destinationType: EntityType.Person,
-      transactionDirection: TransactionDirection.PersonToPerson,
-      paidBy: this.user.data.person._id
+    let flutterwaveRes = {
+      data: paymentRes.data.data,
+      tx: {
+        charged_amount: paymentRes.tx.charged_amount,
+        customer: paymentRes.tx.customer,
+        flwRef: paymentRes.tx.flwRef,
+        txRef: paymentRes.tx.txRef,
+        orderRef: paymentRes.tx.orderRef,
+        paymentType: paymentRes.tx.paymentType,
+        raveRef: paymentRes.tx.raveRef,
+        status: paymentRes.tx.status
+      }
     };
 
-    this.personService.fundWallet(walletTransaction).then((res: any) => {
-      this.loading = false;
-      console.log(res);
-      if (res.body.status === 'success') {
-        this.paymentFormGroup.reset();
-        this.paymentFormGroup.controls['fundAmount'].setValue(0);
-        this.disableBtn = false;
-        this.cashPayment = false;
-        this.flutterwavePayment = false;
-        this.paystackPayment = false;
-        this.person = res.body.data;
-        this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
-        this._notification('Success', 'Your wallet has been credited successfully.');
-      } else {
-        console.log(res.body.message);
-        this._notification('Error', res.body.message);
-      }
-    }).catch(err => {
-      console.log(err);
-    });
+    let walletTransaction: WalletTransaction = {
+      ref: this.ePaymentMethod === 'Flutterwave' ? flutterwaveRes : paymentRes,
+      paymentMethod: 'e-Payment',
+      ePaymentMethod: 'Flutterwave',
+      transactionType: TransactionType.Cr,
+      transactionMedium: TransactionMedium.Wallet,
+      amount: this.fundAmount.value,
+      description: 'Funding wallet via e-Payment using flutterwave',
+      sourceId: this.person._id,
+      destinationId: this.person._id,
+      source: EntityType.Person,
+      destination: EntityType.Person,
+      transactionDirection: TransactionDirection.PersonToPerson
+    };
+
+    this.personService
+      .fundWallet(walletTransaction)
+      .then((res: any) => {
+        this.loading = false;
+        console.log(res);
+        if (res.body.status === 'success') {
+          this.ePayment = false;
+          this.fundAmount.setValue(0);
+          this.person = res.body.data;
+          this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
+          this._notification('Success', 'Your wallet has been credited successfully.');
+        } else {
+          console.log(res.body.message);
+          this._notification('Error', res.body.message);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  onClickEPayment() {
+    if (this.fundAmount.valid && this.fundAmount.value >= 500) {
+      this.ePayment = !this.ePayment;
+    } else {
+      let text = 'Please enter amount above 500 naira';
+      this._notification('Info', text);
+    }
   }
 
   paymentCancel() {

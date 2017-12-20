@@ -76,7 +76,6 @@ export class FacilitiesService {
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
-
   trimEmployee(loginEmployee) {
     const logEmp: any = loginEmployee;
     if (logEmp !== null && logEmp.department !== undefined) {

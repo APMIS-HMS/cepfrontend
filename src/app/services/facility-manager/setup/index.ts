@@ -89,7 +89,3 @@ export * from './inventory-initialiser.service';
 export * from './sms-alert.service';
 export * from './winref.service';
 export * from './make-payment.service';
-export * from './search-invoices.service';
-export * from './pending-bills.service';
-export * from './today-invoices.service';
-export * from './loc-summary-cash.service';

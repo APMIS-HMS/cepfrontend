@@ -3,10 +3,11 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService,
-    TitleService, CountriesService, PatientService, PersonService, EmployeeService, FacilitiesService
+    TitleService, CountriesService, PatientService, PersonService, EmployeeService, FacilitiesService, FacilitiesServiceCategoryService,
+    BillingService, ServicePriceService
 } from '../../../../services/facility-manager/setup/index';
 import {
-    Facility, Patient, Address, Profession, Relationship, Person,
+    Facility, FacilityService, Patient, Address, Profession, Relationship, Person,
     Department,
     MinorLocation, Gender, Title, Country
 } from '../../../../models/index';
@@ -86,6 +87,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     croppedWidth: number;
     croppedHeight: number;
 
+    cashPlans:FacilityService[] = [];
+    insurancePlans:any = [];
+    planInput:any;
+
     // ***
     uploadFile: any;
     hasBaseDropZoneOver: Boolean = false;
@@ -98,7 +103,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     // **
     OperationType: ImageUploaderEnum = ImageUploaderEnum.PersonProfileImage;
-    constructor(private formBuilder: FormBuilder,
+    constructor(private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+        private formBuilder: FormBuilder,
         private titleService: TitleService,
         private countryService: CountriesService,
         private genderService: GenderService,
@@ -108,7 +114,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private locker: CoolLocalStorage, private patientService: PatientService,
         private personService: PersonService,
         private employeeService: EmployeeService,
-        private facilityService: FacilitiesService
+        private facilityService: FacilitiesService,
+        private billingService: BillingService, private servicePriceService: ServicePriceService
     ) {
         // this.uploadEvents = new EventEmitter();
         this.cropperSettings = new CropperSettings();
@@ -206,12 +213,28 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        
         // this.uploadEvents = new EventEmitter();
         this.facility = <Facility>this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.newEmpIdControl.valueChanges.subscribe(value => {
             // do something with value here
+        });
+
+        const away = this.ccPlanId.valueChanges
+        .debounceTime(400)
+        .distinctUntilChanged()
+        .switchMap((term: any) => this.employeeService.find({
+            query: {
+                facilityId: this.facility._id,
+                "employeeDetails.apmisId": this.ccPlanId.value
+            }
+
+        }));
+  
+        away.subscribe((payload: any) => {
+            console.log(payload);
         });
 
         this.frmNewEmp1 = this.formBuilder.group({
@@ -318,6 +341,52 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         });
 
         this.zone = new NgZone({ enableLongStackTrace: false });
+    
+        this.getCashPlans();
+    }
+
+    getCashPlans() {
+        this._facilitiesServiceCategoryService.find({
+          query:
+          { searchCategory: "Medical Records", facilityId: this.facility._id }
+        }).
+        then(payload => {
+            //this.filterOutCategory(payload);
+            //this.categories = [];
+            let cat: any = [];
+            payload.data.forEach((itemi, i) => {
+                itemi.categories.forEach((itemj, j) => {
+                    if (itemi.facilityId !== undefined) {
+                        cat.push(itemj);
+                        this.cashPlans = cat[0].services;
+                    }
+                });
+            });
+        });
+    }
+
+    employeeChecking(value){
+        console.log(value);
+        /* this.employeeService.find({
+            query : {
+                facilityId: this.facility._id,
+                _id: value
+            }
+        }).then(payload => {
+            console.log(payload);
+        }); */
+    }
+
+    next(data){
+        if(this.paymentPlan === true){
+            this.planInput = data;
+            console.log(this.planInput);
+            this.frmNewEmp4_show = false;
+            this.frmNewPerson1_show = true;
+            this.frmNewPerson2_show = false;
+            this.frmNewPerson3_show = false;
+            this.paymentPlan = false;
+        }
     }
 
     getProfessions() {
@@ -374,6 +443,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
+                console.log(this.errMsg);
                 return Observable.of(undefined);
             }
 
@@ -543,7 +613,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         email: this.frmNewEmp3.controls['nok_email'].value,
                         relationship: this.frmNewEmp3.controls['nok_relationship'].value,
 
-                    });
+                    }
+                );
 
                 person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
                 person.phoneNumber = this.frmNewEmp1.controls['empPhonNo'].value;
@@ -553,15 +624,40 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
 
                 this.personService.create(person).then(payload => {
+                    console.log(payload);
+
+                    let patient:any = {
+                        personId: payload.data._id,
+                        facilityId: this.facility._id,
+                        paymentPlan: [this.planInput]
+                    } 
+                    this.patientService.create(patient).then(payl => {
+                        // this.uploadButton();
+                        this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } })
+                        .then(payloadPrice => {
+                            //this.prices = payload.data;
+                            console.log(payloadPrice);
+                            /* let billing:any = {
+                                discount: 0,
+                                facilityId: this.facility._id,
+                                grandTotal: 500,
+                                patientId: ObjectId('59a51e3919370a0f240e2585'),
+                            }
+                            this.billingService.create() */
+                        }).catch(err => {
+                          console.log(err);
+                        });
+                        console.log(payl);
+                        
+                        this.frmNewPerson1_show = false;
+                        this.frmNewPerson2_show = false;
+                        this.frmNewPerson3_show = false;
+                        this.frmNewEmp4_show = true;
+                        this.paymentPlan = false;
+                        this.apmisId_show = false;
+                        this.mainErr = true;
+                    });
                     this.selectedPerson = payload;
-                    // this.uploadButton();
-                    this.frmNewPerson1_show = false;
-                    this.frmNewPerson2_show = false;
-                    this.frmNewPerson3_show = false;
-                    this.frmNewEmp4_show = true;
-                    this.paymentPlan = false;
-                    this.apmisId_show = false;
-                    this.mainErr = true;
                 });
             } else {
                 console.log('skip');
@@ -574,18 +670,42 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
                 this.personService.create(person).then(payload => {
                     console.log('save person');
-                    this.selectedPerson = payload;
-                    this.uploadButton();
-                    if (this.skipNok) {
-                        this.saveEmployee();
-                    }
-                    this.frmNewPerson1_show = false;
-                    this.frmNewPerson2_show = false;
-                    this.frmNewPerson3_show = false;
-                    this.frmNewEmp4_show = true;
-                    this.paymentPlan = false;
-                    this.apmisId_show = false;
-                    this.mainErr = true;
+                    console.log(payload);
+                    let patient:any = {
+                        personId: payload._id,
+                        facilityId: this.facility._id,
+                        paymentPlan: [this.planInput]
+                    } 
+                    this.patientService.create(patient).then(payl => {
+                        this.selectedPerson = payload;
+                        console.log(payl);
+                        this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } })
+                        .then(payloadPrice => {
+                            //this.prices = payload.data;
+                            console.log(payloadPrice);
+                            /* let billing:any = {
+                                discount: 0,
+                                facilityId: this.facility._id,
+                                grandTotal: 500,
+                                patientId: ObjectId('59a51e3919370a0f240e2585'),
+                            }
+                            this.billingService.create() */
+                            this.uploadButton();
+                            if (this.skipNok) {
+                                this.saveEmployee();
+                            }
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = true;
+                            this.paymentPlan = false;
+                            this.apmisId_show = false;
+                            this.mainErr = true;
+                        }).catch(err => {
+                          console.log(err);
+                        });
+                        
+                    });
                 }, error => {
                     console.log(error);
                 });

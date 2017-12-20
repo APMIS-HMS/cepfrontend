@@ -59,29 +59,18 @@ export class PersonService {
     return this._socket.remove(id, query);
   }
 
-  // This is to strip unnecessary data from person.
-  abridgePerson(person) {
-    return {
-      _id: person._id,
-      apmisId: person.apmisId,
-      email: person.email,
-      fullname: person.firstName + ' ' + person.lastName,
-      phoneNumber: person.phoneNumber
-    };
-  }
-
   walletTransaction(walletTransaction: WalletTransaction) {
     const host = this._restService.getHost();
     const path = host + '/wallet-transaction';
     return request.get(path).query({
-      destination: walletTransaction.destinationId,
-      source: walletTransaction.sourceId,
+      destinationId: walletTransaction.destinationId,
+      sourceId: walletTransaction.sourceId,
       transactionType: TransactionType[walletTransaction.transactionType],
       transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
       amount: walletTransaction.amount,
       description: walletTransaction.description,
-      sourceType: EntityType[walletTransaction.sourceType],
-      destinationType: EntityType[walletTransaction.destinationType],
+      source: EntityType[walletTransaction.source],
+      destination: EntityType[walletTransaction.destination],
       transactionDirection:
         TransactionDirection[walletTransaction.transactionDirection]
     }); // query string
@@ -99,13 +88,14 @@ export class PersonService {
           destinationId: walletTransaction.destinationId,
           sourceId: walletTransaction.sourceId,
           transactionType: TransactionType[walletTransaction.transactionType],
-          transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+          transactionMedium:
+            TransactionMedium[walletTransaction.transactionMedium],
           amount: walletTransaction.amount,
           description: walletTransaction.description,
-          sourceType: EntityType[walletTransaction.sourceType],
-          destinationType: EntityType[walletTransaction.destinationType],
-          transactionDirection: TransactionDirection[walletTransaction.transactionDirection],
-          paidBy: walletTransaction.paidBy
+          source: EntityType[walletTransaction.source],
+          destination: EntityType[walletTransaction.destination],
+          transactionDirection:
+            TransactionDirection[walletTransaction.transactionDirection]
         })
       );
     });
