@@ -229,8 +229,9 @@ export class WalletComponent implements OnInit, AfterViewInit {
         if (res.body.status === 'success') {
           this.paymentFormGroup.reset();
           this.paymentFormGroup.controls['fundAmount'].setValue(0);
+          this.cashPaymentPaying = false;
           this.disableBtn = false;
-          this.cashPayment = false;
+          this.cashPayment = true;
           this.flutterwavePayment = false;
           this.paystackPayment = false;
           this.person = res.body.data;
