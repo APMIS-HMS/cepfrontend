@@ -87,7 +87,6 @@ export class ClinicScheduleComponent implements OnInit {
         payload.data[i].schedules.sort(function sortByDay(a, b) {
             var day1 = a.day.toLowerCase();
             var day2 = b.day.toLowerCase();
-            console.log(day1, day2);
             return self.sorter[day1] > self.sorter[day2];
         });
 

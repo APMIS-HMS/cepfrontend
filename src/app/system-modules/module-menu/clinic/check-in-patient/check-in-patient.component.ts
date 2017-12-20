@@ -140,7 +140,6 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       .then(payload => {
         this.loading = false;
         this.checkedInAppointments = payload.data;
-        console.log(this.checkedInAppointments);
       });
   }
 
@@ -335,12 +334,9 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   }
 
   goToPatientPage(appointment, append) {
-    console.log(appointment);
-    console.log(append);
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
-        console.log(1)
         this.locker.setObject('patient', appointment.patientId);
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
@@ -350,12 +346,10 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
             this.appointmentService.appointmentAnnounced(appointment);
           });
       } else {
-        console.log(2)
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { appId: appointment._id }]);
       }
     } else {
-      console.log(3)
       this.locker.setObject('patient', appointment.patientId);
       this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
         appointment.patientId.personDetails._id]);

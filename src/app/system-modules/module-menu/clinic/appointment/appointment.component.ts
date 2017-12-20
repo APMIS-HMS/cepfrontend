@@ -175,7 +175,6 @@ export class AppointmentComponent implements OnInit {
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
-            console.log(payload.data);
         }, error => {
             this._getAppointments(clinicIds);
         });
@@ -224,7 +223,6 @@ export class AppointmentComponent implements OnInit {
                     });
             }
         } catch (error) {
-            console.log(error);
         }
 
     }

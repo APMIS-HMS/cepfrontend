@@ -51,7 +51,6 @@ export class AddDepartmentComponent implements OnInit {
 				this.frmNewDept.controls['deptName'].reset();
 			})
 			.catch(err => {
-				console.log(err);
 			});
 	}
 }

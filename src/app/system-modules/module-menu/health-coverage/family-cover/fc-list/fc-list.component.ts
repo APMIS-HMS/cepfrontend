@@ -136,7 +136,6 @@ export class FcListComponent implements OnInit {
         this.frmNewBeneficiary.controls['status'].setValue(this.statuses[0]._id);
       }
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(beneficiary.filNo));
-      console.log(filtered);
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
@@ -170,13 +169,11 @@ export class FcListComponent implements OnInit {
       const lastCharacter = beneficiary.filNo[filNoLength - 1];
       let sub = beneficiary.filNo.substring(0, (filNoLength - 1));
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
-      console.log(filtered)
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
         if (this.getRole(filter) === 'D') {
           hasRecord = true;
-          console.log('isD');
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
             this.formBuilder.group({
@@ -216,12 +213,8 @@ export class FcListComponent implements OnInit {
 
   }
   change(value){
-    console.log(value)
   }
   save(valid, value, dependantValid, dependantValue) {
-    console.log(dependantValue.controls.dependantArray.controls)
-    console.log(dependantValid)
-    console.log(value)
     let unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
     if(unsavedFiltered.length > 0){
       this._notification('Warning', 'There seems to unsaved but valid dependant yet to be saved, please save and try again!');
@@ -235,16 +228,12 @@ export class FcListComponent implements OnInit {
         facilityId: this.selectedFacility._id,
         facilityObject:this.selectedFacility
       };
-      // console.log(dependantValue.dependantArray);
       let filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
       filtered.forEach(item =>{
         param.dependants.push(item.value);
       })
-  
-      console.log(param);
 
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
-        console.log(payload);
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
       })
@@ -266,7 +255,6 @@ export class FcListComponent implements OnInit {
         let facFamilyCover = payload.data[0];
         this.selectedFamilyCover = facFamilyCover;
         this.beneficiaries = facFamilyCover.familyCovers;
-        console.log(this.beneficiaries);
         const startIndex = 0 * 10;
         this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
         this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));

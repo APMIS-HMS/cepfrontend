@@ -41,7 +41,6 @@ export class BillingHomePageComponent implements OnInit {
     this.servicePriceService.find({ query: { facilityId: this.facility._id } })
       .then(payload => {
         this.prices = payload.data;
-        console.log(this.prices);
       });
   }
   getServicePrice(){
@@ -49,9 +48,7 @@ export class BillingHomePageComponent implements OnInit {
     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: service_id } })
     .then(payload => {
       //this.prices = payload.data;
-      console.log(payload);
     }).catch(err => {
-      console.log(err);
     });
   }
   newPricePopup_show() {

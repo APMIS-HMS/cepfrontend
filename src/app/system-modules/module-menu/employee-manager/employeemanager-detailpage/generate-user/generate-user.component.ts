@@ -43,7 +43,6 @@ export class GenerateUserComponent implements OnInit {
           this.selectedPerson = payload;
           this.userService.find({ query: { personId: id } }).then(users => {
             if (users.data.length > 0) {
-              console.log(1)
               users.data[0].facilitiesRole.forEach((item, i) => {
                 if (!this.checkAccessControlList(item.feature.accessControlId)) {
                   this.accessControlListString.push(item.feature.accessControlId);
@@ -79,7 +78,6 @@ export class GenerateUserComponent implements OnInit {
         });
         itemj.featureList.forEach((item, i) => {
           item.cruds = [];
-          console.log(item)
           for (let ii = 0; ii < 4; ii++) {
             if (ii === 0) {
               item.cruds.push(<CrudModel>{ id: ii + 1, isChecked: false, name: 'Create' });

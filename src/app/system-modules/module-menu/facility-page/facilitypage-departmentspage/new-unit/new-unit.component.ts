@@ -102,9 +102,7 @@ export class NewUnitComponent implements OnInit {
     });
   }
   onRemoveBill(clinic, i) {
-    console.log(clinic);
     this.clinicsToDelele.push(clinic.value);
-    console.log(i);
     (<FormArray>this.clinicForm.controls['clinicArray']).controls.splice(i, 1);
     if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0) {
       this.frmNewUnit.controls['isClinic'].reset(false);
@@ -112,8 +110,6 @@ export class NewUnitComponent implements OnInit {
     }
   }
   onAddHobby(children: any, valid: boolean) {
-    console.log(valid);
-    console.log(children);
     if (valid) {
       if (children.clinicName === '' || children.clinicName === ' ') {
         this.mainErrClinic = false;
@@ -122,7 +118,6 @@ export class NewUnitComponent implements OnInit {
 
         if (children != null) {
           children.value.readonly = true;
-          console.log(children);
           // children.disabled = true;
           (<FormArray>this.clinicForm.controls['clinicArray'])
             .push(
@@ -144,10 +139,7 @@ export class NewUnitComponent implements OnInit {
     }
   }
   newUnit(valid, val) {
-    console.log(valid)
-    console.log(val);
     if (valid) {
-      console.log();
       if (val.unitName === '' || val.unitName === ' ' || val.unitAlias === ''
         || val.unitAlias === ' ' || val.unitDesc === '' || val.unitDesc === ' ') {
         this.mainErr = false;
@@ -156,7 +148,7 @@ export class NewUnitComponent implements OnInit {
         if (this.unit._id === undefined) {
           const id = this.department._id;
           const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
-          console.log(clinics);
+        
           const clinicList = [];
           clinics.forEach((itemi, i) => {
             clinicList.push(itemi.value);
@@ -189,24 +181,19 @@ export class NewUnitComponent implements OnInit {
                   unit.name = val.unitName;
                   unit.shortName = val.unitAlias;
                   unit.description = val.unitDesc;
-                  console.log(unit);
 
                   (<FormArray>that.clinicForm.controls['clinicArray'])
                     .controls.forEach((itemi: any, i) => {
-                      console.log(itemi.value)
                       let isExisting = false;
                       unit.clinics.forEach((clinic, c) => {
                         if (clinic._id === itemi.value._id) {
                           isExisting = true;
                           clinic.clinicName = itemi.value.clinicName;
                           clinic.clinicCapacity = itemi.value.clinicCapacity;
-                          console.log(clinic)
                         }
                       });
                       if (!isExisting) {
-                        console.log(itemi.value)
                         unit.clinics.push(itemi.value);
-                        console.log(unit.clinics)
                       }
                     })
                   let realClinics: any[] = [];
@@ -224,7 +211,6 @@ export class NewUnitComponent implements OnInit {
                     })
 
                     unit.clinics = realClinics;
-                    console.log(unit.clinics);
 
                   }
 

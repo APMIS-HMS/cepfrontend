@@ -69,7 +69,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.personService.get(personId, {}).then(payload => {
       this.selectedPerson = payload;
     }, error => {
-      console.log(error);
     });
   }
   getUser(id) {
@@ -83,7 +82,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
         });
       },
       error => {
-        console.log(error);
       }
     );
   }

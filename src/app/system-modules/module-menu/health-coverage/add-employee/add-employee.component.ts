@@ -46,7 +46,6 @@ export class AddEmployeeComponent implements OnInit {
         { search: this.frmNewEmp.controls['empName'].value }
       }).
         then(payload => {
-          console.log(payload.data);
           this.people = payload.data;
         }));
 
@@ -108,7 +107,6 @@ export class AddEmployeeComponent implements OnInit {
       let principalList = this.selectedCompanyHealthCover.personFacilityPrincipals
         .filter(x => x.personId === this.selectedPerson._id);
       if (principalList.length > 0) {
-        console.log('Principal already on the platform');
         return;
       } else {
         principal.departmentId = this.frmNewEmp.controls['empDept'].value;

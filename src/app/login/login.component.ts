@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
-        console.log(result)
         this.locker.setObject('auth', result);
 
         this.router.navigate(['/accounts']).then(pay => {

@@ -58,7 +58,6 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     private systemService: SystemModuleService,
     private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
-      console.log(payload)
       this.facilityObj = payload;
       this.getCurrentDepartment();
       this.deptsObj = payload.departments;
@@ -89,11 +88,9 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
         if (item.name === 'Clinic') {
           this.selectedLocation = item;
           const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
-          console.log(facility.minorLocations);
           facility.minorLocations.forEach((itemi: MinorLocation) => {
             if (itemi.locationId === this.selectedLocation._id) {
               this.minorLocations.push(itemi);
-              console.log(this.minorLocations);
             }
           });
 
@@ -159,7 +156,6 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       this.deptsObj = this.facilityObj.departments;
     },
       error => {
-        console.log(error);
       })
   }
 
@@ -169,7 +165,6 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.deptEditContentArea = false;
     this.innerMenuShow = false;
     this.deptObj = model;
-    console.log(this.deptObj);
   }
 
   deptHomeContentArea_show() {

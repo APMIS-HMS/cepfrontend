@@ -36,7 +36,6 @@ export class EmployeeLookupComponent implements OnInit {
       this.loadIndicatorVisible = false;
     });
     personService.updateListener.subscribe(payload => {
-      console.log(payload);
       this.getEmployees();
     });
   }

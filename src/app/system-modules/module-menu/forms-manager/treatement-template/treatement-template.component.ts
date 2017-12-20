@@ -58,13 +58,10 @@ export class TreatementTemplateComponent implements OnInit {
           form: this.frmnewTemplate.controls.docFrmList.value._id
         }
         this.documentationTemplateService.create(doc).then(payload =>{
-          console.log(payload);
           this.frmnewTemplate.reset();
         }).catch(err =>{
-          console.log(err);
         })
       } else {
-        console.log('invalid')
         this.frmnewTemplate.controls.visibility.markAsTouched();
         this.frmnewTemplate.controls.visibility.markAsDirty();
         this.frmnewTemplate.controls.visibility.markAsPristine();
@@ -137,7 +134,6 @@ export class TreatementTemplateComponent implements OnInit {
         .subscribe((results: any) => {
           this.forms = results.data;
         }, error => {
-          console.log(error)
           this._getForms();
         })
     } catch (error) {
@@ -160,8 +156,6 @@ export class TreatementTemplateComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
   public upload(e) {
-    // console.log('am here')
-
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();

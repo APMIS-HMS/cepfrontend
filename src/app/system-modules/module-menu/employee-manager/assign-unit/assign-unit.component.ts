@@ -45,8 +45,6 @@ export class AssignUnitComponent implements OnInit {
     this.departments = this.selectedFacility.departments;
     if (this.selectedEmployee !== undefined) {
       this.disableDepartment = true;
-      console.log(this.departments);
-      console.log(this.selectedEmployee.departmentId);
       const deptList = this.departments.filter(x => x._id === this.selectedEmployee.departmentId);
       if (deptList.length > 0) {
         this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
@@ -65,7 +63,6 @@ export class AssignUnitComponent implements OnInit {
     });
     this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
       this.selectedDepartment = value;
-      console.log(value.units);
       this.units = value.units;
       if (this.selectedEmployee === undefined) {
         this.getEmployees(value);
@@ -82,7 +79,6 @@ export class AssignUnitComponent implements OnInit {
       let hasUnit = false;
       if (emp.units !== undefined) {
         emp.units.forEach((itemu, u) => {
-          console.log(itemu);
           if (unit !== null && itemu === unit._id) {
             hasUnit = true;
           }
@@ -113,7 +109,6 @@ export class AssignUnitComponent implements OnInit {
         itemi.isChecked = false;
       });
       this.filteredEmployees = this.employees;
-      // console.log(this.selectedUnit);
       // this.filterDownEmployees(this.selectedUnit);
     });
   }
@@ -132,7 +127,6 @@ export class AssignUnitComponent implements OnInit {
       }
       emp.units.push(this.selectedUnit._id);
     });
-    console.log(checkedEmployees);
     checkedEmployees.forEach((itemi, i) => {
       this.employeeService.update(itemi).then(payload => {
         if (this.selectedEmployee === undefined) {
@@ -146,13 +140,10 @@ export class AssignUnitComponent implements OnInit {
         }
 
       }, error => {
-        console.log(error);
       });
     });
     // this.employeeService.updateMany(checkedEmployees).then(payload => {
-    //   console.log(payload);
     // }, error => {
-    //   console.log(error);
     // });
   }
 }
