@@ -79,13 +79,22 @@ export class FacilityInfoComponent implements OnInit {
 	}
 
 	onCheckEmailAddress(value) {
-		this.facilityService.find({ query: { email: value } }).then(payload => {
-			if (payload.data.length > 0) {
-				this.isEmailExist = false;
-			} else {
-				this.isEmailExist = true;
+		//console.log(value);
+		if(value.length > 4){
+			let email = this.facilityForm1.controls['facilityemail'];
+			if(value.includes("@")){
+				this.facilityService.find({ query: { email: value } }).then(payload => {
+					if (payload.data.length > 0) {
+						this.isEmailExist = false;
+						email.setErrors({duplicate: true});
+					} else {
+						this.isEmailExist = true;
+					}
+				});
+			}else{
+				email.setErrors({invalid: true});
 			}
-		})
+		}
 	}
 
 	facilitySetup1(valid, val, selectedCountry) {

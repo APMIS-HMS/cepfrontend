@@ -103,13 +103,13 @@
                 </div>
 
                 <div class="stat-wrap">
-                    <div>
-                        <li *ngIf="locAmountAccrued.length === 0 && loadingLocAmountAccrued" class="empWrap">
+                    <!-- <div>
+                        <li *ngIf="invoiceGroups.length === 0 && loadingLocAmountAccrued" class="empWrap">
                             <div class="text-center">
                                 <md-spinner class='small-spinner'></md-spinner>
                             </div>
                         </li>
-                    </div>
+                    </div> -->
                     <div style="display: block">
                         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
                             [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>

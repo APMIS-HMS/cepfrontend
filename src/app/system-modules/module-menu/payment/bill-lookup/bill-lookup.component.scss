@@ -398,3 +398,19 @@ td .cta-1:hover {
 .accBal-val {
     color: #ff2500;
 }
+.modal-overlay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.topmenuwrap{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    top: unset;
+    right: unset;
+}
+.frm-item-wrap{
+    width: 100%;
+}

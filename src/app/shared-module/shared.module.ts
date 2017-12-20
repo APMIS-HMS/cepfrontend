@@ -43,55 +43,58 @@ import {
     MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
     MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
 } from '@angular/material';
+
+import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 // import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
-    declarations: [
-        // NewTagComponent,
-        // AddTagComponent,
-        SurveyComponent,
-        SurveyEditorComponent,
-        ProductSearchComponent,
-        Angular4FlutterwaveComponent
-        // LabCheckInComponent,
-        // LabRequestsComponent, RequestDetailComponent
-    ],
-    exports: [
-        LogoUpdateComponent,
-        NgUploaderModule,
-        NgPipesModule,
-        // NewTagComponent,
-        // AddTagComponent,
-        MomentModule,
-        Ng2PaginationModule,
-        InfiniteScrollModule,
-        SurveyComponent,
-        SurveyEditorComponent,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SingUpAccountsSharedModule,
-        Angular4FlutterwaveComponent
-        // DragulaModule,
-        // LabRequestsComponent, RequestDetailComponent
-    ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        NgUploaderModule,
-        NgPipesModule,
-        MomentModule,
-        Ng2PaginationModule,
-        InfiniteScrollModule,
-        ImageCropperModule,
-        MaterialModule,
-        // DragulaModule
-    ],
-    providers: [StoreService, WindowRef, SystemModuleService]
+  declarations: [
+    // NewTagComponent,
+    // AddTagComponent,
+    SurveyComponent,
+    SurveyEditorComponent,
+    ProductSearchComponent,
+    Angular4FlutterwaveComponent
+    // LabCheckInComponent,
+    // LabRequestsComponent, RequestDetailComponent
+  ],
+  exports: [
+    LogoUpdateComponent,
+    NgUploaderModule,
+    NgPipesModule,
+    // NewTagComponent,
+    // AddTagComponent,
+    MomentModule,
+    Ng2PaginationModule,
+    InfiniteScrollModule,
+    SurveyComponent,
+    SurveyEditorComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    SingUpAccountsSharedModule,
+    Angular4FlutterwaveComponent,
+    Angular4PaystackModule
+    // DragulaModule,
+    // LabRequestsComponent, RequestDetailComponent
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgUploaderModule,
+    NgPipesModule,
+    MomentModule,
+    Ng2PaginationModule,
+    InfiniteScrollModule,
+    ImageCropperModule,
+    MaterialModule
+    // DragulaModule
+  ],
+  providers: [StoreService, WindowRef, SystemModuleService]
 })
 export class SharedModule {}
 

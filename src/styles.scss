@@ -29,6 +29,10 @@ textarea {
     font-size: 12px;
 }
 
+.text-center {
+    text-align: center;
+}
+
 
 /*
 input,
@@ -69,7 +73,7 @@ select {
     min-height: 100vh;
 }
 
-.badge-green{
+.badge-green {
     color: #fff;
     background: green;
     padding: 3px 5px;
@@ -332,7 +336,8 @@ select {
 .btn-1 i {
     padding-right: 7px;
 }
-.btn-center{
+
+.btn-center {
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -537,7 +542,8 @@ select {
     color: #8492a6;
     padding: 5px;
 }
-.modal-close-ico:hover{
+
+.modal-close-ico:hover {
     color: #ff2500;
 }
 
@@ -1474,6 +1480,7 @@ ul.topmenuwrap li:hover {
     justify-content: center;
     align-items: center;
 }
+
 .plus {
     position: absolute;
     top: auto;
@@ -1508,7 +1515,8 @@ ul.topmenuwrap li:hover {
         border: 4px solid lighten($primaryColor, 20%);
     }
 }
-.filters-wraper{
+
+.filters-wraper {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1516,15 +1524,17 @@ ul.topmenuwrap li:hover {
 }
 
 @media only screen and (max-width: 600px) {
-    .user-label{
+    .user-label {
         display: none;
     }
 }
+
 @media only screen and (max-width: 670px) {
-    .filters-wraper{
+    .filters-wraper {
         width: auto;
     }
 }
+
 @media only screen and (max-width: 700px) {
     .modal-baseWrap {
         padding: 10px 20px;
@@ -1562,14 +1572,15 @@ ul.topmenuwrap li:hover {
         font-size: 10px;
     }
 }
+
 @media only screen and (max-width: 900px) {
-    .search-wrap{
+    .search-wrap {
         display: none;
     }
 }
-//Loading animation
 
-.loading_screen{
+//Loading animation
+.loading_screen {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -1590,16 +1601,16 @@ ul.topmenuwrap li:hover {
     background-color: rgb(234, 234, 234);
     box-shadow: 0 0 20px lightgrey;
     animation: loading3 linear 2s infinite;
-  }
-  
-  #animated_circle {
+}
+
+#animated_circle {
     position: absolute;
     border-radius: 100%;
     background-color: rgb(0, 161, 223);
     animation: loading ease 1s infinite;
-  }
-  
-  #inner_circle {
+}
+
+#inner_circle {
     color: grey;
     -webkit-font-family: "Segoe UI Light";
     font-family: "Segoe UI";
@@ -1613,9 +1624,10 @@ ul.topmenuwrap li:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  #inner_circle span, #outer_circle span {
+}
+
+#inner_circle span,
+#outer_circle span {
     font-family: "Segoe UI Light", "Segoe UI";
     padding-top: 15px;
     padding-left: 29px;
@@ -1624,52 +1636,51 @@ ul.topmenuwrap li:hover {
     font-weight: lighter;
     font-size: x-large;
     animation: loading2 ease 1s infinite;
-  }
+}
 
-  #inner_circle img {
-    height:60px;
+#inner_circle img {
+    height: 60px;
     animation: loading2 ease 1s infinite;
-  }
+}
 
-  
-  @keyframes loading {
+@keyframes loading {
     0% {
-      width: 130px;
-      height: 130px;
-      margin: 35px;
+        width: 130px;
+        height: 130px;
+        margin: 35px;
     }
     50% {
-      width: 190px;
-      height: 190px;
-      margin: 5px;
+        width: 190px;
+        height: 190px;
+        margin: 5px;
     }
     100% {
-      width: 130px;
-      height: 130px;
-      margin: 35px;
+        width: 130px;
+        height: 130px;
+        margin: 35px;
     }
-  }
-  
-  @keyframes loading2 {
+}
+
+@keyframes loading2 {
     0% {
-      color: black;
+        color: black;
     }
     50% {
-      color: rgb(0, 161, 223);
+        color: rgb(0, 161, 223);
     }
     100% {
-      color: black;
+        color: black;
     }
-  }
-  
-  @keyframes loading3 {
+}
+
+@keyframes loading3 {
     0% {
-      border-color: rgb(0, 161, 223);
+        border-color: rgb(0, 161, 223);
     }
     50% {
-      border-color: lightgrey;
+        border-color: lightgrey;
     }
     100% {
-      border-color: rgb(0, 161, 223);
+        border-color: rgb(0, 161, 223);
     }
-  }
+}

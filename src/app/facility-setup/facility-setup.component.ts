@@ -64,7 +64,7 @@ export class FacilitySetupComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private facilityOwnershipService: FacilityOwnershipService,
-    private countriesService: CountriesService,
+    private countriesService: CountriesService, 
     private genderService: GenderService,
     private titleService: TitleService,
     private maritalStatusService: MaritalStatusService,
