@@ -8,15 +8,16 @@ import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FLUTTERWAVE_PUBLIC_KEY, PAYSTACK_CLIENT_KEY, PaymentChannels } from '../../../../../../shared-module/helpers/global-config';
 import { PersonService, FacilitiesService } from '../../../../../../services/facility-manager/setup/index';
+// import  '../../../../../../../assets/libs/paystack.js';
 import crop from './paystack.js';
 import paystackInline from './paystack-inline.js';
 import { Facility, User } from 'app/models';
 declare var paystack: any;
-
+// declare var callPayStack: any;
 @Component({
-  selector: 'app-wallet',
-  templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.scss']
+  selector: "app-wallet",
+  templateUrl: "./wallet.component.html",
+  styleUrls: ["./wallet.component.scss"]
 })
 export class WalletComponent implements OnInit, AfterViewInit {
   paymentFormGroup: FormGroup;
@@ -70,7 +71,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.paymentFormGroup.controls['paymentType'].valueChanges.subscribe(val => {
         const amount = this.paymentFormGroup.controls['fundAmount'].value;
         if (amount !== 0 && amount >= 500) {
-          if (val === 'Cash' || val === 'Cheque' || val === 'POS' || val === 'Transfer') {
+          if (val === 'Cash' || val === 'Cheque' || val === 'POS') {
             this.cashPayment = true;
             this.flutterwavePayment = false;
             this.paystackPayment = false;
@@ -136,7 +137,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     this.personService.get(this.patient.personId, {}).then(payload => {
       this.loading = false;
-      console.log(payload);
       if (payload.wallet === undefined) {
         payload.wallet = {
           balance: 0,
@@ -151,8 +151,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
         this.transactions = payload.wallet.transactions.reverse().slice(0, 10);
       }
     });
-
-    console.log(this.user);
 
     this.refKey = (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
 

@@ -182,10 +182,10 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   deptDetalContentArea_remove(model: Department) {
     this.systemService.on();
     let index = this.facilityObj.departments.findIndex(x => x._id === model._id);
-    this.facilityObj.departments.splice(index);
-    this.facilityService.update(this.facilityObj).then(payload =>{
+    this.facilityObj.departments.splice(index, 1);
+    this.facilityService.update(this.facilityObj).then(payload => {
       this.systemService.off();
-    }).catch(err =>{
+    }).catch(err => {
       this.systemService.off();
     });
   }

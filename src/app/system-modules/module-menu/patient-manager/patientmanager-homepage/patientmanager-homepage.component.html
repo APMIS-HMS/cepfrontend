@@ -53,20 +53,20 @@
                         <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
                         <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
                     </div>
-                    <div>{{patient.personDetails.lastName}} {{patient.personDetails.firstName}}</div>
+                    <div>{{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</div>
                 </div>
             </td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.age}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.age}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">
-                <span *ngIf="patient.personDetails.gender?.name==='Male'">M</span>
-                <span *ngIf="patient.personDetails.gender?.name==='Female'">F</span>
-                <span *ngIf="patient.personDetails.gender?.name!='Female' && patient.personDetails.gender?.name!='Male'">N</span>
+                <span *ngIf="patient.personDetails?.gender?.name==='Male'">M</span>
+                <span *ngIf="patient.personDetails?.gender?.name==='Female'">F</span>
+                <span *ngIf="patient.personDetails?.gender?.name!='Female' && patient.personDetails?.gender?.name!='Male'">N</span>
             </td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.phoneNumber}}</td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.email}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.phoneNumber}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.email}}</td>
             <!-- <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td> -->
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.dateOfBirth | date}}</td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.apmisId}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.dateOfBirth | date}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.apmisId}}</td>
             <td class="action-placeholder" style="text-align:center;">
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                 <div class="action-container shadow-RB">
