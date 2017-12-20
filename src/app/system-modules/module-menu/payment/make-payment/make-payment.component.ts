@@ -9,7 +9,7 @@ import {
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../../models/index';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-import { PaymentChannel } from '../../../../shared-module/helpers/global-config'
+import { PaymentChannels } from '../../../../shared-module/helpers/global-config'
 
 @Component({
   selector: 'app-make-payment',
