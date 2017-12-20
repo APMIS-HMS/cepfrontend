@@ -54,6 +54,9 @@
     .count-label{
         color: #99c9ff;
     }
+    .work-places-list{
+        display: block;
+    }
 }
 .count-label{
     font-size: 13px;
@@ -62,4 +65,46 @@
     color: #194985;
     font-weight: bold;
     padding-top: 5px;
+}
+.work-places-list{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-height: 80px;
+    min-width: 270px;
+    border: 1px solid #777;
+    background: #fff;
+}
+.work-places-item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+}
+.work-places-item:hover{
+    background: #f1f1f1;
+}
+.wp-img-wrap{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.wp-img-wrap img{
+    width: 100%;
+}
+.wp-name{
+    padding-left: 10px;
+    font-family: $font-titles;
+    font-size: 20px;
+    text-align: left;
+    color: #777;
+    font-size: 18px;
+    width: 210px;
 }
