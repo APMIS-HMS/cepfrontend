@@ -7,11 +7,12 @@ export interface WalletTransaction {
   transactionType: TransactionType;
   transactionMedium: TransactionMedium;
   amount: number;
-  descriptionType: string;
+  description: string;
   destinationId?: string;
-  destination: EntityType;
-  transactionStatus?:string;
+  destinationType: EntityType;
+  transactionStatus?: string;
   transactionDirection: TransactionDirection;
+  paidBy: string;
 }
 export enum TransactionType {
     Dr,
@@ -29,6 +30,7 @@ export enum EntityType {
 export enum TransactionMedium {
     POS,
     Wallet,
+    Cheque,
     Cash,
     PayStack,
     Flutterwave,
