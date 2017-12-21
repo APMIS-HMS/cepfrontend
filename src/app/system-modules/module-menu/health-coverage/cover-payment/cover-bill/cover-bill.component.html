@@ -110,31 +110,31 @@
                     </td>
                     <td>
                       <div class="type-wrap">
-                        <!-- <md-select placeholder="Select Type"  [formControl]="coverTypeFormControl">
-                          <md-option class="captn" [value]="Capitation">Capitation</md-option>
-                          <md-option [value]="Authorization">Authorization Required</md-option>
-                          <md-option [value]="CoPay">Fee For Service</md-option>
-                        </md-select> -->
-                        <md-select  (change)="setSeletedBill(bill)" [formControl]="coverTypeFormControl">
-                            <md-option *ngFor="let cover of coverTypes" value="{{cover.value}}">{{ cover.text }}</md-option>
-                        </md-select>
+                        <!-- <mat-select placeholder="Select Type"  [formControl]="coverTypeFormControl">
+                          <mat-option class="captn" [value]="Capitation">Capitation</mat-option>
+                          <mat-option [value]="Authorization">Authorization Required</mat-option>
+                          <mat-option [value]="CoPay">Fee For Service</mat-option>
+                        </mat-select> -->
+                        <mat-select  (change)="setSeletedBill(bill)" [formControl]="coverTypeFormControl">
+                            <mat-option *ngFor="let cover of coverTypes" value="{{cover.value}}">{{ cover.text }}</mat-option>
+                        </mat-select>
                         <div *ngIf="selectedCoverType==='Authorization' && isSelectedBill(bill)" class="floating-action authorizn shadow-RB">
                           <form>
-                            <md-input-container  class="full-width">
-                              <input mdInput placeholder="Authorization Code" [formControl]="authFormControl">
-                              <md-error *ngIf="authFormControl.hasError('required')">
+                            <mat-input-container  class="full-width">
+                              <input matInput placeholder="Authorization Code" [formControl]="authFormControl">
+                              <mat-error *ngIf="authFormControl.hasError('required')">
                                 Authorization code Required
-                              </md-error>
-                            </md-input-container>
+                              </mat-error>
+                            </mat-input-container>
 
-                            <md-input-container class="full-width">
-                              <input mdInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
-                              <md-hint align="end">{{message.value.length}} / 256</md-hint>
-                            </md-input-container>
+                            <mat-input-container class="full-width">
+                              <input matInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
+                              <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                            </mat-input-container>
 
                             <div class="btn-wrap">
-                              <button md-button>Done</button>
-                              <button (click)="cancelSelectedCover()" md-button>Cancel</button>
+                              <button mat-button>Done</button>
+                              <button (click)="cancelSelectedCover()" mat-button>Cancel</button>
                             </div>
                           </form>
                         </div>
@@ -142,34 +142,34 @@
                         <div *ngIf="selectedCoverType==='CoPay' && isSelectedBill(bill)" class="floating-action copay shadow-RB">
                           <form>
                             <div class="input-x2">
-                              <md-input-container class="half-width" style="padding-top:5px;">
-                                <input type="number" mdInput placeholder="Value" [formControl]="authFormControl">
-                                <md-error *ngIf="authFormControl.hasError('required')">
+                              <mat-input-container class="half-width" style="padding-top:5px;">
+                                <input type="number" matInput placeholder="Value" [formControl]="authFormControl">
+                                <mat-error *ngIf="authFormControl.hasError('required')">
                                   Value Required
-                                </md-error>
-                              </md-input-container>
+                                </mat-error>
+                              </mat-input-container>
 
-                              <md-select placeholder="Unit" class="half-width"  [formControl]="coverTypeFormControl">
-                                <md-option class="captn" [value]="Capitation">%</md-option>
-                                <md-option [value]="Authorization">Naira</md-option>
-                              </md-select>
+                              <mat-select placeholder="Unit" class="half-width"  [formControl]="coverTypeFormControl">
+                                <mat-option class="captn" [value]="Capitation">%</mat-option>
+                                <mat-option [value]="Authorization">Naira</mat-option>
+                              </mat-select>
                             </div>
 
-                            <md-input-container  class="full-width">
-                              <input mdInput placeholder="Authorization Code" [formControl]="authFormControl2">
-                              <md-error *ngIf="authFormControl.hasError('required')">
+                            <mat-input-container  class="full-width">
+                              <input matInput placeholder="Authorization Code" [formControl]="authFormControl2">
+                              <mat-error *ngIf="authFormControl.hasError('required')">
                                 Authorization code Required
-                              </md-error>
-                            </md-input-container>
+                              </mat-error>
+                            </mat-input-container>
 
-                            <md-input-container class="full-width">
-                              <input mdInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
-                              <md-hint align="end">{{message.value.length}} / 256</md-hint>
-                            </md-input-container>
+                            <mat-input-container class="full-width">
+                              <input matInput #message maxlength="256" placeholder="Comment" [formControl]="authCommentFormControl">
+                              <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                            </mat-input-container>
 
                             <div class="btn-wrap">
-                              <button md-button>Done</button>
-                              <button (click)="cancelSelectedCover()" md-button>Cancel</button>
+                              <button mat-button>Done</button>
+                              <button (click)="cancelSelectedCover()" mat-button>Cancel</button>
                             </div>
                           </form>
                         </div>

@@ -64,59 +64,59 @@
             <td colspan="7">
                 <div class="tbl-actionRow">
                     <div class="filter-xxx">
-                        <md-input-container>
-                            <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinicCtrl">
-                        </md-input-container>
+                        <mat-input-container>
+                            <input matInput placeholder="Clinic" [matAutocomplete]="ClinicAuto" [formControl]="clinicCtrl">
+                        </mat-input-container>
 
-                        <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
-                            <md-option *ngFor="let clinic of filteredClinics | async " [value]="clinic">
+                        <mat-autocomplete #ClinicAuto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let clinic of filteredClinics | async " [value]="clinic">
                                 {{ clinic.clinicName }}
-                            </md-option>
-                        </md-autocomplete>
+                            </mat-option>
+                        </mat-autocomplete>
                     </div>
                     <div class="filter-xxx">
-                        <md-input-container>
-                            <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="providerCtrl">
-                        </md-input-container>
+                        <mat-input-container>
+                            <input matInput placeholder="Provider" [matAutocomplete]="providerAuto" [formControl]="providerCtrl">
+                        </mat-input-container>
                         <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
-                        <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
-                            <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+                        <mat-autocomplete #providerAuto="matAutocomplete" [displayWith]="providerDisplayFn">
+                            <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider">
                                 {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
-                            </md-option>
-                        </md-autocomplete>
+                            </mat-option>
+                        </mat-autocomplete>
                     </div>
                     <div>
-                        <md-input-container>
-                            <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="typeCtrl">
-                        </md-input-container>
+                        <mat-input-container>
+                            <input matInput placeholder="Type" [matAutocomplete]="autoType" [formControl]="typeCtrl">
+                        </mat-input-container>
 
-                        <md-autocomplete #autoType="mdAutocomplete" [displayWith]="appointmentTypeDisplayFn">
-                            <md-option *ngFor="let type of filteredAppointmentTypes | async" [value]="type">
+                        <mat-autocomplete #autoType="matAutocomplete" [displayWith]="appointmentTypeDisplayFn">
+                            <mat-option *ngFor="let type of filteredAppointmentTypes | async" [value]="type">
                                 {{ type.name }}
-                            </md-option>
-                        </md-autocomplete>
+                            </mat-option>
+                        </mat-autocomplete>
                     </div>
                     <div>
-                        <md-input-container>
-                            <input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusCtrl">
-                        </md-input-container>
+                        <mat-input-container>
+                            <input matInput placeholder="Status" [matAutocomplete]="auto" [formControl]="statusCtrl">
+                        </mat-input-container>
 
-                        <md-autocomplete #auto="mdAutocomplete">
-                            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let state of filteredStates | async" [value]="state">
                                 {{ state }}
-                            </md-option>
-                        </md-autocomplete>
+                            </mat-option>
+                        </mat-autocomplete>
                     </div>
                     <div>
-                        <md-input-container>
-                            <input mdInput placeholder="Day Count" [mdAutocomplete]="auto" [formControl]="todayCtrl">
-                        </md-input-container>
+                        <mat-input-container>
+                            <input matInput placeholder="Day Count" [matAutocomplete]="auto" [formControl]="todayCtrl">
+                        </mat-input-container>
 
-                        <md-autocomplete #auto="mdAutocomplete">
-                            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let state of filteredStates | async" [value]="state">
                                 {{ state }}
-                            </md-option>
-                        </md-autocomplete>
+                            </mat-option>
+                        </mat-autocomplete>
                     </div>
                     <div class="tbl-search frm-item-wrap">
                         <div class="searchInputWrap">

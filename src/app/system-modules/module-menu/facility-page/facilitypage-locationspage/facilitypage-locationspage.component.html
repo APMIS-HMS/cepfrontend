@@ -40,9 +40,9 @@
                 <div class="rhs">
                     <div [hidden]="locationEditNameIcoShow" class="lhs"> {{locationObj.name}} </div>
                     <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
-                    <md-input-container *ngIf="locationEditNameIcoShow" class="example-full-width">
-                        <input mdInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
-                    </md-input-container>
+                    <mat-input-container *ngIf="locationEditNameIcoShow" class="example-full-width">
+                        <input matInput value="{{locationObj.name}}" [formControl]="locationNameEdit">
+                    </mat-input-container>
                     <i [hidden]="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                     <i *ngIf="locationEditNameIcoShow" (click)="locationEditNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                     <div class="clear"></div>
@@ -57,9 +57,9 @@
                 <div class="rhs">
                     <div [hidden]="locationEditShortNameIcoShow" class="lhs"> {{locationObj.shortName}} </div>
                     <!--<input *ngIf="locationEditNameIcoShow" class="edit-control lhs" type="text" value="{{locationObj.name}}" [formControl]="locationNameEdit">-->
-                    <md-input-container *ngIf="locationEditShortNameIcoShow" class="example-full-width">
-                        <input mdInput value="{{locationObj.shortName}}" [formControl]="locationshortNameEdit">
-                    </md-input-container>
+                    <mat-input-container *ngIf="locationEditShortNameIcoShow" class="example-full-width">
+                        <input matInput value="{{locationObj.shortName}}" [formControl]="locationshortNameEdit">
+                    </mat-input-container>
                     <i [hidden]="locationEditShortNameIcoShow" (click)="locationEditShortNameToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                     <i *ngIf="locationEditShortNameIcoShow" (click)="locationEditShortNameToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                     <div class="clear"></div>
@@ -74,9 +74,9 @@
                 <div class="rhs">
                     <div [hidden]="locationEditDescIcoShow" class="lhs"> {{locationObj.description}} </div>
                     <!--<textarea *ngIf="locationEditDescIcoShow" class="edit-control lhs" value="{{locationObj.desc}}" [formControl]="locationDescEdit" style="width:90%; height:120px;"></textarea>-->
-                    <md-input-container *ngIf="locationEditDescIcoShow" class="example-full-width">
-                        <textarea mdInput value="{{locationObj.desc}}" [formControl]="locationDescEdit"></textarea>
-                    </md-input-container>
+                    <mat-input-container *ngIf="locationEditDescIcoShow" class="example-full-width">
+                        <textarea matInput value="{{locationObj.desc}}" [formControl]="locationDescEdit"></textarea>
+                    </mat-input-container>
                     <i [hidden]="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
                     <i *ngIf="locationEditDescIcoShow" (click)="locationEditDescToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
                     <div class="clear"></div>

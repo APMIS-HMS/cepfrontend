@@ -9,13 +9,13 @@
         <form [formGroup]="frmNewcat" novalidate>
 
             <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input type="text" mdInput md-error placeholder="Category Name" formControlName="catName">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="text" matInput mat-error placeholder="Category Name" formControlName="catName">
+                </mat-input-container>
             </div>
 
             <div class="text-center">
-                <button md-raised-button (click)="newcat(frmNewcat.value, frmNewcat.valid)" class="mat-lg-btn">
+                <button mat-raised-button (click)="newcat(frmNewcat.value, frmNewcat.valid)" class="mat-lg-btn">
                  {{btnTitle}}
                 </button>
             </div>

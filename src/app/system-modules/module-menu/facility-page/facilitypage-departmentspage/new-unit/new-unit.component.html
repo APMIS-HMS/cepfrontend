@@ -11,26 +11,26 @@
         <form [formGroup]="frmNewUnit" novalidate>
 
             <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="unitName" placeholder="Unit Name" autocomplete="off">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput formControlName="unitName" placeholder="Unit Name" autocomplete="off">
+                </mat-input-container>
             </div>
 
             <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput formControlName="unitAlias" placeholder="Short Name" autocomplete="off">
+                </mat-input-container>
             </div>
 
             <div class="frm-item-wrap">
-                <md-select formControlName="unitParent">
-                    <md-option  value="null" disabled selected>Select parent department</md-option>
-                    <md-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</md-option>
-                </md-select>
+                <mat-select formControlName="unitParent">
+                    <mat-option  value="null" disabled selected>Select parent department</mat-option>
+                    <mat-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</mat-option>
+                </mat-select>
             </div>
 
             <div class="frm-item-wrap">
-                <md-checkbox formControlName="isClinic" >Clinic</md-checkbox>
+                <mat-checkbox formControlName="isClinic" >Clinic</mat-checkbox>
             </div>
             
             <form [formGroup]="clinicForm" class="form-horizontal clinic-section">
@@ -41,14 +41,14 @@
                             <div class="valSpan">
                                 <div>
                                     <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
+                                        </mat-input-container>
                                     </div>
                                      <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput type="number" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicCapacity" min="1" placeholder="Daily  Capacity" autocomplete="off">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput type="number" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicCapacity" min="1" placeholder="Daily  Capacity" autocomplete="off">
+                                        </mat-input-container>
                                     </div> 
                                 </div>
                                 <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(clinic,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
@@ -72,12 +72,12 @@
 
 
             <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-                <textarea mdInput formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                <textarea matInput formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
+            </mat-input-container>
             </div>
              <div class="example-full-width" id="example-full-width">
-             <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" md-raised-button> {{btnText}}</button>
+             <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" mat-raised-button> {{btnText}}</button>
              </div>
 
         </form>

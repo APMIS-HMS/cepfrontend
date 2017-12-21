@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
     <div class="cu-search-box">
-        <md-input-container>
-            <input mdInput formControlName="searchtext" class="cu-search" placeholder="{{placeholder}}" (focus)="focusSearch()" (focusout)="focusOutSearch()"
+        <mat-input-container>
+            <input matInput formControlName="searchtext" class="cu-search" placeholder="{{placeholder}}" (focus)="focusSearch()" (focusout)="focusOutSearch()"
                 [value]="valueString" (change)="onChange($event)" (keyup)="onChange($event)" autocomplete="off">
-        </md-input-container>
+        </mat-input-container>
         <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
             <div class="cu-popover-arrow"></div>
             <div class="cu-header">

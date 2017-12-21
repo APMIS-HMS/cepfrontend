@@ -11,22 +11,22 @@
         <div class="mainfrmwrap">
             <div class="sec-1">
                 <div class="frm-item-wrap">
-                    <md-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
-                        <md-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</md-option>
-                    </md-select>
+                    <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
+                        <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Name(Product)" formControlName="name">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Name(Product)" formControlName="name">
+                    </mat-input-container>
                     <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
                         <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                     </div>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Presentation" formControlName="presentation">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Presentation" formControlName="presentation">
+                    </mat-input-container>
                     <!--<span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
                 </div>
                 <!--<div class="frm-item-wrap">
@@ -39,29 +39,29 @@
                     </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
                 </div>-->
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Manufacturer" formControlName="manufacturer">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
+                    </mat-input-container>
                     <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
                 </div>
 
             </div>
             <div class="sec-2">
                 <div class="frm-item-wrap">
-                    <md-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
-                        <md-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</md-option>
-                    </md-select>
+                    <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
+                        <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                    </mat-select>
 
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Pack Label" formControlName="packLabel">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="number" mdInput md-error placeholder="Pack Size" formControlName="packSize">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
+                    </mat-input-container>
                 </div>
                 <!--<div class="frm-item-wrap">
                     <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
@@ -107,19 +107,19 @@
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput md-error placeholder="Name" formControlName="name">
-                                </md-input-container>
+                                <mat-input-container class="example-full-width">
+                                    <input matInput mat-error placeholder="Name" formControlName="name">
+                                </mat-input-container>
                             </div>
                             <div class="frm-item-wrap">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput md-error placeholder="Strength" formControlName="strength">
-                                </md-input-container>
+                                <mat-input-container class="example-full-width">
+                                    <input matInput mat-error placeholder="Strength" formControlName="strength">
+                                </mat-input-container>
                             </div>
                             <div class="frm-item-wrap">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput md-error placeholder="Strength Unit" formControlName="strengthUnit">
-                                </md-input-container>
+                                <mat-input-container class="example-full-width">
+                                    <input matInput mat-error placeholder="Strength Unit" formControlName="strengthUnit">
+                                </mat-input-container>
                             </div>
                         </div>
                     </div>
@@ -143,14 +143,14 @@
                         </div>
                         <div class="frmArr-wrap" formGroupName="{{i}}">
                             <div class="frm-item-wrap">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput md-error placeholder="Size" formControlName="size">
-                                </md-input-container>
+                                <mat-input-container class="example-full-width">
+                                    <input matInput mat-error placeholder="Size" formControlName="size">
+                                </mat-input-container>
                             </div>
                             <div class="frm-item-wrap">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput md-error placeholder="Max. Unit" formControlName="unit">
-                                </md-input-container>
+                                <mat-input-container class="example-full-width">
+                                    <input matInput mat-error placeholder="Max. Unit" formControlName="unit">
+                                </mat-input-container>
                             </div>
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility } from '../../../../models/index';
+import { Facility,User } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
-import { ProductTypeService, ProductService } from '../../../../services/facility-manager/setup/index';
+import { ProductTypeService, ProductService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { ProductEmitterService } from '../../../../services/facility-manager/product-emitter.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
@@ -25,14 +25,15 @@ export class ProductManagerLandingpageComponent implements OnInit {
   slideProductDetails = false;
   selectedProduct: any = <any>{};
   selectedValue: any = <any>{};
+  user: User = <User>{};
 
   productTypes: any[] = [];
   products: any[] = [];
   selProductType = new FormControl();
   searchControl = new FormControl();
   constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
-    private productService: ProductService, private _productEventEmitter: ProductEmitterService
-  ) {
+    private productService: ProductService, private _productEventEmitter: ProductEmitterService,
+   private facilitiesService: FacilitiesService) {
     this.productService.listenerUpdate.subscribe(payload => {
       this.getProducts();
     });
@@ -42,6 +43,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.user = <User>this.locker.getObject('auth');
     this._productEventEmitter.setRouteUrl('Product Manager');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getProducts();
@@ -70,6 +72,15 @@ export class ProductManagerLandingpageComponent implements OnInit {
     //   });
     // });
   }
+
+  private _notification(type: string, text: string): void {
+    this.facilitiesService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
+
   getProducts() {
     this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: 30 } }).then(payload => {
       this.products = payload.data;

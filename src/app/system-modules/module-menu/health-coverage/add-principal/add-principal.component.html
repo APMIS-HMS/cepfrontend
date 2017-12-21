@@ -14,9 +14,9 @@
         </small>
         <i class="fa fa-user" aria-hidden="true"></i>
         <!--<input type="text" formControlName="principalName" placeholder="Principal Name or APMIS ID" autocomplete="off">-->
-        <md-input-container class="example-full-width">
-              <input mdInput formControlName="principalName" placeholder="Principal Name or APMIS ID" autocomplete="off" >
-        </md-input-container>
+        <mat-input-container class="example-full-width">
+              <input matInput formControlName="principalName" placeholder="Principal Name or APMIS ID" autocomplete="off" >
+        </mat-input-container>
         <div class="suggestionFeeds">
           <div *ngFor="let person of people" (click)="onSelectPerson(person)" class="suggestedItem empImageWrap">
             <img *ngIf="person.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -30,7 +30,7 @@
         CREATE PRINCIPAL
       </button>-->
       <div class="example-full-width" id="example-full-width">
-          <button (click)="newFamilyCover(frmNewPrincipal.value, frmNewPrincipal.valid)" class="apmis-blue "md-raised-button>CREATE PRINCIPAL</button>
+          <button (click)="newFamilyCover(frmNewPrincipal.value, frmNewPrincipal.valid)" class="apmis-blue "mat-raised-button>CREATE PRINCIPAL</button>
       </div>
 
     </form>

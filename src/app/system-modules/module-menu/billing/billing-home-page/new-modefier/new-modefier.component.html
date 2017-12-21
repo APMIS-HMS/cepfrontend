@@ -16,9 +16,9 @@
 
             <div class="frm-item-wrap">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                <md-input-container class="example-full-width">
-                    <input autofocus mdInput md-error placeholder="Select Tag" formControlName="tag">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input autofocus matInput mat-error placeholder="Select Tag" formControlName="tag">
+                </mat-input-container>
                 <div class="suggestionFeeds">
                     <div (click)="onSelectedTag(tag)" *ngFor="let tag of tags" class="suggestedItem">
                         <div class="suggetedName">{{tag.name}}</div>
@@ -27,12 +27,12 @@
             </div>
 
             <div class="frm-radio-wrap" style="margin-top: 5px;">
-                <md-radio-group class="example-radio-group" formControlName="valueCheck">
-                    <md-radio-button name="percent" class="example-radio-button" value="Percentage">%
-                    </md-radio-button>
-                    <md-radio-button name="amount" class="example-radio-button" value="Amount">Amount
-                    </md-radio-button>
-                </md-radio-group>
+                <mat-radio-group class="example-radio-group" formControlName="valueCheck">
+                    <mat-radio-button name="percent" class="example-radio-button" value="Percentage">%
+                    </mat-radio-button>
+                    <mat-radio-button name="amount" class="example-radio-button" value="Amount">Amount
+                    </mat-radio-button>
+                </mat-radio-group>
 
 
 
@@ -46,12 +46,12 @@
 
             <div class="frm-item-wrap">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                <md-input-container class="example-full-width">
-                    <input type="number" mdInput md-error placeholder="Value" formControlName="value">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="number" matInput mat-error placeholder="Value" formControlName="value">
+                </mat-input-container>
             </div>
              <div class="text-center">
-                <button md-raised-button (click)="newModefier(frmNewmodefier.value, frmNewmodefier.valid)" class="cta-1 mat-lg-btn">
+                <button mat-raised-button (click)="newModefier(frmNewmodefier.value, frmNewmodefier.valid)" class="cta-1 mat-lg-btn">
                   CREATE MODIFIER
                 </button>
             </div>

@@ -8,9 +8,9 @@
                         <div class="pending-header">
                             <div class="pending-title">Patient's Pending Bills</div>
                             <div class="search-wrap">
-                                <md-input-container>
-                                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
-                                </md-input-container>
+                                <mat-input-container>
+                                    <input matInput placeholder="search for bill" [formControl]="searchPendingBill">
+                                </mat-input-container>
                             </div>
                         </div>
                         <ul class="pending-bills">
@@ -31,7 +31,7 @@
 
                             <li *ngIf="loadingPendingBills" class="empWrap">
                                 <div class="text-center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <mat-spinner class='small-spinner'></mat-spinner>
                                 </div>
                             </li>
 
@@ -48,15 +48,15 @@
                         <div class="pending-header">
                             <div class="pending-title">Invoices</div>
                             <div class="search-wrap">
-                                <md-input-container>
-                                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
-                                </md-input-container>
+                                <mat-input-container>
+                                    <input matInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
+                                </mat-input-container>
                             </div>
                         </div>
                         <div>
                             <li *ngIf="isLoadingInvoice" class="empWrap">
                                 <div class="text-center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <mat-spinner class='small-spinner'></mat-spinner>
                                 </div>
                             </li>
                             <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
@@ -113,7 +113,7 @@
 
                 <div *ngIf="selectedPatient._id != undefined" class="billBody">
                     <div class="billContentSect">
-                        <button md-raised-button (click)="addItem_show()" style="padding: 10px;color: #fff; margin-left:10px;">Add Item</button>
+                        <button mat-raised-button (click)="addItem_show()" style="padding: 10px;color: #fff; margin-left:10px;">Add Item</button>
                         <table class="tblBg">
                             <thead>
                                 <tr>
@@ -202,8 +202,8 @@
                         </table>
                     </div>
                     <div class="generateInvoiceWrap">
-                        <button md-raised-button class="mat-lg-btn" (click)="makePayment_onclick()" style="background-color: green !important; padding: 15px 30px !important;">Make Payment</button>
-                        <button md-raised-button class="mat-lg-btn" [disabled]="isProcessing" (click)="onGenerateInvoice()" style="padding: 15px 30px !important;">
+                        <button mat-raised-button class="mat-lg-btn" (click)="makePayment_onclick()" style="background-color: green !important; padding: 15px 30px !important;">Make Payment</button>
+                        <button mat-raised-button class="mat-lg-btn" [disabled]="isProcessing" (click)="onGenerateInvoice()" style="padding: 15px 30px !important;">
                             <span>
                                 <div [hidden]="isProcessing">
                                     Generate Bill
@@ -233,9 +233,9 @@
 
         <div style="width:100%;">
             <div class="frm-item-wrap">
-                <md-input-container>
-                    <input type="text" mdInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
-                </md-input-container>
+                <mat-input-container>
+                    <input type="text" matInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
+                </mat-input-container>
             </div>
             <ul class="topmenuwrap">
                 <li (click)="fundWallet()">

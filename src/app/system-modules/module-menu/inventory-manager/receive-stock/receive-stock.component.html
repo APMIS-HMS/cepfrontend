@@ -6,9 +6,9 @@
                 </dx-select-box>-->
             </div>
             <div class="">
-                <md-input-container class="example-full-width">
-                    <input type="text" mdInput md-error placeholder="Search">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="text" matInput mat-error placeholder="Search">
+                </mat-input-container>
             </div>
         </div>
         <table class="table table-responsive table-striped text-center">
@@ -135,7 +135,7 @@
                 </div>
                 <div class="row" *ngFor="let transaction of selectedInventoryTransfer.inventoryTransferTransactions">
                     <div class="col-sm-6 col-md-6">
-                        <md-checkbox [disabled]="shouldDisabled(transaction)" (change)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked">{{transaction.productObject.name}}</md-checkbox>
+                        <mat-checkbox [disabled]="shouldDisabled(transaction)" (change)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked">{{transaction.productObject.name}}</mat-checkbox>
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <p> {{transaction.lineCostPrice|number:'1.2-2'}}</p>

@@ -3,9 +3,9 @@
         <!-- <div class="pg-title">Form Generator</div> -->
        <div class="container">
             <div id="cover-select">
-            <md-select class="select-width" placeholder="Forms" [formControl]="txtForm">
-                <md-option *ngFor="let item of forms" [value]="item._id">{{item.title}}</md-option>
-            </md-select>
+            <mat-select class="select-width" placeholder="Forms" [formControl]="txtForm">
+                <mat-option *ngFor="let item of forms" [value]="item._id">{{item.title}}</mat-option>
+            </mat-select>
             <span class="on-create-btn" (click)="onCreate()"><i class="fa fa-plus"></i></span>
         </div>
       
@@ -14,19 +14,19 @@
                 <div class="form-innerSect">
                     <div class="dx-fieldset">
                         <div class="dx-field" style="width:406px;">
-                            <md-input-container class="example-full-width">
-                                <input mdInput md-error placeholder="Form Name" formControlName="formName">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput mat-error placeholder="Form Name" formControlName="formName">
+                            </mat-input-container>
                         </div>
                         <div class="dx-field">
-                            <md-select placeholder="Scope Level" formControlName="scopeLevel">
-                                <md-option *ngFor="let item of scopeLevels" [value]="item._id">{{item.name}}</md-option>
-                            </md-select>
+                            <mat-select placeholder="Scope Level" formControlName="scopeLevel">
+                                <mat-option *ngFor="let item of scopeLevels" [value]="item._id">{{item.name}}</mat-option>
+                            </mat-select>
                         </div>
                         <div class="dx-field">
-                            <md-select placeholder="Document Type" formControlName="documentType">
-                                <md-option *ngFor="let item of documentTypes" [value]="item._id">{{item.name}}</md-option>
-                            </md-select>
+                            <mat-select placeholder="Document Type" formControlName="documentType">
+                                <mat-option *ngFor="let item of documentTypes" [value]="item._id">{{item.name}}</mat-option>
+                            </mat-select>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         <div *ngFor="let control of frm_checkboxGroup['controls'].myValues['controls']; let i=index" class="checkbox-itemWrap">
                             <div class="dx-field">
                                 <div class="checkbox-label"></div>
-                                 <md-checkbox (change)="onValueChanged($event,modules[i])" [value]="modules[i].checked"   [formControl]="control">{{modules[i].name}}</md-checkbox>
+                                 <mat-checkbox (change)="onValueChanged($event,modules[i])" [value]="modules[i].checked"   [formControl]="control">{{modules[i].name}}</mat-checkbox>
                             </div>
                         </div>
                     </div>

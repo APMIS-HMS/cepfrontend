@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
     <div class="cu-search-box">
-        <md-input-container>
-            <input mdInput formControlName="searchtext" class="cu-search" placeholder="{{placeholder}}" (focus)="focusSearch()" [value]="valueString"
+        <mat-input-container>
+            <input matInput formControlName="searchtext" class="cu-search" placeholder="{{placeholder}}" (focus)="focusSearch()" [value]="valueString"
                 (change)="onChange($event)" (keyup)="onChange($event)" autocomplete="off">
-        </md-input-container>
+        </mat-input-container>
         <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
             <div class="cu-popover-arrow"></div>
             <div class="cu-header">
@@ -18,7 +18,7 @@
                 <li *ngFor="let item of results">
                     <a>
                         <div class="txt-val">
-                            <md-checkbox (change)="onSelectedItem(item, $event)"></md-checkbox>
+                            <mat-checkbox (change)="onSelectedItem(item, $event)"></mat-checkbox>
                         </div>
                         <div class="txt-label">{{item[displayKey]}}</div>
                     </a>

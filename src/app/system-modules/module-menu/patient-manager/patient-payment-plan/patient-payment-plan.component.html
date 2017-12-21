@@ -15,11 +15,11 @@
         <div class="plan">
           <div class="plan-title">Out of Pocket</div>
           <div class="frm-item-wrap">
-            <md-select placeholder="Select Plan" [formControl]="walletPlan">
-              <md-option>Diamond</md-option>
-              <md-option>Gold</md-option>
-              <md-option>Bronze</md-option>
-            </md-select>
+            <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+              <mat-option>Diamond</mat-option>
+              <mat-option>Gold</mat-option>
+              <mat-option>Bronze</mat-option>
+            </mat-select>
           </div>
           <button class="cta-1">Save</button>
         </div>
@@ -40,27 +40,27 @@
                       {{insurance.controls.client?.value.surname}} {{insurance.controls.client?.value.firstName}} <span class="role">{{getRole(insurance.controls.client?.value)}}</span>
                     </div>
                     <div class="frm-item-wrap">
-                      <md-select (change)="formArrayControlChanges(insurance, i)" placeholder="HMO" formControlName="hmo">
-                        <md-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
-                      </md-select>
+                      <mat-select (change)="formArrayControlChanges(insurance, i)" placeholder="HMO" formControlName="hmo">
+                        <mat-option *ngFor="let item of hmos" [value]="item?.hmo?._id">{{item?.hmo?.name}}</mat-option>
+                      </mat-select>
                     </div>
                     <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                        <input (change)="formArrayControlChanges(insurance, i)" mdInput md-error placeholder="Insurance ID" formControlName="hmoPlanId">
-                      </md-input-container>
-                      <md-error *ngIf="insurance.controls.hmoPlanId.hasError('idNotFound')">
+                      <mat-input-container class="example-full-width">
+                        <input (change)="formArrayControlChanges(insurance, i)" matInput mat-error placeholder="Insurance ID" formControlName="hmoPlanId">
+                      </mat-input-container>
+                      <mat-error *ngIf="insurance.controls.hmoPlanId.hasError('idNotFound')">
                         <span style="font-size:10px">Insurance ID not found!</span>
-                      </md-error>
+                      </mat-error>
                     </div>
                     <div class="addNew" *ngIf="insurance.controls.hmoPlanId.hasError('idNotFound') || insurance.controls.addInsuranceCondition.value">
-                      <md-checkbox class="example-margin" formControlName="addToHMOPlan">Add</md-checkbox>
-                      <md-checkbox *ngIf="insurance.controls.addToHMOPlan.value" class="example-margin" formControlName="isPrincipal">Principal</md-checkbox>
+                      <mat-checkbox class="example-margin" formControlName="addToHMOPlan">Add</mat-checkbox>
+                      <mat-checkbox *ngIf="insurance.controls.addToHMOPlan.value" class="example-margin" formControlName="isPrincipal">Principal</mat-checkbox>
                     </div>
 
                     <div class="frm-item-wrap">
-                      <md-select placeholder="Select Plan" formControlName="hmoPlan">
-                        <md-option *ngFor="let item of insurance.controls.plans.value" [value]="item">{{item}}</md-option>
-                      </md-select>
+                      <mat-select placeholder="Select Plan" formControlName="hmoPlan">
+                        <mat-option *ngFor="let item of insurance.controls.plans.value" [value]="item">{{item}}</mat-option>
+                      </mat-select>
                     </div>
                     <button [disabled]="!insurance.valid" (click)="onSubmit(insurance, i)" class="cta-1">Save</button>
 
@@ -80,20 +80,20 @@
             <div class="plan-title">Company Cover</div>
             <div class="frm-item-wrap">
                 <div class="frm-item-wrap">
-                    <md-select (change)="formArrayControlChanges(insurance, i)" placeholder="Company" formControlName="company">
-                      <md-option  *ngFor="let item of companies" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
-                    </md-select>
+                    <mat-select (change)="formArrayControlChanges(insurance, i)" placeholder="Company" formControlName="company">
+                      <mat-option  *ngFor="let item of companies" [value]="item?.hmo?._id">{{item?.hmo?.name}}</mat-option>
+                    </mat-select>
                   </div>
-              <md-input-container class="example-full-width">
-                <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
-              </md-input-container>
+              <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId">
+              </mat-input-container>
             </div>
             <div class="frm-item-wrap">
-              <md-select placeholder="Select Plan" [formControl]="ccPlan">
-                <md-option>Diamond</md-option>
-                <md-option>Gold</md-option>
-                <md-option>Bronze</md-option>
-              </md-select>
+              <mat-select placeholder="Select Plan" [formControl]="ccPlan">
+                <mat-option>Diamond</mat-option>
+                <mat-option>Gold</mat-option>
+                <mat-option>Bronze</mat-option>
+              </mat-select>
             </div>
             <button class="cta-1">Save</button>
 
@@ -114,27 +114,27 @@
                       {{company.controls.client?.value.surname}} {{company.controls.client?.value.firstName}} <span class="role">{{getRole(company.controls.client?.value)}}</span>
                     </div>
                     <div class="frm-item-wrap">
-                      <md-select (change)="companyFormArrayControlChanges(company, i)" placeholder="Company" formControlName="company">
-                        <md-option *ngFor="let item of companies" [value]="item?.hmo?._id">{{item?.hmo?.name}}</md-option>
-                      </md-select>
+                      <mat-select (change)="companyFormArrayControlChanges(company, i)" placeholder="Company" formControlName="company">
+                        <mat-option *ngFor="let item of companies" [value]="item?.hmo?._id">{{item?.hmo?.name}}</mat-option>
+                      </mat-select>
                     </div>
                     <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                        <input (change)="companyFormArrayControlChanges(company, i)" mdInput md-error placeholder="Company Plan ID" formControlName="companyPlanId">
-                      </md-input-container>
-                      <md-error *ngIf="company.controls.companyPlanId.hasError('idNotFound')">
+                      <mat-input-container class="example-full-width">
+                        <input (change)="companyFormArrayControlChanges(company, i)" matInput mat-error placeholder="Company Plan ID" formControlName="companyPlanId">
+                      </mat-input-container>
+                      <mat-error *ngIf="company.controls.companyPlanId.hasError('idNotFound')">
                         <span style="font-size:10px">Company Cover ID not found!</span>
-                      </md-error>
+                      </mat-error>
                     </div>
                     <div class="addNew" *ngIf="company.controls.companyPlanId.hasError('idNotFound') || company.controls.addCompanyCondition.value">
-                      <md-checkbox class="example-margin" formControlName="addToCompanyPlan">Add</md-checkbox>
-                      <md-checkbox *ngIf="company.controls.addToCompanyPlan.value" class="example-margin" formControlName="isPrincipal">Principal</md-checkbox>
+                      <mat-checkbox class="example-margin" formControlName="addToCompanyPlan">Add</mat-checkbox>
+                      <mat-checkbox *ngIf="company.controls.addToCompanyPlan.value" class="example-margin" formControlName="isPrincipal">Principal</mat-checkbox>
                     </div>
 
                     <div class="frm-item-wrap">
-                      <md-select (change)="companyFormArrayControlChanges(company, i)" placeholder="Select Plan" formControlName="companyPlan">
-                        <md-option *ngFor="let item of company.controls.plans.value" [value]="item">{{item}}</md-option>
-                      </md-select>
+                      <mat-select (change)="companyFormArrayControlChanges(company, i)" placeholder="Select Plan" formControlName="companyPlan">
+                        <mat-option *ngFor="let item of company.controls.plans.value" [value]="item">{{item}}</mat-option>
+                      </mat-select>
                     </div>
                     <button *ngIf="!company.controls.readOnly.value" [disabled]="!company.valid" (click)="onSubmitCompanyCover(company, i)" class="cta-1">Save</button>
 
@@ -152,9 +152,9 @@
       <!-- <div class="plan">
           <div class="plan-title">Family Cover</div>
           <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+              <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
+            </mat-input-container>
           </div>
           <button class="cta-1">Save</button>
 
@@ -171,42 +171,42 @@
                     <div class="plan-title">Family Cover</div>
                     <div class="frm-x2 frmArray">
                         <div class="frm-item-wrap">
-                            <md-input-container>
-                              <input mdInput placeholder="Cover ID" formControlName="familyPlanId">
-                            </md-input-container>
+                            <mat-input-container>
+                              <input matInput placeholder="Cover ID" formControlName="familyPlanId">
+                            </mat-input-container>
                           </div>
                       <div class="frm-item-wrap">
-                        <md-input-container>
-                          <input mdInput placeholder="Surname" formControlName="surname">
-                        </md-input-container>
+                        <mat-input-container>
+                          <input matInput placeholder="Surname" formControlName="surname">
+                        </mat-input-container>
                       </div>
                       <div class="frm-item-wrap">
-                        <md-input-container>
-                          <input mdInput placeholder="Othernames" formControlName="othernames">
-                        </md-input-container>
-                      </div>
-
-                      <div class="frm-item-wrap">
-                        <md-input-container class="example-full-width">
-                          <input type="email" mdInput md-error placeholder="Email" formControlName="email">
-                        </md-input-container>
+                        <mat-input-container>
+                          <input matInput placeholder="Othernames" formControlName="othernames">
+                        </mat-input-container>
                       </div>
 
                       <div class="frm-item-wrap">
-                        <md-input-container class="example-full-width">
-                          <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
-                        </md-input-container>
+                        <mat-input-container class="example-full-width">
+                          <input type="email" matInput mat-error placeholder="Email" formControlName="email">
+                        </mat-input-container>
                       </div>
 
                       <div class="frm-item-wrap">
-                        <md-select placeholder="Gender" formControlName="gender">
-                          <md-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</md-option>
-                        </md-select>
+                        <mat-input-container class="example-full-width">
+                          <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="phone">
+                        </mat-input-container>
+                      </div>
+
+                      <div class="frm-item-wrap">
+                        <mat-select placeholder="Gender" formControlName="gender">
+                          <mat-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</mat-option>
+                        </mat-select>
                       </div>
                       <div class="frm-item-wrap">
-                        <md-select placeholder="Status" formControlName="status">
-                          <md-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</md-option>
-                        </md-select>
+                        <mat-select placeholder="Status" formControlName="status">
+                          <mat-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</mat-option>
+                        </mat-select>
                       </div>
                     </div>
                     <button *ngIf="!dependant.controls.readOnly.value" [disabled]="!dependant.valid" (click)="onSubmitFamilyCover(dependant, i)"
