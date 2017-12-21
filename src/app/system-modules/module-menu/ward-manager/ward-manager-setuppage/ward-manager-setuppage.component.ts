@@ -46,12 +46,10 @@ export class WardManagerSetuppageComponent implements OnInit {
 	getFacilityWard() {
 		// this._facilitiesService.get(this.facility._id, {}).then(res => {
 		// 	this.loading = false;
-		// 	console.log(res);
 		// 	this.facilityWards = res.wards;
 		// }).catch(err => console.log(err));
 		this._wardAdmissionService.find({query: {'facilityId._id': this.facility._id}}).then(res => {
 			this.loading = false;
-			console.log(res);
 			if (res.data.length > 0) {
 				this.wards = res.data[0].locations;
 			}

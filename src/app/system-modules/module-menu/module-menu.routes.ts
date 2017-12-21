@@ -25,6 +25,10 @@ const MODULEMENU_ROUTES: Routes = [
                 path: 'patient-manager',
                 loadChildren: './patient-manager/patient-manager.module#PatientManagerModule'
             },
+            // {
+            //     path: 'patient-portal',
+            //     loadChildren: './patient-portal/patient-portal.module#PatientPortalModule'
+            // },
             {
                 path: 'patient-manager/:id',
                 loadChildren: './patient-manager/patient-manager.module#PatientManagerModule'

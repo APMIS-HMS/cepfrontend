@@ -17,43 +17,43 @@
             <div class="frm-x2">
 
               <div class="frm-item-wrap">
-                <!-- <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
-                      <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
-                  </md-select> -->
-                <md-select placeholder="Type" formControlName="type">
-                  <md-option value="Documentation" selected>Documentation</md-option>
-                  <md-option value="Order Set">Order Set</md-option>
-                </md-select>
+                <!-- <mat-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+                      <mat-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</mat-option>
+                  </mat-select> -->
+                <mat-select placeholder="Type" formControlName="type">
+                  <mat-option value="Documentation" selected>Documentation</mat-option>
+                  <mat-option value="Order Set">Order Set</mat-option>
+                </mat-select>
               </div>
               <div class="frm-item-wrap">
-                <md-input-container>
-                  <input mdInput placeholder="Template Name" formControlName="name">
-                </md-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Template Name" formControlName="name">
+                </mat-input-container>
               </div>
 
               <div *ngIf="isOrderSet" class="frm-item-wrap">
-                <md-select placeholder="Select Diagnosis" formControlName="diagnosis">
-                  <md-option>Malaria</md-option>
-                  <md-option>Yellow Fever</md-option>
-                </md-select>
+                <mat-select placeholder="Select Diagnosis" formControlName="diagnosis">
+                  <mat-option>Malaria</mat-option>
+                  <mat-option>Yellow Fever</mat-option>
+                </mat-select>
               </div>
 
               <div class="frm-item-wrap">
-                <md-select placeholder="Set Visibility" formControlName="visibility">
-                  <md-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</md-option>
-                </md-select>
+                <mat-select placeholder="Set Visibility" formControlName="visibility">
+                  <mat-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</mat-option>
+                </mat-select>
               </div>
 
               <div class="frm-item-wrap chk-item" style="color:#777;font-size:12px;">
-                <md-checkbox formControlName="isEditable">Editable By Others</md-checkbox>
+                <mat-checkbox formControlName="isEditable">Editable By Others</mat-checkbox>
               </div>
             </div>
 
             <div *ngIf="isDocumentation" class="template-sect animated fadeIn">
               <div class="frm-item-wrap">
-                <md-select placeholder="Select Form" formControlName="docFrmList">
-                  <md-option *ngFor="let item of forms" [value]="item">{{item.title}}</md-option>
-                </md-select>
+                <mat-select placeholder="Select Form" formControlName="docFrmList">
+                  <mat-option *ngFor="let item of forms" [value]="item">{{item.title}}</mat-option>
+                </mat-select>
               </div>
 
               <div class="docFrmArea">
@@ -65,31 +65,31 @@
 
             <div *ngIf="isOrderSet" class="template-sect animated fadeIn">
               <div class="frm-title">Category</div>
-              <md-radio-group>
+              <mat-radio-group>
                 <div class="frm-x3">
                   <div class="frm-item-wrap chk-item">
-                    <md-radio-button value="1">Medication</md-radio-button>
+                    <mat-radio-button value="1">Medication</mat-radio-button>
                   </div>
                   <div class="frm-item-wrap chk-item">
-                    <md-radio-button value="1">Laboratory Investigation</md-radio-button>
-                  </div>
-                  <!-- <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Diagnostic</md-radio-button>
-                  </div> -->
-                  <div class="frm-item-wrap chk-item">
-                    <md-radio-button value="1">Procedure</md-radio-button>
+                    <mat-radio-button value="1">Laboratory Investigation</mat-radio-button>
                   </div>
                   <!-- <div class="frm-item-wrap chk-item">
-                      <md-radio-button value="1">Immunization</md-radio-button>
+                      <mat-radio-button value="1">Diagnostic</mat-radio-button>
                   </div> -->
                   <div class="frm-item-wrap chk-item">
-                    <md-radio-button value="1">Nursing Care</md-radio-button>
+                    <mat-radio-button value="1">Procedure</mat-radio-button>
+                  </div>
+                  <!-- <div class="frm-item-wrap chk-item">
+                      <mat-radio-button value="1">Immunization</mat-radio-button>
+                  </div> -->
+                  <div class="frm-item-wrap chk-item">
+                    <mat-radio-button value="1">Nursing Care</mat-radio-button>
                   </div>
                   <div class="frm-item-wrap chk-item">
-                    <md-radio-button value="1">Physician Order</md-radio-button>
+                    <mat-radio-button value="1">Physician Order</mat-radio-button>
                   </div>
                 </div>
-              </md-radio-group>
+              </mat-radio-group>
 
               <div *ngIf="showMedService" class="service-wrap">
                 <div class="frm-title">Medication</div>

@@ -55,7 +55,6 @@ export class InvestigationServiceComponent implements OnInit {
       this.onDrag(value.slice(1));
     });
     dragulaService.drop.subscribe((value) => {
-      console.log(value)
       this.onDrop(value.slice(1));
     });
   }
@@ -253,7 +252,6 @@ export class InvestigationServiceComponent implements OnInit {
                     const facilityService$ = Observable.fromPromise(this.servicePriceService.create(price));
                     const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                     Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
-                      console.log(results);
                       this.investigation_view = false;
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
@@ -394,7 +392,6 @@ export class InvestigationServiceComponent implements OnInit {
                     const facilityService$ = Observable.fromPromise(this.servicePriceService.create(price));
                     const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                     Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
-                      console.log(results);
                       this.frmNewPanel.reset();
                       this.frmNewPanel.controls['isPanel'].setValue(true);
                       this.investigations.push(payload);
@@ -422,19 +419,9 @@ export class InvestigationServiceComponent implements OnInit {
         this.selectedInvestigation.name = this.frmNewPanel.controls['panelName'].value;
         this.selectedInvestigation.isPanel = this.frmNewPanel.controls['isPanel'].value;
         this.selectedInvestigation.panel = this.movedInvestigations;
-        console.log(this.selectedInvestigation);
         this.investigationService.update(this.selectedInvestigation).then(payload => {
 
-
-
-
-
-          console.log('after');
-          console.log(this.selectedInvestigation);
           if (this.selectedInvestigation.serviceId === undefined) {
-
-
-            console.log('ininin')
 
 
             //
@@ -445,16 +432,11 @@ export class InvestigationServiceComponent implements OnInit {
                 item.services.push(service);
               }
             });
-            console.log(service)
             this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
-              console.log('in2')
               payResult.categories.forEach((itemi, i) => {
                 if (itemi.name === 'Laboratory') {
                   itemi.services.forEach((items, s) => {
                     if (items.name === service.name) {
-                      console.log(s);
-                      console.log(items.name);
-                      console.log(service.name);
                       payload.serviceId = items;
                       payload.facilityServiceId = this.selectedFacilityService._id;
 
@@ -471,7 +453,6 @@ export class InvestigationServiceComponent implements OnInit {
                       const facilityService$ = Observable.fromPromise(this.servicePriceService.create(price));
                       const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                       Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
-                        console.log(results);
                         this.pannel_view = false;
                         this.btnText = 'Create Panel';
                         this.selectedInvestigation = <any>{};

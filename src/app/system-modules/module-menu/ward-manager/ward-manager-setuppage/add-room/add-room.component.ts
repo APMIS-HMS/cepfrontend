@@ -80,7 +80,6 @@ export class AddRoomComponent implements OnInit {
 		}, 2000);
 
 		// this.addRoomFormGroup.controls['service'].valueChanges.subscribe(val => {
-		// 	console.log(val);
 		// 	this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
 		// 	this.selectedProductId = drugId.getAttribute('data-p-id');
 		// });
@@ -115,7 +114,6 @@ export class AddRoomComponent implements OnInit {
 			this.disableAddRoomBtn = true;
       if (!!this.selectedRoom) {
         this.addRoomBtnText = 'Editing Room... <i class="fa fa-spinner fa-spin"></i>';
-            console.log(this.selectedRoom);
         this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
           // Delete serviceId records that are not required.
           delete value.service.modifiers;
@@ -126,7 +124,6 @@ export class AddRoomComponent implements OnInit {
                 if (item.minorLocationId._id === this.wardId) {
                   item.rooms.forEach(roomItem => {
                     if (roomItem._id === this.selectedRoom._id) {
-                      console.log(roomItem);
                       roomItem.serviceId = value.service;
                       roomItem.name = value.room;
                       roomItem.groupId = value.group;
@@ -136,7 +133,6 @@ export class AddRoomComponent implements OnInit {
               });
 
               this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-              	console.log(updateRes);
               	const text = value.room + ' has been Updated successfully';
               	this._notification('Success', text);
               	this.addRoomBtnText = '<i class="fa fa-plus"></i> Add Room';
@@ -157,7 +153,6 @@ export class AddRoomComponent implements OnInit {
             groupId: value.group,
             serviceId: value.service
           };
-          console.log(room);
 
           if (res.data.length > 0) {
               res.data[0].locations.forEach(item => {
@@ -181,8 +176,6 @@ export class AddRoomComponent implements OnInit {
 	}
 
 	onChangeService(item, serviceId) {
-		console.log(item);
-		console.log(serviceId);
 	}
 
 	// Notification

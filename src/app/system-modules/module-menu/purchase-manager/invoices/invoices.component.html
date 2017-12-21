@@ -3,14 +3,14 @@
     <div class="">
         <div class="row margin-bottom">
             <div class="col-sm-4 col-md-4 col-xs-12">
-                <md-select placeholder="Filter By" [formControl]="frmSupplier">
-                    <md-option *ngFor="let item of suppliers" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
+                <mat-select placeholder="Filter By" [formControl]="frmSupplier">
+                    <mat-option *ngFor="let item of suppliers" [value]="item._id">{{item.name}}</mat-option>
+                </mat-select>
             </div>
             <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-                <md-input-container class="example-full-width">
-                    <input type="text" mdInput md-error placeholder="Search">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="text" matInput mat-error placeholder="Search">
+                </mat-input-container>
             </div>
         </div>
         <table class="table table-striped text-center">

@@ -20,51 +20,51 @@
 
             <div class="frm-x2">
               <div class="frm-item-wrap">
-                <md-input-container>
-                  <input mdInput placeholder="Principal Surname" formControlName="surname">
-                </md-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Principal Surname" formControlName="surname">
+                </mat-input-container>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container>
-                  <input mdInput placeholder="Principal Othernames" formControlName="othernames">
-                </md-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Principal Othernames" formControlName="othernames">
+                </mat-input-container>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container>
-                  <input mdInput placeholder="Address" formControlName="address">
-                </md-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Address" formControlName="address">
+                </mat-input-container>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                  <input type="email" mdInput md-error placeholder="Email" formControlName="email">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                  <input type="email" matInput mat-error placeholder="Email" formControlName="email">
+                </mat-input-container>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                  <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                  <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="phone">
+                </mat-input-container>
               </div>
 
               <div class="frm-item-wrap">
-                <md-select placeholder="Gender" formControlName="principalGender">
-                  <md-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</md-option>
-                </md-select>
+                <mat-select placeholder="Gender" formControlName="principalGender">
+                  <mat-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</mat-option>
+                </mat-select>
               </div>
 
               <div class="frm-item-wrap">
-                <md-input-container>
-                  <input mdInput placeholder="Employee ID" formControlName="principalEmpID">
-                </md-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Employee ID" formControlName="principalEmpID">
+                </mat-input-container>
               </div>
 
               <div class="frm-item-wrap">
-                <md-select placeholder="Status" formControlName="principalstatus">
-                  <md-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</md-option>
-                </md-select>
+                <mat-select placeholder="Status" formControlName="principalstatus">
+                  <mat-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</mat-option>
+                </mat-select>
               </div>
 
             </div>
@@ -82,37 +82,37 @@
                       <div class="dv-wrap">
                         <div class="frm-x2 frmArray">
                           <div class="frm-item-wrap">
-                            <md-input-container>
-                              <input mdInput placeholder="Surname" formControlName="dependantSurname">
-                            </md-input-container>
+                            <mat-input-container>
+                              <input matInput placeholder="Surname" formControlName="dependantSurname">
+                            </mat-input-container>
                           </div>
                           <div class="frm-item-wrap">
-                            <md-input-container>
-                              <input mdInput placeholder="Othernames" formControlName="dependantOthernames">
-                            </md-input-container>
+                            <mat-input-container>
+                              <input matInput placeholder="Othernames" formControlName="dependantOthernames">
+                            </mat-input-container>
                           </div>
                           <div class="frm-item-wrap">
-                            <md-input-container class="example-full-width">
-                              <input type="email" mdInput md-error placeholder="Email" formControlName="dependantEmail">
-                            </md-input-container>
-                          </div>
-
-                          <div class="frm-item-wrap">
-                            <md-input-container class="example-full-width">
-                              <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="dependantPhone">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                              <input type="email" matInput mat-error placeholder="Email" formControlName="dependantEmail">
+                            </mat-input-container>
                           </div>
 
                           <div class="frm-item-wrap">
-                            <md-select placeholder="Gender" formControlName="dependantGender">
-                              <md-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</md-option>
-                            </md-select>
+                            <mat-input-container class="example-full-width">
+                              <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="dependantPhone">
+                            </mat-input-container>
                           </div>
 
                           <div class="frm-item-wrap">
-                            <md-select placeholder="Status" formControlName="dependantStatus">
-                              <md-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</md-option>
-                            </md-select>
+                            <mat-select placeholder="Gender" formControlName="dependantGender">
+                              <mat-option *ngFor="let gender of genders" [value]="gender._id">{{gender.name}}</mat-option>
+                            </mat-select>
+                          </div>
+
+                          <div class="frm-item-wrap">
+                            <mat-select placeholder="Status" formControlName="dependantStatus">
+                              <mat-option *ngFor="let status of statuses" [value]="status._id">{{status.name}}</mat-option>
+                            </mat-select>
                           </div>
                         </div>
                         <div *ngIf="!dependant.value.readOnly" (click)="pushNewDependant(dependant, i)" class="frmArrayBtn"><i class="fa fa-plus" aria-hidden="true"></i></div>
@@ -132,9 +132,9 @@
         </div>
 
         <div class="tblWrapa" class="actSect">
-          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+          <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">
-          </md-paginator>
+          </mat-paginator>
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
               <tr>
@@ -227,9 +227,9 @@
               </tr>
             </tbody>
           </table>
-          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+          <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">
-          </md-paginator>
+          </mat-paginator>
         </div>
       </div>
     </div>

@@ -59,6 +59,16 @@ export class PersonService {
     return this._socket.remove(id, query);
   }
 
+  abridgePerson(person) {
+    return {
+      _id: person._id,
+      apmisId: person.apmisId,
+      email: person.email,
+      firstName: person.firstName,
+      lastName: person.lastName
+    }
+  }
+
   walletTransaction(walletTransaction: WalletTransaction) {
     const host = this._restService.getHost();
     const path = host + '/wallet-transaction';

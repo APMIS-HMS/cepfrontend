@@ -15,9 +15,9 @@ import { Facility, User } from 'app/models';
 // declare var paystack: any;
 // declare var callPayStack: any;
 @Component({
-  selector: "app-wallet",
-  templateUrl: "./wallet.component.html",
-  styleUrls: ["./wallet.component.scss"]
+  selector: 'app-wallet',
+  templateUrl: './wallet.component.html',
+  styleUrls: ['./wallet.component.scss']
 })
 export class WalletComponent implements OnInit, AfterViewInit {
   paymentFormGroup: FormGroup;
@@ -137,7 +137,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     this.personService.get(this.patient.personId, {}).then(payload => {
       this.loading = false;
-      console.log(payload);
       if (payload.wallet === undefined) {
         payload.wallet = {
           balance: 0,
@@ -158,26 +157,20 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     // let formData = { type: 'customers' };
     // this._payStackService.paystack(formData).then(payload => {
-    //   console.log(payload);
     // })
     // this.verifyTransaction('T706272350859262');
   }
   ngAfterViewInit(): void {
     // crop();
   }
-  // fundWallet() {
-  //   crop();
-  // }
 
   // verifyTransaction(reference) {
   //   let formData = { type: 'verifyTransaction', reference: reference };
   //   this._payStackService.paystack(formData).then(payload => {
-  //     console.log(payload);
   //   });
   // }
 
   // fundWithElectronic() {
-  //   console.log(this.patient);
   //   let retVal = paystackInline(
   //     this.patient.personDetails.email,
   //     this.fundAmount.value,
@@ -188,7 +181,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
   // onClose() {}
 
   // paystackCallback(response) {
-  //   console.log(response);
   //   // let that = this;
   //   this.verifyTransaction(response.reference);
   // }
@@ -229,26 +221,33 @@ export class WalletComponent implements OnInit, AfterViewInit {
         if (res.body.status === 'success') {
           this.paymentFormGroup.reset();
           this.paymentFormGroup.controls['fundAmount'].setValue(0);
-          this.cashPaymentPaying = false;
-          this.disableBtn = false;
-          this.cashPayment = true;
-          this.flutterwavePayment = false;
-          this.paystackPayment = false;
+          this.resetPaymentForm();
           this.person = res.body.data;
           this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
           const text = 'Your facility\'s wallet has been debited and patient\'s wallet has been credited successfully.';
           this._notification('Success', text);
         } else {
-          console.log(res.body.message);
+          this.resetPaymentForm();
           this._notification('Error', res.body.message);
         }
       }).catch(err => {
-        console.log(err);
       });
     } else {
       let text = 'Please enter amount above 500 naira and also select payment type';
       this._notification('Info', text);
     }
+  }
+
+  // Reset payment form when payment is done or failed.
+  resetPaymentForm() {
+    this.paymentFormGroup.reset();
+    this.paymentFormGroup.controls['fundAmount'].setValue(0);
+    this.cashPaymentPay = true;
+    this.cashPaymentPaying = false;
+    this.disableBtn = false;
+    this.cashPayment = false;
+    this.flutterwavePayment = false;
+    this.paystackPayment = false;
   }
 
   // Flutterwave Payment
@@ -290,7 +289,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     this.personService.fundWallet(walletTransaction).then((res: any) => {
       this.loading = false;
-      console.log(res);
       if (res.body.status === 'success') {
         this.paymentFormGroup.reset();
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
@@ -302,16 +300,13 @@ export class WalletComponent implements OnInit, AfterViewInit {
         this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
         this._notification('Success', 'Your wallet has been credited successfully.');
       } else {
-        console.log(res.body.message);
         this._notification('Error', res.body.message);
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 
   paymentCancel() {
-    console.log('Cancelled');
   }
 
   // Notification

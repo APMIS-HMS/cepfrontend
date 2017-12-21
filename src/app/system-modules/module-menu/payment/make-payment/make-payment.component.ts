@@ -68,10 +68,8 @@ export class MakePaymentComponent implements OnInit {
     //     this.disableBtn = true;
     //     let bal = value - this.cost;
     //     this.balance.setValue(bal);
-    //     console.log(this.disableBtn);
     //   } else {
     //     this.disableBtn = false;
-    //     console.log(this.disableBtn);
     //   }
     // });
     // this.channel.valueChanges.subscribe(value => {
@@ -90,7 +88,6 @@ export class MakePaymentComponent implements OnInit {
 
   makePayment() {
     this.isProcessing = true;
-    console.log(this.isInvoicePage);
     if (this.isInvoicePage == false) {
       var paymantObj = {
         "inputedValue": {
@@ -110,7 +107,6 @@ export class MakePaymentComponent implements OnInit {
       }
 
       this._makePaymentService.create(paymantObj).then(payload => {
-        console.log(payload);
         this.personValueChanged.emit(payload.data);
         this.isProcessing = false;
         this.close_onClick();
@@ -129,7 +125,6 @@ export class MakePaymentComponent implements OnInit {
         "isInvoicePage":true
       }
       this._makePaymentService.create(paymantObj2).then(payload => {
-        console.log(payload);
         this.personValueChanged.emit(payload.data);
         this.isProcessing = false;
         this.close_onClick();

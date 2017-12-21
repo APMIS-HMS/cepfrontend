@@ -11,24 +11,24 @@
   <div class="pay-wrap">
 
     <!-- <div class="frm-item-wrap">
-      <md-select [formControl]="channel" placeholder="Payment Channel">
-        <md-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</md-option>
-      </md-select>
+      <mat-select [formControl]="channel" placeholder="Payment Channel">
+        <mat-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</mat-option>
+      </mat-select>
     </div>
 
     <div class="frm-item-wrap" [hidden]="!isCash">
-      <md-input-container>
-        <input mdInput md-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
-      </md-input-container>
+      <mat-input-container>
+        <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
+      </mat-input-container>
     </div>
 
     <div class="frm-item-wrap" [hidden]="!isCash">
-      <md-input-container>
-        <input mdInput md-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
-      </md-input-container>
+      <mat-input-container>
+        <input matInput mat-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
+      </mat-input-container>
     </div> -->
     <div class="btn-group">
-      <button md-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
+      <button mat-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
         <span>
           <div [hidden]="isProcessing">
             Make Payment

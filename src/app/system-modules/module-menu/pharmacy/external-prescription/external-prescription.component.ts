@@ -40,7 +40,6 @@ export class ExternalPrescriptionComponent implements OnInit {
   // Get all drugs from generic
 	private _getAllPrescriptions() {
 		this._prescriptionService.findAll().then(res => {
-				console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
 					if (element.isDispensed) {

@@ -3,7 +3,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MdPaginator, PageEvent } from '@angular/material';
+import { MatPaginator, PageEvent } from '@angular/material';
 @Component({
   selector: 'app-beneficiary-list',
   templateUrl: './beneficiary-list.component.html',
@@ -24,7 +24,7 @@ export class BeneficiaryListComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
 
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
     private hmoService: HmoService) { }

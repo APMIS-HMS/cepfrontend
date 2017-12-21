@@ -6,9 +6,9 @@
     <div class="doc-contentArea">
       <div class="clinicalNoteWrap">
         <div class="tblWrapa" class="actSect">
-          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+          <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">
-          </md-paginator>
+          </mat-paginator>
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
               <tr>
@@ -88,9 +88,9 @@
 
             </tfoot> -->
           </table>
-          <md-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+          <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">
-          </md-paginator>
+          </mat-paginator>
         </div>
       </div>
     </div>

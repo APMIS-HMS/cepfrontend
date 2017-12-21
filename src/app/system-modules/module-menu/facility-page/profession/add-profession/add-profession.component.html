@@ -7,9 +7,9 @@
     <div class="f_sg_1">
         <form>
             <div>
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Profession" [formControl]="professionCtrl">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput placeholder="Profession" [formControl]="professionCtrl">
+                </mat-input-container>
             </div>
             <div>
                 <form [formGroup]="cadreForm" class="form-horizontal">
@@ -24,7 +24,7 @@
                                     <span class="trash"><i (click)="onRemoveBill(cadre,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                                 </div>
                                 <div class="frm-item-wrap frm-item-inner-wrap">
-                                    <button *ngIf="!cadre.value.readonly" (click)="onAddHobby(cadre, cadreForm.valid)" md-mini-fab><i class="fa fa-plus"></i></button>
+                                    <button *ngIf="!cadre.value.readonly" (click)="onAddHobby(cadre, cadreForm.valid)" mat-mini-fab><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
 
             </div>
             <div class="example-full-width" id="example-full-width">
-                <button (click)="save(frm_profession.valid, frm_profession.value)" class="apmis-blue" md-raised-button>Save Profession</button>
+                <button (click)="save(frm_profession.valid, frm_profession.value)" class="apmis-blue" mat-raised-button>Save Profession</button>
             </div>
         </form>
     </div>

@@ -16,9 +16,9 @@
                                 <form [formGroup]="categoryGroup">
                                     <div class="form-group">
                                         <!--<label for="name">New Category</label>-->
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput md-error placeholder="New Category" formControlName="name">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput mat-error placeholder="New Category" formControlName="name">
+                                        </mat-input-container>
                                         <button (click)="onClickAdd(categoryGroup.value, categoryGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
                                         <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
                                     </div>
@@ -27,7 +27,7 @@
                         </div>
                     </div><br><br>
                     <div class="row">
-                        <div class="col-sm-12 col-md-12 col-xs-12">
+                        <div class="col-sm-12 col-mat-12 col-xs-12">
                             <input type="text" class="form-control" placeholder="search categories">
                             <br>
                         </div>

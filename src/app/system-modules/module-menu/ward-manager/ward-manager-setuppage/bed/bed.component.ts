@@ -59,12 +59,10 @@ export class BedComponent implements OnInit {
 	getRooomBedItems() {
 		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
 			if (res.data.length > 0) {
-				console.log(res.data);
 				res.data[0].locations.forEach(item => {
 					if (item.minorLocationId._id === this.wardId) {
 						item.rooms.forEach(itm => {
 							if (itm._id === this.roomId) {
-								console.log(itm);
 								this.beds = itm.beds;
 								this.wardRoom = itm;
 								this.bedNameEditShow = this.beds.map(i => false);

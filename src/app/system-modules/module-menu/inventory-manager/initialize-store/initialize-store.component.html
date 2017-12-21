@@ -57,17 +57,17 @@
                                 </div>
                                 <div [formGroupName]="i">
                                     <div class="col-sm-5">
-                                        <md-input-container class="example-full-width">
-                                            <input type="text" mdInput placeholder="Enter Batch No" formControlName="batchNumber">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input type="text" matInput placeholder="Enter Batch No" formControlName="batchNumber">
+                                        </mat-input-container>
                                         <small [hidden]="myForm.controls.initproduct.controls[i].controls.batchNumber.valid">
                                               Batchno Required
                                           </small>
                                     </div>
                                     <div class="col-sm-5">
-                                        <md-input-container class="example-full-width">
-                                            <input type="number" formControlName="quantity" mdInput placeholder="Enter Quantity">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity">
+                                        </mat-input-container>
                                         <small [hidden]="myForm.controls.initproduct.controls[i].controls.quantity.valid">
                                               Quantity Required
                                           </small>
@@ -86,7 +86,7 @@
 
                         </div>
                         <div class="col-sm-12 text-center">
-                            <a md-raised-button [hidden]="isItemselected" [disabled]="!myForm.valid" (click)="save(myForm.valid,myForm.value,selectedProduct)">
+                            <a mat-raised-button [hidden]="isItemselected" [disabled]="!myForm.valid" (click)="save(myForm.valid,myForm.value,selectedProduct)">
                                 <span>
                                     <div [hidden] = "isProcessing">
                                             Save

@@ -40,7 +40,6 @@ export class LabComponent implements OnInit, OnDestroy {
     this.checkPageUrl(page);
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
-    console.log(this.loginEmployee);
     if ((this.loginEmployee.workbenchCheckIn === undefined
       || this.loginEmployee.workbenchCheckIn.length === 0)) {
       this.modal_on = true;
@@ -70,7 +69,6 @@ export class LabComponent implements OnInit, OnDestroy {
       if (!isOn) {
         this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
           if (r === 0) {
-            console.log(this.loginEmployee.workbenchCheckIn)
             x.isOn = true;
             x.lastLogin = new Date();
             // Set page title

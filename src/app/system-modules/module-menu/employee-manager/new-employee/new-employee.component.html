@@ -15,77 +15,77 @@
             <div class="lhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
-                        <md-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
+                        <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="text" placeholder="First Name" formControlName="empFirstName">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="text" placeholder="First Name" formControlName="empFirstName">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-circle-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="text" placeholder="Other Names" formControlName="empOtherNames">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="text" placeholder="Other Names" formControlName="empOtherNames">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="text" placeholder="Sur Name" formControlName="empLastName">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="text" placeholder="Sur Name" formControlName="empLastName">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="text" placeholder="File Number" formControlName="fileNumber">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="text" placeholder="File Number" formControlName="fileNumber">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                    <md-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
-                        <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
+                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
-                        <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
+                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
-                        <md-option *ngFor="let item of states" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
+                        <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
-                        <md-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
+                        <mat-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="email" placeholder="Email Address" formControlName="empEmail">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="email" placeholder="Email Address" formControlName="empEmail">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="email" placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="email" placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput type="tel" placeholder="Contact Number" formControlName="empPhonNo">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput type="tel" placeholder="Contact Number" formControlName="empPhonNo">
+                    </mat-input-container>
                 </div>
             </div>
             <div class="clear"></div>
@@ -105,58 +105,58 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
-                        <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
+                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <md-select placeholder="Country (Residence)" formControlName="empCountry">
-                        <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Country (Residence)" formControlName="empCountry">
+                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <md-select placeholder="State (Residence)" formControlName="empContactState">
-                        <md-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="State (Residence)" formControlName="empContactState">
+                        <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <md-select placeholder="City (Residence)" formControlName="empCity">
-                        <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="City (Residence)" formControlName="empCity">
+                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
 
             <div class="rhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Home Address" formControlName="empHomeAddress">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Home Address" formControlName="empHomeAddress">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap" style="margin-top:-6px;">
-                    <md-input-container>
-                        <input mdInput [mdDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
+                    <mat-input-container>
+                        <input matInput [matDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
                         <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                    </md-input-container>
-                    <md-datepicker #picker></md-datepicker>
+                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                    </mat-input-container>
+                    <mat-datepicker #picker></mat-datepicker>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Select security question" formControlName="secQst">
-                        <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select security question" formControlName="secQst">
+                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Answer" formControlName="secAns">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Answer" formControlName="secAns">
+                    </mat-input-container>
                 </div>
 
                 <!--<div class="frm-item-wrap">
@@ -186,23 +186,23 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
+                    </mat-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
+                    </mat-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
+                    </mat-input-container>
                 </div>
             </div>
 
@@ -210,23 +210,23 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error type="email" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error type="email" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
+                    </mat-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error type="tel" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error type="tel" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
+                    </mat-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
-                        <md-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
+                        <mat-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
             </div>
@@ -253,30 +253,30 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
-                        <md-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
+                        <mat-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
-                        <md-option *ngFor="let item of units" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
+                        <mat-option *ngFor="let item of units" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
-                        <md-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
+                        <mat-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
-                        <md-option *ngFor="let item of professions" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
+                        <mat-option *ngFor="let item of professions" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
 
@@ -284,23 +284,23 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <md-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
-                        <md-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
+                        <mat-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error type="email" placeholder="Official (Work) Email" formControlName="empWorkEmail">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error type="email" placeholder="Official (Work) Email" formControlName="empWorkEmail">
+                    </mat-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error type="email" placeholder="Official (Work) Contact Number" formControlName="empWorkPhonNo">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error type="email" placeholder="Official (Work) Contact Number" formControlName="empWorkPhonNo">
+                    </mat-input-container>
                 </div>
 
             </div>

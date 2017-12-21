@@ -5,18 +5,18 @@
 
     <form [formGroup]="dischargeFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <md-select placeholder="Discharge Type" formControlName="dischargeType">
-                <md-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge">{{discharge.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Discharge Type" formControlName="dischargeType">
+                <mat-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge">{{discharge.name}}</mat-option>
+            </mat-select>
         </div>
         <div class="frm-item-wrap">
-            <md-input-container>
-                <textarea mdInput formControlName="comment" placeholder="Reason for discharge"></textarea>
-            </md-input-container>
+            <mat-input-container>
+                <textarea matInput formControlName="comment" placeholder="Reason for discharge"></textarea>
+            </mat-input-container>
         </div>
     </form>
     <div class="btn-box">
-        <button md-raised-button [disabled]="disableBtn || !dischargeFormGroup.valid" (click)="onDischarge(dischargeFormGroup.value, dischargeFormGroup.valid)" class="btn">
+        <button mat-raised-button [disabled]="disableBtn || !dischargeFormGroup.valid" (click)="onDischarge(dischargeFormGroup.value, dischargeFormGroup.valid)" class="btn">
           <span *ngIf="dischargeText">Discharge Patient</span>
           <span *ngIf="dischargingText">Discharge Patient...<i class="fa fa-spinner fa-spin"></i></span>
         </button>

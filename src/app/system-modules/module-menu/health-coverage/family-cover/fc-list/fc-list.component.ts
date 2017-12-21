@@ -3,7 +3,7 @@ import { FacilitiesService } from './../../../../../services/facility-manager/se
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { User } from './../../../../../models/facility-manager/setup/user';
-import { MdPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -30,7 +30,7 @@ export class FcListComponent implements OnInit {
 
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   user: User = <User>{};
   genders: any[] = [
     {

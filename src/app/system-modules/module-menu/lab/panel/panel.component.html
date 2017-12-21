@@ -14,9 +14,9 @@
 
           <form class="frmNoteWrap" *ngIf="pannel_view" [formGroup]="frmNewPanel" novalidate>
             <div class="frm-item-wrap lone-input">
-              <md-input-container>
-                  <input mdInput placeholder="Panel Name" formControlName="panelName">
-              </md-input-container>
+              <mat-input-container>
+                  <input matInput placeholder="Panel Name" formControlName="panelName">
+              </mat-input-container>
             </div>
 
             <div class="frm-wrap">
@@ -130,10 +130,10 @@
                         </div>
 
                         <div class="frm-item-wrap">
-                            <md-select placeholder="Status">
-                              <md-option [value]="Active">Active</md-option>
-                              <md-option [value]="Inactive">Inactive</md-option>
-                            </md-select>
+                            <mat-select placeholder="Status">
+                              <mat-option [value]="Active">Active</mat-option>
+                              <mat-option [value]="Inactive">Inactive</mat-option>
+                            </mat-select>
                         </div>
                     </div>
                 </td>

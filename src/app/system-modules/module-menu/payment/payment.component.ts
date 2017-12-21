@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -42,6 +43,7 @@ export class PaymentComponent implements OnInit {
         private invoiceService: InvoiceService,
         private _pendingBillService: PendingBillService,
         private locker: CoolLocalStorage,
+        private router: Router,
         private _todayInvoiceService: TodayInvoiceService,
         private _locSummaryCashService: LocSummaryCashService
     ) {
@@ -67,7 +69,7 @@ export class PaymentComponent implements OnInit {
                 }
                 this._todayInvoiceService.get(facility).then(payload => {
                     this.invoiceGroups = payload.data.invoices;
-                    this.isLoadingInvoice = true;
+                    this.isLoadingInvoice = false;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });
 
@@ -98,6 +100,7 @@ export class PaymentComponent implements OnInit {
         this._todayInvoiceService.get(facility).then(payload => {
             this.invoiceGroups = payload.data.invoices;
             this.totalAmountReceived = payload.data.amountReceived;
+            this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
         }).catch(err => this._notification('Error', 'There was a problem getting invoices, Please try again later!'));
     }
@@ -125,8 +128,12 @@ export class PaymentComponent implements OnInit {
         }
         this._locSummaryCashService.get(facility)
             .then(payload2 => {
+                this.loadingLocAmountAccrued = false;
                 this.barChartLabels = payload2.data.barChartLabels;
-                this.barChartData.splice(0, 1);
+                if (payload2.data.barChartData.length > 0) {
+                    this.barChartData.splice(0, 1);
+                }
+
                 for (let k = 0; k < payload2.data.barChartData.length; k++) {
                     this.barChartData.push({ "data": [0], "label": "" });
                 }
@@ -136,13 +143,17 @@ export class PaymentComponent implements OnInit {
                     }
                     this.barChartData[i].label = payload2.data.barChartData[i].label;
                 }
-                this.loadingLocAmountAccrued=false;
+
             }).catch(err => {
+                this.loadingLocAmountAccrued = false;
                 this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
             });
     }
 
-    
+    onSelectedInvoice(invoice) {
+        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]);
+    }
+
     // Notification
     private _notification(type: string, text: string): void {
         this.facilityService.announceNotification({
@@ -154,10 +165,8 @@ export class PaymentComponent implements OnInit {
 
     // events
     public chartClicked(e: any): void {
-        console.log(e);
     }
 
     public chartHovered(e: any): void {
-        console.log(e);
     }
 }

@@ -69,7 +69,6 @@ export class AddAllergyComponent implements OnInit {
         this.patientDocumentation.documentations = [];
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {
@@ -85,7 +84,6 @@ export class AddAllergyComponent implements OnInit {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               // this.populateDocuments();
-              console.log(this.patientDocumentation);
               // mload.data[0].documentations[0].documents.push(doct);
             }
           })

@@ -11,27 +11,27 @@
         <form [formGroup]="facilityForm1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Company Name" formControlName="facilityname">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Company Name" formControlName="facilityname">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="email" mdInput md-error placeholder="Company Email" formControlName="facilityemail">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="email" matInput mat-error placeholder="Company Email" formControlName="facilityemail">
+                    </mat-input-container>
                 </div>
             </div>
 
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="url" mdInput md-error placeholder="Official Website" formControlName="facilitywebsite">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Select Country" formControlName="facilitycountry">
-                        <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select Country" formControlName="facilitycountry">
+                        <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
             <div class="clear"></div>
@@ -43,61 +43,61 @@
         <form [formGroup]="facilityForm1_1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-select *ngIf="stateAvailable" placeholder="Facility State" formControlName="facilitystate" (change)="onStateChange($event.value)">
-                        <md-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</md-option>
-                    </md-select>
-                    <input [hidden]="stateAvailable" mdInput md-error placeholder="Facility State" formControlName="facilitystate">
+                    <mat-select *ngIf="stateAvailable" placeholder="Facility State" formControlName="facilitystate" (change)="onStateChange($event.value)">
+                        <mat-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</mat-option>
+                    </mat-select>
+                    <input [hidden]="stateAvailable" matInput mat-error placeholder="Facility State" formControlName="facilitystate">
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="City" *ngIf="stateAvailable" formControlName="facilitycity">
-                        <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="City" *ngIf="stateAvailable" formControlName="facilitycity">
+                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Local Government" *ngIf="stateAvailable" formControlName="facilitylga">
-                        <md-option *ngFor="let item of lgas" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Local Government" *ngIf="stateAvailable" formControlName="facilitylga">
+                        <mat-option *ngFor="let item of lgas" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input mdInput md-error placeholder="Facility Address" formControlName="facilityaddress">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input matInput mat-error placeholder="Facility Address" formControlName="facilityaddress">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input mdInput md-error placeholder="Major Landmark" formControlName="facilitylandmark">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input matInput mat-error placeholder="Major Landmark" formControlName="facilitylandmark">
+                    </mat-input-container>
                 </div>
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input mdInput md-error placeholder="Contact Person (First Name)" formControlName="contactFName">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input matInput mat-error placeholder="Contact Person (First Name)" formControlName="contactFName">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input mdInput md-error placeholder="Contact Person (Last Name)" formControlName="contactLName">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input matInput mat-error placeholder="Contact Person (Last Name)" formControlName="contactLName">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input type="tel" mdInput md-error placeholder="Contact Number" formControlName="facilityphonNo">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
+                    <mat-input-container class="example-full-width">
                         <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
-                        <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Password">
+                        <input type="password" matInput mat-error formControlName="password" #showhideinput placeholder="Password">
                         <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
-                    </md-input-container>
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
+                    <mat-input-container class="example-full-width">
                         <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
-                        <input type="password" mdInput md-error formControlName="repass" #showhideinput placeholder="Confirm Password">
+                        <input type="password" matInput mat-error formControlName="repass" #showhideinput placeholder="Confirm Password">
                         <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
-                    </md-input-container>
+                    </mat-input-container>
                 </div>
             </div>
             <div class="clear"></div>
@@ -112,9 +112,9 @@
         </ngb-alert>
         <form *ngIf="!isSuccessful" [formGroup]="frm_numberVerifier" novalidate>
             <div class="frm-singleItem-wrap">
-                <md-input-container>
-                    <input mdInput md-error [(ngModel)]="InputedToken" placeholder="Supply Token" formControlName="txt_numberVerifier">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput mat-error [(ngModel)]="InputedToken" placeholder="Supply Token" formControlName="txt_numberVerifier">
+                </mat-input-container>
             </div>
             <div class="noToken_wrap">
                 <div class="noToken_txt1">...Didn't recieve a token on <span>{{input_facilityphonNo}}</span>?</div>

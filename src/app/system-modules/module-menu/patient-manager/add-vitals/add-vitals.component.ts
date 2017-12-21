@@ -63,9 +63,6 @@ export class AddVitalsComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
-
-    console.log(this._locker.getObject('miniFacility'))
-    console.log(this.loginEmployee)
     this.getVitalLocation();
     this.getVitalPosition();
     this.getVitalRythm();
@@ -78,7 +75,6 @@ export class AddVitalsComponent implements OnInit {
       }
     }).then(payload => {
       this.loginedUser = payload.data[0];
-      console.log(this.loginedUser);
     });
     this.frmAddVitals = this.formBuilder.group({
 
@@ -144,13 +140,12 @@ export class AddVitalsComponent implements OnInit {
 
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
-      console.log(payload);
+     
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {
@@ -164,7 +159,6 @@ export class AddVitalsComponent implements OnInit {
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
-              console.log(this.patientDocumentation);
             }
           })
         }
@@ -178,7 +172,6 @@ export class AddVitalsComponent implements OnInit {
       .subscribe((payload: any) => {
         if (payload.data.length > 0) {
           this.selectedForm = payload.data[0];
-          console.log(this.selectedForm)
         }
       });
   }
@@ -186,7 +179,6 @@ export class AddVitalsComponent implements OnInit {
   getVitalPosition() {
     this._vitalPositionService.findAll().then(payload => {
       this.vitalPosition = payload.data;
-      console.log(this.vitalPosition);
     });
   }
   getVitalRythm() {
@@ -241,8 +233,6 @@ export class AddVitalsComponent implements OnInit {
         patientId: this.patient._id,
         personId: this.patient.personDetails._id
       }
-      console.log(vitalValue);
-      console.log(params);
       this._vitalService.post(vitalValue, params).then(payload => {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
@@ -259,7 +249,6 @@ export class AddVitalsComponent implements OnInit {
       //         documentType: this.selectedForm
       //       }
       //     }
-      //     console.log(documentation)
       //     if (documentation.document.documentType._id != undefined &&
       //       documentation.document.documentType._id === this.selectedForm._id) {
       //       isExisting = true;
@@ -328,19 +317,17 @@ export class AddVitalsComponent implements OnInit {
   //     vitalValue.temperature = this.temperature;
   //     vitalValue.heightWeight = this.heightWeight;
   //     vitalValue.bloodPressure = this.bloodPressure;
-  //     console.log(vitalValue);
   //     // this.documentation.facilityId = this.selectedFacility._id;
   //     // this.documentation.patientId = this.patientId;
 
   //     // this.documentation.createdBy = this.loginedUser._id;
-  //     // console.log(this.loginedUser._id);
   //     // this.documentation.document = vitalValue;
 
 
   //     this.documentationService.create(this.documentation).then(payload => {
   //       this.frmAddVitals.reset();
   //     }, error => {
-  //       console.log(error);
+  //       
   //     });
   //   }
   // }

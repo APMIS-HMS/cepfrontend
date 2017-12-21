@@ -133,7 +133,6 @@ export class PatientPaymentPlanComponent implements OnInit {
         payload.data[0].hmoCovers.forEach((item, i) => {
           this.selectedPatientPolicy = payload.data[0];
           this.hmoService.hmos(this.selectedFacility._id, item.hmo._id).then(payload2 => {
-            console.log(item);
             (<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
               .push(
               this.formBuilder.group({
@@ -424,14 +423,9 @@ export class PatientPaymentPlanComponent implements OnInit {
       phone: this.selectedPatient.personDetails.phoneNumber,
       principalstatus: 'Inactive'
     }
-    console.log(insurance.value.client)
-    console.log(insurance)
-    console.log(this.selectedPatient.personDetails)
     if (insurance.value.client === undefined || insurance.value.client === null) {
-      console.log('null client')
       insurance.value.client = {};
       insurance.value.client = newModel;
-      console.log(newModel)
     }
     const index = this.hmos.findIndex(x => x.hmo._id === insurance.value.hmo);
     insurance.value.client.hmo = this.hmos[index].hmo;
@@ -445,11 +439,9 @@ export class PatientPaymentPlanComponent implements OnInit {
       hmo: this.hmos[index].hmo,
       hmoPlan: insurance.value.hmoPlan
     };
-    console.log(param);
     this.hmoService.updateBeneficiaryList(param).then(payload => {
       const comCoverId = insurance.value.hmoPlanId;
       this.hmoService.hmos(this.selectedFacility._id, insurance.value.hmo, comCoverId).then(pay => {
-        console.log(pay);
 
         let newPolicy: any = {};
         let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
@@ -462,8 +454,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.create(newPolicy).then(payload => {
-          console.log('new policy');
-          console.log(payload);
         })
 
 
@@ -510,7 +500,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
       const comCoverId = insurance.value.hmoPlanId;
       this.hmoService.hmos(this.selectedFacility._id, insurance.value.hmo, comCoverId).then(pay => {
-        console.log(pay);
 
         let newPolicy: any = {};
         let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
@@ -523,8 +512,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.create(newPolicy).then(payload => {
-          console.log('new policy');
-          console.log(payload);
         })
 
 
@@ -565,13 +552,10 @@ export class PatientPaymentPlanComponent implements OnInit {
       principalstatus: 'Inactive'
     }
     if (insurnace.value.client === undefined || insurnace.value.client === null) {
-      console.log('in')
       insurnace.value.client = {};
       insurnace.value.client = newModel;
     }
-    console.log(insurnace.value)
     const index = this.hmos.findIndex(x => x.hmo._id === insurnace.value.hmo);
-    console.log(index)
     insurnace.value.client.hmo = this.hmos[index];
 
 
@@ -585,17 +569,8 @@ export class PatientPaymentPlanComponent implements OnInit {
     };
     this.hmoService.updateBeneficiaryList(param).then(payload => {
 
-
-      console.log(payload)
-
-
-
-
       const comCoverId = insurnace.value.hmoPlanId;
       this.hmoService.hmos(this.selectedFacility._id, insurnace.value.hmo, comCoverId).then(pay => {
-        console.log(pay);
-
-
 
         pay.body.hmo = this.hmos[index].hmo;
         if (this.selectedPatientPolicy.hmoCovers === undefined) {
@@ -605,8 +580,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.update(this.selectedPatientPolicy).then(payload => {
-          console.log('updated policy');
-          console.log(payload);
         })
 
 
@@ -656,15 +629,8 @@ export class PatientPaymentPlanComponent implements OnInit {
     this.hmoService.updateBeneficiaryList(param).then(payload => {
 
 
-
-      console.log(payload)
-
-
-
-
       const comCoverId = insurnace.value.hmoPlanId;
       this.hmoService.hmos(this.selectedFacility._id, insurnace.value.hmo, comCoverId).then(pay => {
-        console.log(pay);
 
 
 
@@ -676,8 +642,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.update(this.selectedPatientPolicy).then(payload => {
-          console.log('updated policy');
-          console.log(payload);
         })
 
       });
@@ -702,7 +666,6 @@ export class PatientPaymentPlanComponent implements OnInit {
   onSubmit(insurance, i) {
     this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
       .controls[this.insuranceFormArrayIndex]).controls['readOnly'].setValue(true);
-    console.log(insurance);
 
 
     //selected patient has no existing policy
@@ -718,27 +681,21 @@ export class PatientPaymentPlanComponent implements OnInit {
         // add him/her to master file
         // add to insurance cover to policy and create;
         if (insurance.value.isPrincipal) {
-          console.log(1)
           this.saveINullPolicyNullClientWithPrincipal(insurance);
         } else {
-          console.log(2)
           this.saveINullPolicyNullClientWithDependant(insurance);
         }
       } else {
-        console.log(3)
         this.saveINullPolicyClient(insurance, newPolicy, index);
       }
     } else {
       if (insurance.value.client === null) {
         if (insurance.value.isPrincipal) {
-          console.log(4)
           this.saveIPolicyNullClientWithPrincipal(insurance);
         } else {
-          console.log(5)
           this.saveIPolicyNullClientWithDependant(insurance);
         }
       } else {
-        console.log(6)
         this.saveIPolicyClient(insurance);
       }
 
@@ -782,12 +739,9 @@ export class PatientPaymentPlanComponent implements OnInit {
       phone: this.selectedPatient.personDetails.phoneNumber,
       principalstatus: 'Inactive'
     }
-    console.log(company.value.client)
     if (company.value.client === undefined || company.value.client === null) {
-      console.log('null client')
       company.value.client = {};
       company.value.client = newModel;
-      console.log(newModel)
     }
     const index = this.companies.findIndex(x => x.hmo._id === company.value.company);
     company.value.client.company = this.companies[index];
@@ -800,12 +754,9 @@ export class PatientPaymentPlanComponent implements OnInit {
       facilityId: this.selectedFacility._id,
       company: this.companies[index].hmo
     };
-    console.log(param);
     this.companyCoverService.updateBeneficiaryList(param).then(payload => {
       const comCoverId = company.value.companyPlanId;
       this.companyCoverService.companycovers(this.selectedFacility._id, company.value.company, comCoverId).then(pay => {
-        console.log(pay);
-
         let newPolicy: any = {};
         let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
         copyPatient = this.trimPerson(copyPatient);
@@ -817,8 +768,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.create(newPolicy).then(payload => {
-          console.log('new policy');
-          console.log(payload);
         })
 
 
@@ -864,7 +813,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
       const comCoverId = company.value.companyPlanId;
       this.companyCoverService.companycovers(this.selectedFacility._id, company.value.company, comCoverId).then(pay => {
-        console.log(pay);
 
         let newPolicy: any = {};
         let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
@@ -877,8 +825,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.create(newPolicy).then(payload => {
-          console.log('new policy');
-          console.log(payload);
         })
 
 
@@ -943,10 +889,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
       const comCoverId = company.value.companyPlanId;
       this.companyCoverService.companycovers(this.selectedFacility._id, company.value.company, comCoverId).then(pay => {
-        console.log(pay);
-
-
-
         pay.body.company = this.companies[index].hmo;
         if (this.selectedPatientPolicy.companyCovers === undefined) {
           this.selectedPatientPolicy.companyCovers = []
@@ -955,8 +897,6 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
         this.policyService.update(this.selectedPatientPolicy).then(payload => {
-          console.log('updated policy');
-          console.log(payload);
         })
 
 

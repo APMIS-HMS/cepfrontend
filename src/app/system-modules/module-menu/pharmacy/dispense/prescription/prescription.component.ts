@@ -94,7 +94,6 @@ export class PrescriptionComponent implements OnInit {
 	// Save prescription
 	onClickSavePrescription() {
 		const tempArray = [];
-		console.log(this.unBilledArray);
 		// Get the billed items from the unbilled items
 		this.unBilledArray.forEach((element, i) => {
 			// Billed items
@@ -103,7 +102,6 @@ export class PrescriptionComponent implements OnInit {
 			}
 		});
 
-		console.log(tempArray);
 		if(tempArray.length > 0) {
 			this.disableSaveBtn = true;
 			this.saveBtn = "Saving... <i class='fa fa-spinner fa-spin'></i>";
@@ -174,13 +172,10 @@ export class PrescriptionComponent implements OnInit {
 				isPrescription: true,
 				storeId: this.storeId,
 			}
-			console.log(dispense);
 			this._dispenseService.create(dispense).then(res => {
-				console.log(res);
 				this.prescriptionItems.isDispensed = true;
 				// Call the prescription service to change the isDispensed to true.
 				this._prescriptionService.update(this.prescriptionItems).then(res => {
-					console.log(res);
 					this.disableDispenseAllBtn = true;
 					this.dispenseAllBtnText = 'Saved';
 					this._notification('Success', 'Drugs has been sent.');
@@ -193,11 +188,10 @@ export class PrescriptionComponent implements OnInit {
 					}, 2000);
 				}).catch(err => console.error(err));
 			}).catch(err => console.error(err));
-			// console.log(externalDispense);
 			// if(externalDispense.generics.length > 0) {
 			// 	// Save external Prescriptions.
 			// 	this._externalPrescriptionService.create(externalDispense).then(res => {
-			// 		console.log(res);
+			// 	
 			// 	}).catch(err => console.error(err));
 			// }
 		} else {
@@ -208,7 +202,6 @@ export class PrescriptionComponent implements OnInit {
 	// Get all drugs from generic
 	private _getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {}).then(res => {
-			console.log(res);
 			this.loading = false;
 			
 			// Check if the page is for prescription or external prescription
@@ -305,7 +298,6 @@ export class PrescriptionComponent implements OnInit {
 							storeId: this.storeId.typeObject.storeId 
 						}})
 						.then(res => {
-							console.log(res);
 							this.batchLoading = false;
 							if(res.data.length > 0) {
 								this.transactions = res.data[0];
@@ -363,7 +355,6 @@ export class PrescriptionComponent implements OnInit {
 
 						// Make a call to update the prescription with the qty dispensed
 						this._prescriptionService.update(this.prescriptionItems).then(res => {
-							console.log(res);
 							if(res._id !== undefined) {
 								this._batchTransactionTracking(index, inputBatch[index], batch);
 								// Make a call to the inventory service so that you can deduct the quantity from the inventory
@@ -372,11 +363,9 @@ export class PrescriptionComponent implements OnInit {
 										// disable the dispense button.
 										this.disableDispenseBtn = false;
 										this.qtyDispenseBtn = "Dispense";
-										console.log(res);
 										this._notification('Success', 'Quantity has been deducted.');
 									})
 									.catch(err => {
-										console.log(err);
 									});
 							}
 						}).catch(err => console.error(err));
@@ -466,12 +455,10 @@ export class PrescriptionComponent implements OnInit {
 							}
 						});
 					});
-					console.log(this.prescriptions);
 					
 					setTimeout(e => {
 						const condition = this.prescriptionItems.prescriptionItems.length !== this.prescriptions.length;
 						const notBilled = this.prescriptions.filter( x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
-						console.log(notBilled);
 						if(notBilled.length > 0 || condition) {
 							this.disableDispenseAllBtn = true;
 						} else {
@@ -512,13 +499,11 @@ export class PrescriptionComponent implements OnInit {
 			// Call the billing service
 			this._billingService.find({query: {_id: this.prescriptionItems.billId, facilityId: this.facility._id }})
 				.then(res => {
-					console.log(res);
 					// Check if the initial generated billingId exist with this facility
 					if(res.data.length > 0) {
 						const containsIsBilled = this.unBilledArray.filter(x => x.isBilled);
 						let totalCost = 0;
 						let totalQuantity = 0;
-						console.log(containsIsBilled);
 						if(containsIsBilled.length > 0) {
 							this.unBilledArray.forEach(element => {
 								if(element.isBilled) {
@@ -550,15 +535,11 @@ export class PrescriptionComponent implements OnInit {
 							// Update the totalCost and totalQuantity in the prescriptionItems object.
 							this.prescriptionItems.totalCost = this.totalCost;
 							this.prescriptionItems.totalQuantity = this.totalQuantity;
-							console.log(res);
 							// Update the Billing service
 							this._billingService.update(res)
 								.then(res => {
-									console.log(res);
-									console.log(this.prescriptionItems);
 									if(res._id !== undefined) {
 										this._prescriptionService.update(this.prescriptionItems).then(res => {
-											console.log(res);
 											if(res._id !== undefined) {
 												this.disableSaveBtn = false;
 												this.saveBtn = "Save";
@@ -590,7 +571,6 @@ export class PrescriptionComponent implements OnInit {
 
 	// External Prescription logic.
 	private _isExternalPrescriptonLogic() {
-		console.log('External Prescription');
 		this._isPrescriptionLogic();
 	}
 
@@ -622,7 +602,6 @@ export class PrescriptionComponent implements OnInit {
 				billItemArray.push(billItem);
 			}
 		});
-		console.log(billItemArray);
 		if(billItemArray.length > 0) {
 			const bill = <BillIGroup> {
 				facilityId: this.facility._id,
@@ -632,11 +611,9 @@ export class PrescriptionComponent implements OnInit {
 				subTotal: totalCost,
 				grandTotal: totalCost,
 			}
-			console.log(bill);
 			// send the billed items to the billing service
 			this._billingService.create(bill)
 				.then(res => {
-					console.log(res);
 					if(res._id !== undefined) {
 						// Update the totalCost and totalQuantity in the prescriptionItems object.
 						this.prescriptionItems.totalCost = this.totalCost;
@@ -644,7 +621,6 @@ export class PrescriptionComponent implements OnInit {
 						this.prescriptionItems.billId = res._id
 						this._prescriptionService.update(this.prescriptionItems)
 							.then(res => {
-								console.log(res);
 								if(res._id !== undefined) {
 									this.disableSaveBtn = false;
 									this.saveBtn = "Save";

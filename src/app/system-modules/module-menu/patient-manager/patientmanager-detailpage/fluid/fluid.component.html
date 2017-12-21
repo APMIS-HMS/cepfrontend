@@ -12,15 +12,15 @@
               <form [formGroup]="frmIntake" novalidate>
                   
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Fluid" formControlName="infusion">
-                      <md-option [value]="1">Drip</md-option>
-                    </md-select>
+                    <mat-select placeholder="Fluid" formControlName="infusion">
+                      <mat-option [value]="1">Drip</mat-option>
+                    </mat-select>
                 </div>
           
                 <div class="frm-item-wrap">
-                  <md-input-container>
-                      <input mdInput md-error placeholder="Volume" formControlName="infusion_volume">
-                  </md-input-container>
+                  <mat-input-container>
+                      <input matInput mat-error placeholder="Volume" formControlName="infusion_volume">
+                  </mat-input-container>
                 </div>
           
                 <button class="cta-1">
@@ -38,15 +38,15 @@
               <form [formGroup]="frmOutput" novalidate>
                   
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Fluid" formControlName="fluid">
-                      <md-option [value]="1">Drip</md-option>
-                    </md-select>
+                    <mat-select placeholder="Fluid" formControlName="fluid">
+                      <mat-option [value]="1">Drip</mat-option>
+                    </mat-select>
                 </div>
           
                 <div class="frm-item-wrap">
-                  <md-input-container>
-                      <input mdInput md-error placeholder="Volume" formControlName="output_volume">
-                  </md-input-container>
+                  <mat-input-container>
+                      <input matInput mat-error placeholder="Volume" formControlName="output_volume">
+                  </mat-input-container>
                 </div>
           
                 <button class="cta-1">

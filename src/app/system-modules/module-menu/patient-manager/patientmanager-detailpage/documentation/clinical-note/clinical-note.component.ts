@@ -58,7 +58,6 @@ export class ClinicalNoteComponent implements OnInit {
 
     this.templateFormCtrl = new FormControl();
     this.templateFormCtrl.valueChanges.subscribe(temp => {
-      // console.log(temp)
       // this.surveyjs.surveyModel.data  = temp.data;
       this.sharedService.announceTemplate(temp);
     })
@@ -95,7 +94,6 @@ export class ClinicalNoteComponent implements OnInit {
     ))
       .subscribe((results: any) => {
         this.forms = results.data;
-        console.log(this.forms)
       }, error =>{
         this.getForms();
       })

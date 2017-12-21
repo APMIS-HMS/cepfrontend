@@ -8,9 +8,9 @@
 
         <form [formGroup]="frmNewprice" novalidate>
             <div class="frm-item-wrap">
-                <md-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat">
-                    <md-option *ngFor="let category of categories" [value]="category">{{category.name}}</md-option>
-                </md-select>
+                <mat-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat">
+                    <mat-option *ngFor="let category of categories" [value]="category">{{category.name}}</mat-option>
+                </mat-select>
             </div>
             <form [formGroup]="frmNewprice2" class="form-horizontal list-div">
                 <div formArrayName="priceArray" class="frmArrayWrap">
@@ -19,15 +19,15 @@
                             <div formGroupName="{{i}}">
                                 <div style="display:flex" class="col-sm-12">
                                     <div style="width:100%" class="col-sm-9">
-                                        <md-list>
-                                            <md-list-item>{{schedule.value.item.name}}</md-list-item>
-                                        </md-list>
+                                        <mat-list>
+                                            <mat-list-item>{{schedule.value.item.name}}</mat-list-item>
+                                        </mat-list>
                                     </div>
                                     <div class="col-sm-3">
-                                        <md-input-container>
-                                            <input #price currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" mdInput md-error
+                                        <mat-input-container>
+                                            <input #price currencyMask [options]="{ prefix: 'N ', thousands: ',', decimal: '.', precision:2 }" type="text" matInput mat-error
                                                 placeholder="" formControlName="amount">
-                                        </md-input-container>
+                                        </mat-input-container>
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
 
             </form>
             <div class="col-sm-12 text-center" style="margin-top:20px; color: #fff;">
-                <button md-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)">
+                <button mat-raised-button (click)="newPrice(frmNewprice.value, frmNewprice.valid)">
                     Add price to list
                 </button>
                 <span *ngIf="loadingIndicator" style="color: #000;">

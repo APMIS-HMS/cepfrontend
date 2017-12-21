@@ -2,7 +2,7 @@
     <h3 class="c-page-title">List of Rooms in {{wardDetail.minorLocationId?.name}}</h3>
     <div class="pull-right btn-box">
         <div class="add-action-box">
-            <button md-raised-button (click)="addRoomModal()" class="btn pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Room</button>
+            <button mat-raised-button (click)="addRoomModal()" class="btn pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Room</button>
         </div>
         <div class="back-btn">
             <span routerLink="/dashboard/ward-manager/setup"><i class="fa fa-arrow-circle-o-left"></i> Back to Setup</span>
@@ -26,7 +26,7 @@
                 <tbody class="custom-tbody">
                     <tr *ngIf="rooms.length === 0 && loading">
                         <td class="table-content " colspan="6" style="text-align: center">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <mat-spinner class="small-spinner"></mat-spinner>
                         </td>
                     </tr>
                     <tr *ngIf="rooms.length === 0 && !loading">

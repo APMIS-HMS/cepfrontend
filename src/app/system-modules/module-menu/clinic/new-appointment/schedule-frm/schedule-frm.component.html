@@ -3,74 +3,74 @@
     <div class="frm-appointment">
         <div class="sect-wrap">
             <div>
-                <md-input-container>
-                    <input mdInput placeholder="Patient" [mdAutocomplete]="autoPatient" [formControl]="patient">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Patient" [matAutocomplete]="autoPatient" [formControl]="patient">
+                </mat-input-container>
                 <span style="margin-left: -15px;" *ngIf="loadingPatients" class="fa fa-spinner fa-spin"></span>
-                <md-autocomplete #autoPatient="mdAutocomplete" [displayWith]="patientDisplayFn">
-                    <md-option *ngFor="let patient of filteredPatients | async" [value]="patient">
+                <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="patientDisplayFn">
+                    <mat-option *ngFor="let patient of filteredPatients | async" [value]="patient">
                         {{ patient.personDetails.lastName }} {{ patient.personDetails.firstName }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
             <div>
                 <div class="survery">
-                    <!-- <md-input-container>
-                        <input mdInput [formControl]="dateCtrl" [value]="date | date: 'short'" [mdDatepicker]="picker" placeholder="Choose a date"
+                    <!-- <mat-input-container>
+                        <input matInput [formControl]="dateCtrl" [value]="date | date: 'short'" [matDatepicker]="picker" placeholder="Choose a date"
                             readonly>
-                        <md-error *ngIf="dateCtrl.hasError('noValue')">
+                        <mat-error *ngIf="dateCtrl.hasError('noValue')">
                             {{clinicErrorMsg}}
-                        </md-error>
-                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                    </md-input-container> -->
-                    <!-- <md-datepicker #picker></md-datepicker> -->
-                    <md-input-container>
-                        <input [formControl]="dateCtrl" [hourTime]="'12'" mdInput [value]="date | date: 'short'" dateTimePicker />
-                        <md-error *ngIf="dateCtrl.hasError('noValue')">
+                        </mat-error>
+                        <button mdSuffix [matDatepickerToggle]="picker"></button>
+                    </mat-input-container> -->
+                    <!-- <mat-datepicker #picker></mat-datepicker> -->
+                    <mat-input-container>
+                        <input [formControl]="dateCtrl" [hourTime]="'12'" matInput [value]="date | date: 'short'" dateTimePicker />
+                        <mat-error *ngIf="dateCtrl.hasError('noValue')">
                             {{clinicErrorMsg}}
-                        </md-error>
-                    </md-input-container>
+                        </mat-error>
+                    </mat-input-container>
                 </div>
             </div>
 
             <div>
-                <md-input-container>
-                    <input mdInput placeholder="Type" [mdAutocomplete]="autoType" [formControl]="type">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Type" [matAutocomplete]="autoType" [formControl]="type">
+                </mat-input-container>
 
-                <md-autocomplete #autoType="mdAutocomplete" [displayWith]="appointmentTypeDisplayFn">
-                    <md-option *ngFor="let type of appointmentTypes" [value]="type">
+                <mat-autocomplete #autoType="matAutocomplete" [displayWith]="appointmentTypeDisplayFn">
+                    <mat-option *ngFor="let type of appointmentTypes" [value]="type">
                         {{ type.name }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
             <div>
-                <md-input-container>
-                    <input mdInput placeholder="Status" [mdAutocomplete]="autoStatus" [formControl]="status">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Status" [matAutocomplete]="autoStatus" [formControl]="status">
+                </mat-input-container>
 
-                <md-autocomplete #autoStatus="mdAutocomplete" [displayWith]="orderStatusDisplayFn">
-                    <md-option *ngFor="let order of orderStatuses" [value]="order">
+                <mat-autocomplete #autoStatus="matAutocomplete" [displayWith]="orderStatusDisplayFn">
+                    <mat-option *ngFor="let order of orderStatuses" [value]="order">
                         {{ order.name }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
 
         </div>
         <div class="sect-wrap">
             <div>
-                <md-input-container>
-                    <input mdInput placeholder="Clinic" [mdAutocomplete]="ClinicAuto" [formControl]="clinic">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Clinic" [matAutocomplete]="ClinicAuto" [formControl]="clinic">
+                </mat-input-container>
 
-                <md-autocomplete #ClinicAuto="mdAutocomplete" [displayWith]="displayFn">
-                    <md-option *ngFor="let clinic of clinics" [value]="clinic">
+                <mat-autocomplete #ClinicAuto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let clinic of clinics" [value]="clinic">
                         {{ clinic.clinicName }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
             <div class="tr-act-btn tr-act-btn1">
@@ -79,44 +79,44 @@
             </div>
 
             <div class="tr-act-btn2">
-                <md-checkbox [formControl]="checkIn">Check In</md-checkbox>
+                <mat-checkbox [formControl]="checkIn">Check In</mat-checkbox>
             </div>
 
             <div class="tr-act-btn3">
-                <md-checkbox [formControl]="teleMed">Tele Medicine Consultation</md-checkbox>
+                <mat-checkbox [formControl]="teleMed">Tele Medicine Consultation</mat-checkbox>
             </div>
 
         </div>
 
         <div class="sect-wrap">
             <div class="filter-xxx">
-                <md-input-container>
-                    <input mdInput placeholder="Provider" [mdAutocomplete]="providerAuto" [formControl]="provider">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Provider" [matAutocomplete]="providerAuto" [formControl]="provider">
+                </mat-input-container>
                 <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
-                <md-autocomplete #providerAuto="mdAutocomplete" [displayWith]="providerDisplayFn">
-                    <md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+                <mat-autocomplete #providerAuto="matAutocomplete" [displayWith]="providerDisplayFn">
+                    <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider">
                         {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
             <div>
-                <md-input-container>
-                    <input mdInput placeholder="Appointment Category" [mdAutocomplete]="categoryAuto" [formControl]="category">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Appointment Category" [matAutocomplete]="categoryAuto" [formControl]="category">
+                </mat-input-container>
 
-                <md-autocomplete #categoryAuto="mdAutocomplete" [displayWith]="categoryServiceDisplayFn">
-                    <md-option *ngFor="let category of categoryServices" [value]="category">
+                <mat-autocomplete #categoryAuto="matAutocomplete" [displayWith]="categoryServiceDisplayFn">
+                    <mat-option *ngFor="let category of categoryServices" [value]="category">
                         {{ category.name }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
             <div>
-                <md-input-container class="example-full-width">
-                    <textarea mdInput [formControl]="reason" placeholder="Reason"></textarea>
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <textarea matInput [formControl]="reason" placeholder="Reason"></textarea>
+                </mat-input-container>
             </div>
             <!--
             <ng2-timezone-picker
@@ -125,22 +125,21 @@
                 placeholder="Select timezone">
             </ng2-timezone-picker> -->
             <div *ngIf="showTimeZone">
-                <md-input-container>
-                    <input mdInput placeholder="Select Timezone" [mdAutocomplete]="timezoneAuto" [formControl]="timezone">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="Select Timezone" [matAutocomplete]="timezoneAuto" [formControl]="timezone">
+                </mat-input-container>
 
-                <md-autocomplete #timezoneAuto="mdAutocomplete" [displayWith]="timezoneDisplayFn">
-                    <md-option *ngFor="let timezone of timezones" [value]="timezone">
+                <mat-autocomplete #timezoneAuto="matAutocomplete" [displayWith]="timezoneDisplayFn">
+                    <mat-option *ngFor="let timezone of timezones" [value]="timezone">
                         {{ timezone.name }}
-                    </md-option>
-                </md-autocomplete>
+                    </mat-option>
+                </mat-autocomplete>
             </div>
-
         </div>
     </div>
 
     <div class="btn-box">
-        <button md-raised-button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" class="btn">
+        <button mat-raised-button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" class="btn">
           <span *ngIf="updateAppointment">Update Appointment</span> 
           <span *ngIf="saveAppointment">Schedule Appointment</span>
           <span *ngIf="savingAppointment">Scheduling Appointment...<i class="fa fa-spinner fa-spin"></i></span>

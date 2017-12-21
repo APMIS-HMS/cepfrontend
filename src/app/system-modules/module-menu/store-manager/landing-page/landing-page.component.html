@@ -34,7 +34,7 @@
                                         <input type="text" [formControl]="searchControl" placeholder="search here" class="searchInput" #inputsearch/>
                                     </div>
                                     <div class="col-xs-2" style="padding-right: 0; padding-left: 0;">
-                                        <button md-raised-button (click)="refresh()" style="background: #FAFAFA;height: 35px;min-width:50px;"><i class="fa fa-refresh"></i></button>
+                                        <button mat-raised-button (click)="refresh()" style="background: #FAFAFA;height: 35px;min-width:50px;"><i class="fa fa-refresh"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                 </tr>
                 <tr *ngIf="stores.length === 0 && loading">
                     <td colspan="7">
-                        <md-spinner class='small-spinner'></md-spinner>
+                        <mat-spinner class='small-spinner'></mat-spinner>
                     </td>
                 </tr>
                 <tr *ngIf="stores.length === 0 && !loading">

@@ -35,9 +35,9 @@
             <div class="pending-header">
               <div class="pending-title">Invoices</div>
               <div class="search-wrap">
-                <md-input-container>
-                  <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
-                </md-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
+                </mat-input-container>
               </div>
             </div>
             <div class="pending-bills">
@@ -49,7 +49,7 @@
                   <div class="list-labels" (click)="onSelectedInvoice(invoice)">
                     <div class="pending-name">{{invoice.invoiceNo}}</div>
                     <div class="oda">
-                      <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
+                      <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
                       <div class="pending-amount">
                         <span>&#x20a6;</span>{{invoice.totalPrice|numberThr}}
                       </div>
@@ -215,9 +215,9 @@
             <div class="pending-header">
               <div class="pending-title">Pending Invoices</div>
               <div class="search-wrap">
-                <md-input-container>
-                    <input mdInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
-                </md-input-container>
+                <mat-input-container>
+                    <input matInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
+                </mat-input-container>
               </div>
             </div>
             <div class="pending-bills">

@@ -65,7 +65,6 @@ export class AdmitPatientComponent implements OnInit {
 
     // this.getwardRoomLocationItems();
     this.getWardsDetails();
-    console.log(this.inPatientItem);
 
     this.admitFormGroup = this.fb.group({
       ward: [''],
@@ -116,7 +115,6 @@ export class AdmitPatientComponent implements OnInit {
   }
 
   // onWardChange(param) {
-  // 	console.log(param);
   // 	this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
   // 		.then(payload => {
   // 			if (payload.data != []) {
@@ -149,7 +147,6 @@ export class AdmitPatientComponent implements OnInit {
 
   onAdmit(value: any, valid: boolean) {
     if (valid) {
-      console.log(value);
       this.disableAdmitBtn = true;
       this.admitBtnText = 'Admitting... <i class="fa fa-spinner fa-spin"></i>';
       this.mainErr = true;
@@ -176,7 +173,6 @@ export class AdmitPatientComponent implements OnInit {
         payload.patientId = this.inPatientItem.patientId._id;
 
         this._inPatientService.admit(payload).then(res => {
-          console.log(res);
           if (res.status === 'success') {
             let patient = this.inPatientItem.patientId.personDetails.personFullName;
             let text = 'You have successfully admitted ' + patient;
@@ -199,7 +195,6 @@ export class AdmitPatientComponent implements OnInit {
             this._notification('Error', 'There was a problem discharging patient. Please try again later.');
           }
         }).catch(err => {
-          console.log(err);
         });
         // this._inPatientListService.find({
         //     query: {
@@ -208,7 +203,6 @@ export class AdmitPatientComponent implements OnInit {
         //       isAdmitted: false
         //     }
         //   }).then(payload1 => {
-        //     console.log(payload1);
         //     // Delete Items that are not relevant in the room
         //     delete value.room.beds;
 
@@ -241,8 +235,6 @@ export class AdmitPatientComponent implements OnInit {
         //         this.inPatient.admissionDate = new Date();
         //         this.inPatient.prevWard = callback1.wardId;
         //         this._inPatientService.create(this.inPatient).then(callback => {
-        //           console.log(callback);
-        //           console.log(value);
         //           let patient = this.inPatientItem.patientId.personDetails
         //             .personFullName;
         //           let text = 'You have successfully admitted ' + patient;
@@ -266,12 +258,10 @@ export class AdmitPatientComponent implements OnInit {
         //       });
         //   });
       } else if (this.inPatientItem.typeChecker === myGlobals.transfer) {
-        console.log('Transfer');
         payload.type = 'acceptTransfer';
         payload.statusId = myGlobals.transfer;
 
         this._inPatientService.admit(payload).then(res => {
-          console.log(res);
           if (res.status === 'success') {
             this._notification('Success', 'Patient has been accepted successfully.');
             setTimeout(e => {
@@ -281,7 +271,6 @@ export class AdmitPatientComponent implements OnInit {
             this._notification('Error', 'There was a problem discharging patient. Please try again later.');
           }
         }).catch(err => {
-          console.log(err);
         });
         // this._inPatientService.get(this.inPatientItem._id, {})
         // 	.then(payload => {
@@ -298,10 +287,8 @@ export class AdmitPatientComponent implements OnInit {
         // 			.then(payload1 => {
         // 				this.router.navigate(['/dashboard/ward-manager/admitted']);
         // 			}, err => {
-        // 				console.log(err);
         // 			})
         // 			.catch(err => {
-        // 				console.log(err);
         // 			});
         // 	});
       }
@@ -314,12 +301,10 @@ export class AdmitPatientComponent implements OnInit {
   // 	if (this.inpatientItem.typeChecker === myGlobals.transfer) {
   // 		this._inPatientService.get(this.inpatientItem._id, {}).then(payload => {
   // 			const rooms = payload.transfers[payload.lastIndex].proposeWard.ward.wardDetails.rooms;
-  // 			console.log(rooms);
   // 			// this.wardRoomLocationItems = rooms;
   // 		});
   // 	} else if (this.inpatientItem.typeChecker === myGlobals.onAdmission) {
   // 		this._inPatientListService.get(this.inpatientItem._id, {}).then(payload => {
-  // 			console.log(payload);
   // 			// this.wardRoomLocationItems = payload.wardId;
   // 		});
   // 	}

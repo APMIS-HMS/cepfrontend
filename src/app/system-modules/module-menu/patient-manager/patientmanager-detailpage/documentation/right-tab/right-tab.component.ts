@@ -55,7 +55,6 @@ export class RightTabComponent implements OnInit {
                     this.patientDocumentation.documentations = [];
                     this.documentationService.create(this.patientDocumentation).subscribe(pload => {
                         this.patientDocumentation = pload;
-                        console.log(this.patientDocumentation);
                     });
                     this.getProblems();
                     this.getAllergies();
@@ -74,7 +73,6 @@ export class RightTabComponent implements OnInit {
                         })).subscribe((mload: any) => {
                             if (mload.data.length > 0) {
                                 this.patientDocumentation = mload.data[0];
-                                console.log(this.patientDocumentation);
                                 this.getProblems();
                                 this.getAllergies();
                                 this.getPastAppointments();
@@ -90,7 +88,6 @@ export class RightTabComponent implements OnInit {
     getProblems() {
         this.problems = [];
         this.patientDocumentation.documentations.forEach(documentation => {
-            console.log(documentation.document)
             if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
                     this.problems.push(problem);
@@ -107,7 +104,6 @@ export class RightTabComponent implements OnInit {
                 })
             }
         });
-        console.log(this.allergies);
     }
     getPastAppointments() {
         this.pastAppointments = [];
@@ -118,11 +114,9 @@ export class RightTabComponent implements OnInit {
     }
     getFutureAppointments() {
         this.futureAppointments = [];
-        console.log('am in future');
         Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isFuture: true } }))
             .subscribe((payload: any) => {
                 this.futureAppointments = payload.data;
-                console.log(this.futureAppointments);
             })
     }
     addProblem_show() {

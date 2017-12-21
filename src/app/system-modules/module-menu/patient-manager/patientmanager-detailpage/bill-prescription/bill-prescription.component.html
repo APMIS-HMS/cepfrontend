@@ -16,16 +16,16 @@
                                 <form [formGroup]="addBillForm" novalidate>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px">
-                                            <md-select placeholder="Drug" formControlName="drug" class="example-full-width">
-                                                <md-option *ngFor="let drug of drugs" [(value)]="drug.productId" #productId [attr.data-p-id]="drug.productId" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" [attr.data-p-price]="drug.price"
-                                                    [attr.data-p-aqty]="drug.availabilty" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</md-option>
-                                            </md-select>
+                                            <mat-select placeholder="Drug" formControlName="drug" class="example-full-width">
+                                                <mat-option *ngFor="let drug of drugs" [(value)]="drug.productId" #productId [attr.data-p-id]="drug.productId" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" [attr.data-p-price]="drug.price"
+                                                    [attr.data-p-aqty]="drug.availabilty" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</mat-option>
+                                            </mat-select>
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
                                             <div class="col-xs-6">
-                                                <md-input-container class="example-full-width">
-                                                    <input mdInput type="number" formControlName="qty" placeholder="Quantity">
-                                                </md-input-container>
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput type="number" formControlName="qty" placeholder="Quantity">
+                                                </mat-input-container>
                                             </div>
                                             <div class="col-xs-6" style="margin-top: -5px;">
                                                 <p>Price: <b>&#x20A6; {{ cost }}</b></p>
@@ -50,10 +50,10 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12">
                                         <div class="col-xs-6 no-padding">
-                                            <button md-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid);" class="btn btn-default">Save</button>
+                                            <button mat-raised-button [disabled]="!addBillForm.valid" (click)="onClickSaveCost(addBillForm.value, addBillForm.valid);" class="btn btn-default">Save</button>
                                         </div>
                                         <div class="col-xs-6">
-                                            <button md-raised-button (click)="onClickClose($event);" class="btn btn-default">Cancel</button>
+                                            <button mat-raised-button (click)="onClickClose($event);" class="btn btn-default">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                             </div>
                             <div class="border-box" *ngIf="drugs.length === 0 && loading">
                                 <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">
-                                    <md-spinner class="small-spinner"></md-spinner>
+                                    <mat-spinner class="small-spinner"></mat-spinner>
                                 </div>
                             </div>
                         </div>

@@ -6,32 +6,32 @@
             <ul *ngIf="!homeContentArea" class="moduleNav">
                 <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
             </ul>
-            <md-input-container style="width:200px;margin-right: 10px;" *ngIf="homeContentArea" class="example-full-width">
-                <input mdInput md-error type="search"  placeholder="Search for employee" [formControl]="searchControl">
-            </md-input-container>
+            <mat-input-container style="width:200px;margin-right: 10px;" *ngIf="homeContentArea" class="example-full-width">
+                <input matInput mat-error type="search"  placeholder="Search for employee" [formControl]="searchControl">
+            </mat-input-container>
             <div class="sort-txt">
                 <div>
-                    <md-select placeholder="Department" [formControl]="department">
-                        <md-option *ngFor="let item of departments" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Department" [formControl]="department">
+                        <mat-option *ngFor="let item of departments" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div>
-                    <md-select placeholder="Unit" [formControl]="unit">
-                        <md-option *ngFor="let item of units" [value]="item.name">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Unit" [formControl]="unit">
+                        <mat-option *ngFor="let item of units" [value]="item.name">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
             <div *ngIf="mobileSort" class="sort-txt-mobile shadow-RB">
                 <div (click)="sort_pop()" class="x">X</div>
                 <div>
-                    <md-select placeholder="Department" [formControl]="department">
-                        <md-option *ngFor="let item of departments" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Department" [formControl]="department">
+                        <mat-option *ngFor="let item of departments" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div>
-                    <md-select placeholder="Unit" [formControl]="unit">
-                        <md-option *ngFor="let item of units" [value]="item.name">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Unit" [formControl]="unit">
+                        <mat-option *ngFor="let item of units" [value]="item.name">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
             </li>
         </ul>         
     </div>
-    <div class="col-md-12">
+    <div class="col-mat-12">
         <span (click)="newEmpShow()" id="floating-button">
             <div class="plus">+</div>
         </span>

@@ -22,7 +22,7 @@ export class UserAccountsComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   logoutConfirm_on = false;
   loginEmployee: Employee = <Employee>{};
-  authData: any;
+  authData: any; 
   constructor(private locker: CoolLocalStorage,
     private router: Router,
     private route: ActivatedRoute,
@@ -44,7 +44,6 @@ export class UserAccountsComponent implements OnInit {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
         this.selectedPerson = payload.selectedPerson;
-        console.log(payload.listOfFacilities)
         if (payload.listOfFacilities.length === 1) {
           this.popListing(payload.listOfFacilities[0]);
         } else {
@@ -68,14 +67,11 @@ export class UserAccountsComponent implements OnInit {
 
     //   this.facilityService.find({ query: { _id: { $in: facilityList } } })
     //     .then(payload => {
-    //       console.log(1)
     //       this.listOfFacilities = payload.data;
     //       if (this.listOfFacilities.length === 1) {
-    //         console.log(2)
     //         this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
     //         this.router.navigate(['/modules']);
     //       } else {
-    //           console.log(3)
     //       }
     //     });
     // } else {

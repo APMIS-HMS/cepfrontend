@@ -292,7 +292,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       const user$ = Observable.fromPromise(this.userService.find({ query: { personId: this.patient.personId } }));
       Observable.forkJoin([patient$, user$]).subscribe((results: any) => {
         this.patient = results[0];
-        console.log(this.patient.personDetails.nextOfKin);
         this.selectedUser = results[1];
 
       })
@@ -373,7 +372,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       this.patient = payload;
     },
       error => {
-        console.log(error);
       });
     this.contentSecMenuShow = false;
   }
@@ -637,11 +635,9 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
   }
 
 }

@@ -79,14 +79,11 @@ export class PrescriptionListComponent implements OnInit {
 	}
 
 	onChangeCategory(value: any) {
-		console.log(value);
 	}
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
-		this._prescriptionService.find({ query: { facilityId : this.facility._id }})
-			.then(res => {
-				console.log(res);
+		this._prescriptionService.find({ query: { facilityId : this.facility._id }}).then(res => {
 				this.loading = false;
 				res.data.forEach(element => {
 					if (!element.isDispensed) {
@@ -99,26 +96,24 @@ export class PrescriptionListComponent implements OnInit {
 						});
 
 						if (isBilledCount === preItemCount) {
-							element.status = 'completely';
+							element.status = 'Completely';
 						} else if (isBilledCount === 0) {
-							element.status = 'not';
+							element.status = 'Not';
 						} else {
-							element.status = 'partly';
+							element.status = 'Partly';
 						}
 
 						this.tempPrescriptionLists.push(element); // temporary variable to search from.
 						this.prescriptionLists.push(element);
 					}
 				});
-			})
-			.catch(err => {
+			}).catch(err => {
 				console.log(err);
 			});
 	}
 
 	getDispenses() {
 		this._dispenseService.find({ query: {facilityId: this.facility._id, isPrescription: false }}).then(res => {
-			console.log(res);
 			this.noPresLoading = false;
 			if (res.data.length > 0) {
 				this.noPrescriptionLists = res.data;
@@ -130,7 +125,6 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Call Api to search
 	private searchApi() {
-		console.log('name');
 	}
 
 }

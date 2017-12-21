@@ -110,7 +110,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
-      console.log(appointment);
       this.selectedAppointment = appointment;
       this.patient = appointment.patientId;
       this.patientDetails = appointment.patientId;
@@ -127,7 +126,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     })
   }
   setAppointment() {
-    console.log(this.selectedAppointment);
     if (this.patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
     }
@@ -139,7 +137,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
-      console.log(this.patient);
     } else {
       this.router.navigate(['/dashboard/patient-manager']);
     }
@@ -152,7 +149,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
           const isOnObj = isOnList[0];
           isOnObj.isOn = true;
           let coo = <any>this.locker.getObject('appointment');
-          console.log(coo.isCheckedOut);
           this.checkedIn = !coo.isCheckedOut;
           this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
             this.loginEmployee = payloadu;
@@ -243,7 +239,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.patient = payload;
     },
       error => {
-        console.log(error);
       });
     this.contentSecMenuShow = false;
   }
