@@ -47,6 +47,7 @@ export class ServicesComponent implements OnInit {
     this.facility = <Facility> this._locker.getObject('selectedFacility');
     this.getCategories();
     this.getTags();
+    this.getCategory();
 
     const subscribeForCategory = this.searchCategory.valueChanges
       .debounceTime(200)
@@ -143,7 +144,7 @@ export class ServicesComponent implements OnInit {
     this._facilitiesServiceCategoryService.find({
       query: {
         $or: [
-          { facilityId: this.facility._id },
+          { facilityId: this.facility._id }
           // { facilityId: undefined }
         ]
       }
@@ -174,6 +175,25 @@ export class ServicesComponent implements OnInit {
           });
         });
       });
+  }
+
+  getCategory() {
+    this._facilitiesServiceCategoryService.find({
+      query:
+      { searchCategory: "Medical Records", facilityId: this.facility._id }
+    }).
+    then(payload => {
+      //this.filterOutCategory(payload);
+      //this.categories = [];
+      let cat: any = [];
+      payload.data.forEach((itemi, i) => {
+        itemi.categories.forEach((itemj, j) => {
+          if (itemi.facilityId !== undefined) {
+            cat.push(itemj);
+          }
+        });
+      });
+    });
   }
 
   getTags() {

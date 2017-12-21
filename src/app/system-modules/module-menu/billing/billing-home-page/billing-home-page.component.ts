@@ -35,12 +35,21 @@ export class BillingHomePageComponent implements OnInit {
     this.pageInView.emit('Services/Billing Manager');
     this.facility =  <Facility> this._locker.getObject('selectedFacility');
     this.getPrices();
+    this.getServicePrice();
   }
   getPrices() {
     this.servicePriceService.find({ query: { facilityId: this.facility._id } })
       .then(payload => {
         this.prices = payload.data;
       });
+  }
+  getServicePrice(){
+    let service_id = "58a7478c291aa72bccf4b7a3";
+    this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: service_id } })
+    .then(payload => {
+      //this.prices = payload.data;
+    }).catch(err => {
+    });
   }
   newPricePopup_show() {
     this.newPricePopup = true;

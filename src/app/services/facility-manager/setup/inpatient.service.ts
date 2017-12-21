@@ -85,36 +85,29 @@ export class InPatientService {
   }
 
   private extractData(res: Response) {
-    console.log(res);
 	  let body = res.json();
     return body || {};
   }
 
   private handleErrorObservable (error: Response | any) {
-	  console.error(error.message || error);
 	  let errMsg: string;
     if (error instanceof Response) {
-      console.log(error);
       const body = error.json() || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} ${error.statusText || ''} - ${err}`;
     } else {
-      console.log(error);
       errMsg = error.message ? error.message : error.toString();
     }
     return Observable.throw(errMsg);
   }
 
   private handleErrorPromise (error: Response | any) {
-    console.error(error.message || error);
     let errMsg: string;
     if (error instanceof Response) {
-      console.log(error);
       const body = error.json() || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} ${error.statusText || ''} - ${err}`;
     } else {
-      console.log(error);
       errMsg = error.message ? error.message : error.toString();
     }
     return Promise.reject(errMsg);

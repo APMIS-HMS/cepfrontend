@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { FacilitiesService, BillingService } from '../../../services/facility-manager/setup/index';
+import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -17,77 +17,138 @@ export class PaymentComponent implements OnInit {
     searchPendingBill = new FormControl('', []);
     selectedFacility: Facility = <Facility>{};
     loadingPendingBills: Boolean = true;
+    loadingLocAmountAccrued: Boolean = true;
+    isLoadingInvoice = false;
+    totalAmountReceived = 0;
+    totalAmountBilled = 0;
     pendingBills: any[] = [];
+    locAmountAccrued: any[] = [];
+    invoiceGroups: any[] = [];
     user: User = <User>{};
 
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true
     };
-    public barChartLabels: String[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    public barChartLabels: String[] = [];
     public barChartType: String = 'bar';
     public barChartLegend: Boolean = true;
-
-    public barChartData: any[] = [
-        {data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40], label: 'Registration'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Appointment'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Ward'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Clinic'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Pharmacy'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Lab'}
-    ];
+    public barChartData: any[] = [{ "data": [0], "label": "" }];
 
     constructor(
         private formBuilder: FormBuilder,
         private billingService: BillingService,
         private facilityService: FacilitiesService,
-        private locker: CoolLocalStorage
+        private invoiceService: InvoiceService,
+        private _pendingBillService: PendingBillService,
+        private locker: CoolLocalStorage,
+        private _todayInvoiceService: TodayInvoiceService,
+        private _locSummaryCashService: LocSummaryCashService
     ) {
+
     }
     ngOnInit() {
-        this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
 
-        this._getAllPendingBills();
+        this._getBills();
+        this._getInvoices();
+
+        this.searchPendingInvoices.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.isLoadingInvoice = true;
+                var facility = {
+                    "_id": this.selectedFacility._id,
+                    "isQuery": true,
+                    "name": value
+                }
+                this._todayInvoiceService.get(facility).then(payload => {
+                    this.invoiceGroups = payload.data.invoices;
+                    this.isLoadingInvoice = true;
+                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
+
+        this.searchPendingBill.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.loadingPendingBills = true;
+                var facility = {
+                    "_id": this.selectedFacility._id,
+                    "isQuery": true,
+                    "name": value
+                }
+                this._pendingBillService.get(facility)
+                    .then(res => {
+                        this.pendingBills = res.data.bills;
+                        this.loadingPendingBills = false;
+                    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
     }
 
-    private _getAllPendingBills() {
-        this.billingService.find({ query: { facilityId: this.selectedFacility._id }})
+    private _getInvoices() {
+        this.isLoadingInvoice = true;
+        var facility = {
+            "_id": this.selectedFacility._id,
+            "isQuery": false
+        }
+        this._todayInvoiceService.get(facility).then(payload => {
+            this.invoiceGroups = payload.data.invoices;
+            this.totalAmountReceived = payload.data.amountReceived;
+            this._getLocAmountAccrued();
+        }).catch(err => this._notification('Error', 'There was a problem getting invoices, Please try again later!'));
+    }
+
+    private _getBills() {
+        this.loadingPendingBills = true;
+        var facility = {
+            "_id": this.selectedFacility._id,
+            "isQuery": false
+        }
+        this._pendingBillService.get(facility)
             .then(res => {
-                console.log(res);
+                this.pendingBills = res.data.bills;
+                this.totalAmountBilled = res.data.amountBilled;
                 this.loadingPendingBills = false;
-                const billings = res.data;
-                const result = [];
-
-                for (let i = 0; i < billings.length; i++) {
-                    const val = billings[i];
-                    const index = result.filter(x => x.patientId === val.patientId);
-
-                    if (index.length > 0) {
-                        index[0].billItems = index[0].billItems.concat(val.billItems);
-                        index[0].subTotal += val.subTotal;
-                        index[0].grandTotal += val.grandTotal;
-                    } else {
-                        result.push(val);
-                    }
-                }
-
-                if (result.length > 0) {
-                    this.pendingBills = result;
-                    console.log(this.pendingBills);
-                } else {
-                    this.pendingBills = [];
-                }
-            }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            }).catch(err => {
+                this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
+            });
     }
 
+    private _getLocAmountAccrued() {
+        this.loadingLocAmountAccrued = true;
+        var facility = {
+            "_id": this.selectedFacility._id
+        }
+        this._locSummaryCashService.get(facility)
+            .then(payload2 => {
+                this.barChartLabels = payload2.data.barChartLabels;
+                this.barChartData.splice(0, 1);
+                for (let k = 0; k < payload2.data.barChartData.length; k++) {
+                    this.barChartData.push({ "data": [0], "label": "" });
+                }
+                for (let i = 0; i < payload2.data.barChartData.length; i++) {
+                    for (let j = 0; j < payload2.data.barChartData[i].data.length; j++) {
+                        this.barChartData[i].data.push(payload2.data.barChartData[i].data[j]);
+                    }
+                    this.barChartData[i].label = payload2.data.barChartData[i].label;
+                }
+                this.loadingLocAmountAccrued=false;
+            }).catch(err => {
+                this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
+            });
+    }
+
+    
     // Notification
     private _notification(type: string, text: string): void {
         this.facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+            users: [this.user._id],
+            type: type,
+            text: text
         });
     }
 

@@ -24,26 +24,22 @@ export class SwitchUserResolverService implements Resolve<Facility> {
     this.authData = auth.data;
     return this.personService.get(this.authData.personId, {}).then(payloadp => {
       this.selectedPerson = payloadp;
-      console.log(payloadp)
       if (auth == null || auth === undefined) {
         this.router.navigate(['/']);
       } else if (auth.data.corporateOrganisationId == null || auth.data.corporateOrganisationId === undefined) {
         const facilities = auth.data.facilitiesRole;
-        console.log(facilities)
         const facilityList = [];
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);
         });
         return this.facilityService.find({ query: { _id: { $in: facilityList }, $select: ['departments.name', 'name', 'logoObject', 'facilitymoduleId'] } })
           .then(payload => {
-            console.log(payload)
             this.listOfFacilities = payload.data;
             if (this.listOfFacilities.length === 1) {
 
 
               this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
               if (this.listOfFacilities[0].isTokenVerified === true) {
-                console.log('direct');
                 // this.router.navigate(['dashboard']);
                 return Observable.of({ selectedPerson: this.selectedPerson, listOfFacilities: this.listOfFacilities, authData: this.authData });
               } else {

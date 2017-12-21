@@ -89,7 +89,6 @@ export class RequisitionComponent implements OnInit {
   }
 
   getStores() {
-    console.log(this.checkingObject.typeObject.storeId);
     this.storeService.find({ query: { facilityId: this.selectedFacility } }).subscribe(payload => {
       payload.data.forEach((item, i) => {
         if (item._id !== this.checkingObject.typeObject.storeId) {
@@ -102,7 +101,6 @@ export class RequisitionComponent implements OnInit {
   getAllProducts() {
     this.productService.find({ query: { facilityId: this.selectedFacility._id, $paginate: false } }).then(payload => {
       this.products = payload;
-      console.log(this.products);
       this.getProductTables(this.products);
     });
   }
@@ -239,7 +237,6 @@ export class RequisitionComponent implements OnInit {
     requisition.comment = this.desc.value;
     requisition.products = [];
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-      console.log(item.value);
       const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
       requisitionProduct.productId = item.value.productObject._id;
       requisitionProduct.qty = item.value.qty;

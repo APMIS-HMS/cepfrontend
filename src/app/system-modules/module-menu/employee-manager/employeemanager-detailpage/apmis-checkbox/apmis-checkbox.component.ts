@@ -37,8 +37,6 @@ export class ApmisCheckboxComponent implements OnInit {
     this.selectedFeature = value;
   }
   checked(e, item: any) {
-    console.log(item);
-    console.log(this.selectedFeature);
     if (e.target.checked && item._id === this.selectedFeature._id && this.selectedFeature.checked) {
       this.expand = true;
     } else {
@@ -46,7 +44,6 @@ export class ApmisCheckboxComponent implements OnInit {
     }
   }
   checkedMain(e) {
-    console.log(e);
     if (e.target.checked) {
       this.expandMain = true;
     } else {

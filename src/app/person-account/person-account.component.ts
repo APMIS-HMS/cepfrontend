@@ -83,8 +83,6 @@ export class PersonAccountComponent implements OnInit {
   }
 
   submit(valid, val) {
-    console.log(valid);
-    console.log(val)
     if (valid) {
       const personModel = <any>{
         firstName: this.frmPerson.controls['firstname'].value,
@@ -103,13 +101,11 @@ export class PersonAccountComponent implements OnInit {
       };
 
       this.personService.create(personModel).then((ppayload) => {
-        console.log('person created')
         const userModel = <User>{
           email: ppayload.apmisId
         };
         userModel.personId = ppayload._id;
         this.userService.create(userModel).then((upayload) => {
-          console.log('user created')
           this.frmPerson.reset();
           this.success = true;
           this.facilitiesService.announceNotification({

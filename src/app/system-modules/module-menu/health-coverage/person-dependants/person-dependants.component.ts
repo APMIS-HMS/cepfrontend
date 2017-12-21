@@ -44,7 +44,6 @@ export class PersonDependantsComponent implements OnInit {
       if (this.selectedActiveFamilyHealthCover._id !== undefined) {
         this.familyHealthCoverService.get(this.selectedActiveFamilyHealthCover._id, {})
           .then(payload => {
-            console.log(payload)
             this.fillDependants(this.selectedPersonPrincipal);
           });
       }
@@ -123,7 +122,6 @@ export class PersonDependantsComponent implements OnInit {
                     this.selectedActiveCompanyHealthCover = payload;
                     this.selectedPersonPrincipal = this.getPrincipalFromCompanyCover(payload);
                     this.fillDependants(this.selectedPersonPrincipal);
-                    console.log(item);
                     this.showFrmDependant = false;
                     this.mainErr = true;
                     this.errMsg = '';
@@ -141,7 +139,6 @@ export class PersonDependantsComponent implements OnInit {
           this.selectedActiveFamilyHealthCover.dependents.push(dependant);
           this.familyHealthCoverService.update(this.selectedActiveFamilyHealthCover)
             .then(payload => {
-              console.log(payload);
               this.selectedActiveFamilyHealthCover = payload;
               this.selectedPersonPrincipal = this.getPrincipalFromFamilyCover(payload);
               this.fillDependants(this.selectedPersonPrincipal);
@@ -178,7 +175,7 @@ export class PersonDependantsComponent implements OnInit {
         }
       });
       this.companyHealthCoverService.update(this.selectedActiveCompanyHealthCover).then(payload => {
-        // console.log(payload);
+       
       });
     } else {
       this.dependants.forEach((itemi, i) => {
@@ -189,7 +186,6 @@ export class PersonDependantsComponent implements OnInit {
               this.selectedActiveFamilyHealthCover.dependents.splice(k, 1);
               this.familyHealthCoverService.update(this.selectedActiveFamilyHealthCover)
                 .then(kPayload => {
-                  console.log(kPayload);
                 });
             }
           });

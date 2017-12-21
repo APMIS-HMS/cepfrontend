@@ -21,7 +21,7 @@ export class NewEmployeeComponent implements OnInit {
 
     mainErr = true;
     skipNok = false;
-    errMsg = 'you have unresolved errors';
+    errMsg = 'You have unresolved errors';
 
     selectedPerson: Person = <Person>{};
     user: User = <User>{};
@@ -90,7 +90,6 @@ export class NewEmployeeComponent implements OnInit {
         const that = this;
         myReader.onloadend = function (loadEvent: any) {
             image.src = loadEvent.target.result;
-            console.log(that.cropper);
             that.cropper.setImage(image);
         };
         myReader.readAsDataURL(file);
@@ -117,7 +116,6 @@ export class NewEmployeeComponent implements OnInit {
         });
 
         this.frmNewEmp1 = this.formBuilder.group({
-
             empTitle: ['', [<any>Validators.required]],
             empFirstName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20)]],
             empOtherNames: ['', [<any>Validators.minLength(3), <any>Validators.maxLength(20)]],
@@ -128,8 +126,8 @@ export class NewEmployeeComponent implements OnInit {
             empState: ['', [<any>Validators.required]],
             empLga: ['', [<any>Validators.required]],
             // tslint:disable-next-line:quotemark
-            empEmail: ['', [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$")]],
-            confirmEmpEmail: ['', [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$")]],
+            empEmail: ['', [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$"), <any>Validators.required]],
+            confirmEmpEmail: ['', [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$"), <any>Validators.required]],
             empPhonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 
         });
@@ -143,7 +141,6 @@ export class NewEmployeeComponent implements OnInit {
         });
 
         this.frmNewEmp2 = this.formBuilder.group({
-
             empMaritalStatus: ['', [<any>Validators.required]],
             empCountry: ['', [<any>Validators.required]],
             empContactState: ['', [<any>Validators.required]],
@@ -177,7 +174,6 @@ export class NewEmployeeComponent implements OnInit {
                 }
             }));
         apmisIdObs.subscribe((payload: any) => {
-            console.log(payload.data);
             if (payload.data.length > 0) {
                 const person = payload.data[0];
                 this.frmNewEmp3.controls['nok_Address'].setValue(person.fullAddress);
@@ -266,13 +262,11 @@ export class NewEmployeeComponent implements OnInit {
                 this.apmisId_show = false;
                 this.mainErr = true;
                 this.shouldMoveFirst = true;
-                console.log(this.shouldMoveFirst);
             }
         });
 
 
         // Observable.forkJoin([findPerson$, findPersonInFacilityEmployee$]).subscribe(results => {
-        //     console.log(results);
         // });
 
         // this.personService.find({
@@ -320,27 +314,30 @@ export class NewEmployeeComponent implements OnInit {
         this.shouldMoveFirst = false;
     }
     newPerson1(valid, val) {
+      console.log(val);
         if (valid) {
+          if (val.confirmEmpEmail === val.empEmail) {
             if (val.empTitle === '' || val.empTitle === ' ' || val.empFirstName === ''
                 || val.empFirstName === ' ' || val.empLastName === '' || val.empLastName === ' '
                 || val.empPhonNo === ' ' || val.empPhonNo === ''
                 || val.empGender === '' || val.empNationality === '' || val.empLga === '' || val.empState === '') {
                 this.mainErr = false;
-                this.errMsg = 'you left out a required field';
+                this.errMsg = 'You left out a required field';
             } else {
-
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = true;
                 this.frmNewPerson3_show = false;
                 this.frmNewEmp4_show = false;
                 this.apmisId_show = false;
                 this.mainErr = true;
-
             }
+          } else {
+            this.mainErr = false;
+            this.errMsg = 'Email address must match Confirm email address';
+          }
         } else {
             this.mainErr = false;
         }
-
     }
 
     back_newPerson1() {
@@ -353,11 +350,10 @@ export class NewEmployeeComponent implements OnInit {
     }
 
     newPerson2(valid, val) {
-        console.log(this.empImg);
         if (valid) {
             if (val.empMaritalStatus === '' || val.empHomeAddress === ' ' || val.empHomeAddress === '' || val.empDOB === ' ') {
                 this.mainErr = false;
-                this.errMsg = 'you left out a required field';
+                this.errMsg = 'You left out a required field';
             } else {
                 this.mainErr = true;
                 this.errMsg = '';
@@ -366,13 +362,12 @@ export class NewEmployeeComponent implements OnInit {
                 this.frmNewPerson3_show = true;
                 this.frmNewEmp4_show = false;
                 this.apmisId_show = false;
-
             }
         } else {
             this.mainErr = false;
         }
-
     }
+
     back_newPerson2() {
         this.frmNewPerson1_show = false;
         this.frmNewPerson2_show = true;
@@ -381,6 +376,7 @@ export class NewEmployeeComponent implements OnInit {
         this.apmisId_show = false;
         this.mainErr = true;
     }
+
     savePerson() {
         {
             const person: Person = <Person>{ nextOfKin: [] };
@@ -424,7 +420,6 @@ export class NewEmployeeComponent implements OnInit {
                 this.user.facilitiesRole = [];
                 this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
                 this.userService.create(this.user).then((upayload) => {
-                    console.log("Employee User created");
                 });
                 if (this.skipNok) {
                     this.saveEmployee();
@@ -440,23 +435,18 @@ export class NewEmployeeComponent implements OnInit {
     }
 
     newPerson3(valid, val) {
-        console.log(valid);
-        console.log(val);
-        console.log(this.frmNewEmp3);
         if (this.skipNok || valid) {
             if (this.skipNok) {
 
                 this.savePerson();
             } else {
                 if (valid) {
-                    console.log(1);
                     if (val.nok_fullname === '' || val.nok_fullname === ' ' || val.nok_relationship === ''
                         || val.nok_relationship === ' ' || val.nok_phoneNo === ' ' || val.nok_phoneNo === ''
                         || val.nok_Address === ' ' || val.nok_Address === '') {
                         this.mainErr = false;
                         this.errMsg = 'you left out a required field';
                     } else {
-                        console.log(2);
                         this.mainErr = false;
                         this.savePerson();
                     }
@@ -480,7 +470,6 @@ export class NewEmployeeComponent implements OnInit {
         this.skipNok = true;
     }
     back_newPerson3() {
-        console.log(this.shouldMoveFirst);
         if (this.shouldMoveFirst === true) {
             this.frmNewPerson1_show = false;
             this.frmNewPerson2_show = false;
@@ -515,14 +504,11 @@ export class NewEmployeeComponent implements OnInit {
         model.professionId = this.frmNewEmp4.controls['empJobTitle'].value._id;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
-        console.log(model);
         this.employeeService.create(model).then(payload => {
 
         });
     }
     newEmp4(valid, val) {
-        console.log(val);
-        console.log(valid);
         if (valid) {
             if (val.empDept === '' || val.empLoc === '' || val.empJobTitle === '') {
                 this.mainErr = false;

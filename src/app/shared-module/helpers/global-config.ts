@@ -14,11 +14,13 @@ export const Clients = [
     { 'id': 2, 'name': 'Corporate', 'selected': false },
     { 'id': 3, 'name': 'Internal', 'selected': false }
 ];
-export const PaymentChannel = [
-    { 'id': 1, 'name': 'POS'},
-    { 'id': 2, 'name': 'Wallet'},
-    { 'id': 3, 'name': 'Cash'},
-    { 'id': 3, 'name': 'Transfer' }
+export const PaymentChannels = [
+  { 'id': 1, 'name': 'Cash'},
+  { 'id': 2, 'name': 'Cheque'},
+  { 'id': 3, 'name': 'Flutterwave'},
+  { 'id': 4, 'name': 'Paystack'},
+  { 'id': 5, 'name': 'POS'},
+  { 'id': 6, 'name': 'Transfer' }
 ];
 export const PAYSTACK_CLIENT_KEY = 'pk_test_3c53bcffeb3c889d04ea0f905c44d36fc342aa85';
 export const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-8da67f59fe34994e78c5f77022ba8178-X'; // Add public keys generated on your dashboard here

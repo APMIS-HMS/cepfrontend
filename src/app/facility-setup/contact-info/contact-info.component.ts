@@ -62,7 +62,6 @@ export class ContactInfoComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		console.log(this.inputFacility);
 		// this.getTitles();
 		// this.getGenders();
 		// this.getMaritalStatus();
@@ -92,10 +91,8 @@ export class ContactInfoComponent implements OnInit {
 		// this.countriesService.findAll().then((payload) => {
 		// 	this.countries = payload.data;
 		// 	this.stateAvailable = false;
-		// 	console.log(this.countries);
 		// 	const country = this.countries.find(item => item._id === this.inputFacility.address.country);
 		// 	this.selectedCountry = country;
-		// 	console.log(this.selectedCountry);
 		// 	if (this.selectedCountry.states.length > 0) {
 		// 		this.stateAvailable = true;
 		// 	}
@@ -167,14 +164,11 @@ export class ContactInfoComponent implements OnInit {
 
 						this.personService.create(personModel).then((ppayload) => {
 							userModel.personId = ppayload._id;
-							console.log('Person');
 							if (userModel.facilitiesRole === undefined) {
 								userModel.facilitiesRole = [];
-								console.log('facilitiesRole is undefine');
 							}
 							userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
 							this.userService.create(userModel).then((upayload) => {
-								console.log('user created');
 								this.sg1_2_show = false;
 								this.next_key_show = true;
 								this.back_key_show = false;
@@ -185,14 +179,12 @@ export class ContactInfoComponent implements OnInit {
 						});
 					},
 						error => {
-							console.log(error);
 						});
 				} else {
 					this.sg1_2_show = false;
 					this.next_key_show = true;
 					this.back_key_show = false;
 					this.mainErr = true;
-					console.log('please update');
 				}
 
 			}
@@ -202,7 +194,6 @@ export class ContactInfoComponent implements OnInit {
 	}
 
 	onCheckEmailAddress(value) {
-		//console.log(value);
 		if(value.length > 4){
 			let email = this.facilityForm1_1.controls['facilityemail'];
 			if(value.includes("@")){
@@ -243,8 +234,6 @@ export class ContactInfoComponent implements OnInit {
 
 			if (this.inputFacility.contactFullName !== undefined && this.inputFacility.contactFullName.length > 0) {
 
-				console.log('is contact');
-
 
 				const filterState = this.selectedCountry.states.filter(x => x._id === this.inputFacility.address.state);
 				if (filterState.length > 0) {
@@ -284,7 +273,6 @@ export class ContactInfoComponent implements OnInit {
 	getCountries() {
 		this.countriesService.findAll().then((payload) => {
 			this.countries = payload.data;
-			console.log(this.countries);
 		})
 	}
 

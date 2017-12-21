@@ -197,8 +197,6 @@ export class FormsComponent implements OnInit {
         this.frm_document.controls['documentType'].setValue(this.selectedForm.typeOfDocumentId);
         this.frm_document.controls['scopeLevel'].setValue(this.selectedForm.scopeLevelId);
         this.formsService.announceFormEdit(this.selectedForm);
-        console.log(this.selectedForm.moduleIds);
-        console.log(this.checkboxArray);
         this.unCheckAll();
         this.modules.forEach((item, i) => {
           const filteredModule = this.selectedForm.moduleIds.filter(x => x === item._id);
@@ -279,7 +277,6 @@ export class FormsComponent implements OnInit {
     Observable.forkJoin([modules$, formType$, scopeLevel$]).subscribe((results: any) => {
       this.modules = [];
       const modules = results[0].data;
-      console.log(this.selectedForm)
       modules.forEach((item, i) => {
         if (this.selectedForm._id === undefined) {
           this.modules.push({
@@ -312,7 +309,6 @@ export class FormsComponent implements OnInit {
     })
   }
   getCheckedValue(value) {
-    console.log(value);
     value.checked = true;
   }
   onValueChanged(event, model: ModuleViewModel) {

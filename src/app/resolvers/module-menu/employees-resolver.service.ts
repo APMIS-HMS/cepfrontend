@@ -43,7 +43,6 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
       return Observable.of(null);
     }, error => {
       this.router.navigateByUrl(this.previousUrl);
-      console.log(error);
     });
   }
   ngOnDestroy() {

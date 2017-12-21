@@ -54,8 +54,6 @@ export class StockTransferComponent implements OnInit {
     this.checkingStore = this.locker.getObject('checkingObject');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 
-    console.log(this.checkingStore)
-
     this.newTransfer.facilityId = this.selectedFacility._id;
     this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
     this.newTransfer.inventoryTransferTransactions = [];

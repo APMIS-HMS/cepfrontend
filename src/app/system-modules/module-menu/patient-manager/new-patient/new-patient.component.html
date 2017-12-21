@@ -27,9 +27,7 @@
                   <div class="plan-title">Out of Pocket</div>
                   <div class="frm-item-wrap">
                     <md-select placeholder="Select Plan" [formControl]="walletPlan">
-                      <md-option>Diamond</md-option>
-                      <md-option>Gold</md-option>
-                      <md-option>Bronze</md-option>
+                        <md-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</md-option>
                     </md-select>
                   </div>
                 </div>
@@ -60,7 +58,7 @@
                   <div class="plan-title">Company Cover</div>
                   <div class="frm-item-wrap">
                       <md-input-container class="example-full-width">
-                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId">
+                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId" (keyup.enter)="employeeChecking(emp.value)" #emp>
                       </md-input-container>
                   </div>
                   <div class="frm-item-wrap">
@@ -85,7 +83,10 @@
                   </div>
                 </div>
               </div>
-              <button class="cta-1">Save</button>
+              <button class="cta-1" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid">Next</button>
+              <button class="cta-1" (click)="next()" *ngIf="tabInsurance">Next</button>
+              <button class="cta-1" (click)="next()" *ngIf="tabCompany">Next</button>
+              <button class="cta-1" (click)="next()" *ngIf="tabFamily">Next</button>
               <div class="back-btn-box">
                 <span (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</span>
               </div>

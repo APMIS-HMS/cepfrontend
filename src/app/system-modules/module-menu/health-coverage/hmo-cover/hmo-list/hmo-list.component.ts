@@ -111,28 +111,22 @@ export class HmoListComponent implements OnInit {
   }
 
   show_beneficiaries(hmo) {
-    // this.showBeneficiaries.emit(true);
     this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
 
   }
   public upload(e, hmo) {
-    // console.log('am here')
 
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
-      // console.log(fileBrowser.files);
       const formData = new FormData();
       formData.append("excelfile", fileBrowser.files[0]);
       formData.append("hmoId", hmo._id);
-      // console.log(formData)
       this.facilityService.upload(formData, this.selectedHMO._id).then(res => {
-        // do stuff w/my uploaded file
-        // console.log(res);
+       
         let enrolleeList: any[] = [];
         if (res.body !== undefined && res.body.error_code === 0) {
-          // console.log(res.body.data.Sheet1);
           res.body.data.Sheet1.forEach(row => {
             let rowObj: any = <any>{};
             rowObj.serial = row.A;
@@ -147,7 +141,6 @@ export class HmoListComponent implements OnInit {
             rowObj.date = this.excelDateToJSDate(row.J);
             enrolleeList.push(rowObj);
           });
-          // console.log(enrolleeList);
           const index = this.loginHMOListObject.hmos.findIndex(x => x._id === hmo._id);
           let facHmo = this.loginHMOListObject.hmos[index];
           let enrolleeItem = {
@@ -155,16 +148,11 @@ export class HmoListComponent implements OnInit {
             year: new Date().getFullYear(),
             enrollees: enrolleeList
           }
-          console.log(enrolleeItem);
 
           facHmo.enrolleeList.push(enrolleeItem);
-          console.log(facHmo);
           this.loginHMOListObject.hmos[index] = facHmo;
 
-
-          console.log(this.loginHMOListObject);
           this.hmoService.update(this.loginHMOListObject).then(pay => {
-            console.log(pay);
             this.getLoginHMOList();
           })
         }
@@ -203,7 +191,6 @@ export class HmoListComponent implements OnInit {
     if (this.selectedHMO._id !== undefined) {
       if (this.loginHMOListObject._id === undefined) {
         this.hmoService.create(this.loginHMOListObject).then(payload => {
-          console.log(payload);
           this.frmNewHmo.controls['name'].reset();
           this.apmisLookupText = '';
           this.getLoginHMOList();
