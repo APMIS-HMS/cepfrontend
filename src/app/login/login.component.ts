@@ -61,8 +61,8 @@ export class LoginComponent implements OnInit {
       this.userService.login(query).then(result => {
         this.locker.setObject('auth', result);
 
-        // this.router.navigate(['/accounts']).then(pay => {
-        this.router.navigate(['/patient-portal']).then(pay => {
+         this.router.navigate(['/accounts']).then(pay => {
+        //this.router.navigate(['/patient-portal']).then(pay => {
           this.userService.isLoggedIn = true;
           this.userService.announceMission('in');
           this.loadIndicatorVisible = false;
