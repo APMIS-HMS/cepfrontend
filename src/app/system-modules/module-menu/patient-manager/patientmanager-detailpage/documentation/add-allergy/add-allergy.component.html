@@ -5,30 +5,30 @@
 
     <div>
         <div>
-            <md-input-container>
-                <input mdInput placeholder="Allergy" [formControl]="allergyFormCtrl">
-            </md-input-container>
+            <mat-input-container>
+                <input matInput placeholder="Allergy" [formControl]="allergyFormCtrl">
+            </mat-input-container>
         </div>
         <div>
-            <md-input-container>
-                <input mdInput placeholder="Reaction" [formControl]="reactionFormCtrl">
-            </md-input-container>
+            <mat-input-container>
+                <input matInput placeholder="Reaction" [formControl]="reactionFormCtrl">
+            </mat-input-container>
         </div>
         <div>
-            <md-input-container>
-                <input mdInput placeholder="Severity" [mdAutocomplete]="auto" [formControl]="severityFormCtrl">
-            </md-input-container>
+            <mat-input-container>
+                <input matInput placeholder="Severity" [matAutocomplete]="auto" [formControl]="severityFormCtrl">
+            </mat-input-container>
 
-            <md-autocomplete #auto="mdAutocomplete" [displayWith]="severityDisplayFn">
-                <md-option *ngFor="let severity of severities" [value]="severity">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="severityDisplayFn">
+                <mat-option *ngFor="let severity of severities" [value]="severity">
                     {{ severity.name }}
-                </md-option>
-            </md-autocomplete>
+                </mat-option>
+            </mat-autocomplete>
         </div>
         <div>
-            <md-input-container>
-                <textarea mdInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
-            </md-input-container>
+            <mat-input-container>
+                <textarea matInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
+            </mat-input-container>
         </div>
 
         <div (click)="save()" class="cta-1">SAVE</div>

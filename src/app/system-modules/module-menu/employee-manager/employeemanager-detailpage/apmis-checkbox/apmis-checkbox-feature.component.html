@@ -1,7 +1,7 @@
 <div class="check-item">
   <label class="control control--checkbox">{{selectedFeature.name}}
               <!--<input type="checkbox" (change)="checked($event, selectedFeature)" [(ngModel)]="selectedFeature.checked" />-->
-              <md-checkbox (change)="checked($event, selectedFeature)" [(ngModel)]="selectedFeature.checked"></md-checkbox>
+              <mat-checkbox (change)="checked($event, selectedFeature)" [(ngModel)]="selectedFeature.checked"></mat-checkbox>
               <div class="control__indicator"></div>
             </label>
   <div *ngIf="expand" class="checker-subgroup">

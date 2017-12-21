@@ -26,7 +26,7 @@
             </tr>
             <tr *ngIf="prescriptionItems.prescriptionItems.length === 0 && loading">
                 <td class="table-content" colspan="4" style="text-align: center !important; padding: 10px !important;">
-                    <md-spinner class="small-spinner"></md-spinner>
+                    <mat-spinner class="small-spinner"></mat-spinner>
                 </td>
             </tr>
             <tr *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;" style="text-align: left">
@@ -41,16 +41,16 @@
                 <td class="table-content" style="width: 25%; padding: 5px !important;">
                     <div *ngIf="isPrescriptionPage" class="pres-data action-long">
                         <a class="trash-box" (click)="onClickDeleteItem(i, prescription);"><i class="fa fa-trash"></i></a>
-                        <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</md-checkbox>
-                        <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
+                        <mat-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</mat-checkbox>
+                        <button mat-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
                             <span *ngIf="!prescription.isBilled">Bill</span>
                             <span *ngIf="prescription.isBilled" style="color: #fff;">Billed</span>
                         </button>
                     </div>
                     <div *ngIf="isDispensePage" class="pres-data action-long">
                         <!-- <a class="trash-box" (click)="toggleBill(i, prescription);"><i class="fa fa-edit"></i></a> -->
-                        <md-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</md-checkbox>
-                        <button md-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
+                        <mat-checkbox *ngIf="!prescription.isBilled" (change)="onClickIsExternal(i, $event.checked, prescription);" [checked]="prescription.isExternal">External?</mat-checkbox>
+                        <button mat-raised-button *ngIf="!prescription.initiateBill" (click)="toggleBill(i, prescription);" class="btn {{ prescription.isBilled ? ' btn-green': ' btn-default'}}">
                             <span *ngIf="!prescription.isBilled">Bill</span>
                             <span *ngIf="prescription.isBilled" style="color: #fff;">Billed</span>
                         </button>

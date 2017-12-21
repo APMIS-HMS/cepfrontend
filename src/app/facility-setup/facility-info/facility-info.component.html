@@ -5,47 +5,47 @@
 
       <div class="lhs">
         <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-                <input mdInput md-error placeholder="Facility Name" formControlName="facilityname" value="inputFacility.name">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="Facility Name" formControlName="facilityname" value="inputFacility.name">
+            </mat-input-container>
         </div>
         <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-                <input mdInput md-error placeholder="Facility Short Name" formControlName="facilityalias" value="inputFacility.shortName">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="Facility Short Name" formControlName="facilityalias" value="inputFacility.shortName">
+            </mat-input-container>
         </div>
         <div class="frm-item-wrap">
-            <md-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
-                <md-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
+                <mat-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</mat-option>
+            </mat-select>
         </div>
         <div class="frm-item-wrap">
-            <md-select placeholder="Facility Category"  formControlName="facilitycategory">
-                <md-option *ngFor="let item of selectedFacilityType?.facilityClasses"  [value]="item._id">{{item.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Facility Category"  formControlName="facilitycategory">
+                <mat-option *ngFor="let item of selectedFacilityType?.facilityClasses"  [value]="item._id">{{item.name}}</mat-option>
+            </mat-select>
         </div>
       </div>
 
       <div class="rhs">
         <div class="frm-item-wrap">
-            <md-select placeholder="Facility Ownership"  formControlName="facilityownership">
-                <md-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Facility Ownership"  formControlName="facilityownership">
+                <mat-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</mat-option>
+            </mat-select>
         </div>
         <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-                <input type="email" mdInput md-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email" (keyup)="onCheckEmailAddress($event.target.value)">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                <input type="email" matInput mat-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email" (keyup)="onCheckEmailAddress($event.target.value)">
+            </mat-input-container>
         </div>
         <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-                <input type="url" mdInput md-error placeholder="Official Website" formControlName="facilitywebsite" value="inputFacility.website">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite" value="inputFacility.website">
+            </mat-input-container>
         </div>
         <div class="frm-item-wrap">
-            <md-select placeholder="Select Country"  formControlName="facilitycountry">
-                <md-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Select Country"  formControlName="facilitycountry">
+                <mat-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</mat-option>
+            </mat-select>
         </div>
 
       </div>

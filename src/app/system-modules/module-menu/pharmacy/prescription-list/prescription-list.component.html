@@ -2,8 +2,8 @@
     Go To Store
 </div>
 <section id="presc-list">
-    <md-tab-group>
-        <md-tab label="Prescription">
+    <mat-tab-group>
+        <mat-tab label="Prescription">
             <div class="survery">
                 <div class="col-xs-12 " style="padding: 0; ">
                     <table cellpadding="0 " cellspacing="0 " border="0.5 ">
@@ -52,16 +52,16 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <md-input-container>
-                                                <input mdInput formControlName="date" [mdDatepicker]="pickerr" placeholder="Choose a date">
-                                                <md-datepicker-toggle mdSuffix [for]="pickerr"></md-datepicker-toggle>
-                                            </md-input-container>
-                                            <md-datepicker #pickerr></md-datepicker>
-                                            <!-- <md-input-container>
-                                                <input formControlName="date" mdInput [mdDatepicker]="picker1" placeholder="Choose a date">
-                                                <button mdSuffix [mdDatepickerToggle]="picker1"></button>
-                                            </md-input-container>
-                                            <md-datepicker #picker1></md-datepicker> -->
+                                            <mat-input-container>
+                                                <input matInput formControlName="date" [matDatepicker]="pickerr" placeholder="Choose a date">
+                                                <mat-datepicker-toggle mdSuffix [for]="pickerr"></mat-datepicker-toggle>
+                                            </mat-input-container>
+                                            <mat-datepicker #pickerr></mat-datepicker>
+                                            <!-- <mat-input-container>
+                                                <input formControlName="date" matInput [matDatepicker]="picker1" placeholder="Choose a date">
+                                                <button mdSuffix [matDatepickerToggle]="picker1"></button>
+                                            </mat-input-container>
+                                            <mat-datepicker #picker1></mat-datepicker> -->
                                         </div>
                                     </form>
                                 </td>
@@ -71,7 +71,7 @@
                             </tr>
                             <tr *ngIf="prescriptionLists.length===0 && loading ">
                                 <td class="table-content " colspan="6" style="text-align: center ">
-                                    <md-spinner class="small-spinner"></md-spinner>
+                                    <mat-spinner class="small-spinner"></mat-spinner>
                                 </td>
                             </tr>
                             <tr *ngFor="let prescription of prescriptionLists " routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
@@ -90,8 +90,8 @@
                     </table>
                 </div>
             </div>
-        </md-tab>
-        <md-tab label="Walk in">
+        </mat-tab>
+        <mat-tab label="Walk in">
             <div class="survery">
                 <div class="col-xs-12 " style="padding: 0; ">
                     <table cellpadding="0 " cellspacing="0 " border="0.5 ">
@@ -140,12 +140,12 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <md-input-container>
-                                                <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-                                                <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                                            </md-input-container>
-                                            <md-datepicker #picker></md-datepicker>
+                                            <mat-input-container>
+                                                <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
+                                                <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
+                                                <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                            </mat-input-container>
+                                            <mat-datepicker #picker></mat-datepicker>
                                         </div>
                                     </form>
                                 </td>
@@ -155,7 +155,7 @@
                             </tr>
                             <tr *ngIf="noPrescriptionLists.length===0 && noPresLoading ">
                                 <td class="table-content " colspan="6 " style="text-align: center ">
-                                    <md-spinner class="small-spinner"></md-spinner>
+                                    <mat-spinner class="small-spinner"></mat-spinner>
                                 </td>
                             </tr>
                             <tr *ngFor="let prescription of noPrescriptionLists " routerLink='/dashboard/pharmacy/dispenses/{{prescription._id}}'>
@@ -172,6 +172,6 @@
                     </table>
                 </div>
             </div>
-        </md-tab>
-    </md-tab-group>
+        </mat-tab>
+    </mat-tab-group>
 </section>

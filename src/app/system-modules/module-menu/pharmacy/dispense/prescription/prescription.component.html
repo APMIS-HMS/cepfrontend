@@ -25,7 +25,7 @@
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
+            <button mat-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
         </div>
     </div>
     <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
@@ -129,12 +129,12 @@
                                     <td class="table-content">{{transaction?.expiryDate | date:'shortDate'}}</td>
                                     <td class="table-content">{{transaction?.quantity}}</td>
                                     <td class="table-content">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput type="number" placeholder="Quantity" name="{{j}}" ngModel>
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput type="number" placeholder="Quantity" name="{{j}}" ngModel>
+                                        </mat-input-container>
                                     </td>
                                     <td class="table-content">
-                                        <button md-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
+                                        <button mat-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
                                     </td>
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && !batchLoading">
@@ -142,7 +142,7 @@
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && batchLoading">
                                     <td class="table-content" colspan="5" style="text-align: center">
-                                        <md-spinner class='small-spinner'></md-spinner>
+                                        <mat-spinner class='small-spinner'></mat-spinner>
                                     </td>
                                 </tr>
                             </tbody>
@@ -155,7 +155,7 @@
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
                 <div style="width: 100%; padding: 10px; font-size: 13px;">
-                    <md-spinner class="small-spinner"></md-spinner>
+                    <mat-spinner class="small-spinner"></mat-spinner>
                 </div>
             </div>
         </div>
@@ -168,7 +168,7 @@
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
+            <button mat-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
         </div>
     </div>
 </div>

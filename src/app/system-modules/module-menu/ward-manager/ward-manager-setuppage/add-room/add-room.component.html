@@ -10,22 +10,22 @@
                 <form [formGroup]="addRoomFormGroup" novalidate>
                     <div class="padding-up">
                         <div class="frm-item-wrap">
-                            <md-input-container>
-                                <input mdInput md-error placeholder="Room Name" formControlName="room">
-                            </md-input-container>
+                            <mat-input-container>
+                                <input matInput mat-error placeholder="Room Name" formControlName="room">
+                            </mat-input-container>
                         </div>
                         <div class="frm-item-wrap">
-                            <md-select placeholder="Group" formControlName="group" [(ngModel)]="groupId">
-                                <md-option *ngFor="let group of groups" [value]="group">{{group.name}}</md-option>
-                            </md-select>
+                            <mat-select placeholder="Group" formControlName="group" [(ngModel)]="groupId">
+                                <mat-option *ngFor="let group of groups" [value]="group">{{group.name}}</mat-option>
+                            </mat-select>
                         </div>
                         <div class="frm-item-wrap" style="margin-top: 30px;">
-                            <md-select placeholder="Select Service" formControlName="service">
-                                <md-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.service.name}} &#x20A6;{{service.price}}</md-option>
-                            </md-select>
+                            <mat-select placeholder="Select Service" formControlName="service">
+                                <mat-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.service.name}} &#x20A6;{{service.price}}</mat-option>
+                            </mat-select>
                         </div>
                         <div class="btn-box">
-                            <button md-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
+                            <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
                         </div>
                     </div>
                 </form>

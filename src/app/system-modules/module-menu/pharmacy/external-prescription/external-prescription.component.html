@@ -50,17 +50,17 @@
                                             </select>
                                 </div>
                                 <div class="col-sm-4">
-                                    <md-input-container>
-                                        <input mdInput formControlName="date" [mdDatepicker]="picker" placeholder="Choose a date">
-                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                                    </md-input-container>
-                                    <md-datepicker #picker></md-datepicker>
-                                    <!-- <md-input-container>
-                    <input formControlName="date" mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                  </md-input-container>
-                  <md-datepicker #picker></md-datepicker> -->
+                                    <mat-input-container>
+                                        <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date">
+                                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                    </mat-input-container>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <!-- <mat-input-container>
+                    <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
+                    <button mdSuffix [matDatepickerToggle]="picker"></button>
+                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                  </mat-input-container>
+                  <mat-datepicker #picker></mat-datepicker> -->
                                 </div>
                             </form>
                         </td>
@@ -70,7 +70,7 @@
                     </tr>
                     <tr *ngIf="extPrescriptions.length===0 && loading ">
                         <td class="table-content " colspan="6" style="text-align: center ">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <mat-spinner class="small-spinner"></mat-spinner>
                         </td>
                     </tr>
                     <tr *ngFor="let prescription of extPrescriptions " routerLink='/dashboard/pharmacy/external-prescriptions/{{prescription._id}}'>

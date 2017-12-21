@@ -14,9 +14,9 @@
         </small>
         <i class="fa fa-user" aria-hidden="true"></i>
         <!--<input type="text" formControlName="tagName" placeholder="Tag Name" autocomplete="off">-->
-        <md-input-container class="example-full-width">
-          <input mdInput formControlName="tagName" placeholder="Tag Name" autocomplete="off">
-        </md-input-container>
+        <mat-input-container class="example-full-width">
+          <input matInput formControlName="tagName" placeholder="Tag Name" autocomplete="off">
+        </mat-input-container>
         <div class="suggestionFeeds">
             <div *ngFor="let dic of dictionaries" class="suggestedItem">
               <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
@@ -28,7 +28,7 @@
         CREATE TAG
       </button>-->
        <div class="example-full-width" id="example-full-width">
-          <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" md-raised-button>CREATE TAG</button>
+          <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" mat-raised-button>CREATE TAG</button>
       </div>
 
     </form>

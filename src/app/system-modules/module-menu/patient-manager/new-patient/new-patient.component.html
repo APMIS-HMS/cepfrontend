@@ -8,7 +8,7 @@
         <div class="gen_idWrap">Patient has no <strong>apmis ID</strong>? <span (click)="newPerson1_show()">Generate New ID</span></div>
         <!-- <div (click)="empApmisID()" class="btn-1 btn-blue">Add Patient</div> -->
         <div class="btn-box">
-            <button class="small-btn" (click)="empApmisID();" md-raised-button>Add Patient</button>
+            <button class="small-btn" (click)="empApmisID();" mat-raised-button>Add Patient</button>
         </div>
     </div>
 
@@ -26,9 +26,9 @@
                 <div class="plan">
                   <div class="plan-title">Out of Pocket</div>
                   <div class="frm-item-wrap">
-                    <md-select placeholder="Select Plan" [formControl]="walletPlan">
-                        <md-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+                        <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                    </mat-select>
                   </div>
                 </div>
               </div>
@@ -37,16 +37,16 @@
                 <div class="plan">
                   <div class="plan-title">Insurance</div>
                   <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                          <input mdInput md-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-                      </md-input-container>
+                      <mat-input-container class="example-full-width">
+                          <input matInput mat-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+                      </mat-input-container>
                   </div>
                   <div class="frm-item-wrap">
-                    <md-select placeholder="Select Plan" [formControl]="hmoPlan">
-                      <md-option>Diamond</md-option>
-                      <md-option>Gold</md-option>
-                      <md-option>Bronze</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
+                      <mat-option>Diamond</mat-option>
+                      <mat-option>Gold</mat-option>
+                      <mat-option>Bronze</mat-option>
+                    </mat-select>
                   </div>
             
                   <div class="another">Another Insurance</div>
@@ -57,16 +57,16 @@
                 <div class="plan">
                   <div class="plan-title">Company Cover</div>
                   <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId" (keyup.enter)="employeeChecking(emp.value)" #emp>
-                      </md-input-container>
+                      <mat-input-container class="example-full-width">
+                          <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId" (keyup.enter)="employeeChecking(emp.value)" #emp>
+                      </mat-input-container>
                   </div>
                   <div class="frm-item-wrap">
-                    <md-select placeholder="Select Plan" [formControl]="ccPlan">
-                      <md-option>Diamond</md-option>
-                      <md-option>Gold</md-option>
-                      <md-option>Bronze</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select Plan" [formControl]="ccPlan">
+                      <mat-option>Diamond</mat-option>
+                      <mat-option>Gold</mat-option>
+                      <mat-option>Bronze</mat-option>
+                    </mat-select>
                   </div>
             
                   <div class="another">Another Company</div>
@@ -77,9 +77,9 @@
                 <div class="plan">
                   <div class="plan-title">Family Cover</div>
                   <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                          <input mdInput md-error placeholder="Principal" [formControl]="familyPlanId">
-                      </md-input-container>
+                      <mat-input-container class="example-full-width">
+                          <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
+                      </mat-input-container>
                   </div>
                 </div>
               </div>
@@ -98,65 +98,65 @@
         <form [formGroup]="frmNewEmp1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
-                        <md-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
+                        <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="First Name" formControlName="empFirstName">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="First Name" formControlName="empFirstName">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Other Name" formControlName="empOtherNames">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Other Name" formControlName="empOtherNames">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Sur Name" formControlName="empLastName">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Sur Name" formControlName="empLastName">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
-                        <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
+                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
             <div class="rhs">
 
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Nationality" formControlName="empNationality">
-                        <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Nationality" formControlName="empNationality">
+                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
-                        <md-option *ngFor="let item of states" [value]="item">{{item.name}}</md-option>
-                    </md-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
-                        <md-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
+                        <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="email" mdInput md-error placeholder="Email Address" formControlName="empEmail">
-                    </md-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="email" mdInput md-error placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
-                    </md-input-container>
+                    <mat-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
+                        <mat-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
 
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="tel" mdInput md-error placeholder="Contact Number" formControlName="empPhonNo">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="email" matInput mat-error placeholder="Email Address" formControlName="empEmail">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="email" matInput mat-error placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
+                    </mat-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="empPhonNo">
+                    </mat-input-container>
                 </div>
             </div>
 
@@ -167,7 +167,7 @@
             </div>
 
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp1.valid" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" md-raised-button>CONTINUE</button>
+                <button class="small-btn" [disabled]="!frmNewEmp1.valid" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div> -->
         </form>
@@ -177,17 +177,17 @@
         <form [formGroup]="frmNewEmp2" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
-                        <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
+                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input mdInput [mdDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                    </md-input-container>
-                    <md-datepicker #picker></md-datepicker>
+                    <mat-input-container>
+                        <input matInput [matDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
+                        <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
+                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                    </mat-input-container>
+                    <mat-datepicker #picker></mat-datepicker>
                 </div>
                 <!--<div class="frm-item-wrap">
                     <div>
@@ -196,45 +196,45 @@
                     </div>
                 </div>-->
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <textarea mdInput md-error placeholder="Home Address" formControlName="empHomeAddress"></textarea>
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <textarea matInput mat-error placeholder="Home Address" formControlName="empHomeAddress"></textarea>
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Select Country" formControlName="empCountry">
-                        <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select Country" formControlName="empCountry">
+                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <md-select placeholder="State (Residence)" formControlName="empContactState">
-                        <md-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="State (Residence)" formControlName="empContactState">
+                        <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="City (Residence)" formControlName="empCity">
-                        <md-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="City (Residence)" formControlName="empCity">
+                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>                  
-                    <md-select placeholder="Select security question" formControlName="secQst">
-                        <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Select security question" formControlName="secQst">
+                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Answer" formControlName="secAns">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Answer" formControlName="secAns">
+                    </mat-input-container>
                 </div>
             </div>
             <div class="clear"></div>
             <div (click)="back_newPerson1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
 
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp2.valid" (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value);" md-raised-button>CONTINUE</button>
+                <button class="small-btn" [disabled]="!frmNewEmp2.valid" (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value);" mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">CONTINUE</div> -->
         </form>
@@ -245,35 +245,35 @@
             <div class="lhs">
                 <div class="frm-item-wrap">
                     <div class="frm-item-wrap">
-                        <md-input-container class="example-full-width">
-                            <input [disabled]="nextOfKinReadOnly" mdInput placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
-                        </md-input-container>
+                        <mat-input-container class="example-full-width">
+                            <input [disabled]="nextOfKinReadOnly" matInput placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
+                        </mat-input-container>
                     </div>
-                    <md-input-container class="example-full-width">
-                        <input [disabled]="nextOfKinReadOnly" mdInput placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input [disabled]="nextOfKinReadOnly" matInput placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input [disabled]="nextOfKinReadOnly" mdInput placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input [disabled]="nextOfKinReadOnly" matInput placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
+                    </mat-input-container>
                 </div>
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input [disabled]="nextOfKinReadOnly" mdInput type="email" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input [disabled]="nextOfKinReadOnly" matInput type="email" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input [disabled]="nextOfKinReadOnly" mdInput type="text" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input [disabled]="nextOfKinReadOnly" matInput type="text" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
-                        <md-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</md-option>
-                    </md-select>
+                    <mat-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
+                        <mat-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
                 </div>
             </div>
             <div class="clear"></div>
@@ -282,7 +282,7 @@
                 <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
             </div>
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp3.valid" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" md-raised-button>CONTINUE</button>
+                <button class="small-btn" [disabled]="!frmNewEmp3.valid" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
         </form>
@@ -294,7 +294,7 @@
             <div (click)="back_newPerson3()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
             <!-- <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">Create Patient</div> -->
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp4.valid" (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value);" md-raised-button>Create Patient</button>
+                <button class="small-btn" [disabled]="!frmNewEmp4.valid" (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value);" mat-raised-button>Create Patient</button>
             </div>
         </form>
     </div>

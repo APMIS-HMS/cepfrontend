@@ -43,10 +43,10 @@
           <div class="txt-label">Specimen</div>
           <div *ngIf="hasSpecimen" class="txt-val">{{localInvestigation?.investigation?.specimen?.name}} - {{localInvestigation?.specimenNumber}}</div>
           <div [hidden]="hasSpecimen" class="txt-val hasBg">
-            <md-input-container style="position:relative;">
-                <input [formControl]="specimenNumber" mdInput>
+            <mat-input-container style="position:relative;">
+                <input [formControl]="specimenNumber" matInput>
                 <span class="input-tag">{{localInvestigation?.investigation?.specimen?.name}}</span>
-            </md-input-container>
+            </mat-input-container>
             <div (click)="receiveSpecimen()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Receive Specimen</div>
           </div>
         </div>
@@ -55,9 +55,9 @@
           <div class="txt-label">Lab Number</div>
           <div *ngIf="hasLabNo" class="txt-val">{{client.clientNumber}}</div>
           <div [hidden]="hasLabNo" class="txt-val hasBg">
-            <md-input-container>
-                <input [formControl]="labNumber" mdInput>
-            </md-input-container>
+            <mat-input-container>
+                <input [formControl]="labNumber" matInput>
+            </mat-input-container>
             <div (click)="assignLabNo()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Assign</div>
           </div>
         </div>
@@ -99,7 +99,7 @@
         <div class="txt-wrap">
           <div class="txt-label">External</div>
           <div class="checka">
-            <md-checkbox [checked]="investigation?.isExternal"></md-checkbox>
+            <mat-checkbox [checked]="investigation?.isExternal"></mat-checkbox>
           </div>
         </div>
 

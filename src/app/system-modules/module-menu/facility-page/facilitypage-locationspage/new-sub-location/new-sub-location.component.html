@@ -17,9 +17,9 @@
         <i class="fa fa-building-o" aria-hidden="true"></i>
         <input type="text" formControlName="sublocName" placeholder="Location Name" autocomplete="off">-->
                 <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="sublocName" placeholder="Location Name" autocomplete="off">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput formControlName="sublocName" placeholder="Location Name" autocomplete="off">
+                </mat-input-container>
             </div>
 
             <div class="frm-item-wrap">
@@ -28,9 +28,9 @@
           </small>-->
                 <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
                 <!--<input type="text" formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">-->
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">
+                </mat-input-container>
             </div>
 
             <div class="frm-item-wrap">
@@ -42,12 +42,12 @@
             <option  value="" disabled selected>Parent Location</option>
             <option *ngFor="let item of locations"  value = "{{item?._id}}">{{item?.name}}</option>
           </select>-->
-                <md-select formControlName="sublocParent">
-                    <md-option value="" disabled selected>Parent Location</md-option>
-                    <md-option *ngFor="let item of locations" [value]="item?._id">
+                <mat-select formControlName="sublocParent">
+                    <mat-option value="" disabled selected>Parent Location</mat-option>
+                    <mat-option *ngFor="let item of locations" [value]="item?._id">
                         {{item?.name}}
-                    </md-option>
-                </md-select>
+                    </mat-option>
+                </mat-select>
             </div>
 
             <div class="frm-item-wrap">
@@ -55,16 +55,16 @@
             This is a required field (minimum 10 characters).
           </small>
         <textarea class="txt-input modal-textarea" formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>-->
-                <md-input-container class="example-full-width">
-                    <textarea mdInput formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <textarea matInput formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>
+                </mat-input-container>
             </div>
 
             <!--<div (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" class="cta-1">
         CREATE CHILD LOCATION
       </div>-->
             <div class="example-full-width" id="example-full-width">
-                <button [disabled]="!frmNewSubLoc.valid && disableNewMinorLoc" (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" md-raised-button [innerHtml]="ActionButton"></button>
+                <button [disabled]="!frmNewSubLoc.valid && disableNewMinorLoc" (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" mat-raised-button [innerHtml]="ActionButton"></button>
             </div>
         </form>
     </div>

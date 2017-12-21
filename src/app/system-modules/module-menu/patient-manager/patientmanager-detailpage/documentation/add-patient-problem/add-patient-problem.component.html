@@ -5,25 +5,25 @@
 
     <div>
         <div>
-          <md-input-container>
-            <input mdInput placeholder="Problem" [formControl]="problemFormCtrl">
-          </md-input-container>
+          <mat-input-container>
+            <input matInput placeholder="Problem" [formControl]="problemFormCtrl">
+          </mat-input-container>
         </div>
          <div>
-          <md-input-container>
-            <input mdInput placeholder="Status" [mdAutocomplete]="auto" [formControl]="statusFormCtrl">
-          </md-input-container>
+          <mat-input-container>
+            <input matInput placeholder="Status" [matAutocomplete]="auto" [formControl]="statusFormCtrl">
+          </mat-input-container>
 
-          <md-autocomplete #auto="mdAutocomplete" [displayWith]="statusDisplayFn">
-            <md-option *ngFor="let status of orderStatuses" [value]="status">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="statusDisplayFn">
+            <mat-option *ngFor="let status of orderStatuses" [value]="status">
               {{ status.name }}
-            </md-option>
-          </md-autocomplete>
+            </mat-option>
+          </mat-autocomplete>
         </div> 
          <div>
-          <md-input-container>
-            <textarea mdInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
-          </md-input-container>
+          <mat-input-container>
+            <textarea matInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
+          </mat-input-container>
         </div> 
 
         <div class="cta-1" (click)="save()">SAVE</div>

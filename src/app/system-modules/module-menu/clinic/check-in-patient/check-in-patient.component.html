@@ -41,37 +41,37 @@
                                         <option value="Select by location" disabled selected>Select Doctor</option>
                                         <option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</option>
                                     </select>
-                                <!-- <md-select placeholder="Doctor">
-                                    <md-option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</md-option>
-                                </md-select> -->
+                                <!-- <mat-select placeholder="Doctor">
+                                    <mat-option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</mat-option>
+                                </mat-select> -->
                             </div>
                             <div class="col-sm-3" style="padding-left: 0;">
                                 <select class="form-control">
                                             <option value="Select by location" disabled selected>Sort by Location</option>
                                             <option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</option>
                                         </select>
-                                <!-- <md-select placeholder="Sort By Location">
-                                    <md-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</md-option>
-                                </md-select> -->
+                                <!-- <mat-select placeholder="Sort By Location">
+                                    <mat-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</mat-option>
+                                </mat-select> -->
                             </div>
                             <div class="col-sm-3" style="padding-left: 0;">
                                 <select class="form-control">
                                             <option value="Select by Clinic" disabled selected>Sort by Clinic</option>
                                             <option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</option>
                                         </select>
-                                <!-- <md-select placeholder="Sort By Clinics">
-                                    <md-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</md-option>
-                                </md-select> -->
+                                <!-- <mat-select placeholder="Sort By Clinics">
+                                    <mat-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</mat-option>
+                                </mat-select> -->
                             </div>
                             <div class="col-sm-3" style="padding-right: 0;padding-left: 0;">
                                 <div class="col-xs-10" style="padding-left: 0;">
                                     <input type="text" placeholder="Search Checked in Patient" class="searchInput" />
-                                    <!-- <md-input-container class="example-full-width">
-                                        <input mdInput placeholder="Search Checked in Patient">
-                                    </md-input-container> -->
+                                    <!-- <mat-input-container class="example-full-width">
+                                        <input matInput placeholder="Search Checked in Patient">
+                                    </mat-input-container> -->
                                 </div>
                                 <div class="col-xs-2" style="padding-right: 0;padding-left: 0;">
-                                    <button md-raised-button style="background: #FAFAFA;height: 33px;line-height: 1.5;min-width:40px;"><i class="fa fa-search"></i></button>
+                                    <button mat-raised-button style="background: #FAFAFA;height: 33px;line-height: 1.5;min-width:40px;"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
             </tr>
             <tr *ngIf="checkedInAppointments.length === 0 && loading">
                 <td class="table-content" colspan="6" style="text-align: center">
-                    <md-spinner class='small-spinner'></md-spinner>
+                    <mat-spinner class='small-spinner'></mat-spinner>
                 </td>
             </tr>
             <tr *ngFor="let appointment of checkedInAppointments">
@@ -181,5 +181,5 @@
 </div>
 
 <div *ngIf="loadIndicatorVisible" class="div_loading">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>

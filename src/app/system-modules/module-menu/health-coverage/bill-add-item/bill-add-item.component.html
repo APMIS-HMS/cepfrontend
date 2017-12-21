@@ -13,9 +13,9 @@
     <form [formGroup]="frmAddItem" novalidate>
 
       <div class="frm-item-wrap">
-        <md-input-container class="example-full-width">
-            <input mdInput md-error placeholder="Item" formControlName="itemName">
-        </md-input-container>
+        <mat-input-container class="example-full-width">
+            <input matInput mat-error placeholder="Item" formControlName="itemName">
+        </mat-input-container>
         <div class="suggestionFeeds">
           <div class="suggestedItem" *ngFor="let service of services">
             <div (click)="onSelectService(service)" class="suggetedName">{{service.service}}</div>
@@ -24,27 +24,27 @@
       </div>
 
       <div class="frm-item-wrap">
-        <md-input-container>
-            <input mdInput md-error placeholder="Description" formControlName="itemDesc">
-        </md-input-container>
+        <mat-input-container>
+            <input matInput mat-error placeholder="Description" formControlName="itemDesc">
+        </mat-input-container>
       </div>
 
       <div class="frm-item-wrap">
-        <md-input-container>
-            <input mdInput md-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="unitPrice" placeholder="Unit Price">
-        </md-input-container>
+        <mat-input-container>
+            <input matInput mat-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="unitPrice" placeholder="Unit Price">
+        </mat-input-container>
       </div>
 
       <div class="frm-item-wrap">
-        <md-input-container>
-            <input type="number" mdInput md-error placeholder="Quantity" formControlName="qty" min="0">
-        </md-input-container>
+        <mat-input-container>
+            <input type="number" matInput mat-error placeholder="Quantity" formControlName="qty" min="0">
+        </mat-input-container>
       </div>
 
       <div class="frm-item-wrap">
-        <md-input-container>
-            <input mdInput md-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="amount" placeholder="Amount">
-        </md-input-container>
+        <mat-input-container>
+            <input matInput mat-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="amount" placeholder="Amount">
+        </mat-input-container>
       </div>
 
       <button (click)="addItem(frmAddItem.value, frmAddItem.valid)" class="cta-1">

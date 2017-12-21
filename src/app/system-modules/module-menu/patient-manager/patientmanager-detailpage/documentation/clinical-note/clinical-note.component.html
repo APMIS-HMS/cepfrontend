@@ -10,21 +10,21 @@
  
     <div class="docCard-header">
         <div>
-            <md-input-container>
-                <input mdInput placeholder="Select Document" [mdAutocomplete]="autoForm" [formControl]="selectFormCtrl">
-            </md-input-container>
+            <mat-input-container>
+                <input matInput placeholder="Select Document" [matAutocomplete]="autoForm" [formControl]="selectFormCtrl">
+            </mat-input-container>
 
-            <md-autocomplete #autoForm="mdAutocomplete" [displayWith]="formDisplayFn">
-                <md-option *ngFor="let form of forms" [value]="form">
+            <mat-autocomplete #autoForm="matAutocomplete" [displayWith]="formDisplayFn">
+                <mat-option *ngFor="let form of forms" [value]="form">
                     {{ form.title }}
-                </md-option>
-            </md-autocomplete>
+                </mat-option>
+            </mat-autocomplete>
         </div>
 
         <div class="frm-item-wrap">
-            <md-select placeholder="Select Template" [formControl]="templateFormCtrl">
-              <md-option *ngFor="let item of templates" [value]="item">{{item.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Select Template" [formControl]="templateFormCtrl">
+              <mat-option *ngFor="let item of templates" [value]="item">{{item.name}}</mat-option>
+            </mat-select>
           </div>
 
         <div>
