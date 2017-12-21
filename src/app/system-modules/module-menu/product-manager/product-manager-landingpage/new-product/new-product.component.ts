@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import {
   ManufacturerService, PresentationService, GenericService, ProductTypeService,
   ProductService, DictionariesService, FacilitiesServiceCategoryService, StrengthService,
-  DrugListApiService, DrugDetailsService
+  DrugListApiService, DrugDetailsService,FacilitiesService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, FacilityService } from '../../../../../models/index';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
@@ -42,7 +42,7 @@ export class NewProductComponent implements OnInit {
   strengths: any[] = [];
   simpleProducts: any[] = [];
   productDetails: any = <any>{};
-
+  
   public frm_newProduct: FormGroup;
   public ingredientForm: FormGroup;
   public variantsForm: FormGroup;
@@ -204,9 +204,10 @@ export class NewProductComponent implements OnInit {
         }));
       dictionaryObs.subscribe((payload: any) => {
         this.productSugestion = true;
-        if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
-          this.dictionaries = payload;
-          payload.forEach(element => {
+        if (payload.data.length > 0 && payload.data[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
+          this.dictionaries = payload.data;
+          console.log(this.dictionaries);
+          payload.data.forEach(element => {
             const arrElements = element.details.split('(');
             element.activeIngredient = arrElements[1].replace(')', '');
             this.dictionaries.push(element);
@@ -357,13 +358,13 @@ export class NewProductComponent implements OnInit {
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
       console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand + '-' + suggestion.activeIngredient);
+      this.frm_newProduct.controls['name'].setValue(payload.data.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
-      this.frm_newProduct.controls['presentation'].setValue(payload.form);
-      this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
+      this.frm_newProduct.controls['presentation'].setValue(payload.data.form);
+      this.frm_newProduct.controls['manufacturer'].setValue(payload.data.company);
       this.initIngredientsForm();
-      this.setIngredientItem(payload.ingredients);
-      this.productDetails = payload;
+      this.setIngredientItem(payload.data.ingredients);
+      this.productDetails = payload.data;
       // this.manufacturers = [];
       // var manufacturerItem : any = <any>{};
       // manufacturerItem = {};
