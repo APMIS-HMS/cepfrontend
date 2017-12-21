@@ -2,7 +2,7 @@
   <div class="facility-title">Bills/Payment</div>
   <div class="inner-page-wrap">
     <ul class="topmenuwrap">
-      <li (click)="makePayment_show()">
+      <li (click)="makePayment_show()" [hidden]="this.selectedInvoiceGroup.paymentCompleted || this.selectedInvoiceGroup.paymentCompleted == undefined">
         <i class="fa fa-money" aria-hidden="true"></i>
         <span>Make Payment</span>
       </li>
@@ -41,7 +41,7 @@
               </div>
             </div>
             <div class="pending-bills">
-              <div [hidden]="isLoadingInvoice">
+              <div *ngIf="isLoadingInvoice">
                 <i class='fa fa-spinner fa-spin'></i>
               </div>
               <div [hidden]="invoiceGroups.length==0">
@@ -213,15 +213,15 @@
         <div class="feedbox">
           <div class="pending-wrap">
             <div class="pending-header">
-              <div class="pending-title">Patient's Unpaid Invoices</div>
+              <div class="pending-title">Pending Invoices</div>
               <div class="search-wrap">
                 <md-input-container>
-                  <input mdInput placeholder="search by patient name" [formControl]="searchPendingBill">
+                    <input mdInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
                 </md-input-container>
               </div>
             </div>
             <div class="pending-bills">
-              <div [hidden]="isLoadingOtherInvoice">
+              <div *ngIf="isLoadingOtherInvoice">
                 <i class='fa fa-spinner fa-spin'></i>
               </div>
               <div [hidden]="otherInvoiceGroups.length==0">
@@ -233,8 +233,8 @@
                   <div class="list-labels">
                     <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
                     <div class="oda">
-                      <div class="pending-date">{{otherInvoice.createdAt}}</div>
-                      <div class="pending-amount">
+                      <div class="pending-date">{{otherInvoice.createdAt | date :'medium'}}</div>
+                      <div class="pending-amount" *ngIf="otherInvoice.totalPrice!=0">
                         <span>&#x20a6;</span>{{otherInvoice.totalPrice|numberThr}}</div>
                     </div>
                   </div>
