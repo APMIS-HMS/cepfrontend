@@ -84,8 +84,7 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
-		this._prescriptionService.find({ query: { facilityId : this.facility._id }})
-			.then(res => {
+		this._prescriptionService.find({ query: { facilityId : this.facility._id }}).then(res => {
 				console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
@@ -99,19 +98,18 @@ export class PrescriptionListComponent implements OnInit {
 						});
 
 						if (isBilledCount === preItemCount) {
-							element.status = 'completely';
+							element.status = 'Completely';
 						} else if (isBilledCount === 0) {
-							element.status = 'not';
+							element.status = 'Not';
 						} else {
-							element.status = 'partly';
+							element.status = 'Partly';
 						}
 
 						this.tempPrescriptionLists.push(element); // temporary variable to search from.
 						this.prescriptionLists.push(element);
 					}
 				});
-			})
-			.catch(err => {
+			}).catch(err => {
 				console.log(err);
 			});
 	}

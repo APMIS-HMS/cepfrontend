@@ -31,11 +31,10 @@ export class ProductManagerLandingpageComponent implements OnInit {
   selProductType = new FormControl();
   searchControl = new FormControl();
   constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
-    private productService: ProductService, private _productEventEmitter: ProductEmitterService,
-    private toast: ToastsManager) {
+    private productService: ProductService, private _productEventEmitter: ProductEmitterService
+  ) {
     this.productService.listenerUpdate.subscribe(payload => {
       this.getProducts();
-      this.toast.success(payload.name + ' updated successfully!', 'Success!');
     });
     this.productService.listenerCreate.subscribe(payload => {
       this.getProducts();
