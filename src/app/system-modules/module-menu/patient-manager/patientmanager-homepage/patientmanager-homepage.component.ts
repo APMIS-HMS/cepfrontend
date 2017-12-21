@@ -200,9 +200,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         facilityId: this.facility._id,
         $limit: this.limit,
         $skip: this.index * this.limit,
-        $sort:{createdAt: -1 }
+        $sort: {createdAt: -1 }
       }
     }).then(payload => {
+      this.systemService.off();
+      this.loading = false;
       this.total = payload.total;
       if (payload.data.length > 0) {
         if (this.resetData !== true) {
@@ -219,8 +221,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.patients = [];
       }
       this.getShowing();
-      this.systemService.off();
-      this.loading = false;
     }).catch(errr => {
       console.log(errr);
       this.systemService.off();
