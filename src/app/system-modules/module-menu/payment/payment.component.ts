@@ -130,6 +130,7 @@ export class PaymentComponent implements OnInit {
         }
         this._locSummaryCashService.get(facility)
             .then(payload2 => {
+                this.loadingLocAmountAccrued=false;
                 this.barChartLabels = payload2.data.barChartLabels;
                 this.barChartData.splice(0, 1);
                 for (let k = 0; k < payload2.data.barChartData.length; k++) {
@@ -141,8 +142,9 @@ export class PaymentComponent implements OnInit {
                     }
                     this.barChartData[i].label = payload2.data.barChartData[i].label;
                 }
-                this.loadingLocAmountAccrued=false;
+                
             }).catch(err => {
+                this.loadingLocAmountAccrued=false;
                 this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
             });
     }
