@@ -40,8 +40,8 @@ import { MaterialModule } from '../shared-common-modules/material-module';
 import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import {
-    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-    MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
+    MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule,
+    MatInputModule, MatOptionModule, MatSelectionList, MatSelectModule, MatRadioButton
 } from '@angular/material';
 import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';

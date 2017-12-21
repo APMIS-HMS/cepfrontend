@@ -3,7 +3,7 @@ import { User } from './../../../../../models/facility-manager/setup/user';
 import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
 import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { MdPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material';
 import { FacilityCompanyCoverService } from './../../../../../services/facility-manager/setup/facility-company-cover.service';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
@@ -30,7 +30,7 @@ export class CompanyBeneficiaryListComponent implements OnInit {
 
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   user: User = <User>{};
   genders: any[] = [
     {
