@@ -20,9 +20,9 @@
                                     <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.FirstName }}  {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
+                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.firstName }}  {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{ pendingBill?.createAt | date:'medium' }}</div>
+                                        <div class="pending-date">{{ pendingBill?.createdAt | date:'medium' }}</div>
                                         <div class="pending-amount">
                                             <span>&#x20a6;</span>{{pendingBill?.grandTotalExcludeInvoice|numberThr  }}</div>
                                     </div>
@@ -64,7 +64,7 @@
                             </li>
                         </div>
                         <ul class="pending-bills" *ngFor="let invoice of invoiceGroups">
-                            <li class="empWrap">
+                            <li class="empWrap" (click)="onSelectedInvoice(invoice)">
                                 <div class="list-img">
                                     <img *ngIf="invoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.personDetails.profileImageObject.thumbnail)">
                                     <img *ngIf="invoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -42,6 +43,7 @@ export class PaymentComponent implements OnInit {
         private invoiceService: InvoiceService,
         private _pendingBillService: PendingBillService,
         private locker: CoolLocalStorage,
+        private router: Router,
         private _todayInvoiceService: TodayInvoiceService,
         private _locSummaryCashService: LocSummaryCashService
     ) {
@@ -67,7 +69,7 @@ export class PaymentComponent implements OnInit {
                 }
                 this._todayInvoiceService.get(facility).then(payload => {
                     this.invoiceGroups = payload.data.invoices;
-                    this.isLoadingInvoice = true;
+                    this.isLoadingInvoice = false;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });
 
@@ -96,8 +98,10 @@ export class PaymentComponent implements OnInit {
             "isQuery": false
         }
         this._todayInvoiceService.get(facility).then(payload => {
+            console.log(payload.data);
             this.invoiceGroups = payload.data.invoices;
             this.totalAmountReceived = payload.data.amountReceived;
+            this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
         }).catch(err => this._notification('Error', 'There was a problem getting invoices, Please try again later!'));
     }
@@ -110,6 +114,7 @@ export class PaymentComponent implements OnInit {
         }
         this._pendingBillService.get(facility)
             .then(res => {
+                console.log(res.data);
                 this.pendingBills = res.data.bills;
                 this.totalAmountBilled = res.data.amountBilled;
                 this.loadingPendingBills = false;
@@ -142,6 +147,9 @@ export class PaymentComponent implements OnInit {
             });
     }
 
+    onSelectedInvoice(invoice){
+        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]);
+    }
     
     // Notification
     private _notification(type: string, text: string): void {
