@@ -150,8 +150,6 @@ export class NewPurchaseOrderComponent implements OnInit {
     });
   }
   onProductCheckChange(event, value) {
-    console.log(event);
-    console.log(value);
     value.checked = event.checked;
     if (event.checked === true) {
       (<FormArray>this.productTableForm.controls['productTableArray'])
@@ -270,13 +268,11 @@ export class NewPurchaseOrderComponent implements OnInit {
   getSuppliers() {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id }, $paginate: false }).then(payload => {
       this.suppliers = payload.data;
-      console.log(this.suppliers);
     });
   }
   getStrengths() {
     this.strengthService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.strengths = payload.data;
-      console.log(payload);
     });
   }
   addNewProductTables() {
@@ -312,12 +308,9 @@ export class NewPurchaseOrderComponent implements OnInit {
         product.quantity = item.qty;
         purchaseOrder.orderedProducts.push(product);
       });
-      console.log(purchaseOrder);
       this.purchaseOrderService.create(purchaseOrder).subscribe(payload => {
-        console.log(payload);
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       }, error => {
-        console.log(error);
       });
     } else {
       this.selectedPurchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
@@ -329,26 +322,21 @@ export class NewPurchaseOrderComponent implements OnInit {
 
       this.selectedPurchaseOrder.orderedProducts = [];
       // let productRemoved = this.hasBeenRemoved();
-      // console.log(productRemoved);
 
       (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((itemi, i) => {
         const item = itemi.value;
         const product: any = <any>{};
         product.productId = item.id;
         product.quantity = item.qty;
-        console.log(product);
         this.selectedPurchaseOrder.orderedProducts.push(product);
       });
 
-      console.log(this.selectedPurchaseOrder);
       this.purchaseOrderService.update(this.selectedPurchaseOrder).subscribe(payload => {
-        console.log(payload);
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.unCheckedAllProducts();
         this.router.navigate(['/dashboard/purchase-manager/orders']);
         // (<FormArray>this.productTableForm.controls['productTableArray']).set = this.formBuilder.array([]);
       }, error => {
-        console.log(error);
       });
     }
   }
@@ -358,13 +346,11 @@ export class NewPurchaseOrderComponent implements OnInit {
       let isExisting = false;
       this.selectedPurchaseOrder.orderedProducts.forEach((itemi, i) => {
         if (itemi.productId === itemm.id) {
-          console.log('am here');
           isExisting = true;
         }
       });
       if (isExisting === false) {
         productRemoved.push(itemm);
-        console.log(productRemoved);
       }
 
     });
@@ -376,7 +362,6 @@ export class NewPurchaseOrderComponent implements OnInit {
         }
       });
     });
-    console.log(this.selectedPurchaseOrder.orderedProducts);
     return productRemoved;
   }
   flyout_toggle(e) {

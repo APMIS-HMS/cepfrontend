@@ -155,7 +155,6 @@ export class NewProductComponent implements OnInit {
         })
       ])
     });
-    console.log(this.variantsForm)
     this.variantsForm.controls['variants'] = this.formBuilder.array([]);
   }
 
@@ -169,19 +168,16 @@ export class NewProductComponent implements OnInit {
         })
       ])
     });
-    console.log(this.ingredientForm)
     this.ingredientForm.controls['ingredients'] = this.formBuilder.array([]);
   }
 
   getStrengths() {
     this.strengthService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.strengths = payload.data;
-      console.log(this.strengths);
     });
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
       if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
@@ -254,7 +250,6 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
       this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
       this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
-      console.log(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
@@ -313,11 +308,8 @@ export class NewProductComponent implements OnInit {
           value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
         }
         value.productDetail = this.productDetails;
-        
-        console.log(value);
 
         this.productService.create(value).then(payload => {
-          console.log(payload);
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
               item.services.push(service);
@@ -331,7 +323,6 @@ export class NewProductComponent implements OnInit {
                     payload.serviceId = items._id;
                     payload.facilityServiceId = this.selectedFacilityService._id;
                     this.productService.update(payload).then(result => {
-                      console.log(result);
                     });
                   }
                 });
@@ -340,10 +331,8 @@ export class NewProductComponent implements OnInit {
           });
           this.close_onClick();
         }, error => {
-          console.log(error);
         });
       } else {
-        console.log(value);
         value._id = this.selectedProduct._id;
         this.productService.update(value).then(payload => {
           this.close_onClick();
@@ -356,7 +345,6 @@ export class NewProductComponent implements OnInit {
   }
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
-      console.log(payload);
       this.frm_newProduct.controls['name'].setValue(payload.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.form);

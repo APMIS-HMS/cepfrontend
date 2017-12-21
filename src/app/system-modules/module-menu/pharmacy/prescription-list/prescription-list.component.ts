@@ -79,14 +79,12 @@ export class PrescriptionListComponent implements OnInit {
 	}
 
 	onChangeCategory(value: any) {
-		console.log(value);
 	}
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
 		this._prescriptionService.find({ query: { facilityId : this.facility._id }})
 			.then(res => {
-				console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
 					if (!element.isDispensed) {
@@ -112,13 +110,11 @@ export class PrescriptionListComponent implements OnInit {
 				});
 			})
 			.catch(err => {
-				console.log(err);
 			});
 	}
 
 	getDispenses() {
 		this._dispenseService.find({ query: {facilityId: this.facility._id, isPrescription: false }}).then(res => {
-			console.log(res);
 			this.noPresLoading = false;
 			if (res.data.length > 0) {
 				this.noPrescriptionLists = res.data;
@@ -130,7 +126,6 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Call Api to search
 	private searchApi() {
-		console.log('name');
 	}
 
 }

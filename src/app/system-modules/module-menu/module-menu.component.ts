@@ -81,7 +81,6 @@ export class ModuleMenuComponent implements OnInit {
   //     this.facilityName = this.facilityObj.name;
   //   },
   //     error => {
-  //       console.log(error);
   //     })
   // }
 

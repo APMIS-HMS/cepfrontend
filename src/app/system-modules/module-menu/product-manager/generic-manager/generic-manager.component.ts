@@ -47,7 +47,6 @@ export class GenericManagerComponent implements OnInit {
 						this.generics.push(payload);
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			} else {
 				value = this.selectedItem;
@@ -60,7 +59,6 @@ export class GenericManagerComponent implements OnInit {
             this.btnLabel = 'Create';
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			}
 
@@ -90,7 +88,6 @@ export class GenericManagerComponent implements OnInit {
           // Do nothing
 			})
 			.catch(err => {
-				console.log(err);
 			});
 	}
 

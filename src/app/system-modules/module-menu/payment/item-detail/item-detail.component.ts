@@ -15,7 +15,6 @@ export class ItemDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.selectedBillItem)
   }
 
   close_onClick() {

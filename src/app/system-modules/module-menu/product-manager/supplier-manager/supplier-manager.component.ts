@@ -39,9 +39,7 @@ export class SupplierManagerComponent implements OnInit {
   getSuppliers() {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.suppliers = payload.data;
-      console.log(payload);
     }, error => {
-      console.log(error);
     });
   }
   onSelect(supplier) {

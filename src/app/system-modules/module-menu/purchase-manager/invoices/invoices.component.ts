@@ -31,7 +31,6 @@ export class InvoicesComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       if (payload !== undefined) {
         this.checkingStore = payload;
         this.getInvoices();
@@ -49,7 +48,6 @@ export class InvoicesComponent implements OnInit {
     this.frmSupplier.valueChanges.subscribe(value => {
       if (value !== null) {
         this.invoiceService.find({ query: { supplierId: value } }).subscribe(payload => {
-          console.log(value);
           this.invoices = payload.data;
         });
       } else {

@@ -130,9 +130,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     apmisLookupHandleSelectedItem(item) {
         this.apmisLookupText = item.details;
-        console.log(item);
         this._drugDetailsApi.find({ query: { 'productId': item.productId } }).then(res => {
-            console.log(res);
             let sRes = res.data;
             if (res.status === 'success') {
               if (!!sRes.ingredients && sRes.ingredients.length > 0) {
@@ -273,12 +271,10 @@ export class PatientPrescriptionComponent implements OnInit {
                     grandTotal: totalCost,
                 }
 
-                console.log(bill);
                 // If any item was billed, then call the billing service
                 if (billItemArray.length > 0) {
                     // send the billed items to the billing service
                     this._billingService.create(bill).then(res => {
-                        console.log(res);
                         if (res._id !== undefined) {
                             this.prescriptions.billId = res._id;
                             // if this is true, send the prescribed drugs to the prescription service
@@ -328,7 +324,6 @@ export class PatientPrescriptionComponent implements OnInit {
 
     private _getAllPriorities() {
         this._priorityService.findAll().then(res => {
-            console.log(res);
             this.priorities = res.data;
             const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
             this.allPrescriptionsForm.controls['priority'].setValue(priority[0]._id);
@@ -394,7 +389,6 @@ export class PatientPrescriptionComponent implements OnInit {
             this.authorizeRx = 'Authorize Rx';
         }).catch(err => {
             this._notification('Error', 'There was an error creating prescription. Please try again later.');
-            console.error(err);
         });
     }
 

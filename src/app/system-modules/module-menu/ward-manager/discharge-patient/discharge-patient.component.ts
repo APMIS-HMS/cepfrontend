@@ -60,9 +60,7 @@ export class DischargePatientComponent implements OnInit {
       this.inPatientId = params.id;
     });
 
-    console.log(this.selectedPatient);
     this._wardDischargeTypesService.findAll().then(payload => {
-      console.log(payload.data);
       this.dischargeTypeItems = payload.data;
     });
   }
@@ -80,7 +78,6 @@ export class DischargePatientComponent implements OnInit {
       };
 
       this._inPatientService.discharge(payload).then(res => {
-        console.log(res);
         if (res.status === 'success') {
           this._notification('Success', 'Patient has been discharged successfully.');
           setTimeout(e => {
@@ -90,7 +87,6 @@ export class DischargePatientComponent implements OnInit {
           this._notification('Error', 'There was a problem discharging patient. Please try again later.');
         }
       }).catch(err => {
-        console.log(err);
       });
 
       // this._inPatientService.get(this.inPatientId, {}).then(payload => {
@@ -114,7 +110,6 @@ export class DischargePatientComponent implements OnInit {
       // 										bed.state = 'Available';
       // 										delete bed.occupant;
       // 										this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
-      // 											// console.log("Complete");
       // 											this._router.navigate(['/dashboard/ward-manager/admitted']);
       // 										});
       // 									}
@@ -125,7 +120,6 @@ export class DischargePatientComponent implements OnInit {
       // 				});
       // 			})
       // 	}, error => {
-      // 		console.log(error)
       // 	});
       // });
     }
@@ -140,7 +134,6 @@ export class DischargePatientComponent implements OnInit {
   }
 
   onDischargeTypeChange(param) {
-    console.log(param);
   }
 
   close_onClick() {

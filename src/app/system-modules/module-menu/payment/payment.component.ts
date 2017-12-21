@@ -98,7 +98,6 @@ export class PaymentComponent implements OnInit {
             "isQuery": false
         }
         this._todayInvoiceService.get(facility).then(payload => {
-            console.log(payload.data);
             this.invoiceGroups = payload.data.invoices;
             this.totalAmountReceived = payload.data.amountReceived;
             this.isLoadingInvoice = false;
@@ -114,7 +113,6 @@ export class PaymentComponent implements OnInit {
         }
         this._pendingBillService.get(facility)
             .then(res => {
-                console.log(res.data);
                 this.pendingBills = res.data.bills;
                 this.totalAmountBilled = res.data.amountBilled;
                 this.loadingPendingBills = false;
@@ -167,10 +165,8 @@ export class PaymentComponent implements OnInit {
 
     // events
     public chartClicked(e: any): void {
-        console.log(e);
     }
 
     public chartHovered(e: any): void {
-        console.log(e);
     }
 }

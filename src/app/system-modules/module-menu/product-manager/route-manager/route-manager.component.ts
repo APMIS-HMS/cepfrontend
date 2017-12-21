@@ -47,7 +47,6 @@ export class RouteManagerComponent implements OnInit {
 						this.routes.push(data);
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			} else {
 				// Updating existing record
@@ -61,7 +60,6 @@ export class RouteManagerComponent implements OnInit {
 						this.btnLabel = 'Create';
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			}
 
@@ -91,7 +89,6 @@ export class RouteManagerComponent implements OnInit {
 				// Do nothing for now
 			})
 			.catch(err => {
-				console.log(err);
 			});
 	}
 
