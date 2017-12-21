@@ -61,9 +61,7 @@
                   </div>
                   <div class="frm-item-wrap">
                     <md-select placeholder="Select Plan" [formControl]="ccPlan">
-                      <md-option>Diamond</md-option>
-                      <md-option>Gold</md-option>
-                      <md-option>Bronze</md-option>
+                        <md-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</md-option>
                     </md-select>
                   </div>
             
@@ -81,10 +79,25 @@
                   </div>
                 </div>
               </div>
-              <button class="cta-1" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid">Next</button>
-              <button class="cta-1" (click)="next()" *ngIf="tabInsurance">Next</button>
-              <button class="cta-1" (click)="next()" *ngIf="tabCompany">Next</button>
-              <button class="cta-1" (click)="next()" *ngIf="tabFamily">Next</button>
+              
+              <div class="btn-box">
+                    <button class="small-btn" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid" md-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+                    <button class="small-btn" (click)="next()" *ngIf="tabInsurance" md-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+                    <button class="small-btn" (click)="nextCompanyCover(ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" md-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+                    <button class="small-btn" (click)="next()" *ngIf="tabFamily" md-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+              </div>
               <div class="back-btn-box">
                 <span (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</span>
               </div>
