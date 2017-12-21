@@ -132,10 +132,11 @@ export class InvoiceComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingInvoice = true;
-                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: value } })
+                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: {$regex:'.*'+value+'.*'}} })
                     .then(payload => {
                         this.invoiceGroups = payload.data;
                         this.isLoadingInvoice = false;
+                        console.log(this.isLoadingInvoice);
                         console.log(this.invoiceGroups);
                         if (this.isPaymentMade == false) {
                             this.selectedInvoiceGroup = <Invoice>{};

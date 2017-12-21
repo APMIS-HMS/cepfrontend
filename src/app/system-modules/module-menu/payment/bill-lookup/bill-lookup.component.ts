@@ -152,7 +152,7 @@ export class BillLookupComponent implements OnInit {
         this._todayInvoiceService.get(facility).then(payload => {
           console.log(payload);
           this.invoiceGroups = payload.data.invoices;
-          this.isLoadingInvoice = true;
+          this.isLoadingInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
       });
 
@@ -250,6 +250,10 @@ export class BillLookupComponent implements OnInit {
       this._notification('Info', "No bill selected")
     }
   }
+
+  onSelectedInvoice(invoice){
+    this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]);
+}
 
   fixedGroup(bill: BillModel) {
     console.log(1);
