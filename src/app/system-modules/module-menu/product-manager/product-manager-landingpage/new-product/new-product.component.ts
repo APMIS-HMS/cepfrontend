@@ -202,7 +202,6 @@ export class NewProductComponent implements OnInit {
         this.productSugestion = true;
         if (payload.data.length > 0 && payload.data[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
           this.dictionaries = payload.data;
-          console.log(this.dictionaries);
           payload.data.forEach(element => {
             const arrElements = element.details.split('(');
             element.activeIngredient = arrElements[1].replace(')', '');
@@ -346,7 +345,6 @@ export class NewProductComponent implements OnInit {
   }
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
-      console.log(payload);
       this.frm_newProduct.controls['name'].setValue(payload.data.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.data.form);
