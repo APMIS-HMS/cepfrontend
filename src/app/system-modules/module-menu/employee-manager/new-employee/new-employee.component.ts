@@ -314,7 +314,6 @@ export class NewEmployeeComponent implements OnInit {
         this.shouldMoveFirst = false;
     }
     newPerson1(valid, val) {
-      console.log(val);
         if (valid) {
           if (val.confirmEmpEmail === val.empEmail) {
             if (val.empTitle === '' || val.empTitle === ' ' || val.empFirstName === ''

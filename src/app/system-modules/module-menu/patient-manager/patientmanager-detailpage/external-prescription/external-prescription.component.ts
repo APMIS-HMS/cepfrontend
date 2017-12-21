@@ -25,7 +25,6 @@ export class ExternalPrescriptionComponent implements OnInit {
 
 	ngOnInit() {
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
-		console.log(this.patientDetails);
 
 		this.getAllPrescriptions();
 	}
@@ -35,11 +34,9 @@ export class ExternalPrescriptionComponent implements OnInit {
 	getAllPrescriptions() {
 		this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id}})
 			.then(res => {
-				console.log(res);
 				this.prescriptions = res.data;
 			})
 			.catch(err => {
-				console.log(err);
 			});
 	}
 }

@@ -41,7 +41,6 @@ export class AddLineModifierComponent implements OnInit {
     this.closeModal.emit(true);
   }
   onSelectModifier(modifier: any) {
-    console.log(modifier);
     let name = '';
     if (modifier.modifierType === 'Percentage') {
       name = modifier.tagDetails.name + ' (' + modifier.modifierValue + '%)';
@@ -54,7 +53,6 @@ export class AddLineModifierComponent implements OnInit {
   }
 
   addModifier(value: any, valid: boolean) {
-    console.log(value);
     if (this.selectedModifier.modifierType === 'Percentage') {
       const percent = this.selectedModifier.modifierValue;
       const unitPrice = this.selectedServiceBill.unitPrice;
@@ -84,7 +82,6 @@ export class AddLineModifierComponent implements OnInit {
         if (payload.data.length > 0) {
           const price = payload.data[0];
           this.modifiers = price.modifiers;
-          console.log(this.modifiers);
         }
       });
   }

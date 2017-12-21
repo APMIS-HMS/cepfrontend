@@ -70,11 +70,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       doc.createdBy = logEmp;
       doc.facilityId = this.selectedMiniFacility;
       doc.patientId = this.patient._id;
-      console.log(doc);
       this.patientDocumentation.documentations.push(doc);
-      console.log(this.patientDocumentation);
       this.documentationService.update(this.patientDocumentation).then(pay => {
-        console.log(pay);
         this.getPersonDocumentation();
       })
     });
@@ -108,7 +105,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               this.populateDocuments();
-              console.log(this.patientDocumentation);
               // mload.data[0].documentations[0].documents.push(doct);
             }
           })
@@ -139,22 +135,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     const docs: any[] = [];
     props.forEach((prop, i) => {
       const property = prop.toString();
-      console.log(Object.assign({}, object));
       docs.push({ property: object[prop] });
-      // console.log(object[Object.getOwnPropertyNames(object)[1]])
     })
 
-
-    // console.log(object[Object.getOwnPropertyNames(object)[1]])
 
     // const arr = Object.keys(object).map(function (k) { return object[k] });
     // const arr = Object.keys(object).map(function(_) { return object[_]; })
     // const obj = JSON.parse(object);
-    // console.log(object.split(':'));
     // const splitObject = JSON.stringify(object).split(':'); //.replace('{"', '')
-    // console.log(splitObject);
-    // console.log(splitObject[1]);
-    console.log(docs);
     return object;
   }
   trimKey(value) {

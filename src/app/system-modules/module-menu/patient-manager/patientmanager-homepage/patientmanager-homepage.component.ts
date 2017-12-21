@@ -60,7 +60,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.getPatients(this.limit);
     });
     this.patientService.createListener.subscribe(payload => {
-      console.log(payload);
       this.getPatients();
       let msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
       this._notification('Success', msg);
@@ -95,8 +94,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
   setAppointment(patient) {
-    console.log(patient);
-    console.log(this.loginEmployee)
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
@@ -146,7 +143,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.resetData);
     if (this.resetData === true) {
       this.index = 0;
       this.getPatients();
@@ -222,7 +218,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
       this.getShowing();
     }).catch(errr => {
-      console.log(errr);
       this.systemService.off();
       this.loading = false;
     });
@@ -254,7 +249,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   slideEdit(patient) {
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
-      console.log(this.selectedPatient);
       this.editPatient = true;
       if (this.selectedPatient.nextOfKin.length > 0) {
         const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -296,14 +290,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
 
-    console.log(this.selectedPatient)
     this.personService.update(this.selectedPatient).then(res => {
       this.updatePatientBtnText = 'Update';
       this.close_onClick();
       this._notification('Success', 'Patient details has been updated successfully.');
     }).catch(err => {
       this.updatePatientBtnText = 'Update';
-      console.log(err);
       this._notification('Error', 'There was an error updating user record, Please try again later.');
     });
   }
@@ -336,7 +328,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
     });
 
-    console.log(this.cities)
     this.cities.forEach(item => {
       if (item._id === value.homeAddress.city) {
         this.patientEditForm.controls['city'].setValue(item);
@@ -404,7 +395,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       .then(res => {
         this.titles = res.data;
       }).catch(err =>{
-        console.log(err)
         this._getAllTitles();
       });
   }

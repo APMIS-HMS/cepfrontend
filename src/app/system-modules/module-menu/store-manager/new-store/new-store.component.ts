@@ -91,8 +91,6 @@ export class NewStoreComponent implements OnInit {
     productType.isChecked = e.value;
   }
   create(valid, value) {
-    console.log(valid)
-    console.log(value)
     if (valid) {
       this.mainErr = true;
       if (this.selectedStore._id === undefined) {
@@ -110,7 +108,6 @@ export class NewStoreComponent implements OnInit {
           });
           this.closeModal.emit(true);
         }, error => {
-          console.log(error);
         });
       } else {
         this.selectedStore.name = value.name;

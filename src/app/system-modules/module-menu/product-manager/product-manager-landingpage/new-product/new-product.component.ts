@@ -330,7 +330,6 @@ export class NewProductComponent implements OnInit {
                     payload.serviceId = items._id;
                     payload.facilityServiceId = this.selectedFacilityService._id;
                     this.productService.update(payload).then(result => {
-
                     });
                   }
                 });
@@ -339,7 +338,6 @@ export class NewProductComponent implements OnInit {
           });
           this.close_onClick();
         }, error => {
-          console.log(error);
         });
       } else {
         value._id = this.selectedProduct._id;

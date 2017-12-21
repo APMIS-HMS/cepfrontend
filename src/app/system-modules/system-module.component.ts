@@ -92,4 +92,7 @@ export class SystemModuleComponent implements OnInit {
     this.moduleManagerActive = true;
     this.facilityManagerActive = false;
   }
+  close_onClick(){
+    this.logoutConfirm_on = false;
+  }
 }

@@ -82,7 +82,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	onWardChange(param) {
 		this.filterAdmittedPatient = [];
 		this._wardAdmissionService.find({ query: {'facilityId._id': this.facility._id }}).then(payload => {
-			console.log(payload);
 			if (payload.data.length > 0) {
 				this.admittedPatient = [];
 				payload.data[0].locations.forEach(item => {
@@ -177,7 +176,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 			.then(payload => {
 				this.loading = false;
 				if (payload.data.length !== 0) {
-					console.log(payload.data);
 					payload.data.forEach(item => {
 						if (item.discharge == null) {
 							// wardDetails.ward = payload.data.transfers[payload.data.lastIndex].name;

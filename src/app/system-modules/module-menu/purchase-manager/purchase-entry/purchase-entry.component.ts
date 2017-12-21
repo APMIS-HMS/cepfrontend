@@ -103,10 +103,8 @@ export class PurchaseEntryComponent implements OnInit {
     this.getStores();
     this.getStrengths();
     // this.route.data.subscribe(data => {
-    //   console.log(data);
     //   data['loginEmployee'].subscribe((payload) => {
     //     this.loginEmployee = payload.loginEmployee;
-    //     console.log(payload);
     //   });
     // });
     this.frm_purchaseOrder = this.formBuilder.group({
@@ -140,7 +138,6 @@ export class PurchaseEntryComponent implements OnInit {
       if (value !== undefined && value !== null) {
         this.purchaseOrderService.get(value, {}).subscribe(payload => {
           this.selectedOrder = payload;
-          console.log(this.selectedOrder);
         });
       }
     });
@@ -362,18 +359,15 @@ export class PurchaseEntryComponent implements OnInit {
     }
   }
   getCostSummary(value) {
-    console.log(value);
     this.totalCost = 0;
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
       const productControlValue: any = item.value;
-      console.log(+productControlValue.costPrice);
       this.totalCost = this.totalCost + (+productControlValue.costPrice * +productControlValue.qty);
     });
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
 
     // Set totalcost for each item
     let total = "₦ " + (value.value.qty * value.value.costPrice);
-    console.log(total);
     value.controls['total'].setValue(total);
   }
   mergeTable(obj) {
@@ -713,7 +707,6 @@ export class PurchaseEntryComponent implements OnInit {
   }
 
   flyout_toggle(e) {
-    console.log(this.selectedOrder);
     if (this.selectedOrder === undefined || this.selectedOrder._id === undefined) {
       this.flyout = !this.flyout;
     }

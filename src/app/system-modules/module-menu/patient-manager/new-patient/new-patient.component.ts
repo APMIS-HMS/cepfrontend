@@ -146,24 +146,19 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         const that = this;
         myReader.onloadend = function (loadEvent: any) {
             image.src = loadEvent.target.result;
-            console.log(that.cropper);
             that.cropper.setImage(image);
         };
         myReader.readAsDataURL(file);
     }
     uploadButton() {
-        console.log('upload button clicked');
         if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
             if (this.selectedPerson.profileImageObject !== undefined) {
-                console.log('aa');
                 this.options.data.filename = this.selectedPerson.profileImageObject.filename;
             } else {
-                console.log('bb');
                 this.options.data.filename = 0;
             }
         }
         this.uploadEvents.emit('startUpload');
-        console.log('event emitted');
     }
     beforeUpload(uploadingFile): void {
         if (uploadingFile.size > this.sizeLimit) {
@@ -172,22 +167,17 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
     }
     handleUpload(data): void {
-        console.log('am uploading 1')
         if (data && data.response) {
-            console.log('am uploading 2')
             data = JSON.parse(data.response);
             const file = data[0].file;
             if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
-                console.log('am uploading 3')
                 this.personService.get(this.selectedPerson._id, {}).then(payload => {
                     if (payload != null) {
-                        console.log('am uploading 4')
                         payload.profileImageObject = file;
                         this.updatePerson(payload);
                     }
                 });
             } else if (this.OperationType === ImageUploaderEnum.PatientProfileImage) {
-                console.log('am uploading 7')
                 this.selectedPerson.profileImageObject = file;
                 this.updatePerson(this.selectedPerson);
             }
@@ -197,7 +187,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.hasBaseDropZoneOver = e;
     }
     updatePerson(person: Person) {
-        console.log('am updating');
         this.personService.update(person).then(rpayload => {
             if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
                 this.selectedPerson = rpayload;
@@ -230,8 +219,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             .switchMap((term: any) => this.employeeService.searchEmployee(this.facility._id, this.ccPlanId.value, false));
 
         away.subscribe((payload: any) => {
-            console.log(this.ccPlanId.value);
-            console.log(payload);
         });
 
         this.frmNewEmp1 = this.formBuilder.group({
@@ -251,7 +238,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         });
         this.frmNewEmp1.controls['empNationality'].valueChanges.subscribe((value: Country) => {
-            console.log(value);
             this.states = value.states;
         });
 
@@ -272,7 +258,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         });
         this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
-            console.log(value);
             this.contactStates = value.states;
         });
         this.frmNewEmp2.controls['empContactState'].valueChanges.subscribe((value) => {
@@ -296,7 +281,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             }));
         apmisIdObs.subscribe((payload: any) => {
-            console.log(payload.data);
             if (payload.data.length > 0) {
                 const person = payload.data[0];
                 this.frmNewEmp3.controls['nok_Address'].setValue(person.fullAddress);
@@ -363,21 +347,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     employeeChecking(value) {
-        console.log(value);
         /* this.employeeService.find({
             query : {
                 facilityId: this.facility._id,
                 _id: value
             }
         }).then(payload => {
-            console.log(payload);
         }); */
     }
 
     next(data) {
         if (this.paymentPlan === true) {
             this.planInput = data;
-            console.log(this.planInput);
             this.frmNewEmp4_show = false;
             this.frmNewPerson1_show = true;
             this.frmNewPerson2_show = false;
@@ -440,7 +421,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
-                console.log(this.errMsg);
                 return Observable.of(undefined);
             }
 
@@ -461,13 +441,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.frmNewPerson3_show = false;
                 this.paymentPlan = false;
                 this.shouldMoveFirst = true;
-                console.log(this.shouldMoveFirst);
             }
         });
 
 
         // Observable.forkJoin([findPerson$, findPersonInFacilityEmployee$]).subscribe(results => {
-        //     console.log(results);
         // });
 
         // this.personService.find({
@@ -552,7 +530,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     newPerson2(valid, val) {
-        console.log(this.empImg);
         if (valid) {
             if (val.empMaritalStatus === '' || val.empHomeAddress === ' ' || val.empHomeAddress === '' || val.empDOB === ' ') {
                 this.mainErr = false;
@@ -601,7 +578,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
             person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
-                console.log('not skip');
                 person.nextOfKin.push(
                     {
                         fullName: this.frmNewEmp3.controls['nok_fullname'].value,
@@ -621,7 +597,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
 
                 this.personService.create(person).then(payload => {
-                    console.log(payload);
 
                     let patient: any = {
                         personId: payload.data._id,
@@ -633,7 +608,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } })
                             .then(payloadPrice => {
                                 //this.prices = payload.data;
-                                console.log(payloadPrice);
                                 /* let billing:any = {
                                     discount: 0,
                                     facilityId: this.facility._id,
@@ -642,9 +616,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 }
                                 this.billingService.create() */
                             }).catch(err => {
-                                console.log(err);
                             });
-                        console.log(payl);
 
                         this.frmNewPerson1_show = false;
                         this.frmNewPerson2_show = false;
@@ -657,7 +629,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     this.selectedPerson = payload;
                 });
             } else {
-                console.log('skip');
                 person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
                 person.phoneNumber = this.frmNewEmp1.controls['empPhonNo'].value;
                 person.titleId = this.frmNewEmp1.controls['empTitle'].value;
@@ -666,8 +637,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
 
                 this.personService.create(person).then(payload => {
-                    console.log('save person');
-                    console.log(payload);
                     let patient: any = {
                         personId: payload._id,
                         facilityId: this.facility._id,
@@ -675,11 +644,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     }
                     this.patientService.create(patient).then(payl => {
                         this.selectedPerson = payload;
-                        console.log(payl);
                         this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } })
                             .then(payloadPrice => {
                                 //this.prices = payload.data;
-                                console.log(payloadPrice);
                                 /* let billing:any = {
                                     discount: 0,
                                     facilityId: this.facility._id,
@@ -699,12 +666,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 this.apmisId_show = false;
                                 this.mainErr = true;
                             }).catch(err => {
-                                console.log(err);
                             });
 
                     });
                 }, error => {
-                    console.log(error);
                 });
             }
 
@@ -713,9 +678,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     newPerson3(valid, val) {
         if (this.skipNok || valid) {
-            console.log('skip');
             if (this.skipNok) {
-                console.log('saving patient');
                 this.savePerson();
             } else {
                 if (valid) {
@@ -737,7 +700,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     skip_nok() {
-        console.log('sking nok method');
         // this.frmNewPerson1_show = false;
         // this.frmNewPerson2_show = false;
         // this.frmNewPerson3_show = false;
@@ -770,7 +732,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         let model: Patient = <Patient>{};
         model.facilityId = this.facility._id;
         model.personId = this.selectedPerson._id;
-        console.log(model);
         this.patientService.create(model).then(payload => {
             this.facilityService.announceNotification({
                 type: 'Success',
@@ -840,7 +801,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.isEmailExist = true;
             }
         }).catch(error => {
-            console.log(error)
         });
     }
 

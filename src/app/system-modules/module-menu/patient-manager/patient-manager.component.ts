@@ -46,7 +46,6 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
       // do something with value here
     });
     this.route.params.subscribe(params => {
-      //console.log(params);
     })
   }
 
@@ -62,7 +61,6 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   }
   resetDataLoader(data){
     this.resetData = data;
-    console.log(this.resetData);
   }
   close_onClick(e) {
     this.newEmp = false;

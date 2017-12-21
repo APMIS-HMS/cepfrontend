@@ -62,13 +62,11 @@ export class AddPatientProblemComponent implements OnInit {
   }
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
-      console.log(payload);
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {
@@ -84,7 +82,6 @@ export class AddPatientProblemComponent implements OnInit {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               // this.populateDocuments();
-              console.log(this.patientDocumentation);
               // mload.data[0].documentations[0].documents.push(doct);
             }
           })
@@ -108,7 +105,6 @@ export class AddPatientProblemComponent implements OnInit {
   }
   save() {
     let isExisting = false;
-    console.log(this.patientDocumentation)
     this.patientDocumentation.documentations.forEach(documentation => {
       if(documentation.document == undefined){
           documentation.document={

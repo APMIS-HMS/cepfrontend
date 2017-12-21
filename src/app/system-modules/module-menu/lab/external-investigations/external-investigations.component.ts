@@ -79,7 +79,6 @@ export class ExternalInvestigationsComponent implements OnInit {
   // Get all drugs from generic
   private _getAllRequests() {
     this._laboratoryRequestService.findAll().then(res => {
-      console.log(res);
       this.loading = false;
       res.data.forEach(element => {
         element.investigations.forEach(item => {

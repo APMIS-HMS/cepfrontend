@@ -76,7 +76,6 @@ export class BillLookupComponent implements OnInit {
     private _todayInvoiceService: TodayInvoiceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.patientService.receivePatient().subscribe((payload: Patient) => {
-      console.log(payload);
       this.selectedPatient = payload;
       this.subTotal = 0;
       this.total = 0;
@@ -96,7 +95,6 @@ export class BillLookupComponent implements OnInit {
     });
 
     this.invoiceService.receiveInvoice().subscribe((payload: any) => {
-      console.log(payload);
       payload.forEach((itemi, i) => {
         if (itemi.isModified !== undefined) {
           this.fixedModifiedBill(itemi);
@@ -117,7 +115,6 @@ export class BillLookupComponent implements OnInit {
       if (!!params.id && params.id !== undefined) {
         this.patientService.find({ query: { facilityId: this.selectedFacility._id, personId: params.id } }).then(res => {
           this.selectedPatient = res.data[0];
-          console.log(this.selectedPatient);
           this.getPatientBills();
         }).catch(err => console.log(err));
       }
@@ -132,7 +129,6 @@ export class BillLookupComponent implements OnInit {
     this.billingService.updatelistner.subscribe(payload => {
       this.getPatientBills();
       this.selectedPatient = this.listedBillItems[0].patientItem;
-      console.log(this.listedBillItems);
     });
 
     this._getAllPendingBills();
@@ -143,14 +139,12 @@ export class BillLookupComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(value => {
         this.isLoadingInvoice = true;
-        console.log(value);
         var facility = {
           "_id": this.selectedFacility._id,
           "isQuery": true,
           "name": value
         }
         this._todayInvoiceService.get(facility).then(payload => {
-          console.log(payload);
           this.invoiceGroups = payload.data.invoices;
           this.isLoadingInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -168,7 +162,6 @@ export class BillLookupComponent implements OnInit {
         }
         this._pendingBillService.get(facility)
           .then(res => {
-            console.log(res);
             this.pendingBills = res.data.bills;
             this.loadingPendingBills = false;
           }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -213,9 +206,6 @@ export class BillLookupComponent implements OnInit {
         billGroup.totalDiscount = this.discount;
         billGroup.subTotal = this.subTotal;
         billGroup.totalPrice = this.total;
-        console.log(billGroup);
-        console.log(this.checkBillitems);
-        console.log(this.listedBillItems);
         this.invoiceService.create(billGroup).then(payload => {
           var len = this.checkBillitems.length - 1;
           var len2 = this.listedBillItems.length - 1;
@@ -227,13 +217,10 @@ export class BillLookupComponent implements OnInit {
                 if (this.listedBillItems[x2].billItems[x3]._id == this.checkBillitems[x]) {
                   this.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
                   filterCheckedBills.push(this.listedBillItems[x2]);
-                  console.log(filterCheckedBills);
-                  console.log("This is verify");
                   if (x == 0) {
                     let len4 = filterCheckedBills.length - 1;
                     for (var x4 = len4; x4 >= 0; x4--) {
                       this.billingService.update(filterCheckedBills[x4]).then(pd => {
-                        console.log(pd);
                       });
                     }
                   }
@@ -243,7 +230,6 @@ export class BillLookupComponent implements OnInit {
           }
           this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
         }, error => {
-          console.log(error);
         });
       }
     } else {
@@ -256,14 +242,12 @@ export class BillLookupComponent implements OnInit {
 }
 
   fixedGroup(bill: BillModel) {
-    console.log(1);
     const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
     if (existingGroupList.length > 0) {
       const existingGroup = existingGroupList[0];
       if (existingGroup.isChecked) {
         bill.isChecked = true;
       }
-      console.log(2);
       const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
       if (existingBills.length > 0) {
         const existingBill = existingBills[0];
@@ -273,16 +257,13 @@ export class BillLookupComponent implements OnInit {
         // existingGroup.total = existingGroup.total + bill.amount;
         this.subTotal = this.subTotal + existingGroup.total;
         this.total = this.subTotal - this.discount;
-        console.log(3);
       } else {
         existingGroup.bills.push(bill);
         this.subTotal = this.subTotal + existingGroup.total;
         this.total = this.subTotal - this.discount;
-        console.log(4);
       }
       existingGroup.isOpened = false;
       this.toggleCurrentCategory(existingGroup);
-      console.log(5);
     } else {
       const group = {
         isChecked: false, total: 0, isOpened: false,
@@ -294,7 +275,6 @@ export class BillLookupComponent implements OnInit {
       this.total = this.subTotal - this.discount;
       group.isOpened = false;
       this.toggleCurrentCategory(group);
-      console.log(this.billGroups);
     }
   }
 
@@ -342,7 +322,6 @@ export class BillLookupComponent implements OnInit {
       group.isOpened = false;
       this.toggleCurrentCategory(group);
     }
-    console.log(this.billGroups);
   }
 
   getBill(payload: any) {
@@ -362,7 +341,6 @@ export class BillLookupComponent implements OnInit {
     this.txtSelectAll.setValue(false);
     this.billingService.find({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then((payload) => {
-        console.log(payload);
         this.listedBillItems = payload.data
         this.masterBillGroups = [];
         this.billGroups = [];
@@ -403,7 +381,6 @@ export class BillLookupComponent implements OnInit {
           "isQuery": false
         }
         this._todayInvoiceService.get(facility).then(payload => {
-          console.log(payload);
           this.invoiceGroups = payload.data.invoices;
           this.isLoadingInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -440,17 +417,14 @@ export class BillLookupComponent implements OnInit {
     });
   }
   checkAll(val: boolean) {
-    console.log("Am here");
     this.billGroups.forEach((itemi, i) => {
       itemi.isChecked = val;
       itemi.bills.forEach((itemj, j) => {
         itemj.isChecked = val;
         if (val == true) {
           this.checkBillitems.push(itemj._id);
-          console.log(this.checkBillitems);
         } else {
           this.checkBillitems.splice(itemj._id, 1);
-          console.log(this.checkBillitems);
         }
 
       });
@@ -480,11 +454,9 @@ export class BillLookupComponent implements OnInit {
         this.subTotal = this.subTotal + itemi.amount;
         this.total = this.total + itemi.amount;
         this.checkBillitems.push(itemi._id);
-        console.log(this.checkBillitems);
       } else {
         group.total = 0;
         this.checkBillitems.splice(itemi._id, 1);
-        console.log(this.checkBillitems);
       }
 
     });
@@ -492,10 +464,8 @@ export class BillLookupComponent implements OnInit {
   }
   checkBill(event: any, bill: any, group: any) {
     bill.isChecked = event.target.checked;
-    console.log(bill);
     if (bill.isChecked) {
       this.checkBillitems.push(bill._id);
-      console.log(this.checkBillitems);
       group.total = group.total + bill.amount;
       this.subTotal = this.subTotal + bill.amount;
       this.total = this.total + bill.amount;
@@ -504,7 +474,6 @@ export class BillLookupComponent implements OnInit {
       this.subTotal = this.subTotal - bill.amount;
       this.total = this.total - bill.amount;
       this.checkBillitems.splice(bill._id, 1);
-      console.log(this.checkBillitems);
     }
     this.unCheckGroupIfEmpty(group);
   }
@@ -545,7 +514,6 @@ export class BillLookupComponent implements OnInit {
     if (!this.itemEditShow) {
       this.selectedBillItem = <BillModel>{};
     }
-    console.log(this.selectedBillItem);
     if (!this.itemEditShow) {
       this.masterBillGroups.forEach((itemi, i) => {
         itemi.billItems.forEach((itemy, y) => {

@@ -40,14 +40,12 @@ export class StrengthManagerComponent implements OnInit {
 			// Check if you are editing an existing or creating a new record
 			if (this.selectedItem._id === undefined) {
 				value.facilityId = this.selectedFacility._id;
-				console.log(value);
 				this._strengthService.create(value)
 					.then(payload => {
 						this.strengthGroup.reset();
 						this.strengths.push(payload);
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			} else {
 				value = this.selectedItem;
@@ -60,7 +58,6 @@ export class StrengthManagerComponent implements OnInit {
 						this.btnLabel = 'Create';
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			}
 
@@ -90,7 +87,6 @@ export class StrengthManagerComponent implements OnInit {
 				// Do nothing for now
 			})
 			.catch(err => {
-				console.log(err);
 			});
 	}
 

@@ -88,7 +88,6 @@ export class InvoiceComponent implements OnInit {
         }
         this._todayInvoiceService.get(facility).then(payload => {
             this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
-            console.log(this.otherInvoiceGroups);
             this.isLoadingOtherInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
 
@@ -103,7 +102,6 @@ export class InvoiceComponent implements OnInit {
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
-                    console.log(this.selectedPatient);
                     this.getPatientInvoices();
                 });
             }
@@ -114,14 +112,12 @@ export class InvoiceComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingOtherInvoice = true;
-                console.log(value);
                 var facility = {
                     "_id": this.selectedFacility._id,
                     "isQuery": true,
                     "name": value
                 }
                 this._todayInvoiceService.get(facility).then(payload => {
-                    console.log(payload);
                     this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
                     this.isLoadingOtherInvoice = false;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -136,8 +132,6 @@ export class InvoiceComponent implements OnInit {
                     .then(payload => {
                         this.invoiceGroups = payload.data;
                         this.isLoadingInvoice = false;
-                        console.log(this.isLoadingInvoice);
-                        console.log(this.invoiceGroups);
                         if (this.isPaymentMade == false) {
                             this.selectedInvoiceGroup = <Invoice>{};
                         }
@@ -147,7 +141,6 @@ export class InvoiceComponent implements OnInit {
 
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
-        console.log(this.selectedInvoiceGroup)
         if (this.selectedInvoiceGroup.paymentCompleted == true) {
             this.isPaidClass = true;
         } else {
