@@ -41,7 +41,6 @@ export class NewTagComponent implements OnInit {
 
         },
         error => {
-          console.log(error);
         })
       );
 

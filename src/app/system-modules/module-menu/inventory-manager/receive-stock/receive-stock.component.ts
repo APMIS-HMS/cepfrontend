@@ -55,7 +55,6 @@ export class ReceiveStockComponent implements OnInit {
         $limit: 200
       }
     }).then(payload => {
-      console.log(payload);
       this.receivedTransfers = payload.data;
     });
   }
@@ -120,7 +119,6 @@ export class ReceiveStockComponent implements OnInit {
       if (item.checked !== undefined && item.checked === true && !(item.transferStatusId === this.completedInventoryStatus._id) ||
         (item.transferStatusId === this.rejectedInventoryStatus._id)) {
         item.transferStatusId = this.completedInventoryStatus._id;
-        console.log(i);
       }
     });
     this.inventoryTransferService.update(this.selectedInventoryTransfer).subscribe(payload => {

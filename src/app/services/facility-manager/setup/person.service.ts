@@ -69,8 +69,8 @@ export class PersonService {
       transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
       amount: walletTransaction.amount,
       description: walletTransaction.description,
-      source: EntityType[walletTransaction.source],
-      destination: EntityType[walletTransaction.destination],
+      sourceType: EntityType[walletTransaction.sourceType],
+      destinationType: EntityType[walletTransaction.destinationType],
       transactionDirection:
         TransactionDirection[walletTransaction.transactionDirection]
     }); // query string
@@ -88,14 +88,13 @@ export class PersonService {
           destinationId: walletTransaction.destinationId,
           sourceId: walletTransaction.sourceId,
           transactionType: TransactionType[walletTransaction.transactionType],
-          transactionMedium:
-            TransactionMedium[walletTransaction.transactionMedium],
+          transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
           amount: walletTransaction.amount,
           description: walletTransaction.description,
-          source: EntityType[walletTransaction.source],
-          destination: EntityType[walletTransaction.destination],
-          transactionDirection:
-            TransactionDirection[walletTransaction.transactionDirection]
+          sourceType: EntityType[walletTransaction.sourceType],
+          destinationType: EntityType[walletTransaction.destinationType],
+          transactionDirection: TransactionDirection[walletTransaction.transactionDirection],
+          paidBy: walletTransaction.paidBy
         })
       );
     });

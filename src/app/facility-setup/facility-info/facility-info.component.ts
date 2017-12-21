@@ -79,7 +79,6 @@ export class FacilityInfoComponent implements OnInit {
 	}
 
 	onCheckEmailAddress(value) {
-		//console.log(value);
 		if(value.length > 4){
 			let email = this.facilityForm1.controls['facilityemail'];
 			if(value.includes("@")){

@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
     this.platformName = environment.platform;
     this.platformLogo = environment.logo;
     this.secondaryLogo = environment.secondary_logo;
-    console.log(environment)
   }
 
   ngOnInit() {

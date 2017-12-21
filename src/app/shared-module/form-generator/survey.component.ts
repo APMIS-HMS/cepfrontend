@@ -16,15 +16,11 @@ export class SurveyComponent implements OnInit, OnDestroy {
             this.json = payload.json;
             this.surveyModel = new Survey.ReactSurveyModel(payload.json);
             Survey.Survey.cssType = 'bootstrap';
-            // console.log(this.surveyModel);
-            // Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
             Survey.Survey.cssType = 'bootstrap';
             this.surveyModel.onComplete.add(() => {
                 this.surveyResult();
             });
             this.surveyModel.onValueChanged.add((a, b) => {
-                // console.log(a);
-                // console.log(b);
             });
         })
 
@@ -37,8 +33,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
         Survey.Survey.cssType = 'bootstrap';
-
-        // this.surveyModel.data = { "Physician's Name": "Ojo", "General Comments": "Lanre" };
         Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
         Survey.Survey.cssType = 'bootstrap';
 
@@ -46,8 +40,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
             this.surveyResult();
         });
         this.surveyModel.onValueChanged.add((a, b) => {
-            // console.log(a);
-            // console.log(b);
         });
 
     }
@@ -66,15 +58,12 @@ export class SurveyComponent implements OnInit, OnDestroy {
 
     }
     sendDataToServer(survey) {
-        // document.getElementById('surveyElement').style.display = 'none';
         document.getElementById('surveyElement').innerHTML = 'Document saved successfully!';
         const resultAsString = JSON.stringify(survey.data);
         this.shareService.submitForm(survey.data)
-        // alert(resultAsString); //send Ajax request to your web server.
     }
 
     ngOnDestroy(): void {
-        // this.json = null;
         this.surveyModel = undefined;
         this.isTemplate = false;
         this.ngOnInit();

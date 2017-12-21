@@ -54,7 +54,6 @@ export class NewSubLocationComponent implements OnInit {
 
     this.addNew();
     this.frmNewSubLoc.controls['sublocParent'].setValue(this.location._id);
-    console.log(this.locations);
     if (this.subLocation._id !== undefined) {
       this.ActionButton = 'Update';
       this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
@@ -74,7 +73,6 @@ export class NewSubLocationComponent implements OnInit {
   }
   getTags() {
     this.tagService.find({ query: { tagType: 'Laboratory Location' } }).then(res => {
-      console.log(res);
       this.tags = res.data;
     })
   }
@@ -143,7 +141,6 @@ export class NewSubLocationComponent implements OnInit {
                     };
                     // Create WardDetails
                     this._wardDetailsService.create(wardDetails).then(wardCreateRes => {
-                      console.log(wardCreateRes);
                       this.addNew();
                       this.disableNewMinorLoc = false;
                       this.ActionButton = 'Create';

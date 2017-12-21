@@ -46,7 +46,6 @@ export class AddPrincipalComponent implements OnInit {
 
   }
   onSelectPerson(person: Person) {
-    console.log(person)
     this.frmNewPrincipal.controls['principalName'].setValue(person.lastName + ' ' + person.otherNames + ' ' +
       person.firstName + ' (' + person.apmisId + ')');
     this.selectedPerson = person;
@@ -61,14 +60,11 @@ export class AddPrincipalComponent implements OnInit {
     this.closeModal.emit(true);
   }
   newFamilyCover(model: any, valid: boolean) {
-    console.log(this.selectedPerson._id);
     const newFamilyCover: FamilyHealthCover = <FamilyHealthCover>{};
     newFamilyCover.facilityId = this.selectedFacility._id;
     newFamilyCover.familyPrincipalPersonId = this.selectedPerson._id;
     newFamilyCover.dependents = [];
     this.familyHealthCoverService.create(newFamilyCover).then(payload => {
-      console.log(payload);
     });
-    console.log(model);
   }
 }

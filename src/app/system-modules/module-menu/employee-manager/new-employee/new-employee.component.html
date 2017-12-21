@@ -1,5 +1,4 @@
 <div class="modal-baseWrap animated pulse">
-
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">New Employee</legend>
     <div class="modal_mini_title">All Purpose Medical Information System</div>
@@ -12,32 +11,26 @@
     </div>
 
     <div *ngIf="frmNewPerson1_show">
-
         <form [formGroup]="frmNewEmp1" novalidate>
-
             <div class="lhs">
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
                     <md-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
                         <md-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
                         <input mdInput type="text" placeholder="First Name" formControlName="empFirstName">
                     </md-input-container>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-circle-o" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
                         <input mdInput type="text" placeholder="Other Names" formControlName="empOtherNames">
                     </md-input-container>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
@@ -50,7 +43,6 @@
                         <input mdInput type="text" placeholder="File Number" formControlName="fileNumber">
                     </md-input-container>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-venus-mars" aria-hidden="true"></i>
                     <md-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
@@ -58,57 +50,46 @@
                     </md-select>
                 </div>
             </div>
-
             <div class="rhs">
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
                     <md-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
                         <md-option *ngFor="let item of countries" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
                     <md-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
                         <md-option *ngFor="let item of states" [value]="item">{{item.name}}</md-option>
                     </md-select>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
                     <md-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
                         <md-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
                         <input mdInput type="email" placeholder="Email Address" formControlName="empEmail">
                     </md-input-container>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
                         <input mdInput type="email" placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
                     </md-input-container>
                 </div>
-
                 <div class="frm-item-wrap">
                     <i class="fa fa-phone" aria-hidden="true"></i>
                     <md-input-container class="example-full-width">
                         <input mdInput type="tel" placeholder="Contact Number" formControlName="empPhonNo">
                     </md-input-container>
                 </div>
-
             </div>
-
             <div class="clear"></div>
-
             <div (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-
             <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
                 CONTINUE
             </div>
@@ -123,7 +104,7 @@
             <div class="lhs">
 
                 <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>                  
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
                     <md-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
                         <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
                     </md-select>
@@ -166,7 +147,7 @@
                     <md-datepicker #picker></md-datepicker>
                 </div>
                 <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>                  
+                    <i class="fa fa-bullseye" aria-hidden="true"></i>
                     <md-select placeholder="Select security question" formControlName="secQst">
                         <md-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</md-option>
                     </md-select>

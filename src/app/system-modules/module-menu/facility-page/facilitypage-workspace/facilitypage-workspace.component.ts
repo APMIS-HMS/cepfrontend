@@ -91,7 +91,6 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     return workSpace.locations.filter(x => x.isActive === true).length;
   }
   delete_onClick($event) {
-    console.log($event);
     if ($event) {
       this.selectedWorkSpace.isActive = false;
       const update$ = Observable.fromPromise(this.workspaceService.update(this.selectedWorkSpace));

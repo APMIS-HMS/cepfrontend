@@ -69,7 +69,6 @@ export class NewPriceComponent implements OnInit {
     this.services = [];
     this.frmNewprice2.controls['priceArray'] = this.formBuilder.array([]);
     this.servicePriceService.find({ query: { facilityId: this.facility._id, categoryId: itemj._id } }).then(payload => {
-      console.log(payload);
       const prices: any[] = payload.data;
       itemj.services.forEach((itemk, k) => {
         const customCategory: CustomCategory = <CustomCategory>{};
@@ -158,7 +157,6 @@ export class NewPriceComponent implements OnInit {
             this.loadingIndicator = false;
           })
         } else {
-          console.log('This is empty')
         }
       });
 

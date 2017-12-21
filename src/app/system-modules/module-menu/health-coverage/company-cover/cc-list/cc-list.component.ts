@@ -61,7 +61,6 @@ export class CcListComponent implements OnInit {
     this.getLoginHMOList();
   }
   public upload(e, companyCover) {
-    // console.log('am here')
 
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
@@ -69,7 +68,6 @@ export class CcListComponent implements OnInit {
       formData.append("excelfile", fileBrowser.files[0]);
       formData.append("companyCoverId", companyCover._id);
       this.facilityService.upload(formData, this.selectedCompanyCover._id).then(res => {
-        console.log(res);
         let enrolleeList: any[] = [];
         if (res.body !== undefined && res.body.error_code === 0) {
           res.body.data.Sheet1.forEach(row => {
@@ -83,7 +81,6 @@ export class CcListComponent implements OnInit {
             rowObj.date = this.excelDateToJSDate(row.G);
             enrolleeList.push(rowObj);
           });
-          console.log(enrolleeList);
           const index = this.loginHMOListObject.companyCovers.findIndex(x => x._id === companyCover._id);
           let facHmo = this.loginHMOListObject.companyCovers[index];
           let enrolleeItem = {
@@ -113,7 +110,6 @@ export class CcListComponent implements OnInit {
     }).then(payload => {
       if (payload.data.length > 0) {
         this.loginHMOListObject = payload.data[0];
-        console.log(this.loginHMOListObject)
       } else {
         this.loginHMOListObject.facilityId = this.selelctedFacility;
         this.loginHMOListObject.companyCovers = [];
@@ -155,7 +151,6 @@ export class CcListComponent implements OnInit {
     if (this.selectedCompanyCover._id !== undefined) {
       if (this.loginHMOListObject._id === undefined) {
         this.companyCoverService.create(this.loginHMOListObject).then(payload => {
-          console.log(payload);
           this.frmAddCompany.controls['name'].reset();
           this.apmisLookupText = '';
           this.getLoginHMOList();

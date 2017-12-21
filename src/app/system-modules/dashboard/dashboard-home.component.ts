@@ -106,10 +106,8 @@ export class DashboardHomeComponent implements OnInit {
       }
     }
     ).subscribe((results: any) => {
-      console.log(results[0]);
       if (results[0] !== undefined) {
         this.loginEmployee = results[0];
-        console.log(this.loginEmployee)
         this.loginEmployee.workSpaces = results[1].data;
         this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
 

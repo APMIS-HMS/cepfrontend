@@ -196,10 +196,8 @@ export class FacilitySetupComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = function (e: any) {
-        // console.log(e.target.result);
       };
       reader.onprogress = function (e: any) {
-        // console.log(e);
       };
 
       reader.readAsDataURL(fileInput.target.files[0]);
