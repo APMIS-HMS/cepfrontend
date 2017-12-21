@@ -14,9 +14,9 @@
         </small>
         <i class="fa fa-user" aria-hidden="true"></i>
         <!--<input type="text" formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">-->
-        <md-input-container class="example-full-width">
-              <input mdInput formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">
-        </md-input-container>
+        <mat-input-container class="example-full-width">
+              <input matInput formControlName="empName" placeholder="Employee Name or APMIS ID" autocomplete="off">
+        </mat-input-container>
         <div class="suggestionFeeds">
           <div (click)="onSelectPerson(person)" *ngFor="let person of people" class="suggestedItem">
             <img *ngIf="person.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -35,24 +35,24 @@
             <option  value="" disabled selected>Department</option>
             <option *ngFor="let item of departments"  [ngValue]="item">{{item.name}}</option>
         </select>-->
-        <md-select placeholder="Department"  formControlName="empDept">
-          <md-option  value="" disabled selected>Department</md-option>
-          <md-option *ngFor="let item of departments" [value]="item">{{ item.name }}</md-option>
-        </md-select>
+        <mat-select placeholder="Department"  formControlName="empDept">
+          <mat-option  value="" disabled selected>Department</mat-option>
+          <mat-option *ngFor="let item of departments" [value]="item">{{ item.name }}</mat-option>
+        </mat-select>
       </div>
 
       <div class="frm-item-wrap">
         <i class="fa fa-object-group" aria-hidden="true"></i>
-        <md-input-container class="example-full-width">
-              <input mdInput type="text" formControlName="empId" placeholder="Employee ID" autocomplete="off">
-        </md-input-container>
+        <mat-input-container class="example-full-width">
+              <input matInput type="text" formControlName="empId" placeholder="Employee ID" autocomplete="off">
+        </mat-input-container>
       </div>
 
       <!--<button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="cta-1">
         ADD EMPLOYEE
       </button>-->
        <div class="example-full-width" id="example-full-width">
-          <button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="apmis-blue" md-raised-button>ADD EMPLOYEE</button>
+          <button (click)="newUnit(frmNewEmp.value, frmNewEmp.valid)" class="apmis-blue" mat-raised-button>ADD EMPLOYEE</button>
        </div>
 
     </form>

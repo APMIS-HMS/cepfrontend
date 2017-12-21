@@ -18,7 +18,7 @@
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">Employee Manager</div>
     <!--<div class="">
-        <a class="back-btn" md-raised-button routerLink="/dashboard/employee-manager"><i class="fa fa-arrow-circle-o-left"></i> Go Back</a>
+        <a class="back-btn" mat-raised-button routerLink="/dashboard/employee-manager"><i class="fa fa-arrow-circle-o-left"></i> Go Back</a>
     </div>-->
     <div routerLink="/dashboard/employee-manager" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
     <!-- <div class="side-sec lhs">
@@ -51,11 +51,11 @@
                         <i class="fa fa-edit"></i></span>
                     </div>
                     <div *ngIf="editDepartment" class="emp-dept">
-                        <md-select placeholder="Departments" [(ngModel)]="selectedValue">
-                            <md-option *ngFor="let department of departments" [value]="department._id">
+                        <mat-select placeholder="Departments" [(ngModel)]="selectedValue">
+                            <mat-option *ngFor="let department of departments" [value]="department._id">
                                 {{department.name}}
-                            </md-option>
-                        </md-select>
+                            </mat-option>
+                        </mat-select>
                         <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
@@ -87,15 +87,15 @@
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!biodatas" class="rhs">{{employee?.employeeDetails?.lastName}} {{employee?.employeeDetails?.firstName}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <md-input-container class="example-full-width">
-                                <input mdInput placeholder="Last Name" [(ngModel)]="employee.employeeDetails.lastName">
-                            </md-input-container>
-                            <md-input-container class="example-full-width">
-                                <input mdInput placeholder="Other Name" [(ngModel)]="employee.employeeDetails.otherNames">
-                            </md-input-container>
-                            <md-input-container class="example-full-width">
-                                <input mdInput placeholder="First Name" [(ngModel)]="employee.employeeDetails.firstName">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput placeholder="Last Name" [(ngModel)]="employee.employeeDetails.lastName">
+                            </mat-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput placeholder="Other Name" [(ngModel)]="employee.employeeDetails.otherNames">
+                            </mat-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput placeholder="First Name" [(ngModel)]="employee.employeeDetails.firstName">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -104,11 +104,11 @@
                         <div class="lhs">Gender</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <md-select placeholder="Gender" [(ngModel)]="employee.employeeDetails.gender._id" name="food">
-                                <md-option *ngFor="let gender of genders" [value]="gender._id">
+                            <mat-select placeholder="Gender" [(ngModel)]="employee.employeeDetails.gender._id" name="food">
+                                <mat-option *ngFor="let gender of genders" [value]="gender._id">
                                     {{gender.name}}
-                                </md-option>
-                            </md-select>
+                                </mat-option>
+                            </mat-select>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -117,11 +117,11 @@
                         <div class="lhs">Marital Status</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <md-select placeholder="Marital Status" [(ngModel)]="employee.employeeDetails.maritalStatus._id" name="food">
-                                <md-option *ngFor="let marital of maritalStatuses" [value]="marital._id">
+                            <mat-select placeholder="Marital Status" [(ngModel)]="employee.employeeDetails.maritalStatus._id" name="food">
+                                <mat-option *ngFor="let marital of maritalStatuses" [value]="marital._id">
                                     {{marital.name}}
-                                </md-option>
-                            </md-select>
+                                </mat-option>
+                            </mat-select>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -130,12 +130,12 @@
                         <div class="lhs">Date of Birth</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.dateOfBirth | date}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <md-input-container>
-                                <input mdInput [mdDatepicker]="picker" [(ngModel)]="employee.employeeDetails.dateOfBirth" placeholder="Choose a date">
+                            <mat-input-container>
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="employee.employeeDetails.dateOfBirth" placeholder="Choose a date">
                                 <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                            </md-input-container>
-                            <md-datepicker #picker></md-datepicker>
+                                <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                            </mat-input-container>
+                            <mat-datepicker #picker></mat-datepicker>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -152,11 +152,11 @@
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <div *ngIf="contacts">
-                                <md-select placeholder="Nationality" [formControl]="countryControl" [(ngModel)]="employee.employeeDetails.nationalityId" name="food">
-                                    <md-option *ngFor="let country of countries" [value]="country._id">
+                                <mat-select placeholder="Nationality" [formControl]="countryControl" [(ngModel)]="employee.employeeDetails.nationalityId" name="food">
+                                    <mat-option *ngFor="let country of countries" [value]="country._id">
                                         {{country.name}}
-                                    </md-option>
-                                </md-select>
+                                    </mat-option>
+                                </mat-select>
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
@@ -167,11 +167,11 @@
                         <div class="lhs">State of Origin</div>
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <md-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.employeeDetails.stateOfOriginId" name="food">
-                                <md-option *ngFor="let state of states" [value]="state._id">
+                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.employeeDetails.stateOfOriginId" name="food">
+                                <mat-option *ngFor="let state of states" [value]="state._id">
                                     {{state.name}}
-                                </md-option>
-                            </md-select>
+                                </mat-option>
+                            </mat-select>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -181,11 +181,11 @@
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
                         <div class="survery rhs">
                             <div *ngIf="contacts" class="">
-                                <md-select placeholder="LGA" [(ngModel)]="employee.employeeDetails.lgaOfOriginId" name="food">
-                                    <md-option *ngFor="let lg of lgs" [value]="lg._id">
+                                <mat-select placeholder="LGA" [(ngModel)]="employee.employeeDetails.lgaOfOriginId" name="food">
+                                    <mat-option *ngFor="let lg of lgs" [value]="lg._id">
                                         {{lg.name}}
-                                    </md-option>
-                                </md-select>
+                                    </mat-option>
+                                </mat-select>
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
@@ -196,24 +196,24 @@
                         <div class="lhs">Home Address</div>
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <md-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.employeeDetails.homeAddress.country" name="food">
-                                <md-option *ngFor="let country of homeCountries" [value]="country._id">
+                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.employeeDetails.homeAddress.country" name="food">
+                                <mat-option *ngFor="let country of homeCountries" [value]="country._id">
                                     {{country.name}}
-                                </md-option>
-                            </md-select>
-                            <md-select placeholder="State" [formControl]="homeStateControl" [(ngModel)]="employee.employeeDetails.homeAddress.state" name="food">
-                                <md-option *ngFor="let state of homeStates" [value]="state._id">
+                                </mat-option>
+                            </mat-select>
+                            <mat-select placeholder="State" [formControl]="homeStateControl" [(ngModel)]="employee.employeeDetails.homeAddress.state" name="food">
+                                <mat-option *ngFor="let state of homeStates" [value]="state._id">
                                     {{state.name}}
-                                </md-option>
-                            </md-select>
-                            <md-select placeholder="City" [(ngModel)]="employee.employeeDetails.homeAddress.city" name="food">
-                                <md-option *ngFor="let city of homeCities" [value]="city._id">
+                                </mat-option>
+                            </mat-select>
+                            <mat-select placeholder="City" [(ngModel)]="employee.employeeDetails.homeAddress.city" name="food">
+                                <mat-option *ngFor="let city of homeCities" [value]="city._id">
                                     {{city.name}}
-                                </md-option>
-                            </md-select>
-                            <md-input-container class="example-full-width" name="street">
-                                <input mdInput placeholder="Street" [(ngModel)]="employee.employeeDetails.homeAddress.street">
-                            </md-input-container>
+                                </mat-option>
+                            </mat-select>
+                            <mat-input-container class="example-full-width" name="street">
+                                <input matInput placeholder="Street" [(ngModel)]="employee.employeeDetails.homeAddress.street">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -222,9 +222,9 @@
                         <div class="lhs">Phone Number</div>
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.phoneNumber}}</div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <md-input-container class="example-full-width">
-                                <input type="tel" mdInput placeholder="Phone Number" [(ngModel)]="employee.employeeDetails.phoneNumber">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input type="tel" matInput placeholder="Phone Number" [(ngModel)]="employee.employeeDetails.phoneNumber">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -233,9 +233,9 @@
                         <div class="lhs">Email Address</div>
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.email}} </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <md-input-container class="example-full-width">
-                                <input type="tel" mdInput placeholder="Email" [(ngModel)]="employee.employeeDetails.email">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input type="tel" matInput placeholder="Email" [(ngModel)]="employee.employeeDetails.email">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -252,9 +252,9 @@
                         <div class="lhs">Full Name</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.fullName}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
-                            <md-input-container class="example-full-width">
-                                <input type="text" mdInput placeholder="Full Name" [(ngModel)]="item.fullName">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input type="text" matInput placeholder="Full Name" [(ngModel)]="item.fullName">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -263,11 +263,11 @@
                         <div class="lhs">Relationship</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{getRelationship(item.relationship)}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
-                             <md-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
-                                <md-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                             <mat-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
+                                <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
                                     {{relationship.name}}
-                                </md-option>
-                            </md-select>
+                                </mat-option>
+                            </mat-select>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -276,9 +276,9 @@
                         <div class="lhs">Phone Number</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.phoneNumber}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
-                            <md-input-container class="example-full-width">
-                                <input mdInput placeholder="Phone Number" [(ngModel)]="item.phoneNumber">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput placeholder="Phone Number" [(ngModel)]="item.phoneNumber">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -287,9 +287,9 @@
                         <div class="lhs">Email</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{item.email}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
-                            <md-input-container class="example-full-width">
-                                <input mdInput placeholder="Email" [(ngModel)]="item.email">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput placeholder="Email" [(ngModel)]="item.email">
+                            </mat-input-container>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -299,7 +299,7 @@
             </div>
         </div>
         <div *ngIf="loadIndicatorVisible" class="div_loading">
-            <md-spinner></md-spinner>
+            <mat-spinner></mat-spinner>
         </div>
     </div>
     <div class="clear"></div>

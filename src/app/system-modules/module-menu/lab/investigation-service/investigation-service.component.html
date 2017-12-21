@@ -27,57 +27,57 @@
                             <div class="frm-l">
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput placeholder="Investigation Name" formControlName="investigationName">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input matInput placeholder="Investigation Name" formControlName="investigationName">
+                                    </mat-input-container>
                                 </div>
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput placeholder="Report Type" [mdAutocomplete]="autoPatient" formControlName="reportType">
-                                    </md-input-container>
-                                    <md-autocomplete #autoPatient="mdAutocomplete">
-                                        <md-option *ngFor="let report of reportTypes" [value]="report">
+                                    <mat-input-container>
+                                        <input matInput placeholder="Report Type" [matAutocomplete]="autoPatient" formControlName="reportType">
+                                    </mat-input-container>
+                                    <mat-autocomplete #autoPatient="matAutocomplete">
+                                        <mat-option *ngFor="let report of reportTypes" [value]="report">
                                             {{ report }}
-                                        </md-option>
-                                    </md-autocomplete>
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </div>
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input *ngIf="isNumeric" type="number" mdInput placeholder="Minimum Reference Value" formControlName="ref">
-                                        <input *ngIf="!isNumeric" type="text" mdInput placeholder="Reference Value" formControlName="ref">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input *ngIf="isNumeric" type="number" matInput placeholder="Minimum Reference Value" formControlName="ref">
+                                        <input *ngIf="!isNumeric" type="text" matInput placeholder="Reference Value" formControlName="ref">
+                                    </mat-input-container>
                                 </div>
                             </div>
                             <div class="frm-r">
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput placeholder="Unit" formControlName="unit">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input matInput placeholder="Unit" formControlName="unit">
+                                    </mat-input-container>
                                 </div>
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput placeholder="Specimen" [mdAutocomplete]="autoSpecimen" formControlName="specimen">
-                                    </md-input-container>
-                                    <md-autocomplete #autoSpecimen="mdAutocomplete" [displayWith]="specimenDisplayFn">
-                                        <md-option *ngFor="let specimen of specimens" [value]="specimen">
+                                    <mat-input-container>
+                                        <input matInput placeholder="Specimen" [matAutocomplete]="autoSpecimen" formControlName="specimen">
+                                    </mat-input-container>
+                                    <mat-autocomplete #autoSpecimen="matAutocomplete" [displayWith]="specimenDisplayFn">
+                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen">
                                             {{ specimen.name }}
-                                        </md-option>
-                                    </md-autocomplete>
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </div>
                                 <div class="frm-item-wrap">
-                                    <md-input-container *ngIf="isNumeric">
-                                        <input *ngIf="isNumeric" type="number" mdInput placeholder="Maximum Reference Value" formControlName="maxRef">
-                                    </md-input-container>
+                                    <mat-input-container *ngIf="isNumeric">
+                                        <input *ngIf="isNumeric" type="number" matInput placeholder="Maximum Reference Value" formControlName="maxRef">
+                                    </mat-input-container>
                                 </div>
                             </div>
                         </div>
 
                         <div class="btn-box">
-                            <button md-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
+                            <button mat-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
                                 {{btnText}}
                             </button>
                         </div>
@@ -85,9 +85,9 @@
 
                     <form class="frmNoteWrap" *ngIf="pannel_view" [formGroup]="frmNewPanel" novalidate>
                         <div class="frm-item-wrap lone-input">
-                            <md-input-container>
-                                <input mdInput placeholder="Panel Name" formControlName="panelName">
-                            </md-input-container>
+                            <mat-input-container>
+                                <input matInput placeholder="Panel Name" formControlName="panelName">
+                            </mat-input-container>
                         </div>
 
                         <div class="frm-wrap">
@@ -136,7 +136,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button md-raised-button [disabled]="!frmNewPanel.valid" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
+                            <button mat-raised-button [disabled]="!frmNewPanel.valid" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
                                 {{panelBtnText}}
                             </button>
                         </div>
@@ -201,7 +201,7 @@
                             </tr>
                             <tr *ngIf="investigations.length === 0 && loading">
                                 <td class="table-content " colspan="7" style="text-align: center ">
-                                    <md-spinner class="small-spinner"></md-spinner>
+                                    <mat-spinner class="small-spinner"></mat-spinner>
                                 </td>
                             </tr>
                             <tr *ngFor="let investigation of investigations">

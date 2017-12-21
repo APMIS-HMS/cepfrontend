@@ -45,7 +45,7 @@
                     <tbody class="custom-tbody" *ngIf="currentMedications.length === 0 && currMedLoading">
                         <tr>
                             <td class="text-center" colspan="5">
-                                <md-spinner class="small-spinner"></md-spinner>
+                                <mat-spinner class="small-spinner"></mat-spinner>
                             </td>
                         </tr>
                     </tbody>
@@ -84,7 +84,7 @@
                     <tbody class="custom-tbody" *ngIf="pastMedications.length === 0 && pastMedLoading">
                         <tr>
                             <td class="text-center" colspan="5">
-                                <md-spinner class="small-spinner"></md-spinner>
+                                <mat-spinner class="small-spinner"></mat-spinner>
                             </td>
                         </tr>
                     </tbody>
@@ -98,63 +98,63 @@
                         <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                     <div class="col-sm-3 col-md-3">
-                        <md-input-container>
-                            <input mdInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
-                        </md-input-container>
+                        <mat-input-container>
+                            <input matInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
+                        </mat-input-container>
                     </div>
                     <div class="col-sm-3 col-md-3">
-                        <md-select formControlName="route" placeholder="Route" class="md-select">
-                            <md-option *ngFor="let route of routes" [(value)]="route.name">
+                        <mat-select formControlName="route" placeholder="Route" class="mat-select">
+                            <mat-option *ngFor="let route of routes" [(value)]="route.name">
                                 {{ route.name }}
-                            </md-option>
-                        </md-select>
+                            </mat-option>
+                        </mat-select>
                     </div>
                 </div>
                 <div class="row padding-top-20px">
                     <div class="">
                         <div class="col-sm-3 col-md-3">
-                            <md-select formControlName="frequency" placeholder="Frequency" class="example-full-width md-select">
-                                <md-option *ngFor="let frequency of frequencies" [value]="frequency.name">
+                            <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
+                                <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
                                     {{ frequency.name }}
-                                </md-option>
-                            </md-select>
+                                </mat-option>
+                            </mat-select>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="input-bg cacaca">
                                 <div class="input-group">
-                                    <md-input-container>
-                                        <input mdInput type="number" formControlName="duration" placeholder="Duration">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input matInput type="number" formControlName="duration" placeholder="Duration">
+                                    </mat-input-container>
                                     <div class="input-group-btn">
-                                        <md-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue" class="md-select">
-                                            <md-option *ngFor="let unit of durationUnits" [value]="unit.name">
+                                        <mat-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue" class="mat-select">
+                                            <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">
                                                 {{ unit.name }}
-                                            </md-option>
-                                        </md-select>
+                                            </mat-option>
+                                        </mat-select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-2 col-md-2">
-                            <md-input-container>
-                                <input type="number" mdInput formControlName="refillCount" placeholder="Refill Count">
-                            </md-input-container>
+                            <mat-input-container>
+                                <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
+                            </mat-input-container>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                            <md-input-container>
-                                <input mdInput formControlName="startDate" [mdDatepicker]="picker" placeholder="Start Date">
-                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                            </md-input-container>
-                            <md-datepicker #picker></md-datepicker>
+                            <mat-input-container>
+                                <input matInput formControlName="startDate" [matDatepicker]="picker" placeholder="Start Date">
+                                <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                            </mat-input-container>
+                            <mat-datepicker #picker></mat-datepicker>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-12">
-                        <md-input-container>
-                            <textarea mdInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
-                        </md-input-container>
+                        <mat-input-container>
+                            <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
+                        </mat-input-container>
                         <div class="after-textarea-btn pull-right">
-                            <button md-raised-button class="mat-lg-btn" [disabled]="!addPrescriptionForm.valid" (click)="onClickAddPrescription(addPrescriptionForm.value, addPrescriptionForm.valid);"> Add </button>
-                            <button md-raised-button class="mat-lg-btn" (click)="onClickReset();"> Reset </button>
+                            <button mat-raised-button class="mat-lg-btn" [disabled]="!addPrescriptionForm.valid" (click)="onClickAddPrescription(addPrescriptionForm.value, addPrescriptionForm.valid);"> Add </button>
+                            <button mat-raised-button class="mat-lg-btn" (click)="onClickReset();"> Reset </button>
                         </div>
                     </div>
                 </div>
@@ -168,12 +168,12 @@
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
                             <div class="col-sm-6" style="margin-top: 10px;">
-                                <md-select placeholder="Priority" formControlName="priority" class="md-select">
-                                    <md-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</md-option>
-                                </md-select>
+                                <mat-select placeholder="Priority" formControlName="priority" class="mat-select">
+                                    <mat-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</mat-option>
+                                </mat-select>
                             </div>
                             <div class="col-sm-6 text-center">
-                                <button md-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
+                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
                             </div>
                         </div>
                         <div class="col-sm-2"></div>

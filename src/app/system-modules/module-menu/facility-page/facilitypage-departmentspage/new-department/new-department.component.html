@@ -16,9 +16,9 @@
           </small>
           <i class="fa fa-building-o" aria-hidden="true"></i>
           <!--<input type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">-->
-            <md-input-container class="example-full-width">
-                  <input mdInput type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                  <input matInput type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">
+            </mat-input-container>
         </div>
 
         <div class="frm-item-wrap">
@@ -27,9 +27,9 @@
           </small>
           <i class="fa fa-circle-o" aria-hidden="true"></i>
           <!--<input type="text" formControlName="deptAlias" placeholder="Short Name" autocomplete="off">-->
-          <md-input-container class="example-full-width">
-                  <input mdInput type="text" formControlName="deptAlias" placeholder="Short Name" autocomplete="off">
-            </md-input-container>
+          <mat-input-container class="example-full-width">
+                  <input matInput type="text" formControlName="deptAlias" placeholder="Short Name" autocomplete="off">
+            </mat-input-container>
         </div>
 
         <div class="frm-item-wrap">
@@ -37,16 +37,16 @@
             This is a required field (minimum 10 characters).
           </small>
           <!--<textarea class="txt-input modal-textarea" formControlName="deptDesc" placeholder="Description" autocomplete="off"></textarea>-->
-          <md-input-container class="example-full-width">
-                <textarea mdInput formControlName="deptDesc" placeholder="Description" autocomplete="off"></textarea>
-          </md-input-container>
+          <mat-input-container class="example-full-width">
+                <textarea matInput formControlName="deptDesc" placeholder="Description" autocomplete="off"></textarea>
+          </mat-input-container>
         </div>
 
       <!--<div (click)="newDept(frmNewDept.valid, frmNewDept.value)" class="cta-1">
         CREATE DEPARTMENT
       </div>-->
        <div class="example-full-width" id="example-full-width">
-          <button [disabled]="!frmNewDept.valid || isBusy" (click)="newDept(frmNewDept.valid, frmNewDept.value)" md-raised-button>CREATE DEPARTMENT</button>
+          <button [disabled]="!frmNewDept.valid || isBusy" (click)="newDept(frmNewDept.valid, frmNewDept.value)" mat-raised-button>CREATE DEPARTMENT</button>
       </div>
     </form>
   </div>

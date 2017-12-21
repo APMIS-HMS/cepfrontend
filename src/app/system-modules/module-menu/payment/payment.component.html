@@ -8,9 +8,9 @@
                         <div class="pending-header">
                             <div class="pending-title">Patient's Pending Bills</div>
                             <div class="search-wrap">
-                                <md-input-container>
-                                    <input mdInput placeholder="search for bill" [formControl]="searchPendingBill">
-                                </md-input-container>
+                                <mat-input-container>
+                                    <input matInput placeholder="search for bill" [formControl]="searchPendingBill">
+                                </mat-input-container>
                             </div>
                         </div>
                         <ul class="pending-bills">
@@ -30,7 +30,7 @@
                             </li>
                             <li *ngIf="loadingPendingBills">
                                 <div class="text-center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <mat-spinner class='small-spinner'></mat-spinner>
                                 </div>
                             </li>
 
@@ -46,15 +46,15 @@
                         <div class="pending-header">
                             <div class="pending-title">Invoices</div>
                             <div class="search-wrap">
-                                <md-input-container>
-                                    <input mdInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
-                                </md-input-container>
+                                <mat-input-container>
+                                    <input matInput placeholder="search for invoice" [formControl]="searchPendingInvoices">
+                                </mat-input-container>
                             </div>
                         </div>
                         <div>
                             <li *ngIf="isLoadingInvoice" class="empWrap">
                                 <div class="text-center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <mat-spinner class='small-spinner'></mat-spinner>
                                 </div>
                             </li>
                             <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
@@ -109,7 +109,7 @@
                     <div>
                         <li *ngIf="loadingLocAmountAccrued" class="empWrap">
                             <div class="text-center">
-                                <md-spinner class='small-spinner'></md-spinner>
+                                <mat-spinner class='small-spinner'></mat-spinner>
                             </div>
                         </li>
                     </div>

@@ -6,47 +6,47 @@
             <div class="wrap1">
                 <div class="row">
                     <div class="frm-item-wrap">
-                        <md-select style="width: 350px;" class="example-full-width" placeholder="Store" formControlName="store">
-                            <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
-                        </md-select>
+                        <mat-select style="width: 350px;" class="example-full-width" placeholder="Store" formControlName="store">
+                            <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                        </mat-select>
                     </div>
                     <div class="frm-item-wrap">
-                        <md-select style="width: 350px;" class="example-full-width" placeholder="Supplier" formControlName="supplier">
-                            <md-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</md-option>
-                        </md-select>
+                        <mat-select style="width: 350px;" class="example-full-width" placeholder="Supplier" formControlName="supplier">
+                            <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+                        </mat-select>
                     </div>
                     <div class="frm-item-wrap">
-                        <md-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
-                            <md-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</md-option>
-                        </md-select>
+                        <mat-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
+                            <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
+                        </mat-select>
                     </div>
                 </div>
 
                 <div class="frm-item-wrap">
-                    <md-input-container>
-                        <input mdInput formControlName="deliveryDate" [mdDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
+                    </mat-input-container>
                     <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                    <md-datepicker #picker></md-datepicker>
+                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </div>
             </div>
             <div class="wrap2">
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="Invoice Number" formControlName="invoiceNo">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Invoice Number" formControlName="invoiceNo">
+                    </mat-input-container>
                 </div>
 
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input type="number" mdInput md-error placeholder="Amount" formControlName="amount">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="number" matInput mat-error placeholder="Amount" formControlName="amount">
+                    </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <textarea mdInput md-error placeholder="Remark" formControlName="desc"></textarea>
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+                    </mat-input-container>
                 </div>
             </div>
         </div>
@@ -64,27 +64,27 @@
                 <div class="col-a">
                     <div class="filter-sect">
                         <div class="frm-item-wrap">
-                            <md-input-container class="example-full-width">
-                                <input mdInput md-error placeholder="search product here..." [formControl]="searchControl">
-                            </md-input-container>
+                            <mat-input-container class="example-full-width">
+                                <input matInput mat-error placeholder="search product here..." [formControl]="searchControl">
+                            </mat-input-container>
                         </div>
 
 
                         <div class="check-filterWrap">
                             <div class="frm-item-wrap chkbox-wrap">
-                                <md-checkbox [formControl]="checkAll">All</md-checkbox>
+                                <mat-checkbox [formControl]="checkAll">All</mat-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <md-checkbox [formControl]="myInventory">My Inventory</md-checkbox>
+                                <mat-checkbox [formControl]="myInventory">My Inventory</mat-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <md-checkbox [formControl]="zeroQuantity">Out of stock</md-checkbox>
+                                <mat-checkbox [formControl]="zeroQuantity">Out of stock</mat-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <md-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</md-checkbox>
+                                <mat-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</mat-checkbox>
                             </div>
                             <div class="frm-item-wrap chkbox-wrap">
-                                <md-checkbox [formControl]="expired">Expired</md-checkbox>
+                                <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                         <div class="control-group" *ngFor="let group of superGroups">
                             <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> 
-                                     <md-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></md-checkbox>
+                                     <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
                                  </div>
                             </label>
                         </div>
@@ -131,15 +131,15 @@
 
             <div class="sec-c">
                 <div class="frm-item-wrap" style="width:50%">
-                    <md-input-container class="example-full-width">
-                        <input type="number" mdInput md-error placeholder="Discount" formControlName="discount">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="number" matInput mat-error placeholder="Discount" formControlName="discount">
+                    </mat-input-container>
 
                 </div>
                 <div class="frm-item-wrap" style="width:50%">
-                    <md-input-container class="example-full-width">
-                        <input type="number" mdInput md-error placeholder="VAT" formControlName="vat">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input type="number" matInput mat-error placeholder="VAT" formControlName="vat">
+                    </mat-input-container>
                 </div>
             </div>
         </div>
@@ -158,38 +158,38 @@
                                     <div (click)="removeProduct(i, schedule)" class="modal-close-ico" aria-hidden="true">X</div>
 
                                     <div style="width: 35%;" class="frm-item-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput md-error placeholder="Product" formControlName="product">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput mat-error placeholder="Product" formControlName="product">
+                                        </mat-input-container>
                                     </div>
                                     <div style="width: 10%;" class="frm-item-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput md-error placeholder="Batch No" formControlName="batchNo">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput mat-error placeholder="Batch No" formControlName="batchNo">
+                                        </mat-input-container>
                                     </div>
                                     
                                     <div style="width: 15%;" class="frm-item-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input [step]="0.01" (change)="getCostSummary(schedule)" mdInput md-error placeholder="Cost Price" formControlName="costPrice">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input [step]="0.01" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Cost Price" formControlName="costPrice">
+                                        </mat-input-container>
                                     </div>
 
                                     <div style="width: 10%;" class="frm-item-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input type="number" (change)="getCostSummary(schedule)" mdInput md-error placeholder="Quantity" formControlName="qty">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty">
+                                        </mat-input-container>
                                     </div>
 
                                     <div style="width: 10%;" class="frm-item-wrap">
-                                        <md-input-container class="example-full-width">
-                                            <input formControlName="total" mdInput md-error placeholder="Total Cost">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input formControlName="total" matInput mat-error placeholder="Total Cost">
+                                        </mat-input-container>
                                     </div>
 
                                     <div style="width: 15%;" class="frm-item-wrap">
-                                        <input mdInput formControlName="expiryDate" [mdDatepicker]="picker" placeholder="Expiry Date">
-                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                                        <md-datepicker #picker></md-datepicker>
+                                        <input matInput formControlName="expiryDate" [matDatepicker]="picker" placeholder="Expiry Date">
+                                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
                                     </div>
                                 </div>
                             </div>
@@ -201,8 +201,8 @@
         </div>
     </form>
     <div class="" style="width: 100%;height: 50px; text-align: center;">
-        <button md-raised-button (click)="cancelAll();">Reset</button>
-        <button md-raised-button class="mat-lg-btn" (click)="create(frm_purchaseOrder.valid, frm_purchaseOrder.value)" style="line-height: 1;">Done</button>
+        <button mat-raised-button (click)="cancelAll();">Reset</button>
+        <button mat-raised-button class="mat-lg-btn" (click)="create(frm_purchaseOrder.valid, frm_purchaseOrder.value)" style="line-height: 1;">Done</button>
         <!-- <div (click)="cancelAll();" class="cta-1" st>
             Cancel
         </div>

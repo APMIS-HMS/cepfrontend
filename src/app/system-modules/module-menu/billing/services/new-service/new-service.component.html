@@ -9,9 +9,9 @@
         <form [formGroup]="frmNewservice" novalidate>
 
             <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input type="text" mdInput md-error placeholder="Service Name" formControlName="serviceName">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="text" matInput mat-error placeholder="Service Name" formControlName="serviceName">
+                </mat-input-container>
                 <div class="suggestionFeeds">
                     <div *ngFor="let dic of dictionaries" class="suggestedItem">
                         <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
@@ -20,19 +20,19 @@
             </div>
 
             <div class="frm-item-wrap">
-                <md-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat">
-                    <md-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</md-option>
-                </md-select>
+                <mat-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat">
+                    <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                </mat-select>
             </div>
 
             <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input type="text" mdInput md-error placeholder="Supply Service Code" formControlName="serviceCode">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="text" matInput mat-error placeholder="Supply Service Code" formControlName="serviceCode">
+                </mat-input-container>
             </div>
 
             <div class="text-center">
-                <button md-raised-button (click)="newService(frmNewservice.value, frmNewservice.valid)" class="apmis-blue">
+                <button mat-raised-button (click)="newService(frmNewservice.value, frmNewservice.valid)" class="apmis-blue">
                   {{btnTitle}}
                 </button>
             </div>

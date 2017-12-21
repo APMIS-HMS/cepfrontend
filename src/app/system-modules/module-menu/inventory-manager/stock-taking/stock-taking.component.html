@@ -30,7 +30,7 @@
                         <div class="control-group" *ngFor="let group of superGroups">
                             <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> 
-                                    <md-checkbox (change)="onProductCheckChange($event,item)" [value]="item.checked"></md-checkbox>
+                                    <mat-checkbox (change)="onProductCheckChange($event,item)" [value]="item.checked"></mat-checkbox>
                                 </div>
                             </label>
                         </div>
@@ -51,21 +51,21 @@
                                         <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
 
                                         <div style="width: 59%;" class="frm-item-wrap">
-                                            <md-input-container class="example-full-width">
-                                                <input mdInput md-error placeholder="Product" formControlName="product">
-                                            </md-input-container>
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput mat-error placeholder="Product" formControlName="product">
+                                            </mat-input-container>
                                         </div>
 
                                         <div style="width: 20%;" class="frm-item-wrap">
-                                            <md-input-container class="example-full-width">
-                                                <input mdInput md-error placeholder="System Quantity" type="number" formControlName="systemQuantity">
-                                            </md-input-container>
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput mat-error placeholder="System Quantity" type="number" formControlName="systemQuantity">
+                                            </mat-input-container>
                                         </div>
 
                                         <div style="width: 20%;" class="frm-item-wrap">
-                                            <md-input-container class="example-full-width">
-                                                <input mdInput md-error placeholder="Actual Qantity" type="number" formControlName="qty">
-                                            </md-input-container>
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput mat-error placeholder="Actual Qantity" type="number" formControlName="qty">
+                                            </mat-input-container>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
        <!-- <div class="survery" *ngIf="productTableForm.controls['productTableArray'].value.length === 0">
             <div class="container cotainer-width">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-mat-12 col-sm-12 col-xs-12">
                         <div class="callout callout-info">
                             <h4>You have no product to transfer</h4>
                             <p>To transfer product <a (click)="flyout_toggle($event)"> click here.</a></p>
@@ -93,9 +93,9 @@
         <div class="sec-a" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
             <div class="wrap2">
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <textarea mdInput md-error placeholder="Remark" formControlName="desc"></textarea>
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+                    </mat-input-container>
                 </div>
             </div>
         </div>

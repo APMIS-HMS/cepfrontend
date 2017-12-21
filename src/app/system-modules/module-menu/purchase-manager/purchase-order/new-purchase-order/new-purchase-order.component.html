@@ -4,34 +4,34 @@
       <div class="wrap1">
         <div class="row">
           <div class="frm-item-wrap">
-            <md-select class="example-full-width" placeholder="Store" formControlName="store">
-              <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
-            </md-select>
+            <mat-select class="example-full-width" placeholder="Store" formControlName="store">
+              <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+            </mat-select>
           </div>
 
           <div class="frm-item-wrap">
-            <md-select class="example-full-width" placeholder="Supplier" formControlName="supplier">
-              <md-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</md-option>
-            </md-select>
+            <mat-select class="example-full-width" placeholder="Supplier" formControlName="supplier">
+              <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+            </mat-select>
           </div>
         </div>
       </div>
       <div class="wrap2">
         <div class="row">
           <div class="frm-item-wrap">
-            <md-input-container>
-              <input mdInput formControlName="deliveryDate" [mdDatepicker]="picker" placeholder="Expected Delivery Date (Choose a date)">
-            </md-input-container>
+            <mat-input-container>
+              <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Expected Delivery Date (Choose a date)">
+            </mat-input-container>
             <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-            <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-            <md-datepicker #picker></md-datepicker>
+            <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </div>
         </div>
         <div class="row">
           <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-              <textarea mdInput md-error placeholder="Remark" formControlName="desc"></textarea>
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+              <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+            </mat-input-container>
           </div>
         </div>
       </div>
@@ -43,26 +43,26 @@
         <div class="col-a">
           <div class="filter-sect">
             <div class="frm-item-wrap">
-              <md-input-container>
-                <input mdInput [formControl]="searchControl" placeholder="search product here...">
-              </md-input-container>
+              <mat-input-container>
+                <input matInput [formControl]="searchControl" placeholder="search product here...">
+              </mat-input-container>
             </div>
 
             <div class="check-filterWrap">
               <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="checkAll">All</md-checkbox>
+                <mat-checkbox [formControl]="checkAll">All</mat-checkbox>
               </div>
               <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="myInventory">My Inventory</md-checkbox>
+                <mat-checkbox [formControl]="myInventory">My Inventory</mat-checkbox>
               </div>
               <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="zeroQuantity">Out of stock</md-checkbox>
+                <mat-checkbox [formControl]="zeroQuantity">Out of stock</mat-checkbox>
               </div>
               <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</md-checkbox>
+                <mat-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</mat-checkbox>
               </div>
               <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="expired">Expired</md-checkbox>
+                <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
             <div class="control-group" *ngFor="let group of superGroups">
               <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> 
-                                     <md-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></md-checkbox>
+                                     <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
                                  </div>
                             </label>
             </div>
@@ -89,14 +89,14 @@
                   <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
 
                   <div style="width: 59%;" class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                      <input mdInput md-error placeholder="Product" formControlName="product">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                      <input matInput mat-error placeholder="Product" formControlName="product">
+                    </mat-input-container>
                   </div>
                   <div style="width: 20%;" class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                      <input type="number" mdInput md-error placeholder="Qantity" formControlName="qty">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                      <input type="number" matInput mat-error placeholder="Qantity" formControlName="qty">
+                    </mat-input-container>
                   </div>
                 </div>
               </div>

@@ -13,9 +13,9 @@
         <option value="" disabled selected>Department</option>
         <option [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
       </select>-->
-            <md-select placeholder="Department" formControlName="dept">
-                <md-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">{{department.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Department" formControlName="dept">
+                <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
+            </mat-select>
         </div>
 
         <div class="frm-item-wrap">
@@ -25,9 +25,9 @@
         <option value="" disabled selected>Unit</option>
         <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
       </select>-->
-            <md-select placeholder="Unit" formControlName="unit">
-                <md-option *ngFor="let unit of units" [value]="unit">{{unit.name}}</md-option>
-            </md-select>
+            <mat-select placeholder="Unit" formControlName="unit">
+                <mat-option *ngFor="let unit of units" [value]="unit">{{unit.name}}</mat-option>
+            </mat-select>
         </div>
 
         <div class="emp-wrap">
@@ -37,7 +37,7 @@
                         <th class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <md-checkbox [formControl]="checkAll"></md-checkbox>
+                                    <mat-checkbox [formControl]="checkAll"></mat-checkbox>
                                     </div>
                             </div>
                         </th>
@@ -66,9 +66,9 @@
                                 <div class="tbl-title"></div>
                                 <div class="tbl-search">
                                     <div class="searchInputWrap">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput [formControl]="searchControl" class="searchInput" type="search" autofocus>
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput [formControl]="searchControl" class="searchInput" type="search" autofocus>
+                                        </mat-input-container>
                                         <i class="fa fa-search" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
                         <td class="sel-all">
                             <div class="dx-field">
                                 <div class="dx-field-value">
-                                    <md-checkbox [formControl]="checkAll" (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></md-checkbox>
+                                    <mat-checkbox [formControl]="checkAll" (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></mat-checkbox>
                                 </div>
                             </div>
                         </td>

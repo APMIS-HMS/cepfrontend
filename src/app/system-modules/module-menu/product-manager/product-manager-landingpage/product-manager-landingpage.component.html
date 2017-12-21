@@ -35,17 +35,17 @@
         <td colspan="5">
           <div class="survery table-container">
             <div class="col-sm-5">
-              <md-select [formControl]="selProductType" placeholder="Select by type" [(ngModel)]="selectedValue" name="food">
-                <md-option value="" disabled selected>Select by type</md-option>
-                <md-option *ngFor="let productType of productTypes" value="{{productType._id}}">
+              <mat-select [formControl]="selProductType" placeholder="Select by type" [(ngModel)]="selectedValue" name="food">
+                <mat-option value="" disabled selected>Select by type</mat-option>
+                <mat-option *ngFor="let productType of productTypes" value="{{productType._id}}">
                   {{productType.name}}
-                </md-option>
-              </md-select>
+                </mat-option>
+              </mat-select>
             </div>
             <div class="col-sm-5">
-              <md-input-container class="example-full-width">
-                <input mdInput placeholder="Search..." [formControl]="searchControl">
-              </md-input-container>
+              <mat-input-container class="example-full-width">
+                <input matInput placeholder="Search..." [formControl]="searchControl">
+              </mat-input-container>
             </div>
             <div class="col-sm-2">
               <div style="margin-top:20px">
@@ -69,7 +69,7 @@
       </tr>
 
       <!--<div *ngIf="loadIndicatorVisible" class="div_loading">
-                <md-spinner></md-spinner>
+                <mat-spinner></mat-spinner>
             </div>-->
     </tbody>
   </table>

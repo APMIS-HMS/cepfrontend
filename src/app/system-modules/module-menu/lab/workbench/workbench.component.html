@@ -18,27 +18,27 @@
                             <div class="frm-l">
                                 <div class="frm-item-wrap">
                                     <div>
-                                        <md-input-container>
-                                            <input mdInput placeholder="Select Laboratory" [mdAutocomplete]="autoPatient" formControlName="minorLocation">
-                                        </md-input-container>
-                                        <md-autocomplete #autoPatient="mdAutocomplete" [displayWith]="patientDisplayFn">
-                                            <md-option *ngFor="let minor of minorLocations" [value]="minor">
+                                        <mat-input-container>
+                                            <input matInput placeholder="Select Laboratory" [matAutocomplete]="autoPatient" formControlName="minorLocation">
+                                        </mat-input-container>
+                                        <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="patientDisplayFn">
+                                            <mat-option *ngFor="let minor of minorLocations" [value]="minor">
                                                 {{ minor.name }}
-                                            </md-option>
-                                        </md-autocomplete>
+                                            </mat-option>
+                                        </mat-autocomplete>
                                     </div>
                                 </div>
                             </div>
                             <div class="frm-r">
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput placeholder="Bench Name" formControlName="benchName">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input matInput placeholder="Bench Name" formControlName="benchName">
+                                    </mat-input-container>
                                 </div>
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button md-raised-button [disabled]="!frmNewWorkbench.valid" (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="btn"> {{btnText}} </button>
+                            <button mat-raised-button [disabled]="!frmNewWorkbench.valid" (click)="createWorkbench(frmNewWorkbench.valid, frmNewWorkbench.value)" class="btn"> {{btnText}} </button>
                         </div>
                     </form>
                 </div>
@@ -82,10 +82,10 @@
                                         </div>
 
                                         <div class="frm-item-wrap">
-                                            <md-select placeholder="Status">
-                                                <md-option [value]="Active">Active</md-option>
-                                                <md-option [value]="Inactive">Inactive</md-option>
-                                            </md-select>
+                                            <mat-select placeholder="Status">
+                                                <mat-option [value]="Active">Active</mat-option>
+                                                <mat-option [value]="Inactive">Inactive</mat-option>
+                                            </mat-select>
                                         </div>
                                     </div>
                                 </td>
@@ -95,7 +95,7 @@
                             </tr>
                             <tr *ngIf="workbenches.length === 0 && loading">
                                 <td class="table-content " colspan="5" style="text-align: center ">
-                                    <md-spinner class="small-spinner"></md-spinner>
+                                    <mat-spinner class="small-spinner"></mat-spinner>
                                 </td>
                             </tr>
                             <tr *ngFor="let bench of workbenches">

@@ -4,9 +4,9 @@
         <div class="col-a">
             <div class="filter-sect">
                 <div class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                        <input mdInput md-error placeholder="search product to transfer..." [formControl]="product">
-                    </md-input-container>
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="search product to transfer..." [formControl]="product">
+                    </mat-input-container>
                 </div>
             </div>
 
@@ -14,7 +14,7 @@
                 <div class="control-group" *ngFor="let group of superGroups">
                     <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> 
-                                    <md-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></md-checkbox>
+                                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
                                     </div>
                             </label>
                 </div>
@@ -27,7 +27,7 @@
 <!--<div class="survery">-->
 <div class="container cotainer-width">
     <!--<div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-mat-12 col-sm-12 col-xs-12">
             <div class="callout callout-info">
                 <h4>You have no product to transfer</h4>
                 <p>To transfer product <a (click)="flyout_toggle($event)"> click here.</a></p>
@@ -35,11 +35,11 @@
         </div>
     </div>-->
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-mat-4">
             <div class="frm-item-wrap">
-                <md-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
-                    <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
-                </md-select>
+                <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
+                    <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                </mat-select>
             </div><br>
         </div>
     </div>
@@ -54,36 +54,36 @@
                                 <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
 
                                 <div style="width: 45%;" class="frm-item-wrap">
-                                    <md-input-container class="example-full-width">
-                                        <input mdInput md-error placeholder="Product" [readOnly]="true" formControlName="product">
-                                    </md-input-container>
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Product" [readOnly]="true" formControlName="product">
+                                    </mat-input-container>
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
-                                    <md-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers" [formControl]="frmDestinationStore">
-                                        <md-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</md-option>
-                                    </md-select>
+                                    <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers" [formControl]="frmDestinationStore">
+                                        <mat-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</mat-option>
+                                    </mat-select>
                                 </div>
                                 <div style="width: 10%;" class="frm-item-wrap">
-                                    <md-input-container class="example-full-width">
-                                        <input mdInput md-error placeholder="Batch No" [readOnly]="true" formControlName="batchNo">
-                                    </md-input-container>
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Batch No" [readOnly]="true" formControlName="batchNo">
+                                    </mat-input-container>
                                 </div>
 
                                 <div style="width: 15%;" class="frm-item-wrap">
-                                    <md-input-container class="example-full-width">
-                                        <input [step]="0.01" type="number" [readOnly]="true" mdInput md-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
-                                    </md-input-container>
+                                    <mat-input-container class="example-full-width">
+                                        <input [step]="0.01" type="number" [readOnly]="true" matInput mat-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
+                                    </mat-input-container>
                                 </div>
                                 <div style="width: 10%;" class="frm-item-wrap">
-                                    <md-input-container class="example-full-width">
-                                        <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="0" type="number" mdInput md-error placeholder="Quantity" [readOnly]="false" formControlName="qty">
-                                    </md-input-container>
+                                    <mat-input-container class="example-full-width">
+                                        <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="0" type="number" matInput mat-error placeholder="Quantity" [readOnly]="false" formControlName="qty">
+                                    </mat-input-container>
                                     <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></div>
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
-                                    <md-input-container class="example-full-width">
-                                        <input [step]="0.01" [readOnly]="true" min="0" type="number" [readOnly]="true" mdInput md-error placeholder="Total Cost Price" [readOnly]="true" formControlName="totalCostPrice">
-                                    </md-input-container>
+                                    <mat-input-container class="example-full-width">
+                                        <input [step]="0.01" [readOnly]="true" min="0" type="number" [readOnly]="true" matInput mat-error placeholder="Total Cost Price" [readOnly]="true" formControlName="totalCostPrice">
+                                    </mat-input-container>
                                 </div>
                             </div>
                         </div>
@@ -103,40 +103,40 @@
         <div class="">
             <div (click)="previewShow()" class="modal-close-ico" aria-hidden="true">X</div>
             <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-mat-12 col-sm-12 col-xs-12">
                     <div class="box">
                         <div class="row">
-                            <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                            <div class="col-sm-12 col-mat-12 col-xs-12 text-center">
                                 <h4 class="apmis-brown">Stock Transfer</h4>
                                 <!--<p class="apmis-blue">112250AA</p>-->
                             </div>
                         </div>
                         <div class="justwrap">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6 col-xs-12">
+                                <div class="col-sm-6 col-mat-6 col-xs-12">
                                     <div class="date-box">
-                                        <div class="col-sm-4 col-md-4">
+                                        <div class="col-sm-4 col-mat-4">
                                             <p>From</p>
                                         </div>
-                                        <div class="col-sm-1 col-md-1">
+                                        <div class="col-sm-1 col-mat-1">
                                             <span>-</span>
                                         </div>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-mat-6">
                                             {{previewObject?.store}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 col-md-6 col-xs-12">
+                                <div class="col-sm-6 col-mat-6 col-xs-12">
                                     <div class="date-box">
-                                        <div class="col-sm-4 col-md-4">
+                                        <div class="col-sm-4 col-mat-4">
                                             <p>To</p>
                                         </div>
-                                        <div class="col-sm-1 col-md-1">
+                                        <div class="col-sm-1 col-mat-1">
                                             <span>-</span>
                                         </div>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-mat-6">
                                             <p>{{previewObject?.destinationStore}}</p>
                                         </div>
                                     </div>
@@ -144,52 +144,52 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-7 col-md-7 col-xs-12">
+                            <div class="col-sm-7 col-mat-7 col-xs-12">
                                 <div class="date-value">
-                                    <div class="col-sm-5 col-md-5">
+                                    <div class="col-sm-5 col-mat-5">
                                         <p>Date Transfered</p>
                                     </div>
-                                    <div class="col-sm-1 col-md-1">
+                                    <div class="col-sm-1 col-mat-1">
                                         <span>-</span>
                                     </div>
-                                    <div class="col-sm-5 col-md-5">
+                                    <div class="col-sm-5 col-mat-5">
                                         <p>{{previewObject?.dateTransfer|date:'short'}}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-7 col-md-7 col-xs-12">
+                            <div class="col-sm-7 col-mat-7 col-xs-12">
                                 <div class="date-value">
-                                    <div class="col-sm-5 col-md-5">
+                                    <div class="col-sm-5 col-mat-5">
                                         <p>Date Accepted</p>
                                     </div>
-                                    <div class="col-sm-1 col-md-1">
+                                    <div class="col-sm-1 col-mat-1">
                                         <span>-</span>
                                     </div>
-                                    <div class="col-sm-5 col-md-5">
+                                    <div class="col-sm-5 col-mat-5">
                                         <p>{{previewObject?.dateAccepted}}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-7 col-md-7 col-xs-12">
+                            <div class="col-sm-7 col-mat-7 col-xs-12">
                                 <div class="date-value red">
-                                    <div class="col-sm-5 col-md-5">
+                                    <div class="col-sm-5 col-mat-5">
                                         <p>Stock Value</p>
                                     </div>
-                                    <div class="col-sm-1 col-md-1">
+                                    <div class="col-sm-1 col-mat-1">
                                         <span>-</span>
                                     </div>
-                                    <div class="col-sm-5 col-md-5">
+                                    <div class="col-sm-5 col-mat-5">
                                         <p>{{previewObject?.stockValue|number:'1.2-2'}}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 col-md-12">
+                            <div class="col-sm-12 col-mat-12">
                                 <div class="print pull-right">
                                     <a><span class="fa fa-paperclip"></span></a>
                                     <a><span class="fa fa-file-pdf-o"></span></a>
@@ -199,24 +199,24 @@
                         </div>
                         <div class=" box-border">
                             <div class="row">
-                                <div class="col-sm-4 col-md-4">
+                                <div class="col-sm-4 col-mat-4">
                                     <h4> Products </h4>
                                 </div>
-                                <div class="col-sm-4 col-md-4">
+                                <div class="col-sm-4 col-mat-4">
                                     <h4> Value (N) </h4>
                                 </div>
-                                <div class="col-sm-4 col-md-4">
+                                <div class="col-sm-4 col-mat-4">
                                     <h4>Qty Transfered</h4>
                                 </div>
                             </div>
                             <div class="row" *ngFor="let previewProduct of previewObject.products">
-                                <div class="col-sm-4 col-md-4">
+                                <div class="col-sm-4 col-mat-4">
                                     <p> {{previewProduct.product}} </p>
                                 </div>
-                                <div class="col-sm-4 col-md-4">
+                                <div class="col-sm-4 col-mat-4">
                                     <p> {{previewProduct?.cost|number:'1.2-2'}} </p>
                                 </div>
-                                <div class="col-sm-4 col-md-4">
+                                <div class="col-sm-4 col-mat-4">
                                     <p> {{previewProduct?.quantity}} </p>
                                 </div>
                             </div>

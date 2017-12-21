@@ -2,9 +2,9 @@
 <form [formGroup]="frm_numberVerifier" *ngIf="verify_show" novalidate>
 
   <div class="frm-singleItem-wrap">
-      <md-input-container class="example-full-width">
-          <input mdInput md-error placeholder="Supply Token" formControlName="txt_numberVerifier" [(ngModel)]="InputedToken">
-      </md-input-container>
+      <mat-input-container class="example-full-width">
+          <input matInput mat-error placeholder="Supply Token" formControlName="txt_numberVerifier" [(ngModel)]="InputedToken">
+      </mat-input-container>
   </div>
 
   <div class="noToken_wrap">

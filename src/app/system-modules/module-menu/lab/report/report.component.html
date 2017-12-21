@@ -80,7 +80,7 @@
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
                                                 <td class="table-content" colspan="5" style="text-align: center">
-                                                    <md-spinner class='small-spinner'></md-spinner>
+                                                    <mat-spinner class='small-spinner'></mat-spinner>
                                                 </td>
                                             </tr>
                                             <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
@@ -142,7 +142,7 @@
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
                                                 <td class="table-content" colspan="6" style="text-align: center">
-                                                    <md-spinner class='small-spinner'></md-spinner>
+                                                    <mat-spinner class='small-spinner'></mat-spinner>
                                                 </td>
                                             </tr>
                                             <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
@@ -200,7 +200,7 @@
                                     </div>
                                     <div *ngIf="requests.length === 0 && loading">
                                         <span class="table-content" colspan="5" style="text-align: center">
-                                                <md-spinner class='small-spinner'></md-spinner>
+                                                <mat-spinner class='small-spinner'></mat-spinner>
                                             </span>
                                     </div>
                                 </div>
@@ -241,9 +241,9 @@
                                                         <div class="val-val">1220</div>
                                                     </div>
                                                     <div class="frm-item-wrap">
-                                                        <md-input-container>
-                                                            <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                        </md-input-container>
+                                                        <mat-input-container>
+                                                            <input type="number" matInput placeholder="Enter Result" formControlName="result">
+                                                        </mat-input-container>
                                                         <div style="width: 100%; text-align: right;padding:5px 0;">
                                                             <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
                                                         </div>
@@ -263,29 +263,29 @@
                                                         <div class="val-val">1220</div>
                                                     </div>
                                                     <div class="frm-item-wrap">
-                                                        <md-input-container>
-                                                            <textarea formControlName="result" mdInput placeholder="Enter Result"></textarea>
-                                                        </md-input-container>
+                                                        <mat-input-container>
+                                                            <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
+                                                        </mat-input-container>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <md-select formControlName="outcome" placeholder="Investigation Outcome">
-                                                <md-option [value]="'Normal'">Normal</md-option>
-                                                <md-option [value]="'Low'">Low</md-option>
-                                                <md-option [value]="'High'">High</md-option>
-                                            </md-select>
+                                            <mat-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                <mat-option [value]="'Normal'">Normal</mat-option>
+                                                <mat-option [value]="'Low'">Low</mat-option>
+                                                <mat-option [value]="'High'">High</mat-option>
+                                            </mat-select>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
-                                            </md-input-container>
+                                            <mat-input-container>
+                                                <textarea formControlName="conclusion" matInput placeholder="Conclusion"></textarea>
+                                            </mat-input-container>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <textarea formControlName="recommendation" mdInput placeholder="Recommendation"></textarea>
-                                            </md-input-container>
+                                            <mat-input-container>
+                                                <textarea formControlName="recommendation" matInput placeholder="Recommendation"></textarea>
+                                            </mat-input-container>
                                         </div>
                                         <div class="frm-item-wrap">
                                             <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
@@ -378,7 +378,7 @@
                             </tr>
                             <tr *ngIf="reports.length === 0 && reportLoading">
                                 <td class="table-content" colspan="8" style="text-align: center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <mat-spinner class='small-spinner'></mat-spinner>
                                 </td>
                             </tr>
 

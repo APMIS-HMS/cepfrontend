@@ -9,9 +9,9 @@
     <form [formGroup]="frmAddModifier" novalidate>
 
       <div class="frm-item-wrap">
-        <md-input-container>
-            <input mdInput md-error placeholder="Select Modifier" formControlName="modifier">
-        </md-input-container>
+        <mat-input-container>
+            <input matInput mat-error placeholder="Select Modifier" formControlName="modifier">
+        </mat-input-container>
         <div class="suggestionFeeds">
           <div (click)="onSelectModifier(modifier)" *ngFor="let modifier of modifiers" class="suggestedItem">
             <span class="suggetedName">{{modifier?.tagDetails?.name}}</span>

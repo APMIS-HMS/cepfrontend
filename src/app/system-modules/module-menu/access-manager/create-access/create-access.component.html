@@ -23,16 +23,16 @@
             </div>
             <div class="featuresMainWrap">
                 <div class="accessInputWrap">
-                    <md-input-container class="">
-                        <input type="text" mdInput md-error placeholder="Supply Access Name" [formControl]="txtAccessName">
-                    </md-input-container>
+                    <mat-input-container class="">
+                        <input type="text" matInput mat-error placeholder="Supply Access Name" [formControl]="txtAccessName">
+                    </mat-input-container>
                     <!--<input id="txtAccessName" class="top-tab-search" type="text" autofocus placeholder="Supply Access Name" [formControl]="txtAccessName">-->
                 </div>
                 <legend class="title-label">Select accessible features</legend>
                 <div class="searchWrap">
-                    <md-input-container *ngIf="searchfeatureActive" class="animated fadeIn">
-                        <input type="text" mdInput md-error placeholder="Search for Feature" [formControl]="searchFeature">
-                    </md-input-container>
+                    <mat-input-container *ngIf="searchfeatureActive" class="animated fadeIn">
+                        <input type="text" matInput mat-error placeholder="Search for Feature" [formControl]="searchFeature">
+                    </mat-input-container>
                     <!--<input *ngIf="searchfeatureActive" class="top-tab-search animated fadeIn" type="search" placeholder="Search for Feature" [formControl]="searchFeature">-->
                     <i (click)="searchFeatureToggle()" [hidden]="searchfeatureActive" style="margin-top: 7px;" class="fa fa-search-plus" aria-hidden="true"></i>
                     <i (click)="searchFeatureToggle()" *ngIf="searchfeatureActive" class="fa fa-search-minus" aria-hidden="true"></i>

@@ -17,14 +17,14 @@
     <div class="head-others shadow">
         <form [formGroup]="paymentFormGroup">
             <div class="frm-item-wrap">
-                <md-input-container>
-                    <input type="number" mdInput placeholder="Amount(&#x20a6;)" formControlName="fundAmount">
-                </md-input-container>
+                <mat-input-container>
+                    <input type="number" matInput placeholder="Amount(&#x20a6;)" formControlName="fundAmount">
+                </mat-input-container>
             </div>
             <div class="frm-item-wrap">
-                <md-select formControlName="paymentType" placeholder="Payment Type" class="md-select">
-                    <md-option *ngFor="let paymentChannel of paymentChannels" [(value)]="paymentChannel.name"> {{ paymentChannel.name }}</md-option>
-                </md-select>
+                <mat-select formControlName="paymentType" placeholder="Payment Type" class="mat-select">
+                    <mat-option *ngFor="let paymentChannel of paymentChannels" [(value)]="paymentChannel.name"> {{ paymentChannel.name }}</mat-option>
+                </mat-select>
             </div>
         </form>
         <!-- <ul class="topmenuwrap" *ngIf="!makingPayment">
@@ -61,9 +61,9 @@
 <div class="tbl-header ">
     <div class="pg-subtitle ">Account Statement</div>
     <div class="frm-item-wrap ">
-        <md-input-container>
-            <input type="text " mdInput placeholder="Search Activities " [formControl]="search ">
-        </md-input-container>
+        <mat-input-container>
+            <input type="text " matInput placeholder="Search Activities " [formControl]="search ">
+        </mat-input-container>
     </div>
 </div>
 <div class="content ">
@@ -103,7 +103,7 @@
             </tr>
             <tr *ngIf="transactions.length===0 && loading ">
                 <td class="table-content " colspan="8 " style="text-align: center ">
-                    <md-spinner class="small-spinner "></md-spinner>
+                    <mat-spinner class="small-spinner "></mat-spinner>
                 </td>
             </tr>
             <tr *ngFor="let tx of transactions; let i=index; ">

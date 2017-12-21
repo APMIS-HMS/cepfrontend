@@ -16,50 +16,50 @@
                             <form [formGroup]="templateFormGroup">
                                 <div class="content-left">
                                     <div class="form-control-box">
-                                        <md-select placeholder="Scope Level" formControlName="apmisScopeLevel">
-                                            <md-option *ngFor="let scopeLevel of scopeLevels" [value]="scopeLevel">{{scopeLevel.name}}</md-option>
-                                        </md-select>
+                                        <mat-select placeholder="Scope Level" formControlName="apmisScopeLevel">
+                                            <mat-option *ngFor="let scopeLevel of scopeLevels" [value]="scopeLevel">{{scopeLevel.name}}</mat-option>
+                                        </mat-select>
                                     </div>
                                 </div>
                                 <div class="content-right">
                                     <div class="form-control-box">
-                                        <md-select placeholder="Select Investigation" formControlName="investigation">
-                                            <md-option *ngFor="let investigation of investigations" [value]="investigation">
+                                        <mat-select placeholder="Select Investigation" formControlName="investigation">
+                                            <mat-option *ngFor="let investigation of investigations" [value]="investigation">
                                                 {{ investigation.name }}
-                                            </md-option>
-                                        </md-select>
+                                            </mat-option>
+                                        </mat-select>
                                     </div>
                                 </div>
                                 <div class="content-left" style="margin-top: 40px;">
                                     <div class="form-control-box">
-                                        <md-input-container>
-                                            <input mdInput placeholder="Template Name" formControlName="name">
-                                        </md-input-container>
+                                        <mat-input-container>
+                                            <input matInput placeholder="Template Name" formControlName="name">
+                                        </mat-input-container>
                                     </div>
                                 </div>
                                 <div class="content-right" style="margin-top: -40px;">
                                     <div class="form-control-box">
-                                        <md-input-container>
-                                            <textarea formControlName="result" mdInput placeholder="Result"></textarea>
-                                        </md-input-container>
+                                        <mat-input-container>
+                                            <textarea formControlName="result" matInput placeholder="Result"></textarea>
+                                        </mat-input-container>
                                     </div>
                                 </div>
                                 <div class="content-left">
                                     <div class="form-control-box">
-                                        <md-input-container>
-                                            <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
-                                        </md-input-container>
+                                        <mat-input-container>
+                                            <textarea formControlName="conclusion" matInput placeholder="Conclusion"></textarea>
+                                        </mat-input-container>
                                     </div>
                                 </div>
                                 <div class="content-right">
                                     <div class="form-control-box">
-                                        <md-input-container>
-                                            <textarea formControlName="recommendation" mdInput placeholder="Recommendation"></textarea>
-                                        </md-input-container>
+                                        <mat-input-container>
+                                            <textarea formControlName="recommendation" matInput placeholder="Recommendation"></textarea>
+                                        </mat-input-container>
                                     </div>
                                 </div>
                                 <div class="fullwidth text-center">
-                                    <button class="text-white" md-raised-button (click)="createTemplate(templateFormGroup.valid, templateFormGroup.value);" [disabled]="!templateFormGroup.valid" [innerHtml]="templateBtnText"></button>
+                                    <button class="text-white" mat-raised-button (click)="createTemplate(templateFormGroup.valid, templateFormGroup.value);" [disabled]="!templateFormGroup.valid" [innerHtml]="templateBtnText"></button>
                                 </div>
                             </form>
                         </div>
@@ -109,7 +109,7 @@
                             </tr>
                             <tr *ngIf="templates.length === 0 && loading">
                                 <td class="table-content" colspan="8" style="text-align: center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <mat-spinner class='small-spinner'></mat-spinner>
                                 </td>
                             </tr>
 

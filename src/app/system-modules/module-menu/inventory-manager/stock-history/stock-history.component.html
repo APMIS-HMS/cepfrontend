@@ -1,14 +1,14 @@
 <div class="survery">
     <div class="row margin-bottom" style="position:absolute;width: 100%;top: -50px;display: block;">
         <div class="col-sm-4 col-md-4 col-xs-12">
-            <md-select class="example-full-width" placeholder="Choose">
-                <md-option></md-option>
-            </md-select>
+            <mat-select class="example-full-width" placeholder="Choose">
+                <mat-option></mat-option>
+            </mat-select>
         </div>
         <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
-            <md-input-container class="example-full-width">
-                <input mdInput md-error placeholder="search">
-            </md-input-container>
+            <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="search">
+            </mat-input-container>
         </div>
     </div>
     
@@ -38,7 +38,7 @@
                     </div>
                     <div class="prodBatch-row batchContent" *ngFor="let transaction of producthistory.inventoryTransferTransactions">
                         <div class="prodBatch-item batchItem1">
-                            <md-checkbox [checked]="false">{{transaction?.productObject?.name}}</md-checkbox>
+                            <mat-checkbox [checked]="false">{{transaction?.productObject?.name}}</mat-checkbox>
                         </div>
                         <div class="prodBatch-item batchItem5">{{transaction.batchNumber}}</div>
                         <div class="prodBatch-item batchItem2">{{transaction.lineCostPrice|number:'1.2-2'}}</div>

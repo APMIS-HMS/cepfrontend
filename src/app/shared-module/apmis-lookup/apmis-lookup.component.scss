@@ -30,7 +30,7 @@
     //padding: 3px;
     //border-radius: 4px;
     .input-group {
-        md-input-container {
+        mat-input-container {
             float: left;
             width: 50%;
         }
@@ -382,7 +382,7 @@ label:hover {
     background: #f5f5f5;
 }
 
-.md-select {
+.mat-select {
     margin-top: -11px;
 }
 

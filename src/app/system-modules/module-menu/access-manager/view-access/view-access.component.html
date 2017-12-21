@@ -28,9 +28,9 @@
             <div style="border: 1px solid #bdbdbd; margin-top: 20px; padding: 10px;">
                 <div class="accessLhsWrap lhs">
                     <!--<input class="top-tab-search" type="search" placeholder="Search for aceess" [formControl]="searchAccess">-->
-                    <md-input-container class="top-tab-search">
-                        <input type="search" mdInput md-error placeholder="Search for aceess" [formControl]="searchAccess">
-                    </md-input-container>
+                    <mat-input-container class="top-tab-search">
+                        <input type="search" matInput mat-error placeholder="Search for aceess" [formControl]="searchAccess">
+                    </mat-input-container>
                     <legend class="title-label">Access Definitions</legend>
                     <ul class="accessDefWrap">
                         <li [ngClass]="{'activeAccess': isSelected(item)}" *ngFor="let item of accessControlList" (click)="show(item)">{{item.name}}</li>

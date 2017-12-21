@@ -5,66 +5,66 @@
 
     <div class="lhs">
       <div class="frm-item-wrap">
-          <md-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
-              <md-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</md-option>
-          </md-select>
+          <mat-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
+              <mat-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</mat-option>
+          </mat-select>
       </div>
       <div class="frm-item-wrap">
-          <md-select placeholder="Facility City" *ngIf="stateAvailable" formControlName="facilitycity">
-              <md-option *ngFor="let item of cities" selected="inputFacility.address.city" [value]="item._id">{{item.name}}</md-option>
-          </md-select>
+          <mat-select placeholder="Facility City" *ngIf="stateAvailable" formControlName="facilitycity">
+              <mat-option *ngFor="let item of cities" selected="inputFacility.address.city" [value]="item._id">{{item.name}}</mat-option>
+          </mat-select>
       </div>
       <div class="frm-item-wrap">
-          <md-select placeholder="Facility LGA" *ngIf="stateAvailable" formControlName="facilitylga">
-              <md-option *ngFor="let item of lgas" selected="inputFacility.address.lga" [value]="item._id">{{item.name}}</md-option>
-          </md-select>
+          <mat-select placeholder="Facility LGA" *ngIf="stateAvailable" formControlName="facilitylga">
+              <mat-option *ngFor="let item of lgas" selected="inputFacility.address.lga" [value]="item._id">{{item.name}}</mat-option>
+          </mat-select>
       </div>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Facility Address" formControlName="facilityaddress" value="inputFacility.address.street">
-          </md-input-container>
+          <mat-input-container class="example-full-width">
+              <input matInput mat-error placeholder="Facility Address" formControlName="facilityaddress" value="inputFacility.address.street">
+          </mat-input-container>
       </div>
       <div class="frm-item-wrap">
-          <md-input-container>
-              <input mdInput md-error placeholder="Major Landmark" formControlName="facilitylandmark" value="inputFacility.address.landmark">
-          </md-input-container>
+          <mat-input-container>
+              <input matInput mat-error placeholder="Major Landmark" formControlName="facilitylandmark" value="inputFacility.address.landmark">
+          </mat-input-container>
       </div>
       <div class="frm-item-wrap">
-        <md-input-container class="example-full-width">
-            <input type="email" mdInput md-error placeholder="Contact Email" formControlName="contactEmail">
-        </md-input-container>
+        <mat-input-container class="example-full-width">
+            <input type="email" matInput mat-error placeholder="Contact Email" formControlName="contactEmail">
+        </mat-input-container>
       </div>
 
     </div>
     <div class="rhs">
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Contact Person (First Name)" formControlName="contactFName">
-          </md-input-container>
+          <mat-input-container class="example-full-width">
+              <input matInput mat-error placeholder="Contact Person (First Name)" formControlName="contactFName">
+          </mat-input-container>
       </div>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
-              <input mdInput md-error placeholder="Contact Person (Last Name)" formControlName="contactLName">
-          </md-input-container>
+          <mat-input-container class="example-full-width">
+              <input matInput mat-error placeholder="Contact Person (Last Name)" formControlName="contactLName">
+          </mat-input-container>
       </div>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
-              <input type="tel" mdInput md-error placeholder="Contact Number" formControlName="facilityphonNo">
-          </md-input-container>
+          <mat-input-container class="example-full-width">
+              <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
+          </mat-input-container>
       </div>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
+          <mat-input-container class="example-full-width">
               <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
-              <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Password">
+              <input type="password" matInput mat-error formControlName="password" #showhideinput placeholder="Password">
               <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
-          </md-input-container>
+          </mat-input-container>
       </div>
       <div class="frm-item-wrap">
-          <md-input-container class="example-full-width">
+          <mat-input-container class="example-full-width">
               <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
-              <input type="password" mdInput md-error formControlName="repass" #showhideinput placeholder="Confirm Password">
+              <input type="password" matInput mat-error formControlName="repass" #showhideinput placeholder="Confirm Password">
               <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
-          </md-input-container>
+          </mat-input-container>
       </div>
 
     </div>
