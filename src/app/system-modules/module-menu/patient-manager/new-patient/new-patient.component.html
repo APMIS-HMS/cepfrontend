@@ -43,9 +43,7 @@
                   </div>
                   <div class="frm-item-wrap">
                     <md-select placeholder="Select Plan" [formControl]="hmoPlan">
-                      <md-option>Diamond</md-option>
-                      <md-option>Gold</md-option>
-                      <md-option>Bronze</md-option>
+                        <md-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</md-option>
                     </md-select>
                   </div>
             
