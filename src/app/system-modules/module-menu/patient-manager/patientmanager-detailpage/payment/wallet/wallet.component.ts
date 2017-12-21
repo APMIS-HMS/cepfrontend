@@ -163,9 +163,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // crop();
   }
-  // fundWallet() {
-  //   crop();
-  // }
 
   // verifyTransaction(reference) {
   //   let formData = { type: 'verifyTransaction', reference: reference };
