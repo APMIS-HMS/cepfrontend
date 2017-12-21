@@ -22,7 +22,7 @@ export class UserAccountsComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   logoutConfirm_on = false;
   loginEmployee: Employee = <Employee>{};
-  authData: any;
+  authData: any; 
   constructor(private locker: CoolLocalStorage,
     private router: Router,
     private route: ActivatedRoute,

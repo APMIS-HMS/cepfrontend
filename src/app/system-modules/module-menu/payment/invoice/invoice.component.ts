@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, BillingService, PatientService, InvoiceService, SearchInvoicesService, PendingBillService, TodayInvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, BillIGroup, Invoice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
@@ -31,7 +31,7 @@ export class InvoiceComponent implements OnInit {
     user: any = <any>{};
 
     searchPendingInvoice = new FormControl('', []);
-    searchPendingBill = new FormControl('', []);
+    searchOtherPendingInvoice = new FormControl('', []);
 
     selectedPatient: Patient = <Patient>{};
     selectedFacility: Facility = <Facility>{};
@@ -40,8 +40,10 @@ export class InvoiceComponent implements OnInit {
     selectedInvoiceGroup: Invoice = <Invoice>{};
     isLoadingInvoice = false;
     isLoadingOtherInvoice = false;
+    isPaymentMade = false;
     invoiceGroups: Invoice[] = [];
-    otherInvoiceGroups: Invoice[] = [];
+    otherInvoiceGroups: any[] = [];
+    otherInvoiceGroups2: any[] = [];
     subscription: Subscription;
     constructor(private formBuilder: FormBuilder,
         private locker: CoolLocalStorage,
@@ -50,7 +52,10 @@ export class InvoiceComponent implements OnInit {
         private billingService: BillingService,
         private router: Router,
         private route: ActivatedRoute,
-        private patientService: PatientService) {
+        private patientService: PatientService,
+        private _searchInvoicesService: SearchInvoicesService,
+        private _pendingBillService: PendingBillService,
+        private _todayInvoiceService: TodayInvoiceService) {
         this.user = <User>this.locker.getObject('auth');
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.patientService.receivePatient().subscribe((payload: Patient) => {
@@ -66,20 +71,26 @@ export class InvoiceComponent implements OnInit {
         });
     }
     getPatientInvoices() {
-        console.log("Load invoices");
-        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { createdAt: -1 }, $limit: 5 } })
+        this.isLoadingInvoice = true;
+        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
-                this.isLoadingInvoice = true;
-                console.log(this.invoiceGroups);
-            });
+                this.isLoadingInvoice = false;
+                if (this.isPaymentMade == false) {
+                    this.selectedInvoiceGroup = <Invoice>{};
+                }
+            }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
 
-        this.invoiceService.find({ query: { patientId: { $ne: this.selectedPatient._id }, facilityId: this.selectedFacility._id, $sort: { createdAt: -1 }, $limit: 10 } })
-            .then(payload => {
-                this.otherInvoiceGroups = payload.data;
-                this.isLoadingOtherInvoice = true;
-                console.log(this.otherInvoiceGroups);
-            });
+        this.isLoadingOtherInvoice = true;
+        var facility = {
+            "_id": this.selectedFacility._id,
+            "isQuery": false
+        }
+        this._todayInvoiceService.get(facility).then(payload => {
+            this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
+            console.log(this.otherInvoiceGroups);
+            this.isLoadingOtherInvoice = false;
+        }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
 
     }
     ngOnInit() {
@@ -88,7 +99,7 @@ export class InvoiceComponent implements OnInit {
             qty: ['', [<any>Validators.required]]
         });
         this.subscription = this.route.params.subscribe(params => {
-            const id = params['id']; // (+) converts string 'id' to a number
+            const id = params['id'];
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
@@ -97,6 +108,41 @@ export class InvoiceComponent implements OnInit {
                 });
             }
         });
+
+        this.searchOtherPendingInvoice.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.isLoadingOtherInvoice = true;
+                console.log(value);
+                var facility = {
+                    "_id": this.selectedFacility._id,
+                    "isQuery": true,
+                    "name": value
+                }
+                this._todayInvoiceService.get(facility).then(payload => {
+                    console.log(payload);
+                    this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
+                    this.isLoadingOtherInvoice = false;
+                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
+
+        this.searchPendingInvoice.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.isLoadingInvoice = true;
+                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: {$regex:'.*'+value+'.*'}} })
+                    .then(payload => {
+                        this.invoiceGroups = payload.data;
+                        this.isLoadingInvoice = false;
+                        console.log(this.isLoadingInvoice);
+                        console.log(this.invoiceGroups);
+                        if (this.isPaymentMade == false) {
+                            this.selectedInvoiceGroup = <Invoice>{};
+                        }
+                    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
     }
 
     onSelectedInvoice(group: Invoice) {
@@ -107,6 +153,7 @@ export class InvoiceComponent implements OnInit {
         } else {
             this.isPaidClass = false;
         }
+        this.isPaymentMade = false;
     }
 
     onPersonValueUpdated(person) {
@@ -114,13 +161,14 @@ export class InvoiceComponent implements OnInit {
         this.isLoadingInvoice = false;
         this.isLoadingOtherInvoice = false;
         this.isPaidClass = true;
+        this.isPaymentMade = true;
         this.getPatientInvoices();
     }
 
     onSelectedOtherPatientInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
-            this.isLoadingInvoice = false;
-            this.isLoadingOtherInvoice = false;
+        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]).then(routePayload => {
+            this.isLoadingInvoice = true;
+            this.isLoadingOtherInvoice = true;
         });
     }
 

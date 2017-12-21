@@ -25,6 +25,10 @@ const appRoutes: Routes = [
                 path: 'access-manager',
                 loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
             },
+            // {
+            //     path: 'patient-portal',
+            //     loadChildren: '../module-menu/patient-portal/patient-portal.module#PatientPortalModule',
+            // },
             {
                 path: 'patient-manager',
                 loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
