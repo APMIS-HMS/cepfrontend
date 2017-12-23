@@ -42,9 +42,11 @@
                       </mat-input-container>
                   </div>
                   <div class="frm-item-wrap">
-                    <md-select placeholder="Select Plan" [formControl]="hmoPlan">
-                        <md-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</md-option>
-                    </md-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
+                            <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                   </div>
             
                   <div class="another">Another Insurance</div>
@@ -55,14 +57,16 @@
                 <div class="plan">
                   <div class="plan-title">Company Cover</div>
                   <div class="frm-item-wrap">
-                      <md-input-container class="example-full-width">
-                          <input mdInput md-error placeholder="Employee" [formControl]="ccPlanId" >
-                      </md-input-container>
+                      <mat-input-container class="example-full-width">
+                          <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId" >
+                      </mat-input-container>
                   </div>
                   <div class="frm-item-wrap">
-                    <md-select placeholder="Select Plan" [formControl]="ccPlan">
-                        <md-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</md-option>
-                    </md-select>
+                    <mat-form-field>
+                            <mat-select placeholder="Select Plan" [formControl]="ccPlan">
+                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                            </mat-select>
+                    </mat-form-field>
                   </div>
             
                   <div class="another">Another Company</div>
@@ -81,19 +85,19 @@
               </div>
               
               <div class="btn-box">
-                    <button class="small-btn" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid" md-raised-button >
+                    <button class="small-btn" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="next()" *ngIf="tabInsurance" md-raised-button >
+                    <button class="small-btn" (click)="next()" *ngIf="tabInsurance" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="nextCompanyCover(ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" md-raised-button >
+                    <button class="small-btn" (click)="nextCompanyCover(ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="next()" *ngIf="tabFamily" md-raised-button >
+                    <button class="small-btn" (click)="next()" *ngIf="tabFamily" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
@@ -195,8 +199,8 @@
                 <div class="frm-item-wrap">
                     <mat-input-container>
                         <input matInput [matDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
-                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                        <!-- <button matSuffix [matDatepickerToggle]="picker"></button> -->
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     </mat-input-container>
                     <mat-datepicker #picker></mat-datepicker>
                 </div>
