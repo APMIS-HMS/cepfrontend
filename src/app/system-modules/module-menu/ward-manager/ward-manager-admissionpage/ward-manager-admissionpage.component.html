@@ -36,7 +36,7 @@
                 <tbody>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
                         <td class="table-content " colspan="7" style="text-align: center">
-                            <mat-spinner class="small-spinner"></mat-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
@@ -113,7 +113,7 @@
                 <tbody>
                     <tr *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
                         <td class="table-content " colspan="7" style="text-align: center">
-                            <mat-spinner class="small-spinner"></mat-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
@@ -178,7 +178,7 @@
                 <tbody>
                     <tr *ngIf="listPatientTransferOutWaiting.length === 0 && transferOutLoading">
                         <td class="table-content " colspan="7" style="text-align: center">
-                            <mat-spinner class="small-spinner"></mat-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientTransferOutWaiting.length === 0 && !transferOutLoading">
@@ -246,7 +246,7 @@
                 <tbody>
                     <tr *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
                         <td class="table-content " colspan="6" style="text-align: center">
-                            <mat-spinner class="small-spinner"></mat-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
