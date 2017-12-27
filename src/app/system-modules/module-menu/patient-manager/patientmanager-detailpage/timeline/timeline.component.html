@@ -3,71 +3,25 @@
 <div class="doc-mainWrap">
   <div class="doc-contentArea">
     <ul>
-      <li class="timeline-wrap">
+      <li class="timeline-wrap" *ngFor="let timeLine of timeLineLists">
         <div class="timeline-liner">
           <div class="date-time">
             <i class="fa fa-caret-right" aria-hidden="true"></i>
-            <div class="date">11th July, 2017.</div>
-            <div class="time">10:00AM</div>
+            <div class="date">{{timeLine.updatedAt|date:'mediumDate'}}</div>
+            <div class="time">{{timeLine.updatedAt|date:'shortTime'}}</div>
           </div>
         </div>
         <div class="timeline-content">
           <div class="empWrap">
             <div class="list-img">
-                <img src="assets/images/users/default.png">
+              <img *ngIf="timeLine?.employeeId.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(timeLine?.employeeId.employeeDetails.profileImageObject.thumbnail)">
+              <img *ngIf="timeLine?.employeeId.employeeDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
             </div>
             <div>
-              <div class="list-label">Dr. John Doe</div>
+              <div class="list-label">{{timeLine?.employeeId.employeeDetails.title.name}} {{timeLine?.employeeId.employeeDetails.firstName}} {{timeLine?.employeeId.employeeDetails.lastName}}</div>
             </div>
           </div>
-
-          <div class="content">Added a new clinical documentation</div>
-        </div>
-      </li>
-
-      <li class="timeline-wrap">
-        <div class="timeline-liner">
-          <div class="date-time">
-            <i class="fa fa-caret-right" aria-hidden="true"></i>
-            <div class="date">11th July, 2017.</div>
-            <div class="time">10:00AM</div>
-          </div>
-        </div>
-        <div class="timeline-content">
-          <div class="empWrap">
-            <div class="list-img">
-                <img src="assets/images/users/default.png">
-            </div>
-            <div>
-              <div class="list-label">Suzan Wade</div>
-            </div>
-          </div>
-
-          <div class="content">Scheduled an appointment for the 22nd of July, 2017 at the EMT Clinic, Continental Hospital.</div>
-        </div>
-      </li>
-
-      <li class="timeline-wrap">
-        <div class="timeline-liner">
-          <div class="date-time">
-            <i class="fa fa-caret-right" aria-hidden="true"></i>
-            <div class="date">11th July, 2017.</div>
-            <div class="time">12:02PM</div>
-          </div>
-        </div>
-        <div class="timeline-content">
-          <div class="empWrap">
-            <div class="list-img">
-                <img src="assets/images/users/default.png">
-            </div>
-            <div>
-              <div class="list-label">Dr. Jude Halaman</div>
-            </div>
-          </div>
-
-          <div class="content">
-            Added a new clinical documentationever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          </div>
+          <div class="content">{{timeLine.description}}</div>
         </div>
       </li>
     </ul>    

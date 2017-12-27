@@ -97,13 +97,17 @@ export class ClinicScheduleComponent implements OnInit {
 
   subscribToFormControls() {
     this.locationTypeControl.valueChanges.subscribe(value => {
-      this.clearAllSchedules();
-      this.schedulerService.find({ query: { 'clinicObject._id': value._id.toString() } }).then(payload => {
-        if (payload.data.length > 0) {
-          this.selectedManager = payload.data[0];
-          this.loadManagerSchedules(false);
-        }
-      });
+      console.log(value);
+      console.log(this.clinics);
+      if(value !== undefined){
+        this.clearAllSchedules();
+        this.schedulerService.find({ query: { 'clinicObject._id': value._id.toString() } }).then(payload => {
+          if (payload.data.length > 0) {
+            this.selectedManager = payload.data[0];
+            this.loadManagerSchedules(false);
+          }
+        });
+      }
     });
   }
 
