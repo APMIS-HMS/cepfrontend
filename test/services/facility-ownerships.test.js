@@ -8,6 +8,6 @@ describe('\'facilityOwnerships\' service', () => {
       assert.equal(person.name, 'David');
     });
   },err=>{
-    console.log(err);
+    assert.fail(err);
   });
 });
