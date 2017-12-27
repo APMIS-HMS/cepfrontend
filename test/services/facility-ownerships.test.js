@@ -7,7 +7,7 @@ describe('\'facilityOwnerships\' service', () => {
       assert.ok(person._id);
       assert.equal(person.name, 'David');
     });
-  },err=>{
-    console.log(err);
+  }, err => {
+    assert.fail(err);
   });
 });
