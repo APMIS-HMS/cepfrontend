@@ -59,7 +59,7 @@
             </li>
             <li *ngIf="roomManager.length === 0 && loading" class="li-itemWrap">
                 <div class="table-content">
-                    <mat-spinner class='small-spinner'></mat-spinner>
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </li>
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of roomManager" class="li-itemWrap">

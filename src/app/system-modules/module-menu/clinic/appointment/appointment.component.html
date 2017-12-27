@@ -104,7 +104,7 @@
         </tr>
         <tr *ngIf="filteredAppointments.length === 0 && loading">
             <td class="table-content" colspan="8" style="text-align: center">
-                <mat-spinner class='small-spinner'></mat-spinner>
+                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
             </td>
         </tr>
         <tr *ngFor="let appointment of filteredAppointments">

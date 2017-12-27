@@ -20,18 +20,18 @@
                                     <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.firstName }}  {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
+                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.firstName }} {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
                                     <div class="oda">
                                         <div class="pending-date">{{ pendingBill?.createdAt | date:'medium' }}</div>
                                         <div class="pending-amount">
-                                            <span>&#x20a6;</span>{{pendingBill?.grandTotalExcludeInvoice|numberThr  }}</div>
+                                            <span>&#x20a6;</span>{{pendingBill?.grandTotalExcludeInvoice|numberThr }}</div>
                                     </div>
                                 </div>
                             </li>
 
                             <li *ngIf="loadingPendingBills" class="empWrap">
                                 <div class="text-center">
-                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </div>
                             </li>
 
@@ -56,7 +56,7 @@
                         <div>
                             <li *ngIf="isLoadingInvoice" class="empWrap">
                                 <div class="text-center">
-                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </div>
                             </li>
                             <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
@@ -94,8 +94,7 @@
                                 </span>
                             </div>
                             <div class="clientAddress">
-                                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}},
-                                    {{selectedPatient?.country}}
+                                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}}, {{selectedPatient?.country}}
                                 </div>
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
@@ -159,8 +158,7 @@
                                                 <span>&#8358;</span> {{bill.amount | number:'1.2-2'}}</div>
                                         </td>
                                         <td>
-                                            <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o"
-                                                aria-hidden="true"></i>
+                                            <i [hidden]="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             <i *ngIf="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-check" aria-hidden="true"></i>
                                             <i (click)="onRemoveBill(bill,group)" class="fa fa-trash" aria-hidden="true"></i>
                                             <div (click)="lineModifier_show(bill)" class="cta-1 btn-addItem">
@@ -266,8 +264,7 @@
 </div>
 
 <div *ngIf="makePayment" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [isInvoicePage]="false"
-        [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems"
+    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [isInvoicePage]="false" [selectedPatient]="selectedPatient" [checkBillitems]="checkBillitems" [billGroups]="billGroups" [listedBillItems]="listedBillItems"
         [cost]="total" [subTotal]="subTotal" [discount]="discount" id="form-modal" class="form-modal center-center"></app-make-payment>
 </div>
 
