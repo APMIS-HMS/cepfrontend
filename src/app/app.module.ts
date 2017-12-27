@@ -97,7 +97,8 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService
+    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    SetupService.TimeLineService
   ],
   bootstrap: [AppComponent]
 })
