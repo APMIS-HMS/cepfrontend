@@ -1,3 +1,4 @@
+import { SignupApmisid } from './../facility-setup/signup-apmisid/signup-apmisid.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +24,8 @@ import { MaterialModule } from '../shared-common-modules/material-module';
         FacilitySetupComponent,
         // PersonAccountComponent,
         CorporateSignupComponent,
-        SignupHomeComponent
+        SignupHomeComponent,
+        SignupApmisid
     ],
     exports: [
     ],
