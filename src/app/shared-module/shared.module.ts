@@ -43,7 +43,6 @@ import {
     MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule,
     MatInputModule, MatOptionModule, MatSelectionList, MatSelectModule, MatRadioButton
 } from '@angular/material';
-import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
@@ -77,8 +76,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     FormsModule,
     SingUpAccountsSharedModule,
     Angular4FlutterwaveComponent,
-    Angular4PaystackModule,
-    Ng4GeoautocompleteModule
+    Angular4PaystackModule
     // DragulaModule,
     // LabRequestsComponent, RequestDetailComponent
   ],
@@ -92,8 +90,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     Ng2PaginationModule,
     InfiniteScrollModule,
     ImageCropperModule,
-    MaterialModule,
-    Ng4GeoautocompleteModule.forRoot()
+    MaterialModule
     // DragulaModule
   ],
   providers: [StoreService, WindowRef, SystemModuleService]
