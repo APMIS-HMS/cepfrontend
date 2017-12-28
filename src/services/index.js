@@ -9,6 +9,7 @@ const relationships = require('./relationships/relationships.service.js');
 const genders = require('./genders/genders.service.js');
 const maritalStatuses = require('./marital-statuses/marital-statuses.service.js');
 const getTokens = require('./get-tokens/get-tokens.service.js');
+const facilities = require('./facilities/facilities.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -21,4 +22,5 @@ module.exports = function (app) {
   app.configure(genders);
   app.configure(maritalStatuses);
   app.configure(getTokens);
+  app.configure(facilities);
 };
