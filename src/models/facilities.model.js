@@ -31,7 +31,7 @@ module.exports = function (app) {
     clinics:[{ type: Schema.Types.Mixed, required: false }],
     pharmacies:[{ type: Schema.Types.Mixed, required: false }],
     theaters:[{ type: Schema.Types.Mixed, required: false }],
-    records:[{ type: Schema.Types.Mixed, required: false }],
+    imagingCenters:[{ type: Schema.Types.Mixed, required: false }],
     ownershipCentreId: { type: String, required: false },
     verificationToken: { type: String, required: false },
     isTokenVerified: { type: Boolean, 'default': false },
