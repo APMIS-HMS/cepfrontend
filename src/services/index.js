@@ -4,6 +4,7 @@ const facilityOwnerships = require('./facility-ownerships/facility-ownerships.se
 const facilityTypes = require('./facility-types/facility-types.service.js');
 const facilityClasses = require('./facility-classes/facility-classes.service.js');
 const locations = require('./locations/locations.service.js');
+const relationships = require('./relationships/relationships.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -11,4 +12,5 @@ module.exports = function (app) {
   app.configure(facilityClasses);
   app.configure(facilityModules);
   app.configure(locations);
+  app.configure(relationships);
 };
