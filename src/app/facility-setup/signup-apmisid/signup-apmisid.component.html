@@ -4,11 +4,11 @@
     <form [formGroup]="facilityForm1" novalidate>
         <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="Apmis ID" formControlName="facilityname" value="inputFacility.name">
+                <input matInput mat-error placeholder="Apmis ID" formControlName="facilityname">
             </mat-input-container>
         </div>
 
-        <button class="cta-1">
+        <button (click)="facilityInfo_show()" class="cta-1">
             CONTINUE
         </button>
     </form>

@@ -11,7 +11,8 @@ import { Observable } from 'rxjs/Observable'
 })
 export class SignupApmisid implements OnInit {
 
-    @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output() facilityInfo: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	errMsg: string;
 	mainErr = true;
@@ -25,22 +26,15 @@ export class SignupApmisid implements OnInit {
 
 	ngOnInit() {
 		this.facilityForm1 = this.formBuilder.group({
-
-			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			facilityalias: ['', [<any>Validators.minLength(2)]],
-			facilitytype: ['', [<any>Validators.required]],
-			facilitycategory: ['', [<any>Validators.required]],
-
-			facilityownership: ['', [<any>Validators.required]],
-			facilityemail: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
-			facilitywebsite: ['', [<any>Validators.pattern('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
-			facilitycountry: ['', [<any>Validators.required]]
+			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]]
 		});
 	}
 
-
 	close_onClick() {
 		this.closeModal.emit(true);
+	}
+	facilityInfo_show(){
+		this.facilityInfo.emit(true);
 	}
 
 }

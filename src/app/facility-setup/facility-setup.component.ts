@@ -16,6 +16,8 @@ export class FacilitySetupComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  facilityInfo = false;
+  apmisID = true;
 
   // uploader variables
   private zone: NgZone;
@@ -533,7 +535,10 @@ export class FacilitySetupComponent implements OnInit {
     this.selectModules_show = false;
     this.sg4_show = false;
   }
-
+  facilityInfo_show(){
+    this.apmisID = false;
+    this.facilityInfo = true;
+	}
   close_onClick(e) {
     this.closeModal.emit(true);
   }

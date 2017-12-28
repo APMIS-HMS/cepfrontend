@@ -7,6 +7,7 @@
   <div *ngIf="sg1_1_show" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied
     below</div>
     
-  <app-signup-apmisid (closeModal)="close_onClick($event)"></app-signup-apmisid>
+  <app-signup-apmisid *ngIf="apmisID"  (facilityInfo)="facilityInfo_show($event)" (closeModal)="close_onClick($event)"></app-signup-apmisid>
+  <app-facility-info *ngIf="facilityInfo" (closeModal)="close_onClick($event)"></app-facility-info>
 
 </div>
