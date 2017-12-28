@@ -8,6 +8,7 @@ const locations = require('./locations/locations.service.js');
 const relationships = require('./relationships/relationships.service.js');
 const genders = require('./genders/genders.service.js');
 const maritalStatuses = require('./marital-statuses/marital-statuses.service.js');
+const uploadImages = require('./upload-images/upload-images.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -19,4 +20,5 @@ module.exports = function (app) {
   app.configure(relationships);
   app.configure(genders);
   app.configure(maritalStatuses);
+  app.configure(uploadImages);
 };
