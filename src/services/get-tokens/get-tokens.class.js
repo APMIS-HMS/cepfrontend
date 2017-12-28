@@ -1,40 +1,38 @@
 /* eslint-disable no-unused-vars */
+const logger = require('winston');
 const tokenLabel = require('../../parameters/token-label');
-
 class Service {
   constructor(options) {
     this.options = options || {};
   }
 
-  find(params) {
-    return Promise.resolve([]);
-  }
-
-  get(id, params) {
-    return Promise.resolve({
-      id, text: `A new message with ID: ${id}!`
-    });
-  }
-
-  create(label, params) {
-    if (label == tokenLabel.tokenType.facilityVerification) {
-
+  generateOtp() {
+    var otp = '';
+    var possible = '0123456789';
+    for (var i = 0; i <= 5; i++) {
+      otp += possible.charAt(Math.floor(Math.random() * possible.length));
     }
+    return otp;
+  }
 
+  get(param) {
+    let data = {
+      token: 0
+    };
+    if (param.query.label.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
+      data.token = this.generateOtp();
+    }
     return Promise.resolve(data);
   }
 
-  update(id, data, params) {
+  find(param) {
+    let data = {};
+    if (param.query.label.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
+      data.token = this.generateOtp();
+    }
     return Promise.resolve(data);
   }
 
-  patch(id, data, params) {
-    return Promise.resolve(data);
-  }
-
-  remove(id, params) {
-    return Promise.resolve({ id });
-  }
 }
 
 module.exports = function (options) {

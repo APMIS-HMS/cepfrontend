@@ -1,10 +1,8 @@
 'use strict';
 
 module.exports = {
-
-    tokenType: {
-        facilityVerification: "0"
-    }
-
-}
+  tokenType: {
+    facilityVerification: 0
+  }
+};
 
