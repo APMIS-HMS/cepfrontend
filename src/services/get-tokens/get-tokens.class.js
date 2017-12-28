@@ -26,7 +26,9 @@ class Service {
   }
 
   find(param) {
-    let data = {};
+    let data = {
+      token: 0
+    };
     if (param.query.label.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
     }
