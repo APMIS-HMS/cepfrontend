@@ -15,22 +15,28 @@
             </mat-input-container>
         </div>
         <div class="frm-item-wrap">
-            <mat-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
-                <mat-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</mat-option>
-            </mat-select>
+            <mat-form-field>
+                <mat-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
+                    <mat-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>  
         </div>
         <div class="frm-item-wrap">
-            <mat-select placeholder="Facility Category"  formControlName="facilitycategory">
-                <mat-option *ngFor="let item of selectedFacilityType?.facilityClasses"  [value]="item._id">{{item.name}}</mat-option>
-            </mat-select>
+            <mat-form-field>
+                <mat-select placeholder="Facility Category"  formControlName="facilitycategory">
+                    <mat-option *ngFor="let item of selectedFacilityType?.facilityClasses"  [value]="item._id">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
       </div>
 
       <div class="rhs">
         <div class="frm-item-wrap">
-            <mat-select placeholder="Facility Ownership"  formControlName="facilityownership">
-                <mat-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</mat-option>
-            </mat-select>
+            <mat-form-field>
+                <mat-select placeholder="Facility Ownership"  formControlName="facilityownership">
+                    <mat-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">
@@ -43,9 +49,11 @@
             </mat-input-container>
         </div>
         <div class="frm-item-wrap">
-            <mat-select placeholder="Select Country"  formControlName="facilitycountry">
-                <mat-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</mat-option>
-            </mat-select>
+            <mat-form-field>
+                <mat-select placeholder="Select Country"  formControlName="facilitycountry">
+                    <mat-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
 
       </div>
