@@ -182,7 +182,7 @@
             </div>
 
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp1.valid" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" mat-raised-button>CONTINUE</button>
+                <button class="small-btn" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div> -->
         </form>
@@ -224,18 +224,18 @@
             <div class="rhs">
                 <div class="frm-item-wrap">
                     <mat-select placeholder="State (Residence)" formControlName="empContactState">
-                        <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let state of contactStates" [value]="state">{{state.name}}</mat-option>
                     </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <mat-select placeholder="City (Residence)" formControlName="empCity">
-                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let city of cities" [value]="city._id">{{city.name}}</mat-option>
                     </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>                  
                     <mat-select placeholder="Select security question" formControlName="secQst">
-                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let martialStatus of maritalStatuses" [value]="martialStatus._id">{{martialStatus.name}}</mat-option>
                     </mat-select>
                 </div>
                 <div class="frm-item-wrap">

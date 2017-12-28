@@ -34,6 +34,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
     paymentPlan = false;
+    employee: any;
 
     shouldMoveFirst = false;
     nextOfKinReadOnly = false;
@@ -88,6 +89,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     professions: Profession[] = [];
     croppedWidth: number;
     croppedHeight: number;
+
+    person_Id:any;
+    planValue:any;
 
     cashPlans: FacilityService[] = [];
     insurancePlans: any = [];
@@ -434,73 +438,30 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     nextCompanyCover(planValue){
         this.loading = true;
 
-        let info = this.employeeService.searchEmployee(this.facility._id, this.ccPlanId.value, false);
+        this.employeeService.searchEmployee(this.facility._id, this.ccPlanId.value, false).then(de => {
+            let data = de.body["0"].employeeDetails;
+            this.person_Id = de.body[0].personId;
 
-        info.then(de => {
-            console.log(de);
+            //this.frmNewEmp1.controls['empTitle'].setValue(data.firstName);
+            this.frmNewEmp1.controls['empFirstName'].setValue(data.firstName);
+            this.frmNewEmp1.controls['empLastName'].setValue(data.lastName);
+            this.frmNewEmp1.controls['empEmail'].setValue(data.email);
+            this.frmNewEmp1.controls['confirmEmpEmail'].setValue(data.email);
+            this.frmNewEmp1.controls['empPhonNo'].setValue(data.phoneNumber);
+            
+                this.planInput = data;
+                this.frmNewEmp4_show = false;
+                this.frmNewPerson1_show = true;
+                this.frmNewPerson2_show = false;
+                this.frmNewPerson3_show = false;
+                this.paymentPlan = false;
+                this.employee = true;
 
-            let data = de.body[0].employeeDetails;
-            let _id = de.body[0].personId;
-
-            console.log(planValue);
-            this.planInput = planValue;
-
-            let patient: any = {
-                personId: _id,
-                facilityId: this.facility._id,
-                paymentPlan: [this.planInput],
-                paymentMethod: []
-            }
-
+                this.loading = false;
             
 
-            this.patientService.create(patient).then(payl => {
-                // this.uploadButton();
-                this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
-                    
-                    //this.prices = payload.data;
-                    console.log(payloadPrice.data);
-                    let servicePrice = payloadPrice.data[0];
-                    let billing:any = {
-                        discount: 0,
-                        facilityId: this.facility._id,
-                        grandTotal: servicePrice.price,
-                        patientId: payl._id,
-                        subTotal: servicePrice.price,
-                        billItems: [
-                            {
-                                unitPrice: servicePrice.price,
-                                facilityId: this.facility._id,
-                                description: "",
-                                facilityServiceId: servicePrice.facilityServiceId,
-                                serviceId: this.planInput,
-                                patientId: payl._id,
-                                quantity: 1,
-                                totalPrice: servicePrice.price,
-                                unitDiscountedAmount: 0,
-                                totalDiscoutedAmount: 0,
-                                modifierId: [],
-                                isServiceEnjoyed: false,
-                                paymentCompleted: false,
-                                paymentStatus: [],
-                                payments: []
-                                
-                            }
-                        ]
-                    }
-                    this.billingService.create(billing).then(billingPayload => {
-                        console.log(billingPayload);
-                        this.close_onClick();
-                    }).catch(errr => {
-                        console.log(errr);
-                    });
-                
-                }).catch(err => {
-                    console.log(err);
-                });
-
-            });
-
+        }).catch(err => {
+            console.log(err);
         });
 
     }
@@ -699,7 +660,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     savePerson() {
-        {
             if(this.tabWallet){
 
             }
@@ -742,7 +702,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     let patient: any = {
                         personId: payload.data._id,
                         facilityId: this.facility._id,
-                        paymentPlan: [this.planInput]
+                        paymentPlan: [this.planInput],
+                        personDetails: payload.data
                     }
                     this.patientService.create(patient).then(payl => {
                         // this.uploadButton();
@@ -817,9 +778,120 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }, error => {
                 });
             }
-
-        }
     }
+
+    saveCompanyPerson(planValue){
+        const person: Person = <Person>{ nextOfKin: [] };
+            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
+            person.email = this.frmNewEmp1.controls['empEmail'].value;
+            person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
+            person.genderId = this.frmNewEmp1.controls['empGender'].value;
+            person.homeAddress = <Address>{
+                street: this.frmNewEmp2.controls['empHomeAddress'].value,
+                city: this.frmNewEmp2.controls['empCity'].value,
+                // lga: this.frmNewEmp1.controls["empLga"].value,
+                country: this.frmNewEmp2.controls['empCountry'].value,
+                state: this.frmNewEmp2.controls['empContactState'].value
+
+            }
+            person._id = this.person_Id;
+            person.lastName = this.frmNewEmp1.controls['empLastName'].value;
+            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            if (!this.skipNok) {
+                person.nextOfKin.push(
+                    { 
+                        fullName: this.frmNewEmp3.controls['nok_fullname'].value,
+                        address: this.frmNewEmp3.controls['nok_Address'].value,
+                        phoneNumber: this.frmNewEmp3.controls['nok_phoneNo'].value,
+                        email: this.frmNewEmp3.controls['nok_email'].value,
+                        relationship: this.frmNewEmp3.controls['nok_relationship'].value,
+
+                    }
+                );
+
+                person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
+                person.phoneNumber = this.frmNewEmp1.controls['empPhonNo'].value;
+                person.titleId = this.frmNewEmp1.controls['empTitle'].value;
+                person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
+                person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
+                person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
+
+                console.log(planValue);
+                this.planInput = planValue;
+
+                
+
+                let patient: any = {
+                    personId: this.person_Id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [this.planInput],
+                    paymentMethod: []
+                }
+
+                this.personService.update(person).then(personPayload => {
+                    console.log(personPayload);
+                    this.patientService.create(patient).then(payl => {
+                        // this.uploadButton();
+                        this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
+                        
+                            //this.prices = payload.data;
+                            console.log(payloadPrice.data);
+                            let servicePrice = payloadPrice.data[0];
+                            let billing:any = {
+                                discount: 0,
+                                facilityId: this.facility._id,
+                                grandTotal: servicePrice.price,
+                                patientId: payl._id,
+                                subTotal: servicePrice.price,
+                                billItems: [
+                                    {
+                                        unitPrice: servicePrice.price,
+                                        facilityId: this.facility._id,
+                                        description: "",
+                                        facilityServiceId: servicePrice.facilityServiceId,
+                                        serviceId: this.planInput,
+                                        patientId: payl._id,
+                                        quantity: 1,
+                                        totalPrice: servicePrice.price,
+                                        unitDiscountedAmount: 0,
+                                        totalDiscoutedAmount: 0,
+                                        modifierId: [],
+                                        isServiceEnjoyed: false,
+                                        paymentCompleted: false,
+                                        paymentStatus: [],
+                                        payments: []
+                                        
+                                    }
+                                ]
+                            }
+                            this.billingService.create(billing).then(billingPayload => {
+                                console.log(billingPayload);
+                                this.close_onClick();
+                            }).catch(errr => {
+                                console.log(errr);
+                            });
+                    
+                        }).catch(err => {
+                            console.log(err);
+                        });
+
+                    });
+                });
+            }else{
+                person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
+                person.phoneNumber = this.frmNewEmp1.controls['empPhonNo'].value;
+                person.titleId = this.frmNewEmp1.controls['empTitle'].value;
+                person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
+                person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
+                person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
+
+                this.personService.update(person).then(personPayload => {
+                    console.log(personPayload);
+                });
+            }
+    }
+
+
 
     newPerson3(valid, val) {
         if (this.skipNok || valid) {
@@ -854,6 +926,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.skipNok = true;
         this.savePerson();
     }
+
     back_newPerson3() {
         if (this.shouldMoveFirst === true) {
             this.frmNewPerson1_show = false;
@@ -873,10 +946,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.mainErr = true;
         }
     }
+
     saveEmployee() {
         let model: Patient = <Patient>{};
         model.facilityId = this.facility._id;
         model.personId = this.selectedPerson._id;
+        model.personDetails = this.selectedPerson;
+
         this.patientService.create(model).then(payload => {
             this.facilityService.announceNotification({
                 type: 'Success',
