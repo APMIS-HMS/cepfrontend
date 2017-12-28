@@ -1,36 +1,38 @@
 /* eslint-disable no-unused-vars */
+const tokenLabel = require('../../parameters/token-label');
+
 class Service {
-  constructor (options) {
+  constructor(options) {
     this.options = options || {};
   }
 
-  find (params) {
+  find(params) {
     return Promise.resolve([]);
   }
 
-  get (id, params) {
+  get(id, params) {
     return Promise.resolve({
       id, text: `A new message with ID: ${id}!`
     });
   }
 
-  create (data, params) {
-    if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current)));
+  create(label, params) {
+    if (label == tokenLabel.tokenType.facilityVerification) {
+
     }
 
     return Promise.resolve(data);
   }
 
-  update (id, data, params) {
+  update(id, data, params) {
     return Promise.resolve(data);
   }
 
-  patch (id, data, params) {
+  patch(id, data, params) {
     return Promise.resolve(data);
   }
 
-  remove (id, params) {
+  remove(id, params) {
     return Promise.resolve({ id });
   }
 }
