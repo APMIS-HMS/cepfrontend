@@ -53,5 +53,25 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
+app.use(function (err, req, res, next) {
+  logger.error('wow');
+  res.status(err.status || 404);
+
+  res.format({
+    'text/html': function () {
+      // Probably render a nice error page here
+      return res.send(err);
+    },
+
+    'application/json': function () {
+      res.json(err);
+    },
+
+    'text/plain': function () {
+      res.send(err.message);
+    }
+  });
+  next;
+});
 
 module.exports = app;
