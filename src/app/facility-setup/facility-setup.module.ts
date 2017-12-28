@@ -25,7 +25,7 @@ import { SharedModule } from '../shared-module/shared.module';
     // CommonModule,
     // ReactiveFormsModule,
     // FormsModule,
-    // SharedModule 
+    SharedModule 
   ],
   providers: []
 })

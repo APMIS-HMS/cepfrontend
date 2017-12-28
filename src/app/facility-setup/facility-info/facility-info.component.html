@@ -6,17 +6,18 @@
             <input matInput mat-error placeholder="Facility Name" formControlName="facilityname">
         </mat-input-container>
     </div>
-    <label class="control control--checkbox">Network
-        <input type="checkbox"  formControlName="network" />
-        <div class="control__indicator"></div>
-    </label>
     <div class="frm-item-wrap">
         <mat-input-container class="example-full-width">
             <input matInput mat-error placeholder="CAC Reg No" formControlName="cac">
         </mat-input-container>
     </div>
+    <label class="control control--checkbox">Network
+        <input type="checkbox"  formControlName="network" />
+        <div class="control__indicator"></div>
+    </label>
+    <ng4geo-autocomplete (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
 
-    <button class="cta-1">
+    <button class="cta-1"> 
     CONTINUE
     </button>
 
