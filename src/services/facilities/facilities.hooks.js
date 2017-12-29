@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const facilityToken = require('../../hooks/facility-token');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
@@ -15,8 +17,8 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
+    create: [facilityToken()],
+    update: [facilityToken()],
     patch: [],
     remove: []
   },
