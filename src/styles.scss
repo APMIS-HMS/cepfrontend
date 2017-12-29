@@ -513,7 +513,8 @@ select {
     position: relative;
     width: 590px;
     min-width: 440px;
-    height: 100vh;
+    height: auto;
+    max-height: 100vh;
     background: #fff;
     overflow: auto;
     padding: 50px;

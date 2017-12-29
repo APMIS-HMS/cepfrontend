@@ -27,8 +27,13 @@ export class FacilityInfoComponent implements OnInit {
 		this.facilityForm1 = this.formBuilder.group({
 
 			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			network: ['', [<any>Validators.minLength(2)]],
+			facilityemail: ['', [<any>Validators.required, <any>Validators.
+			pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+			facilitywebsite: ['', [<any>Validators.required, <any>Validators
+			.pattern('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+			// network: ['', [<any>Validators.minLength(2)]],
 			cac: ['', [<any>Validators.required]],
+			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 	}
 
