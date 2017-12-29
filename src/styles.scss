@@ -513,11 +513,10 @@ select {
     position: relative;
     width: 590px;
     min-width: 440px;
-    max-height: 90%;
+    height: 100vh;
     background: #fff;
     overflow: auto;
     padding: 50px;
-    border-radius: 7px;
     box-sizing: border-box;
     -webkit-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
     -moz-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
@@ -1510,6 +1509,36 @@ ul.topmenuwrap li:hover {
     justify-content: space-between;
     align-items: center;
     width: 80%;
+}
+
+.button-included{
+    padding-right: 0px!important; 
+    box-sizing: border-box;
+}
+.custom-autocomplete__input input {
+    padding: 5px!important;
+    height: 30px !important;
+    border: 0px solid #ccc!important;
+    border-bottom: 1px solid #777!important;
+    width: 88%!important;
+}
+.custom-autocomplete{
+    float: unset !important;
+}
+.search-icon{
+    display: none !important;
+}
+.custom-autocomplete__dropdown{
+    width: 90% !important;
+}
+.custom-autocomplete__dropdown .currentlocation a{
+    width: 98% !important;
+}
+.custom-autocomplete__dropdown .active a {
+    width: 98% !important;
+}
+.custom-autocomplete__dropdown li {
+    width: 97% !important;
 }
 
 @media only screen and (max-width: 600px) {

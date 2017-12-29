@@ -25,7 +25,7 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.27",
+    "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.4",
     "@ngx-loading-bar/http": "^1.0.0-rc.1",
     "@ngx-loading-bar/router": "^1.0.0-rc.1",
     "@types/crypto-js": "^3.1.35",
