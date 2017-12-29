@@ -16,9 +16,9 @@ module.exports = function (app) {
   const facilities = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, set: toLower },
-    shortName: { type: String, required: true },
     cacNo: { type: String, required: true },
     primaryContactPhoneNo: { type: String, required: true },
+    shortName: { type: String, required: false },
     isNetworkFacility: { type: Boolean, 'default': false },
     isHostFacility:{ type: Boolean, 'default': false },
     memberFacilities:[{ type: Schema.Types.ObjectId, require: false }],
