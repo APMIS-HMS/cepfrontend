@@ -18,7 +18,7 @@ module.exports = {
     find: [],
     get: [],
     create: [facilityToken()],
-    update: [facilityToken()],
+    update: [],
     patch: [],
     remove: []
   },

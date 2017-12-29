@@ -15,21 +15,21 @@ class Service {
     return otp;
   }
 
-  get(param) {
+  get(id, param) {
     let data = {
       token: 0
     };
-    if (param.query.label.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
+    if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
     }
     return Promise.resolve(data);
   }
 
-  find(param) {
+  find(id, param) {
     let data = {
       token: 0
     };
-    if (param.query.label.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
+    if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
     }
     return Promise.resolve(data);
