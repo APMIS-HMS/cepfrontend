@@ -1,12 +1,12 @@
 <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-<form [formGroup]="facilityForm1" novalidate>
+<form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1)">
 
     <div class="frm-item-wrap">
         <mat-input-container class="example-full-width">
             <input matInput mat-error placeholder="Facility Name" formControlName="facilityname">
         </mat-input-container>
     </div>
-    <ng4geo-autocomplete (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+    <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
     <div class="frm-item-wrap">
         <mat-input-container class="example-full-width">
             <input type="email" matInput mat-error placeholder="Email Address" formControlName="facilityemail">
@@ -32,9 +32,8 @@
         <div class="control__indicator"></div>
     </label> -->
 
-    <button class="cta-1"> 
-    CONTINUE
+    <button [disabled]="!facilityForm1.valid" class="cta-1">
+        CONTINUE
     </button>
 
 </form>
-  
