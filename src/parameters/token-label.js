@@ -2,7 +2,7 @@
 
 module.exports = {
   tokenType: {
-    facilityVerification: 0
+    facilityVerification: 0,
+    apmisId: 1
   }
 };
-
