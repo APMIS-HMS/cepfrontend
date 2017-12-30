@@ -2,7 +2,8 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Facility } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs/Observable';
+import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-facility-info',
@@ -17,7 +18,13 @@ export class FacilityInfoComponent implements OnInit {
 	mainErr = true;
 
 	public facilityForm1: FormGroup;
-
+	userSettings: any = {
+		geoCountryRestriction: [GEO_LOCATIONS],
+		showCurrentLocation: false,
+		resOnSearchButtonClickOnly: false,
+		// inputPlaceholderText: 'Type anything and you will get a location',
+		recentStorageName: 'componentData3'
+	  };
 	constructor(
 		private formBuilder: FormBuilder,
 		private _route: ActivatedRoute
@@ -27,11 +34,10 @@ export class FacilityInfoComponent implements OnInit {
 		this.facilityForm1 = this.formBuilder.group({
 
 			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			facilityemail: ['', [<any>Validators.required, <any>Validators.
-			pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
-			facilitywebsite: ['', [<any>Validators.required, <any>Validators
-			.pattern('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+			facilityemail: ['', [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
+			facilitywebsite: ['', [<any>Validators.required, <any>Validators.pattern(WEBSITE_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
+			address: ['', [<any>Validators.required]],
 			cac: ['', [<any>Validators.required]],
 			facilitystreet: ['', [<any>Validators.required]],
 			facilitycity: ['', [<any>Validators.required]],
@@ -46,6 +52,10 @@ export class FacilityInfoComponent implements OnInit {
 	}
 	autoCompleteCallback1(selectedData:any) {
 		//do any necessery stuff.
+		console.log(selectedData);
 	}
 
+	save(form){
+		console.log(form)
+	}
 }
