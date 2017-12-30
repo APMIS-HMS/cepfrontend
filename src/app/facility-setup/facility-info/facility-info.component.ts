@@ -33,6 +33,10 @@ export class FacilityInfoComponent implements OnInit {
 			.pattern('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
 			// network: ['', [<any>Validators.minLength(2)]],
 			cac: ['', [<any>Validators.required]],
+			facilitystreet: ['', [<any>Validators.required]],
+			facilitycity: ['', [<any>Validators.required]],
+			facilitystate: ['', [<any>Validators.required]],
+			facilitycountry: ['', [<any>Validators.required]],
 			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 	}

@@ -567,6 +567,15 @@ select {
     margin-bottom: 0;
     margin-top: 30px;
 }
+.frm-item-x2{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+.frm-item-x2 .example-full-width{
+    width: 46%;
+}
 
 .frm-singleItem-wrap {
     position: relative;
