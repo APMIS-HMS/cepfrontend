@@ -1,21 +1,24 @@
-<div class="modal-baseWrap animated pulse">
-  
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">Update Nursing Care</legend>
-
-    <form [formGroup]="addNursingCareForm" novalidate>
-      <div class="frmArrWrap">
-        <div class="frm-x2">
-          <div class="frm-item-wrap">
-            <textarea style="border:1px solid #777; padding:10px;" matInput formControlName="nursingCare" class="textarea" cols="30" rows="10"></textarea>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+  </div>
+  <div class="modal-baseWrap">
+      <form [formGroup]="addNursingCareForm" novalidate>
+        <div class="frmArrWrap">
+          <div class="frm-x2">
+            <div class="frm-item-wrap">
+              <textarea style="border:1px solid #777; padding:10px;" matInput formControlName="nursingCare" class="textarea" cols="30" rows="10"></textarea>
+            </div>
           </div>
         </div>
-      </div>
-    
-      <div class="addDrugBtn">
-          <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
-          <span>UPDATE NURSING CARE</span>
-      </div>
-    </form>
       
+        <div class="addDrugBtn">
+            <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+            <span>UPDATE NURSING CARE</span>
+        </div>
+      </form>
+        
+  </div>
 </div>

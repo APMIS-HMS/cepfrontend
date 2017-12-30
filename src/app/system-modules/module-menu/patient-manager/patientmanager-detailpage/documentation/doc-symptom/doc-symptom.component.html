@@ -1,18 +1,22 @@
-<div class="modal-baseWrap animated pulse">
-    
-  <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <div class="modal_title">Add Symptom</div>
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Add Symptom</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+  </div>
+  <div class="modal-baseWrap">
 
-  <form [formGroup]="addSymptomForm" novalidate>
-    <div class="frm-x2">
-      <div class="frm-item-wrap">
-        <apmis-lookup formControlName="symptom" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+    <form [formGroup]="addSymptomForm" novalidate>
+      <div class="frm-x2">
+        <div class="frm-item-wrap">
+          <apmis-lookup formControlName="symptom" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+        </div>
       </div>
-    </div>
-  
-    <div class="addDrugBtn">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-        <span>ADD SYMPTOM</span>
-    </div>
-  </form>
+    
+      <div class="addDrugBtn">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <span>ADD SYMPTOM</span>
+      </div>
+    </form>
+  </div>
 </div>

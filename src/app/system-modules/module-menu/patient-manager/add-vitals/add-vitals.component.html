@@ -1,163 +1,167 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Add Patient Vitals</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+  </div>
+  <div class="modal-baseWrap">
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-  <div (click)="close_onClick()" class="modal-close-ico">X</div>
-  <legend class="modal_title">Add Patient Vitals</legend>
-  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div>
 
-  <div>
-
-    <form [formGroup]="frmAddVitals" novalidate>
-      <div class="frm-addVitals">
-        <div class="frmGroupWrap">
-          <div class="frmGroupTitle">Pulse Rate</div>
-          <div class="frm-item-wrap">
-            <!--<label class="side-label">Pulse Rate<br>(80-100)</label>
-            <input type="text" formControlName="pulseRate" autocomplete="off">-->
-            <mat-input-container class="example-full-width">
-              <input type="number" matInput placeholder="Pulse Rate (80-100)" formControlName="pulseRate">
-            </mat-input-container>
-            <span class="trailer">Beats per Minute</span>
-          </div>
-
-          <div class="frm-item-wrap">
-            <!--<label>Location</label>
-            <select formControlName="pulseLoc">
-              <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
-            </select>-->
-            <mat-select placeholder="Location" formControlName="pulseLoc">
-              <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
-            </mat-select>
-          </div>
-
-          <div class="frm-item-wrap">
-            <!--<label>Rythm</label>
-            <select formControlName="pulseRythm">
-              <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
-            </select>-->
-            <mat-select placeholder="Rythm" formControlName="pulseRythm">
-              <mat-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</mat-option>
-            </mat-select>
-          </div>
-        </div>
-
-        <div class="frmGroupWrap">
-          <div class="frmGroupTitle">Respiratory Rate</div>
-          <div class="frm-item-wrap">
-            <!--<label class="side-label">Respiratory Rate<br>(12-20)</label>
-            <input type="number" formControlName="respiratoryRate" autocomplete="off">-->
-            <mat-input-container class="example-full-width">
-              <input matInput type="number" placeholder="Respiratory Rate (12-20)" formControlName="respiratoryRate">
-            </mat-input-container>
-          </div>
-          <div class="frmGroupTitle">Temperature</div>
-          <div class="frm-item-wrap">
-            <!--<label class="side-label">Temperature<br>(92-101) &#8451;</label>
-            <input type="number" formControlName="temp" autocomplete="off">-->
-            <mat-input-container class="example-full-width">
-              <input matInput type="number" placeholder="Temperature (92-101)" formControlName="temp">
-            </mat-input-container>
-          </div>
-        </div>
-
-        <div class="frmGroupWrap">
-          <div class="frmGroupTitle">Height/Weight</div>
-          <div class="frm-item-wrap">
-            <!--<label class="side-label">Height (m)</label>
-            <input type="number" formControlName="height" value="">-->
-            <mat-input-container class="example-full-width">
-              <input matInput type="number" placeholder="Height (m)" formControlName="height">
-            </mat-input-container>
-          </div>
-          <div class="frm-item-wrap">
-            <!--<label class="side-label">Weight (kg)</label>
-            <input type="number" formControlName="weight" value="">-->
-            <mat-input-container class="example-full-width">
-              <input matInput type="number" placeholder="Weight (kg)" formControlName="weight">
-            </mat-input-container>
-          </div>
-          <div class="frm-item-wrap">
-            <!--<label class="side-label">BMI</label>
-            <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">-->
-            <mat-input-container class="example-full-width">
-              <input matInput type="number" [class.warning-flag]="isWarning" [value]="bmi" placeholder="BMI" [readonly]="true" formControlName="weight">
-            </mat-input-container>
-            <small class="alert-label" *ngIf="isWarning">
-            {{bmiWarningMssg}}
-          </small>
-          </div>
-        </div>
-
-        <div class="frmGroupWrap bpGroup bp">
-          <div class="frmGroupTitle">Blood Pressure</div>
-
-          <div class="frm-row">
-            <div class="itemGrp">
-              <div class="frm-item">
-                <div class="frm-item-wrap">
-                  <!--<input type="text" formControlName="systolicBp1" autocomplete="off">-->
-                  <mat-input-container class="example-full-width">
-                    <input placeholder="Systolic (90-119)" matInput type="number" formControlName="systolicBp1">
-                  </mat-input-container>
-                </div>
-              </div>
-              <div class="frm-slash">
-                <div class="frm-item-wrap">
-                  <span class="slash"><div class="frm-item-wrap">/</div></span>
-                </div>
-              </div>
-              <div class="frm-item">
-                <div class="frm-item-wrap">
-                  <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
-                  <mat-input-container class="example-full-width">
-                    <input placeholder="Diastolic (60-79)" matInput type="number" formControlName="diastolicBp1">
-                  </mat-input-container>
-                  <span class="trailer inputUnit">mmHg</span>
-                </div>
-              </div>
-            </div>
+      <form [formGroup]="frmAddVitals" novalidate>
+        <div class="frm-addVitals">
+          <div class="frmGroupWrap">
+            <div class="frmGroupTitle">Pulse Rate</div>
             <div class="frm-item-wrap">
-              <mat-select placeholder="Location" formControlName="diastolicBp1Loc">
+              <!--<label class="side-label">Pulse Rate<br>(80-100)</label>
+              <input type="text" formControlName="pulseRate" autocomplete="off">-->
+              <mat-input-container class="example-full-width">
+                <input type="number" matInput placeholder="Pulse Rate (80-100)" formControlName="pulseRate">
+              </mat-input-container>
+              <span class="trailer">Beats per Minute</span>
+            </div>
+
+            <div class="frm-item-wrap">
+              <!--<label>Location</label>
+              <select formControlName="pulseLoc">
+                <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
+              </select>-->
+              <mat-select placeholder="Location" formControlName="pulseLoc">
                 <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
               </mat-select>
             </div>
+
             <div class="frm-item-wrap">
-              <mat-select placeholder="Position" formControlName="diastolicBp1Pos">
-                <mat-option *ngFor="let position of vitalPosition" [value]="position?.name">{{position?.name}}</mat-option>
+              <!--<label>Rythm</label>
+              <select formControlName="pulseRythm">
+                <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
+              </select>-->
+              <mat-select placeholder="Rythm" formControlName="pulseRythm">
+                <mat-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</mat-option>
               </mat-select>
             </div>
           </div>
 
-        </div>
-
-        <div class="frmGroupWrap bpGroup bp">
-          <div class="frmGroupTitle">Abdominal Condition</div>
-          <div class="frm-row">
-            <div class="itemGrp">
-              <div class="frm-item">
-                <div class="frm-item-wrap">
-                  <!--<input type="text" formControlName="systolicBp1" autocomplete="off">-->
-                  <mat-input-container class="example-full-width">
-                    <input placeholder="SPO" matInput type="number" formControlName="spo2">
-                  </mat-input-container>
-                </div>
-              </div>
-              <div class="frm-item">
-                <div class="frm-item-wrap">
-                  <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
-                  <mat-input-container class="example-full-width">
-                    <input placeholder="abdominal girth" matInput type="number" formControlName="girth">
-                  </mat-input-container>
-                </div>
-              </div>
+          <div class="frmGroupWrap">
+            <div class="frmGroupTitle">Respiratory Rate</div>
+            <div class="frm-item-wrap">
+              <!--<label class="side-label">Respiratory Rate<br>(12-20)</label>
+              <input type="number" formControlName="respiratoryRate" autocomplete="off">-->
+              <mat-input-container class="example-full-width">
+                <input matInput type="number" placeholder="Respiratory Rate (12-20)" formControlName="respiratoryRate">
+              </mat-input-container>
+            </div>
+            <div class="frmGroupTitle">Temperature</div>
+            <div class="frm-item-wrap">
+              <!--<label class="side-label">Temperature<br>(92-101) &#8451;</label>
+              <input type="number" formControlName="temp" autocomplete="off">-->
+              <mat-input-container class="example-full-width">
+                <input matInput type="number" placeholder="Temperature (92-101)" formControlName="temp">
+              </mat-input-container>
             </div>
           </div>
 
+          <div class="frmGroupWrap">
+            <div class="frmGroupTitle">Height/Weight</div>
+            <div class="frm-item-wrap">
+              <!--<label class="side-label">Height (m)</label>
+              <input type="number" formControlName="height" value="">-->
+              <mat-input-container class="example-full-width">
+                <input matInput type="number" placeholder="Height (m)" formControlName="height">
+              </mat-input-container>
+            </div>
+            <div class="frm-item-wrap">
+              <!--<label class="side-label">Weight (kg)</label>
+              <input type="number" formControlName="weight" value="">-->
+              <mat-input-container class="example-full-width">
+                <input matInput type="number" placeholder="Weight (kg)" formControlName="weight">
+              </mat-input-container>
+            </div>
+            <div class="frm-item-wrap">
+              <!--<label class="side-label">BMI</label>
+              <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">-->
+              <mat-input-container class="example-full-width">
+                <input matInput type="number" [class.warning-flag]="isWarning" [value]="bmi" placeholder="BMI" [readonly]="true" formControlName="weight">
+              </mat-input-container>
+              <small class="alert-label" *ngIf="isWarning">
+              {{bmiWarningMssg}}
+            </small>
+            </div>
+          </div>
+
+          <div class="frmGroupWrap bpGroup bp">
+            <div class="frmGroupTitle">Blood Pressure</div>
+
+            <div class="frm-row">
+              <div class="itemGrp">
+                <div class="frm-item">
+                  <div class="frm-item-wrap">
+                    <!--<input type="text" formControlName="systolicBp1" autocomplete="off">-->
+                    <mat-input-container class="example-full-width">
+                      <input placeholder="Systolic (90-119)" matInput type="number" formControlName="systolicBp1">
+                    </mat-input-container>
+                  </div>
+                </div>
+                <div class="frm-slash">
+                  <div class="frm-item-wrap">
+                    <span class="slash"><div class="frm-item-wrap">/</div></span>
+                  </div>
+                </div>
+                <div class="frm-item">
+                  <div class="frm-item-wrap">
+                    <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
+                    <mat-input-container class="example-full-width">
+                      <input placeholder="Diastolic (60-79)" matInput type="number" formControlName="diastolicBp1">
+                    </mat-input-container>
+                    <span class="trailer inputUnit">mmHg</span>
+                  </div>
+                </div>
+              </div>
+              <div class="frm-item-wrap">
+                <mat-select placeholder="Location" formControlName="diastolicBp1Loc">
+                  <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
+                </mat-select>
+              </div>
+              <div class="frm-item-wrap">
+                <mat-select placeholder="Position" formControlName="diastolicBp1Pos">
+                  <mat-option *ngFor="let position of vitalPosition" [value]="position?.name">{{position?.name}}</mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="frmGroupWrap bpGroup bp">
+            <div class="frmGroupTitle">Abdominal Condition</div>
+            <div class="frm-row">
+              <div class="itemGrp">
+                <div class="frm-item">
+                  <div class="frm-item-wrap">
+                    <!--<input type="text" formControlName="systolicBp1" autocomplete="off">-->
+                    <mat-input-container class="example-full-width">
+                      <input placeholder="SPO" matInput type="number" formControlName="spo2">
+                    </mat-input-container>
+                  </div>
+                </div>
+                <div class="frm-item">
+                  <div class="frm-item-wrap">
+                    <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
+                    <mat-input-container class="example-full-width">
+                      <input placeholder="abdominal girth" matInput type="number" formControlName="girth">
+                    </mat-input-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </div>
 
-      <button [disabled]="!frmAddVitals.valid || diabledSaveBtn" (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1" [innerHtml]="saveBtnText"></button>
+        <button [disabled]="!frmAddVitals.valid || diabledSaveBtn" (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1" [innerHtml]="saveBtnText"></button>
 
-    </form>
+      </form>
+    </div>
+
   </div>
-
 </div>

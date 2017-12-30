@@ -1,46 +1,50 @@
-<div class="modal-baseWrap animated pulse">
-
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <div class="facility-title">Make Payment</div>
-  <div class="total">&#x20a6;{{cost| number}}</div>
-  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-  <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
-    <i class="fa fa-check" aria-hidden="true"></i>
-    <span>{{successMsg}}</span>
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Make Payment</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
   </div>
-  <div class="pay-wrap">
-
-    <!-- <div class="frm-item-wrap">
-      <mat-select [formControl]="channel" placeholder="Payment Channel">
-        <mat-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</mat-option>
-      </mat-select>
+  <div class="modal-baseWrap">
+    <div class="total">&#x20a6;{{cost| number}}</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div *ngIf="success" class="successAlert animated shake" [hidden]="mainErr">
+      <i class="fa fa-check" aria-hidden="true"></i>
+      <span>{{successMsg}}</span>
     </div>
+    <div class="pay-wrap">
 
-    <div class="frm-item-wrap" [hidden]="!isCash">
-      <mat-input-container>
-        <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
-      </mat-input-container>
-    </div>
+      <!-- <div class="frm-item-wrap">
+        <mat-select [formControl]="channel" placeholder="Payment Channel">
+          <mat-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</mat-option>
+        </mat-select>
+      </div>
 
-    <div class="frm-item-wrap" [hidden]="!isCash">
-      <mat-input-container>
-        <input matInput mat-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
-      </mat-input-container>
-    </div> -->
-    <div class="btn-group">
-      <button mat-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
-        <span>
-          <div [hidden]="isProcessing">
-            Make Payment
-          </div>
-          <div [hidden]="!isProcessing">
-            Processing...
-            <i class='fa fa-spinner fa-spin'></i>
-          </div>
-        </span>
-      </button>
+      <div class="frm-item-wrap" [hidden]="!isCash">
+        <mat-input-container>
+          <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
+        </mat-input-container>
+      </div>
 
-      <button class="btn btn-red">Cancel</button>
+      <div class="frm-item-wrap" [hidden]="!isCash">
+        <mat-input-container>
+          <input matInput mat-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
+        </mat-input-container>
+      </div> -->
+      <div class="btn-group">
+        <button mat-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
+          <span>
+            <div [hidden]="isProcessing">
+              Make Payment
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+
+        <button class="btn btn-red">Cancel</button>
+      </div>
     </div>
   </div>
 </div>

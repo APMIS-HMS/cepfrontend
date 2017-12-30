@@ -1,163 +1,166 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">New Product</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+        <div class="modal_mini_title">{{productName}}</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+        <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
 
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">New Product</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-    <div class="modal_mini_title">{{productName}}</div>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-    <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
-
-    <form novalidate [formGroup]="frm_newProduct">
-        <div class="mainfrmwrap">
-            <div class="sec-1">
-                <div class="frm-item-wrap">
-                    <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
-                        <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Name(Product)" formControlName="name">
-                    </mat-input-container>
-                    <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
-                        <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
+        <form novalidate [formGroup]="frm_newProduct">
+            <div class="mainfrmwrap">
+                <div class="sec-1">
+                    <div class="frm-item-wrap">
+                        <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
+                            <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
+                        </mat-select>
                     </div>
-                </div>
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Presentation" formControlName="presentation">
-                    </mat-input-container>
-                    <!--<span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
-                </div>
-                <!--<div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Strength</label>
-                    <dx-lookup [dataSource]="strengths" formControlName="strengthId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
-                        displayExpr="strength" valueExpr="_id">
-                    </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
-                </div>-->
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
-                    </mat-input-container>
-                    <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
-                </div>
-
-            </div>
-            <div class="sec-2">
-                <div class="frm-item-wrap">
-                    <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
-                        <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
-                    </mat-select>
-
-                </div>
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
-                    </mat-input-container>
-                </div>
-                <!--<div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Strength</label>
-                    <select formControlName="strengthId">
-                        <option  *ngFor="let manufacturer of manufacturers" value="{{manufacturer._id}}">{{manufacturer.name}}</option>
-                    </select>
-                </div>-->
-                <!--<div class="frm-item-wrap">
-                    <small class="alert-label" [hidden]="frm_newProduct.controls.genericName || frm_newProduct.controls.genericName.pristine">
-                        Kindly select an option from the drop down.
-                    </small>
-                    <label>Active Ingredient</label>
-                    <input formControlName="genericName" type="text" name="" value="">
-                    <!--<div *ngIf="ingridentSugestion" class="sugestion-wrap shadow-B">
-                        <div (click)="onSelectActiveIngredientSuggestion(active)" *ngFor="let active of activeIngredients" class="sugestion-item">{{active.genericName}}</div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Name(Product)" formControlName="name">
+                        </mat-input-container>
+                        <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
+                            <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
+                        </div>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Presentation" formControlName="presentation">
+                        </mat-input-container>
+                        <!--<span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
+                    </div>
+                    <!--<div class="frm-item-wrap">
+                        <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
+                            Kindly select an option from the drop down.
+                        </small>
+                        <label>Strength</label>
+                        <dx-lookup [dataSource]="strengths" formControlName="strengthId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
+                            displayExpr="strength" valueExpr="_id">
+                        </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
                     </div>-->
-                <!--</div>-->
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
+                        </mat-input-container>
+                        <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
+                    </div>
 
-            </div>
-        </div>
+                </div>
+                <div class="sec-2">
+                    <div class="frm-item-wrap">
+                        <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
+                            <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                        </mat-select>
 
-        <div class="clear"></div>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
+                        </mat-input-container>
+                    </div>
+                    <!--<div class="frm-item-wrap">
+                        <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
+                            Kindly select an option from the drop down.
+                        </small>
+                        <label>Strength</label>
+                        <select formControlName="strengthId">
+                            <option  *ngFor="let manufacturer of manufacturers" value="{{manufacturer._id}}">{{manufacturer.name}}</option>
+                        </select>
+                    </div>-->
+                    <!--<div class="frm-item-wrap">
+                        <small class="alert-label" [hidden]="frm_newProduct.controls.genericName || frm_newProduct.controls.genericName.pristine">
+                            Kindly select an option from the drop down.
+                        </small>
+                        <label>Active Ingredient</label>
+                        <input formControlName="genericName" type="text" name="" value="">
+                        <!--<div *ngIf="ingridentSugestion" class="sugestion-wrap shadow-B">
+                            <div (click)="onSelectActiveIngredientSuggestion(active)" *ngFor="let active of activeIngredients" class="sugestion-item">{{active.genericName}}</div>
+                        </div>-->
+                    <!--</div>-->
 
-        <div>
-            <div class="sectLabel">Active
-                <!-- <Ingredient><s></s></Ingredient> -->
+                </div>
             </div>
-            <i class="fa fa-plus faplus pull-right" (click)="addIngredient()"></i>
-        </div>
-        <div class="sec-3">
-            <div class="sec3-headWrap">
-                <!--<div class="sectLabel">Active Ingrident</div>-->
-                <!--<i class="fa fa-plus faplus" (click)="addIngredient()"></i>-->
+
+            <div class="clear"></div>
+
+            <div>
+                <div class="sectLabel">Active
+                    <!-- <Ingredient><s></s></Ingredient> -->
+                </div>
+                <i class="fa fa-plus faplus pull-right" (click)="addIngredient()"></i>
             </div>
-            <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
-                <div formArrayName="ingredients">
-                    <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
-                        <div class="panel-heading">
-                            <span class="glyphicon glyphicon-remove pull-right" (click)="removeIngredient(i)"></span>
-                        </div>
-                        <div class="frmArr-wrap" formGroupName="{{i}}">
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Name" formControlName="name">
-                                </mat-input-container>
+            <div class="sec-3">
+                <div class="sec3-headWrap">
+                    <!--<div class="sectLabel">Active Ingrident</div>-->
+                    <!--<i class="fa fa-plus faplus" (click)="addIngredient()"></i>-->
+                </div>
+                <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
+                    <div formArrayName="ingredients">
+                        <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-remove pull-right" (click)="removeIngredient(i)"></span>
                             </div>
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Strength" formControlName="strength">
-                                </mat-input-container>
-                            </div>
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Strength Unit" formControlName="strengthUnit">
-                                </mat-input-container>
+                            <div class="frmArr-wrap" formGroupName="{{i}}">
+                                <div class="frm-item-wrap">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Name" formControlName="name">
+                                    </mat-input-container>
+                                </div>
+                                <div class="frm-item-wrap">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Strength" formControlName="strength">
+                                    </mat-input-container>
+                                </div>
+                                <div class="frm-item-wrap">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Strength Unit" formControlName="strengthUnit">
+                                    </mat-input-container>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <div class="clear"></div>
+            <div class="clear"></div>
 
-        <div>
-            <div class="sectLabel">Variant</div>
-            <i class="fa fa-plus faplus pull-right" (click)="addVariant()"></i>
-        </div>
-        <div class="sec-3">
-            <div class="sec3-headWrap"></div>
-            <form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
-                <div formArrayName="variants">
-                    <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
-                        <div class="panel-heading">
-                            <span class="glyphicon glyphicon-remove pull-right" (click)="removeVariant(i)"></span>
-                        </div>
-                        <div class="frmArr-wrap" formGroupName="{{i}}">
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Size" formControlName="size">
-                                </mat-input-container>
+            <div>
+                <div class="sectLabel">Variant</div>
+                <i class="fa fa-plus faplus pull-right" (click)="addVariant()"></i>
+            </div>
+            <div class="sec-3">
+                <div class="sec3-headWrap"></div>
+                <form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
+                    <div formArrayName="variants">
+                        <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-remove pull-right" (click)="removeVariant(i)"></span>
                             </div>
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Max. Unit" formControlName="unit">
-                                </mat-input-container>
+                            <div class="frmArr-wrap" formGroupName="{{i}}">
+                                <div class="frm-item-wrap">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Size" formControlName="size">
+                                    </mat-input-container>
+                                </div>
+                                <div class="frm-item-wrap">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Max. Unit" formControlName="unit">
+                                    </mat-input-container>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
-    </form>
+            <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)"> <i class="fa fa-plus"></i>&nbsp; Create Product</button>
+        </form>
+    </div>
 </div>

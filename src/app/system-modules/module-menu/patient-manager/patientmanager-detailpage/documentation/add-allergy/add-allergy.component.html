@@ -1,36 +1,41 @@
-<div class="modal-baseWrap animated pulse">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Add Allergy</legend>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Add Allergy</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <div>
         <div>
-            <mat-input-container>
-                <input matInput placeholder="Allergy" [formControl]="allergyFormCtrl">
-            </mat-input-container>
-        </div>
-        <div>
-            <mat-input-container>
-                <input matInput placeholder="Reaction" [formControl]="reactionFormCtrl">
-            </mat-input-container>
-        </div>
-        <div>
-            <mat-input-container>
-                <input matInput placeholder="Severity" [matAutocomplete]="auto" [formControl]="severityFormCtrl">
-            </mat-input-container>
+            <div>
+                <mat-input-container>
+                    <input matInput placeholder="Allergy" [formControl]="allergyFormCtrl">
+                </mat-input-container>
+            </div>
+            <div>
+                <mat-input-container>
+                    <input matInput placeholder="Reaction" [formControl]="reactionFormCtrl">
+                </mat-input-container>
+            </div>
+            <div>
+                <mat-input-container>
+                    <input matInput placeholder="Severity" [matAutocomplete]="auto" [formControl]="severityFormCtrl">
+                </mat-input-container>
 
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="severityDisplayFn">
-                <mat-option *ngFor="let severity of severities" [value]="severity">
-                    {{ severity.name }}
-                </mat-option>
-            </mat-autocomplete>
-        </div>
-        <div>
-            <mat-input-container>
-                <textarea matInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
-            </mat-input-container>
-        </div>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="severityDisplayFn">
+                    <mat-option *ngFor="let severity of severities" [value]="severity">
+                        {{ severity.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div>
+                <mat-input-container>
+                    <textarea matInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
+                </mat-input-container>
+            </div>
 
-        <div (click)="save()" class="cta-1">SAVE</div>
+            <div (click)="save()" class="cta-1">SAVE</div>
+        </div>
     </div>
 </div>
