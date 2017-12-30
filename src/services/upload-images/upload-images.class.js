@@ -29,7 +29,7 @@ class Service {
     // var filePath = path.join(__dirname, 'Sunday2.jpg');
     // logger.info(data.rawImage);
     var rawdata = data.rawImage;
-    var matches = rawdata.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    var matches = rawdata.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/);
     var type = matches[1];
     var buffer = new Buffer(matches[2], 'base64');
 
