@@ -13,6 +13,7 @@ const facilities = require('./facilities/facilities.service.js');
 const uploadImages = require('./upload-images/upload-images.service.js');
 const countries = require('./countries/countries.service.js');
 const people = require('./people/people.service.js');
+const patients = require('./patients/patients.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -29,4 +30,5 @@ module.exports = function (app) {
   app.configure(uploadImages);
   app.configure(countries);
   app.configure(people);
+  app.configure(patients);
 };

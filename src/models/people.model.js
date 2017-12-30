@@ -25,9 +25,7 @@ module.exports = function (app) {
     homeAddress: { type: Schema.Types.Mixed, required: false },
     maritalStatus: { type: Schema.Types.String, required: false },
     nextOfKin: [{ type: Schema.Types.Mixed, required: false }],
-    wallet:  walletSchema,
-    createdAt: { type: Date, 'default': Date.now },
-    updatedAt: { type: Date, 'default': Date.now }
+    wallet:  walletSchema
   }, {
     timestamps: true
   });
