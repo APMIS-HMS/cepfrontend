@@ -508,6 +508,11 @@ select {
 .form-modal {
     height: 100%;
 }
+.modal-header-wrap{
+    position: relative;
+    padding: 10px;
+    background: #0288D1;
+}
 
 .modal-baseWrap {
     position: relative;
@@ -531,7 +536,7 @@ select {
     top: 9px;
     right: 9px;
     font-size: 16px;
-    color: #8492a6;
+    color: #fff;
     padding: 5px;
 }
 .modal-close-ico:hover{
@@ -542,15 +547,14 @@ select {
     font-family: "Josefin Sans", sans-serif;
     margin: 0px auto;
     font-size: 20px;
-    color: #0D47A1;
+    color: #fff;
     text-align: center;
 }
 
 .modal_mini_title {
     margin: 0px auto;
     font-size: 14px;
-    margin-bottom: 20px;
-    color: #000;
+    color: #fff;
     text-align: center;
 }
 

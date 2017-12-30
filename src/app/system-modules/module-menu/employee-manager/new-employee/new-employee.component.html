@@ -1,318 +1,322 @@
-<div class="modal-baseWrap animated pulse">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">New Employee</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <div *ngIf="apmisId_show" class="newEmp-idWrap">
-        <input type="text" placeholder="Employee's Apmis ID'" [formControl]="newEmpIdControl">
-        <div class="gen_idWrap">Employee has no <strong>apmis ID</strong>? <span (click)="newPerson1_show()">Generate New ID</span></div>
-        <div (click)="empApmisID()" class="btn-1 btn-blue">Add Employee</div>
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">New Employee</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <div *ngIf="frmNewPerson1_show">
-        <form [formGroup]="frmNewEmp1" novalidate>
-            <div class="lhs">
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
-                        <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="text" placeholder="First Name" formControlName="empFirstName">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-circle-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="text" placeholder="Other Names" formControlName="empOtherNames">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="text" placeholder="Sur Name" formControlName="empLastName">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="text" placeholder="File Number" formControlName="fileNumber">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                    <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
-                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-            </div>
-            <div class="rhs">
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
-                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
-                        <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
-                        <mat-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="email" placeholder="Email Address" formControlName="empEmail">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="email" placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput type="tel" placeholder="Contact Number" formControlName="empPhonNo">
-                    </mat-input-container>
-                </div>
-            </div>
-            <div class="clear"></div>
-            <div (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-            <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
-                CONTINUE
-            </div>
+        <div *ngIf="apmisId_show" class="newEmp-idWrap">
+            <input type="text" placeholder="Employee's Apmis ID'" [formControl]="newEmpIdControl">
+            <div class="gen_idWrap">Employee has no <strong>apmis ID</strong>? <span (click)="newPerson1_show()">Generate New ID</span></div>
+            <div (click)="empApmisID()" class="btn-1 btn-blue">Add Employee</div>
+        </div>
 
-        </form>
-    </div>
-
-    <div *ngIf="frmNewPerson2_show">
-
-        <form [formGroup]="frmNewEmp2" novalidate>
-
-            <div class="lhs">
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
-                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <mat-select placeholder="Country (Residence)" formControlName="empCountry">
-                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <mat-select placeholder="State (Residence)" formControlName="empContactState">
-                        <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <mat-select placeholder="City (Residence)" formControlName="empCity">
-                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-            </div>
-
-            <div class="rhs">
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Home Address" formControlName="empHomeAddress">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap" style="margin-top:-6px;">
-                    <mat-input-container>
-                        <input matInput [matDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                    </mat-input-container>
-                    <mat-datepicker #picker></mat-datepicker>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Select security question" formControlName="secQst">
-                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Answer" formControlName="secAns">
-                    </mat-input-container>
-                </div>
-
-                <!--<div class="frm-item-wrap">
-                    <div>
-                        <img-cropper [image]="empImg" #cropper [settings]="cropperSettings"></img-cropper>
+        <div *ngIf="frmNewPerson1_show">
+            <form [formGroup]="frmNewEmp1" novalidate>
+                <div class="lhs">
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
+                            <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
                     </div>
-                </div>-->
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="text" placeholder="First Name" formControlName="empFirstName">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-circle-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="text" placeholder="Other Names" formControlName="empOtherNames">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="text" placeholder="Sur Name" formControlName="empLastName">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="text" placeholder="File Number" formControlName="fileNumber">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-venus-mars" aria-hidden="true"></i>
+                        <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
+                            <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+                <div class="rhs">
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
+                            <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
+                            <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
+                            <mat-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="email" placeholder="Email Address" formControlName="empEmail">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="email" placeholder="Confirm Email Address" formControlName="confirmEmpEmail">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput type="tel" placeholder="Contact Number" formControlName="empPhonNo">
+                        </mat-input-container>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+                <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+                    CONTINUE
+                </div>
 
-            </div>
+            </form>
+        </div>
 
-            <div class="clear"></div>
+        <div *ngIf="frmNewPerson2_show">
 
-            <div (click)="back_newPerson1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+            <form [formGroup]="frmNewEmp2" novalidate>
 
-            <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">
-                CONTINUE
-            </div>
+                <div class="lhs">
 
-        </form>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
+                            <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                        <mat-select placeholder="Country (Residence)" formControlName="empCountry">
+                            <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        <mat-select placeholder="State (Residence)" formControlName="empContactState">
+                            <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        <mat-select placeholder="City (Residence)" formControlName="empCity">
+                            <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+
+                <div class="rhs">
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Home Address" formControlName="empHomeAddress">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap" style="margin-top:-6px;">
+                        <mat-input-container>
+                            <input matInput [matDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
+                            <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                            <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                        </mat-input-container>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Select security question" formControlName="secQst">
+                            <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Answer" formControlName="secAns">
+                        </mat-input-container>
+                    </div>
+
+                    <!--<div class="frm-item-wrap">
+                        <div>
+                            <img-cropper [image]="empImg" #cropper [settings]="cropperSettings"></img-cropper>
+                        </div>
+                    </div>-->
+
+                </div>
+
+                <div class="clear"></div>
+
+                <div (click)="back_newPerson1()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+                <div (click)="newPerson2(frmNewEmp2.valid, frmNewEmp2.value)" class="cta-1">
+                    CONTINUE
+                </div>
+
+            </form>
+        </div>
+
+        <div *ngIf="frmNewPerson3_show">
+
+            <form [formGroup]="frmNewEmp3" novalidate>
+
+                <div class="lhs">
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
+                        </mat-input-container>
+                    </div>
+                </div>
+
+                <div class="rhs">
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error type="email" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error type="tel" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                        <mat-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
+                            <mat-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                </div>
+
+                <div class="clear"></div>
+
+                <div class="frmNavControls_wrap">
+                    <div (click)="back_newPerson2()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+                    <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
+                </div>
+
+                <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">
+                    CONTINUE
+                </div>
+
+            </form>
+        </div>
+
+        <div *ngIf="frmNewEmp4_show">
+
+            <form [formGroup]="frmNewEmp4" novalidate>
+
+                <div class="lhs">
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
+                            <mat-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
+                            <mat-option *ngFor="let item of units" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
+                            <mat-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
+                            <mat-option *ngFor="let item of professions" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+
+                <div class="rhs">
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        <mat-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
+                            <mat-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error type="email" placeholder="Official (Work) Email" formControlName="empWorkEmail">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="frm-item-wrap">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error type="email" placeholder="Official (Work) Contact Number" formControlName="empWorkPhonNo">
+                        </mat-input-container>
+                    </div>
+
+                </div>
+
+                <div class="clear"></div>
+                <div (click)="back_newPerson3()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+
+                <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">
+                    Create Employee
+                </div>
+
+            </form>
+        </div>
+
     </div>
-
-    <div *ngIf="frmNewPerson3_show">
-
-        <form [formGroup]="frmNewEmp3" novalidate>
-
-            <div class="lhs">
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Apmis ID" formControlName="nok_apmisID">
-                    </mat-input-container>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's' Full Name" formControlName="nok_fullname">
-                    </mat-input-container>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Home Address" formControlName="nok_Address">
-                    </mat-input-container>
-                </div>
-            </div>
-
-            <div class="rhs">
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error type="email" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Email Address" formControlName="nok_email">
-                    </mat-input-container>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error type="tel" [readonly]="nextOfKinReadOnly" placeholder="Next Of Kin's Contact Number" formControlName="nok_phoneNo">
-                    </mat-input-container>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
-                        <mat-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-            </div>
-
-            <div class="clear"></div>
-
-            <div class="frmNavControls_wrap">
-                <div (click)="back_newPerson2()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-                <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
-            </div>
-
-            <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">
-                CONTINUE
-            </div>
-
-        </form>
-    </div>
-
-    <div *ngIf="frmNewEmp4_show">
-
-        <form [formGroup]="frmNewEmp4" novalidate>
-
-            <div class="lhs">
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
-                        <mat-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
-                        <mat-option *ngFor="let item of units" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
-                        <mat-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
-                        <mat-option *ngFor="let item of professions" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-            </div>
-
-            <div class="rhs">
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
-                        <mat-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error type="email" placeholder="Official (Work) Email" formControlName="empWorkEmail">
-                    </mat-input-container>
-                </div>
-
-                <div class="frm-item-wrap">
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error type="email" placeholder="Official (Work) Contact Number" formControlName="empWorkPhonNo">
-                    </mat-input-container>
-                </div>
-
-            </div>
-
-            <div class="clear"></div>
-            <div (click)="back_newPerson3()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-
-            <div (click)="newEmp4(frmNewEmp4.valid, frmNewEmp4.value)" class="cta-1">
-                Create Employee
-            </div>
-
-        </form>
-    </div>
-
 </div>
