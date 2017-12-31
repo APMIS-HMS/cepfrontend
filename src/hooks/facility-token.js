@@ -6,16 +6,21 @@ const tokenLabel = require('../parameters/token-label');
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
     return new Promise(function (resolve, reject) {
-      context.app.service('get-tokens').get(tokenLabel.tokenType.facilityVerification, {}).then(result => {
-        context.result.verificationToken = result.token;
-        context.service.update(context.result._id, context.result).then(facility => {
-          context.result = facility;
-          resolve(context);
-        }, error => {
-          reject(error);
-        });
+      if (context && context.app) {
+        context.app.service('get-tokens').get(tokenLabel.tokenType.facilityVerification, {}).then(result => {
+          context.result.verificationToken = result.token;
+          context.service.update(context.result._id, context.result).then(facility => {
+            context.result = facility;
+            resolve(context);
+          }, error => {
+            reject(error);
+          });
 
-      });
+        });
+      } else {
+        resolve(context);
+      }
+
     });
   };
 };
