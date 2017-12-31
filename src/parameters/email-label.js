@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  tokenType: {
-    facilityVerification: 0,
+  emailType: {
+    facilityToken: 0,
     apmisId: 1
   }
 };
