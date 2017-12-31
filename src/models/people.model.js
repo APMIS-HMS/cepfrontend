@@ -14,7 +14,7 @@ module.exports = function (app) {
     lastName: { type: String, required: true },
     gender: { type: String, required: true },
     phoneNumber: { type: String, required: true },
-    dateOfBirth: { type: Date, require: true },
+    dateOfBirth: { type: Date, require: false },
     email: { type: String, required: false },
     otherNames: { type: String, required: false },
     biometric: { type: Buffer, required: false },

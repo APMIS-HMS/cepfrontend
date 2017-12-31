@@ -12,6 +12,8 @@ describe('\'global-error\' hook', () => {
     // and compare the resulting hook object
     return hook(mock).then(result => {
       assert.equal(result, mock, 'Returns the expected hook object');
+    },error =>{
+      assert.ifError(error);
     });
   });
 });
