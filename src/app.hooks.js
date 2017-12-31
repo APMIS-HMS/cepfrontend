@@ -1,6 +1,8 @@
 // Application hooks that run for every service
 const logger = require('./hooks/logger');
 
+const globalError = require('./hooks/global-error');
+
 module.exports = {
   before: {
     all: [ logger() ],
@@ -23,7 +25,7 @@ module.exports = {
   },
 
   error: {
-    all: [ logger() ],
+    all: [globalError(), logger()],
     find: [],
     get: [],
     create: [],
