@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+const smsLabel = require('../../parameters/sms-label');
+const smsTemplate = require('../../templates/sms-sender');
 class Service {
   constructor (options) {
     this.options = options || {};
@@ -15,11 +17,9 @@ class Service {
   }
 
   create (data, params) {
-    if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current)));
+    if (params.query.label.toString() == smsLabel.smsType.facilityToken.toString()) {
+      smsTemplate.sendToken(data);
     }
-    
-
     return Promise.resolve(data);
   }
 

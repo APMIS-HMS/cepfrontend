@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  tokenType: {
+  smsType: {
     facilityToken: 0,
     apmisId: 1
   }
