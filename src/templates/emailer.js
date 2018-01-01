@@ -61,7 +61,7 @@ function emailTemplate(themeMessage, titleMessage, data) {
 
                           <div style="height: 21px; line-height: 21px; font-size: 19px;">&nbsp;</div> <font face="'Source Sans Pro', sans-serif" color="#000000" style="font-size: 20px; line-height: 28px;">
                                 <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px;">
-                                Hey ${data.personFullName},
+                                Hey${data.name} ${data.firstName} ${data.lastName},
                                 </span>
                             </font>
 
