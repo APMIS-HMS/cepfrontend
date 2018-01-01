@@ -31,7 +31,6 @@ export class PersonAccountComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private countriesService: CountriesService,
     private titleGenderFacadeService: TitleGenderFacadeService,
     private personService: PersonService,
     private userService: UserService,
@@ -41,7 +40,6 @@ export class PersonAccountComponent implements OnInit {
   ngOnInit() {
     this.getGenders();
     this.getTitles();
-    // this.getCountries();
     this.frmPerson = this.formBuilder.group({
       persontitle: [new Date(), [<any>Validators.required]],
       firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
@@ -71,13 +69,6 @@ export class PersonAccountComponent implements OnInit {
       this.titles = payload;
     })
   }
-
-  // getCountries() {
-  //   this.countriesService.findAll().then((payload) => {
-  //     this.countries = payload.data;
-  //   })
-  // }
-
   onNationalityChange(value: any) {
     const country = this.countries.find(item => item._id === value);
     this.selectedCountry = country;
@@ -87,23 +78,6 @@ export class PersonAccountComponent implements OnInit {
     console.log(valid);
     console.log(val);
     if (valid) {
-      // persontitle: [new Date(), [<any>Validators.required]],
-      // firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-      // lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-      // gender: [[<any>Validators.minLength(2)]],
-      // dob: [new Date(), [<any>Validators.required]],
-      // email: ['', [<any>Validators.required, <any>Validators.pattern(EMAIL_REGEX)]],
-      // phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
-
-
-      // title: { type: String, required: true },
-      // firstName: { type: String, required: true },
-      // lastName: { type: String, required: true },
-      // gender: { type: String, required: true },
-      // phoneNumber: { type: String, required: true },
-      // dateOfBirth: { type: Date, require: false },
-      // email: { type: String, required: false },
-
       const personModel = <any>{
         title: this.frmPerson.controls['persontitle'].value,
         firstName: this.frmPerson.controls['firstname'].value,
@@ -125,7 +99,6 @@ export class PersonAccountComponent implements OnInit {
           this.facilitiesService.announceNotification({
             type: 'Success',
             text: this.frmPerson.controls['firstname'].value + ' '
-              + this.frmPerson.controls['othernames'].value + ' '
               + this.frmPerson.controls['lastname'].value + ' '
               + 'added successful'
           });
