@@ -5,6 +5,17 @@ label {
     color: #797D7F;
 }
 
+.modal-baseWrap {
+    max-width: 730px;
+    padding: 30px;
+    .cont-item {
+        width: 35%;
+    }
+    .recent-rooms {
+        width: 65%;
+    }
+}
+
 .strapImgWrap {
     position: absolute;
     width: 60px;

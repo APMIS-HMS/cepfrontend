@@ -40,6 +40,7 @@
 
 .modal-baseWrap {
     min-width: 500px;
+    max-width: 530px;
     padding: 20px;
 }
 
@@ -69,4 +70,11 @@ label {
     .btn {
         color: #fff;
     }
+}
+
+.mat-select {
+    padding: 0px;
+    width: 100%;
+    font-size: 12px;
+    height: 0px;
 }
