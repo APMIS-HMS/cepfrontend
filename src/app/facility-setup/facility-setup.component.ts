@@ -1,3 +1,4 @@
+import { CountryServiceFacadeService } from './../system-modules/service-facade/country-service-facade.service';
 import { Component, OnInit, EventEmitter, NgZone, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
@@ -66,7 +67,8 @@ export class FacilitySetupComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private facilityOwnershipService: FacilityOwnershipService,
-    private countriesService: CountriesService,
+    // private countriesService: CountriesService,
+    private countryFacadeService:CountryServiceFacadeService,
     private genderService: GenderService,
     private titleService: TitleService,
     private maritalStatusService: MaritalStatusService,
@@ -247,14 +249,19 @@ export class FacilitySetupComponent implements OnInit {
     });
   }
   getCountries() {
-    this.countriesService.find({
-      query: {
-        $select: { 'states': 0 }
-      }
-    }).then((payload) => {
-      this.countries = payload.data;
-    }, error => {
+    // this.countriesService.find({
+    //   query: {
+    //     $select: { 'states': 0 }
+    //   }
+    // }).then((payload) => {
+    //   this.countries = payload.data;
+    // }, error => {
 
+    // });
+    this.countryFacadeService.getOnlyCountries().then(payload =>{
+      console.log(payload);
+    }).catch(error =>{
+      console.log(error);
     });
   }
   getGenders() {

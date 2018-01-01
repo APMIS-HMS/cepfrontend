@@ -6,13 +6,14 @@
     </div>
     <div class="modal-baseWrap">
 
-        <div *ngIf="success" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!</div>
+        <div *ngIf="success" class="infoAlert">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!</div>
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
         <form [formGroup]="frmPerson" novalidate>
             <mat-form-field class="example-full-width">
                 <mat-select placeholder="Title" formControlName="persontitle">
-                    <mat-option>Mr</mat-option>
+                    <mat-option [value]="title.name" *ngFor="let title of titles">{{title.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -31,7 +32,7 @@
             <div class="frm-item-wrap">
                 <mat-form-field class="example-full-width">
                     <mat-select placeholder="Gender" formControlName="gender">
-                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let item of genders" [value]="item.name">{{item.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -58,9 +59,9 @@
 
             <div class="clear"></div>
             <!--<button mat-raised-button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">Sign Up</button>-->
-            <div (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
+            <button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
                 Register
-            </div>
+            </button>
 
         </form>
     </div>

@@ -1,3 +1,4 @@
+import { CountryServiceFacadeService } from './../../system-modules/service-facade/country-service-facade.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Facility } from '../../models/index';
@@ -16,7 +17,8 @@ export class FacilityInfoComponent implements OnInit {
 
 	errMsg: string;
 	mainErr = true;
-
+	countries: any[] = [];
+	states: any[] = [];
 	public facilityForm1: FormGroup;
 	userSettings: any = {
 		geoCountryRestriction: [GEO_LOCATIONS],
@@ -24,10 +26,11 @@ export class FacilityInfoComponent implements OnInit {
 		resOnSearchButtonClickOnly: false,
 		// inputPlaceholderText: 'Type anything and you will get a location',
 		recentStorageName: 'componentData3'
-	  };
+	};
 	constructor(
 		private formBuilder: FormBuilder,
-		private _route: ActivatedRoute
+		private _route: ActivatedRoute,
+		private _countryServiceFacade: CountryServiceFacadeService
 	) { }
 
 	ngOnInit() {
@@ -45,17 +48,63 @@ export class FacilityInfoComponent implements OnInit {
 			facilitycountry: ['', [<any>Validators.required]],
 			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
+		this.facilityForm1.controls.facilitycountry.valueChanges.subscribe(country => {
+			this._countryServiceFacade.getOnlyStates(country).then((payload: any) => {
+				console.log(payload);
+				this.states = payload;
+			}).catch(error => {
+
+			});
+		})
+		this._getCountries();
 	}
 
+	_getCountries() {
+		this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
+			console.log(payload);
+			this.countries = payload;
+		}).catch(error => {
+			console.log(error);
+		});
+	}
 	close_onClick() {
 		this.closeModal.emit(true);
 	}
-	autoCompleteCallback1(selectedData:any) {
+	autoCompleteCallback1(selectedData: any) {
 		//do any necessery stuff.
 		console.log(selectedData);
+		if (selectedData.response) {
+			let res = selectedData;
+			console.log(res.data.address_components[0].types[0]);
+			if (res.data.address_components[0].types[0] === 'route') {
+				let streetAddress = res.data.address_components[0].long_name;
+				let city = res.data.address_components[1].long_name;
+				let country = res.data.address_components[4].long_name;
+				let state = res.data.address_components[3].long_name;
+
+				this.facilityForm1.controls.facilitystreet.setValue(streetAddress);
+				this.facilityForm1.controls.facilitycity.setValue(city);
+				this.facilityForm1.controls.facilitycountry.setValue(country);
+				this.facilityForm1.controls.facilitystate.setValue(state);
+			} else {
+				let streetAddress = res.data.vicinity;
+				let city = res.data.address_components[0].long_name;
+				let country = res.data.address_components[3].long_name;
+				let state = res.data.address_components[2].long_name;
+
+				this.facilityForm1.controls.facilitystreet.setValue(streetAddress);
+				this.facilityForm1.controls.facilitycity.setValue(city);
+				this.facilityForm1.controls.facilitycountry.setValue(country);
+				this.facilityForm1.controls.facilitystate.setValue(state);
+			}
+		}
 	}
 
-	save(form){
+	compareState(l1: any, l2: any) {
+		return l1.includes(l2);
+	  }
+
+	save(form) {
 		console.log(form)
 	}
 }

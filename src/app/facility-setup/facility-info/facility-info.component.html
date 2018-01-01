@@ -20,13 +20,13 @@
     <div class="frm-item-wrap">
         <div class="frm-item-x2">
             <mat-form-field class="example-full-width">
-                <mat-select placeholder="State" formControlName="facilitystate">
-                    <mat-option>Lagos</mat-option>
+                <mat-select placeholder="Country" formControlName="facilitycountry">
+                    <mat-option  [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="example-full-width">
-                <mat-select placeholder="Country" formControlName="facilitycountry">
-                    <mat-option>Nigeria</mat-option>
+                <mat-select placeholder="State" formControlName="facilitystate" [compareWith]="compareState">
+                    <mat-option [value]="state.name" *ngFor="let state of states">{{state.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

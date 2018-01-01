@@ -1,7 +1,10 @@
+import { Title } from './../models/facility-manager/setup/title';
+import { TitleGenderFacadeService } from './../system-modules/service-facade/title-gender-facade.service';
 import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CountriesService, GenderService, PersonService, UserService, FacilitiesService } from '../services/facility-manager/setup/index';
 import { Gender, User, Person, Address } from '../models/index';
+import { EMAIL_REGEX, PHONE_REGEX } from 'app/shared-module/helpers/global-config';
 
 @Component({
   selector: 'app-person-account',
@@ -19,6 +22,7 @@ export class PersonAccountComponent implements OnInit {
   selectedCountry: any = <any>{};
   selectedState: any = <any>{};
   genders: Gender[] = [];
+  titles: Title[] = [];
   errMsg: string;
   mainErr = true;
   success = false;
@@ -28,7 +32,7 @@ export class PersonAccountComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private countriesService: CountriesService,
-    private genderService: GenderService,
+    private titleGenderFacadeService: TitleGenderFacadeService,
     private personService: PersonService,
     private userService: UserService,
     private facilitiesService: FacilitiesService
@@ -36,44 +40,43 @@ export class PersonAccountComponent implements OnInit {
 
   ngOnInit() {
     this.getGenders();
-    this.getCountries();
+    this.getTitles();
+    // this.getCountries();
     this.frmPerson = this.formBuilder.group({
       persontitle: [new Date(), [<any>Validators.required]],
       firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-      // othernames: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(200)]],
       gender: [[<any>Validators.minLength(2)]],
       dob: [new Date(), [<any>Validators.required]],
-      // nationality: ['', [<any>Validators.required]],
-
-      // state: ['', [<any>Validators.required]],
-      // lga: ['', [<any>Validators.required]],
-      // address: ['', [<any>Validators.required]],
-      email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
-      phone: ['', [<any>Validators.required]]
+      email: ['', [<any>Validators.required, <any>Validators.pattern(EMAIL_REGEX)]],
+      phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
     });
 
-    this.frmPerson.controls['state'].valueChanges.subscribe((value: any) => {
-      this.selectedState = value;
-    })
-
-    this.frmPerson.valueChanges.subscribe(value =>{
+    this.frmPerson.valueChanges.subscribe(value => {
       this.success = false;
+      this.mainErr = true;
+      this.errMsg = '';
     })
   }
 
 
   getGenders() {
-    this.genderService.findAll().then((payload) => {
-      this.genders = payload.data;
+    this.titleGenderFacadeService.getGenders().then((payload: any) => {
+      this.genders = payload;
     })
   }
 
-  getCountries() {
-    this.countriesService.findAll().then((payload) => {
-      this.countries = payload.data;
+  getTitles() {
+    this.titleGenderFacadeService.getTitles().then((payload: any) => {
+      this.titles = payload;
     })
   }
+
+  // getCountries() {
+  //   this.countriesService.findAll().then((payload) => {
+  //     this.countries = payload.data;
+  //   })
+  // }
 
   onNationalityChange(value: any) {
     const country = this.countries.find(item => item._id === value);
@@ -81,21 +84,34 @@ export class PersonAccountComponent implements OnInit {
   }
 
   submit(valid, val) {
+    console.log(valid);
+    console.log(val);
     if (valid) {
+      // persontitle: [new Date(), [<any>Validators.required]],
+      // firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+      // lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+      // gender: [[<any>Validators.minLength(2)]],
+      // dob: [new Date(), [<any>Validators.required]],
+      // email: ['', [<any>Validators.required, <any>Validators.pattern(EMAIL_REGEX)]],
+      // phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
+
+
+      // title: { type: String, required: true },
+      // firstName: { type: String, required: true },
+      // lastName: { type: String, required: true },
+      // gender: { type: String, required: true },
+      // phoneNumber: { type: String, required: true },
+      // dateOfBirth: { type: Date, require: false },
+      // email: { type: String, required: false },
+
       const personModel = <any>{
+        title: this.frmPerson.controls['persontitle'].value,
         firstName: this.frmPerson.controls['firstname'].value,
         lastName: this.frmPerson.controls['lastname'].value,
-        otherNames: this.frmPerson.controls['othernames'].value,
-        genderId: this.genders[0]._id,
+        gender: this.frmPerson.controls['lastname'].value,
         dateOfBirth: this.frmPerson.controls['dob'].value,
-        homeAddress: <Address>({
-          street: this.frmPerson.controls['address'].value,
-        }),
         email: this.frmPerson.controls['email'].value,
-        phoneNumber: this.frmPerson.controls['phone'].value,
-        nationalityId: this.frmPerson.controls['nationality'].value,
-        stateOfOriginId: this.frmPerson.controls['state'].value._id,
-        lgaOfOriginId: this.frmPerson.controls['lga'].value
+        phoneNumber: this.frmPerson.controls['phone'].value
       };
 
       this.personService.create(personModel).then((ppayload) => {
@@ -109,15 +125,17 @@ export class PersonAccountComponent implements OnInit {
           this.facilitiesService.announceNotification({
             type: 'Success',
             text: this.frmPerson.controls['firstname'].value + ' '
-            + this.frmPerson.controls['othernames'].value + ' '
-            + this.frmPerson.controls['lastname'].value + ' '
-            + 'added successful'
+              + this.frmPerson.controls['othernames'].value + ' '
+              + this.frmPerson.controls['lastname'].value + ' '
+              + 'added successful'
           });
         }, error => {
-          this.mainErr = false;
-          this.errMsg = 'An error has occured, please check and try again!';
+          console.log(error);
+          // this.mainErr = false;
+          // this.errMsg = 'An error has occured, please check and try again!';
         });
       }, err => {
+        console.log(err);
       });
     } else {
       this.mainErr = false;

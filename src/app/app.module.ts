@@ -1,3 +1,4 @@
+import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
 import { PolicyService } from './services/facility-manager/setup/policy.service';
@@ -45,6 +46,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
+import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 
 @NgModule({
   declarations: [
@@ -97,7 +99,8 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService
+    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    CountryServiceFacadeService, TitleGenderFacadeService
   ],
   bootstrap: [AppComponent]
 })
