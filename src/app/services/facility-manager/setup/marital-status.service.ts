@@ -9,8 +9,8 @@ export class MaritalStatusService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('maritalstatuses');
-    this._socket = _socketService.getService('maritalstatuses');
+    this._rest = _restService.getService('marital-statuses');
+    this._socket = _socketService.getService('marital-statuses');
     this._socket.on('created', function (maritalstatus) {
     });
   }

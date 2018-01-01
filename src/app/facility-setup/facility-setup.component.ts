@@ -66,7 +66,7 @@ export class FacilitySetupComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private facilityOwnershipService: FacilityOwnershipService,
-    private countriesService: CountriesService, 
+    private countriesService: CountriesService,
     private genderService: GenderService,
     private titleService: TitleService,
     private maritalStatusService: MaritalStatusService,
@@ -166,7 +166,7 @@ export class FacilitySetupComponent implements OnInit {
       if (payload.data.length > 0) {
         this.isEmailExist = false;
       }
-      else{
+      else {
         this.isEmailExist = true;
       }
     })
@@ -242,32 +242,48 @@ export class FacilitySetupComponent implements OnInit {
   getOwnerships() {
     this.facilityOwnershipService.findAll().then((payload) => {
       this.ownerships = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getCountries() {
-    this.countriesService.findAll().then((payload) => {
+    this.countriesService.find({
+      query: {
+        $select: { 'states': 0 }
+      }
+    }).then((payload) => {
       this.countries = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getGenders() {
     this.genderService.findAll().then((payload) => {
       this.genders = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getTitles() {
     this.titleService.findAll().then((payload: any) => {
       this.titles = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getMaritalStatus() {
     this.maritalStatusService.findAll().then((payload: any) => {
       this.maritalStatuses = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getFacilityTypes() {
     this.facilityTypeService.findAll().then((payload) => {
       this.facilityTypes = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getModules() {
     this.facilityModuleService.findAll().then((payload) => {
@@ -293,7 +309,9 @@ export class FacilitySetupComponent implements OnInit {
           checked: false
         })
       })
-    })
+    }, error => {
+
+    });
   }
 
   /* Component Events */
@@ -535,10 +553,10 @@ export class FacilitySetupComponent implements OnInit {
     this.selectModules_show = false;
     this.sg4_show = false;
   }
-  facilityInfo_show(){
+  facilityInfo_show() {
     this.apmisID = false;
     this.facilityInfo = true;
-	}
+  }
   close_onClick(e) {
     this.closeModal.emit(true);
   }
