@@ -5,7 +5,7 @@
 
     <div class="contWrap">
         <div class="CTAs-wrap">
-            <div class="checkoutBtn" (click)='checkOutPatient("No Futher Appointment")'>No Futher Appointment</div> 
+            <div class="checkoutBtn" (click)='checkOutPatient("No Futher Appointment")'>No Futher Appointment</div>
             <div class="checkoutBtn" (click)='checkOutPatient("Follow-Up With Appointment")'>Follow-Up With Appointment</div>
             <div (click)="checkoutWard()" class="checkoutBtn">Send for Admission</div>
             <div (click)="deathCheckout()" class="checkoutBtn">Death</div>
@@ -16,11 +16,11 @@
                     <div class="sub-header">Send {{ patientDetails?.personDetails?.personFullName }} to be admitted</div>
                     <form [formGroup]="admitFormGroup" novalidate>
                         <div class="frm-item-wrap">
-                            <mat-select placeholder="Ward" formControlName="ward">
-                                <mat-option *ngFor="let ward of wards" [value]="ward">
-                                    {{ ward.name }}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Ward" formControlName="ward">
+                                    <mat-option *ngFor="let ward of wards" [value]="ward"> {{ ward.name }} </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="frm-item-wrap">
                             <mat-form-field>

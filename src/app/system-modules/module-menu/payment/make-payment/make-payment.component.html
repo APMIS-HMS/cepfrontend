@@ -14,19 +14,19 @@
       <mat-select [formControl]="channel" placeholder="Payment Channel">
         <mat-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</mat-option>
       </mat-select>
-    </div>
+    </div> -->
 
-    <div class="frm-item-wrap" [hidden]="!isCash">
+    <div class="frm-item-wrap">
       <mat-input-container>
         <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
       </mat-input-container>
     </div>
 
-    <div class="frm-item-wrap" [hidden]="!isCash">
+    <div class="frm-item-wrap">
       <mat-input-container>
-        <input matInput mat-error currencyMask [disabled] [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance">
+        <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance" readonly>
       </mat-input-container>
-    </div> -->
+    </div>
     <div class="btn-group">
       <button mat-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
         <span>
@@ -40,7 +40,7 @@
         </span>
       </button>
 
-      <button class="btn btn-red">Cancel</button>
+      <button class="btn btn-red" (click)="close_onClick()">Cancel</button>
     </div>
   </div>
 </div>

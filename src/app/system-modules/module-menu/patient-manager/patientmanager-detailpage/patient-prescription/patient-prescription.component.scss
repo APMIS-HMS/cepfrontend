@@ -31,13 +31,17 @@
     //padding: 3px;
     //border-radius: 4px;
     .input-group {
-        mat-input-container {
+        mat-form-field {
             float: left;
             width: 50%;
         }
         .input-group-btn {
             float: left;
             width: 50%;
+            mat-form-field {
+                float: left;
+                width: 100%;
+            }
         }
     }
 }
@@ -382,8 +386,13 @@ label:hover {
     background: #f5f5f5;
 }
 
+mat-form-field {
+    // margin-top: -18px;
+    margin-top: 0px;
+}
+
 .mat-select {
-    margin-top: -11px;
+    margin-top: -18px;
 }
 
 .fa {

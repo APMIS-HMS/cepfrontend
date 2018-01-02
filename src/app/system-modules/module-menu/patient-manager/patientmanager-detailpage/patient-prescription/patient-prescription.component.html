@@ -45,7 +45,7 @@
                     <tbody class="custom-tbody" *ngIf="currentMedications.length === 0 && currMedLoading">
                         <tr>
                             <td class="text-center" colspan="5">
-                                <mat-spinner class="small-spinner"></mat-spinner>
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -84,7 +84,7 @@
                     <tbody class="custom-tbody" *ngIf="pastMedications.length === 0 && pastMedLoading">
                         <tr>
                             <td class="text-center" colspan="5">
-                                <mat-spinner class="small-spinner"></mat-spinner>
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -98,60 +98,68 @@
                         <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                     <div class="col-sm-3 col-md-3">
-                        <mat-input-container>
+                        <mat-form-field>
                             <input matInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
-                        </mat-input-container>
+                        </mat-form-field>
                     </div>
                     <div class="col-sm-3 col-md-3">
-                        <mat-select formControlName="route" placeholder="Route" class="mat-select">
-                            <mat-option *ngFor="let route of routes" [(value)]="route.name">
-                                {{ route.name }}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field class="mat-select">
+                            <mat-select formControlName="route" placeholder="Route">
+                                <mat-option *ngFor="let route of routes" [(value)]="route.name">
+                                    {{ route.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="row padding-top-20px">
                     <div class="">
                         <div class="col-sm-3 col-md-3">
-                            <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
-                                <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
-                                    {{ frequency.name }}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field class="mat-select">
+                                <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
+                                    <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
+                                        {{ frequency.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="input-bg cacaca">
                                 <div class="input-group">
-                                    <mat-input-container>
+                                    <mat-form-field>
                                         <input matInput type="number" formControlName="duration" placeholder="Duration">
-                                    </mat-input-container>
+                                    </mat-form-field>
                                     <div class="input-group-btn">
-                                        <mat-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue" class="mat-select">
-                                            <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">
-                                                {{ unit.name }}
-                                            </mat-option>
-                                        </mat-select>
+                                        <mat-form-field class="mat-select">
+                                            <mat-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue">
+                                                <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">
+                                                    {{ unit.name }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-2 col-md-2">
-                            <mat-input-container>
+                            <mat-form-field>
                                 <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                            <mat-input-container>
+                            <mat-form-field>
                                 <input matInput formControlName="startDate" [matDatepicker]="picker" placeholder="Start Date">
-                                <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                            </mat-input-container>
+                                <mat-icon matSuffix>
+                                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                </mat-icon>
+                            </mat-form-field>
                             <mat-datepicker #picker></mat-datepicker>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-12">
-                        <mat-input-container>
+                        <mat-form-field>
                             <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
-                        </mat-input-container>
+                        </mat-form-field>
                         <div class="after-textarea-btn pull-right">
                             <button mat-raised-button class="mat-lg-btn" [disabled]="!addPrescriptionForm.valid" (click)="onClickAddPrescription(addPrescriptionForm.value, addPrescriptionForm.valid);"> Add </button>
                             <button mat-raised-button class="mat-lg-btn" (click)="onClickReset();"> Reset </button>
@@ -168,9 +176,11 @@
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
                             <div class="col-sm-6" style="margin-top: 10px;">
-                                <mat-select placeholder="Priority" formControlName="priority" class="mat-select">
-                                    <mat-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</mat-option>
-                                </mat-select>
+                                <mat-form-field class="mat-select">
+                                    <mat-select placeholder="Priority" formControlName="priority">
+                                        <mat-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <div class="col-sm-6 text-center">
                                 <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>

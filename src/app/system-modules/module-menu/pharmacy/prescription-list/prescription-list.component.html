@@ -71,7 +71,7 @@
                             </tr>
                             <tr *ngIf="prescriptionLists.length===0 && loading ">
                                 <td class="table-content " colspan="6" style="text-align: center ">
-                                    <mat-spinner class="small-spinner"></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </td>
                             </tr>
                             <tr *ngFor="let prescription of prescriptionLists " routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
@@ -155,7 +155,7 @@
                             </tr>
                             <tr *ngIf="noPrescriptionLists.length===0 && noPresLoading ">
                                 <td class="table-content " colspan="6 " style="text-align: center ">
-                                    <mat-spinner class="small-spinner"></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </td>
                             </tr>
                             <tr *ngFor="let prescription of noPrescriptionLists " routerLink='/dashboard/pharmacy/dispenses/{{prescription._id}}'>
