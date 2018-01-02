@@ -2,12 +2,14 @@
 
 const facilityToken = require('../../hooks/facility-token');
 
+const alerts = require('../../hooks/alerts');
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [facilityToken()],
     update: [],
     patch: [],
     remove: []
@@ -17,7 +19,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [facilityToken()],
+    create: [alerts()],
     update: [],
     patch: [],
     remove: []

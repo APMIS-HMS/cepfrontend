@@ -1,13 +1,13 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-
-const getApmisId = require('../../hooks/get-apmis-id');
+const peopleApmisId = require('../../hooks/people-apmis-id');
+const alerts = require('../../hooks/alerts');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [authenticate('jwt')],
-    create: [getApmisId()],
+    create: [peopleApmisId()],
     update: [authenticate('jwt')],
     patch: [authenticate('jwt')],
     remove: [authenticate('jwt')]
@@ -17,7 +17,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [alerts()],
     update: [],
     patch: [],
     remove: []

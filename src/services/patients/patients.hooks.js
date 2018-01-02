@@ -26,6 +26,7 @@ const createSchema = {
   'required': [ 'personId', 'facilityId' ]
 
 };
+const alerts = require('../../hooks/alerts');
 // module.before({
 //   create: validateSchema(createSchema, Ajv)
 // });
@@ -45,7 +46,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [alerts()],
     update: [],
     patch: [],
     remove: []
