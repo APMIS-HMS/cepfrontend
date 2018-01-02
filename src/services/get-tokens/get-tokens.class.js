@@ -46,27 +46,11 @@ class Service {
 
   generateId(data) {
     let apmisNo = this.getApmisId();
-    return data.apmisId = apmisNo;
-    // return this.app.service('people').find({
-    //   query: {
-    //     apmisId: apmisNo
-    //   }
-    // }).then(personsApmisReturn => {
-    //   logger.info(personsApmisReturn);
-    //   if (personsApmisReturn.data.length == 0) {
-    //     data.apmisId = apmisNo;
-    //   } else {
-    //     return this.generateId(data);
-    //   }
-    // }, error =>{
-    //   logger.info('its an error');
-    // });
+    data.apmisId = apmisNo;
   }
 
   get(id, param) {
-    let data = {
-      token: 0
-    };
+    let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
     } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
@@ -78,11 +62,11 @@ class Service {
   }
 
   find(id, param) {
-    let data = {
-      token: 0
-    };
+    let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
+    } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
+      this.generateId(data);
     }
     return Promise.resolve(data);
   }

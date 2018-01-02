@@ -1,4 +1,4 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+//const { authenticate } = require('@feathersjs/authentication').hooks;
 
 const getApmisId = require('../../hooks/get-apmis-id');
 
