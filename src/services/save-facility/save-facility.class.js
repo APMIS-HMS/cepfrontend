@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
 const logger = require('winston');
+const app = require('../../app');
 class Service {
   constructor (options) {
     this.options = options || {};
+    this.app = app;
   }
 
   find (id, params) {
     logger.info('78');
-    logger.info(this.options);
+    logger.info(this.app);
     return Promise.resolve([]);
   }
 
