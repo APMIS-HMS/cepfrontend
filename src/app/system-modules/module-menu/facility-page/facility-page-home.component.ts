@@ -21,6 +21,8 @@ export class FacilityPageHomeComponent implements OnInit {
   professionContentArea = false;
   dashboardContentArea = false;
 
+  showUnit = false;
+
   selectedFacility: any;
   hasModules = false;
   hasDepartments = false;
@@ -54,6 +56,12 @@ export class FacilityPageHomeComponent implements OnInit {
     this.getUnits();
     this.getMinorLocations();
     this.getEmployees();
+  }
+  showUnit_click(){
+    this.showUnit = true;
+  }
+  showUnit_hide(){
+    this.showUnit = false;
   }
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]);

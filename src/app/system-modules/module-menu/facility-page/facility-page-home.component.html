@@ -1,83 +1,184 @@
-<ul class="pg-menuWrap">
-    <li (click)="changeRoute('')" [class.pg-menuActive]="homeContentArea"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-    <li (click)="changeRoute('modules')" [class.pg-menuActive]="modulesContentArea"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
-    <li (click)="changeRoute('departments')" [class.pg-menuActive]="departmentsContentArea"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
-    <li (click)="changeRoute('locations')" [class.pg-menuActive]="locationsContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
-    <li (click)="changeRoute('workspaces')" [class.pg-menuActive]="workspaceContentArea"><i class="fa fa-superpowers" aria-hidden="true"></i> Workspace</li>
-    <li (click)="changeRoute('options')" [class.pg-menuActive]="optionsContentArea"><i class="fa fa-filter" aria-hidden="true"></i> Options</li>
-    <li (click)="changeRoute('profession')" [class.pg-menuActive]="professionContentArea"><i class="fa fa-briefcase" aria-hidden="true"></i> Profession</li>
-</ul>
 
-<div class="inner-wrap-b body-wrap">
-    <div class="facility-title">{{pageInView}}</div>
-    <div class="survery">
-        <div class="container" id="container">
-            <div class="completion-meter">
-                <div class="completion-meter_step">
-                    <div class="first-chenck">
-                        <span class="completion-meter_icon completion-meter_icon-first-gradient">
-                            <i class="fa fa-2x fa-check-circle-o"></i>
-                        </span>
-                        <div class="dropdown">
-                            <div class="dropdown-content">
-                                <ul>
-                                    <li><i class="fa fa-check"></i>Facility Profile</li>
-                                    <li>
-                                        <i *ngIf="!hasModules" class="fa fa-close"></i>
-                                        <i *ngIf="hasModules" class="fa fa-check"></i> Modules
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasDepartments" class="fa fa-close"></i>
-                                        <i *ngIf="hasDepartments" class="fa fa-check"></i> Departments
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasUnits" class="fa fa-close"></i>
-                                        <i *ngIf="hasUnits" class="fa fa-check"></i> Units
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasMinorLocations" class="fa fa-close"></i>
-                                        <i *ngIf="hasMinorLocations" class="fa fa-check"></i> Locations
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasAssignedEmployees" class="fa fa-close"></i>
-                                        <i *ngIf="hasAssignedEmployees" class="fa fa-check"></i> Assign Employee/Unit(s)
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasWorkSpaces" class="fa fa-close"></i>
-                                        <i *ngIf="hasWorkSpaces" class="fa fa-check"></i> Workspace
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+<div class="portal-wrap">
+    <div class="content-sect">
+        <div class="side-sect">
+            <div class="pp-card shadow-grey">
+            
+                <i class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+            
+                <div class="card-seperator">
+                <div class="patient-img-wrap">
+                    <img src="../../../../assets/images/logos/default.png">
+                </div>
+            
+                <div class="basic-info-wrap">
+                    <div class="basic-info-name">Continental Hospital</div>
+                    <div class="name-class">
+                        <div class="basic-info-others">State</div>
+                        <div class="basic-info-others">Hospital</div>
+                        <div class="basic-info-others">No. 22A China Close, off Ajao Street, Alausa Ikeja, Lagos Nigeria.</div>
+                    </div>
+                    <div class="basic-info-group">
+                        <div class="basic-info-others">COH</div>
+                    </div>
+                    <div class="basic-info-group">
+                        <div class="basic-info-others"><i class="fa fa-registered" aria-hidden="true"></i>RG1221AC</div>
+                        <div class="basic-info-others"><i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                        <div class="basic-info-others"><i class="fa fa-globe" aria-hidden="true"></i>www.continentalhospital.com</div>
+                        <div class="basic-info-others"><i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                    </div>
                     </div>
                 </div>
-                <div class="completion-meter_step completion-meter-moving">
-                    <span class="completion-meter_icon_step completion-meter_icon-first-gradient">
-                            <i class="fa fa-2x fa-check-circle-o"></i>
-                    </span>
+            
+                <div class="facility-count-sect card-seperator clickable-sect">
+                    <div class="isnetwork-wrap">
+                        <div class="isnetwork">NETWORK</div>
+                        <div class="network-membership">HOST</div>
+                    </div>
+                    <div class="facility-count">3</div>
+                    <div class="count-label">Facilities In Network</div>
+                
+                    <ul class="work-places-list shadow-RB animated pulse">
+                        <li class="work-places-item">
+                            <div class="wp-img-wrap">
+                                <img src="../../../../assets/images/logos/lagoon.png">
+                            </div>
+                            <div class="network-list">
+                                <div class="wp-name">Lagoon Hospital</div>
+                                <div class="basic-info-others"><i class="fa fa-registered" aria-hidden="true"></i>RG1221AC</div>
+                                <div class="basic-info-others"><i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                                <div class="basic-info-others"><i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                            </div>
+                        </li>
+                        <li class="work-places-item">
+                            <div class="wp-img-wrap">
+                                <img src="../../../../assets/images/logos/lagoon.png">
+                            </div>
+                            <div class="network-list">
+                                <div class="wp-name">Lagoon Hospital</div>
+                                <div class="basic-info-others"><i class="fa fa-registered" aria-hidden="true"></i>RG1221AC</div>
+                                <div class="basic-info-others"><i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                                <div class="basic-info-others"><i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                            </div>
+                        </li>
+                        <li class="work-places-item">
+                            <div class="wp-img-wrap">
+                                <img src="../../../../assets/images/logos/lagoon.png">
+                            </div>
+                            <div class="network-list">
+                                <div class="wp-name">Lagoon Hospital</div>
+                                <div class="basic-info-others"><i class="fa fa-registered" aria-hidden="true"></i>RG1221AC</div>
+                                <div class="basic-info-others"><i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                                <div class="basic-info-others"><i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            
+            <div class="pp-card shadow-grey">
+                <div class="card-title">Activities Feed</div>
+                <ul class="feed-ul">
+                <li class="feed-li">
+                    You was scheduled for a blood count test on the 16th dec, 2017, 9:00am at Clinix Diagnostics
+                    <div class="feed-time">16th Dec, 2017. 08:00am</div>
+                </li>
+                <li class="feed-li">
+                    &#8358;1500 was debited from your wallet for your blood count test at Clinix Diagnostics
+                    <div class="feed-time">16th Dec, 2017. 08:01am</div>
+                </li>
+                <li class="feed-li">
+                    Your blood count test results from Clinix Diagnostics is available
+                    <div class="feed-time">16th Dec, 2017. 08:00am</div>
+                </li>
+                </ul>
+            </div> 
         </div>
+        <div class="mid-sect">
+            <div class="pp-card shadow-grey">
+                <div class="card-title">Department(s)</div>
+
+                <ul class="dept-wrap">
+                    <li class="dept-li">
+                        <div class="dept-item">
+                            <div class="dept-name">Surgery</div>
+                            <div class="action-icons">
+                                <i [hidden]="showUnit" (click)="showUnit_click()" class="fa fa-expand" aria-hidden="true"></i>
+                                <i *ngIf="showUnit" (click)="showUnit_hide()" class="fa fa-compress" aria-hidden="true"></i>
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div *ngIf="showUnit" class="dept-units">
+                            <table cellpadding="0" cellspacing="0" border="0.5"> 
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <span style="padding-left: 3px;">Unit</span>
+                                        </th>
+                                        <th>
+                                            <span style="padding-left: 3px;">Short Name</span>
+                                        </th>
+                                        <th>
+                                            <span style="padding-left: 3px;">Describtion</span>
+                                        </th>
+                                        <th style="min-width:120px;">
+                                            <span style="padding-left: 3px;">Clinic</span>
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                
+                                <tbody>
+                                    <tr>
+                                        <td> Surgical Out Patient Unit</td>
+                                        <td>SOP Unit</td>
+                                        <td>All them surgicall operations takes place right here at this department</td>
+                                        <td class="td-worspace">
+                                            <div class="workspace-count">
+                                                <div class="workspace-count">3 Clinic(s)</div>
+                                                <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                                    <li class="workspace-listItem">
+                                                        <ng-container>
+                                                            <span>Clinic 1</span>
+                                                            <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
+                                                        </ng-container>
+                                                    </li>
+                                                    <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                                </ul>
+                                            </div>
+                                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                                <li class="workspace-listItem">
+                                                    <ng-container>
+                                                        <span>Workspace 1</span>
+                                                        <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
+                                                    </ng-container>
+                                                </li>
+                                                <li class="workspace-listItem">
+                                                    <ng-container>
+                                                        <span>Workspace 2</span>
+                                                        <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
+                                                    </ng-container>
+                                                </li>
+                                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                            </ul>
+                                        </td>
+                                        <td class="action-icons">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div> 
+        <span (click)="newEmpShow()" id="floating-button">
+            <p class="plus">+</p>
+        </span>
     </div>
-    <div class="inner-menu1-wrap responsive_nav-group">
-        <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
-            aria-hidden="true"></i>
-        <ul id="innerMenu-ul" *ngIf="contentSecMenuShow" class="innerMenu-ul shadow">
-            <li (click)="changeRoute('')"><i class="fa fa-home" aria-hidden="true"></i> Home</li>
-            <li (click)="changeRoute('dashboard')"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li>
-            <li (click)="changeRoute('departments')"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
-            <li (click)="changeRoute('locations')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
-            <li (click)="changeRoute('workspaces')"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
-            <li (click)="changeRoute('options')"><i class="fa fa-map-marker" aria-hidden="true"></i> Options</li>
-            <li (click)="changeRoute('profession')"><i class="fa fa-map-marker" aria-hidden="true"></i> Profession</li>
-        </ul>
-    </div>
-    <div class="inner-page-wrap">
-        <div class="inner-page-contentArea">
-            <router-outlet></router-outlet>
-        </div>
-    </div>
-</div>
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <mat-spinner></mat-spinner>
 </div>
