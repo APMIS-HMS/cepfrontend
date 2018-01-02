@@ -197,7 +197,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
             const prescription = <Prescription>{
                 facilityId: this.facility._id,
-                employeeId: this.employeeDetails.employeeDetails._id,
+                employeeId: this.employeeDetails._id,
                 employeeObject: this._facilityService.trimEmployee(this.employeeDetails),
                 clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : undefined,
                 priorityId: '',

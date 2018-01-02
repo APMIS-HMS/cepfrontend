@@ -50,11 +50,18 @@
                                             </select>
                                 </div>
                                 <div class="col-sm-4">
-                                    <mat-input-container>
+                                    <mat-form-field>
+                                        <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date">
+                                        <mat-icon matSuffix>
+                                            <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                        </mat-icon>
+                                    </mat-form-field>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <!-- <mat-input-container>
                                         <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date">
                                         <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
                                     </mat-input-container>
-                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-datepicker #picker></mat-datepicker> -->
                                     <!-- <mat-input-container>
                     <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
                     <button mdSuffix [matDatepickerToggle]="picker"></button>

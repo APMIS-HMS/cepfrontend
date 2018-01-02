@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User, 
+import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User,
 	Dispensed, DispensedArray, BatchTransaction,
 	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
@@ -82,7 +82,7 @@ export class PrescriptionComponent implements OnInit {
 
 		if (this.prescriptionItems.prescriptionItems !== undefined) {
 			const notBilled = this.prescriptionItems.prescriptionItems.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
-			
+
 			if(notBilled.length > 0) {
 				this.disableDispenseAllBtn = true;
 			} else {
@@ -104,7 +104,7 @@ export class PrescriptionComponent implements OnInit {
 
 		if(tempArray.length > 0) {
 			this.disableSaveBtn = true;
-			this.saveBtn = "Saving... <i class='fa fa-spinner fa-spin'></i>";
+			this.saveBtn = 'Saving... <i class="fa fa-spinner fa-spin"></i>';
 
 			if(!this.isExternalPrescription) {
 				this._isPrescriptionLogic();
@@ -139,7 +139,7 @@ export class PrescriptionComponent implements OnInit {
 
 					// Push all dispenseItem into dispenseArray
 					dispenseArray.push(dispenseItem);
-				} 
+				}
 				// else if(element.isExternal) {
 				// 	const external = {
 				// 		genericName: element.genericName,
@@ -179,7 +179,7 @@ export class PrescriptionComponent implements OnInit {
 					this.disableDispenseAllBtn = true;
 					this.dispenseAllBtnText = 'Saved';
 					this._notification('Success', 'Drugs has been sent.');
-					
+
 					setTimeout(e => {
 						this._notification('Info', 'Redirecting...');
 					}, 1000);
@@ -191,7 +191,7 @@ export class PrescriptionComponent implements OnInit {
 			// if(externalDispense.generics.length > 0) {
 			// 	// Save external Prescriptions.
 			// 	this._externalPrescriptionService.create(externalDispense).then(res => {
-			// 	
+			//
 			// 	}).catch(err => console.error(err));
 			// }
 		} else {
@@ -203,7 +203,7 @@ export class PrescriptionComponent implements OnInit {
 	private _getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {}).then(res => {
 			this.loading = false;
-			
+
 			// Check if the page is for prescription or external prescription
 			if(!this.isExternalPrescription) {
 				this.prescriptionItems = res;
@@ -289,13 +289,13 @@ export class PrescriptionComponent implements OnInit {
 				this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
 				const productId = prescription.productId;
 				//const productId = '592419145fbce732205cf0ba';
-				if(this.storeId.typeObject.storeId !== undefined) {
+				if (this.storeId.typeObject.storeId !== undefined) {
 					// Get the batches for the selected product
-					this._inventoryService.find({ 
-						query: { 
-							facilityId: this.facility._id, 
-							productId: productId, 
-							storeId: this.storeId.typeObject.storeId 
+					this._inventoryService.find({
+						query: {
+							facilityId: this.facility._id,
+							productId: productId,
+							storeId: this.storeId.typeObject.storeId
 						}})
 						.then(res => {
 							this.batchLoading = false;
@@ -323,7 +323,7 @@ export class PrescriptionComponent implements OnInit {
 					this._notification('Info', 'Please check into store!');
 				}
 			} else {
-				this._notification('Error', 'Patient has not paid for this item, so you can not dispense it!');	
+				this._notification('Error', 'Patient has not paid for this item, so you can not dispense it!');
 			}
 		} else {
 			this._notification('Info', 'This item is marked external, you can not bill the patient!');
@@ -346,7 +346,7 @@ export class PrescriptionComponent implements OnInit {
 					if(this.storeId.typeObject.storeId !== undefined) {
 						// disable the dispense button.
 						this.disableDispenseBtn = true;
-						this.qtyDispenseBtn = "Dispensing... <i class='fa fa-spinner fa-spin'></i>";
+						this.qtyDispenseBtn = 'Dispensing... <i class="fa fa-spinner fa-spin"></i>';
 						// Update the quantityDispensed in the selected item.
 						const itemIndex = this.prescriptionItems.prescriptionItems.findIndex(item => item._id == itemId);
 						this.prescriptionItems.prescriptionItems[itemIndex].quantityDispensed += inputBatch[index];
@@ -362,7 +362,7 @@ export class PrescriptionComponent implements OnInit {
 									.then(res => {
 										// disable the dispense button.
 										this.disableDispenseBtn = false;
-										this.qtyDispenseBtn = "Dispense";
+										this.qtyDispenseBtn = 'Dispense';
 										this._notification('Success', 'Quantity has been deducted.');
 									})
 									.catch(err => {
@@ -455,7 +455,7 @@ export class PrescriptionComponent implements OnInit {
 							}
 						});
 					});
-					
+
 					setTimeout(e => {
 						const condition = this.prescriptionItems.prescriptionItems.length !== this.prescriptions.length;
 						const notBilled = this.prescriptions.filter( x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
@@ -519,16 +519,16 @@ export class PrescriptionComponent implements OnInit {
 										unitDiscountedAmount: 0,
 										totalDiscoutedAmount: 0,
 									};
-		
+
 									totalCost += element.totalCost;
 									totalQuantity += element.quantity;
 									this.totalQuantity += element.quantity;
 									this.totalCost += element.totalCost;
-		
+
 									res.billItems.push(billItem);
 								}
 							});
-						
+
 							// Update the subTotal and grandTotal in the billing response.
 							res.subTotal += totalCost;
 							res.grandTotal += totalCost;
@@ -542,7 +542,7 @@ export class PrescriptionComponent implements OnInit {
 										this._prescriptionService.update(this.prescriptionItems).then(res => {
 											if(res._id !== undefined) {
 												this.disableSaveBtn = false;
-												this.saveBtn = "Save";
+												this.saveBtn = 'Save';
 												// clear prescriptions then call the getPrescriptionsDetails again.
 												this.prescriptions = [];
 												this.totalCost = 0;
@@ -556,7 +556,7 @@ export class PrescriptionComponent implements OnInit {
 						} else {
 							// Reset back the button.
 							this.disableSaveBtn = false;
-							this.saveBtn = "Save";
+							this.saveBtn = 'Save';
 						}
 					} else {
 						// This is a new facility that is trying to bill a drug
@@ -578,7 +578,7 @@ export class PrescriptionComponent implements OnInit {
 		const billItemArray = [];
 		let totalCost = 0;
 		let totalQuantity = 0;
-		
+
 		this.unBilledArray.forEach(element => {
 			if(element.isBilled) {
 				const billItem = <BillItem> {
@@ -623,7 +623,7 @@ export class PrescriptionComponent implements OnInit {
 							.then(res => {
 								if(res._id !== undefined) {
 									this.disableSaveBtn = false;
-									this.saveBtn = "Save";
+									this.saveBtn = 'Save';
 									// clear prescriptions then call the getPrescriptionsDetails again.
 									this.prescriptions = [];
 									this.totalCost = 0;
@@ -637,9 +637,9 @@ export class PrescriptionComponent implements OnInit {
 				.catch(err => { console.log(err); });
 		} else {
 			this.disableSaveBtn = false;
-			this.saveBtn = "Save";
+			this.saveBtn = 'Save';
 			this._notification('Info', 'If you do not have any of these drugs, Please check each item as external.');
 		}
 	}
-	
+
 }

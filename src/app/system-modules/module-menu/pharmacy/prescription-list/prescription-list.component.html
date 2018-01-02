@@ -1,6 +1,6 @@
-<div class="backBtn" routerLink="/dashboard/store/home">
+<!-- <div class="backBtn" routerLink="/dashboard/store/home">
     Go To Store
-</div>
+</div> -->
 <section id="presc-list">
     <mat-tab-group>
         <mat-tab label="Prescription">
@@ -52,11 +52,18 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <mat-input-container>
+                                            <mat-form-field>
+                                                <input matInput formControlName="date" [matDatepicker]="pickerr" placeholder="Choose a date">
+                                                <mat-icon matSuffix>
+                                                    <mat-datepicker-toggle mdSuffix [for]="pickerr"></mat-datepicker-toggle>
+                                                </mat-icon>
+                                            </mat-form-field>
+                                            <mat-datepicker #pickerr></mat-datepicker>
+                                            <!-- <mat-input-container>
                                                 <input matInput formControlName="date" [matDatepicker]="pickerr" placeholder="Choose a date">
                                                 <mat-datepicker-toggle mdSuffix [for]="pickerr"></mat-datepicker-toggle>
                                             </mat-input-container>
-                                            <mat-datepicker #pickerr></mat-datepicker>
+                                            <mat-datepicker #pickerr></mat-datepicker> -->
                                             <!-- <mat-input-container>
                                                 <input formControlName="date" matInput [matDatepicker]="picker1" placeholder="Choose a date">
                                                 <button mdSuffix [matDatepickerToggle]="picker1"></button>
@@ -140,12 +147,20 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <mat-input-container>
-                                                <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
-                                                <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
-                                                <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                                            </mat-input-container>
+                                            <mat-form-field>
+                                                <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date">
+                                                <mat-icon matSuffix>
+                                                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                                </mat-icon>
+                                            </mat-form-field>
                                             <mat-datepicker #picker></mat-datepicker>
+                                            <!-- <mat-form-field>
+                                                <mat-input-container>
+                                                    <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
+                                                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                                                </mat-input-container>
+                                            </mat-form-field>
+                                            <mat-datepicker #picker></mat-datepicker> -->
                                         </div>
                                     </form>
                                 </td>

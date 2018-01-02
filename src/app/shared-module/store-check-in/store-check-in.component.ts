@@ -15,6 +15,7 @@ export class StoreCheckInComponent implements OnInit {
 	errMsg = 'You have unresolved errors';
 	@Input() loginEmployee: Employee;
 	@Input() workSpace: any;
+	workSpaces: any;
 
 	public storeCheckin: FormGroup;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -32,12 +33,13 @@ export class StoreCheckInComponent implements OnInit {
 		public storeService: StoreService,
 		public locker: CoolLocalStorage
 	) {
+    this.workSpaces = this.locker.getObject('workspaces');
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 	}
 
 	ngOnInit() {
-		if (this.loginEmployee.workSpaces !== undefined) {
-			this.loginEmployee.workSpaces.forEach(workspace => {
+		if (this.workSpaces !== undefined) {
+			this.workSpaces.forEach(workspace => {
 				if(workspace.isActive && workspace.locations.length > 0) {
 					workspace.locations.forEach(x => {
 					  if(x.isActive) {
@@ -45,8 +47,7 @@ export class StoreCheckInComponent implements OnInit {
 					  }
 					});
 				  }
-			})
-
+			});
 		}
 
 		this.storeCheckin = this.formBuilder.group({

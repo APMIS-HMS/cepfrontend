@@ -3,9 +3,11 @@
         <div class="col-sm-5">
             <div class="input-group-btn">
                 <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
-                <mat-select placeholder="Client" formControlName="client" [(ngModel)]="selectedClient" (change)="onChange($event.value)" class="example-full-width">
-                    <mat-option *ngFor="let client of clients" [value]="client.name">{{ client.name }}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Client" formControlName="client" [(ngModel)]="selectedClient" (change)="onChange($event.value)" class="example-full-width">
+                        <mat-option *ngFor="let client of clients" [value]="client.name">{{ client.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
     </div>
@@ -54,19 +56,25 @@
                     </mat-radio-group>
                 </div>
                 <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="deptLocationShow">
-                    <mat-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
-                        <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
+                            <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="deptLocationShow">
-                    <mat-select placeholder="Unit" formControlName="unit" class="example-full-width">
-                        <mat-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Unit" formControlName="unit" class="example-full-width">
+                            <mat-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="!deptLocationShow">
-                    <mat-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
-                        <mat-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
+                            <mat-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <!--end Internal-->
@@ -94,10 +102,12 @@
                 </div>
             </div>
             <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top:2px;">
-                <mat-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
-                    <mat-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
-                    </mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
+                        <mat-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="col-sm-2 col-mat-2 col-xs-12">
                 <mat-input-container class="example-full-width">
@@ -106,7 +116,7 @@
             </div>
             <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
-                <span style="margin-top: 40px;"> 
+                <span style="margin-top: 40px;">
                     <small><b>Unit price: &#x20A6;{{ price }}</b></small><br>
                 </span>
             </div>
