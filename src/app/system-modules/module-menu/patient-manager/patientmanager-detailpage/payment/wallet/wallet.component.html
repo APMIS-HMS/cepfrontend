@@ -22,9 +22,11 @@
                 </mat-input-container>
             </div>
             <div class="frm-item-wrap">
-                <mat-select formControlName="paymentType" placeholder="Payment Type" class="mat-select">
-                    <mat-option *ngFor="let paymentChannel of paymentChannels" [(value)]="paymentChannel.name"> {{ paymentChannel.name }}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select formControlName="paymentType" placeholder="Payment Type" class="mat-select">
+                        <mat-option *ngFor="let paymentChannel of paymentChannels" [(value)]="paymentChannel.name"> {{ paymentChannel.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </form>
         <!-- <ul class="topmenuwrap" *ngIf="!makingPayment">

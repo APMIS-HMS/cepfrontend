@@ -17,17 +17,20 @@
 
             <form [formGroup]="storeCheckin" novalidate>
                 <div class="frm-item-wrap">
-                    <mat-select class="example-full-width" placeholder="Location" formControlName="location">
-                        <mat-option *ngFor="let location of locations" value={{location._id}}>{{location.name}}</mat-option>
-                        <!-- <mat-option *ngFor="let location of workSpace?.locations" [value]="location.minorLocationId">{{location.minorLoactionDetails.name}}</mat-option> -->
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Location" formControlName="location">
+                            <mat-option *ngFor="let location of locations" value={{location._id}}>{{location.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
 
                 <div class="frm-item-wrap">
-                    <mat-select class="example-full-width" placeholder="Store" formControlName="room">
-                        <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Store" formControlName="room">
+                            <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="set-default">
