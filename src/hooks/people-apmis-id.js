@@ -6,9 +6,9 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
     return new Promise(function (resolve, reject) {
       if (context && context.app) {
-        context.app.service('get-tokens').get(tokenLabel.tokenType.facilityVerification, {}).then(payload => {
-          context.data.verificationToken = payload.result;
-          context.alertType = tokenLabel.tokenType.facilityVerification;
+        context.app.service('get-tokens').get(tokenLabel.tokenType.apmisId, {}).then(payload => {
+          context.data.apmisId = payload.result;
+          context.alertType = tokenLabel.tokenType.apmisId;
           resolve(context);
         }, error => {
           reject(error);

@@ -1,3 +1,5 @@
+const peopleApmisId = require('../../hooks/people-apmis-id');
+const alerts = require('../../hooks/alerts');
 //const { authenticate } = require('@feathersjs/authentication').hooks;
 
 module.exports = {
@@ -5,7 +7,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [peopleApmisId()],
     update: [],
     patch: [],
     remove: []
@@ -15,7 +17,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [alerts()],
     update: [],
     patch: [],
     remove: []

@@ -35,13 +35,13 @@ class Service {
 
   generateId(data) {
     let apmisNo = this.getApmisId();
-    data.apmisId = apmisNo;
+    data.result = apmisNo;
   }
 
   get(id, param) {
     let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
-      data.token = this.generateOtp();
+      data.result = this.generateOtp();
     } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
       this.generateId(data);
     }
@@ -51,7 +51,7 @@ class Service {
   find(id, param) {
     let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
-      data.token = this.generateOtp();
+      data.result = this.generateOtp();
     } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
       this.generateId(data);
     }
