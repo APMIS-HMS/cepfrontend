@@ -28,7 +28,7 @@ export class SocketService {
     this.socket = io(this.HOST);
     this._app = feathers()
       .configure(socketio(this.socket))
-      .configure(rx(RxJS, { listStrategy: 'always' }))
+      .configure(rx({ idField: "_id", listStrategy: 'always' }))
       .configure(hooks())
       .configure(authentication({ storage: window.localStorage }));
   }
@@ -38,12 +38,13 @@ export class SocketService {
   }
   loginIntoApp(query: any) {
     return this._app.authenticate({
-      type: 'local',
+      "strategy": 'local',
       'email': query.email,
       'password': query.password
     });
   }
   getService(value: any) {
+    this._app.authenticate();
     return this._app.service(value);
   }
 }
@@ -66,24 +67,26 @@ export class RestService {
             headers: { 'authorization': 'Bearer ' + auth.token }
           }
         )) // Fire up rest
-        .configure(rx(RxJS, { listStrategy: 'always' }))
+        .configure(rx({ idField: '_id', listStrategy: 'always' }))
         .configure(hooks())
-        .configure(authentication());
+        .configure(authentication({ storage: window.localStorage }));
     } else {
       this._app = feathers() // Initialize feathers
         .configure(rest(this.HOST).superagent(superagent)) // Fire up rest
         .configure(hooks())
-        .configure(authentication()); // Configure feathers-hooks
+        .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
     }
   }
   loginIntoApp(query) {
+    console.log(query);
     return this._app.authenticate({
-      type: 'local',
+      "strategy": 'local',
       'email': query.email,
       'password': query.password
     });
   }
   getService(value: any) {
+    this._app.authenticate();
     return this._app.service(value);
   }
   getHost() {
