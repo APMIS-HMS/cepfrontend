@@ -53,25 +53,29 @@ export class LoginComponent implements OnInit {
   }
   login(valid) {
     if (valid) {
-      this.loadIndicatorVisible = true;
+      // this.loadIndicatorVisible = true;
       const query = {
         email: this.frm_login.controls['username'].value,
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
         console.log(result);
+        this.userService.authenticateResource();
         this.userService.find({}).then(payload =>{
           console.log(payload);
         }, error =>{
           console.log(error);
         });
-        // this.locker.setObject('auth', result);
+        let auth = {
+          data: result.user
+        }
+        this.locker.setObject('auth', result.user);
 
-        //  this.router.navigate(['/accounts']).then(pay => {
-        //   this.userService.isLoggedIn = true;
-        //   this.userService.announceMission('in');
-        //   this.loadIndicatorVisible = false;
-        // });
+        this.router.navigate(['/accounts']).then(pay => {
+          this.userService.isLoggedIn = true;
+          this.userService.announceMission('in');
+          this.loadIndicatorVisible = false;
+        });
 
       },
         error => {

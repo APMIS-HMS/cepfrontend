@@ -1,5 +1,5 @@
 <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-<form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1)">
+<form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1.value)">
 
     <div class="frm-item-wrap">
         <mat-input-container class="example-full-width">
@@ -41,11 +41,11 @@
             <input matInput mat-error placeholder="CAC Reg No" formControlName="cac">
         </mat-input-container>
     </div>
-    <div class="frm-item-wrap">
+    <!-- <div class="frm-item-wrap">
         <mat-input-container class="example-full-width">
             <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
         </mat-input-container>
-    </div>
+    </div> -->
     <div class="frm-item-wrap">
         <mat-input-container>
             <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
@@ -56,7 +56,7 @@
         <div class="control__indicator"></div>
     </label> -->
 
-    <button class="cta-1"> 
+    <button [disabled]="!facilityForm1.valid" class="cta-1"> 
     SIGN UP
     </button>
 

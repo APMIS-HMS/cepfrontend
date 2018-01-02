@@ -11,6 +11,7 @@ const request = require('superagent');
 export class FacilitiesService {
   public listner;
   public _socket;
+  public _saveFacilitySocket;
   private _rest;
   private _restLogin;
 
@@ -28,6 +29,7 @@ export class FacilitiesService {
   ) {
     this._rest = _restService.getService('facilities');
     this._socket = _socketService.getService('facilities');
+    this._saveFacilitySocket = _socketService.getService('save-facility');
     this._socket.timeout = 30000;
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -46,7 +48,7 @@ export class FacilitiesService {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {
@@ -69,6 +71,13 @@ export class FacilitiesService {
   }
   create(facility: any) {
     return this._socket.create(facility);
+  }
+  createFacility(facility: any) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._saveFacilitySocket.create(facility))
+    });
+    // return this._saveFacilitySocket.create(facility);
   }
   update(facility: any) {
     return this._socket.update(facility._id, facility);

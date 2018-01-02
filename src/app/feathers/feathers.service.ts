@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 const feathers = require('feathers/client');
 const socketio = require('feathers-socketio/client');
 const io = require('socket.io-client');
@@ -22,7 +23,7 @@ export class SocketService {
   public socket: any;
   public HOST;
   private _app: any;
-  constructor(public locker: CoolLocalStorage) {
+  constructor(public locker: CoolLocalStorage, private _router:Router) {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
@@ -43,8 +44,13 @@ export class SocketService {
     });
   }
   getService(value: any) {
-    this._app.authenticate();
+    // this._app.authenticate();
     return this._app.service(value);
+  }
+  authenticateService() {
+    this._app.authenticate().then(payload =>{},error =>{
+      this._router.navigate(['/']);
+    });
   }
 }
 
@@ -56,7 +62,7 @@ export class RestService {
   logOut() {
     this.locker.clear();
   }
-  constructor(private locker: CoolLocalStorage) {
+  constructor(private locker: CoolLocalStorage, private _router:Router) {
     this.HOST = HOST;
     if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
       const auth: any = this.locker.getObject('auth')
@@ -85,8 +91,13 @@ export class RestService {
     });
   }
   getService(value: any) {
-    this._app.authenticate();
+    // this._app.authenticate();
     return this._app.service(value);
+  }
+  authenticateService() {
+    this._app.authenticate().then(payload =>{},error =>{
+      this._router.navigate(['/']);
+    });
   }
   getHost() {
     return this.HOST;

@@ -1,3 +1,5 @@
+import { FacilitiesService } from './../../services/facility-manager/setup/facility.service';
+
 import { CountryServiceFacadeService } from './../../system-modules/service-facade/country-service-facade.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -5,6 +7,7 @@ import { Facility } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
+import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
 
 @Component({
 	selector: 'app-facility-info',
@@ -20,6 +23,7 @@ export class FacilityInfoComponent implements OnInit {
 	countries: any[] = [];
 	states: any[] = [];
 	public facilityForm1: FormGroup;
+	selectedLocation: any;
 	userSettings: any = {
 		geoCountryRestriction: [GEO_LOCATIONS],
 		showCurrentLocation: false,
@@ -30,7 +34,9 @@ export class FacilityInfoComponent implements OnInit {
 	constructor(
 		private formBuilder: FormBuilder,
 		private _route: ActivatedRoute,
-		private _countryServiceFacade: CountryServiceFacadeService
+		private _countryServiceFacade: CountryServiceFacadeService,
+		private _facilityService: FacilitiesService,
+		private _facilityServiceFacade: FacilityFacadeService
 	) { }
 
 	ngOnInit() {
@@ -38,9 +44,9 @@ export class FacilityInfoComponent implements OnInit {
 
 			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
 			facilityemail: ['', [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
-			facilitywebsite: ['', [<any>Validators.required, <any>Validators.pattern(WEBSITE_REGEX)]],
+			// facilitywebsite: ['', [ <any>Validators.pattern(WEBSITE_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
-			address: ['', [<any>Validators.required]],
+			address: ['', []],
 			cac: ['', [<any>Validators.required]],
 			facilitystreet: ['', [<any>Validators.required]],
 			facilitycity: ['', [<any>Validators.required]],
@@ -50,7 +56,6 @@ export class FacilityInfoComponent implements OnInit {
 		});
 		this.facilityForm1.controls.facilitycountry.valueChanges.subscribe(country => {
 			this._countryServiceFacade.getOnlyStates(country).then((payload: any) => {
-				console.log(payload);
 				this.states = payload;
 			}).catch(error => {
 
@@ -61,7 +66,6 @@ export class FacilityInfoComponent implements OnInit {
 
 	_getCountries() {
 		this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
-			console.log(payload);
 			this.countries = payload;
 		}).catch(error => {
 			console.log(error);
@@ -71,11 +75,9 @@ export class FacilityInfoComponent implements OnInit {
 		this.closeModal.emit(true);
 	}
 	autoCompleteCallback1(selectedData: any) {
-		//do any necessery stuff.
-		console.log(selectedData);
 		if (selectedData.response) {
 			let res = selectedData;
-			console.log(res.data.address_components[0].types[0]);
+			this.selectedLocation = res.data;
 			if (res.data.address_components[0].types[0] === 'route') {
 				let streetAddress = res.data.address_components[0].long_name;
 				let city = res.data.address_components[1].long_name;
@@ -102,9 +104,31 @@ export class FacilityInfoComponent implements OnInit {
 
 	compareState(l1: any, l2: any) {
 		return l1.includes(l2);
-	  }
+	}
 
 	save(form) {
 		console.log(form)
+		let facility: any = {
+			name: form.facilityname,
+			email: form.facilityemail,
+			cacNo: form.cac,
+			primaryContactPhoneNo: form.facilityphonNo,
+			address: this.selectedLocation,
+			country: form.facilitycountry,
+			state: form.facilitystate,
+			city: form.facilitycity,
+			street: form.facilitystreet
+		}
+		let payload = {
+			facility: facility,
+			apmisId:this._facilityServiceFacade.facilityCreatorApmisID,
+			personId:this._facilityServiceFacade.facilityCreatorPersonId
+		}
+		this._facilityServiceFacade.saveFacility(payload).then(payload => {
+			console.log(payload);
+		}, error => {
+			console.log(error);
+		})
+		console.log(facility);
 	}
 }

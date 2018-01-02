@@ -75,8 +75,6 @@ export class PersonAccountComponent implements OnInit {
   }
 
   submit(valid, val) {
-    console.log(valid);
-    console.log(val);
     if (valid) {
       const personModel = <any>{
         title: this.frmPerson.controls['persontitle'].value,
@@ -85,7 +83,7 @@ export class PersonAccountComponent implements OnInit {
         gender: this.frmPerson.controls['lastname'].value,
         dateOfBirth: this.frmPerson.controls['dob'].value,
         email: this.frmPerson.controls['email'].value,
-        phoneNumber: this.frmPerson.controls['phone'].value
+        primaryContactPhoneNo: this.frmPerson.controls['phone'].value
       };
 
       this.personService.create(personModel).then((ppayload) => {

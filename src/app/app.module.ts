@@ -47,6 +47,7 @@ import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
+import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,7 @@ import { TitleGenderFacadeService } from 'app/system-modules/service-facade/titl
     SetupService.TemplateService, PolicyService, PayStackService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
-    CountryServiceFacadeService, TitleGenderFacadeService
+    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService
   ],
   bootstrap: [AppComponent]
 })

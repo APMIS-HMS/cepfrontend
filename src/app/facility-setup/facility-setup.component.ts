@@ -249,17 +249,7 @@ export class FacilitySetupComponent implements OnInit {
     });
   }
   getCountries() {
-    // this.countriesService.find({
-    //   query: {
-    //     $select: { 'states': 0 }
-    //   }
-    // }).then((payload) => {
-    //   this.countries = payload.data;
-    // }, error => {
-
-    // });
     this.countryFacadeService.getOnlyCountries().then(payload =>{
-      console.log(payload);
     }).catch(error =>{
       console.log(error);
     });
