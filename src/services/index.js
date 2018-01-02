@@ -16,6 +16,7 @@ const people = require('./people/people.service.js');
 const emailers = require('./emailers/emailers.service.js');
 const patients = require('./patients/patients.service.js');
 const smsSenders = require('./sms-senders/sms-senders.service.js');
+const saveFacility = require('./save-facility/save-facility.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -35,4 +36,5 @@ module.exports = function (app) {
   app.configure(emailers);
   app.configure(patients);
   app.configure(smsSenders);
+  app.configure(saveFacility);
 };
