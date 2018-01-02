@@ -17,7 +17,7 @@ class Service {
 
   makeid() {
     var text = '';
-    var possible = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for (var i = 0; i < 2; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
@@ -35,37 +35,25 @@ class Service {
 
   generateId(data) {
     let apmisNo = this.getApmisId();
-    return this.app.service('people').find({
-      query: {
-        apmisId: apmisNo
-      }
-    }).then(personsApmisReturn => {
-      if (personsApmisReturn.data.length == 0) {
-        data.apmisId = apmisNo;
-      } else {
-        return this.generateId(data);
-      }
-    });
+    data.apmisId = apmisNo;
   }
 
   get(id, param) {
-    let data = {
-      token: 0
-    };
+    let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
-    } else if (param.query.label.toString() === tokenLabel.tokenType.apmisId.toString()) {
+    } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
       this.generateId(data);
     }
     return Promise.resolve(data);
   }
 
   find(id, param) {
-    let data = {
-      token: 0
-    };
+    let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
+    } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
+      this.generateId(data);
     }
     return Promise.resolve(data);
   }
