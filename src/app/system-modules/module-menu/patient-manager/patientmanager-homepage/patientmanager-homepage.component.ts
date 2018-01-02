@@ -203,6 +203,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.systemService.off();
       this.loading = false;
       this.total = payload.total;
+      console.log(payload.data)
       if (payload.data.length > 0) {
         if (this.resetData !== true) {
           this.patients.push(...payload.data);

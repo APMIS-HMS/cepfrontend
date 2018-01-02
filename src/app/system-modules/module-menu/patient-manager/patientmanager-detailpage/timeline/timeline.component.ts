@@ -41,7 +41,11 @@ export class TimelineComponent implements OnInit {
       }
     }).then((payload: any) => {
       console.log(payload);
+      console.log('Timeline');
       this.timeLineLists = payload.data;
+    }).catch(err => {
+      console.log(err);
+      console.log('Error In Timeline');
     })
   }
 
