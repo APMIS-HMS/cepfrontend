@@ -19,7 +19,7 @@ function sendEmailViaApi(sender, receiver, title, body) {
   });
 }
 
-function emailAomisIdTemplate(themeMessage, titleMessage, data) {
+function emailApmisIdTemplate(themeMessage, titleMessage, data) {
   let tem = `<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #f5f8fa; min-width: 350px; font-size: 1px; line-height: normal;">
     <tr>
       <td align="center" valign="top">
@@ -430,14 +430,14 @@ function emailOtpTemplate(themeMessage, titleMessage, data) {
 function sendApmisId(data) {
   const message = `This is to notify you that ${data.apmisId}. is your personal APMIS identification number.`;
   const title = 'Confirm Your APMIS Id';
-  let tem = emailAomisIdTemplate(message, title, data);
+  let tem = emailApmisIdTemplate(message, title, data);
   sendEmailViaApi('dev@apmis.ng', data.email, title, tem);
 }
 
 function passwordReset(data) {
   const title = 'Password Reset';
   const message = `Kindly use this code ${data.otp} to complete your password reset.`;
-  let tem = emailTemplate(message, title, data);
+  let tem = emailApmisIdTemplate(message, title, data);
   sendEmailViaApi('dev@apmis.ng', data.email, title, tem);
 }
 
@@ -451,14 +451,14 @@ function sendToken(data) {
 function authGeneratedPassword(data) {
   const title = 'APMIS Auto-generated Password';
   const message = `APMIS Auto-generated password: ${data.password} kindly change your password.`;
-  let tem = emailTemplate(message, title, data);
+  let tem = emailApmisIdTemplate(message, title, data);
   sendEmailViaApi('dev@apmis.ng', data.email, title, tem);
 }
 
 function appointment(data) {
   let themeMessage = (data.doctorId.employeeDetails != undefined) ? `This is to notify you of your appointment with ${data.doctorId.employeeDetails.personFullName} scheduled for: ${data.date} at ${data.facilityId.name} ${data.clinicId.clinicName} clinic` : `This is to notify you of your appointment scheduled for: ${data.date} at ${data.facilityId.name} ${data.clinicId.clinicName} clinic`;
   const title = 'Your Apmis Appoinment';
-  let tem = emailTemplate(themeMessage, title, data);
+  let tem = emailApmisIdTemplate(themeMessage, title, data);
   sendEmailViaApi('dev@apmis.ng', data.email, title, tem);
 }
 
