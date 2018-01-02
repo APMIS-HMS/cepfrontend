@@ -17,6 +17,6 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     // }
     // logger.error(context.error);
     // context.apmis = context.data;
-    return Promise.reject(new errors.GeneralError(new Error(context)));
+    return Promise.reject(context);
   };
 };

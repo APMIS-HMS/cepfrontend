@@ -3,6 +3,7 @@
 module.exports = {
   tokenType: {
     facilityVerification: 0,
-    apmisId: 1
+    apmisId: 1,
+    autoPassword: 2
   }
 };

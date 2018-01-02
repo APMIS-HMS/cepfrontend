@@ -1,14 +1,16 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const getApmisId = require('../../hooks/get-apmis-id');
+
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [],
     find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    get: [authenticate('jwt')],
+    create: [getApmisId()],
+    update: [authenticate('jwt')],
+    patch: [authenticate('jwt')],
+    remove: [authenticate('jwt')]
   },
 
   after: {

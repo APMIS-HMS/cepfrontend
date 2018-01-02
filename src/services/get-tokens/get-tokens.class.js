@@ -15,9 +15,20 @@ class Service {
     return otp;
   }
 
+  generateAutoPassword(data) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz';
+
+    for (var i = 0; i < 8; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    data.password = text;
+    return data;
+  }
+
   makeid() {
     var text = '';
-    var possible = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for (var i = 0; i < 2; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
@@ -35,17 +46,21 @@ class Service {
 
   generateId(data) {
     let apmisNo = this.getApmisId();
-    return this.app.service('people').find({
-      query: {
-        apmisId: apmisNo
-      }
-    }).then(personsApmisReturn => {
-      if (personsApmisReturn.data.length == 0) {
-        data.apmisId = apmisNo;
-      } else {
-        return this.generateId(data);
-      }
-    });
+    return data.apmisId = apmisNo;
+    // return this.app.service('people').find({
+    //   query: {
+    //     apmisId: apmisNo
+    //   }
+    // }).then(personsApmisReturn => {
+    //   logger.info(personsApmisReturn);
+    //   if (personsApmisReturn.data.length == 0) {
+    //     data.apmisId = apmisNo;
+    //   } else {
+    //     return this.generateId(data);
+    //   }
+    // }, error =>{
+    //   logger.info('its an error');
+    // });
   }
 
   get(id, param) {
@@ -54,8 +69,10 @@ class Service {
     };
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
       data.token = this.generateOtp();
-    } else if (param.query.label.toString() === tokenLabel.tokenType.apmisId.toString()) {
+    } else if (id.toString() === tokenLabel.tokenType.apmisId.toString()) {
       this.generateId(data);
+    } else if (id.toString() === tokenLabel.tokenType.autoPassword.toString()) {
+      this.generateAutoPassword(data);
     }
     return Promise.resolve(data);
   }
