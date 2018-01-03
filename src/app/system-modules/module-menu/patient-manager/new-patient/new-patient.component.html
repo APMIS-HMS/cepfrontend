@@ -89,7 +89,7 @@
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="next()" *ngIf="tabInsurance" mat-raised-button >
+                    <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" *ngIf="tabInsurance" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
@@ -130,6 +130,21 @@
                 <div class="frm-item-wrap">
                     <mat-input-container class="example-full-width">
                         <input matInput mat-error placeholder="Sur Name" formControlName="empLastName">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="hidden" matInput mat-error formControlName="facId">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="hidden" matInput mat-error formControlName="facName">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="hidden" matInput mat-error formControlName="empPersonId">
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
