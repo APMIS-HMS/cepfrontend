@@ -45,6 +45,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
+import { IkeComponent } from './ike/ike.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     HomeComponent,
     PasswordResetComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent
+    ApmisCheckboxComponent,
+    IkeComponent
   ],
   exports: [
     // MaterialModule,

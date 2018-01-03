@@ -7,6 +7,7 @@ export interface Invoice {
     invoiceNo: string;
     totalDiscount: number;
     totalPrice: number;
+    balance: number;
     grandAmount: number;
     createdAt: Date;
     grandTotal: number;

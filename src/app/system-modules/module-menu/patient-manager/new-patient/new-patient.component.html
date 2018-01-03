@@ -42,11 +42,11 @@
                       </mat-input-container>
                   </div>
                   <div class="frm-item-wrap">
-                    <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
-                      <mat-option>Diamond</mat-option>
-                      <mat-option>Gold</mat-option>
-                      <mat-option>Bronze</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
+                            <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                   </div>
             
                   <div class="another">Another Insurance</div>
@@ -58,15 +58,15 @@
                   <div class="plan-title">Company Cover</div>
                   <div class="frm-item-wrap">
                       <mat-input-container class="example-full-width">
-                          <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId" (keyup.enter)="employeeChecking(emp.value)" #emp>
+                          <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId" >
                       </mat-input-container>
                   </div>
                   <div class="frm-item-wrap">
-                    <mat-select placeholder="Select Plan" [formControl]="ccPlan">
-                      <mat-option>Diamond</mat-option>
-                      <mat-option>Gold</mat-option>
-                      <mat-option>Bronze</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                            <mat-select placeholder="Select Plan" [formControl]="ccPlan">
+                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                            </mat-select>
+                    </mat-form-field>
                   </div>
             
                   <div class="another">Another Company</div>
@@ -83,10 +83,25 @@
                   </div>
                 </div>
               </div>
-              <button class="cta-1" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid">Next</button>
-              <button class="cta-1" (click)="next()" *ngIf="tabInsurance">Next</button>
-              <button class="cta-1" (click)="next()" *ngIf="tabCompany">Next</button>
-              <button class="cta-1" (click)="next()" *ngIf="tabFamily">Next</button>
+              
+              <div class="btn-box">
+                    <button class="small-btn" (click)="next(walletPlan.value)" *ngIf="tabWallet" [disabled]="!walletPlan.valid" mat-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+                    <button class="small-btn" (click)="next()" *ngIf="tabInsurance" mat-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+                    <button class="small-btn" (click)="nextCompanyCover(ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+                    <button class="small-btn" (click)="next()" *ngIf="tabFamily" mat-raised-button >
+                        <span *ngIf="!loading">Next</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+              </div>
               <div class="back-btn-box">
                 <span (click)="back_empApmisID()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</span>
               </div>
@@ -167,7 +182,7 @@
             </div>
 
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp1.valid" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" mat-raised-button>CONTINUE</button>
+                <button class="small-btn" (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson1(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">CONTINUE</div> -->
         </form>
@@ -184,8 +199,8 @@
                 <div class="frm-item-wrap">
                     <mat-input-container>
                         <input matInput [matDatepicker]="picker" formControlName="empDOB" placeholder="Date of Birth">
-                        <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
-                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                        <!-- <button matSuffix [matDatepickerToggle]="picker"></button> -->
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     </mat-input-container>
                     <mat-datepicker #picker></mat-datepicker>
                 </div>
@@ -209,18 +224,18 @@
             <div class="rhs">
                 <div class="frm-item-wrap">
                     <mat-select placeholder="State (Residence)" formControlName="empContactState">
-                        <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let state of contactStates" [value]="state">{{state.name}}</mat-option>
                     </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <mat-select placeholder="City (Residence)" formControlName="empCity">
-                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let city of cities" [value]="city._id">{{city.name}}</mat-option>
                     </mat-select>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>                  
                     <mat-select placeholder="Select security question" formControlName="secQst">
-                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                        <mat-option *ngFor="let martialStatus of maritalStatuses" [value]="martialStatus._id">{{martialStatus.name}}</mat-option>
                     </mat-select>
                 </div>
                 <div class="frm-item-wrap">

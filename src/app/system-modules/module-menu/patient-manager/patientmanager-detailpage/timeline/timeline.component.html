@@ -14,7 +14,7 @@
         <div class="timeline-content">
           <div class="empWrap">
             <div class="list-img">
-              <img *ngIf="timeLine?.employeeId.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(timeLine?.employeeId.employeeDetails.profileImageObject.thumbnail)">
+              <img *ngIf="timeLine?.employeeId.employeeDetails.profileImageObject != undefined" [src]="facilitiesService.transform(timeLine?.employeeId.employeeDetails.profileImageObject.thumbnail)">
               <img *ngIf="timeLine?.employeeId.employeeDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
             </div>
             <div>
