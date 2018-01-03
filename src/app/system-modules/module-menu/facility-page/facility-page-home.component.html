@@ -1,10 +1,17 @@
-
+<ul class="pg-menuWrap">
+    <li (click)="changeRoute('departments')" [class.pg-menuActive]="departmentsContentArea"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
+    <li (click)="changeRoute('locations')" [class.pg-menuActive]="locationsContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
+    <li (click)="changeRoute('workspaces')" [class.pg-menuActive]="workspaceContentArea"><i class="fa fa-home" aria-hidden="true"></i> Workspace</li>
+    <!-- <li (click)="changeRoute('modules')" [class.pg-menuActive]="modulesContentArea"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li> -->
+    <li (click)="changeRoute('options')" [class.pg-menuActive]="optionsContentArea"><i class="fa fa-filter" aria-hidden="true"></i> Options</li>
+    <li (click)="changeRoute('profession')" [class.pg-menuActive]="professionContentArea"><i class="fa fa-briefcase" aria-hidden="true"></i> Profession</li>
+</ul>
 <div class="portal-wrap">
     <div class="content-sect">
         <div class="side-sect">
             <div class="pp-card shadow-grey">
             
-                <i class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+                <i (click)="editBasicInfo_onClick()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
             
                 <div class="card-seperator">
                 <div class="patient-img-wrap">
@@ -95,7 +102,7 @@
             </div> 
         </div>
         <div class="mid-sect">
-            <div class="pp-card shadow-grey">
+            <div *ngIf="departmentsContentArea" class="pp-card shadow-grey">
                 <div class="card-title">Department(s)</div>
 
                 <ul class="dept-wrap">
@@ -175,10 +182,128 @@
                         </div>
                     </li>
                 </ul>
+
+                <span (click)="newDept()" id="floating-button">
+                    <p class="plus">+</p>
+                </span>
+            </div>
+
+            <div *ngIf="locationsContentArea" class="pp-card shadow-grey">
+                <div class="card-title">Location(s)</div>
+
+                <ul class="dept-wrap">
+                    <li class="dept-li">
+                        <div class="dept-item">
+                            <div class="dept-name">Laboratory</div>
+                            <div class="action-icons">
+                                <i [hidden]="showLoc" (click)="showLoc_click()" class="fa fa-expand" aria-hidden="true"></i>
+                                <i *ngIf="showLoc" (click)="showLoc_hide()" class="fa fa-compress" aria-hidden="true"></i>
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div *ngIf="showLoc" class="dept-units">
+                            <table cellpadding="0" cellspacing="0" border="0.5"> 
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <span style="padding-left: 3px;">Minor Location</span>
+                                        </th>
+                                        <th>
+                                            <span style="padding-left: 3px;">Short Name</span>
+                                        </th>
+                                        <th>
+                                            <span style="padding-left: 3px;">Describtion</span>
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                
+                                <tbody>
+                                    <tr>
+                                        <td> Surgical Out Patient Unit</td>
+                                        <td>SOP Unit</td>
+                                        <td>All them surgicall operations takes place right here at this department</td>
+                                        <td class="action-icons">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+
+                <span (click)="newLoc()" id="floating-button">
+                    <p class="plus">+</p>
+                </span>
+            </div>
+
+            <div *ngIf="workspaceContentArea" class="pp-card shadow-grey">
+                <div class="card-title">Workspaces</div>
+                <div class="searchInputWrap">
+                    <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+                <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5"> 
+                    <thead>
+                        <tr>
+                            <th>
+                                <span style="padding-left: 3px;">Employee</span>
+                            </th>
+                            <th>
+                                <span style="padding-left: 3px;">Department</span>
+                            </th>
+                            <th>
+                                <span style="padding-left: 3px;">Workspace</span>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                
+                    <tbody>                
+                        <tr>
+                            <td>
+                                <div class="empWrap">
+                                    <div class="list-img">
+                                        <img src="assets/images/users/default.png">
+                                    </div>
+                                    <div>Olori James</div>
+                                </div>
+                            </td>
+                            <td>Surgery</td>
+                            <td class="td-worspace">
+                                <div class="workspace-count">3 workspaces</div>
+                                <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                    <li class="workspace-listItem">
+                                        <ng-container>
+                                            <span>SOP</span>
+                                            <i (click)="removeLocation(location, workSpace, i)" class="fa fa-trash" aria-hidden="true"></i>
+                                        </ng-container>
+                                    </li>
+                                    <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                </ul>
+                            </td>
+                            <td>
+                                <div class="td-ctaWrap">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <span (click)="newDept()" id="floating-button">
+                    <p class="plus">+</p>
+                </span>
             </div>
         </div> 
-        <span (click)="newEmpShow()" id="floating-button">
-            <p class="plus">+</p>
-        </span>
     </div>
+</div>
+<div *ngIf="editBasicInfo" class="modal-overlay">
+    <app-facility-basicinfo-edit (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-facility-basicinfo-edit>
 </div>
