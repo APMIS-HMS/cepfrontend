@@ -24,10 +24,12 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                    <mat-select formControlName="unitParent">
-                        <mat-option  value="null" disabled selected>Select parent department</mat-option>
-                        <mat-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select formControlName="unitParent">
+                            <mat-option  value="null" disabled selected>Select parent department</mat-option>
+                            <mat-option *ngFor="let item of deptsObj" value = "{{item._id}}">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">
