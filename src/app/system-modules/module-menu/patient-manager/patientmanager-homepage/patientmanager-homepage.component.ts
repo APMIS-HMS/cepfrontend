@@ -1,3 +1,4 @@
+import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
@@ -29,7 +30,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   user: User = <User>{};
   loginEmployee: Employee = <Employee>{};
   patients: Patient[] = [];
-  genders: Gender[] = [];
+  genders: any[] = [];
   relationships: Relationship[] = [];
   selectedPatient: Patient = <Patient>{};
   searchControl = new FormControl();
@@ -50,9 +51,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
-    private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
+    private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
-    private _countryService: CountriesService, private systemService:SystemModuleService,
+    private _countryService: CountriesService, private systemService: SystemModuleService,
     private _titleService: TitleService
   ) {
     this.systemService.on();
@@ -80,16 +81,16 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.searchControl.setValue(searchText);
   }
   getGender() {
-    this.genderService.findAll().subscribe(payload => {
-      this.genders = payload.data;
-    },error =>{
+    this.genderService.getGenders().then((payload: any) => {
+      this.genders = payload;
+    }, error => {
       this.getGender();
     })
   }
   getRelationships() {
-    this.relationshipService.findAll().subscribe(payload => {
+    this.relationshipService.find({}).then(payload => {
       this.relationships = payload.data;
-    }, error =>{
+    }, error => {
       this.getRelationships();
     })
   }
@@ -197,7 +198,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         facilityId: this.facility._id,
         $limit: this.limit,
         $skip: this.index * this.limit,
-        $sort: {createdAt: -1 }
+        $sort: { createdAt: -1 }
       }
     }).then(payload => {
       this.systemService.off();
@@ -228,10 +229,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   getShowing() {
     let ret = this.index * this.limit
     if (ret >= this.total && this.index > 0) {
-      this.loadMoreText = 'Showing ' + this.total + ' of '+this.total + ' records';
+      this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
       return;
     }
-    this.loadMoreText = 'Showing ' + ret + ' of '+this.total + ' records';
+    this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
@@ -393,10 +394,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }).catch(err => console.log(err));
   }
   private _getAllTitles() {
-    this._titleService.findAll()
+    this.genderService.getTitles()
       .then(res => {
-        this.titles = res.data;
-      }).catch(err =>{
+        this.titles = res;
+      }).catch(err => {
         this._getAllTitles();
       });
   }

@@ -391,7 +391,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         this.zone = new NgZone({ enableLongStackTrace: false });
 
-        this.getCashPlans();
+        // this.getCashPlans();
     }
 
     getCashPlans() {

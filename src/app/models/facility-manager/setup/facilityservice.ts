@@ -4,4 +4,5 @@ export interface FacilityService {
     facilityId: string;
     categories: ServiceCategory[];
     facilityServiceId: '';
+    name:string;
 }
