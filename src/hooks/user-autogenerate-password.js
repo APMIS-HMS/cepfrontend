@@ -7,9 +7,9 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
     return new Promise(function (resolve, reject) {
       if (context && context.app && context.data.password === undefined) {
-        context.app.service('get-tokens').get(tokenLabel.tokenType.autoPassword, {}).then(result => {
-          logger.info(result.password);
-          context.data.password = result.password;
+        context.app.service('get-tokens').get(tokenLabel.tokenType.autoPassword, {}).then(payload => {
+          logger.info(payload.result);
+          context.data.password = payload.result;
           resolve(context);
         }, error =>{
           logger.error(error.message);

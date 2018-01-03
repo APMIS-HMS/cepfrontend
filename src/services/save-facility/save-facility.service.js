@@ -8,7 +8,8 @@ module.exports = function (app) {
 
   const options = {
     name: 'save-facility',
-    paginate
+    paginate,
+    app:app
   };
 
   // Initialize our service with any options it requires

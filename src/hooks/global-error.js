@@ -1,7 +1,7 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 // const logger = require('winston');
-const errors = require('@feathersjs/errors');
+// const errors = require('@feathersjs/errors');
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
     // // context.error = null;

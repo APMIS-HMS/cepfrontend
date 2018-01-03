@@ -22,7 +22,7 @@ class Service {
     for (var i = 0; i < 8; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    data.password = text;
+    data.result = text;
     return data;
   }
 
