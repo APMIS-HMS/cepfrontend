@@ -61,15 +61,15 @@ export class LoginComponent implements OnInit {
       this.userService.login(query).then(result => {
         console.log(result);
         this.userService.authenticateResource();
-        this.userService.find({}).then(payload =>{
-          console.log(payload);
-        }, error =>{
-          console.log(error);
-        });
+        // this.userService.find({}).then(payload =>{
+        //   console.log(payload);
+        // }, error =>{
+        //   console.log(error);
+        // });
         let auth = {
           data: result.user
-        }
-        this.locker.setObject('auth', result.user);
+        };
+        this.locker.setObject('auth', auth);
 
         this.router.navigate(['/accounts']).then(pay => {
           this.userService.isLoggedIn = true;

@@ -37,7 +37,7 @@ export class UserService {
     
     authenticateResource(){
         this._socketService.authenticateService();
-        this._restService.authenticateService();
+        // this._restService.authenticateService();
     }
 
     find(query: any) {

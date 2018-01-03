@@ -125,7 +125,8 @@ export class FacilityInfoComponent implements OnInit {
 			personId:this._facilityServiceFacade.facilityCreatorPersonId
 		}
 		this._facilityServiceFacade.saveFacility(payload).then(payload => {
-			console.log(payload);
+			this.facilityForm1.reset();
+			this.userSettings['inputString']='';
 		}, error => {
 			console.log(error);
 		})

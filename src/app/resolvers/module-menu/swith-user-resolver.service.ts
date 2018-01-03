@@ -21,7 +21,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const auth: any = this.locker.getObject('auth');
-    this.authData = auth;
+    this.authData = auth.data;
     if (auth == null || auth === undefined) {
       this.router.navigate(['/']);
       return Observable.of(null);
@@ -31,7 +31,8 @@ export class SwitchUserResolverService implements Resolve<Facility> {
       if (auth == null || auth === undefined) {
         this.router.navigate(['/']);
       } else if (auth.corporateOrganisationId == null || auth.corporateOrganisationId === undefined) {
-        const facilities = auth.facilitiesRole;
+        console.log(auth);
+        const facilities = auth.data.facilitiesRole;
         const facilityList = [];
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);
