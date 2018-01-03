@@ -102,4 +102,4 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { } 
+export class AppModule { }

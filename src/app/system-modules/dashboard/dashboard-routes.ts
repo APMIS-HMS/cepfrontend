@@ -100,6 +100,10 @@ const appRoutes: Routes = [
                 loadChildren: '../module-menu/lab/lab.module#LabModule'
             },
             {
+             path: 'radiology',
+             loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule'
+            },
+            {
                 path: 'corporate',
                 loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
                 data: { preload: false },
