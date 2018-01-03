@@ -5,6 +5,11 @@ label {
     color: #797D7F;
 }
 
+.modal-baseWrap {
+    padding: 30px;
+    max-width: 750px;
+}
+
 .strapImgWrap {
     position: absolute;
     width: 60px;
@@ -54,11 +59,13 @@ label {
     border-radius: 7px;
     padding: 15px;
     min-width: 80px;
+    width: 35%;
     cursor: pointer;
 }
 
 .cont-wrap .recent-rooms {
     background: #fff;
+    width: 65%;
 }
 
 .cont-wrap .set-default {
