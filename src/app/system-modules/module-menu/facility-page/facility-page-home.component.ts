@@ -38,6 +38,7 @@ export class FacilityPageHomeComponent implements OnInit {
   hasAssignedEmployees = false;
   hasWorkSpaces = false;
   editBasicInfo = false;
+  newDept = false;
 
   searchControl: FormControl = new FormControl();
   
@@ -241,9 +242,13 @@ export class FacilityPageHomeComponent implements OnInit {
   }
   close_onClick(e){
     this.editBasicInfo = false;
+    this.newDept = false;
   }
   editBasicInfo_onClick(){
     this.editBasicInfo = true;
+  }
+  newDept_onClick(){
+    this.newDept = true;
   }
   autoCompleteCallback1(selectedData:any) {
 		//do any necessery stuff.
