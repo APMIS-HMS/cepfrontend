@@ -1,9 +1,17 @@
 'use strict';
 const request = require('request');
+// const logger = require('winston');
 
 function sender(mesage, data) {
   const url = 'http://portal.bulksmsnigeria.net/api/?username=apmis&password=apmis&message=' + mesage + '&sender=APMIS&mobiles=@@' + data.primaryContactPhoneNo + '@@';
-  request.get(url);
+  request.get(url, null, (error, response, body) => {
+    if (error) {
+      // logger.error(error);
+    }
+    if (response && body) {
+      // logger.error(error);
+    }
+  });
 }
 
 function sendToken(data) {
