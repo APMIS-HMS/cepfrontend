@@ -2,9 +2,9 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const employeeRole = require('../custom-models/employee-role-model');
-const roomCheckInSchema = require('../custom-models/roomCheckin-model');
-const storeCheckInSchema = require('../custom-models/storeCheckin-model');
+const employeeRole = require('../custom-models/employeerole-model');
+const roomCheckInSchema = require('../custom-models/room-check-in');
+const storeCheckInSchema = require('../custom-models/store-check-in');
 
 
 module.exports = function (app) {
