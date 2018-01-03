@@ -37,8 +37,9 @@ export class FacilityPageHomeComponent implements OnInit {
   hasMinorLocations = false;
   hasAssignedEmployees = false;
   hasWorkSpaces = false;
-  editBasicInfo = false;
+  
   newDept = false;
+  newUnit = false;
 
   searchControl: FormControl = new FormControl();
   
@@ -47,16 +48,6 @@ export class FacilityPageHomeComponent implements OnInit {
     //   this.checkRouterEvent(routerEvent);
     // });
   }
-  // checkRouterEvent(routerEvent: Event): void {
-  //   if (routerEvent instanceof NavigationStart) {
-  //     this.loadIndicatorVisible = true;
-  //   }
-  //   if (routerEvent instanceof NavigationEnd ||
-  //     routerEvent instanceof NavigationCancel ||
-  //     routerEvent instanceof NavigationError) {
-  //     this.loadIndicatorVisible = false;
-  //   }
-  // }
   ngOnInit() {
     const page: string = this.router.url;
     this.checkPageUrl(page);
@@ -241,14 +232,14 @@ export class FacilityPageHomeComponent implements OnInit {
 		}
   }
   close_onClick(e){
-    this.editBasicInfo = false;
     this.newDept = false;
-  }
-  editBasicInfo_onClick(){
-    this.editBasicInfo = true;
+    this.newUnit = false;
   }
   newDept_onClick(){
     this.newDept = true;
+  }
+  newUnit_onClick(){
+    this.newUnit = true;
   }
   autoCompleteCallback1(selectedData:any) {
 		//do any necessery stuff.

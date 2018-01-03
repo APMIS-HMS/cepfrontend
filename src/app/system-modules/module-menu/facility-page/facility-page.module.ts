@@ -28,7 +28,7 @@ import { FacilityPageComponent } from './facility-page.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { FacilityBasicinfoEditComponent } from './facility-basicinfo-edit/facility-basicinfo-edit.component';
-
+import { FacilitypageSidesectComponent } from './facilitypage-sidesect/facilitypage-sidesect.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +48,7 @@ import { FacilityBasicinfoEditComponent } from './facility-basicinfo-edit/facili
         AddProfessionComponent,
         FacilityPageComponent,
         FacilityBasicinfoEditComponent,
-
+        FacilitypageSidesectComponent,
     ],
     exports: [
     ],
