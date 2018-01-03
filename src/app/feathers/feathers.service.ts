@@ -23,6 +23,18 @@ export class SocketService {
   public socket: any;
   public HOST;
   private _app: any;
+
+  errorHandler = error => {
+    console.log('auth error')
+    this._app.authenticate({
+      strategy: 'local',
+      email: 'admin@feathersjs.com',
+      password: 'admin'
+    }).then(response => {
+      // You are now authenticated again
+    });
+  };
+
   constructor(public locker: CoolLocalStorage, private _router:Router) {
     this.HOST = HOST;
     this.socket = io(this.HOST);
@@ -31,6 +43,7 @@ export class SocketService {
       .configure(rx({ idField: "_id", listStrategy: 'always' }))
       .configure(hooks())
       .configure(authentication({ storage: window.localStorage }));
+     this._app.on('reauthentication-error', this.errorHandler)
   }
   logOut() {
     this._app.logout();
@@ -48,9 +61,7 @@ export class SocketService {
     return this._app.service(value);
   }
   authenticateService() {
-    this._app.authenticate().then(payload =>{},error =>{
-      this._router.navigate(['/']);
-    });
+    return this._app.authenticate();
   }
 }
 

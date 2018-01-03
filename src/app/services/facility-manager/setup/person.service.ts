@@ -12,6 +12,7 @@ const request = require('superagent');
 @Injectable()
 export class PersonService {
   public _socket;
+  public _personSocket;
   public createListener;
   public updateListener;
   private _rest;
@@ -25,6 +26,7 @@ export class PersonService {
   ) {
     this._rest = _restService.getService('people');
     this._socket = _socketService.getService('people');
+    this._personSocket = _socketService.getService('save-person');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.updateListener = Observable.fromEvent(this._socket, 'updated');
@@ -50,6 +52,9 @@ export class PersonService {
 
   create(person: any) {
     return this._socket.create(person);
+  }
+  createPerson(body: any) {
+    return this._personSocket.create(body);
   }
   update(person: any) {
     return this._socket.update(person._id, person);

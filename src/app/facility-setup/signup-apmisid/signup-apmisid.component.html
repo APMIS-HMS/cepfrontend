@@ -8,7 +8,7 @@
             </mat-input-container>
         </div>
 
-        <button (click)="facilityInfo_show(facilityForm1.value)" class="cta-1">
+        <button [disabled]="!facilityForm1.valid" (click)="facilityInfo_show(facilityForm1.value)" [ngClass]="{'cta-1':facilityForm1.valid, 'cta-1-disable':!facilityForm1.valid}">
             CONTINUE
         </button>
     </form>

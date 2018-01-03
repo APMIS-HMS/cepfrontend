@@ -1,6 +1,11 @@
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { UserFacadeService } from './../system-modules/service-facade/user-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Title } from './../models/facility-manager/setup/title';
 import { TitleGenderFacadeService } from './../system-modules/service-facade/title-gender-facade.service';
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CountriesService, GenderService, PersonService, UserService, FacilitiesService } from '../services/facility-manager/setup/index';
 import { Gender, User, Person, Address } from '../models/index';
@@ -25,8 +30,10 @@ export class PersonAccountComponent implements OnInit {
   titles: Title[] = [];
   errMsg: string;
   mainErr = true;
-  success = false;
+  isSuccessful = false;
 
+  counterSubscription:Subscription;
+  countDown = 10;
   public frmPerson: FormGroup;
 
   constructor(
@@ -34,8 +41,13 @@ export class PersonAccountComponent implements OnInit {
     private titleGenderFacadeService: TitleGenderFacadeService,
     private personService: PersonService,
     private userService: UserService,
-    private facilitiesService: FacilitiesService
-  ) { }
+    private userServiceFacade:UserFacadeService,
+    private facilitiesService: FacilitiesService,
+    private systemModuleService:SystemModuleService,
+    private vcr: ViewContainerRef, private toastr: ToastsManager
+  ) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getGenders();
@@ -51,7 +63,10 @@ export class PersonAccountComponent implements OnInit {
     });
 
     this.frmPerson.valueChanges.subscribe(value => {
-      this.success = false;
+      if(!this.mainErr){
+        this.isSuccessful = false;
+      }
+      
       this.mainErr = true;
       this.errMsg = '';
     })
@@ -76,6 +91,7 @@ export class PersonAccountComponent implements OnInit {
 
   submit(valid, val) {
     if (valid) {
+      this.systemModuleService.on();
       const personModel = <any>{
         title: this.frmPerson.controls['persontitle'].value,
         firstName: this.frmPerson.controls['firstname'].value,
@@ -86,31 +102,46 @@ export class PersonAccountComponent implements OnInit {
         primaryContactPhoneNo: this.frmPerson.controls['phone'].value
       };
 
-      this.personService.create(personModel).then((ppayload) => {
-        const userModel = <User>{
-          email: ppayload.apmisId
-        };
-        userModel.personId = ppayload._id;
-        this.userService.create(userModel).then((upayload) => {
-          this.frmPerson.reset();
-          this.success = true;
-          this.facilitiesService.announceNotification({
-            type: 'Success',
-            text: this.frmPerson.controls['firstname'].value + ' '
+      // const userModel = <User>{
+      //   email: personModel.apmisId
+      // };
+      // userModel.personId = ppayload._id;
+
+      this.personService.createPerson(personModel).then((ppayload) => {
+      
+        this.isSuccessful = true;
+          let text =  this.frmPerson.controls['firstname'].value + ' '
               + this.frmPerson.controls['lastname'].value + ' '
               + 'added successful'
+          this.success(text);
+          this.frmPerson.reset();
+          this.systemModuleService.off();
+
+          this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
+            this.countDown = this.countDown - 1;
+            console.log(this.countDown);
+            if (rx === 9) {
+              this.close_onClick();
+              this.counterSubscription.unsubscribe();
+            }
+      
           });
-        }, error => {
-          console.log(error);
-          // this.mainErr = false;
-          // this.errMsg = 'An error has occured, please check and try again!';
-        });
+        // this.userService.create(userModel).then((upayload) => {
+          
+        // }, error => {
+        //   console.log(error);
+        //   this.systemModuleService.off();
+        //   // this.mainErr = false;
+        //   // this.errMsg = 'An error has occured, please check and try again!';
+        // });
       }, err => {
         console.log(err);
+        this.systemModuleService.off();
       });
     } else {
       this.mainErr = false;
       this.errMsg = 'An error has occured, please check and try again!';
+      this.systemModuleService.off();
     }
   }
 
@@ -126,5 +157,16 @@ export class PersonAccountComponent implements OnInit {
       this.input.nativeElement.type = 'password';
     }
   }
-
+  success(text) {
+    this.toastr.success(text, 'Success!');
+  }
+  error(text) {
+    this.toastr.error(text, 'Error!');
+  }
+  info(text) {
+    this.toastr.info(text, 'Info');
+  }
+  warning(text) {
+    this.toastr.warning(text, 'Warning');
+  }
 }

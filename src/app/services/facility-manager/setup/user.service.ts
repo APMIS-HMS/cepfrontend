@@ -35,10 +35,10 @@ export class UserService {
         // return this._restLogin.create(query);
     }
     
-    authenticateResource(){
-        this._socketService.authenticateService();
-        // this._restService.authenticateService();
-    }
+    // authenticateResource(){
+    //     return this._socketService.authenticateService();
+    //     // this._restService.authenticateService();
+    // }
 
     find(query: any) {
         return this._socket.find(query);

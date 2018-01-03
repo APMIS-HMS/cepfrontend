@@ -148,6 +148,35 @@ select {
 }
 
 // End
+.cta-1-disable{
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 49px;
+    cursor: pointer;
+    background: #eee;
+    color: #aaa;
+    margin: 10px auto;
+    border: 0;
+    outline: 0;
+    border-radius: 30px;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    background: -webkit-gradient(linear, left top, right top, from(#aaa), to(#eee));
+    background: -webkit-linear-gradient(left, #aaa, #eee);
+    background: -moz-linear-gradient(left, #aaa, #eee);
+    background: -ms-linear-gradient(left, #aaa, #eee);
+    background: -o-linear-gradient(left, #aaa, #eee);
+}
 .cta-1 {
     display: -webkit-box;
     /* OLD - iOS 6-, Safari 3.1-6 */

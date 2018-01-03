@@ -13,7 +13,7 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import {            } from './facility-setup/facility-setup.module';
+import { } from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
@@ -48,6 +48,7 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
 
 @NgModule({
   declarations: [
@@ -97,11 +98,11 @@ import { FacilityFacadeService } from 'app/system-modules/service-facade/facilit
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
-    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
+    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
-    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
+    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService
   ],
   bootstrap: [AppComponent]
 })

@@ -6,8 +6,12 @@
     </div>
     <div class="modal-baseWrap">
 
-        <div *ngIf="success" class="infoAlert">
-            <i class="fa fa-info-circle" aria-hidden="true"></i>Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!</div>
+        <div *ngIf="isSuccessful" class="infoAlert">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!
+            <br>
+            You will be taking to login page in {{countDown}} minutes!
+        </div>
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
         <form [formGroup]="frmPerson" novalidate>
@@ -59,7 +63,7 @@
 
             <div class="clear"></div>
             <!--<button mat-raised-button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">Sign Up</button>-->
-            <button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
+            <button [disabled]="!frmPerson.valid" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':frmPerson.valid, 'cta-1-disable':!frmPerson.valid}">
                 Register
             </button>
 

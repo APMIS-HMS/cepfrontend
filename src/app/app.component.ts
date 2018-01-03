@@ -1,3 +1,5 @@
+import { UserFacadeService } from './system-modules/service-facade/user-facade.service';
+import { UserService } from './services/facility-manager/setup/user.service';
 import { SystemModuleService } from './services/module-manager/setup/system-module.service';
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
@@ -22,9 +24,10 @@ export class AppComponent implements OnInit {
   auth: any;
   subscription: Subscription;
 
-  constructor(router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
+  constructor(private router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
     private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage,
+    private userServiceFacade: UserFacadeService,
     private systemModuleService: SystemModuleService, private loadingService: LoadingBarService, ) {
     this.toastr.setRootViewContainerRef(vcr);
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
@@ -58,8 +61,16 @@ export class AppComponent implements OnInit {
     })
   }
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.auth = <any>this.locker.getObject('auth');
+    this.userServiceFacade.authenticateResource().then((result) => {
+      console.log(result);
+    
+      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+      this.auth = <any>this.locker.getObject('auth');
+    }).catch(err => {
+      this.warning("Authentication is required, please log-in with your credentials");
+      this.router.navigate(['/']);
+    });
+
   }
   success(text) {
     this.toastr.success(text, 'Success!');

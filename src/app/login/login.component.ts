@@ -1,3 +1,5 @@
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
+import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -32,7 +34,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private userService: UserService,
+    private userServiceFacade:UserFacadeService,
     public facilityService: FacilitiesService,
+    private systemModule: SystemModuleService,
     private locker: CoolLocalStorage, private router: Router) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
@@ -53,30 +57,29 @@ export class LoginComponent implements OnInit {
   }
   login(valid) {
     if (valid) {
-      // this.loadIndicatorVisible = true;
+      this.systemModule.on();
       const query = {
         email: this.frm_login.controls['username'].value,
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
-        console.log(result);
-        this.userService.authenticateResource();
-        // this.userService.find({}).then(payload =>{
-        //   console.log(payload);
-        // }, error =>{
-        //   console.log(error);
-        // });
-        let auth = {
-          data: result.user
-        };
-        this.locker.setObject('auth', auth);
+        this.userServiceFacade.authenticateResource().then(payload => {
+          let auth = {
+            data: result.user
+          };
+          this.locker.setObject('auth', auth);
 
-        this.router.navigate(['/accounts']).then(pay => {
-          this.userService.isLoggedIn = true;
-          this.userService.announceMission('in');
-          this.loadIndicatorVisible = false;
+          this.router.navigate(['/accounts']).then(pay => {
+            this.userService.isLoggedIn = true;
+            this.userService.announceMission('in');
+            this.systemModule.off();
+          });
+        }, error => {
+          this.systemModule.off();
+        }).catch(merr => {
+          this.systemModule.off();
+          console.log(merr);
         });
-
       },
         error => {
           this.loadIndicatorVisible = false;
