@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const autoGeneratePassword = require('../../hooks/user-autogenerate-password');
+// const autoGeneratePassword = require('../../hooks/user-autogenerate-password');
 
 const {
   hashPassword, protect
@@ -10,7 +10,7 @@ module.exports = {
     all: [],
     find: [authenticate('jwt')],
     get: [],
-    create: [autoGeneratePassword(), hashPassword()],
+    create: [hashPassword()],
     update: [hashPassword()],
     patch: [hashPassword()],
     remove: []

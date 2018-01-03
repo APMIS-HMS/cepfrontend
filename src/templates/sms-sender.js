@@ -24,11 +24,19 @@ function sendApmisId(data) {
   sender(message, data);
 }
 
+function sendAutoGeneratorPassword(data, password) {
+  const message = 'APMIS Auto-generated password: ' + password + ' kindly change your password';
+  sender(message, data);
+}
+
 module.exports = {
   sendToken(data) {
     sendToken(data);
   },
   sendApmisId(data) {
     sendApmisId(data);
+  },
+  sendAutoGeneratorPassword(data, password) {
+    sendAutoGeneratorPassword(data, password);
   }
 };
