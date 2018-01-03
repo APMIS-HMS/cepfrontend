@@ -19,6 +19,9 @@ const smsSenders = require('./sms-senders/sms-senders.service.js');
 const saveFacility = require('./save-facility/save-facility.service.js');
 const savePerson = require('./save-person/save-person.service.js');
 const employees = require('./employees/employees.service.js');
+const appointments = require('./appointments/appointments.service.js');
+const organisationServices = require('./organisation-services/organisation-services.service.js');
+const categoryTypes = require('./category-types/category-types.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -41,4 +44,7 @@ module.exports = function (app) {
   app.configure(saveFacility);
   app.configure(savePerson);
   app.configure(employees);
+  app.configure(appointments);
+  app.configure(organisationServices);
+  app.configure(categoryTypes);
 };
