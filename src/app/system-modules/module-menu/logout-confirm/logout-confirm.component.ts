@@ -8,7 +8,7 @@ import { UserService } from '../../../services/facility-manager/setup/index';
 export class LogoutConfirmComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  modal_on = false;
+  modal_on = false; 
 
   constructor(private userService: UserService) { }
 
