@@ -8,7 +8,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import {
   Facility, MinorLocation, Investigation, InvestigationModel, Employee,
-  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest
+  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest, User
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
@@ -75,9 +75,11 @@ export class LabRequestsComponent implements OnInit {
   bindInvestigations: InvestigationModel[] = [];
   movedInvestigations: any[] = [];
   selectedInvestigation: any = <any>{};
+  user: User = <User>{};
 
   totalPrice: Number = 0;
-  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
+  constructor(
+    private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig, private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
     private _router: Router,
@@ -89,6 +91,7 @@ export class LabRequestsComponent implements OnInit {
     this.requests = [];
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
     this.selectedLab = <Facility>this.locker.getObject('workbenchCheckingObject');
+    this.user = <User>this.locker.getObject('auth');
     this.searchInvestigation = new FormControl('', []);
     this.searchInvestigation.valueChanges
       .debounceTime(400)
@@ -674,9 +677,10 @@ export class LabRequestsComponent implements OnInit {
   }
 
   validateForm() {
+    console.log(this.selectedPatient);
     if (this.frmNewRequest.valid) {
-      this.isValidateForm =true;
-    } else if (this.selectedPatient._id != undefined && this.selectedPatient._id.length > 0) {
+      this.isValidateForm = true;
+    } else if (this.selectedPatient !== undefined && this.selectedPatient._id !== undefined && this.selectedPatient._id.length > 0) {
       if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
         this.isValidateForm = true;
       }
@@ -798,8 +802,9 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-          this.addToast('Request sent successfully');
-        }).catch(ex =>{
+          this.addToast('Request has been sent successfully!');
+          this._notification('Success', 'Request has been sent successfully!');
+        }).catch(ex => {
         })
 
       })
@@ -810,8 +815,9 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-        this.addToast('Request sent successfully');
-      },err=>{
+        this.addToast('Request has been sent successfully!');
+          this._notification('Success', 'Request has been sent successfully!');
+      }, err => {
       })
     }
   }
@@ -904,6 +910,7 @@ export class LabRequestsComponent implements OnInit {
         // Filter investigations based on the laboratory Id
         res.data.forEach(labRequest => {
           labRequest.investigations.forEach(investigation => {
+            console.log(investigation.location);
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
@@ -963,4 +970,13 @@ export class LabRequestsComponent implements OnInit {
   goToWriteReport(request: any) {
     this._router.navigate(['/dashboard/laboratory/report/' + request.labRequestId + '/' + request.investigationId]);
   }
+
+  // Notification
+	private _notification(type: string, text: string): void {
+		this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+	}
 }

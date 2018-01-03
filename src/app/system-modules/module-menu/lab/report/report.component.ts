@@ -199,7 +199,7 @@ export class ReportComponent implements OnInit {
                   'clinicalInformation': labRequest.clinicalInformation,
                   'labNumber': labRequest.labNumber,
                   'investigation': investigation.investigation.name,
-                  
+
                 })
               }
             });

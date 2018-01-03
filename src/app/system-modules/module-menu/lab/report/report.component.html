@@ -271,11 +271,13 @@
                                             </div>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <mat-select formControlName="outcome" placeholder="Investigation Outcome">
-                                                <mat-option [value]="'Normal'">Normal</mat-option>
-                                                <mat-option [value]="'Low'">Low</mat-option>
-                                                <mat-option [value]="'High'">High</mat-option>
-                                            </mat-select>
+                                            <mat-form-field>
+                                                <mat-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                    <mat-option [value]="'Normal'">Normal</mat-option>
+                                                    <mat-option [value]="'Low'">Low</mat-option>
+                                                    <mat-option [value]="'High'">High</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                         <div class="frm-item-wrap">
                                             <mat-input-container>
