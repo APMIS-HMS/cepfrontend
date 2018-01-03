@@ -16,10 +16,12 @@
                                 <form [formGroup]="addBillForm" novalidate>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px">
-                                            <mat-select placeholder="Drug" formControlName="drug" class="example-full-width">
-                                                <mat-option *ngFor="let drug of drugs" [(value)]="drug.productId" #productId [attr.data-p-id]="drug.productId" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" [attr.data-p-price]="drug.price"
-                                                    [attr.data-p-aqty]="drug.availabilty" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</mat-option>
-                                            </mat-select>
+                                            <mat-form-field>
+                                                <mat-select placeholder="Drug" formControlName="drug" class="example-full-width">
+                                                    <mat-option *ngFor="let drug of drugs" [(value)]="drug.productId" #productId [attr.data-p-id]="drug.productId" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" [attr.data-p-price]="drug.price"
+                                                        [attr.data-p-aqty]="drug.availabilty" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
                                             <div class="col-xs-6">
@@ -63,7 +65,7 @@
                             </div>
                             <div class="border-box" *ngIf="drugs.length === 0 && loading">
                                 <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">
-                                    <mat-spinner class="small-spinner"></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>

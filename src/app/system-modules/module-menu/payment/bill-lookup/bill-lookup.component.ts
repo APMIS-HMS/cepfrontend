@@ -206,6 +206,7 @@ export class BillLookupComponent implements OnInit {
         billGroup.totalDiscount = this.discount;
         billGroup.subTotal = this.subTotal;
         billGroup.totalPrice = this.total;
+        billGroup.balance = this.total;
         this.invoiceService.create(billGroup).then(payload => {
           var len = this.checkBillitems.length - 1;
           var len2 = this.listedBillItems.length - 1;

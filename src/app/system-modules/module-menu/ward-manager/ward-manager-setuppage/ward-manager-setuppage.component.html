@@ -26,7 +26,7 @@
                     </tr>
                     <tr *ngIf="wards.length === 0 && loading">
                         <td class="table-content" colspan="4" style="text-align: center">
-                            <mat-spinner class='small-spinner'></mat-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{ward.minorLocationId._id}}" *ngFor="let ward of wards; let i = index">

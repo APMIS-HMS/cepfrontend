@@ -93,3 +93,4 @@ export * from './search-invoices.service';
 export * from './pending-bills.service';
 export * from './today-invoices.service';
 export * from './loc-summary-cash.service';
+export * from './timeline.service';

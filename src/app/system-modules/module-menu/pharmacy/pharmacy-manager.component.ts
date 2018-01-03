@@ -40,6 +40,7 @@ export class PharmacyManagerComponent implements OnInit, OnDestroy {
 		const url: String = this._router.url;
 		this.changeRoute(url);
 
+    console.log(this.loginEmployee.storeCheckIn);
 		if ((this.loginEmployee.storeCheckIn === undefined
 			|| this.loginEmployee.storeCheckIn.length === 0)) {
 			this.modal_on = true;

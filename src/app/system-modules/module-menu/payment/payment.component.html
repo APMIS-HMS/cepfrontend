@@ -30,7 +30,7 @@
                             </li>
                             <li *ngIf="loadingPendingBills">
                                 <div class="text-center">
-                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </div>
                             </li>
 
@@ -54,7 +54,7 @@
                         <div>
                             <li *ngIf="isLoadingInvoice" class="empWrap">
                                 <div class="text-center">
-                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </div>
                             </li>
                             <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
@@ -109,13 +109,12 @@
                     <div>
                         <li *ngIf="loadingLocAmountAccrued" class="empWrap">
                             <div class="text-center">
-                                <mat-spinner class='small-spinner'></mat-spinner>
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </li>
                     </div>
                     <div style="display: block" *ngIf="!loadingLocAmountAccrued">
-                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-                            [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
                     </div>
 
                     <!-- <div class="stat-tbl pending-title" *ngIf="!loadingLocAmountAccrued">

@@ -80,7 +80,7 @@
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
                                                 <td class="table-content" colspan="5" style="text-align: center">
-                                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                                 </td>
                                             </tr>
                                             <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
@@ -142,7 +142,7 @@
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
                                                 <td class="table-content" colspan="6" style="text-align: center">
-                                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                                 </td>
                                             </tr>
                                             <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
@@ -200,7 +200,7 @@
                                     </div>
                                     <div *ngIf="requests.length === 0 && loading">
                                         <span class="table-content" colspan="5" style="text-align: center">
-                                                <mat-spinner class='small-spinner'></mat-spinner>
+                                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                             </span>
                                     </div>
                                 </div>
@@ -378,7 +378,7 @@
                             </tr>
                             <tr *ngIf="reports.length === 0 && reportLoading">
                                 <td class="table-content" colspan="8" style="text-align: center">
-                                    <mat-spinner class='small-spinner'></mat-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </td>
                             </tr>
 

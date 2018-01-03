@@ -50,6 +50,7 @@ import { TitleGenderFacadeService } from 'app/system-modules/service-facade/titl
 import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
 import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,7 +103,10 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
     SetupService.TemplateService, PolicyService, PayStackService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
-    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService
+    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    SetupService.TimeLineService
   ],
   bootstrap: [AppComponent]
 })

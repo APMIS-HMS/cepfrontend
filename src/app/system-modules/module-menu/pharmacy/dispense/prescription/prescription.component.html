@@ -9,7 +9,9 @@
             <div class="col-xs-8" style="width:93%; float: left;">
                 <small>Patient Name: <b>{{ prescriptionItems?.patientName }}</b></small><br>
                 <small>Age: <b>42years</b></small><br>
-                <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                <div *ngIf="!!prescriptionItems?.clinicDetails">
+                    <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                </div>
                 <small>Prescription Priotity: <b>{{ prescriptionItems?.priorityObject?.name}}</b></small>
             </div>
         </div>
@@ -142,7 +144,7 @@
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && batchLoading">
                                     <td class="table-content" colspan="5" style="text-align: center">
-                                        <mat-spinner class='small-spinner'></mat-spinner>
+                                        <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                     </td>
                                 </tr>
                             </tbody>
@@ -155,7 +157,7 @@
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
                 <div style="width: 100%; padding: 10px; font-size: 13px;">
-                    <mat-spinner class="small-spinner"></mat-spinner>
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </div>
         </div>

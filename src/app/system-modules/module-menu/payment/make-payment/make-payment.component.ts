@@ -45,12 +45,14 @@ export class MakePaymentComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
   InvoiceTotal = 5000;
+  balance;
+  bAmount = 0;
   success = false;
   public frmMakePayment: FormGroup;
 
-  channel = new FormControl('', []);
+  
   amount = new FormControl('', []);
-  balance = new FormControl('', []);
+  
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
@@ -63,15 +65,17 @@ export class MakePaymentComponent implements OnInit {
 
   ngOnInit() {
     this.user = <User>this.locker.getObject('auth');
-    // this.amount.valueChanges.subscribe(value => {
-    //   if (parseFloat(value) < this.cost) {
-    //     this.disableBtn = true;
-    //     let bal = value - this.cost;
-    //     this.balance.setValue(bal);
-    //   } else {
-    //     this.disableBtn = false;
-    //   }
-    // });
+    this.balance = new FormControl(this.cost, []);
+    this.amount.valueChanges.subscribe(value => {
+      var bal = this.cost - value;
+      if(bal >= 0){
+        this.balance.setValue(bal);
+        console.log(this.balance);
+      }else{
+        this.amount.setValue(this.cost);
+        this._notification('Error',"Balance cannot be lesser than zero");
+      }
+    });
     // this.channel.valueChanges.subscribe(value => {
     //   this.disableBtn = false;
     //   if (value == "Cash") {
@@ -81,6 +85,17 @@ export class MakePaymentComponent implements OnInit {
     //   }
     // });
   }
+
+  // calculateBalance(ev){
+  //   console.log(ev.target.value);
+  //   var bal = this.cost - ev.target.value;
+  //   if(bal >= 0){
+  //     this.balance = bal;
+  //     console.log(this.balance);
+  //   }else{
+  //     this._notification('Error',"Balance cannot be lesser than zero");
+  //   }
+  // }
 
   close_onClick() {
     this.closeModal.emit(true);
@@ -94,7 +109,9 @@ export class MakePaymentComponent implements OnInit {
           "channel": TransactionMedium[TransactionMedium.Wallet],
           "txnType": TransactionType[TransactionType.Dr],
           "txnStatus": TransactionStatus.Complete,
-          "cost": this.cost
+          "amountPaid": this.amount.value,
+          "balance": this.balance,
+          "cost": this.cost,
         },
         "billGroups": this.billGroups,
         "selectedPatient": this.selectedPatient,
@@ -118,7 +135,9 @@ export class MakePaymentComponent implements OnInit {
           "channel": TransactionMedium[TransactionMedium.Wallet],
           "txnType": TransactionType[TransactionType.Dr],
           "txnStatus": TransactionStatus.Complete,
-          "cost": this.cost
+          "amountPaid": this.amount.value,
+          "balance": this.balance,
+          "cost": this.cost,
         },
         "invoice": this.invoice,
         "selectedPatient": this.selectedPatient,

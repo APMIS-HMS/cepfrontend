@@ -1,4 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import {
+  Facility, User
+} from '../../../../../models/index';
+import {
+  FacilitiesService, TimeLineService
+} from './../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-timeline',
@@ -7,15 +14,39 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class TimelineComponent implements OnInit {
   @Input() patient;
+  selectedFacility: Facility = <Facility>{};
+  user: User = <User>{};
+  timeLineLists = [];
   addProblem_view = false;
   addAllergy_view = false;
   addHistory_view = false;
   addVitals_view = false;
   docDetail_view = false;
 
-  constructor() { }
+  constructor(private _timeLineService: TimeLineService,
+    private locker: CoolLocalStorage,
+    private facilitiesService: FacilitiesService) { }
 
   ngOnInit() {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
+    this.getTimeLines();
+  }
+
+  getTimeLines() {
+    this._timeLineService.find({
+      query: {
+        patientId: this.patient._id,
+        facilityId: this.selectedFacility._id
+      }
+    }).then((payload: any) => {
+      console.log(payload);
+      console.log('Timeline');
+      this.timeLineLists = payload.data;
+    }).catch(err => {
+      console.log(err);
+      console.log('Error In Timeline');
+    })
   }
 
   addProblem_show(e) {

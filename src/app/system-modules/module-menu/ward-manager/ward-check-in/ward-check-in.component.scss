@@ -2,7 +2,7 @@ label {
     position: absolute;
     font-size: 10px;
     margin-top: -5px;
-    color: #797D7F;
+    color: #797d7f;
 }
 
 .strapImgWrap {
@@ -14,6 +14,11 @@ label {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.modal-baseWrap {
+    max-width: 750px;
+    padding: 30px;
 }
 
 .strapImgWrap img {
@@ -55,10 +60,12 @@ label {
     padding: 15px;
     min-width: 80px;
     cursor: pointer;
+    width: 35%;
 }
 
 .cont-wrap .recent-rooms {
     background: #fff;
+    width: 65%;
 }
 
 .cont-wrap .set-default {
