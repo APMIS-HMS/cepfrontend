@@ -64,31 +64,31 @@ export class EmployeeService {
     });
   }
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {
-    return this._rest.find();
+    return this._socket.find();
   }
   get(id: string, query: any) {
-    return this._rest.get(id, query);
+    return this._socket.get(id, query);
   }
 
   create(employee: any) {
-    return this._rest.create(employee);
+    return this._socket.create(employee);
   }
 
   remove(id: string, query: any) {
-    return this._rest.remove(id, query);
+    return this._socket.remove(id, query);
   }
   update(employee: any) {
-    return this._rest.update(employee._id, employee);
+    return this._socket.update(employee._id, employee);
   }
   updateMany(employees: any) {
-    return this._rest.update('employees._id', employees);
+    return this._socket.update('employees._id', employees);
   }
   patchMany(data: any, param: any) {
-    return this._rest.patch(null, data, param);
+    return this._socket.patch(null, data, param);
   }
   searchEmployee(facilityId: string, searchText: string, showbasicinfo: boolean) {
     const host = this._restService.getHost();
