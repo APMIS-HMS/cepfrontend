@@ -30,6 +30,7 @@ const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
 const laboratoryRequests = require('./laboratory-requests/laboratory-requests.service.js');
 const laboratoryReports = require('./laboratory-reports/laboratory-reports.service.js');
+const documentations = require('./documentations/documentations.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -63,4 +64,5 @@ module.exports = function (app) {
   app.configure(invoices);
   app.configure(laboratoryRequests);
   app.configure(laboratoryReports);
+  app.configure(documentations);
 };
