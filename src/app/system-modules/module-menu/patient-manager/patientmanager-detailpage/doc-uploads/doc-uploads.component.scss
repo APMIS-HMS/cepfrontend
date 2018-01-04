@@ -1,0 +1,36 @@
+@import "../documentation/documentation.component.scss";
+
+.upload-ul{
+    width: 90%;
+    margin: 0 auto;
+}
+.upload-li{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #fff;
+    border: 2px solid #f8f8f8;
+    padding: 5px;
+    width: 100%;
+    margin: 5px 0;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.upload-li:hover{
+    background: #f8f8f8;
+    border: 2px solid #fff;
+}
+.upload-file-desc {
+    font-size: 12px;
+}
+.uploaded-img i{
+    font-size: 40px;
+    color: #aaa;
+    padding-right: 10px;
+}
+.upload-file-name {
+    color: #0288D1;
+    text-align: right;
+    font-size: 12px;
+    margin-top: 5px;
+}
