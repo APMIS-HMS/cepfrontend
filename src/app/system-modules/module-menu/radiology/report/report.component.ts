@@ -524,7 +524,7 @@ export class ReportComponent implements OnInit {
             pendingLabReq.investigationId = investigation.investigation._id;
             pendingLabReq.createdAt = investigation.investigation.createdAt;
             pendingLabReq.updatedAt = investigation.investigation.updatedAt;
-            pendingLabReq.isPaid = false;
+            pendingLabReq.isPaid = true;
 
             pendingRequests.push(pendingLabReq);
           }
@@ -540,6 +540,7 @@ export class ReportComponent implements OnInit {
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
+      console.log(request);
       if (!!request.billingId) {
         this._billingService.find({
           query: {
@@ -553,7 +554,8 @@ export class ReportComponent implements OnInit {
           billingItem.billItems.forEach(billItem => {
             counter++;
             if (billItem.serviceId === request.service._id) {
-              request.isPaid = billItem.paymentCompleted;
+              // request.isPaid = billItem.paymentCompleted;
+              request.isPaid = true;
             }
           });
 

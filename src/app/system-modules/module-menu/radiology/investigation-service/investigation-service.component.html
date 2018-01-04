@@ -42,37 +42,6 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </div>
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input *ngIf="isNumeric" type="number" matInput placeholder="Minimum Reference Value" formControlName="ref">
-                                        <input *ngIf="!isNumeric" type="text" matInput placeholder="Reference Value" formControlName="ref">
-                                    </mat-input-container>
-                                </div>
-                            </div>
-                            <div class="frm-r">
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input matInput placeholder="Unit" formControlName="unit">
-                                    </mat-input-container>
-                                </div>
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input matInput placeholder="Specimen" [matAutocomplete]="autoSpecimen" formControlName="specimen">
-                                    </mat-input-container>
-                                    <mat-autocomplete #autoSpecimen="matAutocomplete" [displayWith]="specimenDisplayFn">
-                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen">
-                                            {{ specimen.name }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </div>
-                                <div class="frm-item-wrap">
-                                    <mat-input-container *ngIf="isNumeric">
-                                        <input *ngIf="isNumeric" type="number" matInput placeholder="Maximum Reference Value" formControlName="maxRef">
-                                    </mat-input-container>
-                                </div>
                             </div>
                         </div>
 
@@ -136,7 +105,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewPanel.valid" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
+                            <button mat-raised-button [disabled]="true" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
                                 {{panelBtnText}}
                             </button>
                         </div>
@@ -155,26 +124,11 @@
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Specimens</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Reference Value</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Unit</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                                     <span style="padding-left: 3px;">Report Type</span>
                                 </th>
+                                <th>
 
-                                <th></th>
-                                <th></th>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -185,14 +139,14 @@
                                         <div class="frm-item-wrap">
                                             <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
-
+                                        <!-- 
                                         <div class="frm-item-wrap">
                                             <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Report Type" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
 
                                         <div class="frm-item-wrap">
                                             <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Specimen" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </td>
                             </tr>
@@ -206,11 +160,7 @@
                             </tr>
                             <tr *ngFor="let investigation of investigations">
                                 <td>{{investigation.name}}</td>
-                                <td>{{investigation.specimen?.name}}</td>
-                                <td>{{getRefrenceValues(investigation?.reportType)}} </td>
-                                <td>{{investigation.unit}}</td>
                                 <td>{{investigation.reportType?.name}}</td>
-                                <td>Blood, Urine, Stool.</td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
