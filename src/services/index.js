@@ -28,6 +28,9 @@ const serviceTags = require('./service-tags/service-tags.service.js');
 const products = require('./products/products.service.js');
 const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
+const vitaLocations = require('./vita-locations/vita-locations.service.js');
+const vitalPositions = require('./vital-positions/vital-positions.service.js');
+const vitalRythms = require('./vital-rythms/vital-rythms.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -59,4 +62,7 @@ module.exports = function (app) {
   app.configure(products);
   app.configure(billings);
   app.configure(invoices);
+  app.configure(vitaLocations);
+  app.configure(vitalPositions);
+  app.configure(vitalRythms);
 };
