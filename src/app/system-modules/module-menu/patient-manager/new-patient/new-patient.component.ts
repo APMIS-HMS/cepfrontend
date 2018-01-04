@@ -536,11 +536,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             this.family.push(data);
             
-            this.frmNewEmp1.controls['empFirstName'].setValue(data.enrollees.othernames);
+            this.frmNewEmp1.controls['empFirstName'].setValue(data.enrollees.firstname);
+            this.frmNewEmp1.controls['empOtherName'].setValue(data.enrollees.othernames);
             this.frmNewEmp1.controls['empLastName'].setValue(data.enrollees.surname);
             this.frmNewEmp1.controls['empEmail'].setValue(data.enrollees.email);
             this.frmNewEmp1.controls['confirmEmpEmail'].setValue(data.email);
             this.frmNewEmp1.controls['empGender'].setValue(data.enrollees.gender);
+            this.frmNewEmp2.controls['empHomeAddress'].setValue(data.enrollees.address);
             this.frmNewEmp1.controls['empPhonNo'].setValue(data.enrollees.phone);
             this.frmNewEmp1.controls['empPersonId'].setValue(data.enrollees.filNo);
             this.frmNewEmp1.controls['facId'].setValue(data._id);
@@ -1184,13 +1186,16 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 ]
             }
 
-            let familyEnrollee
+             
 
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
-                    this.faService.updateFamily(family).then(familyPayload => {});
+                    this.family[0].enrollees.patientId = payl._id;
+                    this.faService.getFamily(facId, this.family[0]).then(familyPayload => {
+
+                    });
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
                     
                         //this.prices = payload.data;
