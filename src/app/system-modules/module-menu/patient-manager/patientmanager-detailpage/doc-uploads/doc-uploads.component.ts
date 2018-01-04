@@ -15,6 +15,7 @@ export class DocUploadsComponent implements OnInit {
   addVitals_view = false;
   docDetail_view = false;
   newUpload = false;
+  showDoc = false;
 
   constructor() { }
 
@@ -43,6 +44,10 @@ export class DocUploadsComponent implements OnInit {
     this.addHistory_view = false;
     this.addVitals_view = false;
     this.newUpload = false;
+    this.showDoc = false;
+  }
+  docDetail(){
+    this.showDoc = true;
   }
   onChange(e){
     //upload stuff

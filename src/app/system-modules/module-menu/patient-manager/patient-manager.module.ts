@@ -55,6 +55,7 @@ import { FluidComponent } from './patientmanager-detailpage/fluid/fluid.componen
 import { DocumentationTemplateService } from 'app/services/facility-manager/setup/documentation-template.service';
 import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc-uploads.component';
 import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
+import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -93,7 +94,8 @@ import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-
         TreatementPlanComponent,
         FluidComponent,
         DocUploadsComponent,
-        DocUploadComponent
+        DocUploadComponent,
+        DocUploadDetailComponent
     ],
     exports: [
     ],

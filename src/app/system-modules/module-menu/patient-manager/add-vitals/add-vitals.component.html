@@ -27,9 +27,11 @@
               <select formControlName="pulseLoc">
                 <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
               </select>-->
-              <mat-select placeholder="Location" formControlName="pulseLoc">
-                <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
-              </mat-select>
+              <mat-form-field>
+                <mat-select placeholder="Location" formControlName="pulseLoc">
+                  <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
 
             <div class="frm-item-wrap">
@@ -37,9 +39,11 @@
               <select formControlName="pulseRythm">
                 <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
               </select>-->
-              <mat-select placeholder="Rythm" formControlName="pulseRythm">
-                <mat-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</mat-option>
-              </mat-select>
+              <mat-form-field>
+                <mat-select placeholder="Rythm" formControlName="pulseRythm">
+                  <mat-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
 
@@ -119,14 +123,18 @@
                 </div>
               </div>
               <div class="frm-item-wrap">
-                <mat-select placeholder="Location" formControlName="diastolicBp1Loc">
-                  <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                  <mat-select placeholder="Location" formControlName="diastolicBp1Loc">
+                    <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
               <div class="frm-item-wrap">
-                <mat-select placeholder="Position" formControlName="diastolicBp1Pos">
-                  <mat-option *ngFor="let position of vitalPosition" [value]="position?.name">{{position?.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                  <mat-select placeholder="Position" formControlName="diastolicBp1Pos">
+                    <mat-option *ngFor="let position of vitalPosition" [value]="position?.name">{{position?.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </div>
 
