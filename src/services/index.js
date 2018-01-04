@@ -34,6 +34,7 @@ const vitalRythms = require('./vital-rythms/vital-rythms.service.js');
 const forms = require('./forms/forms.service.js');
 const formScopeLevels = require('./form-scope-levels/form-scope-levels.service.js');
 const formTypes = require('./form-types/form-types.service.js');
+const orderMgtTemplates = require('./order-mgt-templates/order-mgt-templates.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -71,4 +72,5 @@ module.exports = function (app) {
   app.configure(forms);
   app.configure(formScopeLevels);
   app.configure(formTypes);
+  app.configure(orderMgtTemplates);
 };
