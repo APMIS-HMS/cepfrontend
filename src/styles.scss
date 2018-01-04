@@ -568,7 +568,11 @@ select {
 .modal-baseWrap {
     @extend .nice-scroll;
     position: relative;
+<<<<<<< HEAD
     // width: 590px;
+=======
+    width: 800px;
+>>>>>>> remotes/origin/development
     min-width: 440px;
     height: auto;
     max-height: 90vh;
@@ -1223,7 +1227,7 @@ select {
 
 ul.topmenuwrap {
     position: absolute;
-    top: -25px;
+    top: -35px;
     right: 22px;
     font-size: 12px;
     color: #0288D1;
