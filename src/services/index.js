@@ -22,6 +22,7 @@ const employees = require('./employees/employees.service.js');
 const appointments = require('./appointments/appointments.service.js');
 const organisationServices = require('./organisation-services/organisation-services.service.js');
 const categoryTypes = require('./category-types/category-types.service.js');
+const purchaseOrders = require('./purchase-orders/purchase-orders.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -47,4 +48,5 @@ module.exports = function (app) {
   app.configure(appointments);
   app.configure(organisationServices);
   app.configure(categoryTypes);
+  app.configure(purchaseOrders);
 };
