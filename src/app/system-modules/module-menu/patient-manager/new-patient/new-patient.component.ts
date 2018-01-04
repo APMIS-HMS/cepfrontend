@@ -760,6 +760,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     savePerson() {
+            console.log(this.planInput);
             const person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
@@ -801,19 +802,19 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
                 person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
             }
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    }
-                ]
-            }
 
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
@@ -867,6 +868,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveCompanyPerson(){
+        console.log(this.planInput);
         const person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
@@ -917,27 +919,27 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             let facId = this.frmNewEmp1.controls['facId'].value;
             let facName = this.frmNewEmp1.controls['facName'].value;
 
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    },
-                    {
-                        planType: 'company',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
 
             this.personService.update(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true
+                        },
+                        {
+                            planType: 'company',
+                            isDefault: false,
+                            planDetails: {
+                                name: facName,
+                                _id: facId
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
@@ -1042,27 +1044,27 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             let facId = this.frmNewEmp1.controls['facId'].value;
             let facName = this.frmNewEmp1.controls['facName'].value;
 
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    },
-                    {
-                        planType: 'insurance',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
 
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true
+                        },
+                        {
+                            planType: 'insurance',
+                            isDefault: false,
+                            planDetails: {
+                                name: facName,
+                                _id: facId
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
@@ -1168,29 +1170,26 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             let facName = this.frmNewEmp1.controls['facName'].value;
             let empFcltiId = this.frmNewEmp1.controls['ffId'].value;
 
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    },
-                    {
-                        planType: 'family',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
-
-             
-
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true
+                        },
+                        {
+                            planType: 'family',
+                            isDefault: false,
+                            planDetails: {
+                                name: facName,
+                                _id: facId
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     //this.family[0].enrollees.patientId = payl._id;
