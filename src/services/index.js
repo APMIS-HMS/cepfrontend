@@ -32,6 +32,7 @@ const inPatients = require('./in-patients/in-patients.service.js');
 const inpatientTransferStatuses = require('./inpatient-transfer-statuses/inpatient-transfer-statuses.service.js');
 const inpatientWaitingLists = require('./inpatient-waiting-lists/inpatient-waiting-lists.service.js');
 const inpatientWaitingTypes = require('./inpatient-waiting-types/inpatient-waiting-types.service.js');
+const facilityPrices = require('./facility-prices/facility-prices.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -67,4 +68,5 @@ module.exports = function (app) {
   app.configure(inpatientTransferStatuses);
   app.configure(inpatientWaitingLists);
   app.configure(inpatientWaitingTypes);
+  app.configure(facilityPrices);
 };
