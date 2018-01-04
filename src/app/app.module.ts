@@ -12,7 +12,7 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import {            } from './facility-setup/facility-setup.module';
+// import {            } from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
@@ -45,7 +45,7 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
-import { IkeComponent } from './ike/ike.component';
+//import { IkeComponent } from './ike/ike.component';
 
 @NgModule({
   declarations: [
@@ -53,8 +53,7 @@ import { IkeComponent } from './ike/ike.component';
     HomeComponent,
     PasswordResetComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent,
-    IkeComponent
+    ApmisCheckboxComponent
   ],
   exports: [
     // MaterialModule,

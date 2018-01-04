@@ -93,11 +93,11 @@
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="nextCompanyCover(ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button >
+                    <button class="small-btn" (click)="nextCompanyCover(ccPlanId.value, ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="next()" *ngIf="tabFamily" mat-raised-button >
+                    <button class="small-btn" (click)="nextFamily(familyPlanId.value)" *ngIf="tabFamily" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
@@ -145,6 +145,11 @@
                 <div class="frm-item-wrap">
                     <mat-input-container class="example-full-width">
                         <input type="hidden" matInput mat-error formControlName="empPersonId">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="hidden" matInput mat-error formControlName="empFcltyId">
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
