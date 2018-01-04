@@ -24,6 +24,8 @@ const organisationServices = require('./organisation-services/organisation-servi
 const categoryTypes = require('./category-types/category-types.service.js');
 const resendToken = require('./resend-token/resend-token.service.js');
 const joinFacilityChannel = require('./join-facility-channel/join-facility-channel.service.js');
+const serviceTags = require('./service-tags/service-tags.service.js');
+const products = require('./products/products.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -51,4 +53,6 @@ module.exports = function (app) {
   app.configure(categoryTypes);
   app.configure(resendToken);
   app.configure(joinFacilityChannel);
+  app.configure(serviceTags);
+  app.configure(products);
 };

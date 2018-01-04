@@ -11,14 +11,14 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const appointments = new Schema({
-    facilityId: { type: Schema.Types.Mixed, required: true },
-    clinicId: { type: Schema.Types.Mixed, required: true },
-    appointmentTypeId: { type: Schema.Types.Mixed, required: true },
-    doctorId: { type: Schema.Types.Mixed, required: false },
+    facilityId: { type: Schema.Types.ObjectId, required: true },
+    clinicId: { type: Schema.Types.ObjectId, required: true },
+    appointmentTypeId: { type: Schema.Types.ObjectId, required: true },
+    doctorId: { type: Schema.Types.ObjectId, required: false },
     orderStatusId: { type: Schema.Types.Mixed, required: true },
     zoom: { type: Schema.Types.Mixed, required: false },
     startDate: { type: Date, require: true },
-    patientId: { type: Schema.Types.Mixed, required: true },
+    patientId: { type: Schema.Types.ObjectId, required: true },
     appointmentReason: { type: String, require: false },
     category: { type: Schema.Types.Mixed, required: true },
     checkedOut: { type: Schema.Types.Mixed, required: false },
