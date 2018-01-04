@@ -49,6 +49,8 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
 import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
+import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 
 
 @NgModule({
@@ -106,7 +108,7 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
     CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
-    SetupService.TimeLineService
+    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService
   ],
   bootstrap: [AppComponent]
 })

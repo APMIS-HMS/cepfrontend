@@ -9,7 +9,7 @@
 
   <div class="noToken_wrap">
     <div class="noToken_txt1">...Didn't recieve a token on <span>{{input_facilityphonNo}}</span>?</div>
-    <div class="noToken_txt2">Resend Token</div>
+    <div (click)="resendToken()" class="noToken_txt2">Resend Token</div>
   </div>
 
   <div (click)="back_verifier()" class="backBtn" *ngIf="backBtnVisible"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>

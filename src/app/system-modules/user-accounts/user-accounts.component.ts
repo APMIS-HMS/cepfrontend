@@ -1,3 +1,4 @@
+import { JoinChannelService } from './../../services/facility-manager/setup/join-channel.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, CorporateFacilityService, EmployeeService } from '../../services/facility-manager/setup/index';
@@ -31,6 +32,7 @@ export class UserAccountsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private corporateFacilityService: CorporateFacilityService,
     private employeeService: EmployeeService,
+    private joinChannelService:JoinChannelService,
     public facilityService: FacilitiesService) {
     this.userService.missionAnnounced$.subscribe(payload => {
       if (payload === 'out') {
@@ -85,14 +87,21 @@ export class UserAccountsComponent implements OnInit {
 
   popListing(item: any) {
     const auth: any = this.locker.getObject('auth');
+    console.log(auth);
     this.facilityService.get(item._id,{}).then(payload =>{
       this.selectedFacility = payload;
       if (this.selectedFacility.isTokenVerified === false) {
         this.popup_verifyToken = true;
         this.popup_listing = false;
       } else {
-        this.popup_listing = true;
-        this.popup_verifyToken = false;
+        this.joinChannelService.create({_id:this.selectedFacility._id, userId:auth.data._id}).then(pay =>{
+          console.log(pay);
+          this.popup_listing = true;
+          this.popup_verifyToken = false;
+        }, err =>{
+          console.log(err)
+        })
+        
       }
       this.locker.setObject('selectedFacility', this.selectedFacility);
       this.logoutConfirm_on = false;
@@ -102,6 +111,7 @@ export class UserAccountsComponent implements OnInit {
   close_onClick(e) {
     this.popup_listing = false;
     this.logoutConfirm_on = false;
+    this.popup_verifyToken = false;
   }
   logoutConfirm_show() {
     this.popup_listing = false;

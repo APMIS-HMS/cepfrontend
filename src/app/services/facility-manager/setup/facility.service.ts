@@ -10,8 +10,10 @@ const request = require('superagent');
 @Injectable()
 export class FacilitiesService {
   public listner;
+  public patchListner;
   public _socket;
   public _saveFacilitySocket;
+  public _sendFacilityTokenSocket;
   private _rest;
   private _restLogin;
 
@@ -28,11 +30,15 @@ export class FacilitiesService {
     private locker: CoolLocalStorage
   ) {
     this._rest = _restService.getService('facilities');
-    this._socket = _socketService.getService('facilities');
+    this._socket = _socketService.getService('facilities')
     this._saveFacilitySocket = _socketService.getService('save-facility');
+    this._sendFacilityTokenSocket = _socketService.getService('resend-token');
     this._socket.timeout = 30000;
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
+    this.patchListner = Observable.fromEvent(this._socket, 'patched');
+    // client.service('messages').on('created', addMessage);
+
   }
   announceSlider(slider: Object) {
     this.sliderAnnouncedSource.next(slider);
@@ -77,10 +83,19 @@ export class FacilitiesService {
     return new Promise(function (resolve, reject) {
       resolve(that._saveFacilitySocket.create(facility))
     });
-    // return this._saveFacilitySocket.create(facility);
+  }
+
+  resendToken(facilityId: any) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._sendFacilityTokenSocket.create(facilityId));
+    });
   }
   update(facility: any) {
     return this._socket.update(facility._id, facility);
+  }
+  patch(_id: any, data: any, param: any) {
+    return this._socket.patch(_id, data, param);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);

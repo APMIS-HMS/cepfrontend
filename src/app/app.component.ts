@@ -12,6 +12,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
     private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage,
-    private userServiceFacade: UserFacadeService,
+    private userServiceFacade: UserFacadeService, private joinService:JoinChannelService,
     private systemModuleService: SystemModuleService, private loadingService: LoadingBarService, ) {
     this.toastr.setRootViewContainerRef(vcr);
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
@@ -66,6 +67,9 @@ export class AppComponent implements OnInit {
     
       this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.auth = <any>this.locker.getObject('auth');
+      this.joinService.create({_id:this.selectedFacility._id, userId: this.auth.data._id}).then(paylo =>{
+        console.log(paylo);
+      });
     }).catch(err => {
       this.warning("Authentication is required, please log-in with your credentials");
       this.router.navigate(['/']);

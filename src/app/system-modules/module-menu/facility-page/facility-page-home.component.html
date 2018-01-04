@@ -8,7 +8,7 @@
 </ul>
 <div class="portal-wrap">
     <div class="content-sect">
-        <app-facilitypage-sidesect class="side-sect"></app-facilitypage-sidesect>
+        <app-facilitypage-sidesect [selectedFacility]="selectedFacility" class="side-sect"></app-facilitypage-sidesect>
         <div class="mid-sect">
             <div *ngIf="departmentsContentArea" class="pp-card shadow-grey">
                 <div class="card-title">Department(s)</div>

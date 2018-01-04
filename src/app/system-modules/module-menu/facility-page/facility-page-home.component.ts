@@ -59,6 +59,7 @@ export class FacilityPageHomeComponent implements OnInit {
     this.getMinorLocations();
     this.getEmployees();
   }
+  
   showUnit_click(){
     this.showUnit = true;
   }

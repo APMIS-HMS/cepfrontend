@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FacilitiesService } from '../services/facility-manager/setup/index';
 import { Facility } from '../models/index';
 import { UserService } from '../services/facility-manager/setup/index';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 
 
 @Component({

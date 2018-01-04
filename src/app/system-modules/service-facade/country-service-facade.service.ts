@@ -29,10 +29,12 @@ export class CountryServiceFacadeService {
     });
   }
 
-  getOnlyStates(country: string) {
+  getOnlyStates(country: string, refresh?:boolean) {
     let that = this;
+    console.log(refresh);
     return new Promise(function (resolve, reject) {
-      if (that.states.length > 0) {
+      if (that.states.length > 0 && !refresh) {
+        console.log('am not')
         resolve(that.states);
       } else {
         console.log('refresh state');
