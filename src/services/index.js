@@ -32,6 +32,13 @@ const inPatients = require('./in-patients/in-patients.service.js');
 const inpatientTransferStatuses = require('./inpatient-transfer-statuses/inpatient-transfer-statuses.service.js');
 const inpatientWaitingLists = require('./inpatient-waiting-lists/inpatient-waiting-lists.service.js');
 const inpatientWaitingTypes = require('./inpatient-waiting-types/inpatient-waiting-types.service.js');
+const vitaLocations = require('./vita-locations/vita-locations.service.js');
+const vitalPositions = require('./vital-positions/vital-positions.service.js');
+const vitalRythms = require('./vital-rythms/vital-rythms.service.js');
+const forms = require('./forms/forms.service.js');
+const formScopeLevels = require('./form-scope-levels/form-scope-levels.service.js');
+const formTypes = require('./form-types/form-types.service.js');
+const orderMgtTemplates = require('./order-mgt-templates/order-mgt-templates.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -67,4 +74,11 @@ module.exports = function (app) {
   app.configure(inpatientTransferStatuses);
   app.configure(inpatientWaitingLists);
   app.configure(inpatientWaitingTypes);
+  app.configure(vitaLocations);
+  app.configure(vitalPositions);
+  app.configure(vitalRythms);
+  app.configure(forms);
+  app.configure(formScopeLevels);
+  app.configure(formTypes);
+  app.configure(orderMgtTemplates);
 };
