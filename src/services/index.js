@@ -28,6 +28,10 @@ const serviceTags = require('./service-tags/service-tags.service.js');
 const products = require('./products/products.service.js');
 const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
+const inPatients = require('./in-patients/in-patients.service.js');
+const inpatientTransferStatuses = require('./inpatient-transfer-statuses/inpatient-transfer-statuses.service.js');
+const inpatientWaitingLists = require('./inpatient-waiting-lists/inpatient-waiting-lists.service.js');
+const inpatientWaitingTypes = require('./inpatient-waiting-types/inpatient-waiting-types.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -59,4 +63,8 @@ module.exports = function (app) {
   app.configure(products);
   app.configure(billings);
   app.configure(invoices);
+  app.configure(inPatients);
+  app.configure(inpatientTransferStatuses);
+  app.configure(inpatientWaitingLists);
+  app.configure(inpatientWaitingTypes);
 };
