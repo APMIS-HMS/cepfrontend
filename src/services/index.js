@@ -28,6 +28,10 @@ const serviceTags = require('./service-tags/service-tags.service.js');
 const products = require('./products/products.service.js');
 const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
+const stores = require('./stores/stores.service.js');
+const storeRequisitions = require('./store-requisitions/store-requisitions.service.js');
+const inventoryTransactionTypes = require('./inventory-transaction-types/inventory-transaction-types.service.js');
+const inventoryTransfers = require('./inventory-transfers/inventory-transfers.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -59,4 +63,8 @@ module.exports = function (app) {
   app.configure(products);
   app.configure(billings);
   app.configure(invoices);
+  app.configure(stores);
+  app.configure(storeRequisitions);
+  app.configure(inventoryTransactionTypes);
+  app.configure(inventoryTransfers);
 };
