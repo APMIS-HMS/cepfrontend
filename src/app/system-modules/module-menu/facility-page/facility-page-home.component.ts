@@ -40,6 +40,8 @@ export class FacilityPageHomeComponent implements OnInit {
   
   newDept = false;
   newUnit = false;
+  newSubLocModal_on = false;
+  createWorkspace = false;
 
   searchControl: FormControl = new FormControl();
   
@@ -235,12 +237,20 @@ export class FacilityPageHomeComponent implements OnInit {
   close_onClick(e){
     this.newDept = false;
     this.newUnit = false;
+    this.newSubLocModal_on = false;
+    this.createWorkspace = false;
   }
   newDept_onClick(){
     this.newDept = true;
   }
   newUnit_onClick(){
     this.newUnit = true;
+  }
+  newLoc_onClick(){
+    this.newSubLocModal_on = true;
+  }
+  newWorkspace_onClick(){
+    this.createWorkspace = true;
   }
   autoCompleteCallback1(selectedData:any) {
 		//do any necessery stuff.

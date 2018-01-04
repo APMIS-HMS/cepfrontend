@@ -106,9 +106,9 @@
                             <div class="action-icons">
                                 <i [hidden]="showLoc" (click)="showLoc_click()" class="fa fa-expand" aria-hidden="true"></i>
                                 <i *ngIf="showLoc" (click)="showLoc_hide()" class="fa fa-compress" aria-hidden="true"></i>
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                <i (click)="newLoc_onClick()" class="fa fa-plus" aria-hidden="true"></i>
+                                <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <i class="fa fa-trash-o" aria-hidden="true"></i> -->
                             </div>
                         </div>
                         <div *ngIf="showLoc" class="dept-units">
@@ -134,7 +134,7 @@
                                         <td>SOP Unit</td>
                                         <td>All them surgicall operations takes place right here at this department</td>
                                         <td class="action-icons">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <i (click)="newLoc_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </td>
@@ -145,9 +145,9 @@
                     </li>
                 </ul>
 
-                <span (click)="newLoc()" id="floating-button">
+                <!-- <span id="floating-button">
                     <p class="plus">+</p>
-                </span>
+                </span> -->
             </div>
 
             <div *ngIf="workspaceContentArea" class="pp-card shadow-grey">
@@ -197,7 +197,7 @@
                             </td>
                             <td>
                                 <div class="td-ctaWrap">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <i (click)="newWorkspace_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                     <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"></i>
                                 </div>
                             </td>
@@ -205,7 +205,7 @@
                     </tbody>
                 </table>
 
-                <span (click)="newDept()" id="floating-button">
+                <span (click)="newWorkspace_onClick()" id="floating-button">
                     <p class="plus">+</p>
                 </span>
             </div>
@@ -218,4 +218,10 @@
 </div>
 <div *ngIf="newUnit" class="modal-overlay">
     <app-new-unit (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-unit>
+</div>
+<div *ngIf="newSubLocModal_on" class="modal-overlay">
+    <app-new-sub-location [locations]="locationsObj" [location]="locationObj" [subLocation]="subLocation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-sub-location>
+</div>
+<div *ngIf="createWorkspace" class="modal-overlay">
+    <app-create-workspace (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
 </div>

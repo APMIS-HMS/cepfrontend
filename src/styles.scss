@@ -568,7 +568,7 @@ select {
 .modal-baseWrap {
     @extend .nice-scroll;
     position: relative;
-    width: 590px;
+    // width: 590px;
     min-width: 440px;
     height: auto;
     max-height: 90vh;
@@ -1270,7 +1270,7 @@ ul.topmenuwrap li:hover {
 }
 
 .mat-input-container {
-    width: 90%;
+    width: 100%;
 }
 
 .tr-act-btn {

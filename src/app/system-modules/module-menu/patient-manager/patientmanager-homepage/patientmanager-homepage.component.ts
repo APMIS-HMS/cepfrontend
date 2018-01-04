@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input } from '@angular/core';
+=======
+import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input } from '@angular/core';
+>>>>>>> remotes/origin/facility-signup
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
@@ -25,6 +29,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
   @Input() resetData: Boolean;
   @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   facility: Facility = <Facility>{};
   user: User = <User>{};
@@ -409,5 +414,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       type: type,
       text: text
     });
+  }
+  onChange(e){
+    //upload stuff
+  }
+  showImageBrowseDlg(){
+    this.fileInput.nativeElement.click()
   }
 }
