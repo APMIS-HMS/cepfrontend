@@ -11,36 +11,44 @@
             <div class="mainfrmwrap">
                 <div class="sec-1">
                     <div class="frm-item-wrap">
-                        <mat-select formControlName="dept" placeholder="Department">
-                            <mat-option *ngFor="let department of departments" [value]="department">
-                                {{department.name}}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select formControlName="dept" placeholder="Department">
+                                <mat-option *ngFor="let department of departments" [value]="department">
+                                    {{department.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
 
                     <div class="frm-item-wrap">
-                        <mat-select formControlName="unit" placeholder="Unit" >
-                            <mat-option *ngFor="let unit of units" [value]="unit">
-                                {{unit.name}}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select formControlName="unit" placeholder="Unit" >
+                                <mat-option *ngFor="let unit of units" [value]="unit">
+                                    {{unit.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="sec-2">
                     <div class="frm-item-wrap">
-                        <mat-select formControlName="majorLoc" placeholder ="Major Location" >
-                            <mat-option *ngFor="let major of majorLocations" [value]="major">
-                                {{major.name}}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select formControlName="majorLoc" placeholder ="Major Location" >
+                                <mat-option *ngFor="let major of majorLocations" [value]="major">
+                                    {{major.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
 
                     <div class="frm-item-wrap">
-                        <mat-select formControlName="minorLoc" placeholder="Minor Location" >
-                            <mat-option *ngFor="let minor of minorLocations" [value]="minor">
-                                {{minor.name}}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select formControlName="minorLoc" placeholder="Minor Location" >
+                                <mat-option *ngFor="let minor of minorLocations" [value]="minor">
+                                    {{minor.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
 
