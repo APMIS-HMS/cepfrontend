@@ -57,6 +57,10 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     SurveyEditorComponent,
     ProductSearchComponent,
     Angular4FlutterwaveComponent,
+    // VerifyTokenComponent,
+    // FacilityInfoComponent,
+    // ContactInfoComponent,
+    // AddLogoComponent
     // LabCheckInComponent,
     // LabRequestsComponent, RequestDetailComponent
   ],
@@ -76,7 +80,11 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     FormsModule,
     SingUpAccountsSharedModule,
     Angular4FlutterwaveComponent,
-    Angular4PaystackModule
+    Angular4PaystackModule,
+    // VerifyTokenComponent,
+    // FacilityInfoComponent,
+    // ContactInfoComponent,
+    // AddLogoComponent
     // DragulaModule,
     // LabRequestsComponent, RequestDetailComponent
   ],

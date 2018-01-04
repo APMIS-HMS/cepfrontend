@@ -28,7 +28,7 @@ export class CheckoutPatientComponent implements OnInit {
 	deathFormGroup: FormGroup;
 	wards: any[] = [];
 	admittedWard: any = <any>{};
-	admitBtnText: String = 'Send <i class="fa fa-check-circle-o"></i>';
+	admitBtnText: String = 'Send <i class=\'fa fa-check-circle-o\'></i>';
 	loading: Boolean = true;
 
 	constructor(
@@ -66,7 +66,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	onClickAdmit(value: any, valid: boolean) {
 		if (valid) {
-			this.admitBtnText = 'Sending... <i class="fa fa-spinner fa-spin"></i>';
+			this.admitBtnText = 'Sending... <i class=\'fa fa-spinner fa-spin\'></i>';
 			// Delete irrelevant data from employee
 			delete this.employeeDetails.workSpaces;
 			delete this.employeeDetails.department;
@@ -110,7 +110,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 						this._appointmentService.update(updateData).then(updateRes => {
 							this.admitFormGroup.reset();
-							this.admitBtnText = 'Send <i class="fa fa-check-circle-o"></i>';
+							this.admitBtnText = 'Send <i class=\'fa fa-check-circle-o\'></i>';
 							let text = this.patientDetails.personDetails.personFullName + ' has been sent to ' + value.ward.name + ' ward for admission';
 							res.isAdmitted = true;
 							res.msg = text;
@@ -119,7 +119,7 @@ export class CheckoutPatientComponent implements OnInit {
 						}).catch(err => console.log(err));
 					} else {
 						this.admitFormGroup.reset();
-						this.admitBtnText = 'Send <i class="fa fa-check-circle-o"></i>';
+						this.admitBtnText = 'Send <i class=\'fa fa-check-circle-o\'></i>';
 						let text = this.patientDetails.personDetails.personFullName + ' has been sent to ' + value.ward.name + ' ward for admission';
 						res.isAdmitted = true;
 						res.msg = text;
@@ -133,25 +133,24 @@ export class CheckoutPatientComponent implements OnInit {
 		}
 	}
 
-	checkOutPatient(type, formData?, formDataValid?){
+	checkOutPatient(type, formData?, formDataValid?) {
 		this.loading = true;
-		var checkoutData;
-		if(type == "No Futher Appointment"){
-
+		let checkoutData;
+		if (type === 'No Futher Appointment') {
 			checkoutData = {
 				type: 'NFA',
 				checkOutTime: new Date(),
 				person: this.user.data.person
 			};
 
-		}else if(type == "Follow-Up With Appointment"){
+		} else if (type === 'Follow-Up With Appointment') {
 			checkoutData = {
 				type: 'FUWA',
 				checkedOutTime: new Date(),
 				person: this.user.data.person
 			}
-		}else if(type == "death"){
-			if(formDataValid){
+		} else if (type === 'death'){
+			if (formDataValid){
 				checkoutData = {
 					type: 'Death',
 					checkedOutTime: new Date(),
@@ -161,7 +160,7 @@ export class CheckoutPatientComponent implements OnInit {
 				}
 			}
 		}
-		
+
 		this._appointmentService.find({ query: {
 			'_id': this.selectedAppointment._id
 		}}).then(clinicRes => {
@@ -171,9 +170,9 @@ export class CheckoutPatientComponent implements OnInit {
 				updateData.checkedOut = checkoutData;
 				this._appointmentService.update(updateData).then((updateRes) => {
 					this._notification('Success', 'Patient Has Successfully Been Checked Out ');
-					if(checkoutData.type == "FUWA"){
+					if (checkoutData.type === 'FUWA') {
 						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id], { queryParams: { checkedOut: true } });
-					}else{
+					} else {
 						this._router.navigate(['/dashboard/clinic/appointment']).then(() => {
 						});
 					}
@@ -189,7 +188,7 @@ export class CheckoutPatientComponent implements OnInit {
 			'facilityId._id': this.facility._id,
 			'patientId._id': this.patientDetails._id
 		}}).then(res => {
-      this.loading = false;
+      		this.loading = false;
 			if (res.data.length > 0) {
 				this._inpatientService.find({ query: {
 					'facilityId._id': this.facility._id,
@@ -203,7 +202,7 @@ export class CheckoutPatientComponent implements OnInit {
 						resp.data[0].isAdmitted = true;
 						resp.data[0].msg = text;
 						this.admittedWard = resp.data[0];
-          }
+          			}
           //  else {
 					// 	let text = patientName + ' has been sent to ' + res.data[0].wardId.name + ' ward for admission.';
 					// 	res.data[0].isAdmitted = true;

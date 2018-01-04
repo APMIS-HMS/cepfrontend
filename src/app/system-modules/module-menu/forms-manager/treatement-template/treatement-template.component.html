@@ -20,10 +20,12 @@
                 <!-- <mat-select *ngIf="stateAvailable" placeholder="Facility State"  formControlName="facilitystate" (change)="onStateChange($event.value)">
                       <mat-option *ngFor="let state of selectedCountry?.states" selected="inputFacility.address.state" [value]="state">{{state.name}}</mat-option>
                   </mat-select> -->
-                <mat-select placeholder="Type" formControlName="type">
-                  <mat-option value="Documentation" selected>Documentation</mat-option>
-                  <mat-option value="Order Set">Order Set</mat-option>
-                </mat-select>
+                  <mat-form-field>
+                    <mat-select placeholder="Type" formControlName="type">
+                      <mat-option value="Documentation" selected>Documentation</mat-option>
+                      <mat-option value="Order Set">Order Set</mat-option>
+                    </mat-select>
+                  </mat-form-field>
               </div>
               <div class="frm-item-wrap">
                 <mat-input-container>
@@ -32,16 +34,19 @@
               </div>
 
               <div *ngIf="isOrderSet" class="frm-item-wrap">
-                <mat-select placeholder="Select Diagnosis" formControlName="diagnosis">
-                  <mat-option>Malaria</mat-option>
-                  <mat-option>Yellow Fever</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Select Diagnosis" formControlName="diagnosis">
+                      <mat-option>Malaria</mat-option>
+                      <mat-option>Yellow Fever</mat-option>
+                    </mat-select>
+                </mat-form-field>
               </div>
-
               <div class="frm-item-wrap">
-                <mat-select placeholder="Set Visibility" formControlName="visibility">
-                  <mat-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Set Visibility" formControlName="visibility">
+                      <mat-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
               </div>
 
               <div class="frm-item-wrap chk-item" style="color:#777;font-size:12px;">
@@ -51,9 +56,11 @@
 
             <div *ngIf="isDocumentation" class="template-sect animated fadeIn">
               <div class="frm-item-wrap">
-                <mat-select placeholder="Select Form" formControlName="docFrmList">
-                  <mat-option *ngFor="let item of forms" [value]="item">{{item.title}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Select Form" formControlName="docFrmList">
+                    <mat-option *ngFor="let item of forms" [value]="item">{{item.title}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
               <div class="docFrmArea">

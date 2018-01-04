@@ -22,8 +22,8 @@ import { PatientPortalAppointmentComponent } from './patient-portal-appointment/
   declarations: [
     PatientPortalComponent,
     PatientPortalHomeComponent,
-    SystemModuleComponent,
-    ChangePasswordComponent,
+    // SystemModuleComponent,
+    // ChangePasswordComponent,
     PpHomeComponent,
     PatientPortalAppointmentComponent
   ]
