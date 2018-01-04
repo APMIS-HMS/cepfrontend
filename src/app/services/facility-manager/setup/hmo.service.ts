@@ -67,4 +67,11 @@ export class HmoService {
       .post(path)
       .send(formData);
   }
+  getEnrollee(filNo) {
+    const host = this._restService.getHost();
+    const path = host + '/insurance-enrollees';
+    return request
+      .get(path)
+      .query({ filNo: filNo}); // query string 
+  }
 }
