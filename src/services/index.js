@@ -40,6 +40,7 @@ const formScopeLevels = require('./form-scope-levels/form-scope-levels.service.j
 const formTypes = require('./form-types/form-types.service.js');
 const orderMgtTemplates = require('./order-mgt-templates/order-mgt-templates.service.js');
 const facilityPrices = require('./facility-prices/facility-prices.service.js');
+const diagnosises = require('./diagnosises/diagnosises.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -83,4 +84,5 @@ module.exports = function (app) {
   app.configure(formTypes);
   app.configure(orderMgtTemplates);
   app.configure(facilityPrices);
+  app.configure(diagnosises);
 };
