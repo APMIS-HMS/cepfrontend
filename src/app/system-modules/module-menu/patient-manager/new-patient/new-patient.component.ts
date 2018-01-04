@@ -1197,7 +1197,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         _id: facId,
                         facilityId: empFcltiId
                     }).then(familyPayload => {
-                        familyPayload.data[0].familyCovers 
+                        //familyPayload.data[0].familyCovers 
                     });
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
                     
