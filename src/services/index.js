@@ -44,6 +44,7 @@ const diagnosises = require('./diagnosises/diagnosises.service.js');
 const laboratoryRequests = require('./laboratory-requests/laboratory-requests.service.js');
 const laboratoryReports = require('./laboratory-reports/laboratory-reports.service.js');
 const documentations = require('./documentations/documentations.service.js');
+const symptoms = require('./symptoms/symptoms.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -91,4 +92,5 @@ module.exports = function (app) {
   app.configure(laboratoryRequests);
   app.configure(laboratoryReports);
   app.configure(documentations);
+  app.configure(symptoms);
 };
