@@ -45,6 +45,12 @@ const laboratoryRequests = require('./laboratory-requests/laboratory-requests.se
 const laboratoryReports = require('./laboratory-reports/laboratory-reports.service.js');
 const documentations = require('./documentations/documentations.service.js');
 const symptoms = require('./symptoms/symptoms.service.js');
+const stores = require('./stores/stores.service.js');
+const storeRequisitions = require('./store-requisitions/store-requisitions.service.js');
+const inventoryTransactionTypes = require('./inventory-transaction-types/inventory-transaction-types.service.js');
+const inventoryTransfers = require('./inventory-transfers/inventory-transfers.service.js');
+const investigations = require('./investigations/investigations.service.js');
+const investigationReportTypes = require('./investigation-report-types/investigation-report-types.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -93,4 +99,10 @@ module.exports = function (app) {
   app.configure(laboratoryReports);
   app.configure(documentations);
   app.configure(symptoms);
+  app.configure(stores);
+  app.configure(storeRequisitions);
+  app.configure(inventoryTransactionTypes);
+  app.configure(inventoryTransfers);
+  app.configure(investigations);
+  app.configure(investigationReportTypes);
 };

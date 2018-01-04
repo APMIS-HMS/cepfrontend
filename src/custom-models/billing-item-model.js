@@ -12,6 +12,7 @@ const billingSchema = new Schema({
   unitPrice: { type: Number, required: true },
   unitDiscountedAmount: { type: Number, required: false },
   totalDiscoutedAmount: { type: Number, required: false },
+  waver:{ type: Schema.Types.Mixed, required: false },
   payments: [{ type: Schema.Types.Mixed, required: false }], // payment method
   paymentStatus: [{ type: Schema.Types.Mixed, required: false }], // waved, insurance, partpayment, paid. 
   paymentCompleted: { type: Schema.Types.Boolean, 'default': false },
