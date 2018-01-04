@@ -393,12 +393,12 @@ export class FacilitySetupComponent implements OnInit {
           this.selectedFacility = payload;
           // create person and user
           const personModel = <Person>{
-            titleId: this.titles[0]._id,
+            title: this.titles[0]._id,
             firstName: this.facilityForm1_1.controls['contactFName'].value,
             lastName: this.facilityForm1_1.controls['contactLName'].value,
-            genderId: this.genders[0]._id,
+            gender: this.genders[0]._id,
             homeAddress: model.address,
-            phoneNumber: model.contactPhoneNo,
+            primaryContactPhoneNo: model.contactPhoneNo,
             lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
             nationalityId: this.facilityForm1.controls['facilitycountry'].value,
             stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,

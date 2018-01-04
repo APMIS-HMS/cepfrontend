@@ -126,8 +126,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     })
   }
   setAppointment() {
-    if (this.patient !== undefined && this.loginEmployee !== undefined) {
+    if (this.patient !== undefined && this.loginEmployee !== undefined && this.loginEmployee !== null) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
+    }else{
+      
     }
 
   }

@@ -2,14 +2,14 @@ import { Address } from '../../index';
 export interface Person {
     _id: string;
     apmisId: string;
-    titleId: string;
+    title: string;
     firstName: string;
     lastName: string;
     otherNames?: string;
-    genderId: string;
+    gender: string;
     biometric?: any;
     homeAddress: Address;
-    phoneNumber: string;
+    primaryContactPhoneNo: string;
     nationalityId: string;
     stateOfOriginId: string;
     lgaOfOriginId: string;

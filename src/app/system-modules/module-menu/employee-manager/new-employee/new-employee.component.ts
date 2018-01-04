@@ -382,7 +382,7 @@ export class NewEmployeeComponent implements OnInit {
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value.momentObj;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
-            person.genderId = this.frmNewEmp1.controls['empGender'].value;
+            person.gender = this.frmNewEmp1.controls['empGender'].value;
             person.homeAddress = <Address>{
                 street: this.frmNewEmp2.controls['empHomeAddress'].value,
                 city: this.frmNewEmp2.controls['empCity'].value,
@@ -405,8 +405,8 @@ export class NewEmployeeComponent implements OnInit {
             }
 
             person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
-            person.phoneNumber = this.frmNewEmp1.controls['empPhonNo'].value;
-            person.titleId = this.frmNewEmp1.controls['empTitle'].value;
+            person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
+            person.title = this.frmNewEmp1.controls['empTitle'].value;
             person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;

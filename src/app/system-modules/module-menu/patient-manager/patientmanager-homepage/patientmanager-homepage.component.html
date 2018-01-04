@@ -58,11 +58,11 @@
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.age}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">
-                <span *ngIf="patient.personDetails?.gender?.name==='Male'">M</span>
-                <span *ngIf="patient.personDetails?.gender?.name==='Female'">F</span>
-                <span *ngIf="patient.personDetails?.gender?.name!='Female' && patient.personDetails?.gender?.name!='Male'">N</span>
+                <span *ngIf="patient.personDetails?.gender ==='Male'">M</span>
+                <span *ngIf="patient.personDetails?.gender ==='Female'">F</span>
+                <span *ngIf="patient.personDetails?.gender!='Female' && patient.personDetails?.gender!='Male'">N</span>
             </td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.phoneNumber}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.primaryContactPhoneNo}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.email}}</td>
             <!-- <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td> -->
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.dateOfBirth | date}}</td>

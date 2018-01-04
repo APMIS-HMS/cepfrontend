@@ -229,7 +229,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       { data: [], label: '' }
 
     ];
-    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
         payload.data[0].documentations.forEach(documentItem => {
           if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
@@ -258,7 +258,9 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
           }
         });
       }
-    })
+    }, error =>{
+
+    });
   }
 
   dateFormater(d) {
