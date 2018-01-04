@@ -1193,8 +1193,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.family[0].enrollees.patientId = payl._id;
-                    this.faService.getFamily(facId, this.family[0]).then(familyPayload => {
-
+                    this.faService.findFamily({
+                        _id: facId,
+                        facilityId: empFcltiId
+                    }).then(familyPayload => {
+                        familyPayload.data[0].familyCovers 
                     });
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
                     
