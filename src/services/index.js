@@ -32,6 +32,8 @@ const stores = require('./stores/stores.service.js');
 const storeRequisitions = require('./store-requisitions/store-requisitions.service.js');
 const inventoryTransactionTypes = require('./inventory-transaction-types/inventory-transaction-types.service.js');
 const inventoryTransfers = require('./inventory-transfers/inventory-transfers.service.js');
+const investigations = require('./investigations/investigations.service.js');
+const investigationReportTypes = require('./investigation-report-types/investigation-report-types.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -67,4 +69,6 @@ module.exports = function (app) {
   app.configure(storeRequisitions);
   app.configure(inventoryTransactionTypes);
   app.configure(inventoryTransfers);
+  app.configure(investigations);
+  app.configure(investigationReportTypes);
 };
