@@ -39,6 +39,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     wallet: boolean;
     insurance: boolean; */
     family: any = [];
+    
 
     coverType:any;
 
@@ -311,7 +312,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empPersonId: [''],
             facId: [''],
             facName: [''],
-            empfcltyId: [''],
+            ffId: [''],
             empNationality: ['', [<any>Validators.required]],
             empState: ['', [<any>Validators.required]],
             empLga: ['', [<any>Validators.required]],
@@ -546,7 +547,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewEmp1.controls['empPhonNo'].setValue(data.enrollees.phone);
             this.frmNewEmp1.controls['empPersonId'].setValue(data.enrollees.filNo);
             this.frmNewEmp1.controls['facId'].setValue(data._id);
-            this.frmNewEmp1.controls['empFcltyId'].setValue(data.facilityId);
+            this.frmNewEmp1.controls['ffId'].setValue(data.facilityId);
             this.frmNewEmp1.controls['facName'].setValue(data.facilityName);
             
                 
@@ -1165,7 +1166,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             let facId = this.frmNewEmp1.controls['facId'].value;
             let facName = this.frmNewEmp1.controls['facName'].value;
-            let empFcltiId = this.frmNewEmp1.controls['empFcltyId'].value;
+            let empFcltiId = this.frmNewEmp1.controls['ffId'].value;
 
             let patient: any = {
                 personId: this.person_Id,

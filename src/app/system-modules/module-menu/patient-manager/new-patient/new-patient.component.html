@@ -26,28 +26,30 @@
                 <div class="plan">
                   <div class="plan-title">Out of Pocket</div>
                   <div class="frm-item-wrap">
-                    <mat-select placeholder="Select Plan" [formControl]="walletPlan">
-                        <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+                            <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
         
               <div *ngIf="tabInsurance">
                 <div class="plan">
-                  <div class="plan-title">Insurance</div>
-                  <div class="frm-item-wrap">
-                      <mat-input-container class="example-full-width">
-                          <input matInput mat-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-                      </mat-input-container>
-                  </div>
-                  <div class="frm-item-wrap">
-                    <mat-form-field>
-                        <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
-                            <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                  </div>
+                    <div class="plan-title">Insurance</div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Insurance ID" [formControl]="hmoPlanId">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-form-field>
+                            <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
+                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
             
                   <div class="another">Another Insurance</div>
                 </div>
@@ -55,19 +57,19 @@
         
               <div *ngIf="tabCompany">
                 <div class="plan">
-                  <div class="plan-title">Company Cover</div>
-                  <div class="frm-item-wrap">
-                      <mat-input-container class="example-full-width">
-                          <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId" >
-                      </mat-input-container>
-                  </div>
-                  <div class="frm-item-wrap">
-                    <mat-form-field>
+                    <div class="plan-title">Company Cover</div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId" >
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-form-field>
                             <mat-select placeholder="Select Plan" [formControl]="ccPlan">
                                 <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
                             </mat-select>
-                    </mat-form-field>
-                  </div>
+                        </mat-form-field>
+                    </div>
             
                   <div class="another">Another Company</div>
                 </div>
@@ -77,9 +79,14 @@
                 <div class="plan">
                   <div class="plan-title">Family Cover</div>
                   <div class="frm-item-wrap">
-                      <mat-input-container class="example-full-width">
-                          <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
-                      </mat-input-container>
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
+                        </mat-input-container>
+                        <mat-form-field>
+                            <mat-select placeholder="Select Plan" [formControl]="faPlan">
+                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                   </div>
                 </div>
               </div> 
@@ -97,7 +104,7 @@
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="nextFamily(familyPlanId.value)" *ngIf="tabFamily" mat-raised-button >
+                    <button class="small-btn" (click)="nextFamilyCover(familyPlanId.value, faPlan.value)" *ngIf="tabFamily" mat-raised-button >
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
@@ -133,25 +140,20 @@
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input type="hidden" matInput mat-error formControlName="facId">
-                    </mat-input-container>
+                    <input type="hidden" formControlName="facId">
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input type="hidden" matInput mat-error formControlName="facName">
-                    </mat-input-container>
+                    <input type="hidden" formControlName="facName">
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input type="hidden" matInput mat-error formControlName="empPersonId">
-                    </mat-input-container>
+                    <input type="hidden" formControlName="empPersonId">
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input type="hidden" matInput mat-error formControlName="empFcltyId">
-                    </mat-input-container>
+                    <input type="hidden" formControlName="ffId">
                 </div>
+                <!-- <div class="frm-item-wrap">
+                    <input type="hidden" formControlName="empFcltyId">
+                </div> -->
                 <div class="frm-item-wrap">
                     <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
                         <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
