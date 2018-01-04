@@ -28,6 +28,8 @@ const serviceTags = require('./service-tags/service-tags.service.js');
 const products = require('./products/products.service.js');
 const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
+const laboratoryRequests = require('./laboratory-requests/laboratory-requests.service.js');
+const laboratoryReports = require('./laboratory-reports/laboratory-reports.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -59,4 +61,6 @@ module.exports = function (app) {
   app.configure(products);
   app.configure(billings);
   app.configure(invoices);
+  app.configure(laboratoryRequests);
+  app.configure(laboratoryReports);
 };
