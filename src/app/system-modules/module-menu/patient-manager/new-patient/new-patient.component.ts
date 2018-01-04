@@ -1192,63 +1192,82 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 console.log(personPayload);
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
-                    this.family[0].enrollees.patientId = payl._id;
+                    //this.family[0].enrollees.patientId = payl._id;
                     this.faService.findFamily({
                         _id: facId,
                         facilityId: empFcltiId
                     }).then(familyPayload => {
-                        //familyPayload.data[0].familyCovers 
-                    });
-                    this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
+                        let object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
+                        
+                        let ii = object.i;
+                        delete object.i;
+
+                        familyPayload.data[0].familyCovers[ii].patientId = payl._id;
+
+                        this.faService.updateFamily(familyPayload.data[0]).then(famPayl => {
+                            this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
                     
-                        //this.prices = payload.data;
-                        console.log(payloadPrice.data);
-                        let servicePrice = payloadPrice.data[0];
-                        let billing:any = {
-                            discount: 0,
-                            facilityId: this.facility._id,
-                            grandTotal: servicePrice.price,
-                            patientId: payl._id,
-                            subTotal: servicePrice.price,
-                            billItems: [
-                                {
-                                    unitPrice: servicePrice.price,
+                                //this.prices = payload.data;
+                                console.log(payloadPrice.data);
+                                let servicePrice = payloadPrice.data[0];
+                                let billing:any = {
+                                    discount: 0,
                                     facilityId: this.facility._id,
-                                    description: "",
-                                    facilityServiceId: servicePrice.facilityServiceId,
-                                    serviceId: this.planInput,
+                                    grandTotal: servicePrice.price,
                                     patientId: payl._id,
-                                    quantity: 1,
-                                    totalPrice: servicePrice.price,
-                                    unitDiscountedAmount: 0,
-                                    totalDiscoutedAmount: 0,
-                                    modifierId: [],
-                                    covered: {
-                                        coverType: this.coverType,
-                                        _id: facId,
-                                        name: facName
-                                    },
-                                    isServiceEnjoyed: false,
-                                    paymentCompleted: false,
-                                    paymentStatus: [],
-                                    payments: []
-                                    
+                                    subTotal: servicePrice.price,
+                                    billItems: [
+                                        {
+                                            unitPrice: servicePrice.price,
+                                            facilityId: this.facility._id,
+                                            description: "",
+                                            facilityServiceId: servicePrice.facilityServiceId,
+                                            serviceId: this.planInput,
+                                            patientId: payl._id,
+                                            quantity: 1,
+                                            totalPrice: servicePrice.price,
+                                            unitDiscountedAmount: 0,
+                                            totalDiscoutedAmount: 0,
+                                            modifierId: [],
+                                            covered: {
+                                                coverType: this.coverType,
+                                                _id: facId,
+                                                name: facName
+                                            },
+                                            isServiceEnjoyed: false,
+                                            paymentCompleted: false,
+                                            paymentStatus: [],
+                                            payments: []
+                                            
+                                        }
+                                    ]
                                 }
-                            ]
-                        }
-                        this.billingService.create(billing).then(billingPayload => {
-                            console.log(billingPayload);
-                            this.close_onClick();
-                        }).catch(errr => {
-                            console.log(errr);
-                        });
-                
-                    }).catch(err => {
-                        console.log(err);
+                                this.billingService.create(billing).then(billingPayload => {
+                                    console.log(billingPayload);
+                                    this.close_onClick();
+                                }).catch(errr => {
+                                    console.log(errr);
+                                });
+                        
+                            }).catch(err => {
+                                console.log(err);
+                            });
+                        }); 
                     });
+                    
 
                 });
             });
+    }
+
+    findObjectByKey(array, key, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][key] === value) {
+                array[i].i = i;
+                return array[i];
+            }
+        }
+        return null;
     }
 
     saveData(){
