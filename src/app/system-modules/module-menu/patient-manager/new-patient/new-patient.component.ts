@@ -529,7 +529,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.loading = true;
         this.faId = faPlanId;
         this.planInput = faPlan;
-        this.coverType = 'company';
+        this.coverType = 'family';
 
         this.faService.getFamilyDependant(this.faId, this.facility._id).then(de => {
             let data = de.data;
@@ -855,6 +855,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.billingService.create(billing).then(billingPayload => {
                             console.log(billingPayload);
                             this.close_onClick();
+                            this.paymentPlan = false;
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = false;
+                            this.apmisId_show = false;
                         }).catch(errr => {
                             console.log(errr);
                         });
@@ -982,6 +988,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.billingService.create(billing).then(billingPayload => {
                             console.log(billingPayload);
                             this.close_onClick();
+                            this.paymentPlan = false;
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = false;
+                            this.apmisId_show = false;
                         }).catch(errr => {
                             console.log(errr);
                         });
@@ -1107,6 +1119,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.billingService.create(billing).then(billingPayload => {
                             console.log(billingPayload);
                             this.close_onClick();
+                            this.paymentPlan = false;
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = false;
+                            this.apmisId_show = false;
                         }).catch(errr => {
                             console.log(errr);
                         });
@@ -1245,6 +1263,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 this.billingService.create(billing).then(billingPayload => {
                                     console.log(billingPayload);
                                     this.close_onClick();
+                                    this.paymentPlan = false;
+                                    this.frmNewPerson1_show = false;
+                                    this.frmNewPerson2_show = false;
+                                    this.frmNewPerson3_show = false;
+                                    this.frmNewEmp4_show = false;
+                                    this.apmisId_show = false;
                                 }).catch(errr => {
                                     console.log(errr);
                                 });
@@ -1278,7 +1302,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }else if(this.coverType == 'wallet'){
             this.savePerson();
         }else if(this.coverType == 'family'){
-
+            this.saveFamilyPerson();
         }
     }
 
