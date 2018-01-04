@@ -53,25 +53,25 @@ export class HmoService {
    return this._socket.update(hmo._id, hmo);
  }
 
- hmos(facilityId, hmoId?, search?) {
-   const host = this._restService.getHost();
-   const path = host + '/distinct-hmo-plans';
-   return request
-     .get(path)
-     .query({ facilityId: facilityId, hmoId:hmoId, search:search });
- }
- updateBeneficiaryList(formData) {
-   const host = this._restService.getHost();
-   const path = host + '/hmo-beneficiaries';
-   return request
-     .post(path)
-     .send(formData);
- }
- getEnrollee(filNo) {
-   const host = this._restService.getHost();
-   const path = host + '/insurance-enrollees';
-   return request
-     .get(path)
-     .query({ filNo: filNo}); // query string
- }
+  hmos(facilityId, hmoId?, search?) {
+    const host = this._restService.getHost();
+    const path = host + '/distinct-hmo-plans';
+    return request
+      .get(path)
+      .query({ facilityId: facilityId, hmoId:hmoId, search:search });
+  }
+  updateBeneficiaryList(formData) {
+    const host = this._restService.getHost();
+    const path = host + '/hmo-beneficiaries';
+    return request
+      .post(path)
+      .send(formData);
+  }
+  getEnrollee(filNo) {
+    const host = this._restService.getHost();
+    const path = host + '/insurance-enrollees';
+    return request
+      .get(path)
+      .query({ filNo: filNo}); // query string 
+  }
 }

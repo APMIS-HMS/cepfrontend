@@ -13,7 +13,11 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+<<<<<<< HEAD
 import { } from './facility-setup/facility-setup.module';
+=======
+// import {            } from './facility-setup/facility-setup.module';
+>>>>>>> remotes/origin/development
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
@@ -52,6 +56,7 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
 import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 
+//import { IkeComponent } from './ike/ike.component';
 
 @NgModule({
   declarations: [
@@ -112,4 +117,4 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { } 
+export class AppModule { }

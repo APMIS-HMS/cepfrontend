@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// import { FacilitySetupComponent } from './facility-setup.component';
 // import { VerifyTokenComponent } from './verify-token/verify-token.component';
 // import { AddLogoComponent } from './add-logo/add-logo.component';
 // import { AddFacilityModuleComponent } from './add-facility-module/add-facility-module.component';

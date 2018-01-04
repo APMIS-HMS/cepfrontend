@@ -1,46 +1,45 @@
-<div class="animated pulse">
-  <div class="modal-header-wrap">
-    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Add Patient Vitals</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-  </div>
-  <div class="modal-baseWrap">
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+<div class="modal-baseWrap animated pulse">
 
-    <div>
+  <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+  <legend class="modal_title">Add Patient Vitals</legend>
+  <div class="modal_mini_title">All Purpose Medical Information System</div>
 
-      <form [formGroup]="frmAddVitals" novalidate>
-        <div class="frm-addVitals">
-          <div class="frmGroupWrap">
-            <div class="frmGroupTitle">Pulse Rate</div>
-            <div class="frm-item-wrap">
-              <!--<label class="side-label">Pulse Rate<br>(80-100)</label>
-              <input type="text" formControlName="pulseRate" autocomplete="off">-->
-              <mat-input-container class="example-full-width">
-                <input type="number" matInput placeholder="Pulse Rate (80-100)" formControlName="pulseRate">
-              </mat-input-container>
-              <span class="trailer">Beats per Minute</span>
-            </div>
+  <div>
+    <form [formGroup]="frmAddVitals" novalidate>
+      <div class="frm-addVitals">
+        <div class="frmGroupWrap">
+          <div class="frmGroupTitle">Pulse Rate</div>
+          <div class="frm-item-wrap">
+            <!--<label class="side-label">Pulse Rate<br>(80-100)</label>
+            <input type="text" formControlName="pulseRate" autocomplete="off">-->
+            <mat-input-container class="example-full-width">
+              <input type="number" matInput placeholder="Pulse Rate (80-100)" formControlName="pulseRate">
+            </mat-input-container>
+            <span class="trailer">Beats per Minute</span>
+          </div>
 
-            <div class="frm-item-wrap">
-              <!--<label>Location</label>
-              <select formControlName="pulseLoc">
-                <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
-              </select>-->
+          <div class="frm-item-wrap">
+            <!--<label>Location</label>
+            <select formControlName="pulseLoc">
+              <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
+            </select>-->
+            <mat-form-field>
               <mat-select placeholder="Location" formControlName="pulseLoc">
                 <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
               </mat-select>
-            </div>
+            </mat-form-field>
+          </div>
 
-            <div class="frm-item-wrap">
-              <!--<label>Rythm</label>
-              <select formControlName="pulseRythm">
-                <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
-              </select>-->
+          <div class="frm-item-wrap">
+            <!--<label>Rythm</label>
+            <select formControlName="pulseRythm">
+              <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
+            </select>-->
+            <mat-form-field>
               <mat-select placeholder="Rythm" formControlName="pulseRythm">
                 <mat-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</mat-option>
               </mat-select>
-            </div>
+            </mat-form-field>
           </div>
 
           <div class="frmGroupWrap">
@@ -129,6 +128,24 @@
                 </mat-select>
               </div>
             </div>
+<<<<<<< HEAD
+=======
+            <div class="frm-item-wrap">
+              <mat-form-field>
+                <mat-select placeholder="Location" formControlName="diastolicBp1Loc">
+                  <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="frm-item-wrap">
+              <mat-form-field>
+                <mat-select placeholder="Position" formControlName="diastolicBp1Pos">
+                  <mat-option *ngFor="let position of vitalPosition" [value]="position?.name">{{position?.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+>>>>>>> remotes/origin/development
 
           </div>
 
