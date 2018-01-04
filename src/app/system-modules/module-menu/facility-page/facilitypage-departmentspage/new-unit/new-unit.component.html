@@ -74,13 +74,13 @@
 
 
 
-                <div class="frm-item-wrap">
+                <!-- <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">
                     <textarea matInput formControlName="unitDesc" placeholder="Description" autocomplete="off"></textarea>
                 </mat-input-container>
-                </div>
+                </div> -->
                 <div class="example-full-width" id="example-full-width">
-                <button (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" mat-raised-button> {{btnText}}</button>
+                <button [disabled]="!frmNewUnit.valid" (click)="newUnit(frmNewUnit.valid, frmNewUnit.value)" [ngClass]="{'cta-1':frmNewUnit.valid, 'cta-1-disable':!frmNewUnit.valid}"> {{btnText}}</button>
                 </div>
 
             </form>

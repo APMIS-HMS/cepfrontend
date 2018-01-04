@@ -15,79 +15,79 @@
 
                 <ul class="dept-wrap">
                     <li class="dept-li">
-                        <div class="dept-item">
-                            <div class="dept-name">Surgery</div>
-                            <div class="action-icons">
-                                <i [hidden]="showUnit" (click)="showUnit_click()" class="fa fa-expand" aria-hidden="true"></i>
-                                <i *ngIf="showUnit" (click)="showUnit_hide()" class="fa fa-compress" aria-hidden="true"></i>
-                                <i (click)="newUnit_onClick()" class="fa fa-plus" aria-hidden="true"></i>
-                                <i (click)="newDept_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div *ngIf="showUnit" class="dept-units">
-                            <table cellpadding="0" cellspacing="0" border="0.5"> 
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <span style="padding-left: 3px;">Unit</span>
-                                        </th>
-                                        <th>
-                                            <span style="padding-left: 3px;">Short Name</span>
-                                        </th>
-                                        <th>
-                                            <span style="padding-left: 3px;">Describtion</span>
-                                        </th>
-                                        <th style="min-width:120px;">
-                                            <span style="padding-left: 3px;">Clinic</span>
-                                        </th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                
-                                <tbody>
-                                    <tr>
-                                        <td> Surgical Out Patient Unit</td>
-                                        <td>SOP Unit</td>
-                                        <td>All them surgicall operations takes place right here at this department</td>
-                                        <td class="td-worspace">
-                                            <div class="workspace-count">
-                                                <div class="workspace-count">3 Clinic(s)</div>
+                        <div *ngFor="let dept of selectedFacility.departments">
+                            <div class="dept-item">
+                                <div class="dept-name">{{dept.name}}</div>
+                                <div class="action-icons">
+                                    <i [hidden]="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_click(dept)" class="fa fa-expand" aria-hidden="true"></i>
+                                    <i *ngIf="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_hide(dept)" class="fa fa-compress" aria-hidden="true"></i>
+                                    <i (click)="newUnit_onClick(dept)" class="fa fa-plus" aria-hidden="true"></i>
+                                    <i (click)="newDept_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <i (click)="deptDetalContentArea_remove(dept)" class="fa fa-trash-o" aria-hidden="true"></i>
+                                </div>
+                            </div> 
+                            <div *ngIf="showUnit_selectedDepartmentUnit(dept)" class="dept-units">
+                                <table cellpadding="0" cellspacing="0" border="0.5"> 
+                                    <thead>
+                                        <tr *ngIf="dept.units.length > 0">
+                                            <th>
+                                                <span style="padding-left: 3px;">Unit</span>
+                                            </th>
+                                            <th>
+                                                <span style="padding-left: 3px;">Short Name</span>
+                                            </th>
+                                            <!-- <th>
+                                                <span style="padding-left: 3px;">Describtion</span>
+                                            </th> -->
+                                            <!-- <th style="min-width:120px;">
+                                                <span style="padding-left: 3px;">Clinic</span>
+                                            </th> -->
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                    
+                                    <tbody>
+                                        <tr *ngFor="let unit of dept.units">
+                                            <td> {{unit.name}}</td>
+                                            <td>{{unit.shortName}}</td>
+                                            <!-- <td>All them surgicall operations takes place right here at this department</td> -->
+                                            <!-- <td class="td-worspace">
+                                                <div class="workspace-count">
+                                                    <div class="workspace-count">3 Clinic(s)</div>
+                                                    <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                                        <li class="workspace-listItem">
+                                                            <ng-container>
+                                                                <span>Clinic 1</span>
+                                                            </ng-container>
+                                                        </li>
+                                                        <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                                    </ul>
+                                                </div>
                                                 <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                                     <li class="workspace-listItem">
                                                         <ng-container>
-                                                            <span>Clinic 1</span>
-                                                            <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
+                                                            <span>Workspace 1</span>
+                                                        </ng-container>
+                                                    </li>
+                                                    <li class="workspace-listItem">
+                                                        <ng-container>
+                                                            <span>Workspace 2</span>
                                                         </ng-container>
                                                     </li>
                                                     <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
                                                 </ul>
-                                            </div>
-                                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
-                                                <li class="workspace-listItem">
-                                                    <ng-container>
-                                                        <span>Workspace 1</span>
-                                                        <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
-                                                    </ng-container>
-                                                </li>
-                                                <li class="workspace-listItem">
-                                                    <ng-container>
-                                                        <span>Workspace 2</span>
-                                                        <!-- <i (click)="removeLocation(clinic, unit, i)" class="fa fa-trash" aria-hidden="true"></i> -->
-                                                    </ng-container>
-                                                </li>
-                                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                                            </ul>
-                                        </td>
-                                        <td class="action-icons">
-                                            <i (click)="newUnit_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </td>
-                                    </tr> 
-                                </tbody>
-                            </table>
+                                            </td> -->
+                                            <td class="action-icons">
+                                                <i (click)="editUnit_onClick(dept, unit)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                       
                     </li>
                 </ul>
 
@@ -217,7 +217,7 @@
     <app-new-department (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-department>
 </div>
 <div *ngIf="newUnit" class="modal-overlay">
-    <app-new-unit (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-unit>
+    <app-new-unit [department]="selectedDepartment" (closeModal)="close_onClick($event)" [unit]="selectedUnit" id="form-modal" class="form-modal center-center"></app-new-unit>
 </div>
 <div *ngIf="newSubLocModal_on" class="modal-overlay">
     <app-new-sub-location [locations]="locationsObj" [location]="locationObj" [subLocation]="subLocation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-sub-location>

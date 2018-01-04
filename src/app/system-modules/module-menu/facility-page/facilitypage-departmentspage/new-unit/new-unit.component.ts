@@ -36,14 +36,23 @@ export class NewUnitComponent implements OnInit {
     this.frmNewUnit.controls['unitParent'].valueChanges.subscribe(payload => {
       this.frmNewUnit.controls['isClinic'].valueChanges.subscribe(value => {
         this.isClinic = value;
-        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0 && this.unit._id !== undefined) {
+        if ((<FormArray>this.clinicForm.controls['clinicArray']).controls.length === 0 && this.unit !== undefined && this.unit._id !== undefined) {
           this.addNew2();
         }
       })
     });
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
-    this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
+    if(this.department !== undefined){
+      this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
+    }
+    if(this.unit !== undefined){
+      this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
+      this.frmNewUnit.controls['unitAlias'].setValue(this.unit.shortName);
+      // this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
+      this.frmNewUnit.controls['_id'].setValue(this.unit._id);
+    }
+    
 
 
 
@@ -76,6 +85,7 @@ export class NewUnitComponent implements OnInit {
       this.btnText = 'CREATE UNIT';
     }
     this.clinicsToDelele = [];
+    console.log(this.unit);
   }
   addNew() {
     this.frmNewUnit = this.formBuilder.group({
@@ -84,7 +94,7 @@ export class NewUnitComponent implements OnInit {
       unitParent: ['', [<any>Validators.required]],
       _id: [, []],
       isClinic: [false, []],
-      unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
+      // unitDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
     });
 
 
@@ -140,12 +150,11 @@ export class NewUnitComponent implements OnInit {
   }
   newUnit(valid, val) {
     if (valid) {
-      if (val.unitName === '' || val.unitName === ' ' || val.unitAlias === ''
-        || val.unitAlias === ' ' || val.unitDesc === '' || val.unitDesc === ' ') {
+      if (val.unitName === '' || val.unitName === ' ') {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
       } else {
-        if (this.unit._id === undefined) {
+        if (this.unit === undefined) {
           const id = this.department._id;
           const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
         
