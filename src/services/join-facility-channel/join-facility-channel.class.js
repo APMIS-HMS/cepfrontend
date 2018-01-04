@@ -16,7 +16,7 @@ class Service {
   }
 
   create(data, params) {
-    logger.info(data);
+    // logger.info(data);
     // this.app.channel('anonymous').leave(connection);
 
     // Add it to the authenticated user channel

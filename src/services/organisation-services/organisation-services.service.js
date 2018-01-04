@@ -1,4 +1,4 @@
-// Initializes the `organisationServices` service on path `/organisation-services`
+// Initializes the `organisation-services` service on path `/organisation-services`
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/organisation-services.model');
 const hooks = require('./organisation-services.hooks');

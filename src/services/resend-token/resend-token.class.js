@@ -30,7 +30,7 @@ class Service {
             getFac.verificationToken = tokenPayload.result;
             logger.info(tokenPayload.result);
             facilityService.patch(getFac._id, {verificationToken:tokenPayload.result}).then(facPayload => {
-              // sms.sendToken(getFac);
+              sms.sendToken(getFac);
               resolve(facPayload);
             }, facError => {
               reject(facError);

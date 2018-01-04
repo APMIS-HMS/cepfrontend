@@ -20,7 +20,6 @@ const saveFacility = require('./save-facility/save-facility.service.js');
 const savePerson = require('./save-person/save-person.service.js');
 const employees = require('./employees/employees.service.js');
 const appointments = require('./appointments/appointments.service.js');
-const organisationServices = require('./organisation-services/organisation-services.service.js');
 const categoryTypes = require('./category-types/category-types.service.js');
 const resendToken = require('./resend-token/resend-token.service.js');
 const joinFacilityChannel = require('./join-facility-channel/join-facility-channel.service.js');
@@ -28,6 +27,7 @@ const serviceTags = require('./service-tags/service-tags.service.js');
 const products = require('./products/products.service.js');
 const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
+const organisationServices = require('./organisation-services/organisation-services.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -51,7 +51,6 @@ module.exports = function (app) {
   app.configure(savePerson);
   app.configure(employees);
   app.configure(appointments);
-  app.configure(organisationServices);
   app.configure(categoryTypes);
   app.configure(resendToken);
   app.configure(joinFacilityChannel);
@@ -59,4 +58,5 @@ module.exports = function (app) {
   app.configure(products);
   app.configure(billings);
   app.configure(invoices);
+  app.configure(organisationServices);
 };
