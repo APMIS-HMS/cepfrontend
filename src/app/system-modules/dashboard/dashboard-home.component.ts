@@ -73,7 +73,10 @@ export class DashboardHomeComponent implements OnInit {
     });
     this.facilityService.listner.subscribe(pay => {
       this.facilityName = pay.name;
-    })
+    });
+    this.facilityService.patchListner.subscribe(pay => {
+      this.facilityName = pay.name;
+    });
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     const auth = <any>this.locker.getObject('auth');
     if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
