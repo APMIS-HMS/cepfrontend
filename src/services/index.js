@@ -29,6 +29,7 @@ const products = require('./products/products.service.js');
 const billings = require('./billings/billings.service.js');
 const invoices = require('./invoices/invoices.service.js');
 const diagnosises = require('./diagnosises/diagnosises.service.js');
+const symptoms = require('./symptoms/symptoms.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -61,4 +62,5 @@ module.exports = function (app) {
   app.configure(billings);
   app.configure(invoices);
   app.configure(diagnosises);
+  app.configure(symptoms);
 };
