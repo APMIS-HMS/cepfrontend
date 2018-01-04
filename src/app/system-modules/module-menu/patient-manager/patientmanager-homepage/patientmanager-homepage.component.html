@@ -85,12 +85,12 @@
                         <span>Payment Plans</span>
                     </div>
 
-                    <div (click)="showImageBrowseDlg()" class="action-item">
+                    <div (click)="newUpload_show()" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload File</span>
                     </div>
                     <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                </div>
+                </div> 
             </td>
         </tr>
         <tr *ngIf="patients.length === 0 && !loading">
@@ -299,4 +299,7 @@
 
 <div *ngIf="payPlan" class="modal-overlay">
     <app-patient-payment-plan [selectedPatient]="selectedPatient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-patient-payment-plan>
+</div>
+<div *ngIf="newUpload" class="modal-overlay">
+    <app-doc-upload (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload>
 </div>

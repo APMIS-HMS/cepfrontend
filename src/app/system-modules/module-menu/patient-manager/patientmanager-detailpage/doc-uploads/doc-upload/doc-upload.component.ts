@@ -22,5 +22,8 @@ export class DocUploadComponent implements OnInit {
       desc: ['', [<any>Validators.required]]
     });
   }
+  close_onClick(e){
+    this.closeModal.emit(true);
+  }
 
 }
