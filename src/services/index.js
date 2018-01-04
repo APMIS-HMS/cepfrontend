@@ -31,6 +31,9 @@ const invoices = require('./invoices/invoices.service.js');
 const vitaLocations = require('./vita-locations/vita-locations.service.js');
 const vitalPositions = require('./vital-positions/vital-positions.service.js');
 const vitalRythms = require('./vital-rythms/vital-rythms.service.js');
+const forms = require('./forms/forms.service.js');
+const formScopeLevels = require('./form-scope-levels/form-scope-levels.service.js');
+const formTypes = require('./form-types/form-types.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -65,4 +68,7 @@ module.exports = function (app) {
   app.configure(vitaLocations);
   app.configure(vitalPositions);
   app.configure(vitalRythms);
+  app.configure(forms);
+  app.configure(formScopeLevels);
+  app.configure(formTypes);
 };
