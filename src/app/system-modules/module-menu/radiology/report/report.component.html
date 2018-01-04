@@ -230,23 +230,10 @@
                                             <div *ngIf="numericReport" class="lettering-wrap">
                                                 <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                 <div class="invstn-vals">
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Reference:</div>
-                                                        <div class="val-val">
-                                                            {{ selectedInvestigation?.reportType?.ref?.min }} - {{ selectedInvestigation?.reportType?.ref?.max }} ({{ selectedInvestigation?.unit }})
-                                                        </div>
-                                                    </div>
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Sample NO:</div>
-                                                        <div class="val-val">1220</div>
-                                                    </div>
                                                     <div class="frm-item-wrap">
                                                         <mat-input-container>
-                                                            <input type="number" matInput placeholder="Enter Result" formControlName="result">
+                                                            <input type="text" matInput placeholder="Enter Findings" formControlName="result">
                                                         </mat-input-container>
-                                                        <div style="width: 100%; text-align: right;padding:5px 0;">
-                                                            <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,30 +241,18 @@
                                             <div *ngIf="textReport" class="lettering-wrap">
                                                 <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                 <div class="invstn-vals">
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Reference:</div>
-                                                        <div class="val-val">{{ selectedInvestigation?.reportType?.ref }}</div>
-                                                    </div>
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Sample NO:</div>
-                                                        <div class="val-val">1220</div>
-                                                    </div>
-                                                    <div class="frm-item-wrap">
-                                                        <mat-input-container>
-                                                            <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
-                                                        </mat-input-container>
-                                                    </div>
+                                                    <mat-input-container>
+                                                        <textarea formControlName="result" matInput placeholder="Enter Findings"></textarea>
+                                                    </mat-input-container>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <mat-form-field>
-                                                <mat-select formControlName="outcome" placeholder="Investigation Outcome">
-                                                    <mat-option [value]="'Normal'">Normal</mat-option>
-                                                    <mat-option [value]="'Low'">Low</mat-option>
-                                                    <mat-option [value]="'High'">High</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                            <mat-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                <mat-option [value]="'Normal'">Normal</mat-option>
+                                                <mat-option [value]="'Low'">Low</mat-option>
+                                                <mat-option [value]="'High'">High</mat-option>
+                                            </mat-select>
                                         </div>
                                         <div class="frm-item-wrap">
                                             <mat-input-container>
