@@ -143,7 +143,7 @@
                     <tbody>
                       <tr *ngFor="let billItem of selectedInvoiceGroup.billingIds">
                         <td (click)="itemDetail(billItem)" class="col1">
-                          <div class="itemName">{{billItem.billingItem?.facilityServiceObject.service}}</div>
+                          <div class="itemName">{{billItem.facilityServiceObject.service}}</div>
                           <div class="itemDesc">{{billItem.billingItem?.description}}</div>
                         </td>
                         <td class="col2">

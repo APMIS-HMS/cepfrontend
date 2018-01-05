@@ -197,7 +197,8 @@ export class BillLookupComponent implements OnInit {
       this.billGroups.forEach((itemg, g) => {
         itemg.bills.forEach((itemb: BillModel, b) => {
           if (itemb.isChecked) {
-            billGroup.billingIds.push({ billingId: itemb._id });
+            delete itemb.billObject;
+            billGroup.billingIds.push(itemb);
           }
         });
       });
@@ -229,7 +230,9 @@ export class BillLookupComponent implements OnInit {
               }
             }
           }
-          this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
+          this.router.navigate(['/dashboard/payment/invoice', payload.patientId]).then(()=>{
+            this.patientService.announcePatient(this.selectedPatient);
+          });
         }, error => {
         });
       }
@@ -238,9 +241,9 @@ export class BillLookupComponent implements OnInit {
     }
   }
 
-  onSelectedInvoice(invoice){
+  onSelectedInvoice(invoice) {
     this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]);
-}
+  }
 
   fixedGroup(bill: BillModel) {
     const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
@@ -287,6 +290,7 @@ export class BillLookupComponent implements OnInit {
     inBill.qty = bill.quantity;
     inBill.unitPrice = bill.unitPrice;
     inBill._id = bill._id;
+    inBill.covered = bill.covered;
     inBill.facilityServiceObject = bill.facilityServiceObject;
     inBill.billObject = bill;
 
@@ -377,14 +381,14 @@ export class BillLookupComponent implements OnInit {
 
   private _getAllInvoices() {
     this.isLoadingInvoice = true;
-        var facility = {
-          "_id": this.selectedFacility._id,
-          "isQuery": false
-        }
-        this._todayInvoiceService.get(facility).then(payload => {
-          this.invoiceGroups = payload.data.invoices;
-          this.isLoadingInvoice = false;
-        }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+    var facility = {
+      "_id": this.selectedFacility._id,
+      "isQuery": false
+    }
+    this._todayInvoiceService.get(facility).then(payload => {
+      this.invoiceGroups = payload.data.invoices;
+      this.isLoadingInvoice = false;
+    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
   }
 
 
