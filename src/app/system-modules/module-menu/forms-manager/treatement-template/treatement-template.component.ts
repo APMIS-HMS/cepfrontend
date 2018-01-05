@@ -2,8 +2,10 @@ import { DocumentationTemplateService } from './../../../../services/facility-ma
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ScopeLevelService, FormTypeService } from 'app/services/module-manager/setup';
+import { OrderSetSharedService } from '../../../../services/facility-manager/order-set-shared-service';
 import { Observable } from 'rxjs/Observable';
 import { FormsService } from 'app/services/facility-manager/setup';
+import { OrderSetTemplate }  from '../../../../models/index';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SharedService } from 'app/shared-module/shared.service';
@@ -18,31 +20,26 @@ export class TreatementTemplateComponent implements OnInit {
   @ViewChild('surveyjs') surveyjs: any;
   public frmnewTemplate: FormGroup;
   newTemplate = false;
-
   isOrderSet = false;
   isDocumentation = true;
-
   showMedService = true;
-  showLabService = true;
-  showNursingCareService = true;
-  showPhysicianOrderService = true;
-  showProcedureService = true;
+  showLabService = false;
+  showNursingCareService = false;
+  showPhysicianOrderService = false;
+  showProcedureService = false;
   isTemplate = true;
-
   json: any
   showDocument = false;
-
   selectedFacility: Facility = <Facility>{};
   selectedForm: any = <any>{};
-
-
   scopeLevels: any[] = [];
   forms: any[] = [];
-
+  orderSet: OrderSetTemplate = <OrderSetTemplate>{};
 
   constructor(private formBuilder: FormBuilder, private scopeLevelService: ScopeLevelService,
     private formTypeService: FormTypeService, private formService: FormsService, private locker: CoolLocalStorage,
-    private sharedService: SharedService, private documentationTemplateService: DocumentationTemplateService
+    private sharedService: SharedService, private documentationTemplateService: DocumentationTemplateService,
+    private _orderSetSharedService: OrderSetSharedService
   ) {
     this.sharedService.submitForm$.subscribe(payload => {
 
@@ -50,7 +47,7 @@ export class TreatementTemplateComponent implements OnInit {
       let isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
       let isNameValid = this.frmnewTemplate.controls.name.valid;
       if (isVisibilityValid && isFormValid && isNameValid) {
-        let doc = {
+        const doc = {
           data: payload,
           isEditable: this.frmnewTemplate.controls.isEditable.value,
           name: this.frmnewTemplate.controls.name.value,
@@ -105,6 +102,24 @@ export class TreatementTemplateComponent implements OnInit {
     this.frmnewTemplate.controls['docFrmList'].valueChanges.subscribe(value => {
       this._setSelectedForm(value);
     });
+
+    // Listen to the event from children components
+    this._orderSetSharedService.itemSubject.subscribe(value => {
+      console.log(value);
+      if (!!value.medications) {
+        this.orderSet.medications = value.medications;
+      } else if (!!value.investigations) {
+        this.orderSet.investigations = value.investigations;
+      } else if (!!value.procedures) {
+        this.orderSet.procedures = value.procedures;
+      } else if (!!value.nursingCares) {
+        this.orderSet.nursingCares = value.nursingCares;
+      } else if (!!value.physicianOrders) {
+        this.orderSet.physicianOrders = value.physicianOrders
+      }
+
+      console.log(this.orderSet);
+    });
   }
 
   newTemplate_show() {
@@ -155,13 +170,50 @@ export class TreatementTemplateComponent implements OnInit {
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
-  public upload(e) {
-    let fileBrowser = this.fileInput.nativeElement;
-    if (fileBrowser.files && fileBrowser.files[0]) {
-      const formData = new FormData();
-      formData.append("excelfile", fileBrowser.files[0]);
+
+  onClickRadioBtn(value: string) {
+    console.log(value);
+    if (value === 'medication') {
+      this.showMedService = true;
+      this.showLabService = false;
+      this.showNursingCareService = false;
+      this.showPhysicianOrderService = false;
+      this.showProcedureService = false;
+    } else if (value === 'laboratory') {
+      this.showMedService = false;
+      this.showLabService = true;
+      this.showNursingCareService = false;
+      this.showPhysicianOrderService = false;
+      this.showProcedureService = false;
+    } else if (value === 'nursingCare') {
+      this.showMedService = false;
+      this.showLabService = false;
+      this.showNursingCareService = true;
+      this.showPhysicianOrderService = false;
+      this.showProcedureService = false;
+    } else if (value === 'procedure') {
+      this.showMedService = false;
+      this.showLabService = false;
+      this.showNursingCareService = false;
+      this.showPhysicianOrderService = false;
+      this.showProcedureService = true;
+    } else if (value === 'physicianOrder') {
+      this.showMedService = false;
+      this.showLabService = false;
+      this.showNursingCareService = false;
+      this.showPhysicianOrderService = true;
+      this.showProcedureService = false;
     }
   }
+
+  public upload(e) {
+    const fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      const formData = new FormData();
+      formData.append('excelfile', fileBrowser.files[0]);
+    }
+  }
+
   show_beneficiaries() {
 
   }
