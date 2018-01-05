@@ -260,23 +260,23 @@
                                 <td colspan="10">
                                     <div class="tbl-actionRow">
                                         <!-- <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
-                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          isSocket="false" displayKey="apmisLookupDisplayKey"
                           (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
 
                         <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              isSocket="false" displayKey="apmisLookupDisplayKey"
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
 
                         <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              isSocket="false" displayKey="apmisLookupDisplayKey"
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div> -->
                                     </div>
@@ -361,7 +361,7 @@
 </div>
 
 <div *ngIf="reqDetail_view" class="modal-overlay">
-    <app-request-detail [investigation]="selectedInvestigation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
+    <app-rad-request-detail [investigation]="selectedInvestigation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-rad-request-detail>
 </div>
 <div *ngIf="personAcc_view" class="modal-overlay">
     <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
