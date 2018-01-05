@@ -11,4 +11,5 @@ export interface BillModel {
     service: any;
     unitPrice: number;
     modifiers: any[];
+    covered:any;
 }

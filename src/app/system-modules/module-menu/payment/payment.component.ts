@@ -99,6 +99,7 @@ export class PaymentComponent implements OnInit {
         }
         this._todayInvoiceService.get(facility).then(payload => {
             this.invoiceGroups = payload.data.invoices;
+            console.log(this.invoiceGroups);
             this.totalAmountReceived = payload.data.amountReceived;
             this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
@@ -114,6 +115,7 @@ export class PaymentComponent implements OnInit {
         this._pendingBillService.get(facility)
             .then(res => {
                 this.pendingBills = res.data.bills;
+                console.log(this.pendingBills);
                 this.totalAmountBilled = res.data.amountBilled;
                 this.loadingPendingBills = false;
             }).catch(err => {

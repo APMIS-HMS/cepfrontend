@@ -50,9 +50,9 @@ export class MakePaymentComponent implements OnInit {
   success = false;
   public frmMakePayment: FormGroup;
 
-  
+
   amount = new FormControl('', []);
-  
+
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
@@ -68,12 +68,12 @@ export class MakePaymentComponent implements OnInit {
     this.balance = new FormControl(this.cost, []);
     this.amount.valueChanges.subscribe(value => {
       var bal = this.cost - value;
-      if(bal >= 0){
+      if (bal >= 0) {
         this.balance.setValue(bal);
         console.log(this.balance);
-      }else{
+      } else {
         this.amount.setValue(this.cost);
-        this._notification('Error',"Balance cannot be lesser than zero");
+        this._notification('Error', "Balance cannot be lesser than zero");
       }
     });
     // this.channel.valueChanges.subscribe(value => {
@@ -103,53 +103,31 @@ export class MakePaymentComponent implements OnInit {
 
   makePayment() {
     this.isProcessing = true;
-    if (this.isInvoicePage == false) {
-      var paymantObj = {
-        "inputedValue": {
-          "channel": TransactionMedium[TransactionMedium.Wallet],
-          "txnType": TransactionType[TransactionType.Dr],
-          "txnStatus": TransactionStatus.Complete,
-          "amountPaid": this.amount.value,
-          "balance": this.balance,
-          "cost": this.cost,
-        },
-        "billGroups": this.billGroups,
-        "selectedPatient": this.selectedPatient,
-        "selectedFacility": this.selectedFacility,
-        "discount": this.discount,
-        "subTotal": this.subTotal,
-        "checkBillitems": this.checkBillitems,
-        "listedBillItems": this.listedBillItems,
-        "isInvoicePage":true
-      }
-
-      this._makePaymentService.create(paymantObj).then(payload => {
-        this.personValueChanged.emit(payload.data);
-        this.isProcessing = false;
-        this.close_onClick();
-        this._notification('Success', 'Payment successfull.');
-      });
-    } else {
-      var paymantObj2 = {
-        "inputedValue": {
-          "channel": TransactionMedium[TransactionMedium.Wallet],
-          "txnType": TransactionType[TransactionType.Dr],
-          "txnStatus": TransactionStatus.Complete,
-          "amountPaid": this.amount.value,
-          "balance": this.balance,
-          "cost": this.cost,
-        },
-        "invoice": this.invoice,
-        "selectedPatient": this.selectedPatient,
-        "isInvoicePage":true
-      }
-      this._makePaymentService.create(paymantObj2).then(payload => {
-        this.personValueChanged.emit(payload.data);
-        this.isProcessing = false;
-        this.close_onClick();
-        this._notification('Success', 'Payment successfull.');
-      });
+    var paymantObj = {
+      "inputedValue": {
+        "channel": TransactionMedium[TransactionMedium.Wallet],
+        "txnType": TransactionType[TransactionType.Dr],
+        "txnStatus": TransactionStatus.Complete,
+        "amountPaid": this.amount.value,
+        "balance": this.balance,
+        "cost": this.cost,
+      },
+      "billGroups": this.billGroups,
+      "selectedPatient": this.selectedPatient,
+      "selectedFacility": this.selectedFacility,
+      "discount": this.discount,
+      "subTotal": this.subTotal,
+      "checkBillitems": this.checkBillitems,
+      "listedBillItems": this.listedBillItems,
+      "isInvoicePage": this.isInvoicePage
     }
+
+    this._makePaymentService.create(paymantObj).then(payload => {
+      this.personValueChanged.emit(payload.data);
+      this.isProcessing = false;
+      this.close_onClick();
+      this._notification('Success', 'Payment successfull.');
+    });
   }
 
   private _notification(type: String, text: String): void {
