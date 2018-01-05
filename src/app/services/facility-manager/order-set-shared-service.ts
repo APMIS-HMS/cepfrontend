@@ -17,7 +17,6 @@ export class OrderSetSharedService {
   // }
 
   saveItem(value: any) {
-    console.log(value);
     this.itemSubject.next(value);
   }
 }
