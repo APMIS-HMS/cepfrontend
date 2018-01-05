@@ -308,10 +308,11 @@
             <div class="clear"></div>
             <div class="frmNavControls_wrap">
                 <div (click)="back_newPerson2()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-                <div (click)="skip_nok()" class="backBtn"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
+                <div (click)="skip_nok()" class="backBtn" *ngIf="!loading"><i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
+                <div *ngIf="loading" class="backBtn">Loading</div>
             </div>
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp3.valid" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" mat-raised-button>CONTINUE</button>
+                <button class="small-btn" [disabled]="!frmNewEmp3.valid || loading" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" mat-raised-button >CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
         </form>

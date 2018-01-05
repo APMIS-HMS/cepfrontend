@@ -861,11 +861,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.frmNewPerson3_show = false;
                             this.frmNewEmp4_show = false;
                             this.apmisId_show = false;
+                            this.loading = false
                         }).catch(errr => {
+                            this.loading = false;
                             console.log(errr);
                         });
                 
                     }).catch(err => {
+                        this.loading = false;
                         console.log(err);
                     });
 
@@ -994,11 +997,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.frmNewPerson3_show = false;
                             this.frmNewEmp4_show = false;
                             this.apmisId_show = false;
+                            this.loading = false
                         }).catch(errr => {
+                            this.loading = false;
                             console.log(errr);
                         });
                 
                     }).catch(err => {
+                        this.loading = false;
                         console.log(err);
                     });
 
@@ -1125,11 +1131,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.frmNewPerson3_show = false;
                             this.frmNewEmp4_show = false;
                             this.apmisId_show = false;
+                            this.loading = false
                         }).catch(errr => {
+                            this.loading = false;
                             console.log(errr);
                         });
                 
                     }).catch(err => {
+                        this.loading = false
                         console.log(err);
                     });
 
@@ -1269,11 +1278,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     this.frmNewPerson3_show = false;
                                     this.frmNewEmp4_show = false;
                                     this.apmisId_show = false;
+                                    this.loading = false;
                                 }).catch(errr => {
+                                    this.loading = false;
                                     console.log(errr);
                                 });
                         
                             }).catch(err => {
+                                this.loading = false;
                                 console.log(err);
                             });
                         }); 
@@ -1309,6 +1321,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
 
     newPerson3(valid, val) {
+        this.loading = true;
         if (this.skipNok || valid) {
             if (this.skipNok) {
                 this.saveData();
@@ -1339,6 +1352,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.apmisId_show = false;
         this.mainErr = true;
         this.skipNok = true;
+        this.loading = true;
         this.saveData();
     }
 
