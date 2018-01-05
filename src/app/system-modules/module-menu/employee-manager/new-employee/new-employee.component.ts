@@ -430,15 +430,18 @@ export class NewEmployeeComponent implements OnInit {
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
             // person.profileImage = this.empImg.image;
-
-            this.personService.create(person).then(payload => {
+            let body = {
+                person: person,
+                facilityId: this.facility._id
+            }
+            this.personService.createPerson(body).then(payload => {
                 this.selectedPerson = payload;
-                this.user.email = this.selectedPerson.apmisId;
-                this.user.personId = this.selectedPerson._id;
-                this.user.facilitiesRole = [];
-                this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
-                this.userService.create(this.user).then((upayload) => {
-                });
+                // this.user.email = this.selectedPerson.apmisId;
+                // this.user.personId = this.selectedPerson._id;
+                // this.user.facilitiesRole = [];
+                // this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
+                // this.userService.create(this.user).then((upayload) => {
+                // });
                 if (this.skipNok) {
                     this.saveEmployee();
                 }
@@ -523,7 +526,15 @@ export class NewEmployeeComponent implements OnInit {
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
         this.employeeService.create(model).then(payload => {
+            console.log(payload);
+            this.frmNewPerson1_show = false;
+            this.frmNewPerson2_show = false;
+            this.frmNewPerson3_show = false;
+            this.frmNewEmp4_show = false;
+            this.apmisId_show = false;
+            this.mainErr = true;
 
+            this.closeModal.emit(true);
         });
     }
     newEmp4(valid, val) {
@@ -539,14 +550,14 @@ export class NewEmployeeComponent implements OnInit {
 
                 }
 
-                this.frmNewPerson1_show = false;
-                this.frmNewPerson2_show = false;
-                this.frmNewPerson3_show = false;
-                this.frmNewEmp4_show = false;
-                this.apmisId_show = false;
-                this.mainErr = true;
+                // this.frmNewPerson1_show = false;
+                // this.frmNewPerson2_show = false;
+                // this.frmNewPerson3_show = false;
+                // this.frmNewEmp4_show = false;
+                // this.apmisId_show = false;
+                // this.mainErr = true;
 
-                this.closeModal.emit(true);
+                // this.closeModal.emit(true);
 
             }
         } else {
@@ -577,16 +588,16 @@ export class NewEmployeeComponent implements OnInit {
     }
     onEmpLocChange(val) { }
     onNokRelationshipChange(val) { }
-    onEmpJobTitleChange(val) { 
+    onEmpJobTitleChange(val) {
         this.cadres = [];
-       if(val !== undefined){
-           let proIndex = this.professions.findIndex(x =>x.name === val);
-           console.log(proIndex);
-           if(proIndex > -1){
-               console.log(this.professions[proIndex])
-               this.cadres = this.professions[proIndex].caders;
-           }
-       } 
+        if (val !== undefined) {
+            let proIndex = this.professions.findIndex(x => x.name === val);
+            console.log(proIndex);
+            if (proIndex > -1) {
+                console.log(this.professions[proIndex])
+                this.cadres = this.professions[proIndex].caders;
+            }
+        }
     }
     onEmpLevelChange(val) { }
 

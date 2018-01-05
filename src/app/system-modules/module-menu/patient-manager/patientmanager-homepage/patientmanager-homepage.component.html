@@ -137,7 +137,7 @@
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select formControlName="title" placeholder="Title">
-                                                                <mat-option *ngFor="let title of titles" [value]="title">
+                                                                <mat-option *ngFor="let title of titles" [value]="title.name">
                                                                     {{title.name}}
                                                                 </mat-option>
                                                             </mat-select>
@@ -160,13 +160,13 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-input-container>
-                                                            <input matInput type="number" formControlName="phoneNumber" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
+                                                            <input matInput type="number" formControlName="phoneNumber" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.primaryContactPhoneNo">
                                                         </mat-input-container>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select formControlName="gender" placeholder="Gender">
-                                                                <mat-option *ngFor="let gender of genders" [value]="gender">
+                                                                <mat-option *ngFor="let gender of genders" [value]="gender.name">
                                                                     {{gender.name}}
                                                                 </mat-option>
                                                             </mat-select>
@@ -175,7 +175,7 @@
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select placeholder="Country" formControlName="country">
-                                                                <mat-option *ngFor="let country of countries" [value]="country">
+                                                                <mat-option *ngFor="let country of countries" [value]="country.name">
                                                                     {{country.name}}
                                                                 </mat-option>
                                                             </mat-select>
@@ -183,8 +183,8 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="State" formControlName="state">
-                                                                <mat-option *ngFor="let state of states" [value]="state">
+                                                            <mat-select placeholder="State" formControlName="state" [compareWith]="compareState">
+                                                                <mat-option *ngFor="let state of states" [value]="state.name">
                                                                     {{state.name}}
                                                                 </mat-option>
                                                             </mat-select>
@@ -192,8 +192,8 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="City" formControlName="city">
-                                                                <mat-option *ngFor="let city of cities" [value]="city">
+                                                            <mat-select placeholder="City" formControlName="city" [compareWith]="compareState">
+                                                                <mat-option *ngFor="let city of cities" [value]="city.name">
                                                                     {{city.name}}
                                                                 </mat-option>
                                                             </mat-select>
@@ -201,8 +201,8 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="L.G.A" formControlName="lga">
-                                                                <mat-option *ngFor="let lga of lgas" [value]="lga">
+                                                            <mat-select placeholder="L.G.A" formControlName="lga" [compareWith]="compareState">
+                                                                <mat-option *ngFor="let lga of lgas" [value]="lga.name">
                                                                     {{lga.name}}
                                                                 </mat-option>
                                                             </mat-select>

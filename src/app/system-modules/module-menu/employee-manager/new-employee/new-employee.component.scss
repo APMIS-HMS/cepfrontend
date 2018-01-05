@@ -1,5 +1,8 @@
 @import "../../../../../globals/variables.scss";
-
+.modal-baseWrap{
+    width: 100%;
+    padding: 10px 50px;
+}
 .newEmp-idWrap input{
     border: 1px solid #727272;
     border-radius: 10px;
@@ -38,4 +41,5 @@
 .lhs {
     float: left;
     padding-right: 0px; 
+    margin-right: 30px;
 }

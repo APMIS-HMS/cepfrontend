@@ -124,6 +124,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
     });
   }
   getEmployees(limit?, isUp?) {
+    console.log('mmmsd')
     //let skip = this.employees.length;
     this.systemService.on();
     this.loadIndicatorVisible = true;

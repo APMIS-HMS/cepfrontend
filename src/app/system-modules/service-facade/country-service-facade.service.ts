@@ -62,6 +62,7 @@ export class CountryServiceFacadeService {
   getOnlyLGAndCities(country: string, state: string, refresh?: boolean) {
     let that = this;
     console.log(refresh);
+    console.log(state);
     return new Promise(function (resolve, reject) {
       if (that.lgsAndCities !== undefined && !refresh) {
         console.log('am not')
