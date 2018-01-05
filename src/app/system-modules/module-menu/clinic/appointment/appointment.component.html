@@ -114,7 +114,7 @@
                         <img *ngIf="appointment.patientId?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.patientId?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.patientId.personDetails.personFullName}}</div>
+                    <div>{{appointment.patientId.personDetails.firstName}} {{appointment.patientId.personDetails.lastName}}</div>
                 </div>
             </td>
             <td>{{appointment.startDate | date:'shortDate'}}</td>

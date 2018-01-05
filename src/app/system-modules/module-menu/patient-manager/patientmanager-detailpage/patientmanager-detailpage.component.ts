@@ -149,7 +149,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
           const isOnObj = isOnList[0];
           isOnObj.isOn = true;
           let coo = <any>this.locker.getObject('appointment');
-          this.checkedIn = !coo.isCheckedOut;
+          this.checkedIn = !coo.isCheckedOut || false;
           this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
             this.loginEmployee = payloadu;
             if (this.selectedAppointment !== undefined) {
