@@ -54,6 +54,7 @@ const investigationReportTypes = require('./investigation-report-types/investiga
 const purchaseEntries = require('./purchase-entries/purchase-entries.service.js');
 const inventories = require('./inventories/inventories.service.js');
 const purchaseOrders = require('./purchase-orders/purchase-orders.service.js');
+const professions = require('./professions/professions.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -111,4 +112,5 @@ module.exports = function (app) {
   app.configure(purchaseEntries);
   app.configure(inventories);
   app.configure(purchaseOrders);
+  app.configure(professions);
 };

@@ -1,8 +1,21 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const { populate } = require('feathers-hooks-common');
+
+const personSchema = {
+  include: {
+    service: 'people',
+    nameAs: 'personDetails',
+    parentField: 'personId',
+    childField: '_id',
+    query: {
+      $sort: { createdAt: -1 }
+    },
+  }
+};
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
@@ -12,7 +25,7 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [populate({ schema: personSchema })],
     find: [],
     get: [],
     create: [],

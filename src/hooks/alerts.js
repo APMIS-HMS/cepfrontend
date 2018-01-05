@@ -7,23 +7,28 @@ const logger = require('winston');
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
-    logger.info(context.alertType);
-    logger.info(tokenLabel.tokenType.facilityVerification.toString());
-    if (context.alertType.toString() == tokenLabel.tokenType.facilityVerification.toString()) {
-      logger.info(22);
-      delete context.alertType;
-      emailer.sendToken(context.result);
-      sms.sendToken(context.result);
-    } else if (context.alertType.toString() == tokenLabel.tokenType.apmisId.toString()) {
-      logger.info(33);
-      delete context.alertType;
-      if (context.result.email != undefined) {
-        logger.info(44);
-        emailer.sendApmisId(context.result);
+    if (context.alertType !== undefined) {
+      logger.info(context.alertType);
+      logger.info(tokenLabel.tokenType.facilityVerification.toString());
+      if (context.alertType.toString() == tokenLabel.tokenType.facilityVerification.toString()) {
+        logger.info(22);
+        delete context.alertType;
+        emailer.sendToken(context.result);
+        sms.sendToken(context.result);
+      } else if (context.alertType.toString() == tokenLabel.tokenType.apmisId.toString()) {
+        logger.info(33);
+        delete context.alertType;
+        if (context.result.email != undefined) {
+          logger.info(44);
+          emailer.sendApmisId(context.result);
+        }
+        logger.info(55);
+        sms.sendApmisId(context.result);
       }
-      logger.info(55);
-      sms.sendApmisId(context.result);
+    } else {
+      return Promise.resolve(context);
     }
+
     return Promise.resolve(context);
   };
 };

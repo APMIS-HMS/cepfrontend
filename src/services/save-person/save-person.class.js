@@ -23,7 +23,7 @@ class Service {
     const getTokenService = this.app.service('get-tokens');
 
     return new Promise(function (resolve, reject) {
-      personService.create(data).then(payload => {
+      personService.create(data.person).then(payload => {
         if (payload) {
           const user = {
             email: payload.apmisId
@@ -31,9 +31,15 @@ class Service {
           user.personId = payload._id;
           getTokenService.get(tokenLabel.tokenType.autoPassword, {}).then(smsPayload => {
             user.password = smsPayload.result;
+
+            if (data.facilityId !== undefined) {
+              user.facilitiesRole = [];
+              user.facilitiesRole.push({ facilityId: data.facilityId });
+            }
+
             userService.create(user).then(facPayload => {
               sms.sendAutoGeneratorPassword(payload, smsPayload.result);
-              resolve(facPayload);
+              resolve(payload);
             }, facError => {
               reject(facError);
             });
