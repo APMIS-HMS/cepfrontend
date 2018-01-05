@@ -55,6 +55,11 @@ const purchaseEntries = require('./purchase-entries/purchase-entries.service.js'
 const inventories = require('./inventories/inventories.service.js');
 const purchaseOrders = require('./purchase-orders/purchase-orders.service.js');
 const prescription = require('./prescription/prescription.service.js');
+const prescriptionpriorities = require('./prescriptionpriorities/prescriptionpriorities.service.js');
+const presentation = require('./presentation/presentation.service.js');
+const productroutes = require('./productroutes/productroutes.service.js');
+const producttype = require('./producttype/producttype.service.js');
+const productvariant = require('./productvariant/productvariant.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -113,4 +118,9 @@ module.exports = function (app) {
   app.configure(inventories);
   app.configure(purchaseOrders);
   app.configure(prescription);
+  app.configure(prescriptionpriorities);
+  app.configure(presentation);
+  app.configure(productroutes);
+  app.configure(producttype);
+  app.configure(productvariant);
 };
