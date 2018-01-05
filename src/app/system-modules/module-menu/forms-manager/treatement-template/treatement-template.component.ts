@@ -108,8 +108,8 @@ export class TreatementTemplateComponent implements OnInit {
       console.log(value);
       if (!!value.medications) {
         this.orderSet.medications = value.medications;
-      } else if (!!value.laboratories) {
-        this.orderSet.laboratories = value.laboratories;
+      } else if (!!value.investigations) {
+        this.orderSet.investigations = value.investigations;
       } else if (!!value.procedures) {
         this.orderSet.procedures = value.procedures;
       } else if (!!value.nursingCares) {
