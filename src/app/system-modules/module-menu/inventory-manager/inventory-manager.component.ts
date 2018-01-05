@@ -152,6 +152,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   closeActivate(e) {
     if (e.srcElement.id !== 'contentSecMenuToggle') {
       this.contentSecMenuShow = false;
+      this.modal_on = false;
     }
   }
 
