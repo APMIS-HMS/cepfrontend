@@ -164,10 +164,8 @@ export class NewEmployeeComponent implements OnInit {
             this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
                 this.contactStates = states;
             }).catch(err => { });
-            // this.contactStates = value.states;
         });
         this.frmNewEmp2.controls['empContactState'].valueChanges.subscribe((value) => {
-            // this.cities = value.cities;
             let country = this.frmNewEmp2.controls['empCountry'].value;
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.cities = lgsAndCities.cities;

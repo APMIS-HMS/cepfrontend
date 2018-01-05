@@ -8,27 +8,31 @@
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <form [formGroup]="frmNewEmp1" novalidate>
             <div class="frm-item-wrap">
-                <i class="fa fa-building-o" aria-hidden="true"></i>
+                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
                 <!--<label>Department</label>-->
                 <!--<select formControlName="dept">
             <option value="" disabled selected>Department</option>
             <option [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
         </select>-->
-                <mat-select placeholder="Department" formControlName="dept">
-                    <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Department" formControlName="dept">
+                        <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department.name">{{department.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
             <div class="frm-item-wrap">
-                <i class="fa fa-building-o" aria-hidden="true"></i>
+                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
                 <!--<label>Unit</label>-->
                 <!--<select formControlName="unit">
             <option value="" disabled selected>Unit</option>
             <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
         </select>-->
-                <mat-select placeholder="Unit" formControlName="unit">
-                    <mat-option *ngFor="let unit of units" [value]="unit">{{unit.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Unit" formControlName="unit">
+                        <mat-option *ngFor="let unit of units" [value]="unit.name">{{unit.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
             <div class="emp-wrap">
@@ -39,7 +43,7 @@
                                 <div class="dx-field">
                                     <div class="dx-field-value">
                                         <mat-checkbox [formControl]="checkAll"></mat-checkbox>
-                                        </div>
+                                    </div>
                                 </div>
                             </th>
                             <th>
@@ -88,14 +92,16 @@
                             <td>
                                 <div class="empWrap">
                                     <div class="list-img">
-                                        <div *ngIf="employee?.employeeDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
-                                        <img *ngIf="employee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(employee?.employeeDetails?.profileImageObject?.thumbnail)">
+                                        <div *ngIf="employee?.personDetails?.profileImageObject === undefined">
+                                            <img src="assets/images/users/default.png">
+                                        </div>
+                                        <img *ngIf="employee?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(employee?.personDetails?.profileImageObject?.thumbnail)">
                                     </div>
-                                    <div>{{employee.employeeDetails.lastName}} {{employee.employeeDetails.firstName}}</div>
+                                    <div>{{employee.personDetails.lastName}} {{employee.personDetails.firstName}}</div>
                                 </div>
                             </td>
-                            <td>{{employee.employeeDetails.phoneNumber}}</td>
-                            <td>{{employee.employeeDetails.email}}</td>
+                            <td>{{employee.personDetails.phoneNumber}}</td>
+                            <td>{{employee.personDetails.email}}</td>
                         </tr>
                     </tbody>
                 </table>

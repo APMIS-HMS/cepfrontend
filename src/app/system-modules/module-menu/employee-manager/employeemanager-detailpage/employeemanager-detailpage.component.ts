@@ -1,4 +1,5 @@
-﻿import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+﻿import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
@@ -76,7 +77,8 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private genderService: GenderService,
     private relationshipService: RelationshipService,
     private maritalStatusService: MaritalStatusService,
-    private systemService:SystemModuleService,
+    private systemService: SystemModuleService,
+    private countryFacadeService: CountryServiceFacadeService,
     private locker: CoolLocalStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -96,31 +98,55 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     // this.getEmployees();
+
+
+
+    // this.homeCountryControl.valueChanges.subscribe(value => {
+    //   this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
+    //             this.homeStates = states;
+    //         }).catch(err => { });
+    // });
+    // this.homeStateControl.valueChanges.subscribe(value => {
+    //   let country = this.homeCountryControl.value;
+    //       this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
+    //           this.homeCities = lgsAndCities.cities;
+    //       }).catch(err => {
+    //           console.log(err);
+    //       });
+    // });
+
+
+
+
+
     this.countryControl.valueChanges.subscribe(value => {
-      const countryFilter = this.countries.filter(x => x._id === value);
-      if (countryFilter.length > 0) {
-        this.states = countryFilter[0].states;
-      }
+      this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
+        this.states = states;
+      }).catch(err => { });
     });
     this.stateControl.valueChanges.subscribe(value => {
-      const stateFilter = this.states.filter(x => x._id === value);
-      if (stateFilter.length > 0) {
-        this.lgs = stateFilter[0].lgs;
-      }
+      let country = this.countryControl.value;
+      let stateIndex = this.states.findIndex(x => x.name === value);
+      this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
+          this.lgs = lgsAndCities.lgs;
+      }).catch(err => {
+          console.log(err);
+      });
     });
 
 
     this.homeCountryControl.valueChanges.subscribe(value => {
-      const countryFilter = this.homeCountries.filter(x => x._id === value);
-      if (countryFilter.length > 0) {
-        this.homeStates = countryFilter[0].states;
-      }
+      this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
+        this.homeStates = states;
+      }).catch(err => { });
     });
     this.homeStateControl.valueChanges.subscribe(value => {
-      const stateFilter = this.homeStates.filter(x => x._id === value);
-      if (stateFilter.length > 0) {
-        this.homeCities = stateFilter[0].cities;
-      }
+      let country = this.homeCountryControl.value;
+      this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
+        this.homeCities = lgsAndCities.cities;
+      }).catch(err => {
+        console.log(err);
+      });
     });
 
     this.loadRoute();
@@ -140,7 +166,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.countries = results[3].data;
       this.homeCountries = results[3].data;
       this.systemService.off();
-    },error =>{
+    }, error => {
       this.systemService.off();
     })
   }
@@ -159,7 +185,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.selectedPerson = this.employee.personDetails;
       this.getCurrentUser(results[1]);
       this.systemService.off();
-    }, error =>{
+    }, error => {
       this.systemService.off();
     });
   }
@@ -199,7 +225,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   getSelectedState() {
     this.selectedNationality.states.forEach((item, i) => {
-      if (item._id === this.employee.employeeDetails.stateOfOriginId) {
+      if (item._id === this.employee.personDetails.stateOfOriginId) {
         this.selectedState = item;
         this.getSelectedLGA();
       }
@@ -207,7 +233,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   getSelectedLGA() {
     this.selectedState.lgs.forEach((item, i) => {
-      if (item._id === this.employee.employeeDetails.lgaOfOriginId) {
+      if (item._id === this.employee.personDetails.lgaOfOriginId) {
         this.selectedLGA = item;
       }
     });
@@ -241,12 +267,12 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.contentSecMenuShow = false;
   }
   generateUserShow() {
-    this.router.navigate(['/dashboard/employee-manager/generate-user', this.employee.employeeDetails._id]);
+    this.router.navigate(['/dashboard/employee-manager/generate-user', this.employee.personDetails._id]);
     this.contentSecMenuShow = false;
   }
   editUserShow() {
     this.router.navigate(['/dashboard/employee-manager/edit-user',
-      this.selectedUser._id, this.employee.employeeDetails._id]);
+      this.selectedUser._id, this.employee.personDetails._id]);
     this.contentSecMenuShow = false;
   }
   toggleActivate() {
@@ -273,27 +299,32 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   updateEmployee() {
     this.employee.departmentId = this.selectedValue;
-    this.employeeService.update(this.employee).subscribe(value => {
+    this.employeeService.update(this.employee).then(value => {
       this.employee = value;
       this.editDepartment = !this.editDepartment;
     });
   }
   UpdatePerson() {
-    const person = this.employee.employeeDetails;
+    const person = this.employee.personDetails;
     this.biodatas = !this.biodatas;
-    this.personService.update(person).subscribe(payload => {
+    this.personService.update(person).then(payload => {
+      console.log(payload);
     });
   }
   UpdatePersonContact() {
-    const person = this.employee.employeeDetails;
+    const person = this.employee.personDetails;
     this.contacts = !this.contacts;
-    this.personService.update(person).subscribe(payload => {
+    console.log(person);
+    this.personService.update(person).then(payload => {
+      console.log(payload);
+    }, error => {
+      console.log(error);
     });
   }
   UpdatePersonNextOfKin() {
-    const person = this.employee.employeeDetails;
+    const person = this.employee.personDetails;
     this.nextofkin = !this.nextofkin;
-    this.personService.update(person).subscribe(payload => {
+    this.personService.update(person).then(payload => {
     });
   }
   toggleDepartmentShow() {

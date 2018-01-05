@@ -43,13 +43,16 @@ export class AssignUnitComponent implements OnInit {
     });
     this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
+    console.log(this.selectedEmployee)
     if (this.selectedEmployee !== undefined) {
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.departmentId);
+      const deptList = this.departments.filter(x => x.name === this.selectedEmployee.departmentId);
       if (deptList.length > 0) {
-        this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
+        console.log(deptList);
+        this.frmNewEmp1.controls['dept'].setValue(deptList[0].name);
+        this.units = deptList[0].units;
       }
-      this.units = this.frmNewEmp1.controls['dept'].value.units;
+      // this.units = this.frmNewEmp1.controls['dept'].value.units;
       this.selectedEmployee.isChecked = false;
       this.employees.push(this.selectedEmployee);
       this.filteredEmployees = this.employees;
@@ -119,19 +122,25 @@ export class AssignUnitComponent implements OnInit {
     employee.isChecked = e.value;
   }
   assignUnit(valid, value) {
+    console.log(valid);
+    console.log(value);
     const checkedEmployees = this.filteredEmployees.filter(emp => emp.isChecked === true);
 
     checkedEmployees.forEach((emp, i) => {
+      console.log(i)
       if (emp.units === undefined) {
         emp.units = [];
       }
       emp.units.push(this.selectedUnit._id);
     });
     checkedEmployees.forEach((itemi, i) => {
+      console.log(i)
+      console.log(itemi)
       this.employeeService.update(itemi).then(payload => {
         if (this.selectedEmployee === undefined) {
           this.getEmployees(this.selectedDepartment);
         } else {
+          console.log('334')
           this.employees = [];
           this.filteredEmployees = [];
           this.selectedEmployee.isChecked = false;
@@ -140,6 +149,7 @@ export class AssignUnitComponent implements OnInit {
         }
 
       }, error => {
+        console.log(error);
       });
     });
     // this.employeeService.updateMany(checkedEmployees).then(payload => {

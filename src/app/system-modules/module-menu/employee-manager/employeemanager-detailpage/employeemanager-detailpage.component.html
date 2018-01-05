@@ -8,19 +8,26 @@
     <li><i class="fa fa-heartbeat" aria-hidden="true"></i> Health Care Coverage</li>
 </ul> -->
 <ul class="pg-menuWrap">
-    <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" [class.pg-menuActive]="requestContentArea"><i class="fa fa-home" aria-hidden="true"></i> Generate User</li>
-    <li (click)="generateUnit()" [class.pg-menuActive]="externalContentArea"><i class="fa fa-braille" aria-hidden="true"></i> Assign Unit</li>
-    <li (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea"><i class="fa fa-building" aria-hidden="true"></i> Assign Workspace</li>
-    <li *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> User Privileges</li>
-    <li *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea"><i class="fa fa-superpowers" aria-hidden="true"></i> Deactivate Employee</li>
-    <li *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea"><i class="fa fa-filter" aria-hidden="true"></i>Activate Employee</li>
+    <li *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" [class.pg-menuActive]="requestContentArea">
+        <i class="fa fa-home" aria-hidden="true"></i> Generate User</li>
+    <li (click)="generateUnit()" [class.pg-menuActive]="externalContentArea">
+        <i class="fa fa-braille" aria-hidden="true"></i> Assign Unit</li>
+    <li (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea">
+        <i class="fa fa-building" aria-hidden="true"></i> Assign Workspace</li>
+    <li *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea">
+        <i class="fa fa-map-marker" aria-hidden="true"></i> User Privileges</li>
+    <li *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea">
+        <i class="fa fa-superpowers" aria-hidden="true"></i> Deactivate Employee</li>
+    <li *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea">
+        <i class="fa fa-filter" aria-hidden="true"></i>Activate Employee</li>
 </ul>
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">Employee Manager</div>
     <!--<div class="">
         <a class="back-btn" mat-raised-button routerLink="/dashboard/employee-manager"><i class="fa fa-arrow-circle-o-left"></i> Go Back</a>
     </div>-->
-    <div routerLink="/dashboard/employee-manager" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+    <div routerLink="/dashboard/employee-manager" class="backBtn">
+        <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
     <!-- <div class="side-sec lhs">
         <app-employee-lookup (selectedEmployee)="navEpDetail($event)"></app-employee-lookup>
     </div> -->
@@ -48,15 +55,20 @@
                     </div>
                     <div class="emp-dept">{{employee?.departmentId}}
                         <span *ngIf="!editDepartment" (click)="toggleDepartmentShow()" class="editButton">
-                        <i class="fa fa-edit"></i></span>
+                            <i class="fa fa-edit"></i>
+                        </span>
                     </div>
                     <div *ngIf="editDepartment" class="emp-dept">
+                            <mat-form-field>
                         <mat-select placeholder="Departments" [(ngModel)]="selectedValue">
                             <mat-option *ngFor="let department of departments" [value]="department.name">
                                 {{department.name}}
                             </mat-option>
                         </mat-select>
-                        <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
+                        </mat-form-field>
+                        <a *ngIf="editDepartment" (click)="updateEmployee()">
+                            <i class="fa fa-check"></i>
+                        </a>
                     </div>
                     <div class="emp-email">{{employee?.personDetails?.email}}</div>
                     <div class="emp-number">{{employee?.personDetails?.phoneNumber}}</div>
@@ -67,7 +79,9 @@
                 </div>
                 <div class="rhs emp-img">
                     <div class="emp-img-wrap">
-                        <div *ngIf="employee?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                        <div *ngIf="employee?.personDetails?.profileImageObject === undefined">
+                            <img src="assets/images/users/default.png">
+                        </div>
                         <img *ngIf="employee?.personDetails?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(employee?.personDetails?.profileImageObject?.detailthumbnail)">
                         <div (click)="show_changeUserImg()" class="pp-overlay">Change User Image</div>
                     </div>
@@ -78,7 +92,8 @@
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Bio Data
                         <div *ngIf="!biodatas" (click)="bioDataShow()" class="editButton">
-                            <i class="fa fa-edit"></i></div>
+                            <i class="fa fa-edit"></i>
+                        </div>
                         <div *ngIf="biodatas" (click)="UpdatePerson()" class="editButton">
                             <i class="fa fa-check"></i>
                         </div>
@@ -104,11 +119,13 @@
                         <div class="lhs">Gender</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.personDetails?.gender}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
+                                <mat-form-field>
                             <mat-select placeholder="Gender" [(ngModel)]="employee.personDetails.gender._id" name="food">
                                 <mat-option *ngFor="let gender of genders" [value]="gender._id">
                                     {{gender.name}}
                                 </mat-option>
                             </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -117,11 +134,13 @@
                         <div class="lhs">Marital Status</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.personDetails?.maritalStatus}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <mat-select placeholder="Marital Status" [(ngModel)]="employee.personDetails.maritalStatus._id" name="food">
-                                <mat-option *ngFor="let marital of maritalStatuses" [value]="marital._id">
-                                    {{marital.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Marital Status" [(ngModel)]="employee.personDetails.maritalStatus" name="food">
+                                    <mat-option *ngFor="let marital of maritalStatuses" [value]="marital.name">
+                                        {{marital.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -144,19 +163,25 @@
 
                 <div class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Contact Information
-                        <span *ngIf="!contacts" (click)="contactShow()" class="editButton"><i class="fa fa-edit"></i></span>
-                        <span *ngIf="contacts" (click)="UpdatePersonContact()" class="editButton"><i class="fa fa-check"></i></span>
+                        <span *ngIf="!contacts" (click)="contactShow()" class="editButton">
+                            <i class="fa fa-edit"></i>
+                        </span>
+                        <span *ngIf="contacts" (click)="UpdatePersonContact()" class="editButton">
+                            <i class="fa fa-check"></i>
+                        </span>
                     </div>
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Nationality</div>
-                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.addressObj?.country}} </div>
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.nationality}} </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <div *ngIf="contacts">
-                                <mat-select placeholder="Nationality" [formControl]="countryControl" [(ngModel)]="employee.personDetails.nationalityId" name="food">
-                                    <mat-option *ngFor="let country of countries" [value]="country._id">
+                                    <mat-form-field>
+                                <mat-select placeholder="Nationality" [formControl]="countryControl" [(ngModel)]="employee.personDetails.nationality" name="food">
+                                    <mat-option *ngFor="let country of countries" [value]="country.name">
                                         {{country.name}}
                                     </mat-option>
                                 </mat-select>
+                                    </mat-form-field>
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
@@ -165,27 +190,32 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">State of Origin</div>
-                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.addressObj?.state}} </div>
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.stateOfOrigin}} </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.personDetails.stateOfOriginId" name="food">
-                                <mat-option *ngFor="let state of states" [value]="state._id">
+                                <mat-form-field>
+                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.personDetails.stateOfOrigin"
+                                name="food">
+                                <mat-option *ngFor="let state of states" [value]="state.name">
                                     {{state.name}}
                                 </mat-option>
                             </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">LGA</div>
-                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.addressObj?.lga}} </div>
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.lgaOfOrigin}} </div>
                         <div class="survery rhs">
                             <div *ngIf="contacts" class="">
-                                <mat-select placeholder="LGA" [(ngModel)]="employee.personDetails.lgaOfOriginId" name="food">
-                                    <mat-option *ngFor="let lg of lgs" [value]="lg._id">
+                                <mat-form-field>
+                                <mat-select placeholder="LGA" [(ngModel)]="employee.personDetails.lgaOfOrigin" name="food">
+                                    <mat-option *ngFor="let lg of lgs" [value]="lg.name">
                                         {{lg.name}}
                                     </mat-option>
                                 </mat-select>
+                                </mat-form-field>
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
@@ -194,23 +224,32 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Home Address</div>
-                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.fullAddress}}. </div>
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.homeAddress.street}}, {{employee?.personDetails?.homeAddress?.city}},
+                            {{employee?.personDetails?.homeAddress.state}}, {{employee?.personDetails?.homeAddress.country}}.
+                            </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.personDetails.homeAddress.country" name="food">
-                                <mat-option *ngFor="let country of homeCountries" [value]="country._id">
-                                    {{country.name}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-select placeholder="State" [formControl]="homeStateControl" [(ngModel)]="employee.personDetails.homeAddress.state" name="food">
-                                <mat-option *ngFor="let state of homeStates" [value]="state._id">
-                                    {{state.name}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-select placeholder="City" [(ngModel)]="employee.personDetails.homeAddress.city" name="food">
-                                <mat-option *ngFor="let city of homeCities" [value]="city._id">
-                                    {{city.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.personDetails.homeAddress.country"
+                                    name="food">
+                                    <mat-option *ngFor="let country of homeCountries" [value]="country.name">
+                                        {{country.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="State" [formControl]="homeStateControl" [(ngModel)]="employee.personDetails.homeAddress.state" name="food">
+                                    <mat-option *ngFor="let state of homeStates" [value]="state.name">
+                                        {{state.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="City" [(ngModel)]="employee.personDetails.homeAddress.city" name="food">
+                                    <mat-option *ngFor="let city of homeCities" [value]="city.name">
+                                        {{city.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-input-container class="example-full-width" name="street">
                                 <input matInput placeholder="Street" [(ngModel)]="employee.personDetails.homeAddress.street">
                             </mat-input-container>
@@ -220,10 +259,10 @@
 
                     <div class="dataMix-wrap color1">
                         <div class="lhs">Phone Number</div>
-                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.phoneNumber}}</div>
+                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.primaryContactPhoneNo}}</div>
                         <div *ngIf="contacts" class="survery rhs">
                             <mat-input-container class="example-full-width">
-                                <input type="tel" matInput placeholder="Phone Number" [(ngModel)]="employee.personDetails.phoneNumber">
+                                <input type="tel" matInput placeholder="Phone Number" [(ngModel)]="employee.personDetails.primaryContactPhoneNo">
                             </mat-input-container>
                         </div>
                         <div class="clear"></div>
@@ -244,8 +283,12 @@
 
                 <div *ngFor="let item of employee?.personDetails?.nextOfKin" class="empData-block emp-bioData">
                     <div class="empDataBlock-title">Next of Kin
-                        <span *ngIf="!nextofkin" (click)="nextofkinShow()" class="editButton"><i class="fa fa-edit"></i></span>
-                        <span *ngIf="nextofkin" (click)="UpdatePersonNextOfKin()" class="editButton"><i class="fa fa-check"></i></span>
+                        <span *ngIf="!nextofkin" (click)="nextofkinShow()" class="editButton">
+                            <i class="fa fa-edit"></i>
+                        </span>
+                        <span *ngIf="nextofkin" (click)="UpdatePersonNextOfKin()" class="editButton">
+                            <i class="fa fa-check"></i>
+                        </span>
                     </div>
 
                     <div class="dataMix-wrap color1">
@@ -263,11 +306,13 @@
                         <div class="lhs">Relationship</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{getRelationship(item.relationship)}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
-                             <mat-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
-                                <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
-                                    {{relationship.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
+                                    <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                        {{relationship.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
