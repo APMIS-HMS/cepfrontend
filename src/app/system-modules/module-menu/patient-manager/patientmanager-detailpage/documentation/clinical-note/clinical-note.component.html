@@ -7,7 +7,7 @@
             <span>Symptoms</span>
         </li>
     </ul>
- 
+
     <div class="docCard-header">
         <div>
             <mat-input-container>
@@ -22,10 +22,12 @@
         </div>
 
         <div class="frm-item-wrap">
-            <mat-select placeholder="Select Template" [formControl]="templateFormCtrl">
-              <mat-option *ngFor="let item of templates" [value]="item">{{item.name}}</mat-option>
-            </mat-select>
-          </div>
+            <mat-form-field>
+                <mat-select placeholder="Select Template" [formControl]="templateFormCtrl">
+                    <mat-option *ngFor="let item of templates" [value]="item">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
         <div>
             <div class="val-tag">Status</div>
@@ -35,7 +37,7 @@
         <div class="empWrap">
             <div class="list-img">
                 <img *ngIf="patient?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                 <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div> 
+                <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
             </div>
             <div>
                 <div class="val-tag">Patient</div>

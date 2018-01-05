@@ -12,8 +12,8 @@ export class DocSymptomComponent implements OnInit {
   
   addSymptomForm: FormGroup;
   apmisLookupQuery = {};
-  apmisLookupUrl = '';
-  apmisLookupDisplayKey = '';
+  apmisLookupUrl = 'symptoms';
+  apmisLookupDisplayKey = 'name';
   apmisLookupText = '';
 
   constructor(private fb: FormBuilder) { }
@@ -43,4 +43,3 @@ export class DocSymptomComponent implements OnInit {
     // }
   }
 }
-  
