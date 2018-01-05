@@ -43,12 +43,14 @@
                 <option  value="" disabled selected>Parent Location</option>
                 <option *ngFor="let item of locations"  value = "{{item?._id}}">{{item?.name}}</option>
             </select>-->
-                    <mat-select formControlName="sublocParent">
-                        <mat-option value="" disabled selected>Parent Location</mat-option>
-                        <mat-option *ngFor="let item of locations" [value]="item?._id">
-                            {{item?.name}}
-                        </mat-option>
-                    </mat-select>
+                    <mat-form-field>    
+                        <mat-select formControlName="sublocParent">
+                            <mat-option value="" disabled selected>Parent Location</mat-option>
+                            <mat-option *ngFor="let item of locations" [value]="item?._id">
+                                {{item?.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">

@@ -531,18 +531,19 @@ select {
     position: relative;
     padding: 10px;
     background: #0288D1;
+    box-sizing: border-box;
 }
 
 .modal-baseWrap {
     @extend .nice-scroll;
     position: relative;
-    width: 590px;
+    // width: 590px;
     min-width: 440px;
     height: auto;
     max-height: 90vh;
     background: #fff;
     overflow: auto;
-    padding: 50px;
+    padding: 20px 50px;
     box-sizing: border-box;
     -webkit-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
     -moz-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
@@ -1237,7 +1238,7 @@ ul.topmenuwrap li:hover {
 }
 
 .mat-input-container {
-    width: 90%;
+    width: 100%;
 }
 
 .tr-act-btn {
@@ -1574,6 +1575,34 @@ ul.topmenuwrap li:hover {
 .custom-autocomplete__dropdown li {
     width: 97% !important;
 }
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  .upload-btn {
+    border: 2px solid #eee;
+    color: #aaa;
+    background-color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .upload-btn:hover{
+      background: #256cc6;
+      color: #fff;
+      border: 2px solid #256cc6;
+  }
+  
 
 @media only screen and (max-width: 600px) {
     .user-label{
@@ -1586,10 +1615,17 @@ ul.topmenuwrap li:hover {
     }
 }
 @media only screen and (max-width: 700px) {
-    .modal-baseWrap {
+    .modal-baseWrap{
         padding: 10px 20px;
-        min-width: 80%;
-        width: 80%;
+        min-width: 100%;
+        width: 100%;
+    }
+    .modal-header-wrap{
+        min-width: 100%;
+        width: 100%;
+    }
+    .pulse{
+        width: 90%;
     }
     form .lhs,
     form .rhs {

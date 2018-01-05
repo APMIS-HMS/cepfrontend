@@ -26,7 +26,9 @@ import { ProfessionComponent } from './profession/profession.component';
 import { AddProfessionComponent } from './profession/add-profession/add-profession.component';
 import { FacilityPageComponent } from './facility-page.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
-
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { FacilityBasicinfoEditComponent } from './facility-basicinfo-edit/facility-basicinfo-edit.component';
+import { FacilitypageSidesectComponent } from './facilitypage-sidesect/facilitypage-sidesect.component';
 
 @NgModule({
     declarations: [
@@ -45,14 +47,16 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
         ProfessionComponent,
         AddProfessionComponent,
         FacilityPageComponent,
-
+        FacilityBasicinfoEditComponent,
+        FacilitypageSidesectComponent,
     ],
     exports: [
     ],
     imports: [
         facilityPageRoutes,
         facilityPageRoutes,
-        MaterialModule
+        MaterialModule,
+        Ng4GeoautocompleteModule
     ],
     providers: [
         WorkspaceResolverService, LocationsResolverService,

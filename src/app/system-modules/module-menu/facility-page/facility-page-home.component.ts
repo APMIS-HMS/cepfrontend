@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Facility } from '../../../models/index';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
+
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { EmployeeService } from '../../../services/facility-manager/setup/index';
@@ -22,6 +28,7 @@ export class FacilityPageHomeComponent implements OnInit {
   dashboardContentArea = false;
 
   showUnit = false;
+  showLoc = false;
 
   selectedFacility: any;
   hasModules = false;
@@ -30,22 +37,19 @@ export class FacilityPageHomeComponent implements OnInit {
   hasMinorLocations = false;
   hasAssignedEmployees = false;
   hasWorkSpaces = false;
+  
+  newDept = false;
+  newUnit = false;
+  newSubLocModal_on = false;
+  createWorkspace = false;
 
-  constructor(private router: Router, private locker: CoolLocalStorage, private employeeService: EmployeeService) {
+  searchControl: FormControl = new FormControl();
+  
+  constructor(private formBuilder: FormBuilder, private router: Router, private locker: CoolLocalStorage, private employeeService: EmployeeService) {
     // router.events.subscribe((routerEvent: Event) => {
     //   this.checkRouterEvent(routerEvent);
     // });
   }
-  // checkRouterEvent(routerEvent: Event): void {
-  //   if (routerEvent instanceof NavigationStart) {
-  //     this.loadIndicatorVisible = true;
-  //   }
-  //   if (routerEvent instanceof NavigationEnd ||
-  //     routerEvent instanceof NavigationCancel ||
-  //     routerEvent instanceof NavigationError) {
-  //     this.loadIndicatorVisible = false;
-  //   }
-  // }
   ngOnInit() {
     const page: string = this.router.url;
     this.checkPageUrl(page);
@@ -63,21 +67,25 @@ export class FacilityPageHomeComponent implements OnInit {
   showUnit_hide(){
     this.showUnit = false;
   }
+  showLoc_click(){
+    this.showLoc = true;
+  }
+  showLoc_hide(){
+    this.showLoc = false;
+  }
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]);
 
     if(value == ''){
-      this.homeContentArea = true;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
-      this.departmentsContentArea = false;
+      this.departmentsContentArea = true;
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
     } else if(value == 'modules'){
-      this.homeContentArea = false;
       this.modulesContentArea = true;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -87,7 +95,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
     } else if(value == 'departments'){
-      this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -97,7 +104,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
     } else if(value == 'locations'){
-      this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -107,7 +113,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
     } else if(value == 'workspaces'){
-      this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -117,7 +122,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
     } else if(value == 'options'){
-      this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = true;
@@ -127,7 +131,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
     } else if(value == 'profession'){
-      this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -166,7 +169,6 @@ export class FacilityPageHomeComponent implements OnInit {
 
   private checkPageUrl(param: string) {
 		if (param.includes('facility/modules')) {
-			this.homeContentArea = false;
       this.modulesContentArea = true;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -176,7 +178,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
 		} else if (param.includes('facility/departments')) {
-			this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -186,7 +187,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
 		} else if (param.includes('facility/locations')) {
-			this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -196,7 +196,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
 		} else if (param.includes('facility/workspaces')) {
-			this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -206,7 +205,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
 		} else if (param.includes('facility/options')) {
-			this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = true;
@@ -216,7 +214,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
 		} else if (param.includes('facility/profession')) {
-			this.homeContentArea = false;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -226,16 +223,36 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = true;
       // this.dashboardContentArea = false;
 		} else if (param.includes('facility')) {
-			this.homeContentArea = true;
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
-      this.departmentsContentArea = false;
+      this.departmentsContentArea = true;
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
 		}
+  }
+  close_onClick(e){
+    this.newDept = false;
+    this.newUnit = false;
+    this.newSubLocModal_on = false;
+    this.createWorkspace = false;
+  }
+  newDept_onClick(){
+    this.newDept = true;
+  }
+  newUnit_onClick(){
+    this.newUnit = true;
+  }
+  newLoc_onClick(){
+    this.newSubLocModal_on = true;
+  }
+  newWorkspace_onClick(){
+    this.createWorkspace = true;
+  }
+  autoCompleteCallback1(selectedData:any) {
+		//do any necessery stuff.
+		console.log(selectedData);
 	}
- 
 }
