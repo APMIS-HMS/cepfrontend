@@ -21,6 +21,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   editPatient = false;
   payPlan = false;
+  newUpload = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
   @Input() resetData: Boolean;
@@ -187,9 +188,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   navEpDetail(patient) {
     console.log(patient);
+    this.locker.setObject('patient', patient);
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]).then(() => {
       this.patientService.announcePatient(patient);
-    })
+    }).catch(err => {
+      console.log(err);
+    });
   }
   getPatients(limit?) {
     this.loading = true;
@@ -384,6 +388,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   close_onClick() {
     this.editPatient = false;
     this.payPlan = false;
+    this.newUpload = false;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);
   }
@@ -416,5 +421,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   showImageBrowseDlg(){
     this.fileInput.nativeElement.click()
+  }
+  newUpload_show(){
+    this.newUpload = true;
   }
 }

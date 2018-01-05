@@ -24,9 +24,9 @@
 
             <div class="frm-item-wrap">
               <!--<label>Location</label>
-                <select formControlName="pulseLoc">
-                  <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
-                </select>-->
+              <select formControlName="pulseLoc">
+                <option *ngFor="let location of vitalLocation"  value="{{location?.name}}" value="">{{location?.name}}</option>
+              </select>-->
               <mat-form-field>
                 <mat-select placeholder="Location" formControlName="pulseLoc">
                   <mat-option *ngFor="let location of vitalLocation" [value]="location?.name">{{location?.name}}</mat-option>
@@ -36,9 +36,9 @@
 
             <div class="frm-item-wrap">
               <!--<label>Rythm</label>
-                <select formControlName="pulseRythm">
-                  <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
-                </select>-->
+              <select formControlName="pulseRythm">
+                <option *ngFor="let rythm of vitalRythm"  value="{{rythm?.name}}" value="">{{rythm?.name}}</option>
+              </select>-->
               <mat-form-field>
                 <mat-select placeholder="Rythm" formControlName="pulseRythm">
                   <mat-option *ngFor="let rythm of vitalRythm" [value]="rythm?.name">{{rythm?.name}}</mat-option>
