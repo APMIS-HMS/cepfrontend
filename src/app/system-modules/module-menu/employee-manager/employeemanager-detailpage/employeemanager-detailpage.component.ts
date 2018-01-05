@@ -150,12 +150,13 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     const employee$ = this.employeeService.get(id, {});
     const user$ = this.userService.find({ query: { personId: auth.data.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
+      console.log(results)
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};
       this.loadIndicatorVisible = false;
       this.employee = <any>results[0];
       this.selectedValue = this.employee.departmentId;
-      this.selectedPerson = this.employee.employeeDetails;
+      this.selectedPerson = this.employee.personDetails;
       this.getCurrentUser(results[1]);
       this.systemService.off();
     }, error =>{

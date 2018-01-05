@@ -134,6 +134,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
         $skip: this.index * this.limit,
       } 
     }).then(payload => {
+      console.log(payload);
       this.total = payload.total;
       if(this.resetData !== true)
       {

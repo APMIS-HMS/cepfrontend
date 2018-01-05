@@ -37,7 +37,7 @@
                 </div>
             </td>
             <td class="pointer" (click)="navEpDetail(item)">{{item.personDetails?.apmisId}}</td>
-			<td class="pointer" (click)="navEpDetail(item)">{{item.department}}</td>
+			<td class="pointer" (click)="navEpDetail(item)">{{item.departmentId}}</td>
 			<td class="pointer" (click)="navEpDetail(item)">
                 <span *ngIf="!item.isActive" style="color:#E53935;">Inactive</span>
                 <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>

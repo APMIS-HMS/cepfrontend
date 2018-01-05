@@ -21,4 +21,5 @@ export interface Employee {
     workbenchCheckIn: any[];
     workSpaces: any[];
     unitDetails: any[];
+    personDetails?:any;
 }

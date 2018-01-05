@@ -50,8 +50,12 @@
             <td class="pointer" (click)="navEpDetail(patient)">
                 <div class="empWrap">
                     <div class="list-img">
-                        <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                        <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
+                        <div *ngIf="patient?.personDetails?.profileImageObject == undefined">
+                            <img src="assets/images/users/default.png">
+                        </div>
+                        <div *ngIf="patient?.personDetails?.profileImageObject != undefined">
+                            <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                        </div>
                     </div>
                     <div>{{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</div>
                 </div>
@@ -109,7 +113,7 @@
 </table>
 
 <div class="btn-center">
-    <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore" >Load More</button>  
+    <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore">Load More</button>
 </div>
 <div style="text-align:center; margin-top:20px;" *ngIf="total > 0">{{loadMoreText}} </div>
 <div *ngIf="editPatient">
@@ -131,11 +135,13 @@
                                             <mat-tab label="Patient" style="padding: 10px;">
                                                 <div class="patient-detail-wrapper">
                                                     <div class="col-sm-6">
-                                                        <mat-select formControlName="title" placeholder="Title">
-                                                            <mat-option *ngFor="let title of titles" [value]="title">
-                                                                {{title.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select formControlName="title" placeholder="Title">
+                                                                <mat-option *ngFor="let title of titles" [value]="title">
+                                                                    {{title.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-input-container>
@@ -158,41 +164,51 @@
                                                         </mat-input-container>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <mat-select formControlName="gender" placeholder="Gender">
-                                                            <mat-option *ngFor="let gender of genders" [value]="gender">
-                                                                {{gender.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select formControlName="gender" placeholder="Gender">
+                                                                <mat-option *ngFor="let gender of genders" [value]="gender">
+                                                                    {{gender.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: 20px;">
-                                                        <mat-select placeholder="Country" formControlName="country">
-                                                            <mat-option *ngFor="let country of countries" [value]="country">
-                                                                {{country.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="Country" formControlName="country">
+                                                                <mat-option *ngFor="let country of countries" [value]="country">
+                                                                    {{country.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: -40px;">
-                                                        <mat-select placeholder="State" formControlName="state">
-                                                            <mat-option *ngFor="let state of states" [value]="state">
-                                                                {{state.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="State" formControlName="state">
+                                                                <mat-option *ngFor="let state of states" [value]="state">
+                                                                    {{state.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: 20px;">
-                                                        <mat-select placeholder="City" formControlName="city">
-                                                            <mat-option *ngFor="let city of cities" [value]="city">
-                                                                {{city.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="City" formControlName="city">
+                                                                <mat-option *ngFor="let city of cities" [value]="city">
+                                                                    {{city.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: 20px;">
-                                                        <mat-select placeholder="L.G.A" formControlName="lga">
-                                                            <mat-option *ngFor="let lga of lgas" [value]="lga">
-                                                                {{lga.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="L.G.A" formControlName="lga">
+                                                                <mat-option *ngFor="let lga of lgas" [value]="lga">
+                                                                    {{lga.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
-                                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                                    <div class="col-xs-12">
                                                         <mat-input-container style="width: 100%;">
                                                             <textarea matInput placeholder="Street" formControlName="street"></textarea>
                                                         </mat-input-container>
@@ -206,8 +222,8 @@
                                                             <div class="panel-heading">
                                                                 <span>Next Of Kin {{i + 1}}</span>
                                                                 <span *ngIf="patientEditForm.controls.nextOfKin.controls.length > 1" (click)="removeNextOfKin(i)" style="float: right;">
-                                                                        <i class="fa fa-times"></i>
-                                                                    </span>
+                                                                    <i class="fa fa-times"></i>
+                                                                </span>
                                                             </div>
                                                             <div class="panel-body" [formGroupName]="i">
                                                                 <mat-input-container class="example-full-width">
@@ -273,7 +289,9 @@
                                                     </form>
                                                 </div> -->
                                                 <div class="add-next-of-kin-box">
-                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin <i class="fa fa-plus"></i></a>
+                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
                                                 </div>
                                             </mat-tab>
                                             <mat-tab label="Plan">
@@ -285,7 +303,8 @@
                                     </form>
                                 </div>
                                 <div class="example-full-width" id="example-full-width">
-                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" mat-raised-button [innerHtml]="updatePatientBtnText"></button>
+                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue"
+                                        mat-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
                             </div>
                         </div>
