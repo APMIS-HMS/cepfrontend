@@ -17,6 +17,7 @@ import { TemplateLabComponent } from './treatement-template/template-lab/templat
 import { TemplateProcedureComponent } from './treatement-template/template-procedure/template-procedure.component';
 import { TemplateNursingCareComponent } from './treatement-template/template-nursing-care/template-nursing-care.component';
 import { TemplatePhysicianOrderComponent } from './treatement-template/template-physician-order/template-physician-order.component';
+import { OrderSetSharedService } from '../../../services/facility-manager/order-set-shared-service';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,7 @@ import { TemplatePhysicianOrderComponent } from './treatement-template/template-
         // FormsModule,
         formsManagerRoutes
     ],
-    providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService,
+    providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService, OrderSetSharedService,
         ScopeLevelResolverService, FormTypeResolverService, FormsService, SharedService, DocumentationTemplateService]
 })
 export class FormsManagerModule { }
