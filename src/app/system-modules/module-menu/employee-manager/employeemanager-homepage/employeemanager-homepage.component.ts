@@ -64,6 +64,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
 
   ngOnInit() {
     this.route.data.subscribe(data => {
+      console.log(data);
       data['employees'].subscribe((payload) => {
         if (payload !== null) {
           this.total = payload.total;
@@ -131,7 +132,6 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
         facilityId: this.facility._id, 
         $limit: this.limit, 
         $skip: this.index * this.limit,
-        showbasicinfo: true 
       } 
     }).then(payload => {
       this.total = payload.total;

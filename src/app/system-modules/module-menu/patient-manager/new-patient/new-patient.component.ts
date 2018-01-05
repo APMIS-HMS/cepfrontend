@@ -391,7 +391,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empLevel: ['', [<any>Validators.required]]
 
         });
-        this.frmNewEmp4.controls['empJobTitle'].valueChanges.subscribe((value) => {
+        this.frmNewEmp4.controls['empJobTitle'].valueChanges.subscribe((value:Profession) => {
             this.cadres = value.caders;
         });
         this.getCountries();
