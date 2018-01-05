@@ -82,19 +82,22 @@ export class ClinicalNoteComponent implements OnInit {
     })
   }
   getForms() {
+    console.log(22)
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
     formType$.mergeMap(((formTypes: any) =>
       Observable.fromPromise(this.formService.find({
         query: {
-          $limit: 200, facilityId: this.selectedFacility._id,
-          typeOfDocumentId: formTypes.data[0]._id,
-          isSide: false
+          facilityId: this.selectedFacility._id,
+          typeOfDocumentId: formTypes.data[0]._id
         }
       }))
     ))
       .subscribe((results: any) => {
+        console.log(results);
         this.forms = results.data;
-      }, error =>{
+      }, error => {
+        console.log(11)
+        console.log(error);
         this.getForms();
       })
   }

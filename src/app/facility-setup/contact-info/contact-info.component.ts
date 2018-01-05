@@ -155,7 +155,7 @@ export class ContactInfoComponent implements OnInit {
 							nationalityId: this.inputFacility.address.country,
 							stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
 							email: this.facilityForm1_1.controls['contactEmail'].value,
-							maritalStatusId: this.maritalStatuses[0]._id
+							maritalStatus: this.maritalStatuses[0].name
 						};
 						const userModel = <User>{
 							email: this.facilityForm1_1.controls['contactEmail'].value,

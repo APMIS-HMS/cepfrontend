@@ -774,7 +774,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             }
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
                 person.nextOfKin.push(
                     { 
@@ -885,7 +885,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             person._id = this.person_Id;
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
                 person.nextOfKin.push(
                     { 
@@ -1011,7 +1011,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             person._id = this.person_Id;
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
                 person.nextOfKin.push(
                     { 
@@ -1136,7 +1136,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             person._id = this.person_Id;
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
                 person.nextOfKin.push(
                     { 

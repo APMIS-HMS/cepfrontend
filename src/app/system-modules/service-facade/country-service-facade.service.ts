@@ -69,13 +69,16 @@ export class CountryServiceFacadeService {
         resolve(that.lgsAndCities);
       } else {
         console.log('refresh state');
+        console.log(state);
         that.countriesService.find({
           query: {
-            'name': country,
+            name: country,
             'states.name': state,
-            $select: { 'states.cities': 1, 'states.lgs': 1 }
+            $select: { 'states.$': 1}
+          
           }
         }).then((payload) => {
+          console.log(payload);
           if (payload.data.length > 0) {
             that.lgsAndCities = { lgs: payload.data[0].states[0].lgs, cities: payload.data[0].states[0].cities };
           }

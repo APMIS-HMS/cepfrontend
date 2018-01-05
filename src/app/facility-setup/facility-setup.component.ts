@@ -403,7 +403,7 @@ export class FacilitySetupComponent implements OnInit {
             nationalityId: this.facilityForm1.controls['facilitycountry'].value,
             stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
             email: model.email,
-            maritalStatusId: this.maritalStatuses[0]._id
+            maritalStatus: this.maritalStatuses[0].name
           };
           const userModel = <User>{
             email: model.email,

@@ -14,7 +14,7 @@ export interface Person {
     stateOfOriginId: string;
     lgaOfOriginId: string;
     email: string;
-    maritalStatusId: string;
+    maritalStatus: string;
     nextOfKin: any[];
     dateOfBirth: Date;
     profileImageObject: any;

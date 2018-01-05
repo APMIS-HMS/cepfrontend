@@ -411,7 +411,7 @@ export class NewEmployeeComponent implements OnInit {
 
             };
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
                 person.nextOfKin.push(
                     {
