@@ -187,9 +187,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   navEpDetail(patient) {
     console.log(patient);
+    this.locker.setObject('patient', patient);
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]).then(() => {
       this.patientService.announcePatient(patient);
-    })
+    }).catch(err => {
+      console.log(err);
+    });
   }
   getPatients(limit?) {
     this.loading = true;
