@@ -10,6 +10,7 @@ import { FormsComponent } from './forms/forms.component';
 import { SystemModulesResolverService } from '../../../resolvers/module-menu/index';
 import { FormTypeResolverService, ScopeLevelResolverService } from '../../../resolvers/module-manager/index';
 import { ScopeLevelService, FormTypeService } from '../../../services/module-manager/setup/index';
+import { OrderSetTemplateService } from '../../../services/facility-manager/setup/index';
 import { FormsService } from '../../../services/facility-manager/setup/index';
 import { TreatementTemplateComponent } from './treatement-template/treatement-template.component';
 import { TemplateMedicationComponent } from './treatement-template/template-medication/template-medication.component';
@@ -38,7 +39,7 @@ import { OrderSetSharedService } from '../../../services/facility-manager/order-
         // FormsModule,
         formsManagerRoutes
     ],
-    providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService, OrderSetSharedService,
+    providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService, OrderSetSharedService, OrderSetTemplateService,
         ScopeLevelResolverService, FormTypeResolverService, FormsService, SharedService, DocumentationTemplateService]
 })
 export class FormsManagerModule { }
