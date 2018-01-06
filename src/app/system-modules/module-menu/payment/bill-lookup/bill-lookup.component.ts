@@ -197,8 +197,12 @@ export class BillLookupComponent implements OnInit {
       this.billGroups.forEach((itemg, g) => {
         itemg.bills.forEach((itemb: BillModel, b) => {
           if (itemb.isChecked) {
-            delete itemb.billObject;
-            billGroup.billingIds.push(itemb);
+            itemb.billObject.isInvoiceGenerated = true;
+            billGroup.billingIds
+              .push({
+                billingId: itemb._id,
+                billObject: itemb.billObject
+              });
           }
         });
       });
@@ -208,6 +212,7 @@ export class BillLookupComponent implements OnInit {
         billGroup.subTotal = this.subTotal;
         billGroup.totalPrice = this.total;
         billGroup.balance = this.total;
+        console.log(billGroup);
         this.invoiceService.create(billGroup).then(payload => {
           var len = this.checkBillitems.length - 1;
           var len2 = this.listedBillItems.length - 1;
@@ -230,9 +235,7 @@ export class BillLookupComponent implements OnInit {
               }
             }
           }
-          this.router.navigate(['/dashboard/payment/invoice', payload.patientId]).then(()=>{
-            this.patientService.announcePatient(this.selectedPatient);
-          });
+          this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
         }, error => {
         });
       }
@@ -288,9 +291,9 @@ export class BillLookupComponent implements OnInit {
     inBill.itemDesc = bill.description;
     inBill.itemName = bill.facilityServiceObject.service;
     inBill.qty = bill.quantity;
+    inBill.covered = bill.covered;
     inBill.unitPrice = bill.unitPrice;
     inBill._id = bill._id;
-    inBill.covered = bill.covered;
     inBill.facilityServiceObject = bill.facilityServiceObject;
     inBill.billObject = bill;
 

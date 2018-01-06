@@ -30,8 +30,10 @@ export class MakePaymentComponent implements OnInit {
   @Input() subTotal: any = <any>{};
   @Input() invoice: any = <any>{};
   @Input() isInvoicePage: any = <any>{};
+  isPartPay = false;
 
-
+  totalAmountPaid = 0;
+  outOfPocketAmountPaid = 0;
   paymentChannels = PaymentChannels;
   selectedFacility: Facility = <Facility>{};
   selectedBillItem: BillModel = <BillModel>{};
@@ -39,6 +41,12 @@ export class MakePaymentComponent implements OnInit {
   disableBtn = true;
   isProcessing = false;
   isCash = false;
+
+  loading = false;
+  tabWallet = true;
+  tabInsurance = false;
+  tabCompany = false;
+  tabFamily = false;
 
   transaction: WalletTransaction = <WalletTransaction>{};
   mainErr = true;
@@ -52,7 +60,7 @@ export class MakePaymentComponent implements OnInit {
 
 
   amount = new FormControl('', []);
-
+  selectOutOfPocket = new FormControl('', []);
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
@@ -86,6 +94,10 @@ export class MakePaymentComponent implements OnInit {
     // });
   }
 
+  onOutOfPocketPartPay() {
+    this.isPartPay = !this.isPartPay;
+  }
+
   // calculateBalance(ev){
   //   console.log(ev.target.value);
   //   var bal = this.cost - ev.target.value;
@@ -101,16 +113,63 @@ export class MakePaymentComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
-  makePayment() {
+  tabWallet_click() {
+    this.tabWallet = true;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+  }
+  tabCompany_click() {
+    this.tabWallet = false;
+    this.tabCompany = true;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+  }
+  tabFamily_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = true;
+    this.tabInsurance = false;
+  }
+  tabInsurance_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = true;
+  }
+
+  onExactCharges(event: any) {
+    var isChecked = event.target.checked;
+    this.onOutOfPocketPartPay();
+    if (isChecked) {
+      this.amount = this.cost;
+    }
+  }
+
+  onOutOfPocket() {
+    var paymentValue = {
+      "channel": TransactionMedium[TransactionMedium.Wallet],
+      "amountPaid": this.amount
+    }
+    this.makePayment(paymentValue);
+  }
+
+  onInsuranceCover() { }
+
+  onFamilyCover() { }
+
+  onCompanyCover() { }
+
+
+  makePayment(value) {
     this.isProcessing = true;
     var paymantObj = {
       "inputedValue": {
-        "channel": TransactionMedium[TransactionMedium.Wallet],
+        "channel": value.channel,
         "txnType": TransactionType[TransactionType.Dr],
-        "txnStatus": TransactionStatus.Complete,
-        "amountPaid": this.amount.value,
+        "amountPaid": value.amountPaid,
         "balance": this.balance,
-        "cost": this.cost,
+        "cost": this.cost
       },
       "billGroups": this.billGroups,
       "selectedPatient": this.selectedPatient,
