@@ -102,13 +102,12 @@ export class TemplateMedicationComponent implements OnInit {
         );
         if (containsGeneric.length < 1) {
           this.medications.push(medication);
+          this._orderSetSharedService.saveItem({ medications: this.medications});
         }
       } else {
         this.medications.push(medication);
+        this._orderSetSharedService.saveItem({ medications: this.medications});
       }
-      // this._orderSetSharedService.setItem(medication);
-      this._orderSetSharedService.saveItem({ medications: this.medications});
-      console.log(this.medications);
 
       this.addPrescriptionForm.reset();
       this.addPrescriptionForm.controls['refillCount'].reset(0);

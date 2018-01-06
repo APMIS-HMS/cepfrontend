@@ -1,6 +1,6 @@
 export interface OrderSetTemplate {
     medications: any[];
-    laboratories: any[];
+    investigations: any[];
     procedures: any[];
     nursingCares: any[];
     physicianOrders: any[];
