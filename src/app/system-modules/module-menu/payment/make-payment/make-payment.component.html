@@ -55,9 +55,12 @@
             <div class="plan-title">Out of Pocket</div>
             <div class="frm-item-wrap">
               <div class="frm-item-wrap">
-                <input type="checkbox" (change)="onExactCharges($event)" [formControl]="selectOutOfPocket">
+                <input type="checkbox" (change)="onExactCharges($event)" [checked]="isPartPay" [formControl]="selectOutOfPocket"> Exact Charges
               </div>
-              <div>
+              <div class="frm-item-wrap">
+                <input type="checkbox" (change)="onWaverCharges($event)" [formControl]="selectWaved"> Wave
+              </div>
+              <div *ngIf="!isPartPay">
                 <div class="frm-item-wrap">
                   <mat-input-container>
                     <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
@@ -70,17 +73,7 @@
                   </mat-input-container>
                 </div>
               </div>
-              <div class="frm-item-wrap">
-                <mat-input-container>
-                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
-                </mat-input-container>
-              </div>
-              <div class="frm-item-wrap">
-                <mat-input-container>
-                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance"
-                    readonly>
-                </mat-input-container>
-              </div>
+
             </div>
           </div>
         </div>
@@ -88,14 +81,48 @@
         <div *ngIf="tabInsurance">
           <div class="plan">
             <div class="plan-title">Insurance</div>
-
+            <div class="frm-item-wrap">
+              <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+                <mat-option *ngFor="let plan of patientInsuranceLists" [value]="plan._id">{{plan.planDetails.name}}</mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="!isPartPay">
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountInsurance" placeholder="Enter Amount">
+                </mat-input-container>
+              </div>
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balanceInsurance" placeholder="Amount Balance"
+                    readonly>
+                </mat-input-container>
+              </div>
+            </div>
           </div>
         </div>
 
         <div *ngIf="tabCompany">
           <div class="plan">
             <div class="plan-title">Company Cover</div>
-
+            <div class="frm-item-wrap">
+              <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+                <mat-option *ngFor="let plan of patientCompanyLists" [value]="plan._id">{{plan.planDetails.name}}</mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="!isPartPay">
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountCompany" placeholder="Enter Amount">
+                </mat-input-container>
+              </div>
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balanceCompany" placeholder="Amount Balance"
+                    readonly>
+                </mat-input-container>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -103,37 +130,78 @@
           <div class="plan">
             <div class="plan-title">Family Cover</div>
             <div class="frm-item-wrap">
-
+              <div class="frm-item-wrap">
+                <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+                  <mat-option *ngFor="let plan of patientFamilyLists" [value]="plan._id">{{plan.planDetails.name}}</mat-option>
+                </mat-select>
+              </div>
+              <div *ngIf="!isPartPay">
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                    <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountFamily" placeholder="Enter Amount">
+                  </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                    <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balanceFamily" placeholder="Amount Balance"
+                      readonly>
+                  </mat-input-container>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="btn-box">
-          <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing" (click)="onOutOfPocket()">
-            <span>
-              <div [hidden]="isProcessing">
-                Complete
-              </div>
-              <div [hidden]="!isProcessing">
-                Processing...
-                <i class='fa fa-spinner fa-spin'></i>
-              </div>
-            </span>
-          </button>
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing" (click)="onOutOfPocket()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
 
-          <!-- <button class="small-btn" (click)="onInsuranceCover()" *ngIf="tabInsurance" mat-raised-button >
-                      <span *ngIf="!loading">Finish</span>
-                      <span *ngIf="loading">Processing...</span>
-                  </button>
-                  <button class="small-btn" (click)="onCompanyCover()" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button >
-                      <span *ngIf="!loading">Finish</span>
-                      <span *ngIf="loading">Processing...</span>
-                  </button>
-                  <button class="small-btn" (click)="onFamilyCover()" *ngIf="tabFamily" mat-raised-button >
-                      <span *ngIf="!loading">Finish</span>
-                      <span *ngIf="loading">Processing...</span>
-                  </button> -->
-        </div>
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabInsurance" [disabled]="isProcessing" (click)="onOutOfPocket()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabCompany" [disabled]="isProcessing" (click)="onOutOfPocket()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabFamily" [disabled]="isProcessing" (click)="onOutOfPocket()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
         <button class="btn btn-red" (click)="close_onClick()">Cancel</button>
 
       </div>

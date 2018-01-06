@@ -4,7 +4,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InvoiceService, MakePaymentService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import {
-  WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium, TransactionStatus
+  WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium, TransactionStatus, PaymentPlan
 } from './../../../../models/facility-manager/setup/wallet-transaction';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../../models/index';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -30,7 +30,8 @@ export class MakePaymentComponent implements OnInit {
   @Input() subTotal: any = <any>{};
   @Input() invoice: any = <any>{};
   @Input() isInvoicePage: any = <any>{};
-  isPartPay = false;
+  isPartPay = true;
+  isWaved = false;
 
   totalAmountPaid = 0;
   outOfPocketAmountPaid = 0;
@@ -53,14 +54,24 @@ export class MakePaymentComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
   InvoiceTotal = 5000;
-  balance;
   bAmount = 0;
   success = false;
   public frmMakePayment: FormGroup;
 
+  patientInsuranceLists = [];
+  patientCompanyLists = [];
+  patientFamilyLists = [];
 
+  balance;
   amount = new FormControl('', []);
   selectOutOfPocket = new FormControl('', []);
+  selectWaved = new FormControl('', []);
+  amountInsurance = new FormControl('', []);
+  balanceInsurance = new FormControl('', []);
+  amountCompany = new FormControl('', []);
+  balanceCompany = new FormControl('', []);
+  amountFamily = new FormControl('', []);
+  balanceFamily = new FormControl('', []);
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
@@ -73,12 +84,15 @@ export class MakePaymentComponent implements OnInit {
 
   ngOnInit() {
     this.user = <User>this.locker.getObject('auth');
+    this.getPatientInsuranceLists();
+    this.getPatientCompanyLists();
+    this.getPatientFamilyLists();
     this.balance = new FormControl(this.cost, []);
     this.amount.valueChanges.subscribe(value => {
       var bal = this.cost - value;
       if (bal >= 0) {
         this.balance.setValue(bal);
-        console.log(this.balance);
+        console.log(this.balance.value);
       } else {
         this.amount.setValue(this.cost);
         this._notification('Error', "Balance cannot be lesser than zero");
@@ -92,6 +106,18 @@ export class MakePaymentComponent implements OnInit {
     //     this.isCash = false;
     //   }
     // });
+  }
+
+  getPatientInsuranceLists() {
+    this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.insurance);
+  }
+
+  getPatientCompanyLists() {
+    this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.company);
+  }
+
+  getPatientFamilyLists() {
+    this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
   }
 
   onOutOfPocketPartPay() {
@@ -142,14 +168,30 @@ export class MakePaymentComponent implements OnInit {
     var isChecked = event.target.checked;
     this.onOutOfPocketPartPay();
     if (isChecked) {
-      this.amount = this.cost;
+      this.amount.setValue(this.cost);
+      this.balance.setValue(0);
     }
   }
 
+  onWaverCharges(event: any) {
+    this.isWaved = event.target.checked;
+  }
+
   onOutOfPocket() {
-    var paymentValue = {
-      "channel": TransactionMedium[TransactionMedium.Wallet],
-      "amountPaid": this.amount
+    var paymentValue = {};
+    if (!this.isWaved) {
+      var plan = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.outOfPocket);
+      paymentValue = {
+        "paymentMethod": plan[0],
+        "amountPaid": this.amount.value
+      }
+    } else {
+      paymentValue = {
+        "paymentMethod": PaymentPlan.waved,
+        "amountPaid": this.amount.value
+      }
+      this.amount .setValue(this.cost);
+      this.balance.setValue(0);
     }
     this.makePayment(paymentValue);
   }
@@ -161,26 +203,43 @@ export class MakePaymentComponent implements OnInit {
   onCompanyCover() { }
 
 
-  makePayment(value) {
+  makePayment(val) {
+    console.log(val);
     this.isProcessing = true;
-    var paymantObj = {
-      "inputedValue": {
-        "channel": value.channel,
-        "txnType": TransactionType[TransactionType.Dr],
-        "amountPaid": value.amountPaid,
-        "balance": this.balance,
-        "cost": this.cost
-      },
-      "billGroups": this.billGroups,
-      "selectedPatient": this.selectedPatient,
-      "selectedFacility": this.selectedFacility,
-      "discount": this.discount,
-      "subTotal": this.subTotal,
-      "checkBillitems": this.checkBillitems,
-      "listedBillItems": this.listedBillItems,
-      "isInvoicePage": this.isInvoicePage
+    var paymantObj = {};
+    if (this.isInvoicePage == false) {
+      paymantObj = {
+        "inputedValue": {
+          "paymentMethod": val.paymentMethod,
+          "amountPaid": val.amountPaid,
+          "balance": this.balance.value,
+          "cost": this.cost,
+          "transactionType": TransactionType[TransactionType.Dr]
+        },
+        "billGroups": this.billGroups,
+        "selectedPatient": this.selectedPatient,
+        "selectedFacility": this.selectedFacility,
+        "discount": this.discount,
+        "subTotal": this.subTotal,
+        "checkBillitems": this.checkBillitems,
+        "listedBillItems": this.listedBillItems,
+        "isInvoicePage": false
+      }
+    } else {
+      paymantObj = {
+        "inputedValue": {
+          "paymentMethod": val.paymentMethod,
+          "amountPaid": val.amountPaid,
+          "balance": this.balance.value,
+          "cost": this.cost,
+          "transactionType": TransactionType[TransactionType.Dr]
+        },
+        "invoice": this.invoice,
+        "selectedPatient": this.selectedPatient,
+        "isInvoicePage": true
+      }
     }
-
+    console.log(paymantObj);
     this._makePaymentService.create(paymantObj).then(payload => {
       this.personValueChanged.emit(payload.data);
       this.isProcessing = false;

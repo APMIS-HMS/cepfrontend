@@ -223,6 +223,9 @@ export class BillLookupComponent implements OnInit {
               for (var x3 = len3; x3 >= 0; x3--) {
                 if (this.listedBillItems[x2].billItems[x3]._id == this.checkBillitems[x]) {
                   this.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
+                  delete this.listedBillItems[x2].billItems[x3].paymentCompleted;
+                  delete this.listedBillItems[x2].billItems[x3].paymentStatus;
+                  delete this.listedBillItems[x2].billItems[x3].payments;
                   filterCheckedBills.push(this.listedBillItems[x2]);
                   if (x == 0) {
                     let len4 = filterCheckedBills.length - 1;
