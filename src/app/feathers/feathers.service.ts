@@ -40,7 +40,8 @@ export class SocketService {
     this.socket = io(this.HOST);
     this._app = feathers()
       .configure(socketio(this.socket))
-      .configure(rx({ idField: "_id", listStrategy: 'always' }))
+      // .configure(rx({ idField: "_id", listStrategy: 'always' }))
+      .configure(rx(RxJS, { listStrategy: 'always' }))
       .configure(hooks())
       .configure(authentication({ storage: window.localStorage }));
      this._app.on('reauthentication-error', this.errorHandler)
@@ -83,7 +84,8 @@ export class RestService {
             headers: { 'authorization': 'Bearer ' + auth.token }
           }
         )) // Fire up rest
-        .configure(rx({ idField: '_id', listStrategy: 'always' }))
+        // .configure(rx({ idField: '_id', listStrategy: 'always' }))
+        .configure(rx(RxJS, { listStrategy: 'always' }))
         .configure(hooks())
         .configure(authentication({ storage: window.localStorage }));
     } else {
