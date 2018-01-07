@@ -29,10 +29,10 @@ const FACLITYPAGE_ROUTES: Routes = [
                 path: 'employees',
                 loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
             },
-            {
-                path: 'employees/:id',
-                loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-            },
+            // {
+            //     path: 'employees/:id',
+            //     loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
+            // },
             { path: 'locations', component: FacilitypageLocationspageComponent, resolve: { locations: LocationsResolverService } },
             { path: 'workspaces', component: FacilitypageWorkspaceComponent, resolve: { workSpaces: WorkspaceResolverService } },
             { path: 'departments', component: FacilitypageDepartmentspageComponent, resolve: { facility: FacilityResolverService } },
