@@ -86,7 +86,6 @@ export class TreatementTemplateComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.user = <User>this._locker.getObject('auth');
-    console.log(this.user);
     this.frmnewTemplate = this.formBuilder.group({
       name: ['', [Validators.required]],
       diagnosis: [''],
