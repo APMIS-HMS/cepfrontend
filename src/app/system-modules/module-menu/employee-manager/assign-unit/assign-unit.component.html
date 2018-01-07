@@ -7,28 +7,32 @@
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <form [formGroup]="frmNewEmp1" novalidate>
-            <div class="frm-item-wrap">
-                <i class="fa fa-building-o" aria-hidden="true"></i>
-                <!--<label>Department</label>-->
-                <!--<select formControlName="dept">
-            <option value="" disabled selected>Department</option>
-            <option [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
-        </select>-->
-                <mat-select placeholder="Department" formControlName="dept">
-                    <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
-                </mat-select>
-            </div>
+            <div class="frm-item-x2">
+                <div class="frm-item-wrap example-full-width">
+                    <!--<label>Department</label>-->
+                    <!--<select formControlName="dept">
+                        <option value="" disabled selected>Department</option>
+                        <option [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
+                    </select>-->
+                    <mat-form-field>
+                        <mat-select placeholder="Department" formControlName="dept">
+                            <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-            <div class="frm-item-wrap">
-                <i class="fa fa-building-o" aria-hidden="true"></i>
-                <!--<label>Unit</label>-->
-                <!--<select formControlName="unit">
-            <option value="" disabled selected>Unit</option>
-            <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
-        </select>-->
-                <mat-select placeholder="Unit" formControlName="unit">
-                    <mat-option *ngFor="let unit of units" [value]="unit">{{unit.name}}</mat-option>
-                </mat-select>
+                <div class="frm-item-wrap example-full-width">
+                    <!--<label>Unit</label>-->
+                    <!--<select formControlName="unit">
+                        <option value="" disabled selected>Unit</option>
+                        <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
+                    </select>-->
+                    <mat-form-field>
+                        <mat-select placeholder="Unit" formControlName="unit">
+                            <mat-option *ngFor="let unit of units" [value]="unit">{{unit.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
 
             <div class="emp-wrap">

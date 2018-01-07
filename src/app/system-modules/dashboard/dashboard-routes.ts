@@ -14,14 +14,6 @@ const appRoutes: Routes = [
                 loadChildren: '../module-menu/facility-page/facility-page.module.ts#FacilityPageModule',
             },
             {
-                path: 'employee-manager',
-                loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-            },
-            {
-                path: 'employee-manager/:id',
-                loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-            },
-            {
                 path: 'access-manager',
                 loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
             },

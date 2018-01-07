@@ -6,13 +6,21 @@ label{
     color: #797D7F;
 }
 .modal-baseWrap {
-    padding: 20px 90px;
+    padding: 20px;
+    width: 800px;
 }
 .modal_title {
     margin-bottom: 20px;
 }
+.modal-baseWrap .frm-item-x2 .example-full-width .mat-input-container{
+    width: 100% !important;
+}
+.frm-item-x2{
+    width: 100%;
+}
 .emp-wrap{
-    width: 600px;
+    width: 100%;
+    box-sizing: border-box;
     height: 200px;
     background: #eee;
     overflow-y: scroll;

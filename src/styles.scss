@@ -47,7 +47,13 @@ select,
 textarea {
     font-size: 12px;
 }
-
+.clickable-ico{
+    cursor: pointer;
+    margin: 0 20px;
+}
+.clickable-ico:hover{
+    color: #0288D1;
+}
 
 /*
 input,
