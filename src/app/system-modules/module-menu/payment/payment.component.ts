@@ -101,6 +101,7 @@ export class PaymentComponent implements OnInit {
             this.invoiceGroups = payload.data.invoices;
             console.log(this.invoiceGroups);
             this.totalAmountReceived = payload.data.amountReceived;
+            console.log(this.totalAmountReceived);
             this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
         }).catch(err => this._notification('Error', 'There was a problem getting invoices, Please try again later!'));
@@ -130,6 +131,7 @@ export class PaymentComponent implements OnInit {
         }
         this._locSummaryCashService.get(facility)
             .then(payload2 => {
+                console.log(payload2);
                 this.loadingLocAmountAccrued = false;
                 this.barChartLabels = payload2.data.barChartLabels;
                 if (payload2.data.barChartData.length > 0) {

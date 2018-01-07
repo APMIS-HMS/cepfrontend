@@ -55,12 +55,12 @@
             <div class="plan-title">Out of Pocket</div>
             <div class="frm-item-wrap">
               <div class="frm-item-wrap">
-                <input type="checkbox" (change)="onExactCharges($event)" [checked]="isPartPay" [formControl]="selectOutOfPocket"> Exact Charges
+                <input type="checkbox" (change)="onExactCharges($event)" [checked]="isExact" [formControl]="selectOutOfPocket"> Exact Charges
               </div>
-              <div class="frm-item-wrap">
+              <div class="frm-item-wrap" [hidden]="isExact">
                 <input type="checkbox" (change)="onWaverCharges($event)" [formControl]="selectWaved"> Wave
               </div>
-              <div *ngIf="!isPartPay">
+              <div *ngIf="!isExact">
                 <div class="frm-item-wrap">
                   <mat-input-container>
                     <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
@@ -82,11 +82,14 @@
           <div class="plan">
             <div class="plan-title">Insurance</div>
             <div class="frm-item-wrap">
-              <mat-select placeholder="Select Plan" [formControl]="walletPlan">
-                <mat-option *ngFor="let plan of patientInsuranceLists" [value]="plan._id">{{plan.planDetails.name}}</mat-option>
+              <input type="checkbox" (change)="onInsuranceExactCharges($event)" [checked]="isExactInsurance"> Exact Charges
+            </div>
+            <div class="frm-item-wrap">
+              <mat-select placeholder="Select Plan" [formControl]="insurancePlan">
+                <mat-option *ngFor="let plan of patientInsuranceLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
               </mat-select>
             </div>
-            <div *ngIf="!isPartPay">
+            <div *ngIf="!isExactInsurance">
               <div class="frm-item-wrap">
                 <mat-input-container>
                   <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountInsurance" placeholder="Enter Amount">
@@ -106,11 +109,14 @@
           <div class="plan">
             <div class="plan-title">Company Cover</div>
             <div class="frm-item-wrap">
-              <mat-select placeholder="Select Plan" [formControl]="walletPlan">
-                <mat-option *ngFor="let plan of patientCompanyLists" [value]="plan._id">{{plan.planDetails.name}}</mat-option>
+              <input type="checkbox" (change)="onCompanyExactCharges($event)" [checked]="isExactCompany"> Exact Charges
+            </div>
+            <div class="frm-item-wrap">
+              <mat-select placeholder="Select Plan" [formControl]="companyPlan">
+                <mat-option *ngFor="let plan of patientCompanyLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
               </mat-select>
             </div>
-            <div *ngIf="!isPartPay">
+            <div *ngIf="!isExactCompany">
               <div class="frm-item-wrap">
                 <mat-input-container>
                   <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountCompany" placeholder="Enter Amount">
@@ -131,11 +137,14 @@
             <div class="plan-title">Family Cover</div>
             <div class="frm-item-wrap">
               <div class="frm-item-wrap">
-                <mat-select placeholder="Select Plan" [formControl]="walletPlan">
-                  <mat-option *ngFor="let plan of patientFamilyLists" [value]="plan._id">{{plan.planDetails.name}}</mat-option>
+                <input type="checkbox" (change)="onFamilyExactCharges($event)" [checked]="isExactFamily"> Exact Charges
+              </div>
+              <div class="frm-item-wrap">
+                <mat-select placeholder="Select Plan" [formControl]="familyPlan">
+                  <mat-option *ngFor="let plan of patientFamilyLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
                 </mat-select>
               </div>
-              <div *ngIf="!isPartPay">
+              <div *ngIf="!isExactFamily">
                 <div class="frm-item-wrap">
                   <mat-input-container>
                     <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountFamily" placeholder="Enter Amount">
@@ -152,7 +161,8 @@
           </div>
         </div>
 
-        <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing" (click)="onOutOfPocket()">
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing"
+          (click)="onOutOfPocket()">
           <span>
             <div [hidden]="isProcessing">
               Complete
@@ -165,7 +175,7 @@
         </button>
 
 
-        <button mat-raised-btn class="btn btn-primary" *ngIf="tabInsurance" [disabled]="isProcessing" (click)="onOutOfPocket()">
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabInsurance" [hidden]="!insurancePlan.valid" [disabled]="isProcessing" (click)="onInsuranceCover()">
           <span>
             <div [hidden]="isProcessing">
               Complete
@@ -178,7 +188,7 @@
         </button>
 
 
-        <button mat-raised-btn class="btn btn-primary" *ngIf="tabCompany" [disabled]="isProcessing" (click)="onOutOfPocket()">
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabCompany" [hidden]="!companyPlan.valid" [disabled]="isProcessing" (click)="onCompanyCover()">
           <span>
             <div [hidden]="isProcessing">
               Complete
@@ -191,7 +201,7 @@
         </button>
 
 
-        <button mat-raised-btn class="btn btn-primary" *ngIf="tabFamily" [disabled]="isProcessing" (click)="onOutOfPocket()">
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabFamily" [disabled]="isProcessing" (click)="onFamilyCover()">
           <span>
             <div [hidden]="isProcessing">
               Complete

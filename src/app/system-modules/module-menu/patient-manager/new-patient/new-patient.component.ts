@@ -811,7 +811,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     paymentPlan: [
                         {
                             planType: 'wallet',
-                            isDefault: true
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
                         }
                     ]
                 }
@@ -937,7 +941,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     paymentPlan: [
                         {
                             planType: 'wallet',
-                            isDefault: true
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
                         },
                         {
                             planType: 'company',
@@ -1071,7 +1079,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     paymentPlan: [
                         {
                             planType: 'wallet',
-                            isDefault: true
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
                         },
                         {
                             planType: 'insurance',
@@ -1205,7 +1217,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     paymentPlan: [
                         {
                             planType: 'wallet',
-                            isDefault: true
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
                         },
                         {
                             planType: 'family',

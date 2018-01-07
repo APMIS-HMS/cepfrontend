@@ -141,6 +141,7 @@ export class InvoiceComponent implements OnInit {
 
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
+        console.log(this.selectedInvoiceGroup);
         if (this.selectedInvoiceGroup.paymentCompleted == true) {
             this.isPaidClass = true;
         } else {
@@ -177,11 +178,12 @@ export class InvoiceComponent implements OnInit {
     makePayment_show() {
         if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
             if (this.selectedInvoiceGroup.paymentCompleted == false) {
-                if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
-                    this._notification('Info', "You donot have sufficient balance to make this payment");
-                } else {
-                    this.makePaymentPopup = true;
-                }
+                // if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+                //     this._notification('Info', "You donot have sufficient balance to make this payment");
+                // } else {
+                    
+                // }
+                this.makePaymentPopup = true;
             } else {
                 this._notification('Info', "Selected invoice is paid");
             }

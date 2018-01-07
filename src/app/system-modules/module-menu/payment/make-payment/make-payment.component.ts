@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-import { InvoiceService, MakePaymentService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { InvoiceService, MakePaymentService, FacilitiesService, PersonService } from '../../../../services/facility-manager/setup/index';
 import {
   WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium, TransactionStatus, PaymentPlan
 } from './../../../../models/facility-manager/setup/wallet-transaction';
@@ -31,7 +31,12 @@ export class MakePaymentComponent implements OnInit {
   @Input() invoice: any = <any>{};
   @Input() isInvoicePage: any = <any>{};
   isPartPay = true;
+  isPartPayInsurance = true;
   isWaved = false;
+  isExact = false;
+  isExactInsurance = false;
+  isExactCompany = false;
+  isExactFamily = false;
 
   totalAmountPaid = 0;
   outOfPocketAmountPaid = 0;
@@ -54,7 +59,7 @@ export class MakePaymentComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
   InvoiceTotal = 5000;
-  bAmount = 0;
+  bAmount;
   success = false;
   public frmMakePayment: FormGroup;
 
@@ -73,21 +78,27 @@ export class MakePaymentComponent implements OnInit {
   amountFamily = new FormControl('', []);
   balanceFamily = new FormControl('', []);
 
+  companyPlan = new FormControl('', []);
+  familyPlan = new FormControl('', []);
+  insurancePlan = new FormControl('', []);
+
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
     private _invoiceService: InvoiceService,
     private toastr: ToastsManager,
     private _makePaymentService: MakePaymentService,
-    private facilityService: FacilitiesService) {
+    private facilityService: FacilitiesService,
+    private personService: PersonService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
   ngOnInit() {
     this.user = <User>this.locker.getObject('auth');
-    this.getPatientInsuranceLists();
-    this.getPatientCompanyLists();
-    this.getPatientFamilyLists();
+    this.getPatientCovers();
     this.balance = new FormControl(this.cost, []);
+    this.balanceInsurance = new FormControl(this.cost, []);
+    this.balanceCompany = new FormControl(this.cost, []);
+    this.balanceFamily = new FormControl(this.cost, []);
     this.amount.valueChanges.subscribe(value => {
       var bal = this.cost - value;
       if (bal >= 0) {
@@ -95,6 +106,35 @@ export class MakePaymentComponent implements OnInit {
         console.log(this.balance.value);
       } else {
         this.amount.setValue(this.cost);
+        this._notification('Error', "Balance cannot be lesser than zero");
+      }
+    });
+    this.amountInsurance.valueChanges.subscribe(value => {
+      var bal = this.cost - value;
+      if (bal >= 0) {
+        this.balanceInsurance.setValue(bal);
+      } else {
+        this.amountInsurance.setValue(this.cost);
+        this._notification('Error', "Balance cannot be lesser than zero");
+      }
+    });
+
+    this.amountCompany.valueChanges.subscribe(value => {
+      var bal = this.cost - value;
+      if (bal >= 0) {
+        this.balanceCompany.setValue(bal);
+      } else {
+        this.amountCompany.setValue(this.cost);
+        this._notification('Error', "Balance cannot be lesser than zero");
+      }
+    });
+
+    this.amountFamily.valueChanges.subscribe(value => {
+      var bal = this.cost - value;
+      if (bal >= 0) {
+        this.balanceFamily.setValue(bal);
+      } else {
+        this.amountFamily.setValue(this.cost);
         this._notification('Error', "Balance cannot be lesser than zero");
       }
     });
@@ -108,16 +148,23 @@ export class MakePaymentComponent implements OnInit {
     // });
   }
 
-  getPatientInsuranceLists() {
-    this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.insurance);
+  getPatientCovers() {
+    if (this.selectedPatient.paymentPlan != undefined) {
+      this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.insurance);
+      this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.company);
+      this.patientFamilyLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
+    } else {
+      this._notification('Error', "No payment plan is attached to patient");
+    }
+    console.log(this.patientInsuranceLists);
   }
 
   getPatientCompanyLists() {
-    this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.company);
+
   }
 
   getPatientFamilyLists() {
-    this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
+    //this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
   }
 
   onOutOfPocketPartPay() {
@@ -165,9 +212,8 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onExactCharges(event: any) {
-    var isChecked = event.target.checked;
-    this.onOutOfPocketPartPay();
-    if (isChecked) {
+    this.isExact = event.target.checked;
+    if (this.isExact) {
       this.amount.setValue(this.cost);
       this.balance.setValue(0);
     }
@@ -175,32 +221,172 @@ export class MakePaymentComponent implements OnInit {
 
   onWaverCharges(event: any) {
     this.isWaved = event.target.checked;
+    if (this.isWaved) {
+      this.amount.setValue(this.cost);
+      this.balance.setValue(0);
+    }
+  }
+
+  onInsuranceExactCharges(event: any) {
+    this.isExactInsurance = event.target.checked;
+    if (this.isExactInsurance) {
+      this.amountInsurance.setValue(this.cost);
+      this.balance.setValue(0);
+    }
+  }
+
+  onCompanyExactCharges(event: any) {
+    this.isExactCompany = event.target.checked;
+    if (this.isExactCompany) {
+      this.amountCompany.setValue(this.cost);
+      this.balance.setValue(0);
+    }
+  }
+
+  onFamilyExactCharges(event: any) {
+    this.isExactFamily = event.target.checked;
+    if (this.isExactFamily) {
+      this.amountFamily.setValue(this.cost);
+      this.balanceFamily.setValue(0);
+    }
   }
 
   onOutOfPocket() {
-    var paymentValue = {};
-    if (!this.isWaved) {
-      var plan = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.outOfPocket);
-      paymentValue = {
-        "paymentMethod": plan[0],
-        "amountPaid": this.amount.value
+    if (this.amount.value != '' && this.amount.value != 0) {
+      if (this.selectedPatient.personDetails.wallet != undefined) {
+        if (this.selectedPatient.personDetails.wallet.balance < this.cost) {
+          this._notification('Info', "You donot have sufficient balance to make this payment");
+        } else {
+          var paymentValue = {};
+          var plan = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.outOfPocket);
+          if (this.isExact) {
+            paymentValue = {
+              "paymentMethod": plan[0],
+              "amountPaid": this.amount.value
+            }
+          } else if (this.isWaved) {
+            let objPlanType = {
+              "planType": PaymentPlan.waved
+            }
+            paymentValue = {
+              "paymentMethod": objPlanType,
+              "amountPaid": this.amount.value
+            }
+          } else {
+            paymentValue = {
+              "paymentMethod": plan[0],
+              "amountPaid": this.amount.value
+            }
+          }
+          this.bAmount = this.balance.value;
+          this.makePayment(paymentValue);
+        }
+      } else {
+        this._notification('Info', "You donot have sufficient balance to make this payment");
       }
-    } else {
-      paymentValue = {
-        "paymentMethod": PaymentPlan.waved,
-        "amountPaid": this.amount.value
-      }
-      this.amount .setValue(this.cost);
-      this.balance.setValue(0);
+    }else{
+      this._notification('Error', "Please enter a valid amount");
     }
-    this.makePayment(paymentValue);
   }
 
-  onInsuranceCover() { }
+  onInsuranceCover() {
+    if (this.insurancePlan.value.planDetails != undefined) {
+      this.facilityService.get(this.insurancePlan.value.planDetails._id, {}).then((payload: any) => {
+        if (payload.wallet != undefined) {
+          if (payload.wallet.balance < this.cost) {
+            this._notification('Info', "No sufficient balance to make this payment");
+          } else {
+            var paymentValue = {};
+            if (this.isExactInsurance) {
+              paymentValue = {
+                "paymentMethod": this.insurancePlan.value,
+                "amountPaid": this.amountInsurance.value
+              }
+            } else {
+              paymentValue = {
+                "paymentMethod": this.insurancePlan.value,
+                "amountPaid": this.amountInsurance.value
+              }
+            }
+            this.bAmount = this.balanceInsurance.value;
+            console.log(this.bAmount);
+            this.makePayment(paymentValue);
+          }
+        } else {
+          this._notification('Info', "You donot have sufficient balance to make this payment");
+        }
+      });
+    } else {
+      this._notification('Error', "You have not selected an insurance cover");
+    }
 
-  onFamilyCover() { }
 
-  onCompanyCover() { }
+  }
+
+  onFamilyCover() {
+    if (this.familyPlan.value.planDetails != undefined) {
+      this.personService.get(this.familyPlan.value.planDetails._id, {}).then((payload: any) => {
+        if (payload.wallet != undefined) {
+          if (payload.wallet.balance < this.cost) {
+            this._notification('Info', "No sufficient balance to make this payment");
+          } else {
+            var paymentValue = {};
+            if (this.isExactFamily) {
+              paymentValue = {
+                "paymentMethod": this.familyPlan.value,
+                "amountPaid": this.amountFamily.value
+              }
+            } else {
+              paymentValue = {
+                "paymentMethod": this.familyPlan.value,
+                "amountPaid": this.amountFamily.value
+              }
+            }
+            this.bAmount = this.balanceFamily.value;
+            console.log(this.bAmount);
+            this.makePayment(paymentValue);
+          }
+        } else {
+          this._notification('Info', "You donot have sufficient balance to make this payment");
+        }
+      });
+    } else {
+      this._notification('Error', "You have not selected a family cover");
+    }
+  }
+
+  onCompanyCover() {
+    if (this.companyPlan.value.planDetails != undefined) {
+      this.facilityService.get(this.companyPlan.value.planDetails._id, {}).then((payload: any) => {
+        if (payload.wallet != undefined) {
+          if (payload.wallet.balance < this.cost) {
+            this._notification('Info', "No sufficient balance to make this payment");
+          } else {
+            var paymentValue = {};
+            if (this.isExactCompany) {
+              paymentValue = {
+                "paymentMethod": this.companyPlan.value,
+                "amountPaid": this.amountCompany.value
+              }
+            } else {
+              paymentValue = {
+                "paymentMethod": this.companyPlan.value,
+                "amountPaid": this.amountCompany.value
+              }
+            }
+            this.bAmount = this.balanceCompany.value;
+            console.log(this.bAmount);
+            this.makePayment(paymentValue);
+          }
+        } else {
+          this._notification('Info', "You donot have sufficient balance to make this payment");
+        }
+      });
+    } else {
+      this._notification('Error', "You have not selected a company cover");
+    }
+
+  }
 
 
   makePayment(val) {
@@ -212,7 +398,7 @@ export class MakePaymentComponent implements OnInit {
         "inputedValue": {
           "paymentMethod": val.paymentMethod,
           "amountPaid": val.amountPaid,
-          "balance": this.balance.value,
+          "balance": this.bAmount,
           "cost": this.cost,
           "transactionType": TransactionType[TransactionType.Dr]
         },
@@ -230,7 +416,7 @@ export class MakePaymentComponent implements OnInit {
         "inputedValue": {
           "paymentMethod": val.paymentMethod,
           "amountPaid": val.amountPaid,
-          "balance": this.balance.value,
+          "balance": this.bAmount,
           "cost": this.cost,
           "transactionType": TransactionType[TransactionType.Dr]
         },
@@ -243,6 +429,7 @@ export class MakePaymentComponent implements OnInit {
     this._makePaymentService.create(paymantObj).then(payload => {
       this.personValueChanged.emit(payload.data);
       this.isProcessing = false;
+      this.balance.setValue(0);
       this.close_onClick();
       this._notification('Success', 'Payment successfull.');
     });

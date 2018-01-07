@@ -51,7 +51,10 @@
                     <div class="oda">
                       <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
                       <div class="pending-amount">
-                        <span>&#x20a6;</span>{{invoice.balance|numberThr}}
+                        <span>Cost &#x20a6;</span>{{invoice.totalPrice|numberThr}}
+                      </div>
+                      <div class="pending-amount">
+                        <span>Balance &#x20a6;</span>{{invoice.balance|numberThr}}
                       </div>
                     </div>
                     <div class="pay-status pending-amount">
@@ -266,5 +269,5 @@
   </div>
 
   <div *ngIf="makePaymentPopup" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.totalPrice" [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
+    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.balance" [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
   </div>
