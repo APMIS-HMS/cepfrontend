@@ -27,7 +27,6 @@ export class PatientService {
     this.listner = Observable.fromEvent(this._socket, 'updated');
   }
   announcePatient(patient: Patient) {
-    console.log(patient);
     this.patientAnnouncedSource.next(patient);
   }
   receivePatient(): Observable<Patient> {

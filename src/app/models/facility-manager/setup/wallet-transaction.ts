@@ -22,6 +22,15 @@ export const TransactionStatus = {
     'Incomplete': 'Incomplete',
     'Complete': 'Complete'
 };
+
+export const PaymentPlan = {
+    'outOfPocket': 'wallet',
+    'insurance': 'insurance',
+    'company': 'company',
+    'family': 'family',
+    'waved':'waved'
+};
+
 export enum EntityType {
     Facility,
     Person,

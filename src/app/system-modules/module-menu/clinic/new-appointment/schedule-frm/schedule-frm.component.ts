@@ -508,6 +508,7 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     filterPatients(val: any) {
+        console.log(val);
         return val ? this.patients.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.patients;
@@ -566,10 +567,12 @@ export class ScheduleFrmComponent implements OnInit {
     scheduleAppointment() {
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
             // this.loadIndicatorVisible = true;
+            console.log(this.filteredPatients);
             this.disableBtn = true;
             this.updateAppointment = false;
             this.saveAppointment = false;
             this.savingAppointment = true;
+            console.log(this.patient.value);
             const patient = this.patient.value;
             const clinic = this.clinic.value;
             const provider = this.provider.value;
@@ -657,7 +660,7 @@ export class ScheduleFrmComponent implements OnInit {
                                 // this.loadIndicatorVisible = false;
                                 // this.newSchedule();
                                 // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-
+                                console.log(meeting);
                                 this.setValueSmsAlert(
                                     patient.personDetails.personFullName,
                                     this.appointment.startDate,
@@ -693,6 +696,8 @@ export class ScheduleFrmComponent implements OnInit {
 
 
                 }, error => {
+                    this.savingAppointment = false;
+                    this.disableBtn = false;
                     this.loadIndicatorVisible = false;
                 })
             } else {
@@ -833,6 +838,8 @@ export class ScheduleFrmComponent implements OnInit {
         this.date = new Date();
         this.reason.reset();
         this.status.reset();
+        this.savingAppointment = false;
+        this.disableBtn = false;
     }
 
     changeTimezone(timezone) {
