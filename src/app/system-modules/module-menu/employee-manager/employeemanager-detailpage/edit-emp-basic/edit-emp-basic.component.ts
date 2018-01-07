@@ -1,13 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
- 
+
 @Component({
-  selector: 'app-facility-basicinfo-edit',
-  templateUrl: './facility-basicinfo-edit.component.html',
-  styleUrls: ['./facility-basicinfo-edit.component.scss']
+  selector: 'app-edit-emp-basic',
+  templateUrl: './edit-emp-basic.component.html',
+  styleUrls: ['./edit-emp-basic.component.scss']
 })
-export class FacilityBasicinfoEditComponent implements OnInit {
+export class EditEmpBasicComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   mainErr = true;
