@@ -39,6 +39,7 @@ export class ClinicalNoteComponent implements OnInit {
   forms: any[] = [];
   documents: Document[] = [];
   templates: any[] = [];
+  symptoms: any[] = [];
 
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -94,7 +95,7 @@ export class ClinicalNoteComponent implements OnInit {
     ))
       .subscribe((results: any) => {
         this.forms = results.data;
-      }, error =>{
+      }, error => {
         this.getForms();
       })
   }
@@ -133,8 +134,19 @@ export class ClinicalNoteComponent implements OnInit {
   docSymptom_show() {
     this.docSymptom_view = true;
   }
+
   docDiagnosis_show() {
     this.docDiagnosis_view = true;
+  }
+
+  addSymptom(item) {
+    this.symptoms.push(item);
+    console.log(this.symptoms);
+  }
+
+  deleteSymptom(item) {
+    this.symptoms = this.symptoms.filter(e => e !== item);
+    console.log('delete');
   }
 
 }

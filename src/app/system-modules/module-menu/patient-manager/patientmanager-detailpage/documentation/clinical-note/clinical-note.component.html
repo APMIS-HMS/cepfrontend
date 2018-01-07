@@ -49,9 +49,14 @@
     <div class="cont-wrap">
         <div class="docCard-body">
             <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 12px; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
+            <div *ngIf="symptoms.length != 0">Symptoms <br>
+                <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp; <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i> </button>
+            </div>
             <!--Load form here  -->
+
             <div class="jsonFrnWrap" *ngIf="showDocument">
                 <survey #surveyjs [json]="json"></survey>
+
 
                 <div class="actWrappers-jsonFrm">
                     <div (click)="docDiagnosis_show()" class="atch-orderSet">
@@ -71,7 +76,7 @@
 </div>
 
 <div *ngIf="docSymptom_view" class="modal-overlay">
-    <app-doc-symptom (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>
+    <app-doc-symptom (symptom)="addSymptom($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>
 </div>
 <div *ngIf="docDiagnosis_view" class="modal-overlay">
     <app-doc-diagnosis (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
