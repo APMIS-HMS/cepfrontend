@@ -5,7 +5,7 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const productroutes = new Schema({
+  const productRoutes = new Schema({
     facilityId: { type: Schema.Types.ObjectId, require: true },
     name: { type: String, required: true },
     createdAt: { type: Date, 'default': Date.now },
@@ -15,5 +15,5 @@ module.exports = function (app) {
     timestamps: true
   });
 
-  return mongooseClient.model('productroutes', productroutes);
+  return mongooseClient.model('productRoutes', productRoutes);
 };

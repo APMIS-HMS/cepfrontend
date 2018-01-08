@@ -5,14 +5,14 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const presentation = new Schema({
+  const presentations = new Schema({
     name: { type: String, required: true },
     createdAt: { type: Date, 'default': Date.now },
     updatedAt: { type: Date, 'default': Date.now },
     isActive: { type: Boolean, 'default': true }
   }, {
-      timestamps: true
-    });
+    timestamps: true
+  });
 
-  return mongooseClient.model('presentation', presentation);
+  return mongooseClient.model('presentations', presentations);
 };

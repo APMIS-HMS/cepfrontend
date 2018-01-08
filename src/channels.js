@@ -55,7 +55,10 @@ module.exports = function(app) {
   //     app.channel(`emails/${data.recipientEmail}`)
   //   ];
   // });
-  app.service('facilities').publish((data, context) => {
+  // app.service('facilities').publish((data, context) => {
+  //   return app.channel(data._id);
+  // });
+  app.service('facilities').publish((data) => {
     return app.channel(data._id);
   });
 };

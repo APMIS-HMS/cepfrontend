@@ -2,7 +2,6 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const modifierScheme = require('../custom-models/price-modifier-model');
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');

@@ -5,13 +5,13 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const productvariant = new Schema({
+  const productVariant = new Schema({
     text: { type: String, required: true },
-  createdAt: { type: Date, 'default': Date.now },
-  updatedAt: { type: Date, 'default': Date.now }
+    createdAt: { type: Date, 'default': Date.now },
+    updatedAt: { type: Date, 'default': Date.now }
   }, {
     timestamps: true
   });
 
-  return mongooseClient.model('productvariant', productvariant);
+  return mongooseClient.model('productVariant', productVariant);
 };
