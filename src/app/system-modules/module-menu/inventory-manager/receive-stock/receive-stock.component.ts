@@ -3,7 +3,7 @@ import { InventoryEmitterService } from '../../../../services/facility-manager/i
 // tslint:disable-next-line:max-line-length
 import {
   InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService,
-  StoreService, FacilitiesService
+  StoreService, FacilitiesService, EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
@@ -34,14 +34,20 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
-    private locker: CoolLocalStorage, private facilityService: FacilitiesService
-  ) { }
+    private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService
+  ) {
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      this.getTransfers();
+    })
+  }
 
   ngOnInit() {
     this.user = this.locker.getObject('auth');
     this._inventoryEventEmitter.setRouteUrl('Receive Stock');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
+    console.log(this.checkingStore);
 
     this.route.data.subscribe(data => {
       data['loginEmployee'].subscribe((payload) => {
@@ -52,6 +58,7 @@ export class ReceiveStockComponent implements OnInit {
     this.getTransferStatus();
   }
   getTransfers() {
+    console.log(this.checkingStore.typeObject)
     this.inventoryTransferService.find({
       query: {
         facilityId: this.selectedFacility._id,
@@ -59,6 +66,7 @@ export class ReceiveStockComponent implements OnInit {
         $limit: 200
       }
     }).then(payload => {
+      console.log(payload)
       this.receivedTransfers = payload.data;
     });
   }

@@ -72,6 +72,7 @@ export class StoreCheckInComponent implements OnInit {
 		this.closeModal.emit(true);
 	}
 	checkIn(valid, value) {
+		console.log(value);
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
@@ -80,17 +81,22 @@ export class StoreCheckInComponent implements OnInit {
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
 		if (this.loginEmployee.storeCheckIn === undefined) {
+			console.log(1);
 			this.loginEmployee.storeCheckIn = [];
 		}
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+			console.log(i);
 			itemi.isOn = false;
 			if (value.isDefault === true) {
 				itemi.isDefault = false;
 			}
 		});
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		//this.loadIndicatorVisible = true;
+		console.log(2);
+		// this.loadIndicatorVisible = true;
+		console.log(this.loginEmployee);
 		this.employeeService.update(this.loginEmployee).then(payload => {
+			console.log(3);
 			this.loginEmployee = payload;
 			const workspaces = <any>this.locker.getObject('workspaces');
 			this.loginEmployee.workSpaces = workspaces;
@@ -99,6 +105,8 @@ export class StoreCheckInComponent implements OnInit {
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
 				if (itemi.storeId === checkIn.storeId) {
+					console.log(4);
+					console.log(checkIn.storeId);
 					itemi.isOn = true;
 					keepCheckIn = itemi;
 				}
