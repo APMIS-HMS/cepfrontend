@@ -1,3 +1,4 @@
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 // tslint:disable-next-line:max-line-length
@@ -34,12 +35,14 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
-    private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService
+    private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService,
+    private systemModuleService: SystemModuleService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       console.log(payload);
+      this.checkingStore = payload;
       this.getTransfers();
-    })
+    });
   }
 
   ngOnInit() {
@@ -58,7 +61,8 @@ export class ReceiveStockComponent implements OnInit {
     this.getTransferStatus();
   }
   getTransfers() {
-    console.log(this.checkingStore.typeObject)
+    console.log(this.checkingStore.typeObject);
+    this.systemModuleService.on();
     this.inventoryTransferService.find({
       query: {
         facilityId: this.selectedFacility._id,
@@ -66,8 +70,11 @@ export class ReceiveStockComponent implements OnInit {
         $limit: 200
       }
     }).then(payload => {
-      console.log(payload)
+      console.log(payload);
+      this.systemModuleService.off();
       this.receivedTransfers = payload.data;
+    }, error => {
+      this.systemModuleService.off();
     });
   }
   getTransferStatus() {
