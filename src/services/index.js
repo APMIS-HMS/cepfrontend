@@ -56,6 +56,13 @@ const inventories = require('./inventories/inventories.service.js');
 const purchaseOrders = require('./purchase-orders/purchase-orders.service.js');
 const professions = require('./professions/professions.service.js');
 const assignEmployeeUnit = require('./assign-employee-unit/assign-employee-unit.service.js');
+const prescription = require('./prescription/prescription.service.js');
+const prescriptionpriorities = require('./prescriptionpriorities/prescriptionpriorities.service.js');
+const presentation = require('./presentation/presentation.service.js');
+const productroutes = require('./productroutes/productroutes.service.js');
+const producttype = require('./producttype/producttype.service.js');
+const productvariant = require('./productvariant/productvariant.service.js');
+const profession = require('./profession/profession.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -115,4 +122,11 @@ module.exports = function (app) {
   app.configure(purchaseOrders);
   app.configure(professions);
   app.configure(assignEmployeeUnit);
+  app.configure(prescription);
+  app.configure(prescriptionpriorities);
+  app.configure(presentation);
+  app.configure(productroutes);
+  app.configure(producttype);
+  app.configure(productvariant);
+  app.configure(profession);
 };
