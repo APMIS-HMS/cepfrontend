@@ -10,15 +10,36 @@ export class DocDiagnosisComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  _tempDiagnosis;
+
+  diagnoses = [
+    {
+      name : 'Epiphora',
+      code : 'H04.2'
+    },
+    {
+      name : 'Dacryoadenitis',
+      code : 'H04.0'
+    },
+    {
+      name : 'Exophthalmic conditions',
+      code : 'H05.2'
+    },
+    {
+      name : 'Deformity of orbit',
+      code : 'H05.3'
+    }
+  ]
+
   tab_all = true;
   tab_favourite = false;
   tab_patient = false;
   tab_recent = false;
-  
+
   addDiagnosisForm: FormGroup;
   apmisLookupQuery = {};
-  apmisLookupUrl = '';
-  apmisLookupDisplayKey = '';
+  apmisLookupUrl = 'diagnosises';
+  apmisLookupDisplayKey = 'name';
   apmisLookupText = '';
 
   favorite_type = new FormControl();
@@ -32,6 +53,7 @@ export class DocDiagnosisComponent implements OnInit {
       diagnosis: ['', [<any>Validators.required]]
     });
   }
+
 
   tabAll_click(){
     this.tab_all = true;
@@ -62,5 +84,23 @@ export class DocDiagnosisComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
+  apmisLookupHandleSelectedItem(value) {
+    this.apmisLookupText = value.name;
+    this._tempDiagnosis = value;
+    console.log(this._tempDiagnosis);
+  }
+
+  add_onClick() {
+    if (this._tempDiagnosis.name && this._tempDiagnosis.code) {
+      this.diagnoses.push(this._tempDiagnosis);
+    }
+  }
+
+  deleteDiagonis(item) {
+    this.diagnoses = this.diagnoses.filter(e => e !== item);
+  }
+
+  done() {
+    this.closeModal.emit(true);
+  }
 }
-  
