@@ -35,7 +35,12 @@ export class TemplateLabComponent implements OnInit {
 
   onClickAddInvestigation(valid: boolean, value: any) {
     if (valid) {
-      const investigation = { name: value.investigation };
+      const investigation = {
+        name: value.investigation,
+        comment: '',
+        status: 'Not Done',
+        completed: false,
+      };
 
       if (this.investigations.length > 0) {
         // Check if generic has been added already.

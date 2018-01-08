@@ -91,8 +91,8 @@ export class ClinicalNoteComponent implements OnInit {
           isSide: false
         }
       }))
-    ))
-      .subscribe((results: any) => {
+    )).subscribe((results: any) => {
+      console.log(results);
         this.forms = results.data;
       }, error =>{
         this.getForms();

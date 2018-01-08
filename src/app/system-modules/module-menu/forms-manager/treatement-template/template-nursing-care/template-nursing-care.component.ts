@@ -30,7 +30,12 @@ export class TemplateNursingCareComponent implements OnInit {
 
   onClickAddNursingCare(valid: boolean, value: any) {
     if (valid) {
-      const nursingCare = { name: value.nursingCare };
+      const nursingCare = {
+        name: value.nursingCare,
+        comment: '',
+        status: 'Not Done',
+        completed: false,
+      };
 
       if (this.nursingCares.length > 0) {
         // Check if generic has been added already.

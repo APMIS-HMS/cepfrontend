@@ -1,6 +1,9 @@
 @import "../documentation-detail/documentation-detail.component.scss";
+.frm-item-wrap {
+    width: 40%;
+}
 
-.frmNoteWrap{
+.frmNoteWrap {
     position: relative;
     background: #fff;
     width: 90%;
@@ -8,31 +11,38 @@
     padding: 3px;
     box-sizing: border-box;
 }
-.modal_title{
+
+.modal_title {
     padding-top: 10px;
     font-size: 16px;
     margin: 0;
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.jsonFrnWrap{
+
+.jsonFrnWrap {
     position: relative;
 }
-.actWrappers-jsonFrm{
+
+.actWrappers-jsonFrm {
     position: absolute;
     bottom: 21px;
     right: 10px;
     display: flex;
 }
+
 .atch-orderSet {
     font-size: 12px;
     cursor: pointer;
     color: #0288D1;
     margin-right: 10px;
 }
-.atch-orderSet:hover, .links-ul li:hover{
+
+.atch-orderSet:hover,
+.links-ul li:hover {
     text-decoration: underline;
 }
+
 .links-ul {
     position: absolute;
     top: 105px;
@@ -40,4 +50,8 @@
     font-size: 12px;
     cursor: pointer;
     color: #0288D1;
+}
+
+.mat-select {
+    height: 0px;
 }

@@ -1,71 +1,85 @@
 <div class="modal-baseWrap animated pulse">
-  
+
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Update Medication</legend>
+    <legend class="modal_title">Add Medication</legend>
 
     <form class="survery" [formGroup]="addPrescriptionForm" novalidate>
-      <div class="frmArrWrap">
-        <div class="row padding-top-20px">
-          <div class="col-sm-6 col-md-6">
-              <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-          </div>
-          <div class="col-sm-3 col-md-3">
-              <mat-input-container>
-                  <input matInput formControlName="strength" placeholder="Strength">
-              </mat-input-container>
-          </div>
-          <div class="col-sm-3 col-md-3">
-              <mat-select formControlName="route" placeholder="Route" class="mat-select">
-                  <mat-option>Oral</mat-option>
-              </mat-select>
-          </div>
+        <div class="frmArrWrap">
+            <div class="row padding-top-20px">
+                <div class="col-sm-6 col-md-6">
+                    <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <mat-form-field>
+                        <input matInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <mat-form-field class="mat-select">
+                        <mat-select formControlName="route" placeholder="Route">
+                            <mat-option *ngFor="let route of routes" [(value)]="route.name">
+                                {{ route.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row padding-top-20px">
+                <div class="">
+                    <div class="col-sm-3 col-md-3">
+                        <mat-form-field class="mat-select">
+                            <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
+                                <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
+                                    {{ frequency.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="input-bg cacaca">
+                            <div class="input-group">
+                                <mat-form-field>
+                                    <input matInput type="number" formControlName="duration" placeholder="Duration">
+                                </mat-form-field>
+                                <div class="input-group-btn">
+                                    <mat-form-field class="mat-select">
+                                        <mat-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedDuration">
+                                            <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">
+                                                {{ unit.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <mat-form-field>
+                            <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <mat-form-field>
+                            <input matInput formControlName="startDate" [matDatepicker]="picker" placeholder="Start Date">
+                            <mat-icon matSuffix>
+                                <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                            </mat-icon>
+                        </mat-form-field>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <mat-input-container>
+                        <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
+                    </mat-input-container>
+                </div>
+            </div>
         </div>
-        <div class="row padding-top-20px">
-          <div class="">
-              <div class="col-sm-3 col-md-3">
-                  <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
-                      <mat-option>1 hourly</mat-option>
-                  </mat-select>
-              </div>
-              <div class="col-sm-4 col-md-4">
-                  <div class="input-bg cacaca">
-                      <div class="input-group">
-                          <mat-input-container>
-                              <input matInput type="number" formControlName="duration" placeholder="Duration">
-                          </mat-input-container>
-                          <div class="input-group-btn">
-                              <mat-select placeholder="Unit" formControlName="durationUnit" class="mat-select">
-                                  <mat-option>Days</mat-option>
-                              </mat-select>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-sm-2 col-md-2">
-                  <mat-input-container>
-                      <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
-                  </mat-input-container>
-              </div>
-              <div class="col-sm-3 col-md-3">
-                  <mat-input-container>
-                      <input matInput formControlName="startDate" [matDatepicker]="picker" placeholder="Start Date">
-                      <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                  </mat-input-container>
-                  <mat-datepicker #picker></mat-datepicker>
-              </div>
-          </div>
-          <div class="col-sm-12 col-md-12">
-              <mat-input-container>
-                  <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
-              </mat-input-container>
-          </div>
+
+        <div class="addDrugBtn" (click)="onClickAddMedication(addPrescriptionForm.valid, addPrescriptionForm.value);">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span>ADD MEDICATION</span>
         </div>
-      </div>
-    
-      <div class="addDrugBtn">
-          <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
-          <span>UPDATE MEDICATION</span>
-      </div>
     </form>
-    
+
 </div>
