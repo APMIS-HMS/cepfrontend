@@ -298,11 +298,11 @@
                                             <div *ngIf="request?.patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
                                             <img *ngIf="request?.patient?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(request?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{request.patient.personDetails.personFullName}}</div>
+                                        <div>{{request.patient.personDetails.firstName }} {{request.patient.personDetails.lastName }}</div>
                                     </div>
                                 </td>
                                 <td>{{request.name}}</td>
-                                <td>Jilad Lab</td>
+                                <td></td>
                                 <td>
                                     <div class="status-wrap">
                                         <div class="status-item">

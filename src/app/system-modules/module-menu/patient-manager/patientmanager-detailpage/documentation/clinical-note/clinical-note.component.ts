@@ -37,7 +37,6 @@ export class ClinicalNoteComponent implements OnInit {
   documents: Document[] = [];
   templates: any[] = [];
   symptoms: any[] = [];
-
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
