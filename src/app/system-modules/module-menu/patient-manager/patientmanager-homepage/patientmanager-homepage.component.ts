@@ -57,9 +57,21 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   ) {
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
+      this.pageSize = 1;
+      this.index = 0;
+      this.limit = 5;
+      this.showLoadMore = true;
+      this.total = 0;
+      this.patients = [];
       this.getPatients(this.limit);
     });
     this.patientService.createListener.subscribe(payload => {
+      this.pageSize = 1;
+      this.index = 0;
+      this.limit = 5;
+      this.showLoadMore = true;
+      this.total = 0;
+      this.patients = [];
       this.getPatients(this.limit);
       const msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
       this._notification('Success', msg);
