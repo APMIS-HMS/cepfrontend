@@ -140,13 +140,14 @@ export class ClinicalNoteComponent implements OnInit {
   }
 
   addSymptom(item) {
-    this.symptoms.push(item);
+    if (item.name && item.code) {
+      this.symptoms.push(item);
+    }
     console.log(this.symptoms);
   }
 
   deleteSymptom(item) {
     this.symptoms = this.symptoms.filter(e => e !== item);
-    console.log('delete');
   }
 
 }
