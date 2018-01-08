@@ -51,10 +51,7 @@
                     <div class="oda">
                       <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
                       <div class="pending-amount">
-                        <span>Cost &#x20a6;</span>{{invoice.totalPrice|numberThr}}
-                      </div>
-                      <div class="pending-amount">
-                        <span>Balance &#x20a6;</span>{{invoice.balance|numberThr}}
+                        <span>Outstanding &#x20a6;</span>{{invoice.balance|numberThr}}
                       </div>
                     </div>
                     <div class="pay-status pending-amount">
