@@ -61,21 +61,24 @@ export class ReceiveStockComponent implements OnInit {
     this.getTransferStatus();
   }
   getTransfers() {
-    console.log(this.checkingStore.typeObject);
-    this.systemModuleService.on();
-    this.inventoryTransferService.find({
-      query: {
-        facilityId: this.selectedFacility._id,
-        destinationStoreId: this.checkingStore.typeObject.storeId,
-        $limit: 200
-      }
-    }).then(payload => {
-      console.log(payload);
-      this.systemModuleService.off();
-      this.receivedTransfers = payload.data;
-    }, error => {
-      this.systemModuleService.off();
-    });
+    if (this.checkingStore !== undefined) {
+      console.log(this.checkingStore.typeObject);
+      this.systemModuleService.on();
+      this.inventoryTransferService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          destinationStoreId: this.checkingStore.typeObject.storeId,
+          $limit: 200
+        }
+      }).then(payload => {
+        console.log(payload);
+        this.systemModuleService.off();
+        this.receivedTransfers = payload.data;
+      }, error => {
+        this.systemModuleService.off();
+      });
+    }
+
   }
   getTransferStatus() {
     this.inventoryTransferStatusService.findAll().subscribe(payload => {
