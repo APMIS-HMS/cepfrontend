@@ -432,6 +432,8 @@ export class MakePaymentComponent implements OnInit {
       this.balance.setValue(0);
       this.close_onClick();
       this._notification('Success', 'Payment successfull.');
+    },error=>{
+      this._notification('Error', 'Fail to make payment pls try again later');
     });
   }
 

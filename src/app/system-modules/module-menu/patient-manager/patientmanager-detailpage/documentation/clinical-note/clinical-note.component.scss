@@ -1,8 +1,4 @@
 @import "../documentation-detail/documentation-detail.component.scss";
-.frm-item-wrap {
-    width: 40%;
-}
-
 .frmNoteWrap {
     position: relative;
     background: #fff;
@@ -52,6 +48,13 @@
     color: #0288D1;
 }
 
-.mat-select {
-    height: 0px;
+.tags {
+    border: 1px solid #0288D1;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 7px;
+    margin: 5px;
+    color: #0288D1;
+    background: #fff;
+    font-size: 10px;
 }
