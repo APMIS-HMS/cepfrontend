@@ -21,7 +21,6 @@ export class ClinicalNoteComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() showOrderset: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('surveyjs') surveyjs: any;
-
   json: any
   selectFormCtrl: FormControl;
   templateFormCtrl: FormControl;
@@ -31,18 +30,16 @@ export class ClinicalNoteComponent implements OnInit {
   personDocumentation: Documentation = <Documentation>{};
   docSymptom_view = false;
   docDiagnosis_view = false;
-
   mainErr = true;
-  errMsg = 'you have unresolved errors';
-
+  errMsg = 'You have unresolved errors';
   states: any[] = [];
   forms: any[] = [];
   documents: Document[] = [];
   templates: any[] = [];
-
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
+  showOrderSet: boolean = false;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
@@ -119,7 +116,9 @@ export class ClinicalNoteComponent implements OnInit {
     this.docDiagnosis_view = false;
   }
   showOrderset_onClick() {
-    this.showOrderset.emit(true);
+    console.log('Clicked');
+    this.showOrderSet = true;
+     // this.showOrderset.emit(true);
   }
 
   filterForms(val: any) {

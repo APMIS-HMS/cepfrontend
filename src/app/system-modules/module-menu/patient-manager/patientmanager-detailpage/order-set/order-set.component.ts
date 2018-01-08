@@ -156,16 +156,11 @@ export class OrderSetComponent implements OnInit {
         /**
          * Treatment Sheet
          */
-        const patientTreatmentSheet = {
-          document: this.orderSet,
-          createdBy: this.employeeDetails.employeeDetails._id,
-          facilityId: this.miniFacility,
-          patientId: this._patientService.abridgePatient(this.selectedPatient),
-        };
-
         const treatementSheet = {
-          personId: this._personService.abridgePerson(this.selectedPatient.personDetails),
-          treatmentSheets: patientTreatmentSheet,
+          personId: this.selectedPatient.personDetails._id,
+          treatmentSheet: this.orderSet,
+          facilityId: this.miniFacility._id,
+          createdBy: this.employeeDetails.employeeDetails._id,
         };
 
         this._treatmentSheetService.create(treatementSheet).then(treatment => {
