@@ -11,14 +11,14 @@ const EMPLOYEEMANAGER_ROUTES: Routes = [
         path: '', component: EmployeeManagerHomeComponent, children: [
             { path: '', component: EmployeeManagerComponent, resolve: { employees: EmployeesResolverService } },
             // { path: 'employee-manager', component: EmployeeManagerComponent },
-            { path: 'employee-manager-detail', component: EmployeemanagerDetailpageComponent },
-            { path: 'employee-manager-detail/:id', component: EmployeemanagerDetailpageComponent },
+            { path: 'detail', component: EmployeemanagerDetailpageComponent },
+            { path: 'detail/:id', component: EmployeemanagerDetailpageComponent },
             { path: 'generate-user', component: GenerateUserComponent },
             { path: 'generate-user/:id', component: GenerateUserComponent },
             { path: 'edit-user', component: EditUserComponent },
             { path: 'edit-user/:id/:personId', component: EditUserComponent }
         ]
     }
-];
+]; 
 
 export const employeeManagerRoutes = RouterModule.forChild(EMPLOYEEMANAGER_ROUTES);

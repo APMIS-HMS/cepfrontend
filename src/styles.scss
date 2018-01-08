@@ -47,7 +47,13 @@ select,
 textarea {
     font-size: 12px;
 }
-
+.clickable-ico{
+    cursor: pointer;
+    margin: 0 20px;
+}
+.clickable-ico:hover{
+    color: #0288D1;
+}
 
 /*
 input,
@@ -1589,7 +1595,6 @@ ul.topmenuwrap li:hover {
     height: 30px !important;
     border: 0px solid #ccc!important;
     border-bottom: 1px solid #777!important;
-    width: 88%!important;
 }
 .custom-autocomplete{
     float: unset !important;

@@ -6,6 +6,7 @@ import { FacilitypageLocationspageComponent } from './facilitypage-locationspage
 import { FacilitypageWorkspaceComponent } from './facilitypage-workspace/facilitypage-workspace.component';
 import { FacilityOptionsComponent } from './facility-options/facility-options.component';
 import { ProfessionComponent } from './profession/profession.component';
+
 import {
     WorkspaceResolverService, FacilityResolverService, SystemModulesResolverService,
     LocationsResolverService
@@ -23,7 +24,15 @@ const FACLITYPAGE_ROUTES: Routes = [
                     systemModules: SystemModulesResolverService,
                     facility: FacilityResolverService
                 }
+            }, 
+            {
+                path: 'employees',
+                loadChildren: '../../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
             },
+            // {
+            //     path: 'employees/:id',
+            //     loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
+            // },
             { path: 'locations', component: FacilitypageLocationspageComponent, resolve: { locations: LocationsResolverService } },
             { path: 'workspaces', component: FacilitypageWorkspaceComponent, resolve: { workSpaces: WorkspaceResolverService } },
             { path: 'departments', component: FacilitypageDepartmentspageComponent, resolve: { facility: FacilityResolverService } },
