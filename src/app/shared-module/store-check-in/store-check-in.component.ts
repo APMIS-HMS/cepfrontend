@@ -88,6 +88,7 @@ export class StoreCheckInComponent implements OnInit {
 				itemi.isDefault = false;
 			}
 		});
+		
 		this.loginEmployee.storeCheckIn.push(checkIn);
 		//this.loadIndicatorVisible = true;
 		this.employeeService.update(this.loginEmployee).then(payload => {
