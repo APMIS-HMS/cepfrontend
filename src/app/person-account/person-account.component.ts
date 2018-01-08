@@ -32,7 +32,7 @@ export class PersonAccountComponent implements OnInit {
   mainErr = true;
   isSuccessful = false;
 
-  counterSubscription:Subscription;
+  counterSubscription: Subscription;
   countDown = 10;
   public frmPerson: FormGroup;
 
@@ -41,13 +41,13 @@ export class PersonAccountComponent implements OnInit {
     private titleGenderFacadeService: TitleGenderFacadeService,
     private personService: PersonService,
     private userService: UserService,
-    private userServiceFacade:UserFacadeService,
+    private userServiceFacade: UserFacadeService,
     private facilitiesService: FacilitiesService,
-    private systemModuleService:SystemModuleService,
+    private systemModuleService: SystemModuleService,
     private vcr: ViewContainerRef, private toastr: ToastsManager
   ) {
     this.toastr.setRootViewContainerRef(vcr);
-   }
+  }
 
   ngOnInit() {
     this.getGenders();
@@ -63,10 +63,10 @@ export class PersonAccountComponent implements OnInit {
     });
 
     this.frmPerson.valueChanges.subscribe(value => {
-      if(!this.mainErr){
+      if (!this.mainErr) {
         this.isSuccessful = false;
       }
-      
+
       this.mainErr = true;
       this.errMsg = '';
     })
@@ -101,33 +101,33 @@ export class PersonAccountComponent implements OnInit {
         email: this.frmPerson.controls['email'].value,
         primaryContactPhoneNo: this.frmPerson.controls['phone'].value
       };
-
+      console.log(personModel);
       // const userModel = <User>{
       //   email: personModel.apmisId
       // };
       // userModel.personId = ppayload._id;
 
       this.personService.createPerson(personModel).then((ppayload) => {
-      
-        this.isSuccessful = true;
-          let text =  this.frmPerson.controls['firstname'].value + ' '
-              + this.frmPerson.controls['lastname'].value + ' '
-              + 'added successful'
-          this.success(text);
-          this.frmPerson.reset();
-          this.systemModuleService.off();
 
-          this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
-            this.countDown = this.countDown - 1;
-            console.log(this.countDown);
-            if (rx === 9) {
-              this.close_onClick();
-              this.counterSubscription.unsubscribe();
-            }
-      
-          });
+        this.isSuccessful = true;
+        let text = this.frmPerson.controls['firstname'].value + ' '
+          + this.frmPerson.controls['lastname'].value + ' '
+          + 'added successful'
+        this.success(text);
+        this.frmPerson.reset();
+        this.systemModuleService.off();
+
+        this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
+          this.countDown = this.countDown - 1;
+          console.log(this.countDown);
+          if (rx === 9) {
+            this.close_onClick();
+            this.counterSubscription.unsubscribe();
+          }
+
+        });
         // this.userService.create(userModel).then((upayload) => {
-          
+
         // }, error => {
         //   console.log(error);
         //   this.systemModuleService.off();
