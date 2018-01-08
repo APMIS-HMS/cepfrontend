@@ -59,9 +59,9 @@ const assignEmployeeUnit = require('./assign-employee-unit/assign-employee-unit.
 const prescriptions = require('./prescriptions/prescriptions.service.js');
 const prescriptionPriorities = require('./prescription-priorities/prescription-priorities.service.js');
 const presentations = require('./presentations/presentations.service.js');
-const productroutes = require('./productroutes/productroutes.service.js');
-const producttype = require('./producttype/producttype.service.js');
-const productvariant = require('./productvariant/productvariant.service.js');
+const productRoutes = require('./product-routes/product-routes.service.js');
+const productTypes = require('./product-types/product-types.service.js');
+const productVariants = require('./product-variants/product-variants.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -124,7 +124,7 @@ module.exports = function (app) {
   app.configure(prescriptions);
   app.configure(prescriptionPriorities);
   app.configure(presentations);
-  app.configure(productroutes);
-  app.configure(producttype);
-  app.configure(productvariant);
+  app.configure(productRoutes);
+  app.configure(productTypes);
+  app.configure(productVariants);
 };

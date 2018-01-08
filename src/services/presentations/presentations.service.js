@@ -1,7 +1,7 @@
 // Initializes the `presentation` service on path `/presentation`
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/presentations.model');
-const hooks = require('./presentation.hooks');
+const hooks = require('./presentations.hooks');
 
 module.exports = function (app) {
   const Model = createModel(app);

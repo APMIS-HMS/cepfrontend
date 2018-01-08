@@ -1,7 +1,7 @@
 // Initializes the `prescription` service on path `/prescription`
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/prescriptions.model');
-const hooks = require('./prescription.hooks');
+const hooks = require('./prescriptions.hooks');
 
 module.exports = function (app) {
   const Model = createModel(app);
