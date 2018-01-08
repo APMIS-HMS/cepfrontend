@@ -2,7 +2,7 @@
     <div class="modal-header-wrap">
     <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title">Facility Setup</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
+    <div class="modal_mini_title">Edit Employee's Basic Info</div>
     </div>
 
     <div class="modal-baseWrap"> 
@@ -13,10 +13,10 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <div class="menuBar-facilityName">
         <div class="menubar_facilityLogo orgLogo-wrap">
-            <img src="../../../../assets/images/logos/default.png">
+            <img src="../../../../../../assets/images/users/default.png">
         </div>
         <div class="upload-btn-wrapper">
-            <button class="upload-btn">Change Logo</button>
+            <button class="upload-btn">Change Image</button>
             <input type="file" name="myfile" />
         </div>
     </div>
@@ -24,61 +24,42 @@
     
         <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="Facility Name" formControlName="facilityname">
-            </mat-input-container>
-        </div>
-        <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
-        <div class="frm-item-wrap">
-            <div class="frm-item-x2">
-                <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Street Address" formControlName="facilitystreet">
-                </mat-input-container>
-                <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="City" formControlName="facilitycity">
-                </mat-input-container>
-            </div>
-        </div>
-        <div class="frm-item-wrap">
-            <div class="frm-item-x2">
-                <mat-form-field class="example-full-width">
-                    <mat-select placeholder="State" formControlName="facilitystate">
-                        <mat-option>Lagos</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-select placeholder="Country" formControlName="facilitycountry">
-                        <mat-option>Nigeria</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input type="email" matInput mat-error placeholder="Email Address" formControlName="facilityemail">
+                <input matInput mat-error placeholder="First Name" formControlName="firstname">
             </mat-input-container>
         </div>
         <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="CAC Reg No" formControlName="cac">
+                <input matInput mat-error placeholder="Last Name" formControlName="lastname">
             </mat-input-container>
         </div>
         <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">
-                <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
+                <input matInput mat-error placeholder="Other Names" formControlName="othernames">
+            </mat-input-container>
+        </div>
+        <mat-form-field>
+            <mat-select placeholder="Department" formControlName="dept">
+                <mat-option>Surgery</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+                <input type="email" matInput mat-error placeholder="Email Address" formControlName="email">
             </mat-input-container>
         </div>
         <div class="frm-item-wrap">
             <mat-input-container>
-                <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
+                <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="phone">
             </mat-input-container>
         </div>
-        <!-- <label class="control control--checkbox">Network
-            <input type="checkbox"  formControlName="network" />
+        
+        <label class="control control--checkbox">Activate Employee
+            <input type="checkbox"  formControlName="status" />
             <div class="control__indicator"></div>
-        </label> -->
+        </label>
     
         <button class="cta-1"> 
-        SIGN UP
+        UPDATE
         </button>
     
     </form> 

@@ -27,17 +27,14 @@ export class EditEmpBasicComponent implements OnInit {
   ngOnInit() {
     this.facilityForm1 = this.formBuilder.group({
 
-			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			facilityemail: ['', [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
-			facilitywebsite: ['', [<any>Validators.required, <any>Validators.pattern(WEBSITE_REGEX)]],
+			firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			othernames: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			email: ['', [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
-			address: ['', [<any>Validators.required]],
-			cac: ['', [<any>Validators.required]],
-			facilitystreet: ['', [<any>Validators.required]],
-			facilitycity: ['', [<any>Validators.required]],
-			facilitystate: ['', [<any>Validators.required]],
-			facilitycountry: ['', [<any>Validators.required]],
-			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
+			status: ['', [<any>Validators.required]],
+			dept: ['', [<any>Validators.required]],
+			phone: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
   }
 
