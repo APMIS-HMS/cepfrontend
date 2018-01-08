@@ -101,7 +101,7 @@ export class PersonAccountComponent implements OnInit {
         email: this.frmPerson.controls['email'].value,
         primaryContactPhoneNo: this.frmPerson.controls['phone'].value
       };
-
+      console.log(personModel);
       // const userModel = <User>{
       //   email: personModel.apmisId
       // };
