@@ -119,41 +119,49 @@ export class AssignUnitComponent implements OnInit {
     this.closeModal.emit(true);
   }
   onValueChanged(e, employee: Employee) {
-    employee.isChecked = e.value;
+    console.log(employee);
+    console.log(e);
+    employee.isChecked = e.checked;
   }
   assignUnit(valid, value) {
     console.log(valid);
     console.log(value);
     const checkedEmployees = this.filteredEmployees.filter(emp => emp.isChecked === true);
 
-    checkedEmployees.forEach((emp, i) => {
-      console.log(i)
-      if (emp.units === undefined) {
-        emp.units = [];
-      }
-      emp.units.push(this.selectedUnit._id);
-    });
-    checkedEmployees.forEach((itemi, i) => {
-      console.log(i)
-      console.log(itemi)
-      this.employeeService.update(itemi).then(payload => {
-        if (this.selectedEmployee === undefined) {
-          this.getEmployees(this.selectedDepartment);
-        } else {
-          console.log('334')
-          this.employees = [];
-          this.filteredEmployees = [];
-          this.selectedEmployee.isChecked = false;
-          this.employees.push(this.selectedEmployee);
-          this.frmNewEmp1.controls['unit'].reset();
-        }
+    this.employeeService.assignUnit({unitId:this.selectedUnit._id, employees:checkedEmployees}).then(payload =>{
+      console.log(payload);
+    },error =>{
+      console.log(error);
+    })
+    //what to send to the server
+    //1.  checkedemployees
+    //2.  assignunit id
 
-      }, error => {
-        console.log(error);
-      });
-    });
-    // this.employeeService.updateMany(checkedEmployees).then(payload => {
-    // }, error => {
+    // checkedEmployees.forEach((emp, i) => {
+    //   console.log(i)
+    //   if (emp.units === undefined) {
+    //     emp.units = [];
+    //   }
+    //   emp.units.push(this.selectedUnit._id);
+    // });
+    // checkedEmployees.forEach((itemi, i) => {
+    //   console.log(i)
+    //   console.log(itemi)
+    //   this.employeeService.update(itemi).then(payload => {
+    //     if (this.selectedEmployee === undefined) {
+    //       this.getEmployees(this.selectedDepartment);
+    //     } else {
+    //       console.log('334')
+    //       this.employees = [];
+    //       this.filteredEmployees = [];
+    //       this.selectedEmployee.isChecked = false;
+    //       this.employees.push(this.selectedEmployee);
+    //       this.frmNewEmp1.controls['unit'].reset();
+    //     }
+
+    //   }, error => {
+    //     console.log(error);
+    //   });
     // });
   }
 }

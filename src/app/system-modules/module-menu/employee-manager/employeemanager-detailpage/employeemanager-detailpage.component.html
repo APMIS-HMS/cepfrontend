@@ -224,8 +224,8 @@
 
                     <div class="dataMix-wrap color2">
                         <div class="lhs">Home Address</div>
-                        <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.homeAddress.street}}, {{employee?.personDetails?.homeAddress?.city}},
-                            {{employee?.personDetails?.homeAddress.state}}, {{employee?.personDetails?.homeAddress.country}}.
+                        <div *ngIf="!contacts && employee.personDetails.homeAddress" class="rhs"> {{employee?.personDetails?.homeAddress?.street}}, {{employee?.personDetails?.homeAddress?.city}},
+                            {{employee?.personDetails?.homeAddress?.state}}, {{employee?.personDetails?.homeAddress?.country}}.
                             </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <mat-form-field>

@@ -83,20 +83,21 @@ export class CreateWorkspaceComponent implements OnInit {
     this.departments = this.selectedFacility.departments;
     this.getMajorLocations();
 
-
+    console.log(this.selectedEmployee);
 
     if (this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined) {
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.department._id);
+      const deptList = this.departments.filter(x => x.name === this.selectedEmployee.department);
       if (deptList.length > 0) {
         this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
+        this.frmNewEmp1.controls['dept'].value.units.forEach((item, i) => {
+          const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
+          if (unitsList.length > 0) {
+            this.units.push(unitsList[0]);
+          }
+        });
       }
-      this.frmNewEmp1.controls['dept'].value.units.forEach((item, i) => {
-        const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
-        if (unitsList.length > 0) {
-          this.units.push(unitsList[0]);
-        }
-      });
+
       // this.units = this.frmNewEmp1.controls['dept'].value.units;
       this.selectedEmployee.isChecked = false;
       this.employees.push(this.selectedEmployee);
@@ -160,10 +161,10 @@ export class CreateWorkspaceComponent implements OnInit {
         this.loadIndicatorVisible = true;
         this.workspaceService.find({
           query:
-          {
-            facilityId: this.selectedFacility._id,
-            'locations.minorLocationId._id': minorLocationId, $limit: 100
-          }
+            {
+              facilityId: this.selectedFacility._id,
+              'locations.minorLocationId._id': minorLocationId, $limit: 100
+            }
         }).then(payload => {
           const filteredEmployee: Employee[] = [];
           this.filteredEmployees.forEach((emp, i) => {
@@ -208,7 +209,7 @@ export class CreateWorkspaceComponent implements OnInit {
       const updateArrays: Employee[] = [];
       this.workspaceService.find({
         query:
-        { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
+          { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
       }).then(payload => {
         filtered.forEach((iteme, e) => {
           let hasRecord = false;

@@ -106,8 +106,11 @@ export class PersonAccountComponent implements OnInit {
       //   email: personModel.apmisId
       // };
       // userModel.personId = ppayload._id;
+      let body = {
+        person: personModel
+      }
 
-      this.personService.createPerson(personModel).then((ppayload) => {
+      this.personService.createPerson(body).then((ppayload) => {
 
         this.isSuccessful = true;
         let text = this.frmPerson.controls['firstname'].value + ' '

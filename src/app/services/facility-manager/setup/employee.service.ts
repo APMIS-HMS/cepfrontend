@@ -9,6 +9,7 @@ const request = require('superagent');
 @Injectable()
 export class EmployeeService {
   public _socket;
+  public _assignSocket;
   private _rest;
   public listner;
   public createListener;
@@ -28,6 +29,7 @@ export class EmployeeService {
   ) {
     this._rest = _restService.getService('employees');
     this._socket = _socketService.getService('employees');
+    this._assignSocket = _socketService.getService('assign-employee-unit');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -83,6 +85,10 @@ export class EmployeeService {
   }
   update(employee: any) {
     return this._socket.update(employee._id, employee);
+  }
+  assignUnit(body: any) {
+    console.log(body);
+    return this._assignSocket.update(body.unitId, body.employees);
   }
   updateMany(employees: any) {
     return this._socket.update('employees._id', employees);
