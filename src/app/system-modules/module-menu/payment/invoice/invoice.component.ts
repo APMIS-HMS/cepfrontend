@@ -58,14 +58,16 @@ export class InvoiceComponent implements OnInit {
         private _todayInvoiceService: TodayInvoiceService) {
         this.user = <User>this.locker.getObject('auth');
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-        this.subscription = this.route.params.subscribe(params => {
-            const id = params['id'];
-            if (id !== undefined) {
-                this.patientService.get(id, {}).then(payload => {
-                    this.selectedPatient = payload;
-                    this.getPatientInvoices();
-                });
-            }
+        this.patientService.receivePatient().subscribe((payload: Patient) => {
+            this.selectedPatient = payload;
+            this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
+            this.getPatientInvoices();
+        });
+        this.invoiceService.receiveInvoice().subscribe((payload: any) => {
+            this.invoice.billingDetails.push(payload);
+            this.invoice.billingDetails.forEach((item: any) => {
+                this.invoice.totalPrice = this.invoice.totalPrice + item.amount;
+            });
         });
     }
     getPatientInvoices() {
@@ -73,7 +75,6 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
-                console.log(this.invoiceGroups);
                 this.isLoadingInvoice = false;
                 if (this.isPaymentMade == false) {
                     this.selectedInvoiceGroup = <Invoice>{};
@@ -87,7 +88,6 @@ export class InvoiceComponent implements OnInit {
         }
         this._todayInvoiceService.get(facility).then(payload => {
             this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
-            console.log(this.otherInvoiceGroups);
             this.isLoadingOtherInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
 
@@ -97,6 +97,16 @@ export class InvoiceComponent implements OnInit {
             service: ['', [<any>Validators.required]],
             qty: ['', [<any>Validators.required]]
         });
+        this.subscription = this.route.params.subscribe(params => {
+            const id = params['id'];
+            if (id !== undefined) {
+                this.patientService.get(id, {}).then(payload => {
+                    this.selectedPatient = payload;
+                    this.getPatientInvoices();
+                });
+            }
+        });
+
         this.searchOtherPendingInvoice.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
@@ -131,6 +141,7 @@ export class InvoiceComponent implements OnInit {
 
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
+        console.log(this.selectedInvoiceGroup);
         if (this.selectedInvoiceGroup.paymentCompleted == true) {
             this.isPaidClass = true;
         } else {
@@ -167,11 +178,12 @@ export class InvoiceComponent implements OnInit {
     makePayment_show() {
         if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
             if (this.selectedInvoiceGroup.paymentCompleted == false) {
-                if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
-                    this._notification('Info', "You donot have sufficient balance to make this payment");
-                } else {
-                    this.makePaymentPopup = true;
-                }
+                // if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+                //     this._notification('Info', "You donot have sufficient balance to make this payment");
+                // } else {
+                    
+                // }
+                this.makePaymentPopup = true;
             } else {
                 this._notification('Info', "Selected invoice is paid");
             }

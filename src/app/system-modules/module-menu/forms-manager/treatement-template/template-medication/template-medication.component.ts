@@ -29,7 +29,7 @@ export class TemplateMedicationComponent implements OnInit {
   frequencies: string[] = [];
   durationUnits: any[] = [];
   selectedDuration: any;
-  drugId: string;
+  drugId: string = '';
   refillCount = 0;
   selectedForm = '';
   selectedIngredients: any = [];
@@ -79,7 +79,6 @@ export class TemplateMedicationComponent implements OnInit {
   }
 
   onClickAddMedication(valid: boolean, value: any) {
-    console.log(value);
     if (valid) {
       const medication = {
         genericName: value.drug,
@@ -92,7 +91,10 @@ export class TemplateMedicationComponent implements OnInit {
         patientInstruction: value.specialInstruction,
         refillCount: value.refillCount,
         ingredients: this.selectedIngredients,
-        form: this.selectedForm
+        form: this.selectedForm,
+        comment: '',
+        status: 'Not Started',
+        completed: false,
       };
 
       if (this.medications.length > 0) {

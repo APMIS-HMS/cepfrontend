@@ -45,23 +45,35 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   limit: any = 5;
   showLoadMore: Boolean = true;
   total: any = 0;
-  updatePatientBtnText: string = 'Update';
+  updatePatientBtnText = 'Update';
   loadMoreText = '';
 
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: GenderService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
-    private _countryService: CountriesService, private systemService:SystemModuleService,
+    private _countryService: CountriesService, private systemService: SystemModuleService,
     private _titleService: TitleService
   ) {
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
+      this.pageSize = 1;
+      this.index = 0;
+      this.limit = 5;
+      this.showLoadMore = true;
+      this.total = 0;
+      this.patients = [];
       this.getPatients(this.limit);
     });
     this.patientService.createListener.subscribe(payload => {
-      this.getPatients();
-      let msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
+      this.pageSize = 1;
+      this.index = 0;
+      this.limit = 5;
+      this.showLoadMore = true;
+      this.total = 0;
+      this.patients = [];
+      this.getPatients(this.limit);
+      const msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
       this._notification('Success', msg);
     }, error => {
 
@@ -82,14 +94,14 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   getGender() {
     this.genderService.findAll().subscribe(payload => {
       this.genders = payload.data;
-    },error =>{
+    }, error => {
       this.getGender();
     })
   }
   getRelationships() {
     this.relationshipService.findAll().subscribe(payload => {
       this.relationships = payload.data;
-    }, error =>{
+    }, error => {
       this.getRelationships();
     })
   }
@@ -198,7 +210,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         facilityId: this.facility._id,
         $limit: this.limit,
         $skip: this.index * this.limit,
-        $sort: {createdAt: -1 }
+        $sort: { createdAt: -1 }
       }
     }).then(payload => {
       this.systemService.off();
@@ -227,12 +239,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.index++;
   }
   getShowing() {
-    let ret = this.index * this.limit
+    const ret = this.index * this.limit
     if (ret >= this.total && this.index > 0) {
-      this.loadMoreText = 'Showing ' + this.total + ' of '+this.total + ' records';
+      this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
       return;
     }
-    this.loadMoreText = 'Showing ' + ret + ' of '+this.total + ' records';
+    this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
   }
   onScroll() {
     this.pageSize = this.pageSize + 1;
@@ -397,7 +409,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this._titleService.findAll()
       .then(res => {
         this.titles = res.data;
-      }).catch(err =>{
+      }).catch(err => {
         this._getAllTitles();
       });
   }

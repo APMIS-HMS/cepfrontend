@@ -85,6 +85,10 @@ select {
     background-color: green !important;
 }
 
+.text-center {
+    text-align: center !important;
+}
+
 .text-green {
     color: green !important;
 }
@@ -1207,7 +1211,7 @@ ul.topmenuwrap li:hover {
 }
 
 .mat-input-container {
-    width: 90%;
+    // width: 90%;
 }
 
 .tr-act-btn {

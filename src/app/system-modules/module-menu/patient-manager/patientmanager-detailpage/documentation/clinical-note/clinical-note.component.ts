@@ -39,6 +39,7 @@ export class ClinicalNoteComponent implements OnInit {
   forms: any[] = [];
   documents: Document[] = [];
   templates: any[] = [];
+  symptoms: any[] = [];
 
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -91,10 +92,10 @@ export class ClinicalNoteComponent implements OnInit {
           isSide: false
         }
       }))
-    ))
-      .subscribe((results: any) => {
+    )).subscribe((results: any) => {
+      console.log(results);
         this.forms = results.data;
-      }, error =>{
+      }, error => {
         this.getForms();
       })
   }
@@ -133,8 +134,20 @@ export class ClinicalNoteComponent implements OnInit {
   docSymptom_show() {
     this.docSymptom_view = true;
   }
+
   docDiagnosis_show() {
     this.docDiagnosis_view = true;
+  }
+
+  addSymptom(item) {
+    if (item.name && item.code) {
+      this.symptoms.push(item);
+    }
+    console.log(this.symptoms);
+  }
+
+  deleteSymptom(item) {
+    this.symptoms = this.symptoms.filter(e => e !== item);
   }
 
 }
