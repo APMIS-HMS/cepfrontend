@@ -27,7 +27,7 @@ const FACLITYPAGE_ROUTES: Routes = [
             }, 
             {
                 path: 'employees',
-                loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
+                loadChildren: '../../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
             },
             // {
             //     path: 'employees/:id',
