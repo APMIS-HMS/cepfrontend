@@ -29,9 +29,11 @@
                     <div class="plan">
                         <div class="plan-title">Out of Pocket</div>
                         <div class="frm-item-wrap">
-                            <mat-select placeholder="Select Plan" [formControl]="walletPlan">
-                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Select Plan" [formControl]="walletPlan">
+                                    <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
@@ -45,9 +47,11 @@
                             </mat-input-container>
                         </div>
                         <div class="frm-item-wrap">
-                            <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
-                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Select Plan" [formControl]="hmoPlan">
+                                    <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
 
                         <div class="another">Another Insurance</div>
@@ -63,9 +67,11 @@
                             </mat-input-container>
                         </div>
                         <div class="frm-item-wrap">
-                            <mat-select placeholder="Select Plan" [formControl]="ccPlan">
-                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Select Plan" [formControl]="ccPlan">
+                                    <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
 
                         <div class="another">Another Company</div>
@@ -79,9 +85,11 @@
                             <mat-input-container class="example-full-width">
                                 <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
                             </mat-input-container>
-                            <mat-select placeholder="Select Plan" [formControl]="faPlan">
-                                <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Select Plan" [formControl]="faPlan">
+                                    <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
@@ -119,7 +127,7 @@
                 <div class="frm-item-wrap">
                     <mat-form-field>
                         <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
-                            <mat-option *ngFor="let item of titles" [value]="item.name">{{item.name}}</mat-option>
+                            <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -151,12 +159,12 @@
                     <input type="hidden" formControlName="ffId">
                 </div>
                 <!-- <div class="frm-item-wrap">
-                        <input type="hidden" formControlName="empFcltyId">
-                    </div> -->
+                    <input type="hidden" formControlName="empFcltyId">
+                </div> -->
                 <div class="frm-item-wrap">
                     <mat-form-field>
                         <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
-                            <mat-option *ngFor="let item of genders" [value]="item.name">{{item.name}}</mat-option>
+                            <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -237,11 +245,11 @@
                     <mat-datepicker #picker></mat-datepicker>
                 </div>
                 <!--<div class="frm-item-wrap">
-                        <div>
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <input type="file" ngFileSelect [options]="options" [events]="uploadEvents" (onUpload)="handleUpload($event)" (beforeUpload)="beforeUpload($event)">
-                        </div>
-                    </div>-->
+                    <div>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input type="file" ngFileSelect [options]="options" [events]="uploadEvents" (onUpload)="handleUpload($event)" (beforeUpload)="beforeUpload($event)">
+                    </div>
+                </div>-->
                 <div class="frm-item-wrap">
                     <mat-input-container class="example-full-width">
                         <textarea matInput mat-error placeholder="Home Address" formControlName="empHomeAddress"></textarea>
@@ -338,11 +346,13 @@
             <div class="frmNavControls_wrap">
                 <div (click)="back_newPerson2()" class="backBtn">
                     <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-                <div (click)="skip_nok()" class="backBtn">
+                <div (click)="skip_nok()" class="backBtn" *ngIf="!loading">
                     <i class="fa fa-forward" aria-hidden="true"></i>Skip</div>
+                <div *ngIf="loading" class="backBtn">Loading</div>
             </div>
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp3.valid" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" mat-raised-button>CONTINUE</button>
+                <button class="small-btn" [disabled]="!frmNewEmp3.valid || loading" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);"
+                    mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
         </form>
