@@ -64,6 +64,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
   createWorkspace = false;
   assignUnitPop = false;
+  editBasicPop = false;
 
   employeeSubscription: Subscription;
   departments: any[] = [];
@@ -247,6 +248,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.changeUserImg = false;
     this.assignUnitPop = false;
     this.createWorkspace = false;
+    this.editBasicPop = false;
   }
   show_changeUserImg() {
     this.changeUserImg = true;
@@ -333,7 +335,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   bioDataShow() {
     this.biodatas = !this.biodatas;
   }
-
+  editBasicPop_show(){
+    this.editBasicPop = true;
+  }
   contactShow() {
     this.contacts = !this.contacts;
   }

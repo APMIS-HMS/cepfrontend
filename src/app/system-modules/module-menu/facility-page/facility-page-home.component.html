@@ -2,10 +2,11 @@
     <li (click)="changeRoute('departments')" [class.pg-menuActive]="departmentsContentArea"><i class="fa fa-building" aria-hidden="true"></i> Departments</li>
     <li (click)="changeRoute('locations')" [class.pg-menuActive]="locationsContentArea"><i class="fa fa-map-marker" aria-hidden="true"></i> Locations</li>
     <li (click)="changeRoute('workspaces')" [class.pg-menuActive]="workspaceContentArea"><i class="fa fa-home" aria-hidden="true"></i> Workspace</li>
+    <li (click)="changeRoute('employees')" [class.pg-menuActive]="empContentArea"><i class="fa fa-users" aria-hidden="true"></i> Employees</li>
     <!-- <li (click)="changeRoute('modules')" [class.pg-menuActive]="modulesContentArea"><i class="fa fa-braille" aria-hidden="true"></i> Modules</li> -->
     <li (click)="changeRoute('options')" [class.pg-menuActive]="optionsContentArea"><i class="fa fa-filter" aria-hidden="true"></i> Options</li>
     <li (click)="changeRoute('profession')" [class.pg-menuActive]="professionContentArea"><i class="fa fa-briefcase" aria-hidden="true"></i> Profession</li>
-</ul>
+</ul> 
 <div class="portal-wrap">
     <div class="content-sect">
         <app-facilitypage-sidesect [selectedFacility]="selectedFacility" class="side-sect"></app-facilitypage-sidesect>
@@ -209,6 +210,7 @@
                     <p class="plus">+</p>
                 </span>
             </div>
+            <router-outlet *ngIf="empContentArea"></router-outlet>
         </div> 
     </div>
 </div>
