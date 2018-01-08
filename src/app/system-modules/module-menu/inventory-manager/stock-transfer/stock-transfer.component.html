@@ -59,7 +59,7 @@
                                     </mat-input-container>
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
-                                    <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers" [formControl]="frmDestinationStore">
+                                    <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers">
                                         <mat-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</mat-option>
                                     </mat-select>
                                 </div>
@@ -93,7 +93,7 @@
         </form>
     </div>
 
-    <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
+    <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
         <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
         <button class="cta-1" (click)="saveTransfer()"> Send </button>
     </div>

@@ -16,7 +16,7 @@ import { TemplateComponent } from './template/template.component';
 import { SelectTemplateComponent } from './template/select-template/select-template.component';
 import { ScopeLevelService } from '../../../services/module-manager/setup/index';
 import { LabRequestsComponent } from './lab-requests/lab-requests.component';
-import { RadRequestDetailComponent } from './lab-requests/request-detail/request-detail.component';
+//import { RadRequestDetailComponent } from './lab-requests/request-detail/request-detail.component';
 
 
 @NgModule({
@@ -25,7 +25,7 @@ import { RadRequestDetailComponent } from './lab-requests/request-detail/request
     radiologyRoutes,
     MaterialModule
   ],
-  declarations: [RadiologyComponent, LabRequestsComponent, InvestigationServiceComponent, RadRequestDetailComponent,
+  declarations: [RadiologyComponent, LabRequestsComponent, InvestigationServiceComponent, //RadRequestDetailComponent,
     InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
     ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
   providers: [LaboratoryRequestService, ScopeLevelService]

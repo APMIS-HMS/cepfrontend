@@ -39,6 +39,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     wallet: boolean;
     insurance: boolean; */
     family: any = [];
+    
 
     coverType:any;
 
@@ -311,7 +312,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             empPersonId: [''],
             facId: [''],
             facName: [''],
-            empfcltyId: [''],
+            ffId: [''],
             empNationality: ['', [<any>Validators.required]],
             empState: ['', [<any>Validators.required]],
             empLga: ['', [<any>Validators.required]],
@@ -528,7 +529,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.loading = true;
         this.faId = faPlanId;
         this.planInput = faPlan;
-        this.coverType = 'company';
+        this.coverType = 'family';
 
         this.faService.getFamilyDependant(this.faId, this.facility._id).then(de => {
             let data = de.data;
@@ -546,7 +547,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewEmp1.controls['empPhonNo'].setValue(data.enrollees.phone);
             this.frmNewEmp1.controls['empPersonId'].setValue(data.enrollees.filNo);
             this.frmNewEmp1.controls['facId'].setValue(data._id);
-            this.frmNewEmp1.controls['empFcltyId'].setValue(data.facilityId);
+            this.frmNewEmp1.controls['ffId'].setValue(data.facilityId);
             this.frmNewEmp1.controls['facName'].setValue(data.facilityName);
             
                 
@@ -759,6 +760,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     savePerson() {
+            console.log(this.planInput);
             const person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
@@ -800,19 +802,23 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
                 person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
             }
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    }
-                ]
-            }
 
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
@@ -853,11 +859,20 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.billingService.create(billing).then(billingPayload => {
                             console.log(billingPayload);
                             this.close_onClick();
+                            this.paymentPlan = false;
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = false;
+                            this.apmisId_show = false;
+                            this.loading = false
                         }).catch(errr => {
+                            this.loading = false;
                             console.log(errr);
                         });
                 
                     }).catch(err => {
+                        this.loading = false;
                         console.log(err);
                     });
 
@@ -866,6 +881,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveCompanyPerson(){
+        console.log(this.planInput);
         const person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
@@ -916,27 +932,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             let facId = this.frmNewEmp1.controls['facId'].value;
             let facName = this.frmNewEmp1.controls['facName'].value;
 
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    },
-                    {
-                        planType: 'company',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
 
             this.personService.update(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
+                        },
+                        {
+                            planType: 'company',
+                            isDefault: false,
+                            planDetails: {
+                                name: facName,
+                                _id: facId
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
@@ -979,11 +999,20 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.billingService.create(billing).then(billingPayload => {
                             console.log(billingPayload);
                             this.close_onClick();
+                            this.paymentPlan = false;
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = false;
+                            this.apmisId_show = false;
+                            this.loading = false
                         }).catch(errr => {
+                            this.loading = false;
                             console.log(errr);
                         });
                 
                     }).catch(err => {
+                        this.loading = false;
                         console.log(err);
                     });
 
@@ -1041,27 +1070,31 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             let facId = this.frmNewEmp1.controls['facId'].value;
             let facName = this.frmNewEmp1.controls['facName'].value;
 
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    },
-                    {
-                        planType: 'insurance',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
 
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
+                        },
+                        {
+                            planType: 'insurance',
+                            isDefault: false,
+                            planDetails: {
+                                name: facName,
+                                _id: facId
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
@@ -1104,11 +1137,20 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.billingService.create(billing).then(billingPayload => {
                             console.log(billingPayload);
                             this.close_onClick();
+                            this.paymentPlan = false;
+                            this.frmNewPerson1_show = false;
+                            this.frmNewPerson2_show = false;
+                            this.frmNewPerson3_show = false;
+                            this.frmNewEmp4_show = false;
+                            this.apmisId_show = false;
+                            this.loading = false
                         }).catch(errr => {
+                            this.loading = false;
                             console.log(errr);
                         });
                 
                     }).catch(err => {
+                        this.loading = false
                         console.log(err);
                     });
 
@@ -1165,87 +1207,119 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             let facId = this.frmNewEmp1.controls['facId'].value;
             let facName = this.frmNewEmp1.controls['facName'].value;
-            let empFcltiId = this.frmNewEmp1.controls['empFcltyId'].value;
-
-            let patient: any = {
-                personId: this.person_Id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    },
-                    {
-                        planType: 'family',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
-
-             
+            let empFcltiId = this.frmNewEmp1.controls['ffId'].value;
 
             this.personService.create(person).then(personPayload => {
                 console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true,
+                            planDetails: {
+                                name: personPayload.firstName+" "+personPayload.lastName,
+                                _id: personPayload._id
+                            }
+                        },
+                        {
+                            planType: 'family',
+                            isDefault: false,
+                            planDetails: {
+                                name: facName,
+                                _id: facId
+                            }
+                        }
+                    ]
+                }
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
-                    this.family[0].enrollees.patientId = payl._id;
-                    this.faService.getFamily(facId, this.family[0]).then(familyPayload => {
+                    //this.family[0].enrollees.patientId = payl._id;
+                    this.faService.findFamily({
+                        _id: facId,
+                        facilityId: empFcltiId
+                    }).then(familyPayload => {
+                        let object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
+                        
+                        let ii = object.i;
+                        delete object.i;
 
-                    });
-                    this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
+                        familyPayload.data[0].familyCovers[ii].patientId = payl._id;
+
+                        this.faService.updateFamily(familyPayload.data[0]).then(famPayl => {
+                            this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
                     
-                        //this.prices = payload.data;
-                        console.log(payloadPrice.data);
-                        let servicePrice = payloadPrice.data[0];
-                        let billing:any = {
-                            discount: 0,
-                            facilityId: this.facility._id,
-                            grandTotal: servicePrice.price,
-                            patientId: payl._id,
-                            subTotal: servicePrice.price,
-                            billItems: [
-                                {
-                                    unitPrice: servicePrice.price,
+                                //this.prices = payload.data;
+                                console.log(payloadPrice.data);
+                                let servicePrice = payloadPrice.data[0];
+                                let billing:any = {
+                                    discount: 0,
                                     facilityId: this.facility._id,
-                                    description: "",
-                                    facilityServiceId: servicePrice.facilityServiceId,
-                                    serviceId: this.planInput,
+                                    grandTotal: servicePrice.price,
                                     patientId: payl._id,
-                                    quantity: 1,
-                                    totalPrice: servicePrice.price,
-                                    unitDiscountedAmount: 0,
-                                    totalDiscoutedAmount: 0,
-                                    modifierId: [],
-                                    covered: {
-                                        coverType: this.coverType,
-                                        _id: facId,
-                                        name: facName
-                                    },
-                                    isServiceEnjoyed: false,
-                                    paymentCompleted: false,
-                                    paymentStatus: [],
-                                    payments: []
-                                    
+                                    subTotal: servicePrice.price,
+                                    billItems: [
+                                        {
+                                            unitPrice: servicePrice.price,
+                                            facilityId: this.facility._id,
+                                            description: "",
+                                            facilityServiceId: servicePrice.facilityServiceId,
+                                            serviceId: this.planInput,
+                                            patientId: payl._id,
+                                            quantity: 1,
+                                            totalPrice: servicePrice.price,
+                                            unitDiscountedAmount: 0,
+                                            totalDiscoutedAmount: 0,
+                                            modifierId: [],
+                                            covered: {
+                                                coverType: this.coverType,
+                                                _id: facId,
+                                                name: facName
+                                            },
+                                            isServiceEnjoyed: false,
+                                            paymentCompleted: false,
+                                            paymentStatus: [],
+                                            payments: []
+                                            
+                                        }
+                                    ]
                                 }
-                            ]
-                        }
-                        this.billingService.create(billing).then(billingPayload => {
-                            console.log(billingPayload);
-                            this.close_onClick();
-                        }).catch(errr => {
-                            console.log(errr);
-                        });
-                
-                    }).catch(err => {
-                        console.log(err);
+                                this.billingService.create(billing).then(billingPayload => {
+                                    console.log(billingPayload);
+                                    this.close_onClick();
+                                    this.paymentPlan = false;
+                                    this.frmNewPerson1_show = false;
+                                    this.frmNewPerson2_show = false;
+                                    this.frmNewPerson3_show = false;
+                                    this.frmNewEmp4_show = false;
+                                    this.apmisId_show = false;
+                                    this.loading = false;
+                                }).catch(errr => {
+                                    this.loading = false;
+                                    console.log(errr);
+                                });
+                        
+                            }).catch(err => {
+                                this.loading = false;
+                                console.log(err);
+                            });
+                        }); 
                     });
+                    
 
                 });
             });
+    }
+
+    findObjectByKey(array, key, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][key] === value) {
+                array[i].i = i;
+                return array[i];
+            }
+        }
+        return null;
     }
 
     saveData(){
@@ -1256,13 +1330,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }else if(this.coverType == 'wallet'){
             this.savePerson();
         }else if(this.coverType == 'family'){
-
+            this.saveFamilyPerson();
         }
     }
 
 
 
     newPerson3(valid, val) {
+        this.loading = true;
         if (this.skipNok || valid) {
             if (this.skipNok) {
                 this.saveData();
@@ -1293,6 +1368,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.apmisId_show = false;
         this.mainErr = true;
         this.skipNok = true;
+        this.loading = true;
         this.saveData();
     }
 

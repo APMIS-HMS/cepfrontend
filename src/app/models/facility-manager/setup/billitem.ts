@@ -19,5 +19,6 @@ export interface BillItem {
     amount: number;
     itemDesc: any;
     unitDiscountedAmount?: number,
-  	totalDiscoutedAmount?: number,
+    totalDiscoutedAmount?: number,
+    covered:any;
 }

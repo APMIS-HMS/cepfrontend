@@ -8,24 +8,21 @@
     <i class="fa fa-check" aria-hidden="true"></i>
     <span>{{successMsg}}</span>
   </div>
-  <div class="pay-wrap">
+  <!-- <div class="pay-wrap">
+      <button mat-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="onPartPay()">Part Pay</button>
+    <div *ngIf="isPartPay== true">
+      <div class="frm-item-wrap">
+        <mat-input-container>
+          <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
+        </mat-input-container>
+      </div>
 
-    <!-- <div class="frm-item-wrap">
-      <mat-select [formControl]="channel" placeholder="Payment Channel">
-        <mat-option *ngFor="let item of paymentChannels" [value]="item.name">{{item.name}}</mat-option>
-      </mat-select>
-    </div> -->
-
-    <div class="frm-item-wrap">
-      <mat-input-container>
-        <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
-      </mat-input-container>
-    </div>
-
-    <div class="frm-item-wrap">
-      <mat-input-container>
-        <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance" readonly>
-      </mat-input-container>
+      <div class="frm-item-wrap">
+        <mat-input-container>
+          <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance"
+            readonly>
+        </mat-input-container>
+      </div>
     </div>
     <div class="btn-group">
       <button mat-raised-btn class="btn btn-primary" [disabled]="isProcessing" (click)="makePayment()">
@@ -41,6 +38,183 @@
       </button>
 
       <button class="btn btn-red" (click)="close_onClick()">Cancel</button>
+    </div>
+  </div> -->
+  <div>
+    <div class="doc-mainWrap">
+      <div class="tab-wrap">
+        <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
+        <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
+        <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+        <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+      </div>
+
+      <div class="tab-content">
+        <div *ngIf="tabWallet">
+          <div class="plan">
+            <div class="plan-title">Out of Pocket</div>
+            <div class="frm-item-wrap">
+              <div class="frm-item-wrap">
+                <input type="checkbox" (change)="onExactCharges($event)" [checked]="isExact" [formControl]="selectOutOfPocket"> Exact Charges
+              </div>
+              <div class="frm-item-wrap" [hidden]="isExact">
+                <input type="checkbox" (change)="onWaverCharges($event)" [formControl]="selectWaved"> Wave
+              </div>
+              <div *ngIf="!isExact">
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                    <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amount" placeholder="Enter Amount">
+                  </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                    <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balance" placeholder="Amount Balance"
+                      readonly>
+                  </mat-input-container>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="tabInsurance">
+          <div class="plan">
+            <div class="plan-title">Insurance</div>
+            <div class="frm-item-wrap">
+              <input type="checkbox" (change)="onInsuranceExactCharges($event)" [checked]="isExactInsurance"> Exact Charges
+            </div>
+            <div class="frm-item-wrap">
+              <mat-select placeholder="Select Plan" [formControl]="insurancePlan">
+                <mat-option *ngFor="let plan of patientInsuranceLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="!isExactInsurance">
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountInsurance" placeholder="Enter Amount">
+                </mat-input-container>
+              </div>
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balanceInsurance" placeholder="Amount Balance"
+                    readonly>
+                </mat-input-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="tabCompany">
+          <div class="plan">
+            <div class="plan-title">Company Cover</div>
+            <div class="frm-item-wrap">
+              <input type="checkbox" (change)="onCompanyExactCharges($event)" [checked]="isExactCompany"> Exact Charges
+            </div>
+            <div class="frm-item-wrap">
+              <mat-select placeholder="Select Plan" [formControl]="companyPlan">
+                <mat-option *ngFor="let plan of patientCompanyLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="!isExactCompany">
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountCompany" placeholder="Enter Amount">
+                </mat-input-container>
+              </div>
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balanceCompany" placeholder="Amount Balance"
+                    readonly>
+                </mat-input-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="tabFamily">
+          <div class="plan">
+            <div class="plan-title">Family Cover</div>
+            <div class="frm-item-wrap">
+              <div class="frm-item-wrap">
+                <input type="checkbox" (change)="onFamilyExactCharges($event)" [checked]="isExactFamily"> Exact Charges
+              </div>
+              <div class="frm-item-wrap">
+                <mat-select placeholder="Select Plan" [formControl]="familyPlan">
+                  <mat-option *ngFor="let plan of patientFamilyLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
+                </mat-select>
+              </div>
+              <div *ngIf="!isExactFamily">
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                    <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="amountFamily" placeholder="Enter Amount">
+                  </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                    <input matInput mat-error currencyMask [options]="{ prefix: '&#x20a6; '}" [formControl]="balanceFamily" placeholder="Amount Balance"
+                      readonly>
+                  </mat-input-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing"
+          (click)="onOutOfPocket()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabInsurance" [hidden]="!insurancePlan.valid" [disabled]="isProcessing" (click)="onInsuranceCover()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabCompany" [hidden]="!companyPlan.valid" [disabled]="isProcessing" (click)="onCompanyCover()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+
+
+        <button mat-raised-btn class="btn btn-primary" *ngIf="tabFamily" [disabled]="isProcessing" (click)="onFamilyCover()">
+          <span>
+            <div [hidden]="isProcessing">
+              Complete
+            </div>
+            <div [hidden]="!isProcessing">
+              Processing...
+              <i class='fa fa-spinner fa-spin'></i>
+            </div>
+          </span>
+        </button>
+        <button class="btn btn-red" (click)="close_onClick()">Cancel</button>
+
+      </div>
     </div>
   </div>
 </div>

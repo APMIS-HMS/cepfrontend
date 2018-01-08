@@ -338,11 +338,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       if (isOnList.length > 0) {
         this.locker.setObject('patient', appointment.patientId);
+        this.locker.setObject('appointment', '');
+            this.locker.setObject('appointment', appointment);
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
           .then((payload) => {
-            this.locker.setObject('appointment', '');
-            this.locker.setObject('appointment', appointment);
             this.appointmentService.appointmentAnnounced(appointment);
           });
       } else {
