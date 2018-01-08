@@ -3,60 +3,67 @@
 
     <form [formGroup]="facilityForm1" novalidate>
 
-      <div class="lhs">
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="Facility Name" formControlName="facilityname" value="inputFacility.name">
-            </mat-input-container>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="Facility Short Name" formControlName="facilityalias" value="inputFacility.shortName">
-            </mat-input-container>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-select placeholder="Type of Facility"  formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
-                <mat-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</mat-option>
-            </mat-select>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-select placeholder="Facility Category"  formControlName="facilitycategory">
-                <mat-option *ngFor="let item of selectedFacilityType?.facilityClasses"  [value]="item._id">{{item.name}}</mat-option>
-            </mat-select>
-        </div>
-      </div>
-
-      <div class="rhs">
-        <div class="frm-item-wrap">
-            <mat-select placeholder="Facility Ownership"  formControlName="facilityownership">
-                <mat-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</mat-option>
-            </mat-select>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input type="email" matInput mat-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email" (keyup)="onCheckEmailAddress($event.target.value)">
-            </mat-input-container>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite" value="inputFacility.website">
-            </mat-input-container>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-select placeholder="Select Country"  formControlName="facilitycountry">
-                <mat-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</mat-option>
-            </mat-select>
+        <div class="lhs">
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="Facility Name" formControlName="facilityname" value="inputFacility.name">
+                </mat-input-container>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="Facility Short Name" formControlName="facilityalias" value="inputFacility.shortName">
+                </mat-input-container>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-form-field>
+                    <mat-select placeholder="Type of Facility" formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
+                        <mat-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-form-field>
+                    <mat-select placeholder="Facility Category" formControlName="facilitycategory">
+                        <mat-option *ngFor="let item of selectedFacilityType?.facilityClasses" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
 
-      </div>
+        <div class="rhs">
+            <div class="frm-item-wrap">
+                <mat-form-field>
+                    <mat-select placeholder="Facility Ownership" formControlName="facilityownership">
+                        <mat-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input type="email" matInput mat-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email" (keyup)="onCheckEmailAddress($event.target.value)">
+                </mat-input-container>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite" value="inputFacility.website">
+                </mat-input-container>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-form-field>
+                    <mat-select placeholder="Select Country" formControlName="facilitycountry">
+                        <mat-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
 
-      <div class="clear"></div>
+        </div>
 
-      <button (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" [disabled]="!facilityForm1.valid" class="cta-1">
+        <div class="clear"></div>
+
+        <button (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" [disabled]="!facilityForm1.valid" class="cta-1">
         CONTINUE
       </button>
 
     </form>
 </div>
 <!-- <app-contact-info *ngIf="sg1_1_show" (closeModal)="close_onClick($event)" [inputFacility] = "inputFacility"></app-contact-info> -->
-  
