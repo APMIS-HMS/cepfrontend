@@ -17,13 +17,15 @@
                 <form [formGroup]="addDiagnosisForm" novalidate>
                     <div>
                         <div class="frm-item-wrap">
-                            <mat-select placeholder="Type" formControlName="type">
-                                <mat-option [value]="1">Principal</mat-option>
-                                <mat-option [value]="1">Associated</mat-option>
-                                <mat-option [value]="1">Complication</mat-option>
-                                <mat-option [value]="1">Working</mat-option>
-                                <mat-option [value]="1">Rule Out</mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Type" formControlName="type">
+                                    <mat-option [value]="1">Principal</mat-option>
+                                    <mat-option [value]="1">Associated</mat-option>
+                                    <mat-option [value]="1">Complication</mat-option>
+                                    <mat-option [value]="1">Working</mat-option>
+                                    <mat-option [value]="1">Rule Out</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
 
                         <div class="frm-item-wrap">
@@ -45,13 +47,15 @@
                         <tr>
                             <td>
                                 <div class="frm-item-wrap">
-                                    <mat-select placeholder="Type" [formControl]="favorite_type">
-                                        <mat-option [value]="1">Principal</mat-option>
-                                        <mat-option [value]="1">Associated</mat-option>
-                                        <mat-option [value]="1">Complication</mat-option>
-                                        <mat-option [value]="1">Working</mat-option>
-                                        <mat-option [value]="1">Rule Out</mat-option>
-                                    </mat-select>
+                                    <mat-form-field>
+                                        <mat-select placeholder="Type" [formControl]="favorite_type">
+                                            <mat-option [value]="1">Principal</mat-option>
+                                            <mat-option [value]="1">Associated</mat-option>
+                                            <mat-option [value]="1">Complication</mat-option>
+                                            <mat-option [value]="1">Working</mat-option>
+                                            <mat-option [value]="1">Rule Out</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
                             </td>
                             <td>
@@ -109,13 +113,15 @@
                         <tr>
                             <td>
                                 <div class="frm-item-wrap">
-                                    <mat-select placeholder="Type" [formControl]="recently_type">
-                                        <mat-option [value]="1">Principal</mat-option>
-                                        <mat-option [value]="1">Associated</mat-option>
-                                        <mat-option [value]="1">Complication</mat-option>
-                                        <mat-option [value]="1">Working</mat-option>
-                                        <mat-option [value]="1">Rule Out</mat-option>
-                                    </mat-select>
+                                    <mat-form-field>
+                                        <mat-select placeholder="Type" [formControl]="recently_type">
+                                            <mat-option [value]="1">Principal</mat-option>
+                                            <mat-option [value]="1">Associated</mat-option>
+                                            <mat-option [value]="1">Complication</mat-option>
+                                            <mat-option [value]="1">Working</mat-option>
+                                            <mat-option [value]="1">Rule Out</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
                             </td>
                             <td>

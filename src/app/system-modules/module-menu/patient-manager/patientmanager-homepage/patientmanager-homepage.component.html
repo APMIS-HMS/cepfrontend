@@ -103,7 +103,7 @@
 </table>
 
 <div class="btn-center">
-    <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore" >Load More</button>  
+    <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore">Load More</button>
 </div>
 <div style="text-align:center; margin-top:20px;" *ngIf="total > 0">{{loadMoreText}} </div>
 <div *ngIf="editPatient">
@@ -125,11 +125,13 @@
                                             <mat-tab label="Patient" style="padding: 10px;">
                                                 <div class="patient-detail-wrapper">
                                                     <div class="col-sm-6">
-                                                        <mat-select formControlName="title" placeholder="Title">
-                                                            <mat-option *ngFor="let title of titles" [value]="title">
-                                                                {{title.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select formControlName="title" placeholder="Title">
+                                                                <mat-option *ngFor="let title of titles" [value]="title">
+                                                                    {{title.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-input-container>
@@ -152,39 +154,49 @@
                                                         </mat-input-container>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <mat-select formControlName="gender" placeholder="Gender">
-                                                            <mat-option *ngFor="let gender of genders" [value]="gender">
-                                                                {{gender.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select formControlName="gender" placeholder="Gender">
+                                                                <mat-option *ngFor="let gender of genders" [value]="gender">
+                                                                    {{gender.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6" style="margin-top: 20px;">
-                                                        <mat-select placeholder="Country" formControlName="country">
-                                                            <mat-option *ngFor="let country of countries" [value]="country">
-                                                                {{country.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="Country" formControlName="country">
+                                                                <mat-option *ngFor="let country of countries" [value]="country">
+                                                                    {{country.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6" style="margin-top: -40px;">
-                                                        <mat-select placeholder="State" formControlName="state">
-                                                            <mat-option *ngFor="let state of states" [value]="state">
-                                                                {{state.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="State" formControlName="state">
+                                                                <mat-option *ngFor="let state of states" [value]="state">
+                                                                    {{state.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6" style="margin-top: 20px;">
-                                                        <mat-select placeholder="City" formControlName="city">
-                                                            <mat-option *ngFor="let city of cities" [value]="city">
-                                                                {{city.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="City" formControlName="city">
+                                                                <mat-option *ngFor="let city of cities" [value]="city">
+                                                                    {{city.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6" style="margin-top: 20px;">
-                                                        <mat-select placeholder="L.G.A" formControlName="lga">
-                                                            <mat-option *ngFor="let lga of lgas" [value]="lga">
-                                                                {{lga.name}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="L.G.A" formControlName="lga">
+                                                                <mat-option *ngFor="let lga of lgas" [value]="lga">
+                                                                    {{lga.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-xs-12" style="margin-top: 20px;">
                                                         <mat-input-container style="width: 100%;">
@@ -216,11 +228,13 @@
                                                                 <mat-input-container class="example-full-width" style="margin-left: 5px;">
                                                                     <input matInput type="email" placeholder="Email" formControlName="email">
                                                                 </mat-input-container>
-                                                                <mat-select placeholder="Relationship" formControlName="relationship">
-                                                                    <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
-                                                                        {{relationship.name}}
-                                                                    </mat-option>
-                                                                </mat-select>
+                                                                <mat-form-field>
+                                                                    <mat-select placeholder="Relationship" formControlName="relationship">
+                                                                        <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                                                            {{relationship.name}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
                                                             </div>
                                                         </div>
                                                     </div>
