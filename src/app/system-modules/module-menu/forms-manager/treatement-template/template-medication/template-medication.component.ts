@@ -91,7 +91,10 @@ export class TemplateMedicationComponent implements OnInit {
         patientInstruction: value.specialInstruction,
         refillCount: value.refillCount,
         ingredients: this.selectedIngredients,
-        form: this.selectedForm
+        form: this.selectedForm,
+        comment: '',
+        status: 'Not Started',
+        completed: false,
       };
 
       if (this.medications.length > 0) {

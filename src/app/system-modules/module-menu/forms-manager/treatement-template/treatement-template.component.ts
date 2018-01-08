@@ -41,7 +41,6 @@ export class TreatementTemplateComponent implements OnInit {
   editingTemplateText: boolean = false;
   disableBtn: boolean = true;
   user: any = <any>{};
-  // category: string = 'medication';
 
   constructor(
     private formBuilder: FormBuilder,

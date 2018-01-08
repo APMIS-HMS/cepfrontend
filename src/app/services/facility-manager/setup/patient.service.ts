@@ -71,6 +71,21 @@ export class PatientService {
     return this._socket.get(id, query);
   }
 
+  abridgePatient(patient) {
+    console.log(patient);
+    return {
+      _id: patient._id,
+      personId: patient.personId,
+      personDetails: {
+        _id: patient.personDetails._id,
+        apmisId: patient.personDetails.apmisId,
+        email: patient.personDetails.email,
+        firstName: patient.personDetails.firstName,
+        lastName: patient.personDetails.lastName
+      }
+    }
+  }
+
   create(patient: any) {
     return this._socket.create(patient);
   }
@@ -86,6 +101,6 @@ export class PatientService {
     const path = host + '/patient';
     return request
       .get(path)
-      .query({ facilityid: facilityId, searchtext: searchText }); // query string 
+      .query({ facilityid: facilityId, searchtext: searchText }); // query string
   }
 }

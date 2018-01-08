@@ -13,23 +13,24 @@ import { ScopeLevelService, FormTypeService } from '../../../services/module-man
 import { OrderSetTemplateService } from '../../../services/facility-manager/setup/index';
 import { FormsService } from '../../../services/facility-manager/setup/index';
 import { TreatementTemplateComponent } from './treatement-template/treatement-template.component';
-import { TemplateMedicationComponent } from './treatement-template/template-medication/template-medication.component';
-import { TemplateLabComponent } from './treatement-template/template-lab/template-lab.component';
-import { TemplateProcedureComponent } from './treatement-template/template-procedure/template-procedure.component';
-import { TemplateNursingCareComponent } from './treatement-template/template-nursing-care/template-nursing-care.component';
-import { TemplatePhysicianOrderComponent } from './treatement-template/template-physician-order/template-physician-order.component';
-import { OrderSetSharedService } from '../../../services/facility-manager/order-set-shared-service';
+// import { TemplateMedicationComponent } from './treatement-template/template-medication/template-medication.component';
+// import { TemplateLabComponent } from './treatement-template/template-lab/template-lab.component';
+// import { TemplateProcedureComponent } from './treatement-template/template-procedure/template-procedure.component';
+// import { TemplateNursingCareComponent } from './treatement-template/template-nursing-care/template-nursing-care.component';
+// import { TemplatePhysicianOrderComponent } from './treatement-template/template-physician-order/template-physician-order.component';
+// import { OrderSetSharedService } from '../../../services/facility-manager/order-set-shared-service';
 
 @NgModule({
     declarations: [
         FormsManagerComponent,
         FormsComponent,
         TreatementTemplateComponent,
-        TemplateMedicationComponent,
-        TemplateLabComponent,
-        TemplateProcedureComponent,
-        TemplateNursingCareComponent,
-        TemplatePhysicianOrderComponent],
+        // TemplateMedicationComponent,
+        // TemplateLabComponent,
+        // TemplateProcedureComponent,
+        // TemplateNursingCareComponent,
+        // TemplatePhysicianOrderComponent
+      ],
     exports: [
     ],
     imports: [
@@ -39,7 +40,9 @@ import { OrderSetSharedService } from '../../../services/facility-manager/order-
         // FormsModule,
         formsManagerRoutes
     ],
-    providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService, OrderSetSharedService, OrderSetTemplateService,
+    providers: [SystemModulesResolverService, ScopeLevelService, FormTypeService,
+      // OrderSetSharedService,
+       OrderSetTemplateService,
         ScopeLevelResolverService, FormTypeResolverService, FormsService, SharedService, DocumentationTemplateService]
 })
 export class FormsManagerModule { }

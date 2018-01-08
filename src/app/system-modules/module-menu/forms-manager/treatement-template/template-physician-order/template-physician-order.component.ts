@@ -30,7 +30,12 @@ export class TemplatePhysicianOrderComponent implements OnInit {
 
   onClickAddPhysicianOrder(valid: boolean, value: any) {
     if (valid) {
-      const physicianOrder = { name: value.physicianOrder };
+      const physicianOrder = {
+        name: value.physicianOrder,
+        comment: '',
+        status: 'Not Done',
+        completed: false
+      };
 
       if (this.physicianOrders.length > 0) {
         // Check if generic has been added already.

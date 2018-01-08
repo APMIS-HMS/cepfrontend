@@ -47,6 +47,22 @@ import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import {
+  TemplateMedicationComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-medication/template-medication.component';
+import {
+  TemplateLabComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-lab/template-lab.component';
+import {
+  TemplateProcedureComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-procedure/template-procedure.component';
+import {
+  TemplateNursingCareComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-nursing-care/template-nursing-care.component';
+import {
+  TemplatePhysicianOrderComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-physician-order/template-physician-order.component';
+import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
 // import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
@@ -57,6 +73,11 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     SurveyEditorComponent,
     ProductSearchComponent,
     Angular4FlutterwaveComponent,
+    TemplateMedicationComponent,
+    TemplateLabComponent,
+    TemplateProcedureComponent,
+    TemplateNursingCareComponent,
+    TemplatePhysicianOrderComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
     // ContactInfoComponent,
@@ -81,6 +102,11 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     SingUpAccountsSharedModule,
     Angular4FlutterwaveComponent,
     Angular4PaystackModule,
+    TemplateMedicationComponent,
+    TemplateLabComponent,
+    TemplateProcedureComponent,
+    TemplateNursingCareComponent,
+    TemplatePhysicianOrderComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
     // ContactInfoComponent,
@@ -101,7 +127,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
     MaterialModule
     // DragulaModule
   ],
-  providers: [StoreService, WindowRef, SystemModuleService]
+  providers: [StoreService, WindowRef, OrderSetSharedService, SystemModuleService]
 })
 export class SharedModule {}
 
