@@ -60,6 +60,7 @@ const presentation = require('./presentation/presentation.service.js');
 const productroutes = require('./productroutes/productroutes.service.js');
 const producttype = require('./producttype/producttype.service.js');
 const productvariant = require('./productvariant/productvariant.service.js');
+const profession = require('./profession/profession.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -123,4 +124,5 @@ module.exports = function (app) {
   app.configure(productroutes);
   app.configure(producttype);
   app.configure(productvariant);
+  app.configure(profession);
 };
