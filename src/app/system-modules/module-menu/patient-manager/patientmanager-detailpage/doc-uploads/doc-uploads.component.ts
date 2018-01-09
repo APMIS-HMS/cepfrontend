@@ -27,7 +27,11 @@ export class DocUploadsComponent implements OnInit {
   constructor(
     private facilityService: FacilitiesService,
     private docUploadService: DocumentUploadService,
-    private locker: CoolLocalStorage) { }
+    private locker: CoolLocalStorage) {
+    this.docUploadService.listner.subscribe(payload => {
+      this.getDocuments();
+    })
+  }
 
   ngOnInit() {
     this.getDocuments();
