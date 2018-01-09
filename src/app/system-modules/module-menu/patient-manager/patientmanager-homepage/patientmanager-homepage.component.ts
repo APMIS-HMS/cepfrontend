@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnChanges, Input, ViewChild, ElementRef } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
@@ -20,10 +20,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   editPatient = false;
   payPlan = false;
+  newUpload = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
   @Input() resetData: Boolean;
   @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   facility: Facility = <Facility>{};
   user: User = <User>{};
@@ -395,6 +397,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   close_onClick() {
     this.editPatient = false;
     this.payPlan = false;
+    this.newUpload = false;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);
   }
@@ -422,4 +425,17 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       text: text
     });
   }
+
+  onChange(e){
+    //upload stuff
+  }
+  showImageBrowseDlg(){
+    this.fileInput.nativeElement.click()
+  }
+  newUpload_show(){
+    this.newUpload = true;
+  }
+
+
+
 }
