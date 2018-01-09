@@ -2,15 +2,11 @@ import { FacilitiesService } from './../../../../services/facility-manager/setup
 import { FacilityOwnershipService } from './../../../../services/module-manager/setup/facility-ownership.service';
 import { FacilityTypeFacilityClassFacadeService } from './../../../service-facade/facility-type-facility-class-facade.service';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
-<<<<<<< HEAD
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-
-=======
  
->>>>>>> remotes/origin/facility-signup
 @Component({
 	selector: 'app-facility-basicinfo-edit',
 	templateUrl: './facility-basicinfo-edit.component.html',
