@@ -32,7 +32,6 @@ export class SharedService {
   }
 
   announceNewForm(form: Object) {
-    console.log(form);
     this.newFormAnnouncedSource.next(form);
   }
 

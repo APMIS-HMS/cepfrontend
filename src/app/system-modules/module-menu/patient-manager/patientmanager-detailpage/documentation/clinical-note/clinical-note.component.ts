@@ -58,6 +58,7 @@ export class ClinicalNoteComponent implements OnInit {
     this.sharedService.submitForm$.subscribe(value => {
       this.symptoms = [];
       this.showDocument = false;
+      this.orderSet = {};
     });
 
     this.templateFormCtrl = new FormControl();
@@ -79,8 +80,10 @@ export class ClinicalNoteComponent implements OnInit {
     this.getTemplates();
 
     this.sharedService.announceOrderSetSource$.subscribe(value => {
-      console.log(value);
       this.orderSet = value;
+      const payload = {  type: 'OrderSet', action: 'add', data: value };
+      // Send order set data one after another to the shared service
+      this.sharedService.announceDiagnosisSystemOrder(payload);
     });
   }
 
@@ -132,9 +135,7 @@ export class ClinicalNoteComponent implements OnInit {
     this.showOrderSet = false;
   }
   showOrderset_onClick() {
-    console.log('Clicked');
     this.showOrderSet = true;
-    // this.showOrderset.emit(true);
   }
 
   filterForms(val: any) {
