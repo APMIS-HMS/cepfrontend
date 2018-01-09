@@ -22,6 +22,7 @@ export class InvoiceComponent implements OnInit {
     priceItemDetailPopup = false;
     makePaymentPopup = false;
     isPaidClass = false;
+    isWaved = false;
     addItem = false;
     itemEditShow = false;
     itemEditShow2 = false;
@@ -161,6 +162,8 @@ export class InvoiceComponent implements OnInit {
         this.selectedPatient.personDetails = person;
         this.isLoadingInvoice = false;
         this.isLoadingOtherInvoice = false;
+        this.isPaidClass = person.isPaid;
+        this.isWaved = person.isWaved;
         this.isPaymentMade = true;
         this.getPatientInvoices();
     }

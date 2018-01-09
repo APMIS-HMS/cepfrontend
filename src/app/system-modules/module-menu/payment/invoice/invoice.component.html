@@ -123,7 +123,7 @@
             </div>
             <div class="clear"></div>
           </div>
-          <div *ngIf="this.selectedInvoiceGroup.paymentCompleted != undefined" class="{{ !isPaidClass ? 'invoice unpaid': 'invoice paid' }}">
+          <div *ngIf="this.selectedInvoiceGroup.paymentCompleted != undefined" class="{{ !isPaidClass ? 'invoice unpaid': 'invoice paid'}}">
             <div class="billContentSect">
               <!--<div *ngIf="selectedPatient._id != undefined" (click)="addItem_show()" class="cta-1 btn-addItem">
                     Add Item
@@ -161,12 +161,12 @@
                         <span>&#8358;</span>{{billItem.billObject?.totalPrice|numberThr}}</div>
                     </td>
                     <td class="col3">
-                      <div class="topTotal" *ngIf="billItem.billObject?.isServiceEnjoyed && !isPaidClass">
-                        Waved</div>
+                      <div class="topTotal" *ngIf="billItem.billObject?.isServiceEnjoyed && !isPaidClass || isWaved">
+                        WAVED</div>
                       <div class="topTotal" *ngIf="!billItem.billObject?.isServiceEnjoyed && !isPaidClass">
-                        Unpaid</div>
+                        UNPAID</div>
                       <div class="topTotal" *ngIf="isPaidClass">
-                        Paid</div>
+                        PAID</div>
                     </td>
                     <!--<td class="col5">
                           <i [hidden]="itemEditShow" (click)="itemEditToggle()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
