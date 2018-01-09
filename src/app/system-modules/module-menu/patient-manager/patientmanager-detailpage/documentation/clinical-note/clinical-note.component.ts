@@ -143,8 +143,7 @@ export class ClinicalNoteComponent implements OnInit {
   }
 
   filterForms(val: any) {
-    return val ? this.forms.filter(s => s.title.toLowerCase().indexOf(val.toLowerCase()) === 0)
-      : this.forms;
+    return val ? this.forms.filter(s => s.title.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.forms;
   }
 
   formDisplayFn(form: any): string {
