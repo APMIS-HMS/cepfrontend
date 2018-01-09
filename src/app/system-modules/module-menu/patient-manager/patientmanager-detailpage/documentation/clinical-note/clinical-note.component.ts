@@ -37,6 +37,7 @@ export class ClinicalNoteComponent implements OnInit {
   documents: Document[] = [];
   templates: any[] = [];
   symptoms: any[] = [];
+  diagnoses: any[] = [];
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
@@ -165,6 +166,19 @@ export class ClinicalNoteComponent implements OnInit {
   deleteSymptom(item) {
     this.symptoms = this.symptoms.filter(e => e !== item);
     this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'remove', data: item });
+  }
+
+  addDiagnosis(item) {
+    if (item.name && item.code) {
+      this.diagnoses.push(item);
+    }
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'add', data: item });
+    console.log(this.diagnoses);
+  }
+
+  removeDiagnosis(item) {
+    this.diagnoses = this.diagnoses.filter(e => e !== item);
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'remove', data: item });
   }
 
 }

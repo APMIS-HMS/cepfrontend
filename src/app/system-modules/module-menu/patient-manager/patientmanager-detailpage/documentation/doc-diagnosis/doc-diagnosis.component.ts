@@ -9,27 +9,12 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 export class DocDiagnosisComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() diagnosis: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removediagnosis: EventEmitter<any> = new EventEmitter<any>();
 
   _tempDiagnosis;
 
-  diagnoses = [
-    {
-      name : 'Epiphora',
-      code : 'H04.2'
-    },
-    {
-      name : 'Dacryoadenitis',
-      code : 'H04.0'
-    },
-    {
-      name : 'Exophthalmic conditions',
-      code : 'H05.2'
-    },
-    {
-      name : 'Deformity of orbit',
-      code : 'H05.3'
-    }
-  ]
+  diagnoses = [];
 
   tab_all = true;
   tab_favourite = false;
@@ -92,11 +77,13 @@ export class DocDiagnosisComponent implements OnInit {
   add_onClick() {
     if (this._tempDiagnosis.name && this._tempDiagnosis.code) {
       this.diagnoses.push(this._tempDiagnosis);
+      this.diagnosis.emit(this._tempDiagnosis);
     }
   }
 
   deleteDiagonis(item) {
     this.diagnoses = this.diagnoses.filter(e => e !== item);
+    this.removediagnosis.emit(item);
   }
 
   done() {
