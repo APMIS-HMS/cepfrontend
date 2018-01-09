@@ -81,8 +81,6 @@ export class OrderSetComponent implements OnInit {
 
       console.log(this.orderSet);
     });
-
-    this._getDocumentationForm();
   }
 
   showOrderSetType(type: string) {
@@ -109,7 +107,6 @@ export class OrderSetComponent implements OnInit {
       };
 
       this._treatmentSheetService.create(treatementSheet).then(treatment => {
-        console.log(treatment);
         this.sharedService.announceOrderSet(this.orderSet);
         this.close_onClickModal();
       }).catch(err => {
@@ -142,8 +139,6 @@ export class OrderSetComponent implements OnInit {
     this.diagnosis.setValue('');
     this.template.setValue(value.name);
     this.orderSet = JSON.parse(value.body);
-    console.log(this.orderSet);
-    console.log(value);
   }
 
   apmisDLookupHandleSelectedItem(value: any) {
@@ -151,27 +146,13 @@ export class OrderSetComponent implements OnInit {
     this.template.setValue('');
     this.diagnosis.setValue(value.diagnosis);
     this.orderSet = JSON.parse(value.body);
-    console.log(value);
   }
 
-  private _getDocumentationForm() {
-    this._formService.findAll().then(res => {
-      console.log(res);
-      const selectedForm = res.data.filter(x => new RegExp('Treatment Plan', 'i').test(x.title));
-      if (selectedForm.length > 0) {
-        this.selectedForm = selectedForm[0];
-      } else {
-        this._notification('Error', 'Please create document type of \'Treatment Plan\'');
-      }
-      console.log(this.selectedForm);
-    }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
-  }
 
   private _getOrderSetTemplate() {
     this._orderSetTemplateService.find({
       query: { facilityId: this.facility._id }
     }).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         console.log(JSON.parse(res.data[0].body));
         this.orderSet = JSON.parse(res.data[0].body);
@@ -191,7 +172,6 @@ export class OrderSetComponent implements OnInit {
   }
 
   close_onClickModal() {
-    console.log('click');
     this.closeModal.emit(true);
   }
 
