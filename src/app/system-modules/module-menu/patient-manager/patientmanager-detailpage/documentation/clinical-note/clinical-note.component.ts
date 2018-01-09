@@ -40,7 +40,7 @@ export class ClinicalNoteComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
-  showOrderSet: boolean = false;
+  showOrderSet = false;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
@@ -52,7 +52,12 @@ export class ClinicalNoteComponent implements OnInit {
     this.selectFormCtrl = new FormControl();
     this.selectFormCtrl.valueChanges.subscribe(form => {
       this.setSelectedForm(form)
-    })
+    });
+
+    this.sharedService.submitForm$.subscribe(value => {
+      this.symptoms = [];
+      this.showDocument = false;
+    });
 
     this.templateFormCtrl = new FormControl();
     this.templateFormCtrl.valueChanges.subscribe(temp => {
@@ -91,10 +96,10 @@ export class ClinicalNoteComponent implements OnInit {
       }))
     )).subscribe((results: any) => {
       console.log(results);
-        this.forms = results.data;
-      }, error => {
-        this.getForms();
-      })
+      this.forms = results.data;
+    }, error => {
+      this.getForms();
+    })
   }
   setSelectedForm(form) {
     this.selectedForm = form;
@@ -111,6 +116,7 @@ export class ClinicalNoteComponent implements OnInit {
       }
     })
   }
+
   close_onClick() {
     this.closeModal.emit(true);
     this.docSymptom_view = false;
@@ -119,7 +125,7 @@ export class ClinicalNoteComponent implements OnInit {
   showOrderset_onClick() {
     console.log('Clicked');
     this.showOrderSet = true;
-     // this.showOrderset.emit(true);
+    // this.showOrderset.emit(true);
   }
 
   filterForms(val: any) {
@@ -142,11 +148,13 @@ export class ClinicalNoteComponent implements OnInit {
     if (item.name && item.code) {
       this.symptoms.push(item);
     }
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnosis', action: 'add', data: item });
     console.log(this.symptoms);
   }
 
   deleteSymptom(item) {
     this.symptoms = this.symptoms.filter(e => e !== item);
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnosis', action: 'remove', data: item });
   }
 
 }

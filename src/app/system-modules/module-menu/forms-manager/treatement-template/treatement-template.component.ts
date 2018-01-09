@@ -35,11 +35,11 @@ export class TreatementTemplateComponent implements OnInit {
   scopeLevels: any[] = [];
   forms: any[] = [];
   orderSet: OrderSetTemplate = <OrderSetTemplate>{};
-  saveTemplateText: boolean = true;
-  savingTemplateText: boolean = false;
-  editTemplateText: boolean = false;
-  editingTemplateText: boolean = false;
-  disableBtn: boolean = true;
+  saveTemplateText = true;
+  savingTemplateText = false;
+  editTemplateText = false;
+  editingTemplateText = false;
+  disableBtn = true;
   user: any = <any>{};
 
   constructor(
@@ -55,9 +55,9 @@ export class TreatementTemplateComponent implements OnInit {
     private _orderSetSharedService: OrderSetSharedService
   ) {
     this.sharedService.submitForm$.subscribe(payload => {
-      let isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
-      let isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
-      let isNameValid = this.frmnewTemplate.controls.name.valid;
+      const isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
+      const isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
+      const isNameValid = this.frmnewTemplate.controls.name.valid;
       if (isVisibilityValid && isFormValid && isNameValid) {
         const doc = {
           data: payload,
@@ -68,7 +68,7 @@ export class TreatementTemplateComponent implements OnInit {
         };
         this.documentationTemplateService
           .create(doc)
-          .then(payload => {
+          .then(payload2 => {
             this.frmnewTemplate.reset();
           })
           .catch(err => {});
@@ -176,7 +176,7 @@ export class TreatementTemplateComponent implements OnInit {
     const phy = o.physicianOrders === undefined;
     const pro = o.procedures === undefined;
     if (type === 'Order Set') {
-      if ((form.diagnosis === ''|| form.name === '' || form.type === ''|| form.visibility === '') || (inves && med && nur && phy && pro)) {
+      if ((form.diagnosis === ''|| form.name === '' || form.type === '' || form.visibility === '') || (inves && med && nur && phy && pro)) {
           return false;
       } else {
         return true;

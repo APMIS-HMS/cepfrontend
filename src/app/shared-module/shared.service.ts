@@ -16,10 +16,17 @@ export class SharedService {
   private announceTemplateSource = new Subject<Object>();
   announceTemplate$ = this.announceTemplateSource.asObservable();
 
+  private announceDiagnosisSystemOrderSource = new Subject<Object>();
+  announceDiagnosisSystemOrder$ = this.announceDiagnosisSystemOrderSource.asObservable();
+
   constructor() { }
 
   announceTemplate(temp: Object) {
     this.announceTemplateSource.next(temp);
+  }
+
+  announceDiagnosisSystemOrder(temp: Object) {
+    this.announceDiagnosisSystemOrderSource.next(temp);
   }
 
   announceNewForm(form: Object) {
