@@ -33,7 +33,7 @@ export class MakePaymentComponent implements OnInit {
   isPartPay = true;
   isPartPayInsurance = true;
   isWaved = false;
-  isExact = false;
+  isExact = true;
   isExactInsurance = false;
   isExactCompany = false;
   isExactFamily = false;
@@ -68,6 +68,7 @@ export class MakePaymentComponent implements OnInit {
   patientFamilyLists = [];
 
   balance;
+  wavedDescription = new FormControl('', []);
   amount = new FormControl('', []);
   selectOutOfPocket = new FormControl('', []);
   selectWaved = new FormControl('', []);
@@ -99,6 +100,10 @@ export class MakePaymentComponent implements OnInit {
     this.balanceInsurance = new FormControl(this.cost, []);
     this.balanceCompany = new FormControl(this.cost, []);
     this.balanceFamily = new FormControl(this.cost, []);
+    if (this.isExact == true) {
+      this.amount.setValue(this.cost);
+      this.balance.setValue(0);
+    }
     this.amount.valueChanges.subscribe(value => {
       var bal = this.cost - value;
       if (bal >= 0) {
@@ -221,9 +226,9 @@ export class MakePaymentComponent implements OnInit {
 
   onWaverCharges(event: any) {
     this.isWaved = event.target.checked;
-    if (this.isWaved) {
-      this.amount.setValue(this.cost);
-      this.balance.setValue(0);
+    if (this.isWaved == true) {
+      this.amount.setValue(0);
+      this.balance.setValue(this.cost);
     }
   }
 
@@ -252,7 +257,7 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onOutOfPocket() {
-    if (this.amount.value != '' && this.amount.value != 0) {
+    if ((this.amount.value != '' && this.amount.value != 0) || this.isWaved == true) {
       if (this.selectedPatient.personDetails.wallet != undefined) {
         if (this.selectedPatient.personDetails.wallet.balance < this.cost) {
           this._notification('Info', "You donot have sufficient balance to make this payment");
@@ -284,7 +289,7 @@ export class MakePaymentComponent implements OnInit {
       } else {
         this._notification('Info', "You donot have sufficient balance to make this payment");
       }
-    }else{
+    } else {
       this._notification('Error', "Please enter a valid amount");
     }
   }
@@ -392,7 +397,7 @@ export class MakePaymentComponent implements OnInit {
   makePayment(val) {
     console.log(val);
     this.isProcessing = true;
-    var paymantObj = {};
+    var paymantObj:any = {};
     if (this.isInvoicePage == false) {
       paymantObj = {
         "inputedValue": {
@@ -400,6 +405,7 @@ export class MakePaymentComponent implements OnInit {
           "amountPaid": val.amountPaid,
           "balance": this.bAmount,
           "cost": this.cost,
+          "isWaved": this.isWaved,
           "transactionType": TransactionType[TransactionType.Dr]
         },
         "billGroups": this.billGroups,
@@ -411,6 +417,12 @@ export class MakePaymentComponent implements OnInit {
         "listedBillItems": this.listedBillItems,
         "isInvoicePage": false
       }
+      if (this.isWaved) {
+        paymantObj.reason =  this.wavedDescription.value;
+      }
+      if(this.bAmount == 0){
+        paymantObj.transactionStatus = TransactionStatus.Complete;
+      }
     } else {
       paymantObj = {
         "inputedValue": {
@@ -418,11 +430,18 @@ export class MakePaymentComponent implements OnInit {
           "amountPaid": val.amountPaid,
           "balance": this.bAmount,
           "cost": this.cost,
+          "isWaved": this.isWaved,
           "transactionType": TransactionType[TransactionType.Dr]
         },
         "invoice": this.invoice,
         "selectedPatient": this.selectedPatient,
         "isInvoicePage": true
+      }
+      if (this.isWaved) {
+        paymantObj.reason =  this.wavedDescription.value;
+      }
+      if(this.bAmount == 0){
+        paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     }
     console.log(paymantObj);
@@ -431,8 +450,13 @@ export class MakePaymentComponent implements OnInit {
       this.isProcessing = false;
       this.balance.setValue(0);
       this.close_onClick();
-      this._notification('Success', 'Payment successfull.');
-    },error=>{
+      if(!payload.data.isWaved){
+        this._notification('Success', 'Payment successfull.');
+      }else{
+        this._notification('Success', 'Payment waved successfull.');
+      }
+      
+    }, error => {
       this._notification('Error', 'Fail to make payment pls try again later');
     });
   }
