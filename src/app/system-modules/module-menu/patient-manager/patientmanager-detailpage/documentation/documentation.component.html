@@ -52,8 +52,8 @@
                         <div class="card-sect">
                             <div class="docCard-sectContent">
                                 <div *ngFor="let key of document?.document?.body | keys">
-                                    <div class="sect-key">{{key}}:</div>
-                                    <div class="sect-value">{{document?.document?.body[key]}}</div>
+                                    <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
+                                    <div *ngIf="document?.document?.body !== undefined" class="sect-value">{{document?.document?.body[key]}}</div>
                                 </div>
                             </div>
                         </div>
