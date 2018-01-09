@@ -4,9 +4,11 @@
         <div class="dx-fieldset">
             <form>
                 <div class="frmitemwrap">
-                    <mat-select placeholder="Clinic" [formControl]="locationTypeControl">
-                        <mat-option *ngFor="let clinic of clinics" [value]="clinic">{{ clinic.clinicName }}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Clinic" [formControl]="locationTypeControl">
+                            <mat-option *ngFor="let clinic of clinics" [value]="clinic">{{ clinic.clinicName }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <form *ngIf="locationTypeControl.value != null" [formGroup]="clinicScheduleForm" class="form-horizontal" (ngSubmit)="onSubmit()">
                     <div formArrayName="clinicScheduleArray" class="frmArrayWrap">
@@ -15,9 +17,11 @@
                             <div formGroupName="{{i}}">
                                 <div>
                                     <div class="frmitemwrap">
-                                        <mat-select placeholder="Days" formControlName="day">
-                                            <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
-                                        </mat-select>
+                                        <mat-form-field>
+                                            <mat-select placeholder="Days" formControlName="day">
+                                                <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                     <div class="frmitemwrap">
                                         <div class="dx-field">
@@ -45,9 +49,11 @@
                                     </div>
 
                                     <div class="frmitemwrap">
-                                        <mat-select placeholder="Location" formControlName="location">
-                                            <mat-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</mat-option>
-                                        </mat-select>
+                                        <mat-form-field>
+                                            <mat-select placeholder="Location" formControlName="location">
+                                                <mat-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                 </div>
                             </div>

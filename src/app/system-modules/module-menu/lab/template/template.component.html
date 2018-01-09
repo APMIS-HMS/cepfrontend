@@ -16,18 +16,22 @@
                             <form [formGroup]="templateFormGroup">
                                 <div class="content-left">
                                     <div class="form-control-box">
-                                        <mat-select placeholder="Scope Level" formControlName="apmisScopeLevel">
-                                            <mat-option *ngFor="let scopeLevel of scopeLevels" [value]="scopeLevel">{{scopeLevel.name}}</mat-option>
-                                        </mat-select>
+                                        <mat-form-field>
+                                            <mat-select placeholder="Scope Level" formControlName="apmisScopeLevel">
+                                                <mat-option *ngFor="let scopeLevel of scopeLevels" [value]="scopeLevel">{{scopeLevel.name}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                 </div>
                                 <div class="content-right">
                                     <div class="form-control-box">
-                                        <mat-select placeholder="Select Investigation" formControlName="investigation">
-                                            <mat-option *ngFor="let investigation of investigations" [value]="investigation">
-                                                {{ investigation.name }}
-                                            </mat-option>
-                                        </mat-select>
+                                        <mat-form-field>
+                                            <mat-select placeholder="Select Investigation" formControlName="investigation">
+                                                <mat-option *ngFor="let investigation of investigations" [value]="investigation">
+                                                    {{ investigation.name }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                 </div>
                                 <div class="content-left" style="margin-top: 40px;">

@@ -17,7 +17,7 @@
                     <span class="frm-label">Amount</span>
                     <input type="text" formControlName="amount" autocomplete="off">-->
                     <mat-input-container class="example-full-width">
-                     <input matInput formControlName="amount" autocomplete="off" placeholder="Amount">
+                        <input matInput formControlName="amount" autocomplete="off" placeholder="Amount">
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
@@ -27,33 +27,35 @@
                     <span class="frm-label">Payment Mode</span>
                     <select formControlName="payment_type">
                     </select>-->
-                    <mat-select placeholder="Payment Mode" name="food">
-                        <mat-option *ngFor="let food of foods" [value]="food.value">
-                            {{food}}
-                        </mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Payment Mode" name="food">
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                                {{food}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <div class="sec-2">
-                
+
                 <div class="frm-item-wrap">
-                   <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
+                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
                         Kindly enter cheque.
                     </small>
                     <span class="frm-label">Cheque Number</span>
                     <input type="text" formControlName="cheque_number">-->
                     <mat-input-container class="example-full-width">
-                     <input matInput formControlName="cheque_number" placeholder="Cheque Number">
+                        <input matInput formControlName="cheque_number" placeholder="Cheque Number">
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                   <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
+                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
                         Kindly enter transfer number.
                     </small>
                     <span class="frm-label">Transfer Number</span>
                     <input type="text" formControlName="transfer_number">-->
                     <mat-input-container class="example-full-width">
-                     <input matInput formControlName="transfer_number" placeholder="Transfer Number">
+                        <input matInput formControlName="transfer_number" placeholder="Transfer Number">
                     </mat-input-container>
                 </div>
 
@@ -61,7 +63,7 @@
         </div>
 
         <div (click)="login()" class="cta-1">
-           Make Payment
+            Make Payment
         </div>
 
     </form>

@@ -166,6 +166,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
     this.presentation = false;
   }
   refresh(): void {
-    window.location.reload();
+    // window.location.reload();
   }
 }

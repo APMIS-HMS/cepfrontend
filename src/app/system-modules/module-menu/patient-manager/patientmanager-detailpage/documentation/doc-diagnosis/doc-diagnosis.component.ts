@@ -54,7 +54,6 @@ export class DocDiagnosisComponent implements OnInit {
     });
   }
 
-
   tabAll_click(){
     this.tab_all = true;
     this.tab_favourite = false;
