@@ -101,97 +101,21 @@ export class OrderSetComponent implements OnInit {
 
   authorizerx() {
     if (!!this.selectedForm._id) {
-      // Send to treatment sheet and Documentation
-      const saveDocument = {
-        documentType: this.selectedForm,
-        body: {}
-      };
-
-      Object.keys(this.orderSet).forEach(key => {
-        // I'm doing this because the data structure for medications is quite different.
-        if (key === 'medications') {
-          this.orderSet[key].forEach((it, i) => {
-            const length = this.orderSet[key].length - 1;
-            if (i === 0) {
-              saveDocument.body[key] = (i+1) +'. '+it.strength+' '+it.genericName+' - '+it.frequency+' for '+ it.duration+' ' +it.durationUnit+ ', ';
-            } else {
-              if (length === i) {
-                saveDocument.body[key] += (i+1) +'. '+it.strength+' '+it.genericName+' - '+it.frequency+' for '+ it.duration+' ' +it.durationUnit;
-              } else {
-                saveDocument.body[key] += (i+1) +'. '+it.strength+' '+it.genericName+' - '+it.frequency+' for '+ it.duration+' '+it.durationUnit+ ', ';
-              }
-            }
-          });
-        } else {
-          this.orderSet[key].forEach((item, i) => {
-            const length = this.orderSet[key].length - 1;
-            if (i === 0) {
-              saveDocument.body[key] = (i + 1) + '. ' + item.name +  ', ';
-            } else {
-              if (length === i) {
-                saveDocument.body[key] += ( i + 1) + '. ' + item.name;
-              } else {
-                saveDocument.body[key] += (i + 1) + '. ' + item.name +  ', ';
-              }
-            }
-          });
-        }
-      });
-
-      const patientDocumentation = {
-        document: saveDocument,
+      const treatementSheet = {
+        personId: this.selectedPatient.personDetails._id,
+        treatmentSheet: this.orderSet,
+        facilityId: this.miniFacility._id,
         createdBy: this.employeeDetails.employeeDetails._id,
-        facilityId: this.miniFacility,
-        patientId: this._patientService.abridgePatient(this.selectedPatient),
       };
 
-      const documentation = {
-        personId: this._personService.abridgePerson(this.selectedPatient.personDetails),
-        documentations: patientDocumentation,
-      };
-
-      this.sharedService.announceOrderSet(this.orderSet);
-      this.close_onClickModal();
-
-      // Check if documentation has been created for the user
-      // this._documentationService.find({
-      //   query: { 'personId._id': this.selectedPatient.personDetails._id }
-      // }).then(res => {
-      //   if (res.data.length > 0) {
-      //     res.data[0].documentations.push(patientDocumentation);
-      //     // Update the existing documentation
-      //     this._documentationService.update(res.data[0]).then(resUpdate => {
-      //       this._notification('Success', 'Treatment Plan has been saved successfully!');
-      //     });
-      //   } else {
-      //     // Save into documentation
-      //     this._documentationService.create(documentation).then(resCreate => {
-      //       this._notification('Success', 'Treatment Plan has been saved and uploaded successfully!');
-      //     });
-      //   }
-
-      //   /**
-      //    * Treatment Sheet
-      //    */
-      //   const treatementSheet = {
-      //     personId: this.selectedPatient.personDetails._id,
-      //     treatmentSheet: this.orderSet,
-      //     facilityId: this.miniFacility._id,
-      //     createdBy: this.employeeDetails.employeeDetails._id,
-      //   };
-
-      //   this._treatmentSheetService.create(treatementSheet).then(treatment => {
-      //     console.log(treatment);
-      //   }).catch(err => {
-      //     console.log(err);
-      //   });
-      // }).catch(err => {
-      //   console.log(err);
-      // });
-    } else {
-      this._notification('Error', 'Please create document type of \'Treatment Plan\'');
+      this._treatmentSheetService.create(treatementSheet).then(treatment => {
+        console.log(treatment);
+        this.sharedService.announceOrderSet(this.orderSet);
+        this.close_onClickModal();
+      }).catch(err => {
+        console.log(err);
+      });
     }
-
     this.showDoc.emit(true);
   }
 
