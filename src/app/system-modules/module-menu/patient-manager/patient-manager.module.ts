@@ -1,3 +1,4 @@
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
@@ -56,6 +57,11 @@ import { OrderBillItemComponent } from './patientmanager-detailpage/order-set/or
 import { TreatementPlanComponent } from './patientmanager-detailpage/treatement-plan/treatement-plan.component';
 import { FluidComponent } from './patientmanager-detailpage/fluid/fluid.component';
 import { DocumentationTemplateService } from 'app/services/facility-manager/setup/documentation-template.service';
+import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc-uploads.component';
+import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
+import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
+
+
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -92,7 +98,10 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
         DocDiagnosisComponent,
         OrderBillItemComponent,
         TreatementPlanComponent,
-        FluidComponent
+        FluidComponent,
+        DocUploadsComponent,
+        DocUploadComponent,
+        DocUploadDetailComponent
     ],
     exports: [
     ],
@@ -100,7 +109,8 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
         SharedModule,
         patientManagerRoutes,
         MaterialModule,
-        ChartsModule
+        ChartsModule,
+        PdfViewerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,

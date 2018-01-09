@@ -1,0 +1,43 @@
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">New Patient</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+          <form [formGroup]="frmNewUpload" novalidate>
+              <div>
+                  <div class="upload-btn-wrapper">
+                      <button class="upload-btn">Select Document</button>
+                      <input type="file" name="fileInput" (change)="onFileChange($event)" #fileInput formControlName="fileUpload" />
+                    </div>
+                  <div class="frm-item-wrap">
+                      <mat-form-field>
+                        <mat-select placeholder="Laboratory Report" formControlName="fileType">
+                            <mat-option *ngFor="let item of documentTypes" [value]="item.name">{{item.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                  </div>
+                  <div class="frm-item-wrap">
+                      <mat-input-container class="example-full-width">
+                          <input matInput mat-error placeholder="Document Name" formControlName="fileName">
+                      </mat-input-container>
+                  </div>
+                  <div class="frm-item-wrap">
+                      <mat-form-field>
+                          <textarea formControlName="desc" matInput placeholder="Description (optional)"></textarea>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="btn-box">
+                    <button class="small-btn" [disabled]="loading" (click)="uploadDocument()" mat-raised-button>
+                        <span *ngIf="!loading">Upload Document</span>
+                        <span *ngIf="loading">Loading...</span>
+                    </button>
+              </div>
+          </form>
+    </div>
+</div>
