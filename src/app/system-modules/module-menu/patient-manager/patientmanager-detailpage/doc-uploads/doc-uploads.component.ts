@@ -21,6 +21,7 @@ export class DocUploadsComponent implements OnInit {
   docDetail_view = false;
   newUpload = false;
   showDoc = false;
+  documents:any;
 
   constructor(
     private facilityService: FacilitiesService, 
@@ -38,6 +39,7 @@ export class DocUploadsComponent implements OnInit {
       patientId: patient._id
     }}).then(payload => {
       console.log(payload);
+      this.documents = payload.data;
     }).catch(err => {
       console.log(err);
     })
@@ -67,7 +69,7 @@ export class DocUploadsComponent implements OnInit {
     this.newUpload = false;
     this.showDoc = false;
   }
-  docDetail(){
+  docDetail(data?){
     this.showDoc = true;
   }
   onChange(e){
