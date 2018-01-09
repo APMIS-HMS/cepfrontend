@@ -1,22 +1,10 @@
 <div class="animated pulse">
   <div class="modal-header-wrap">
-      <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
-      <legend class="modal_title">Uploaded Document</legend>
-      <div class="modal_mini_title">All Purpose Medical Information System</div>
+    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Uploaded Document</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
   </div>
   <div class="modal-baseWrap">
-    <div *ngIf="pageurl != undefined">
-        <h5>iframe whit local url</h5>
-        <iframe width="500" height="600" [attr.src]="pageurl" type="application/pdf"></iframe>
-        <h5>object whit local url</h5>
-        <object [attr.data]="pageurl" type="application/pdf" width="100%" height="100%"></object>
-        <h5>embed whit local url</h5>
-        <embed [attr.src]="pageurl" type="application/pdf" width="100%" height="100%">
-    </div>
-    <object data="{{pageurl}}" type="application/pdf" width="100%" height="100%">
-      <iframe src="{{pageurl}}" width="100%" height="100%" style="border: none;">
-      This browser does not support PDFs. Please download the PDF to view it: <a href="{{pageurl}}">Download PDF</a>
-      </iframe>
-    </object>
+    <pdf-viewer [src]="'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf'" [render-text]="true" style="display: block;"></pdf-viewer>
   </div>
-</div> 
+</div>
