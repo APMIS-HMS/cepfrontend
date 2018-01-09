@@ -13,8 +13,8 @@ const RxJS = require('rxjs/Rx');
 // const HOST = 'http://172.16.16.40:3030'; // Mr Segun;
 //  const HOST = 'http://40.68.100.29:3030'; // Online
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
-// const HOST = 'http://13.84.217.251:8082'; // Online
-const HOST = 'http://localhost:3030'; // Local Server
+const HOST = 'http://13.84.217.251:8082'; // Online
+// const HOST = 'http://localhost:3030'; // Local Server
 
 
 
