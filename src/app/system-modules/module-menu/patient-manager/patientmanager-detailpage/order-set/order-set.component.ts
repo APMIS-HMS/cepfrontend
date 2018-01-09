@@ -98,21 +98,19 @@ export class OrderSetComponent implements OnInit {
   }
 
   authorizerx() {
-    if (!!this.selectedForm._id) {
-      const treatementSheet = {
-        personId: this.selectedPatient.personDetails._id,
-        treatmentSheet: this.orderSet,
-        facilityId: this.miniFacility._id,
-        createdBy: this.employeeDetails.employeeDetails._id,
-      };
+    const treatementSheet = {
+      personId: this.selectedPatient.personDetails._id,
+      treatmentSheet: this.orderSet,
+      facilityId: this.miniFacility._id,
+      createdBy: this.employeeDetails.employeeDetails._id,
+    };
 
-      this._treatmentSheetService.create(treatementSheet).then(treatment => {
-        this.sharedService.announceOrderSet(this.orderSet);
-        this.close_onClickModal();
-      }).catch(err => {
-        console.log(err);
-      });
-    }
+    this._treatmentSheetService.create(treatementSheet).then(treatment => {
+      this.sharedService.announceOrderSet(this.orderSet);
+      this.close_onClickModal();
+    }).catch(err => {
+      console.log(err);
+    });
     this.showDoc.emit(true);
   }
 

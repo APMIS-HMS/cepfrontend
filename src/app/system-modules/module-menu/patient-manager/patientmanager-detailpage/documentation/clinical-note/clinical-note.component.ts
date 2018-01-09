@@ -43,6 +43,8 @@ export class ClinicalNoteComponent implements OnInit {
   selectedForm: any = <any>{};
   orderSet: any = <any>{};
   showOrderSet = false;
+  viewOrderManagement: boolean = false;
+  viewDiagnosis: boolean = false;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
@@ -150,6 +152,14 @@ export class ClinicalNoteComponent implements OnInit {
   }
   docSymptom_show() {
     this.docSymptom_view = true;
+  }
+
+  viewOrderset_onClick() {
+    this.viewOrderManagement = !this.viewOrderManagement;
+  }
+
+  docDiagnosisView() {
+    this.viewDiagnosis = !this.viewDiagnosis;
   }
 
   docDiagnosis_show() {
