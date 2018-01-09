@@ -58,6 +58,7 @@ export class ClinicalNoteComponent implements OnInit {
 
     this.sharedService.submitForm$.subscribe(value => {
       this.symptoms = [];
+      this.diagnoses = [];
       this.showDocument = false;
       this.orderSet = {};
     });
@@ -82,7 +83,7 @@ export class ClinicalNoteComponent implements OnInit {
 
     this.sharedService.announceOrderSetSource$.subscribe(value => {
       this.orderSet = value;
-      const payload = {  type: 'OrderSet', action: 'add', data: value };
+      const payload = { type: 'OrderSet', action: 'add', data: value };
       // Send order set data one after another to the shared service
       this.sharedService.announceDiagnosisSystemOrder(payload);
     });
@@ -166,6 +167,10 @@ export class ClinicalNoteComponent implements OnInit {
   deleteSymptom(item) {
     this.symptoms = this.symptoms.filter(e => e !== item);
     this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'remove', data: item });
+  }
+  deleteDiagnosis(item) {
+    this.diagnoses = this.diagnoses.filter(e => e !== item);
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'remove', data: item });
   }
 
   addDiagnosis(item) {
