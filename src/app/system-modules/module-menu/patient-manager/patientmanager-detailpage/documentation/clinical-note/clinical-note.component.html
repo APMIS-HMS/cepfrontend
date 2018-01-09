@@ -176,5 +176,5 @@
     <app-doc-symptom (symptom)="addSymptom($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>
 </div>
 <div *ngIf="docDiagnosis_view" class="modal-overlay">
-    <app-doc-diagnosis (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
+    <app-doc-diagnosis (diagnosis) ="addDiagnosis($event)" (removediagnosis) ="removeDiagnosis($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
 </div>
