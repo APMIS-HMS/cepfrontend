@@ -40,6 +40,7 @@ export class ClinicalNoteComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
+  orderSet: any = <any>{};
   showOrderSet = false;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
@@ -76,7 +77,13 @@ export class ClinicalNoteComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getForms();
     this.getTemplates();
+
+    this.sharedService.announceOrderSetSource$.subscribe(value => {
+      console.log(value);
+      this.orderSet = value;
+    });
   }
+
   getTemplates() {
     this.documentationTemplateService.find({}).then(payload => {
       this.templates = payload.data;
@@ -84,6 +91,7 @@ export class ClinicalNoteComponent implements OnInit {
 
     })
   }
+
   getForms() {
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
     formType$.mergeMap(((formTypes: any) =>
@@ -121,6 +129,7 @@ export class ClinicalNoteComponent implements OnInit {
     this.closeModal.emit(true);
     this.docSymptom_view = false;
     this.docDiagnosis_view = false;
+    this.showOrderSet = false;
   }
   showOrderset_onClick() {
     console.log('Clicked');

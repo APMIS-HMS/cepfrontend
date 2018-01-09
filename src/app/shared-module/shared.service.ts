@@ -12,10 +12,12 @@ export class SharedService {
   private submitFormSource = new Subject<Object>();
   submitForm$ = this.submitFormSource.asObservable();
 
-  
+
   private announceTemplateSource = new Subject<Object>();
   announceTemplate$ = this.announceTemplateSource.asObservable();
 
+  private announceOrderSetSource = new Subject<Object>();
+  announceOrderSetSource$ = this.announceOrderSetSource.asObservable();
   private announceDiagnosisSystemOrderSource = new Subject<Object>();
   announceDiagnosisSystemOrder$ = this.announceDiagnosisSystemOrderSource.asObservable();
 
@@ -30,7 +32,12 @@ export class SharedService {
   }
 
   announceNewForm(form: Object) {
+    console.log(form);
     this.newFormAnnouncedSource.next(form);
+  }
+
+  announceOrderSet(orderSet) {
+    this.announceOrderSetSource.next(orderSet);
   }
 
   submitForm(form: Object) {
