@@ -61,7 +61,7 @@
             <div *ngIf="symptoms.length !== 0">Symptoms <br>
                 <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp; <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i> </button>
             </div>
-            <div *ngIf="diagnoses.length !== 0" class="modal-overlay">
+            <div *ngIf="diagnoses.length !== 0 && viewDiagnosis" class="modal-overlay">
                 <div class="diagnosis-view">
                     <div class="modal-baseWrap animated pulse" style="width:100%">
                         <div (click)="docDiagnosisView()" class="modal-close-ico">X</div>
