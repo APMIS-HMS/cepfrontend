@@ -1,11 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   FormsService, FacilitiesService, OrderSetTemplateService, DocumentationService, PersonService, PatientService, TreatmentSheetService
 } from 'app/services/facility-manager/setup';
+import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
+import { SharedService } from '../../../../../shared-module/shared.service';
 import { OrderSetTemplate, User, Facility } from '../../../../../models/index';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-set',
@@ -14,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OrderSetComponent implements OnInit {
   @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedPatient: any;
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
@@ -40,8 +43,10 @@ export class OrderSetComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _locker: CoolLocalStorage,
+    private _orderSetSharedService: OrderSetSharedService,
     private _orderSetTemplateService: OrderSetTemplateService,
     public facilityService: FacilitiesService,
+    private sharedService: SharedService,
     private _formService: FormsService,
     private _personService: PersonService,
     private _patientService: PatientService,
@@ -59,6 +64,24 @@ export class OrderSetComponent implements OnInit {
       this._getPatient(value.id);
     });
 
+    // Listen to the event from children components
+    this._orderSetSharedService.itemSubject.subscribe(value => {
+      console.log(value);
+      if (!!value.medications) {
+        this.orderSet.medications = value.medications;
+      } else if (!!value.investigations) {
+        this.orderSet.investigations = value.investigations;
+      } else if (!!value.procedures) {
+        this.orderSet.procedures = value.procedures;
+      } else if (!!value.nursingCares) {
+        this.orderSet.nursingCares = value.nursingCares;
+      } else if (!!value.physicianOrders) {
+        this.orderSet.physicianOrders = value.physicianOrders;
+      }
+
+      console.log(this.orderSet);
+    });
+
     this._getDocumentationForm();
   }
 
@@ -74,15 +97,6 @@ export class OrderSetComponent implements OnInit {
     } else if (type === 'procedure') {
       this.popProcedure = true;
     }
-  }
-
-  close_onClick(e){
-    this.popMed = false;
-    this.popInvestigation = false;
-    this.popNursingCare = false;
-    this.popPhysicianOrder = false;
-    this.popProcedure = false;
-    this.showbill = false;
   }
 
   authorizerx() {
@@ -136,41 +150,44 @@ export class OrderSetComponent implements OnInit {
         documentations: patientDocumentation,
       };
 
+      this.sharedService.announceOrderSet(this.orderSet);
+      this.close_onClickModal();
+
       // Check if documentation has been created for the user
-      this._documentationService.find({
-        query: { 'personId._id': this.selectedPatient.personDetails._id }
-      }).then(res => {
-        if (res.data.length > 0) {
-          res.data[0].documentations.push(patientDocumentation);
-          // Update the existing documentation
-          this._documentationService.update(res.data[0]).then(resUpdate => {
-            this._notification('Success', 'Treatment Plan has been saved successfully!');
-          });
-        } else {
-          // Save into documentation
-          this._documentationService.create(documentation).then(resCreate => {
-            this._notification('Success', 'Treatment Plan has been saved and uploaded successfully!');
-          });
-        }
+      // this._documentationService.find({
+      //   query: { 'personId._id': this.selectedPatient.personDetails._id }
+      // }).then(res => {
+      //   if (res.data.length > 0) {
+      //     res.data[0].documentations.push(patientDocumentation);
+      //     // Update the existing documentation
+      //     this._documentationService.update(res.data[0]).then(resUpdate => {
+      //       this._notification('Success', 'Treatment Plan has been saved successfully!');
+      //     });
+      //   } else {
+      //     // Save into documentation
+      //     this._documentationService.create(documentation).then(resCreate => {
+      //       this._notification('Success', 'Treatment Plan has been saved and uploaded successfully!');
+      //     });
+      //   }
 
-        /**
-         * Treatment Sheet
-         */
-        const treatementSheet = {
-          personId: this.selectedPatient.personDetails._id,
-          treatmentSheet: this.orderSet,
-          facilityId: this.miniFacility._id,
-          createdBy: this.employeeDetails.employeeDetails._id,
-        };
+      //   /**
+      //    * Treatment Sheet
+      //    */
+      //   const treatementSheet = {
+      //     personId: this.selectedPatient.personDetails._id,
+      //     treatmentSheet: this.orderSet,
+      //     facilityId: this.miniFacility._id,
+      //     createdBy: this.employeeDetails.employeeDetails._id,
+      //   };
 
-        this._treatmentSheetService.create(treatementSheet).then(treatment => {
-          console.log(treatment);
-        }).catch(err => {
-          console.log(err);
-        });
-      }).catch(err => {
-        console.log(err);
-      });
+      //   this._treatmentSheetService.create(treatementSheet).then(treatment => {
+      //     console.log(treatment);
+      //   }).catch(err => {
+      //     console.log(err);
+      //   });
+      // }).catch(err => {
+      //   console.log(err);
+      // });
     } else {
       this._notification('Error', 'Please create document type of \'Treatment Plan\'');
     }
@@ -238,6 +255,20 @@ export class OrderSetComponent implements OnInit {
     }).catch(err => {
       console.log(err);
     });
+  }
+
+  close_onClick(e){
+    this.popMed = false;
+    this.popInvestigation = false;
+    this.popNursingCare = false;
+    this.popPhysicianOrder = false;
+    this.popProcedure = false;
+    this.showbill = false;
+  }
+
+  close_onClickModal() {
+    console.log('click');
+    this.closeModal.emit(true);
   }
 
   // Notification
