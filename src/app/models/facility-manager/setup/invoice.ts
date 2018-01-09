@@ -15,6 +15,7 @@ export interface Invoice {
     discount: number;
     paymentCompleted: boolean;
     personDetails: any;
+    payments:[any];
 }
 
 

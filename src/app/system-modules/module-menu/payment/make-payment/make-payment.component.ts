@@ -221,10 +221,6 @@ export class MakePaymentComponent implements OnInit {
 
   onWaverCharges(event: any) {
     this.isWaved = event.target.checked;
-    if (this.isWaved) {
-      this.amount.setValue(this.cost);
-      this.balance.setValue(0);
-    }
   }
 
   onInsuranceExactCharges(event: any) {
@@ -252,7 +248,7 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onOutOfPocket() {
-    if (this.amount.value != '' && this.amount.value != 0) {
+    if ((this.amount.value != '' && this.amount.value != 0) || this.isWaved == true) {
       if (this.selectedPatient.personDetails.wallet != undefined) {
         if (this.selectedPatient.personDetails.wallet.balance < this.cost) {
           this._notification('Info', "You donot have sufficient balance to make this payment");
@@ -400,6 +396,7 @@ export class MakePaymentComponent implements OnInit {
           "amountPaid": val.amountPaid,
           "balance": this.bAmount,
           "cost": this.cost,
+          "isWaved": this.isWaved,
           "transactionType": TransactionType[TransactionType.Dr]
         },
         "billGroups": this.billGroups,
@@ -418,6 +415,7 @@ export class MakePaymentComponent implements OnInit {
           "amountPaid": val.amountPaid,
           "balance": this.bAmount,
           "cost": this.cost,
+          "isWaved": this.isWaved,
           "transactionType": TransactionType[TransactionType.Dr]
         },
         "invoice": this.invoice,
