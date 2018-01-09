@@ -15,6 +15,7 @@ import { FormTypeService, ScopeLevelService } from '../../../../../../services/m
   styleUrls: ['./doc-upload.component.scss']
 })
 export class DocUploadComponent implements OnInit {
+  loading: boolean;
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -22,10 +23,10 @@ export class DocUploadComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   public frmNewUpload: FormGroup;
   documentTypes: any;
-  fileType:any;
-  
+  fileType: any;
 
-  constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService, 
+
+  constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService,
     private patientService: PatientService,
     private personService: PersonService,
     private employeeService: EmployeeService,
@@ -45,19 +46,19 @@ export class DocUploadComponent implements OnInit {
     });
     this.documentTypeFn();
   }
-  close_onClick(e){
+  close_onClick(e) {
     this.closeModal.emit(true);
   }
 
   onFileChange(event) {
     let reader = new FileReader();
-    if(event.target.files && event.target.files.length > 0) {
+    if (event.target.files && event.target.files.length > 0) {
       let file = event.target.files[0];
-      if(file.type == "image/png" || file.type == "image/jpg" 
-      || file.type == "image/gif" || file.type == "image/jpeg"
-      || file.type == "application/pdf"){
+      if (file.type == "image/png" || file.type == "image/jpg"
+        || file.type == "image/gif" || file.type == "image/jpeg"
+        || file.type == "application/pdf") {
         console.log(file);
-        if(file.size < 1250000){
+        if (file.size < 1250000) {
           console.log(file);
           this.fileType = file.type;
           reader.readAsDataURL(file);
@@ -65,24 +66,24 @@ export class DocUploadComponent implements OnInit {
             let base64 = reader.result;
             this.fileBase64 = base64;
           };
-        }else{
+        } else {
           this.notification('Size Of Document Too BIG!', 'Error');
           this.frmNewUpload.controls['fileUpload'].setErrors({ sizeTooBig: true });
         }
-        
-      }else{
+
+      } else {
         this.notification('Type of document not supported.', 'Error');
         this.frmNewUpload.controls['fileUpload'].setErrors({ typeDenied: true });
       }
     }
   }
 
-  uploadDocument(patient?:any){
-
+  uploadDocument(patient?: any) {
+    this.loading = true;
     let uploadDoc;
-    
-    if(this.locker.getObject('patient')){
-      let upPatient = <any>this.locker.getObject('patient');
+
+    if (this.locker.getObject('patient')) {
+      const upPatient = <any>this.locker.getObject('patient');
       uploadDoc = {
         base64: this.fileBase64,
         docType: this.frmNewUpload.controls['fileType'].value,
@@ -92,7 +93,7 @@ export class DocUploadComponent implements OnInit {
         patientId: upPatient._id,
         facilityId: this.facilityService.getSelectedFacilityId()._id
       }
-    }else{
+    } else {
       uploadDoc = {
         base64: this.fileBase64,
         docType: this.frmNewUpload.controls['fileType'].value,
@@ -106,13 +107,16 @@ export class DocUploadComponent implements OnInit {
 
     this.docUploadService.post(uploadDoc).then(payload => {
       console.log(payload);
+      this.loading = false;
+      this.close_onClick(true);
     }).catch(err => {
       console.log(JSON.stringify(err));
+      this.loading = false;
     })
 
   }
 
-  documentTypeFn(){
+  documentTypeFn() {
     this.formTypeService.findAll().then(payload => {
       console.log(payload);
       this.documentTypes = payload.data
@@ -121,12 +125,11 @@ export class DocUploadComponent implements OnInit {
     });
   }
 
-  notification(text, type){
+  notification(text, type) {
     this.facilityService.announceNotification({
       type: type,
       text: text,
       users: [this.facilityService.getLoginUserId()]
     });
   }
-
 }

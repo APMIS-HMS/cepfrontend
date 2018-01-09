@@ -1,7 +1,7 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend class="modal_title">New Patient</legend>
+        <legend class="modal_title">Document Upload</legend>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
     <div class="modal-baseWrap">
@@ -35,7 +35,8 @@
               <div class="btn-box">
                     <button class="small-btn" [disabled]="loading" (click)="uploadDocument()" mat-raised-button>
                         <span *ngIf="!loading">Upload Document</span>
-                        <span *ngIf="loading">Loading...</span>
+                        <!-- <span *ngIf="loading">Loading...</span> -->
+                        <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span>
                     </button>
               </div>
           </form>

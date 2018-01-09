@@ -21,10 +21,11 @@ export class DocUploadsComponent implements OnInit {
   docDetail_view = false;
   newUpload = false;
   showDoc = false;
-  documents:any;
+  documents: any;
+  selectedDocument: any;
 
   constructor(
-    private facilityService: FacilitiesService, 
+    private facilityService: FacilitiesService,
     private docUploadService: DocumentUploadService,
     private locker: CoolLocalStorage) { }
 
@@ -32,13 +33,14 @@ export class DocUploadsComponent implements OnInit {
     this.getDocuments();
   }
 
-  getDocuments(){
-    let patient = <any>this.locker.getObject('patient');
-    this.docUploadService.find({query: {
-      facilityId: this.facilityService.getSelectedFacilityId()._id,
-      patientId: patient._id
-    }}).then(payload => {
-      console.log(payload);
+  getDocuments() {
+    const patient = <any>this.locker.getObject('patient');
+    this.docUploadService.find({
+      query: {
+        facilityId: this.facilityService.getSelectedFacilityId()._id,
+        patientId: patient._id
+      }
+    }).then(payload => {
       this.documents = payload.data;
     }).catch(err => {
       console.log(err);
@@ -57,7 +59,7 @@ export class DocUploadsComponent implements OnInit {
   addVitals_show(e) {
     this.addVitals_view = true;
   }
-  newUpload_show(){
+  newUpload_show() {
     this.newUpload = true;
   }
 
@@ -69,11 +71,12 @@ export class DocUploadsComponent implements OnInit {
     this.newUpload = false;
     this.showDoc = false;
   }
-  docDetail(data?){
+  docDetail(data?) {
+    this.selectedDocument = data;
     this.showDoc = true;
   }
-  onChange(e){
-    //upload stuff
+  onChange(e) {
+    // upload stuff
   }
   // showImageBrowseDlg(){
   //   this.fileInput.nativeElement.click()
