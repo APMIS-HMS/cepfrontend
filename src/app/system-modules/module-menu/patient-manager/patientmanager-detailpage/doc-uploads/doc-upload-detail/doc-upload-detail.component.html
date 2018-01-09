@@ -5,6 +5,8 @@
     <div class="modal_mini_title">All Purpose Medical Information System</div>
   </div>
   <div class="modal-baseWrap">
-    <pdf-viewer [src]="'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf'" [render-text]="true" style="display: block;"></pdf-viewer>
+    <!-- <pdf-viewer [src]="'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf'" [render-text]="true" [page]="page" [original-size]="true"
+      style="display: block;"></pdf-viewer> -->
+      <pdf-viewer [src]="currentPDF"></pdf-viewer>
   </div>
 </div>
