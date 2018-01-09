@@ -1,3 +1,4 @@
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
@@ -108,7 +109,8 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         SharedModule,
         patientManagerRoutes,
         MaterialModule,
-        ChartsModule
+        ChartsModule,
+        PdfViewerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,
