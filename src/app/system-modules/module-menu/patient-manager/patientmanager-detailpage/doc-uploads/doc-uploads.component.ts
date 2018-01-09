@@ -1,4 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import {
+  DocumentUploadService, PatientService, PersonService, EmployeeService, FacilitiesService, FacilitiesServiceCategoryService,
+  BillingService, FormsService
+} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-doc-uploads',
@@ -17,9 +22,25 @@ export class DocUploadsComponent implements OnInit {
   newUpload = false;
   showDoc = false;
 
-  constructor() { }
+  constructor(
+    private facilityService: FacilitiesService, 
+    private docUploadService: DocumentUploadService,
+    private locker: CoolLocalStorage) { }
 
   ngOnInit() {
+    this.getDocuments();
+  }
+
+  getDocuments(){
+    let patient = <any>this.locker.getObject('patient');
+    this.docUploadService.find({query: {
+      facilityId: this.facilityService.getSelectedFacilityId()._id,
+      patientId: patient._id
+    }}).then(payload => {
+      console.log(payload);
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
   addProblem_show(e) {

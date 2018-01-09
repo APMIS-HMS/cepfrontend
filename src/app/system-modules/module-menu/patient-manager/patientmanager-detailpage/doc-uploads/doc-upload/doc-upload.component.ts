@@ -22,6 +22,7 @@ export class DocUploadComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   public frmNewUpload: FormGroup;
   documentTypes: any;
+  fileType:any;
   
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService, 
@@ -58,11 +59,11 @@ export class DocUploadComponent implements OnInit {
         console.log(file);
         if(file.size < 1250000){
           console.log(file);
+          this.fileType = file.type;
           reader.readAsDataURL(file);
           reader.onload = () => {
             let base64 = reader.result;
             this.fileBase64 = base64;
-            console.log(reader, file, base64);
           };
         }else{
           this.notification('Size Of Document Too BIG!', 'Error');
@@ -87,6 +88,7 @@ export class DocUploadComponent implements OnInit {
         docType: this.frmNewUpload.controls['fileType'].value,
         docName: this.frmNewUpload.controls['fileName'].value,
         description: this.frmNewUpload.controls['desc'].value,
+        fileType: this.fileType,
         patientId: upPatient._id,
         facilityId: this.facilityService.getSelectedFacilityId()._id
       }
