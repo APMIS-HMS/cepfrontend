@@ -193,7 +193,7 @@ export class BillLookupComponent implements OnInit {
       const billGroup: Invoice = <Invoice>{ billingIds: [] };
       billGroup.facilityId = this.selectedFacility._id;
       billGroup.patientId = this.selectedPatient._id;
-
+      console.log(this.billGroups);
       this.billGroups.forEach((itemg, g) => {
         itemg.bills.forEach((itemb: BillModel, b) => {
           if (itemb.isChecked) {
@@ -201,7 +201,8 @@ export class BillLookupComponent implements OnInit {
             billGroup.billingIds
               .push({
                 billingId: itemb._id,
-                billObject: itemb.billObject
+                billObject: itemb.billObject,
+                billModelId: itemb.billModelId
               });
           }
         });
@@ -288,7 +289,7 @@ export class BillLookupComponent implements OnInit {
     }
   }
 
-  fixedGroupExisting(bill: BillItem) {
+  fixedGroupExisting(bill: BillItem, _id) {
     const inBill: BillModel = <BillModel>{};
     inBill.amount = bill.totalPrice;
     inBill.itemDesc = bill.description;
@@ -299,6 +300,7 @@ export class BillLookupComponent implements OnInit {
     inBill._id = bill._id;
     inBill.facilityServiceObject = bill.facilityServiceObject;
     inBill.billObject = bill;
+    inBill.billModelId = _id
 
     const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
     if (existingGroupList.length > 0) {
@@ -359,7 +361,7 @@ export class BillLookupComponent implements OnInit {
           this.masterBillGroups.push(itemi);
           itemi.billItems.forEach((itemj, j) => {
             if (itemj.isInvoiceGenerated == false || itemj.isInvoiceGenerated == undefined) {
-              this.fixedGroupExisting(itemj);
+              this.fixedGroupExisting(itemj, itemi._id);
             }
           });
         });

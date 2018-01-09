@@ -1,14 +1,16 @@
-.mat-select{
+.mat-select {
     margin-top: 0;
 }
-.frmArrWrap{
+
+.frmArrWrap {
     position: relative;
     background: #fff;
     padding: 10px;
     box-sizing: border-box;
     margin-bottom: 10px;
 }
-.addDrugBtn{
+
+.addDrugBtn {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -20,11 +22,17 @@
     padding: 5px;
     border: 1px solid #777;
 }
-.addDrugBtn:hover{
+
+.addDrugBtn:hover {
     background: #fff;
     color: #009ADF;
 }
+
 .frm-item-wrap {
     width: 100%;
     max-width: 400px;
+}
+
+.modal-baseWrap {
+    width: 250px;
 }

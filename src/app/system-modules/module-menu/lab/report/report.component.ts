@@ -177,9 +177,7 @@ export class ReportComponent implements OnInit {
             const labRequest = res.data[0];
             const saveDocument = {
               documentType: this.selectedForm,
-              body: {
-                laboratory: []
-              }
+              body: {}
             };
 
             labRequest.investigations.forEach(investigation => {
@@ -188,19 +186,28 @@ export class ReportComponent implements OnInit {
                 investigation.isUploaded = !isUploaded;
                 investigation.isSaved = !isSaved;
 
-                // Build document to save in documentation
-                saveDocument.body.laboratory.push({
-                  'conclusion': investigation.report.conclusion,
-                  'recommendation': investigation.report.outcome,
-                  'outcome': investigation.report.outcome,
-                  'result': investigation.report.result,
-                  'specimen': investigation.investigation.specimen.name,
-                  'diagnosis': labRequest.diagnosis,
-                  'clinicalInformation': labRequest.clinicalInformation,
-                  'labNumber': labRequest.labNumber,
-                  'investigation': investigation.investigation.name,
+                saveDocument.body['conclusion'] = investigation.report.conclusion;
+                saveDocument.body['recommendation'] = investigation.report.recommendation;
+                saveDocument.body['outcome'] = investigation.report.outcome;
+                saveDocument.body['result'] = investigation.report.result;
+                saveDocument.body['specimen'] = investigation.investigation.specimen.name;
+                saveDocument.body['investigation'] = investigation.investigation.name;
+                saveDocument.body['diagnosis'] = labRequest.diagnosis;
+                saveDocument.body['clinicalInformation'] = labRequest.clinicalInformation;
+                saveDocument.body['labNumber'] = labRequest.labNumber;
 
-                })
+                // // Build document to save in documentation
+                // saveDocument.body.laboratory.push({
+                //   'conclusion': investigation.report.conclusion,
+                //   'recommendation': investigation.report.outcome,
+                //   'outcome': investigation.report.outcome,
+                //   'result': investigation.report.result,
+                //   'specimen': investigation.investigation.specimen.name,
+                //   'diagnosis': labRequest.diagnosis,
+                //   'clinicalInformation': labRequest.clinicalInformation,
+                //   'labNumber': labRequest.labNumber,
+                //   'investigation': investigation.investigation.name,
+                // })
               }
             });
 

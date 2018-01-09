@@ -164,7 +164,7 @@
                         <img *ngIf="selectedInvestigationData?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
                         <img class="shadow" *ngIf="selectedInvestigationData?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.personDetails?.profileImageObject?.thumbnail)">
                     </div>
-                    <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.personDetails.personFullName }}</div>
+                    <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.personDetails?.firstName }} {{ selectedInvestigationData?.patient?.personDetails?.lastName }}</div>
                     <div class="sel-patient-detaills">
                         <div>{{ selectedInvestigationData?.patient?.personDetails.apmisId }}</div>
                         <div>{{ selectedInvestigationData?.patient?.personDetails.age }} year(s)</div>

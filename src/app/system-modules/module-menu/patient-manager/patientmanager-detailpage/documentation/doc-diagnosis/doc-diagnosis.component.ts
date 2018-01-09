@@ -9,26 +9,38 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 export class DocDiagnosisComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() diagnosis: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removediagnosis: EventEmitter<any> = new EventEmitter<any>();
 
   _tempDiagnosis;
 
-  diagnoses = [
+  diagnoses = [];
+  // <mat-option [value]="Principal">Principal</mat-option>
+  // <mat-option [value]="Associated">Associated</mat-option>
+  // <mat-option [value]="Complication">Complication</mat-option>
+  // <mat-option [value]="Working">Working</mat-option>
+  // <mat-option [value]='Rule Out'>Rule Out</mat-option>
+  types = [
     {
-      name : 'Epiphora',
-      code : 'H04.2'
+      value: 'Principal',
+      name: 'Principal'
     },
     {
-      name : 'Dacryoadenitis',
-      code : 'H04.0'
+      value: 'Associated',
+      name: 'Associated'
     },
     {
-      name : 'Exophthalmic conditions',
-      code : 'H05.2'
+      value: 'Complication',
+      name: 'Complication'
     },
     {
-      name : 'Deformity of orbit',
-      code : 'H05.3'
-    }
+      value: 'Working',
+      name: 'Working'
+    },
+    {
+      value: 'Rule Out',
+      name: 'Rule Out'
+    },
   ]
 
   tab_all = true;
@@ -54,26 +66,25 @@ export class DocDiagnosisComponent implements OnInit {
     });
   }
 
-
-  tabAll_click(){
+  tabAll_click() {
     this.tab_all = true;
     this.tab_favourite = false;
     this.tab_patient = false;
     this.tab_recent = false;
   }
-  tabFavourite_click(){
+  tabFavourite_click() {
     this.tab_all = false;
     this.tab_favourite = true;
     this.tab_patient = false;
     this.tab_recent = false;
   }
-  tabPatient_click(){
+  tabPatient_click() {
     this.tab_all = false;
     this.tab_favourite = false;
     this.tab_patient = true;
     this.tab_recent = false;
   }
-  tabRecent_click(){
+  tabRecent_click() {
     this.tab_all = false;
     this.tab_favourite = false;
     this.tab_patient = false;
@@ -92,12 +103,18 @@ export class DocDiagnosisComponent implements OnInit {
 
   add_onClick() {
     if (this._tempDiagnosis.name && this._tempDiagnosis.code) {
-      this.diagnoses.push(this._tempDiagnosis);
+      const type = this.addDiagnosisForm.controls.type.value;
+      const obj = this._tempDiagnosis;
+      obj.name = obj.name + '---' + type;
+      this.diagnoses.push(obj);
+      this.diagnosis.emit(obj);
+      console.log(obj);
     }
   }
 
   deleteDiagonis(item) {
     this.diagnoses = this.diagnoses.filter(e => e !== item);
+    this.removediagnosis.emit(item);
   }
 
   done() {

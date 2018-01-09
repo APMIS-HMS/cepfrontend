@@ -37,9 +37,11 @@
     <div class="row">
         <div class="col-mat-4">
             <div class="frm-item-wrap">
-                <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
-                    <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
+                        <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div><br>
         </div>
     </div>
