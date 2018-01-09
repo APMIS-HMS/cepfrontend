@@ -26,7 +26,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
         });
 
         this.shareService.announceDiagnosisSystemOrder$.subscribe((payload: any) => {
-            if (payload.type === 'Diagnosis') {
+            if (payload.type === 'Symptoms') {
                 if (payload.action === 'add') {
                     this.symptoms.push(payload.data);
                 } else {

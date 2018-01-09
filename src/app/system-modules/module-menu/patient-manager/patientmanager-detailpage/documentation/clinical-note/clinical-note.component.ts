@@ -148,13 +148,13 @@ export class ClinicalNoteComponent implements OnInit {
     if (item.name && item.code) {
       this.symptoms.push(item);
     }
-    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnosis', action: 'add', data: item });
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'add', data: item });
     console.log(this.symptoms);
   }
 
   deleteSymptom(item) {
     this.symptoms = this.symptoms.filter(e => e !== item);
-    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnosis', action: 'remove', data: item });
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'remove', data: item });
   }
 
 }
