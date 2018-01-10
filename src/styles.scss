@@ -1338,7 +1338,11 @@ ul.topmenuwrap li:hover {
     border: 1px solid #bebebe;
     z-index: 2;
 }
-
+.frm-x2{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
 .action-item {
     padding: 4px 10px;
     cursor: pointer;

@@ -23,7 +23,8 @@ export class DocSymptomComponent implements OnInit {
 
   ngOnInit() {
     this.addSymptomForm = this.fb.group({
-      symptom: ['', [<any>Validators.required]]
+      symptom: ['', [<any>Validators.required]],
+      symptomDuration: ['', [<any>Validators.required]]
     });
   }
 
