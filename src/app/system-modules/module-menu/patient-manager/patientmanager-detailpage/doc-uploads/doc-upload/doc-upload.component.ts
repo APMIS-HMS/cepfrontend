@@ -55,6 +55,7 @@ export class DocUploadComponent implements OnInit {
     let reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       let file = event.target.files[0];
+      console.log(file);
       this.fileName = file.name;
       if(file.type == "image/png" || file.type == "image/jpg" 
       || file.type == "image/gif" || file.type == "image/jpeg"

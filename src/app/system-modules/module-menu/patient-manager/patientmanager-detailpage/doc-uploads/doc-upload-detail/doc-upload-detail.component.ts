@@ -14,15 +14,30 @@ export class DocUploadDetailComponent implements OnInit {
   page = 1;
   auth: any;
   currentPDF = {};
+  currentImg;
   loading = true;
+  loadingError:boolean;
+
+  docPdf:any;
+  docImg:any;
 
   constructor(private domSanitizer: DomSanitizer, private locker: CoolLocalStorage) { }
 
   ngOnInit() {
     this.auth = this.locker.getObject('auth');
-    this.currentPDF = {
-      url: this.selectedDocument.docUrl
-    };
+    
+    console.log(this.selectedDocument);
+    if(this.selectedDocument.fileType == "application/pdf"){
+      this.docPdf = true;
+      this.docImg = false;
+      this.currentPDF = {
+        url: this.selectedDocument.docUrl
+      };
+    }else{
+      this.docPdf = false;
+      this.docImg = true;
+      this.currentImg = this.selectedDocument.docUrl;
+    }
   }
 
   close_onClick(e) {
@@ -32,6 +47,8 @@ export class DocUploadDetailComponent implements OnInit {
     this.loading = false;
   }
   onError(event) {
+    this.loading = false;
+    this.loadingError = true;
   }
   onProgress(progressData: PDFProgressData) {
     // console.log(event);
