@@ -18,6 +18,11 @@ export enum TransactionType {
     Dr,
     Cr
 }
+
+export enum TransactionType2 {
+    Dr,
+    Cr
+}
 export const TransactionStatus = {
     'Incomplete': 'Incomplete',
     'Complete': 'Complete'
