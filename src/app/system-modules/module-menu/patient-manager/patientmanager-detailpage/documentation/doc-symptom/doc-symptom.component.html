@@ -12,7 +12,7 @@
             <div class="frm-item-wrap">
                 <apmis-lookup [(ngModel)]="apmisLookupText" formControlName="symptom" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom"
                     (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-            </div>
+            </div> 
         </div>
 
         <div class="addDrugBtn" (click)="add_onClick()">
