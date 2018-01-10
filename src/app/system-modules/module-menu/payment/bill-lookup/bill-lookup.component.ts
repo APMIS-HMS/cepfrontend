@@ -16,12 +16,13 @@ export class BillLookupComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
-  fundAmount: FormControl;
+  //fundAmount: FormControl;
 
   public frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
   itemQtyEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
   txtSelectAll = new FormControl('', []);
+  fundAmount = new FormControl('', []);
   select1 = new FormControl('', []);
   select2 = new FormControl('', []);
   select3 = new FormControl('', []);
