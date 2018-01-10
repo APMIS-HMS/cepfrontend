@@ -1,3 +1,6 @@
+import { Department } from './../../../models/facility-manager/setup/department';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { FacilitiesService } from './../../../services/facility-manager/setup/facility.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Facility } from '../../../models/index';
@@ -14,6 +17,7 @@ import { EmployeeService } from '../../../services/facility-manager/setup/index'
   styleUrls: ['./facility-page-home.component.scss']
 })
 export class FacilityPageHomeComponent implements OnInit {
+  empContentArea: boolean;
   loadIndicatorVisible = false;
   contentSecMenuShow = false;
   pageInView = 'Facility';
@@ -26,35 +30,43 @@ export class FacilityPageHomeComponent implements OnInit {
   workspaceContentArea = false;
   professionContentArea = false;
   dashboardContentArea = false;
-  empContentArea = false;
 
   showUnit = false;
   showLoc = false;
 
   selectedFacility: any;
+  selectedDepartment: any;
+  selectedUnit:any;
   hasModules = false;
   hasDepartments = false;
   hasUnits = false;
   hasMinorLocations = false;
   hasAssignedEmployees = false;
   hasWorkSpaces = false;
-  
+
   newDept = false;
   newUnit = false;
   newSubLocModal_on = false;
   createWorkspace = false;
 
   searchControl: FormControl = new FormControl();
-  
-  constructor(private formBuilder: FormBuilder, private router: Router, private locker: CoolLocalStorage, private employeeService: EmployeeService) {
-    // router.events.subscribe((routerEvent: Event) => {
-    //   this.checkRouterEvent(routerEvent);
-    // });
+
+  constructor(private formBuilder: FormBuilder, private router: Router, private systemModuleService: SystemModuleService,
+    private locker: CoolLocalStorage, private employeeService: EmployeeService,
+    private facilityService: FacilitiesService) {
+    this.facilityService.patchListner.subscribe(payload => {
+      this.selectedFacility = payload;
+      this.locker.setObject('selectedFacility', payload);
+    });
+    this.facilityService.listner.subscribe(payload => {
+      this.selectedFacility = payload;
+      this.locker.setObject('selectedFacility', payload);
+    });
   }
   ngOnInit() {
     const page: string = this.router.url;
     this.checkPageUrl(page);
-    
+
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.getModules();
     this.getDepartments();
@@ -62,17 +74,38 @@ export class FacilityPageHomeComponent implements OnInit {
     this.getMinorLocations();
     this.getEmployees();
   }
-  showUnit_click(){
+
+  deptDetalContentArea_remove(model: Department) {
+    this.systemModuleService.on();
+    let index = this.selectedFacility.departments.findIndex(x => x._id === model._id);
+    this.selectedFacility.departments.splice(index, 1);
+    this.facilityService.update(this.selectedFacility).then(payload => {
+      this.systemModuleService.off();
+    }).catch(err => {
+      this.systemModuleService.off();
+    });
+  }
+
+  showUnit_click(dept) {
+    this.showUnit = false;
+    this.selectedDepartment = dept;
     this.showUnit = true;
   }
-  showUnit_hide(){
+  showUnit_hide() {
     this.showUnit = false;
+    this.selectedDepartment = undefined;
   }
-  showLoc_click(){
+  showLoc_click() {
     this.showLoc = true;
   }
-  showLoc_hide(){
+  showLoc_hide() {
     this.showLoc = false;
+  }
+  showUnit_selectedDepartmentUnit(dept) {
+    if (this.selectedDepartment !== undefined) {
+      return dept._id === this.selectedDepartment._id;
+    }
+    return false;
   }
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]);
@@ -174,8 +207,8 @@ export class FacilityPageHomeComponent implements OnInit {
   }
 
   private checkPageUrl(param: string) {
-		if (param.includes('dashboard/employees')) {
-      this.empContentArea = true;
+    if (param.includes('facility/modules')) {
+      this.modulesContentArea = true;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -183,8 +216,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
-		} else if (param.includes('facility/departments')) {
-      this.empContentArea = false;
+    } else if (param.includes('facility/departments')) {
+      this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = true;
@@ -192,8 +225,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
-		} else if (param.includes('facility/locations')) {
-      this.empContentArea = false;
+    } else if (param.includes('facility/locations')) {
+      this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -201,8 +234,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
-		} else if (param.includes('facility/workspaces')) {
-      this.empContentArea = false;
+    } else if (param.includes('facility/workspaces')) {
+      this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -210,8 +243,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = true;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
-		} else if (param.includes('facility/options')) {
-      this.empContentArea = false;
+    } else if (param.includes('facility/options')) {
+      this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = true;
       this.departmentsContentArea = false;
@@ -219,8 +252,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
-		} else if (param.includes('facility/profession')) {
-      this.empContentArea = false;
+    } else if (param.includes('facility/profession')) {
+      this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -228,8 +261,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = true;
       // this.dashboardContentArea = false;
-		} else if (param.includes('facility')) {
-      this.empContentArea = false;
+    } else if (param.includes('facility')) {
+      this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = true;
@@ -237,28 +270,34 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       // this.dashboardContentArea = false;
-		}
+    }
   }
-  close_onClick(e){
+  close_onClick(e) {
     this.newDept = false;
     this.newUnit = false;
     this.newSubLocModal_on = false;
     this.createWorkspace = false;
   }
-  newDept_onClick(){
+  newDept_onClick() {
     this.newDept = true;
   }
-  newUnit_onClick(){
+  newUnit_onClick(dept) {
+    this.selectedDepartment = dept;
     this.newUnit = true;
   }
-  newLoc_onClick(){
+  editUnit_onClick(dept, unit) {
+    this.selectedDepartment = dept;
+    this.selectedUnit = unit;
+    this.newUnit = true;
+  }
+  newLoc_onClick() {
     this.newSubLocModal_on = true;
   }
-  newWorkspace_onClick(){
+  newWorkspace_onClick() {
     this.createWorkspace = true;
   }
-  autoCompleteCallback1(selectedData:any) {
-		//do any necessery stuff.
-		console.log(selectedData);
-	}
+  autoCompleteCallback1(selectedData: any) {
+    //do any necessery stuff.
+    console.log(selectedData);
+  }
 }

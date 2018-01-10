@@ -127,12 +127,14 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     });
     this.stateControl.valueChanges.subscribe(value => {
       let country = this.countryControl.value;
-      let stateIndex = this.states.findIndex(x => x.name === value);
-      this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
+      // let stateIndex = this.states.findIndex(x => x.name === value);
+      if (country && value !== undefined) {
+        this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
           this.lgs = lgsAndCities.lgs;
-      }).catch(err => {
+        }).catch(err => {
           console.log(err);
-      });
+        });
+      }
     });
 
 
@@ -183,6 +185,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.loadIndicatorVisible = false;
       this.employee = <any>results[0];
       this.selectedValue = this.employee.departmentId;
+      if (this.employee.personDetails.homeAddress == undefined) {
+        this.employee.personDetails.homeAddress = {};
+      }
       this.selectedPerson = this.employee.personDetails;
       this.getCurrentUser(results[1]);
       this.systemService.off();
@@ -335,7 +340,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   bioDataShow() {
     this.biodatas = !this.biodatas;
   }
-  editBasicPop_show(){
+  editBasicPop_show() {
     this.editBasicPop = true;
   }
   contactShow() {
