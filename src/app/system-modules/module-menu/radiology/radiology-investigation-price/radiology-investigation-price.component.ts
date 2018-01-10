@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, InvestigationService, WorkbenchService, ServicePriceService, TagService
+  FacilitiesService, WorkbenchService, ServicePriceService, TagService,RadiologyInvestigationService
  } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
@@ -23,7 +23,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
   apmisLookupDisplayKey = 'name';
   apmisLookupOtherKeys = ['laboratoryId.name']
 
-  apmisInvestigationLookupUrl = 'investigations';
+  apmisInvestigationLookupUrl = 'radiology-investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {
   };
@@ -53,7 +53,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
   foundPrice: Boolean = false;
 
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
-    private investigationService: InvestigationService, private workbenchService: WorkbenchService,
+    private investigationService: RadiologyInvestigationService, private workbenchService: WorkbenchService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
     private _facilityService: FacilitiesService

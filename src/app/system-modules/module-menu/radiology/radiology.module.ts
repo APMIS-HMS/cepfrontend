@@ -30,6 +30,6 @@ import { RadiologyInvestigationServiceComponent } from '../radiology/radiology-i
   declarations: [RadiologyComponent, LabRequestsComponent, RadiologyInvestigationServiceComponent, RadRequestDetailComponent,
     RadiologyInvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
     ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
-  providers: [LaboratoryRequestService, ScopeLevelService]
+  providers: [LaboratoryRequestService, ScopeLevelService,RadiologyInvestigationService]
 })
 export class RadiologyModule { }
