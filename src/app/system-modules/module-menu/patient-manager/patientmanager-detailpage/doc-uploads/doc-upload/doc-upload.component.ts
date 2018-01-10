@@ -16,14 +16,15 @@ import { FormTypeService, ScopeLevelService } from '../../../../../../services/m
 })
 export class DocUploadComponent implements OnInit {
   loading: boolean;
-
   mainErr = true;
   errMsg = 'you have unresolved errors';
   fileBase64: any;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   public frmNewUpload: FormGroup;
   documentTypes: any;
-  fileType: any;
+  fileType:any;
+  fileName:any;
+  
 
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService,
@@ -46,7 +47,7 @@ export class DocUploadComponent implements OnInit {
     });
     this.documentTypeFn();
   }
-  close_onClick(e) {
+  close_onClick(e?){
     this.closeModal.emit(true);
   }
 
@@ -54,9 +55,10 @@ export class DocUploadComponent implements OnInit {
     let reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       let file = event.target.files[0];
-      if (file.type == "image/png" || file.type == "image/jpg"
-        || file.type == "image/gif" || file.type == "image/jpeg"
-        || file.type == "application/pdf") {
+      this.fileName = file.name;
+      if(file.type == "image/png" || file.type == "image/jpg" 
+      || file.type == "image/gif" || file.type == "image/jpeg"
+      || file.type == "application/pdf"){
         console.log(file);
         if (file.size < 1250000) {
           console.log(file);
@@ -81,9 +83,10 @@ export class DocUploadComponent implements OnInit {
   uploadDocument(patient?: any) {
     this.loading = true;
     let uploadDoc;
-
-    if (this.locker.getObject('patient')) {
-      const upPatient = <any>this.locker.getObject('patient');
+    this.loading = true;
+    
+    if(this.locker.getObject('patient')){
+      let upPatient = <any>this.locker.getObject('patient');
       uploadDoc = {
         base64: this.fileBase64,
         docType: this.frmNewUpload.controls['fileType'].value,
@@ -107,6 +110,7 @@ export class DocUploadComponent implements OnInit {
 
     this.docUploadService.post(uploadDoc).then(payload => {
       console.log(payload);
+      this.notification('Document Successfully Uploaded!', 'Success');
       this.loading = false;
       this.close_onClick(true);
     }).catch(err => {
