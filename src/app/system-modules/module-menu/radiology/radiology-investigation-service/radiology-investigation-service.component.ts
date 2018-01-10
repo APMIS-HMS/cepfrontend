@@ -1,20 +1,21 @@
+import { RadiologyInvestigationService } from './../../../../services/facility-manager/setup/radiologyinvestigation.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, InvestigationSpecimenService, InvestigationService, FacilitiesServiceCategoryService, ServicePriceService
+  FacilitiesService, FacilitiesServiceCategoryService, ServicePriceService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, MinorLocation, FacilityService, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
-  selector: 'app-investigation-service',
-  templateUrl: './investigation-service.component.html',
-  styleUrls: ['./investigation-service.component.scss']
+  selector: 'app-radiology-investigation-service',
+  templateUrl: './radiology-investigation-service.component.html',
+  styleUrls: ['./radiology-investigation-service.component.scss']
 })
-export class InvestigationServiceComponent implements OnInit {
+export class RadiologyInvestigationServiceComponent implements OnInit {
   user: User = <User>{};
   apmisLookupUrl = '';
   apmisLookupText = '';
@@ -46,9 +47,8 @@ export class InvestigationServiceComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private specimenService: InvestigationSpecimenService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
-    private locker: CoolLocalStorage, private investigationService: InvestigationService,
+    private locker: CoolLocalStorage, private investigationService: RadiologyInvestigationService,
     private dragulaService: DragulaService, private _facilityService: FacilitiesService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private servicePriceService: ServicePriceService) {
     dragulaService.drag.subscribe((value) => {
@@ -83,27 +83,13 @@ export class InvestigationServiceComponent implements OnInit {
 
     this.frmNewInvestigationh = this.formBuilder.group({
       investigationName: ['', [Validators.required]],
-      ref: ['', [Validators.required]],
-      maxRef: ['', []],
-      reportType: ['Text', [Validators.required]],
-      unit: ['', [Validators.required]],
-      specimen: ['', [Validators.required]],
       isPanel: [false, [Validators.required]]
     });
-
-    this.frmNewInvestigationh.controls['reportType'].valueChanges.subscribe(value => {
-      if (value === 'Numeric') {
-        this.isNumeric = true;
-      } else {
-        this.isNumeric = false;
-      }
-    })
 
     this.frmNewPanel = this.formBuilder.group({
       panelName: ['', [Validators.required]],
       isPanel: [true, [Validators.required]]
     });
-    this.getSpecimens();
     this.getInvestigations();
     this.getServiceCategories();
   }
@@ -123,14 +109,16 @@ export class InvestigationServiceComponent implements OnInit {
       this.loading = false;
       this.investigations = payload.data;
       this.bindInvestigations = JSON.parse(JSON.stringify(payload.data));
-    }).catch(err => this._notification('Error', 'There was a problem getting investigations. Please try again later!'));
+    }).catch(err => {
+      this.loading = false;
+    });
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
      if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
-        const index = this.categories.findIndex(x => x.name === 'Laboratory');
+        const index = this.categories.findIndex(x => x.name === 'Radiology');
         this.selectedServiceCategory = this.categories[index];
       }
     });
@@ -139,19 +127,7 @@ export class InvestigationServiceComponent implements OnInit {
     if (!investigation.isPanel) {
       this.selectedInvestigation = investigation;
       this.frmNewInvestigationh.controls['investigationName'].setValue(this.selectedInvestigation.name);
-      this.frmNewInvestigationh.controls['specimen'].setValue(this.selectedInvestigation.specimen);
       this.frmNewInvestigationh.controls['isPanel'].setValue(this.selectedInvestigation.isPanel);
-      this.frmNewInvestigationh.controls['unit'].setValue(this.selectedInvestigation.unit);
-      if (this.selectedInvestigation.reportType !== undefined) {
-        if (this.selectedInvestigation.reportType.name === 'Text') {
-          this.frmNewInvestigationh.controls['reportType'].setValue(this.selectedInvestigation.reportType.name);
-          this.frmNewInvestigationh.controls['ref'].setValue(this.selectedInvestigation.reportType.ref);
-        } else if (this.selectedInvestigation.reportType.name === 'Numeric') {
-          this.frmNewInvestigationh.controls['reportType'].setValue(this.selectedInvestigation.reportType.name);
-          this.frmNewInvestigationh.controls['ref'].setValue(this.selectedInvestigation.reportType.ref.min);
-          this.frmNewInvestigationh.controls['maxRef'].setValue(this.selectedInvestigation.reportType.ref.max);
-        }
-      }
 
       this.btnText = 'Update Investigation';
       this.investigation_view = true;
@@ -173,11 +149,6 @@ export class InvestigationServiceComponent implements OnInit {
       this.pannel_view = true;
     }
   }
-  getSpecimens() {
-    this.specimenService.findAll().then(payload => {
-      this.specimens = payload.data;
-    });
-  }
 
   apmisLookupHandleSelectedItem(value) {
 
@@ -191,18 +162,6 @@ export class InvestigationServiceComponent implements OnInit {
     this.investigation_view = false;
   }
 
-  specimenDisplayFn(specimen: any) {
-    return specimen ? specimen.name : specimen;
-  }
-  getRefrenceValues(reportType) {
-    if (reportType !== undefined && reportType.name === 'Numeric') {
-      return reportType.ref.min + ' - ' + reportType.ref.max;
-    } else if (reportType !== undefined && reportType.name !== 'Numeric') {
-      return reportType.ref;
-    } else {
-      return '';
-    }
-  }
 
   createInvestigation(valid, value) {
     if (valid) {
@@ -213,30 +172,18 @@ export class InvestigationServiceComponent implements OnInit {
           unit: value.unit,
           specimen: value.specimen,
         }
-        const reportType: any = {};
-        if (value.reportType === 'Text') {
-          reportType.name = value.reportType;
-          reportType.ref = value.ref;
-          investigation.reportType = reportType;
-        } else if (value.reportType === 'Numeric') {
-          reportType.name = value.reportType;
-          reportType.ref = {
-            max: value.maxRef,
-            min: value.ref
-          }
-          investigation.reportType = reportType;
-        }
+
         this.investigationService.create(investigation).then(payload => {
           const service: any = <any>{};
           service.name = value.investigationName;
           this.selectedFacilityService.categories.forEach((item, i) => {
-            if (item.name === 'Laboratory') {
+            if (item.name === 'Radiology') {
               item.services.push(service);
             }
           });
           this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
             payResult.categories.forEach((itemi, i) => {
-              if (itemi.name === 'Laboratory') {
+              if (itemi.name === 'Radiology') {
                 itemi.services.forEach((items, s) => {
                   if (items.name === service.name) {
                     payload.serviceId = items;
@@ -268,34 +215,19 @@ export class InvestigationServiceComponent implements OnInit {
         })
       } else {
         this.selectedInvestigation.name = this.frmNewInvestigationh.controls['investigationName'].value;
-        this.selectedInvestigation.specimen = this.frmNewInvestigationh.controls['specimen'].value;
         this.selectedInvestigation.isPanel = this.frmNewInvestigationh.controls['isPanel'].value;
-        this.selectedInvestigation.unit = this.frmNewInvestigationh.controls['unit'].value;
-        const reportType: any = {};
-        if (value.reportType === 'Text') {
-          reportType.name = value.reportType;
-          reportType.ref = value.ref;
-          this.selectedInvestigation.reportType = reportType;
-        } else if (value.reportType === 'Numeric') {
-          reportType.name = value.reportType;
-          reportType.ref = {
-            max: value.maxRef,
-            min: value.ref
-          }
-          this.selectedInvestigation.reportType = reportType;
-        }
         this.investigationService.update(this.selectedInvestigation).then(payload => {
           if (this.selectedInvestigation.serviceId === undefined) {
             const service: any = <any>{};
             service.name = value.investigationName;
             this.selectedFacilityService.categories.forEach((item, i) => {
-              if (item.name === 'Laboratory') {
+              if (item.name === 'Radiology') {
                 item.services.push(service);
               }
             });
             this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
               payResult.categories.forEach((itemi, i) => {
-                if (itemi.name === 'Laboratory') {
+                if (itemi.name === 'Radiology') {
                   itemi.services.forEach((items, s) => {
                     if (items.name === service.name) {
                       payload.serviceId = items;
@@ -369,13 +301,13 @@ export class InvestigationServiceComponent implements OnInit {
           service.name = value.panelName;
 
           this.selectedFacilityService.categories.forEach((item, i) => {
-            if (item.name === 'Laboratory') {
+            if (item.name === 'Radiology') {
               item.services.push(service);
             }
           });
           this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
             payResult.categories.forEach((itemi, i) => {
-              if (itemi.name === 'Laboratory') {
+              if (itemi.name === 'Radiology') {
                 itemi.services.forEach((items, s) => {
                   if (items.name === service.name) {
                     payload.serviceId = items;
@@ -428,13 +360,13 @@ export class InvestigationServiceComponent implements OnInit {
             const service: any = <any>{};
             service.name = this.selectedInvestigation.name;
             this.selectedFacilityService.categories.forEach((item, i) => {
-              if (item.name === 'Laboratory') {
+              if (item.name === 'Radiology') {
                 item.services.push(service);
               }
             });
             this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
               payResult.categories.forEach((itemi, i) => {
-                if (itemi.name === 'Laboratory') {
+                if (itemi.name === 'Radiology') {
                   itemi.services.forEach((items, s) => {
                     if (items.name === service.name) {
                       payload.serviceId = items;
