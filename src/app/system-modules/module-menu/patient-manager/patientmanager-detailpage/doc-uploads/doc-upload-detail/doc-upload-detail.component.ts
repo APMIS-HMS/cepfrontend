@@ -14,6 +14,7 @@ export class DocUploadDetailComponent implements OnInit {
   page = 1;
   auth: any;
   currentPDF = {};
+  currentImg;
   loading = true;
   loadingError:boolean;
 
@@ -24,16 +25,18 @@ export class DocUploadDetailComponent implements OnInit {
 
   ngOnInit() {
     this.auth = this.locker.getObject('auth');
-    this.currentPDF = {
-      url: this.selectedDocument.docUrl
-    };
+    
     console.log(this.selectedDocument);
     if(this.selectedDocument.fileType == "application/pdf"){
       this.docPdf = true;
       this.docImg = false;
+      this.currentPDF = {
+        url: this.selectedDocument.docUrl
+      };
     }else{
       this.docPdf = false;
       this.docImg = true;
+      this.currentImg = this.selectedDocument.docUrl;
     }
   }
 

@@ -13,6 +13,6 @@
       <!-- <pdf-viewer [src]="'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf'" [render-text]="true" [page]="page" [original-size]="true"
       style="display: block;"></pdf-viewer> -->
       <pdf-viewer *ngIf="docPdf" [src]="currentPDF" (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
-        <img src="" alt="" *ngIf="docImg">
+        <img [src]="currentImg" alt="" *ngIf="docImg">
     </div>
 </div>
