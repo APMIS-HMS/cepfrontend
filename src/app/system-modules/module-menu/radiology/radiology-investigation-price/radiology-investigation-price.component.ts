@@ -11,11 +11,11 @@ import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
-  selector: 'app-investigation-price',
-  templateUrl: './investigation-price.component.html',
-  styleUrls: ['./investigation-price.component.scss']
+  selector: 'app-radiology-investigation-price',
+  templateUrl: './radiology-investigation-price.component.html',
+  styleUrls: ['./radiology-investigation-price.component.scss']
 })
-export class InvestigationPriceComponent implements OnInit {
+export class RadiologyInvestigationPriceComponent implements OnInit {
   user: User = <User>{};
   apmisLookupUrl = 'workbenches';
   apmisLookupText = '';

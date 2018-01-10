@@ -99,14 +99,14 @@
             <option  value="" disabled selected>Type of Facility/Organisation</option>
             <option *ngFor="let item of facilityTypes"  value={{item._id}}>{{item.name}}</option>
           </select>-->
-            <mat-form-field>
+            <!-- <mat-form-field> -->
                 <mat-select *ngIf="facilityTypeEditShow" [formControl]="facilityTypeEdit">
                     <mat-option value="" disabled selected>Type of Facility/Organisation</mat-option>
                     <mat-option *ngFor="let item of facilityTypes" value={{item._id}}>
                         {{item.name}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>
+           <!-- </mat-form-field> -->
             <i [hidden]="facilityTypeEditShow" (click)="facilityTypeEditToggle()" class="edit-ico fa fa-pencil-square-o" aria-hidden="true"></i>
             <i *ngIf="facilityTypeEditShow" (click)="facilityTypeEditToggle()" class="done-ico fa fa-check" aria-hidden="true"></i>
             <div class="clear"></div>
