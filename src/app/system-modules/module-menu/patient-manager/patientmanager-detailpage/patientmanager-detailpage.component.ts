@@ -48,7 +48,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuForms = false;
   menuDocs = false;
   menuOrder = false;
-  menuUploads = false;
+
   // menuImages = false;
   // menuLists = false;
   menuTimeline = false;
@@ -256,25 +256,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.contentSecMenuShow = false;
     }
   }
-  menuUploads_click() {
-    this.menuSummary = false;
-    this.menuPharmacy = false;
-    this.menuBilling = false;
-    this.menuTreatmentPlan = false;
-    this.menuImaging = false;
-    this.menuLab = false;
-    this.menuForms = false;
-    this.menuUploads = true;
-    this.menuDocs = false;
-    this.menuOrder = false;
-    this.menuFluid = false;
-    this.menuTimeline = false;
-    this.menuPrescription = false;
-    this.menuExternalPrescription = false;
-    this.menuFinance = false;
-    this.menuMedicationHistory = false;
-    this.menuPayment = false;
-  }
+ 
   menuSummary_click() {
     this.menuSummary = true;
     this.menuUploads = false;
