@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
@@ -21,7 +22,7 @@ export class DocumentUploadService {
     this._rest = _restService.getService('docupload');
     this._socket = _socketService.getService('docupload');
     // this._restLogin = _restService.getService('auth/local');
-    // this.listner = Observable.fromEvent(this._socket, 'updated');
+    this.listner = Observable.fromEvent(this._socket, 'created');
   }
   find(query: any) {
     return this._rest.find(query);
