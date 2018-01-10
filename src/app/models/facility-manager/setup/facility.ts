@@ -28,4 +28,5 @@ export interface Facility {
     facilityModules: any;
     invitees: any;
     country?:any;
+    wallet:any;
 }

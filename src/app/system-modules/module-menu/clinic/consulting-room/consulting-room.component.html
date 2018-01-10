@@ -4,9 +4,11 @@
         <div class="dx-fieldset">
             <form action="/Login" method="post">
                 <div class="frmitemwrap">
-                    <mat-select placeholder="Location" [formControl]="locationTypeControl">
-                        <mat-option *ngFor="let cliniclocation of clinicLocations" [value]="cliniclocation">{{ cliniclocation.name }}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Location" [formControl]="locationTypeControl">
+                            <mat-option *ngFor="let cliniclocation of clinicLocations" [value]="cliniclocation">{{ cliniclocation.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <form *ngIf="locationTypeControl.value != null" [formGroup]="consultingRoomForm" class="form-horizontal" (ngSubmit)="onSubmit()">
                     <div formArrayName="consultingRoomArray" class="frmArrayWrap">

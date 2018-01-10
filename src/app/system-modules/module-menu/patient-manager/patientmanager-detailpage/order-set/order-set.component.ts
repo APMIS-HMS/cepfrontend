@@ -1,5 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import {
+  FormsService, FacilitiesService, OrderSetTemplateService, DocumentationService, PersonService, PatientService, TreatmentSheetService
+} from 'app/services/facility-manager/setup';
+import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
+import { SharedService } from '../../../../../shared-module/shared.service';
+import { OrderSetTemplate, User, Facility } from '../../../../../models/index';
 
 @Component({
   selector: 'app-order-set',
@@ -7,45 +15,151 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./order-set.component.scss']
 })
 export class OrderSetComponent implements OnInit {
-
   @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  selectedPatient: any;
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
-
+  facility: Facility = <Facility>{};
+  miniFacility: Facility = <Facility>{};
+  employeeDetails: any = <any>{};
   apmisLookupQuery = {};
-  apmisLookupUrl = '';
-  apmisLookupDisplayKey = '';
+  apmisLookupUrl = 'order-mgt-templates';
+  apmisLookupDisplayKey = 'name';
   apmisLookupText = '';
-
+  apmisDLookupQuery = {};
+  apmisDLookupDisplayKey = 'diagnosis';
+  apmisDLookupText = '';
   popMed = false;
   popInvestigation = false;
   popNursingCare = false;
   popPhysicianOrder = false;
   popProcedure = false;
-
   showbill= false;
+  user: any = <any>{};
+  orderSet: any = <any>{};
+  selectedForm: any;
 
-  constructor() { }
+  constructor(
+    private _route: ActivatedRoute,
+    private _locker: CoolLocalStorage,
+    private _orderSetSharedService: OrderSetSharedService,
+    private _orderSetTemplateService: OrderSetTemplateService,
+    public facilityService: FacilitiesService,
+    private sharedService: SharedService,
+    private _formService: FormsService,
+    private _personService: PersonService,
+    private _patientService: PatientService,
+    private _treatmentSheetService: TreatmentSheetService,
+    private _documentationService: DocumentationService,
+  ) { }
 
   ngOnInit() {
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
+    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
+    this.employeeDetails = this._locker.getObject('loginEmployee');
+    this.user = <User>this._locker.getObject('auth');
+
+    this._route.params.subscribe(value => {
+      this._getPatient(value.id);
+    });
+
+    // Listen to the event from children components
+    this._orderSetSharedService.itemSubject.subscribe(value => {
+      console.log(value);
+      if (!!value.medications) {
+        this.orderSet.medications = value.medications;
+      } else if (!!value.investigations) {
+        this.orderSet.investigations = value.investigations;
+      } else if (!!value.procedures) {
+        this.orderSet.procedures = value.procedures;
+      } else if (!!value.nursingCares) {
+        this.orderSet.nursingCares = value.nursingCares;
+      } else if (!!value.physicianOrders) {
+        this.orderSet.physicianOrders = value.physicianOrders;
+      }
+
+      console.log(this.orderSet);
+    });
   }
 
-  popMed_show(){
-    this.popMed = true;
+  showOrderSetType(type: string) {
+    if (type === 'medication') {
+      this.popMed = true;
+    } else if (type === 'investigation') {
+      this.popInvestigation = true;
+    } else if (type === 'nursing care') {
+      this.popNursingCare = true;
+    } else if (type === 'physician order') {
+      this.popPhysicianOrder = true;
+    } else if (type === 'procedure') {
+      this.popProcedure = true;
+    }
   }
-  popInvestigation_show(){
-    this.popInvestigation = true;
+
+  authorizerx() {
+    const treatementSheet = {
+      personId: this.selectedPatient.personDetails._id,
+      treatmentSheet: this.orderSet,
+      facilityId: this.miniFacility._id,
+      createdBy: this.employeeDetails.employeeDetails._id,
+    };
+
+    this._treatmentSheetService.create(treatementSheet).then(treatment => {
+      this.sharedService.announceOrderSet(this.orderSet);
+      this.close_onClickModal();
+    }).catch(err => {
+      console.log(err);
+    });
+    this.showDoc.emit(true);
   }
-  popNursingCare_show(){
-    this.popNursingCare = true;
+
+  private _getPatient(id) {
+    this._patientService.find({query: {
+      facilityId: this.miniFacility._id,
+      personId: id
+    }}).then(res => {
+      console.log(res);
+      if (res.data.length > 0) {
+        this.selectedPatient = res.data[0];
+      }
+    }).catch(err => {
+      console.log(err);
+    });
   }
-  popPhysicianOrder_show(){
-    this.popPhysicianOrder = true;
+
+  showbill_click(){
+    this.showbill = true;
   }
-  popProcedure_show(){
-    this.popProcedure = true;
+
+  apmisLookupHandleSelectedItem(value: any) {
+    this.apmisLookupText = value.name;
+    this.diagnosis.setValue('');
+    this.template.setValue(value.name);
+    this.orderSet = JSON.parse(value.body);
   }
+
+  apmisDLookupHandleSelectedItem(value: any) {
+    this.apmisDLookupText = value.name;
+    this.template.setValue('');
+    this.diagnosis.setValue(value.diagnosis);
+    this.orderSet = JSON.parse(value.body);
+  }
+
+
+  private _getOrderSetTemplate() {
+    this._orderSetTemplateService.find({
+      query: { facilityId: this.facility._id }
+    }).then(res => {
+      if (res.data.length > 0) {
+        console.log(JSON.parse(res.data[0].body));
+        this.orderSet = JSON.parse(res.data[0].body);
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
   close_onClick(e){
     this.popMed = false;
     this.popInvestigation = false;
@@ -54,27 +168,18 @@ export class OrderSetComponent implements OnInit {
     this.popProcedure = false;
     this.showbill = false;
   }
-  authorizerx(){
-    this.showDoc.emit(true);
-  }
-  showbill_click(){
-    this.showbill = true;
+
+  close_onClickModal() {
+    this.closeModal.emit(true);
   }
 
-  apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.name;
-    let isExisting = false;
-    // this.loginHMOListObject.companyCovers.forEach(item => {
-    //   if (item._id === value._id) {
-    //     isExisting = true;
-    //   }
-    // });
-    // if (!isExisting) {
-    //   this.selectedCompanyCover = value;
-    // } else {
-    //   this.selectedCompanyCover = <any>{};
-    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
-    // }
+  // Notification
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 
 }

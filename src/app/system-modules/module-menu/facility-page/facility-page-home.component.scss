@@ -93,15 +93,11 @@ td{
     font-weight: bold;
     padding-top: 5px;
 }
-.work-places-list{
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-height: 80px;
-    min-width: 270px;
-    border: 1px solid #777;
-    background: #fff;
+
+.completion-meter_step {
+    width: 14.28571%;
+    border-left: 2px solid #fff;
+    float: left;
     z-index: 1;
 }
 .work-places-item{

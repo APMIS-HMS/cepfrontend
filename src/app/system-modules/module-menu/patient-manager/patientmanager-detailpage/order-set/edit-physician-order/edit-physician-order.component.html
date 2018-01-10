@@ -1,25 +1,23 @@
-<div class="animated pulse">
-  <div class="modal-header-wrap">
-    <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Update Physician Order</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-  </div>
-  <div class="modal-baseWrap">
-      <form [formGroup]="addProcedureForm" novalidate>
+<div class="modal-baseWrap animated pulse">
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Add Physician Order</legend>
+    <form [formGroup]="addPhysicianOrderForm" novalidate>
         <div class="frmArrWrap">
-          <div class="frm-x2">
-            <div class="frm-item-wrap">
-              <apmis-lookup formControlName="procedure" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Investigation" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            <div class="frm-x2">
+                <div class="frm-item-wrap">
+                    <div class="frm-item-wrap">
+                        <textarea style="border:1px solid #777; padding:10px;" matInput formControlName="physicianOrder" class="textarea" cols="30" rows="10"></textarea>
+                    </div>
+                    <!-- <mat-form-field>
+                        <textarea matInput formControlName="physicianOrder" class="textarea" cols="30" rows="10"></textarea>
+                    </mat-form-field> -->
+                </div>
             </div>
-          </div>
         </div>
-      
-        <div class="addDrugBtn">
+
+        <div class="addDrugBtn" (click)="onClickAddPhysicianOrder(addPhysicianOrderForm.valid, addPhysicianOrderForm.value);">
             <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
-            <span>UPDATE PHYSICIAN ORDER</span>
+            <span>ADD PHYSICIAN ORDER</span>
         </div>
-      </form>
-        
-        
-  </div>
+    </form>
 </div>

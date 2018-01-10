@@ -238,11 +238,13 @@
                                                                 <mat-input-container class="example-full-width" style="margin-left: 5px;">
                                                                     <input matInput type="email" placeholder="Email" formControlName="email">
                                                                 </mat-input-container>
-                                                                <mat-select placeholder="Relationship" formControlName="relationship">
-                                                                    <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
-                                                                        {{relationship.name}}
-                                                                    </mat-option>
-                                                                </mat-select>
+                                                                <mat-form-field>
+                                                                    <mat-select placeholder="Relationship" formControlName="relationship">
+                                                                        <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                                                            {{relationship.name}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -1,6 +1,5 @@
 @import "../documentation-detail/documentation-detail.component.scss";
-
-.frmNoteWrap{
+.frmNoteWrap {
     position: relative;
     background: #fff;
     width: 90%;
@@ -8,31 +7,48 @@
     padding: 3px;
     box-sizing: border-box;
 }
-.modal_title{
+
+.modal_title {
     padding-top: 10px;
     font-size: 16px;
     margin: 0;
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.jsonFrnWrap{
+
+.jsonFrnWrap {
     position: relative;
 }
-.actWrappers-jsonFrm{
+
+.actWrappers-jsonFrm {
     position: absolute;
-    bottom: 21px;
+    bottom: 10px;
     right: 10px;
     display: flex;
 }
+
+.actWrappers-jsonFrm-view {
+    bottom: 35px;
+    position: absolute;
+    right: 10px;
+    display: flex;
+    .atch-orderSet {
+        color: green;
+    }
+}
+
 .atch-orderSet {
     font-size: 12px;
     cursor: pointer;
     color: #0288D1;
     margin-right: 10px;
 }
-.atch-orderSet:hover, .links-ul li:hover{
+
+.atch-orderSet:hover,
+.links-ul li:hover {
     text-decoration: underline;
 }
+
 .links-ul {
     position: absolute;
     top: 105px;
@@ -40,4 +56,30 @@
     font-size: 12px;
     cursor: pointer;
     color: #0288D1;
+}
+
+.tags {
+    border: 1px solid #0288D1;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 7px;
+    margin: 5px;
+    color: #0288D1;
+    background: #fff;
+    font-size: 10px;
+}
+
+.diagnosis-view {
+    padding: 250px;
+}
+
+.order-set {
+    padding: 100px;
+    .tbl-listWrap {
+        .sect-title {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px;
+        }
+    }
 }

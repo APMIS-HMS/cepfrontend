@@ -1,3 +1,4 @@
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
@@ -34,7 +35,10 @@ import { SharedService } from '../../../shared-module/shared.service';
 import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
 import { ChartsModule } from 'ng2-charts';
-import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
+import { WorkbenchService,
+  LaboratoryRequestService,
+  OrderSetTemplateService, TreatmentSheetService
+} from '../../../services/facility-manager/setup/index';
 import { PaymentComponent } from './patientmanager-detailpage/payment/payment.component';
 import { WalletComponent } from './patientmanager-detailpage/payment/wallet/wallet.component';
 import { InsuranceComponent } from './patientmanager-detailpage/payment/insurance/insurance.component';
@@ -103,9 +107,11 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         SharedModule,
         patientManagerRoutes,
         MaterialModule,
-        ChartsModule
+        ChartsModule,
+        PdfViewerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
+      OrderSetTemplateService, TreatmentSheetService,
         FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService, FacilityCompanyCoverService,
     DocumentationTemplateService]
 })

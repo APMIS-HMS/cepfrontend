@@ -41,7 +41,7 @@ export class AssignUnitComponent implements OnInit {
       dept: ['', []],
       unit: ['', []]
     });
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     console.log(this.selectedEmployee)
     if (this.selectedEmployee !== undefined) {

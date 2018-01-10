@@ -22,6 +22,7 @@ export class InvoiceComponent implements OnInit {
     priceItemDetailPopup = false;
     makePaymentPopup = false;
     isPaidClass = false;
+    isWaved = false;
     addItem = false;
     itemEditShow = false;
     itemEditShow2 = false;
@@ -128,7 +129,7 @@ export class InvoiceComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingInvoice = true;
-                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: {$regex:'.*'+value+'.*'}} })
+                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: { $regex: '.*' + value + '.*' } } })
                     .then(payload => {
                         this.invoiceGroups = payload.data;
                         this.isLoadingInvoice = false;
@@ -141,11 +142,19 @@ export class InvoiceComponent implements OnInit {
 
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
+        console.log(this.selectedInvoiceGroup);
         if (this.selectedInvoiceGroup.paymentCompleted == true) {
             this.isPaidClass = true;
-        } else {
+        }
+        if (this.selectedInvoiceGroup.paymentCompleted == false) {
             this.isPaidClass = false;
         }
+        if (this.selectedInvoiceGroup.payments[this.selectedInvoiceGroup.payments.length - 1] != undefined) {
+            if (this.selectedInvoiceGroup.paymentCompleted == true && this.selectedInvoiceGroup.payments[this.selectedInvoiceGroup.payments.length - 1].paymentMethod.planType == true) {
+                this.isPaidClass = false;
+            }
+        }
+        
         this.isPaymentMade = false;
     }
 
@@ -153,7 +162,8 @@ export class InvoiceComponent implements OnInit {
         this.selectedPatient.personDetails = person;
         this.isLoadingInvoice = false;
         this.isLoadingOtherInvoice = false;
-        this.isPaidClass = true;
+        this.isPaidClass = person.isPaid;
+        this.isWaved = person.isWaved;
         this.isPaymentMade = true;
         this.getPatientInvoices();
     }
@@ -177,11 +187,12 @@ export class InvoiceComponent implements OnInit {
     makePayment_show() {
         if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
             if (this.selectedInvoiceGroup.paymentCompleted == false) {
-                if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
-                    this._notification('Info', "You donot have sufficient balance to make this payment");
-                } else {
-                    this.makePaymentPopup = true;
-                }
+                // if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+                //     this._notification('Info', "You donot have sufficient balance to make this payment");
+                // } else {
+
+                // }
+                this.makePaymentPopup = true;
             } else {
                 this._notification('Info', "Selected invoice is paid");
             }

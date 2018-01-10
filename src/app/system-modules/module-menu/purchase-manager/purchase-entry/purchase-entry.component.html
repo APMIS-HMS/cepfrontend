@@ -6,19 +6,25 @@
             <div class="wrap1">
                 <div class="row">
                     <div class="frm-item-wrap">
-                        <mat-select style="width: 350px;" class="example-full-width" placeholder="Store" formControlName="store">
-                            <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select style="width: 350px;" class="example-full-width" placeholder="Store" formControlName="store">
+                                <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                     <div class="frm-item-wrap">
-                        <mat-select style="width: 350px;" class="example-full-width" placeholder="Supplier" formControlName="supplier">
-                            <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select style="width: 350px;" class="example-full-width" placeholder="Supplier" formControlName="supplier">
+                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                     <div class="frm-item-wrap">
-                        <mat-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
-                            <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
+                                <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
 
@@ -103,7 +109,7 @@
         </div>
 
         <div class="bottomwrap">
-        <!--    <div class="summaries">
+            <!--    <div class="summaries">
                 <div class="summary">
                     <div class="s-itemLabel">Invoice Amount</div>
                     <div class="s-divider">-</div>
@@ -167,7 +173,7 @@
                                             <input matInput mat-error placeholder="Batch No" formControlName="batchNo">
                                         </mat-input-container>
                                     </div>
-                                    
+
                                     <div style="width: 15%;" class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
                                             <input [step]="0.01" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Cost Price" formControlName="costPrice">

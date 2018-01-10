@@ -9,42 +9,29 @@
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
 
-        <form novalidate [formGroup]="frm_newProduct">
-            <div class="mainfrmwrap">
-                <div class="sec-1">
-                    <div class="frm-item-wrap">
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">New Product</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+    <div class="modal_mini_title">{{productName}}</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
+
+    <form novalidate [formGroup]="frm_newProduct">
+        <div class="mainfrmwrap">
+            <div class="sec-1">
+                <div class="frm-item-wrap">
+                    <mat-form-field>
                         <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
                             <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
                         </mat-select>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <input matInput mat-error placeholder="Name(Product)" formControlName="name">
-                        </mat-input-container>
-                        <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
-                            <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
-                        </div>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <input matInput mat-error placeholder="Presentation" formControlName="presentation">
-                        </mat-input-container>
-                        <!--<span (click)="presentationSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
-                    </div>
-                    <!--<div class="frm-item-wrap">
-                        <small class="alert-label" [hidden]="frm_newProduct.controls.strengthId.valid || frm_newProduct.controls.strengthId.pristine">
-                            Kindly select an option from the drop down.
-                        </small>
-                        <label>Strength</label>
-                        <dx-lookup [dataSource]="strengths" formControlName="strengthId" [grouped]="false" [closeOnOutsideClick]="true" [showPopupTitle]="false"
-                            displayExpr="strength" valueExpr="_id">
-                        </dx-lookup><span (click)="strengthSlide()" class="flex"><i class="fa fa-plus"></i></span>
-                    </div>-->
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
-                        </mat-input-container>
-                        <!--<span (click)="manufacturerSlide()" class="flex"><i class="fa fa-plus"></i></span>-->
+                    </mat-form-field>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Name(Product)" formControlName="name">
+                    </mat-input-container>
+                    <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
+                        <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                     </div>
 
                 </div>

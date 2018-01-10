@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
   selector: 'app-template-nursing-care',
@@ -7,16 +8,19 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./template-nursing-care.component.scss']
 })
 export class TemplateNursingCareComponent implements OnInit {
-
   addNursingCareForm: FormGroup;
   addProcedureForm: FormGroup;
   apmisLookupQuery = {};
   apmisLookupUrl = '';
   apmisLookupDisplayKey = '';
   apmisLookupText = '';
-
   newTemplate = true;
-  constructor(private fb: FormBuilder) { }
+  nursingCares: any = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private _orderSetSharedService: OrderSetSharedService,
+  ) {}
 
   ngOnInit() {
     this.addNursingCareForm = this.fb.group({
@@ -24,19 +28,27 @@ export class TemplateNursingCareComponent implements OnInit {
     });
   }
 
-  apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.name;
-    let isExisting = false;
-    // this.loginHMOListObject.companyCovers.forEach(item => {
-    //   if (item._id === value._id) {
-    //     isExisting = true;
-    //   }
-    // });
-    // if (!isExisting) {
-    //   this.selectedCompanyCover = value;
-    // } else {
-    //   this.selectedCompanyCover = <any>{};
-    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
-    // }
+  onClickAddNursingCare(valid: boolean, value: any) {
+    if (valid) {
+      const nursingCare = {
+        name: value.nursingCare,
+        comment: '',
+        status: 'Not Done',
+        completed: false,
+      };
+
+      if (this.nursingCares.length > 0) {
+        // Check if generic has been added already.
+        const containsGeneric = this.nursingCares.filter(x => x.name === value.nursingCare);
+        if (containsGeneric.length < 1) {
+          this.nursingCares.push(nursingCare);
+          this._orderSetSharedService.saveItem({ nursingCares: this.nursingCares });
+        }
+      } else {
+        this.nursingCares.push(nursingCare);
+        this._orderSetSharedService.saveItem({ nursingCares: this.nursingCares});
+      }
+      this.addNursingCareForm.reset();
+    }
   }
 }

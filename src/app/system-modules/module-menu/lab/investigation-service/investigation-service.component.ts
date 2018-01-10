@@ -135,6 +135,7 @@ export class InvestigationServiceComponent implements OnInit {
       }
     });
   }
+  
   editInvestigation(investigation) {
     if (!investigation.isPanel) {
       this.selectedInvestigation = investigation;

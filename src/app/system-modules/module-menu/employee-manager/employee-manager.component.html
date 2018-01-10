@@ -7,7 +7,7 @@
                 <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
             </ul>
             <mat-input-container style="width:200px;margin-right: 10px;" *ngIf="homeContentArea" class="example-full-width">
-                <input matInput mat-error type="search"  placeholder="Search for employee" [formControl]="searchControl">
+                <input matInput mat-error type="search" placeholder="Search for employee" [formControl]="searchControl">
             </mat-input-container>
             <mat-form-field>
                 <mat-select placeholder="Department" [formControl]="department">
@@ -55,10 +55,9 @@
         </span>
     </div>
 
-    <div class="inner-page-wrap"> 
+    <div class="inner-page-wrap">
 
-        <app-employeemanager-homepage [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
-            class="fullwidth"></app-employeemanager-homepage> 
+        <app-employeemanager-homepage [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea" class="fullwidth"></app-employeemanager-homepage>
         <app-employeemanager-detailpage [employee]="employee" *ngIf="employeeDetailArea" class="fullwidth"></app-employeemanager-detailpage>
 
         <div *ngIf="newEmp" class="modal-overlay">
