@@ -45,7 +45,8 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
+// import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
   ],
   exports: [
     // MaterialModule,
-    PdfViewerModule
+    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
@@ -72,7 +73,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
     LoadingBarRouterModule,
-    PdfViewerModule
+    // PdfViewerModule
   ],
   providers: [
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
@@ -102,7 +103,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
      SetupService.LocSummaryCashService,
-    SetupService.TimeLineService, SetupService.DocumentUploadService
+    SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService
   ],
   bootstrap: [AppComponent]
 })
