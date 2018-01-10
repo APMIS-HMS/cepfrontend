@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, WorkbenchService, ServicePriceService, TagService,RadiologyInvestigationService
- } from '../../../../services/facility-manager/setup/index';
+  FacilitiesService, WorkbenchService, ServicePriceService, TagService, RadiologyInvestigationService
+} from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
+import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
@@ -61,7 +61,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this.locker.getObject('auth');
+    this.user = <User>this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.frmNewPrice = this.formBuilder.group({
       price: ['', [Validators.required]],
@@ -98,7 +98,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
       }
     })
 
-  
+
     if (this.loginEmployee.workSpaces !== undefined) {
       this.loginEmployee.workSpaces.forEach(work => {
         work.locations.forEach(loc => {
@@ -145,8 +145,10 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
   getTags() {
     this.checkingObject = this.locker.getObject('workbenchCheckingObject');
     if (this.checkingObject.typeObject !== undefined) {
-      this.tagService.find({ query: {
-        tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
+      this.tagService.find({
+        query: {
+          tagType: 'Radiology Location', name: this.checkingObject.typeObject.minorLocationObject.name
+        }
       }).then(payload => {
         if (payload.data.length > 0) {
           this.selectedTag = payload.data[0];
@@ -211,7 +213,8 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
         if (item.tagDetails !== undefined) {
           delete item.tagDetails;
         }
-
+        console.log(item.tagId);
+        console.log(this.selectedTag);
         if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Laboratory Location'
           && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
           this.foundPrice = true;
@@ -296,9 +299,9 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
     this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 }
