@@ -10,55 +10,6 @@
 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
-    <div class="survery">
-        <div class="container" id="container">
-            <div class="completion-meter">
-                <div class="completion-meter_step">
-                    <div class="first-chenck">
-                        <span class="completion-meter_icon completion-meter_icon-first-gradient">
-                            <i class="fa fa-2x fa-check-circle-o"></i>
-                        </span>
-                        <div class="dropdown">
-                            <div class="dropdown-content">
-                                <ul>
-                                    <li><i class="fa fa-check"></i>Facility Profile</li>
-                                    <li>
-                                        <i *ngIf="!hasModules" class="fa fa-close"></i>
-                                        <i *ngIf="hasModules" class="fa fa-check"></i> Modules
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasDepartments" class="fa fa-close"></i>
-                                        <i *ngIf="hasDepartments" class="fa fa-check"></i> Departments
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasUnits" class="fa fa-close"></i>
-                                        <i *ngIf="hasUnits" class="fa fa-check"></i> Units
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasMinorLocations" class="fa fa-close"></i>
-                                        <i *ngIf="hasMinorLocations" class="fa fa-check"></i> Locations
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasAssignedEmployees" class="fa fa-close"></i>
-                                        <i *ngIf="hasAssignedEmployees" class="fa fa-check"></i> Assign Employee/Unit(s)
-                                    </li>
-                                    <li>
-                                        <i *ngIf="!hasWorkSpaces" class="fa fa-close"></i>
-                                        <i *ngIf="hasWorkSpaces" class="fa fa-check"></i> Workspace
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="completion-meter_step completion-meter-moving">
-                    <span class="completion-meter_icon_step completion-meter_icon-first-gradient">
-                            <i class="fa fa-2x fa-check-circle-o"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="inner-menu1-wrap responsive_nav-group">
         <i id="contentSecMenuToggle" [class.content-sec-icoActive]="contentSecMenuShow" class=" content-sec-ico fa fa-ellipsis-v"
             aria-hidden="true"></i>

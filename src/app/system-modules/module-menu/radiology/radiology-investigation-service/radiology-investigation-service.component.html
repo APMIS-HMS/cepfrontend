@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="true" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
+                            <button mat-raised-button [disabled]="!frmNewPanel.valid" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
                                 {{panelBtnText}}
                             </button>
                         </div>
