@@ -1,3 +1,4 @@
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { RadiologyInvestigationService } from './../../../../services/facility-manager/setup/radiologyinvestigation.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -50,6 +51,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private locker: CoolLocalStorage, private investigationService: RadiologyInvestigationService,
     private dragulaService: DragulaService, private _facilityService: FacilitiesService,
+    private systemModuleService: SystemModuleService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private servicePriceService: ServicePriceService) {
     dragulaService.drag.subscribe((value) => {
       this.onDrag(value.slice(1));
@@ -79,7 +81,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
   }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
-    this.user = <User> this.locker.getObject('auth');
+    this.user = <User>this.locker.getObject('auth');
 
     this.frmNewInvestigationh = this.formBuilder.group({
       investigationName: ['', [Validators.required]],
@@ -115,7 +117,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-     if (payload.data.length > 0) {
+      if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
         const index = this.categories.findIndex(x => x.name === 'Radiology');
@@ -165,6 +167,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
 
   createInvestigation(valid, value) {
     if (valid) {
+      this.systemModuleService.on();
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
           facilityId: this.locker.getObject('miniFacility'),
@@ -206,6 +209,9 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
                       // this.addToast('Investigation created successfully');
                       this._notification('Success', 'Investigation created successfully.');
                       this.getInvestigations();
+                      this.systemModuleService.off();
+                    }, error => {
+                      this.systemModuleService.off();
                     });
                   }
                 });
@@ -253,6 +259,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
                         // this.addToast('Investigation updated successfully');
                         this._notification('Success', 'Investigation updated successfully.');
                         this.getInvestigations();
+                        this.systemModuleService.off();
                       })
                     }
                   });
@@ -270,12 +277,14 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
             // this.addToast('Investigation updated successfully');
             this._notification('Success', 'Investigation updated successfully.');
             this.getInvestigations();
+            this.systemModuleService.off();
           }
 
         }, error => {
           this.btnText = 'Create Investigation';
           this.frmNewInvestigationh.reset();
           this.frmNewInvestigationh.controls['isPanel'].setValue(false);
+          this.systemModuleService.off();
         })
       }
     }
@@ -283,6 +292,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
 
   createPanel(valid, value) {
     if (valid) {
+      this.systemModuleService.on();
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
           facilityId: this.locker.getObject('miniFacility'),
@@ -291,11 +301,6 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
           panel: this.movedInvestigations
         }
         this.investigationService.create(investigation).then(payload => {
-
-
-
-
-
           //
           const service: any = <any>{};
           service.name = value.panelName;
@@ -327,11 +332,17 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
                       this.frmNewPanel.reset();
                       this.frmNewPanel.controls['isPanel'].setValue(true);
                       this.investigations.push(payload);
+                      this.systemModuleService.off();
+                      this._notification('Success', 'Investigation Panel created successfully.');
+                    }, error => {
+                      this.systemModuleService.off();
                     })
                   }
                 });
               }
             });
+          }, error => {
+            this.systemModuleService.off();
           });
 
           //
@@ -372,9 +383,6 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
                       payload.serviceId = items;
                       payload.facilityServiceId = this.selectedFacilityService._id;
 
-
-
-
                       const price: FacilityServicePrice = <FacilityServicePrice>{};
                       price.categoryId = itemi._id;
                       price.facilityId = this.selectedFacility._id;
@@ -392,6 +400,10 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
                         this.frmNewPanel.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
+                        this._notification('Success', 'Investigation Panel updated successfully.');
+                        this.systemModuleService.off();
+                      }, error => {
+                        this.systemModuleService.off();
                       })
                     }
                   });
@@ -415,6 +427,7 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
           this.btnText = 'Create Panel';
           this.frmNewPanel.reset();
           this.frmNewPanel.controls['isPanel'].setValue(false);
+          this.systemModuleService.off();
         })
 
 
@@ -424,9 +437,9 @@ export class RadiologyInvestigationServiceComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
     this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 
