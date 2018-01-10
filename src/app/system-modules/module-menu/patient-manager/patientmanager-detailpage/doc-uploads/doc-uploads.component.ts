@@ -34,9 +34,13 @@ export class DocUploadsComponent implements OnInit {
 
   getDocuments(){
     let patient = <any>this.locker.getObject('patient');
-    this.docUploadService.find({query: {
+    this.docUploadService.socketFind({query: {
       facilityId: this.facilityService.getSelectedFacilityId()._id,
-      patientId: patient._id
+      patientId: patient._id,
+      $limit: 10,
+      $sort: {
+        createdAt: -1
+      }
     }}).then(payload => {
       console.log(payload);
       this.documents = payload.data;

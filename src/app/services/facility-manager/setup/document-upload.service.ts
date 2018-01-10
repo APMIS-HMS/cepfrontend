@@ -27,6 +27,10 @@ export class DocumentUploadService {
     return this._rest.find(query);
   }
 
+  socketFind(query:any){
+    return this._socket.find(query);
+  }
+
   findAll() {
     return this._rest.find();
   }

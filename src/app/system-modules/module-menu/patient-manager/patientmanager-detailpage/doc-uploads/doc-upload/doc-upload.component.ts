@@ -16,6 +16,7 @@ import { FormTypeService, ScopeLevelService } from '../../../../../../services/m
 })
 export class DocUploadComponent implements OnInit {
 
+  loading: boolean;
   mainErr = true;
   errMsg = 'you have unresolved errors';
   fileBase64: any;
@@ -23,6 +24,7 @@ export class DocUploadComponent implements OnInit {
   public frmNewUpload: FormGroup;
   documentTypes: any;
   fileType:any;
+  fileName:any;
   
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService, 
@@ -45,7 +47,7 @@ export class DocUploadComponent implements OnInit {
     });
     this.documentTypeFn();
   }
-  close_onClick(e){
+  close_onClick(e?){
     this.closeModal.emit(true);
   }
 
@@ -53,6 +55,7 @@ export class DocUploadComponent implements OnInit {
     let reader = new FileReader();
     if(event.target.files && event.target.files.length > 0) {
       let file = event.target.files[0];
+      this.fileName = file.name;
       if(file.type == "image/png" || file.type == "image/jpg" 
       || file.type == "image/gif" || file.type == "image/jpeg"
       || file.type == "application/pdf"){
@@ -80,6 +83,7 @@ export class DocUploadComponent implements OnInit {
   uploadDocument(patient?:any){
 
     let uploadDoc;
+    this.loading = true;
     
     if(this.locker.getObject('patient')){
       let upPatient = <any>this.locker.getObject('patient');
@@ -106,6 +110,9 @@ export class DocUploadComponent implements OnInit {
 
     this.docUploadService.post(uploadDoc).then(payload => {
       console.log(payload);
+      this.notification('Document Successfully Uploaded!', 'Success');
+      this.loading = false;
+      this.close_onClick();
     }).catch(err => {
       console.log(JSON.stringify(err));
     })
