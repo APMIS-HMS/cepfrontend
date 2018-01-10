@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { BrowserModule, DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { CoolLocalStorage } from 'angular2-cool-storage/src/cool-local-storage';
+import { PDFProgressData } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-doc-upload-detail',
@@ -8,30 +9,31 @@ import { CoolLocalStorage } from 'angular2-cool-storage/src/cool-local-storage';
   styleUrls: ['./doc-upload-detail.component.scss']
 })
 export class DocUploadDetailComponent implements OnInit {
-
+  @Input() selectedDocument: any = {};
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  dataLocalUrl: any;
-  pageurl: SafeResourceUrl;
   page = 1;
   auth: any;
   currentPDF = {};
+  loading = true;
 
   constructor(private domSanitizer: DomSanitizer, private locker: CoolLocalStorage) { }
 
   ngOnInit() {
     this.auth = this.locker.getObject('auth');
-    console.log(this.auth);
     this.currentPDF = {
-      // tslint:disable-next-line:max-line-length
-      url: 'https://apmisstorageaccount.blob.core.windows.net/personcontainer/5a4f98b2f5173f049cc4eaa4_5901fe882fbd740bd0a702a0_1515498400547.pdf',
-      // withCredentials: true,
-      // httpHeaders: { 'Authorization': this.auth.token }
+      url: this.selectedDocument.docUrl
     };
-    this.dataLocalUrl = 'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf';
-    this.pageurl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.dataLocalUrl);
   }
 
   close_onClick(e) {
     this.closeModal.emit(true);
+  }
+  onComplete(event) {
+    this.loading = false;
+  }
+  onError(event) {
+  }
+  onProgress(progressData: PDFProgressData) {
+    // console.log(event);
   }
 }

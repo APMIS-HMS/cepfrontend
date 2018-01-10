@@ -11,11 +11,11 @@
 
       <ul class="upload-ul">
         <li class="upload-li" *ngFor="let doc of documents">
-          <div class="uploaded-img" (click)="docDetail(doc._id)">
+          <div class="uploaded-img" (click)="docDetail(doc)">
             <!-- <i class="fa fa-file-image-o" aria-hidden="true"></i> -->
-            <i class="{{doc.fileType == 'application/pdf' ? 'fa fa-file-text' : 'fa fa-file-image-o'}}" aria-hidden="true"></i>
+            <i class="{{doc.fileType == 'application/pdf' ? 'fa fa-file-pdf-o' : 'fa fa-file-image-o'}}" aria-hidden="true"></i>
           </div>
-          <div class="uploaded-txt" (click)="docDetail(doc._id)">
+          <div class="uploaded-txt" (click)="docDetail(doc)">
             <div class="modal_title">{{doc.docName}}</div>
             <div class="topWrap">
               <div class="upload_type">{{doc.docType}}</div>
@@ -59,7 +59,7 @@
       <app-doc-upload (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload>
   </div>
   <div *ngIf="showDoc" class="modal-overlay">
-      <app-doc-upload-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload-detail>
+      <app-doc-upload-detail [selectedDocument]="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload-detail>
   </div>
   
 </div>
