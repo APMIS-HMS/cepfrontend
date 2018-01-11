@@ -21,6 +21,7 @@ module.exports = function (app) {
     officialEmailAddress: { type: String, required: false },
     professionId: { type: String, required: true },
     caderId: { type: String, required: false },
+    isActive: { type: Boolean, 'default': true },
     units: [{ type: String, require: false }],
     consultingRoomCheckIn: [roomCheckInSchema],
     storeCheckIn: [storeCheckInSchema],
