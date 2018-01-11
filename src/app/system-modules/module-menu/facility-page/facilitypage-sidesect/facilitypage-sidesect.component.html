@@ -28,9 +28,10 @@
                     <i class="fa fa-phone" aria-hidden="true"></i>{{selectedFacility.primaryContactPhoneNo}}</div>
             </div>
         </div>
-    </div>
+    </div> 
 
-    <div *ngIf="selectedFacility.isNetworkFacility" class="facility-count-sect card-seperator clickable-sect">
+    <!-- <div *ngIf="selectedFacility.isNetworkFacility" class="facility-count-sect card-seperator clickable-sect"> -->
+    <div class="facility-count-sect card-seperator clickable-sect">
         <div class="isnetwork-wrap">
             <div *ngIf="selectedFacility.isNetworkFacility" class="isnetwork">NETWORK</div>
             <div *ngIf="selectedFacility.isNetworkFacility" class="network-membership">HOST</div>
