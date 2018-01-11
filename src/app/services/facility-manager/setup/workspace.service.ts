@@ -6,6 +6,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class WorkSpaceService {
   public _socket;
+  public _assignsocket;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -16,6 +17,7 @@ export class WorkSpaceService {
   ) {
     this._rest = _restService.getService('workspaces');
     this._socket = _socketService.getService('workspaces');
+    this._assignsocket = _socketService.getService('assign-workspace');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
@@ -36,6 +38,9 @@ export class WorkSpaceService {
 
   create(workspace: any) {
     return this._socket.create(workspace);
+  }
+  assignworkspace(body: any) {
+    return this._assignsocket.create(body);
   }
   update(workspace: any) {
     return this._socket.update(workspace._id, workspace);
