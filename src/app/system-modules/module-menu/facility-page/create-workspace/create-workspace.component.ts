@@ -1,3 +1,4 @@
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, EmployeeService, WorkSpaceService } from '../../../../services/facility-manager/setup/index';
@@ -44,6 +45,7 @@ export class CreateWorkspaceComponent implements OnInit {
     private locationService: LocationService,
     private employeeService: EmployeeService,
     private workspaceService: WorkSpaceService,
+    private systemModuleService:SystemModuleService,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {
@@ -214,61 +216,68 @@ export class CreateWorkspaceComponent implements OnInit {
   }
   setWorkspace(valid: boolean, value: any) {
     if (valid) {
-      this.loadIndicatorVisible = true;
+      // this.loadIndicatorVisible = true;
+      // const filtered = data.filtered;
+      // const employeesId = data.employeesId;
+      // const facilityId = data.facilityId;
+      // const majorLocationId = data.majorLocationId;
+      // const minorLocationId = data.minorLocationId;
+
+      this.systemModuleService.on();
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
       const createArrays: Employee[] = [];
       const updateArrays: Employee[] = [];
-      this.workspaceService.find({
-        query:
-          { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
-      }).then(payload => {
-        filtered.forEach((iteme, e) => {
-          let hasRecord = false;
-          if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
-            hasRecord = true;
-          }
-          if (hasRecord) {
-            updateArrays.push(iteme);
-          } else {
-            createArrays.push(iteme);
-          }
-        });
+      // this.workspaceService.find({
+      //   query:
+      //     { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
+      // }).then(payload => {
+      //   filtered.forEach((iteme, e) => {
+      //     let hasRecord = false;
+      //     if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
+      //       hasRecord = true;
+      //     }
+      //     if (hasRecord) {
+      //       updateArrays.push(iteme);
+      //     } else {
+      //       createArrays.push(iteme);
+      //     }
+      //   });
 
-        const workSpaces$ = [];
-        {
-          const workSpaces: WorkSpace[] = [];
-          createArrays.forEach((emp, i) => {
-            const space: WorkSpace = <WorkSpace>{};
-            space.employeeId = emp;
-            space.facilityId = this.selectedFacility._id;
-            space.locations = [];
-            const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
-            space.locations.push(locationModel);
-            workSpaces.push(space);
-            workSpaces$.push(Observable.fromPromise(this.workspaceService.create(space)));
-          });
-        }
+      //   const workSpaces$ = [];
+      //   {
+      //     const workSpaces: WorkSpace[] = [];
+      //     createArrays.forEach((emp, i) => {
+      //       const space: WorkSpace = <WorkSpace>{};
+      //       space.employeeId = emp;
+      //       space.facilityId = this.selectedFacility._id;
+      //       space.locations = [];
+      //       const locationModel = <any>{};
+      //       locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+      //       locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
+      //       space.locations.push(locationModel);
+      //       workSpaces.push(space);
+      //       workSpaces$.push(Observable.fromPromise(this.workspaceService.create(space)));
+      //     });
+      //   }
 
-        {
-          payload.data.forEach((work: WorkSpace, i) => {
-            const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
-            work.locations.push(locationModel);
-            workSpaces$.push(Observable.fromPromise(this.workspaceService.update(work)));
-          });
-        }
-        Observable.forkJoin(workSpaces$).subscribe(results => {
-          this.getWorkSpace();
-          this.loadIndicatorVisible = false;
-        }, error => {
-          this.loadIndicatorVisible = false;
-        });
-      }, error => {
-      });
+      //   {
+      //     payload.data.forEach((work: WorkSpace, i) => {
+      //       const locationModel = <any>{};
+      //       locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+      //       locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
+      //       work.locations.push(locationModel);
+      //       workSpaces$.push(Observable.fromPromise(this.workspaceService.update(work)));
+      //     });
+      //   }
+      //   Observable.forkJoin(workSpaces$).subscribe(results => {
+      //     this.getWorkSpace();
+      //     this.loadIndicatorVisible = false;
+      //   }, error => {
+      //     this.loadIndicatorVisible = false;
+      //   });
+      // }, error => {
+      // });
     } else {
       this.mainErr = false;
       this.errMsg = 'An error occured while setting the workspace, please try again!';
