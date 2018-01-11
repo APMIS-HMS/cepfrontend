@@ -141,3 +141,10 @@
 .control--radio input:disabled ~ .control__indicator:after {
 	background: #7b7b7b;
 }
+.modal-baseWrap{
+    width: 590px;
+    padding: 10px 50px;
+}
+.modal-baseWrap .mat-input-container {
+    width: 100%;
+}

@@ -1,16 +1,18 @@
-<div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-<div class="f_sg1">
+<div class="modal-baseWrap">
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="f_sg1">
 
-    <form [formGroup]="facilityForm1" novalidate>
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="Apmis ID" formControlName="apmisId">
-            </mat-input-container>
-        </div>
+        <form [formGroup]="facilityForm1" novalidate>
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="Apmis ID" formControlName="apmisId">
+                </mat-input-container>
+            </div>
 
-        <button [disabled]="!facilityForm1.valid" (click)="facilityInfo_show(facilityForm1.value)" [ngClass]="{'cta-1':facilityForm1.valid, 'cta-1-disable':!facilityForm1.valid}">
-            CONTINUE
-        </button>
-    </form>
+            <button [disabled]="!facilityForm1.valid" (click)="facilityInfo_show(facilityForm1.value)" [ngClass]="{'cta-1':facilityForm1.valid, 'cta-1-disable':!facilityForm1.valid}">
+                CONTINUE
+            </button>
+        </form>
+    </div>
 </div>
   
