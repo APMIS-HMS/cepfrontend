@@ -23,10 +23,10 @@
 
             <div class="logged-in-as">
                 <div class="user-label">
-                    <div class="user-name">{{selectedPerson?.personFullName}}</div>
-                    <!-- <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</div>
+                    <div class="user-name">{{selectedPerson?.lastName}} {{selectedPerson?.firstName}}</div>
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</div>
                     <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.storeObject?.name}}</div>
-                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.workbenchObject?.name}}</div> -->
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.workbenchObject?.name}}</div>
                 </div>
 
                 <div class="user-imgWrap">

@@ -1,4 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import {
+  DocumentUploadService, PatientService, PersonService, EmployeeService, FacilitiesService, FacilitiesServiceCategoryService,
+  BillingService, FormsService
+} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-doc-uploads',
@@ -16,10 +21,37 @@ export class DocUploadsComponent implements OnInit {
   docDetail_view = false;
   newUpload = false;
   showDoc = false;
+  documents: any;
+  selectedDocument: any;
 
-  constructor() { }
+  constructor(
+    private facilityService: FacilitiesService,
+    private docUploadService: DocumentUploadService,
+    private locker: CoolLocalStorage) {
+    this.docUploadService.listner.subscribe(payload => {
+      this.getDocuments();
+    })
+  }
 
   ngOnInit() {
+    this.getDocuments();
+  }
+
+  getDocuments(){
+    let patient = <any>this.locker.getObject('patient');
+    this.docUploadService.socketFind({query: {
+      facilityId: this.facilityService.getSelectedFacilityId()._id,
+      patientId: patient._id,
+      $limit: 10,
+      $sort: {
+        createdAt: -1
+      }
+    }}).then(payload => {
+      console.log(payload);
+      this.documents = payload.data;
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
   addProblem_show(e) {
@@ -34,7 +66,7 @@ export class DocUploadsComponent implements OnInit {
   addVitals_show(e) {
     this.addVitals_view = true;
   }
-  newUpload_show(){
+  newUpload_show() {
     this.newUpload = true;
   }
 
@@ -46,11 +78,12 @@ export class DocUploadsComponent implements OnInit {
     this.newUpload = false;
     this.showDoc = false;
   }
-  docDetail(){
+  docDetail(data?) {
+    this.selectedDocument = data;
     this.showDoc = true;
   }
-  onChange(e){
-    //upload stuff
+  onChange(e) {
+    // upload stuff
   }
   // showImageBrowseDlg(){
   //   this.fileInput.nativeElement.click()

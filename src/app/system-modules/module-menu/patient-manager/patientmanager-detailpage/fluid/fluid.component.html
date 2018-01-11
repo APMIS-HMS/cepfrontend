@@ -9,25 +9,27 @@
           <div class="modal_title">Fluid Intake</div>
 
           <div class="docCard-body">
-              <form [formGroup]="frmIntake" novalidate>
-                  
-                <div class="frm-item-wrap">
-                    <mat-select placeholder="Fluid" formControlName="infusion">
-                      <mat-option [value]="1">Drip</mat-option>
-                    </mat-select>
-                </div>
-          
-                <div class="frm-item-wrap">
-                  <mat-input-container>
-                      <input matInput mat-error placeholder="Volume" formControlName="infusion_volume">
-                  </mat-input-container>
-                </div>
-          
-                <button class="cta-1">
-                  Add
-                </button>
-          
-              </form>            
+            <form [formGroup]="frmIntake" novalidate>
+
+              <div class="frm-item-wrap">
+                <mat-form-field>
+                  <mat-select placeholder="Fluid" formControlName="infusion">
+                    <mat-option [value]="1">Drip</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error placeholder="Volume" formControlName="infusion_volume">
+                </mat-input-container>
+              </div>
+
+              <button class="cta-1">
+                Add
+              </button>
+
+            </form>
           </div>
         </div>
 
@@ -35,25 +37,27 @@
           <div class="modal_title">Fluid Output</div>
 
           <div class="docCard-body">
-              <form [formGroup]="frmOutput" novalidate>
-                  
-                <div class="frm-item-wrap">
-                    <mat-select placeholder="Fluid" formControlName="fluid">
-                      <mat-option [value]="1">Drip</mat-option>
-                    </mat-select>
-                </div>
-          
-                <div class="frm-item-wrap">
-                  <mat-input-container>
-                      <input matInput mat-error placeholder="Volume" formControlName="output_volume">
-                  </mat-input-container>
-                </div>
-          
-                <button class="cta-1">
-                  Add
-                </button>
-          
-              </form>   
+            <form [formGroup]="frmOutput" novalidate>
+
+              <div class="frm-item-wrap">
+                <mat-form-field>
+                  <mat-select placeholder="Fluid" formControlName="fluid">
+                    <mat-option [value]="1">Drip</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="frm-item-wrap">
+                <mat-input-container>
+                  <input matInput mat-error placeholder="Volume" formControlName="output_volume">
+                </mat-input-container>
+              </div>
+
+              <button class="cta-1">
+                Add
+              </button>
+
+            </form>
           </div>
         </div>
       </div>
@@ -68,7 +72,7 @@
               <th>Date</th>
             </tr>
           </thead>
-      
+
           <tbody>
             <tr>
               <td>Intake</td>
@@ -76,7 +80,7 @@
               <td>20ml</td>
               <td>11th Sept, 2017. 10:17am</td>
             </tr>
-      
+
             <tr>
               <td>Output</td>
               <td>Drip</td>

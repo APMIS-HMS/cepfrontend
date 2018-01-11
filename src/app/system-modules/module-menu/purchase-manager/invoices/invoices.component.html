@@ -1,11 +1,12 @@
-
 <div class="survery">
     <div class="">
         <div class="row margin-bottom">
             <div class="col-sm-4 col-md-4 col-xs-12">
-                <mat-select placeholder="Filter By" [formControl]="frmSupplier">
-                    <mat-option *ngFor="let item of suppliers" [value]="item._id">{{item.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Filter By" [formControl]="frmSupplier">
+                        <mat-option *ngFor="let item of suppliers" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
                 <mat-input-container class="example-full-width">

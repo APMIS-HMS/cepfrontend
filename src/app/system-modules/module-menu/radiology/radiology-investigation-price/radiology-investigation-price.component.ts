@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, InvestigationService, WorkbenchService, ServicePriceService, TagService
- } from '../../../../services/facility-manager/setup/index';
+  FacilitiesService, WorkbenchService, ServicePriceService, TagService, RadiologyInvestigationService
+} from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
+import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 @Component({
-  selector: 'app-investigation-price',
-  templateUrl: './investigation-price.component.html',
-  styleUrls: ['./investigation-price.component.scss']
+  selector: 'app-radiology-investigation-price',
+  templateUrl: './radiology-investigation-price.component.html',
+  styleUrls: ['./radiology-investigation-price.component.scss']
 })
-export class InvestigationPriceComponent implements OnInit {
+export class RadiologyInvestigationPriceComponent implements OnInit {
   user: User = <User>{};
   apmisLookupUrl = 'workbenches';
   apmisLookupText = '';
@@ -23,7 +23,7 @@ export class InvestigationPriceComponent implements OnInit {
   apmisLookupDisplayKey = 'name';
   apmisLookupOtherKeys = ['laboratoryId.name']
 
-  apmisInvestigationLookupUrl = 'investigations';
+  apmisInvestigationLookupUrl = 'radiology-investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {
   };
@@ -53,7 +53,7 @@ export class InvestigationPriceComponent implements OnInit {
   foundPrice: Boolean = false;
 
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
-    private investigationService: InvestigationService, private workbenchService: WorkbenchService,
+    private investigationService: RadiologyInvestigationService, private workbenchService: WorkbenchService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
     private _facilityService: FacilitiesService
@@ -61,7 +61,7 @@ export class InvestigationPriceComponent implements OnInit {
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this.locker.getObject('auth');
+    this.user = <User>this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.frmNewPrice = this.formBuilder.group({
       price: ['', [Validators.required]],
@@ -98,7 +98,7 @@ export class InvestigationPriceComponent implements OnInit {
       }
     })
 
-  
+
     if (this.loginEmployee.workSpaces !== undefined) {
       this.loginEmployee.workSpaces.forEach(work => {
         work.locations.forEach(loc => {
@@ -145,8 +145,10 @@ export class InvestigationPriceComponent implements OnInit {
   getTags() {
     this.checkingObject = this.locker.getObject('workbenchCheckingObject');
     if (this.checkingObject.typeObject !== undefined) {
-      this.tagService.find({ query: {
-        tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
+      this.tagService.find({
+        query: {
+          tagType: 'Radiology Location', name: this.checkingObject.typeObject.minorLocationObject.name
+        }
       }).then(payload => {
         if (payload.data.length > 0) {
           this.selectedTag = payload.data[0];
@@ -211,7 +213,8 @@ export class InvestigationPriceComponent implements OnInit {
         if (item.tagDetails !== undefined) {
           delete item.tagDetails;
         }
-
+        console.log(item.tagId);
+        console.log(this.selectedTag);
         if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Laboratory Location'
           && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
           this.foundPrice = true;
@@ -296,9 +299,9 @@ export class InvestigationPriceComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
     this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 }

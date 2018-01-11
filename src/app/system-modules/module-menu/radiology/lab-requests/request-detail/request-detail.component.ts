@@ -8,11 +8,11 @@ import { FacilitiesService, PatientService } from '../../../../../services/facil
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-request-detail',
+  selector: 'app-rad-request-detail',
   templateUrl: './request-detail.component.html',
   styleUrls: ['./request-detail.component.scss']
 })
-export class RequestDetailComponent implements OnInit {
+export class RadRequestDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() investigation: any;

@@ -10,46 +10,18 @@
       </div>
 
       <ul class="upload-ul">
-        <li class="upload-li" (click)="docDetail()">
-          <div class="uploaded-img">
+        <li class="upload-li" *ngFor="let doc of documents">
+          <div class="uploaded-img" (click)="docDetail(doc)">
             <!-- <i class="fa fa-file-image-o" aria-hidden="true"></i> -->
-            <i class="fa fa-file-text" aria-hidden="true"></i>
+            <i class="{{doc.fileType == 'application/pdf' ? 'fa fa-file-pdf-o' : 'fa fa-file-image-o'}}" aria-hidden="true"></i>
           </div>
-          <div class="uploaded-txt">
-            <div class="modal_title">Health History</div>
+          <div class="uploaded-txt" (click)="docDetail(doc)">
+            <div class="modal_title">{{doc.docName}}</div>
             <div class="topWrap">
-              <div class="upload_type">Eye Pressure</div>
-              <div class="upload-file-name">12th Dec, 2017. 10:08am.</div>
+              <div class="upload_type">{{doc.docType}}</div>
+              <div class="upload-file-name">{{doc.createdAt | date :'medium'}}</div>
             </div>
-            <div class="upload-file-desc">this document explains patients health history from time imemoria. essence is to give the practitioner all background information needed to build upon</div>
-          </div>
-        </li>
-        <li class="upload-li" (click)="docDetail()">
-          <div class="uploaded-img">
-            <i class="fa fa-file-image-o" aria-hidden="true"></i>
-            <!-- <i class="fa fa-file-text" aria-hidden="true"></i> -->
-          </div>
-          <div class="uploaded-txt">
-            <div class="modal_title">Health History</div>
-            <div class="topWrap">
-              <div class="upload_type">XRay of the arm</div>
-              <div class="upload-file-name">12th Dec, 2017. 10:08am.</div>
-            </div>
-            <div class="upload-file-desc">this document explains patients health history from time imemoria. essence is to give the practitioner all background information needed to build upon</div>
-          </div>
-        </li>
-        <li class="upload-li" (click)="docDetail()">
-          <div class="uploaded-img">
-            <!-- <i class="fa fa-file-image-o" aria-hidden="true"></i> -->
-            <i class="fa fa-file-text" aria-hidden="true"></i>
-          </div>
-          <div class="uploaded-txt">
-            <div class="modal_title">Health History</div>
-            <div class="topWrap">
-              <div class="upload_type">Blood Count</div>
-              <div class="upload-file-name">12th Dec, 2017. 10:08am.</div>
-            </div>
-            <div class="upload-file-desc">this document explains patients health history from time imemoria. essence is to give the practitioner all background information needed to build upon</div>
+            <div class="upload-file-desc">{{doc.description}}</div>
           </div>
         </li>
       </ul>
@@ -87,7 +59,7 @@
       <app-doc-upload (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload>
   </div>
   <div *ngIf="showDoc" class="modal-overlay">
-      <app-doc-upload-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload-detail>
+      <app-doc-upload-detail [selectedDocument]="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload-detail>
   </div>
   
 </div>

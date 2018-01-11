@@ -60,10 +60,14 @@ export class CreateWorkspaceComponent implements OnInit {
       this.filteredEmployees = [];
     });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
+      console.log(value);
       this.selectedUnit = value;
-      this.employees = [];
-      this.filteredEmployees = [];
-      this.getEmployees(this.selectedDepartment, this.selectedUnit);
+
+      if (this.selectedEmployee === undefined) {
+        this.employees = [];
+        this.filteredEmployees = [];
+        this.getEmployees(this.selectedDepartment, this.selectedUnit);
+      }
     });
     this.frmNewEmp1.controls['majorLoc'].valueChanges.subscribe((value: Location) => {
       this.selectedMajorLocation = value;
@@ -87,15 +91,23 @@ export class CreateWorkspaceComponent implements OnInit {
 
     if (this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined) {
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x.name === this.selectedEmployee.department);
+      this.frmNewEmp1.controls['dept'].setValue(this.selectedEmployee.departmentId);
+      const deptList = this.departments.filter(x => x.name === this.selectedEmployee.departmentId);
       if (deptList.length > 0) {
-        this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
-        this.frmNewEmp1.controls['dept'].value.units.forEach((item, i) => {
-          const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
-          if (unitsList.length > 0) {
-            this.units.push(unitsList[0]);
-          }
-        });
+        // this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
+        console.log(1)
+        if (this.selectedEmployee.units !== undefined) {
+          this.selectedEmployee.units.forEach((item, i) => {
+            console.log(i);
+            const unitsList = deptList[0].units.filter(x => x._id === item);
+            if (unitsList.length > 0) {
+              if (this.units == undefined) {
+                this.units = [];
+                this.units.push(unitsList[0]);
+              }
+            }
+          });
+        }
       }
 
       // this.units = this.frmNewEmp1.controls['dept'].value.units;
@@ -113,12 +125,12 @@ export class CreateWorkspaceComponent implements OnInit {
   }
   getEmployees(dept: Department, unit: any) {
     this.loadIndicatorVisible = true;
+    console.log(dept);
     this.employeeService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        departmentId: dept._id,
-        units: unit._id,
-        showbasicinfo: true
+        departmentId: dept,
+        units: unit
       }
     }).then(payload => {
       this.employees = payload.data;

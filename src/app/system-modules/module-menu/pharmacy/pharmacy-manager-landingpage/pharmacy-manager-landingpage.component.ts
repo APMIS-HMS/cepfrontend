@@ -153,6 +153,6 @@ export class PharmacyManagerLandingpageComponent implements OnInit {
     this.presentation = false;
   }
   refresh(): void {
-    window.location.reload();
+    // window.location.reload();
   }
 }

@@ -1,68 +1,70 @@
 <div class="head">
-  <div class="top-sect-wrap">
-    <div class="frm-item-wrap">
-      <div class="label">Patient's Company Covers</div>
-      <mat-select [formControl]="selectHmo">
-        <mat-option>Sabaoth Technologies ltd.</mat-option>
-        <mat-option>Guarantee Trust Bank plc.</mat-option>
-      </mat-select>
+    <div class="top-sect-wrap">
+        <div class="frm-item-wrap">
+            <div class="label">Patient's Company Covers</div>
+            <mat-form-field>
+                <mat-select [formControl]="selectHmo">
+                    <mat-option>Sabaoth Technologies ltd.</mat-option>
+                    <mat-option>Guarantee Trust Bank plc.</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
-  </div>
 
-  <div class="head-others">
-    <!-- <ul class="topmenuwrap">
+    <div class="head-others">
+        <!-- <ul class="topmenuwrap">
         <li (click)="fundWallet()">
             <i class="fa fa-credit-card" aria-hidden="true"></i>
             <span>Fund Wallet</span>
         </li>
     </ul> -->
-  </div>
+    </div>
 </div>
 
 <div>
-  <div class="hmo-name">Sabaoth Technologies ltd.</div>
-  <div class="top-summary-wrap">
-    <div class="wrap-inner">
-      <div class="id parentItem">ASA-2100-BE</div>
-      <div class="plan parentItem">PLATINUM</div>
-    </div>
-    <div class="wrap-inner">
-      <div class="status parentItem">CONFIRMED</div>
-      <div class="isprincipal parentItem">
-        <div (click)="childOpener_toggle()" class="isprincipal-nameWrap">
-          <span>PRINCIPAL</span>
-          <i *ngIf="!childOpener" class="fa fa-chevron-down" aria-hidden="true"></i>
-          <i *ngIf="childOpener"  class="fa fa-chevron-up" aria-hidden="true"></i>
+    <div class="hmo-name">Sabaoth Technologies ltd.</div>
+    <div class="top-summary-wrap">
+        <div class="wrap-inner">
+            <div class="id parentItem">ASA-2100-BE</div>
+            <div class="plan parentItem">PLATINUM</div>
         </div>
-        <div *ngIf="childOpener" class="isprincipal-children shadow-RB">
-          <div class="isprincipal-child">
-            <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
+        <div class="wrap-inner">
+            <div class="status parentItem">CONFIRMED</div>
+            <div class="isprincipal parentItem">
+                <div (click)="childOpener_toggle()" class="isprincipal-nameWrap">
+                    <span>PRINCIPAL</span>
+                    <i *ngIf="!childOpener" class="fa fa-chevron-down" aria-hidden="true"></i>
+                    <i *ngIf="childOpener" class="fa fa-chevron-up" aria-hidden="true"></i>
                 </div>
-                <div>
-                  <div>Johnson Wade</div>
-                  <div class="id">ASA-2100-BE</div>
+                <div *ngIf="childOpener" class="isprincipal-children shadow-RB">
+                    <div class="isprincipal-child">
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>
+                                <div>Johnson Wade</div>
+                                <div class="id">ASA-2100-BE</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="isprincipal-child">
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>
+                                <div>Johnson Wade</div>
+                                <div class="id">ASA-2100-BE</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-          </div>
-
-          <div class="isprincipal-child">
-            <div class="empWrap">
-                <div class="list-img">
-                    <img src="assets/images/users/default.png">
-                </div>
-                <div>
-                  <div>Johnson Wade</div>
-                  <div class="id">ASA-2100-BE</div>
-                </div>
-            </div>
-          </div>
-
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <div class="tbl-header">
@@ -71,24 +73,24 @@
         <mat-input-container>
             <input type="text" matInput placeholder="search activities" [formControl]="search">
         </mat-input-container>
-    </div> 
+    </div>
 </div>
 <div class="content">
     <table cellpadding="0" cellspacing="0" border="0.5">
         <thead>
             <tr>
-              <th>
-                  <span style="padding-left: 3px;">Date</span>
-              </th>  
-              <th>
-                  <span style="padding-left: 3px;">Description</span>
-              </th>
-              <th>
-                  <span style="padding-left: 3px; text-align:center;">Ref Code</span>
-              </th>
-              <th>
-                  <span style="padding-left: 3px; text-align:center;">Amount</span>
-              </th>
+                <th>
+                    <span style="padding-left: 3px;">Date</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px;">Description</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Ref Code</span>
+                </th>
+                <th>
+                    <span style="padding-left: 3px; text-align:center;">Amount</span>
+                </th>
             </tr>
         </thead>
 
@@ -136,7 +138,7 @@
                 <td>23100</td>
                 <td><span>&#x20a6;</span>2,500</td>
             </tr>
-              
+
             <tr>
                 <td>11th Jan, 2017. 10:00am</td>
                 <td>patient registeration fee</td>

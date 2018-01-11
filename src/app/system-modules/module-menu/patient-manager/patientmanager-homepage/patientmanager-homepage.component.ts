@@ -49,7 +49,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   limit: any = 5;
   showLoadMore: Boolean = true;
   total: any = 0;
-  updatePatientBtnText: string = 'Update';
+  updatePatientBtnText = 'Update';
   loadMoreText = '';
 
   constructor(private patientService: PatientService, private personService: PersonService,
@@ -61,11 +61,23 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   ) {
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
+      this.pageSize = 1;
+      this.index = 0;
+      this.limit = 5;
+      this.showLoadMore = true;
+      this.total = 0;
+      this.patients = [];
       this.getPatients(this.limit);
     });
     this.patientService.createListener.subscribe(payload => {
-      this.getPatients();
-      let msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
+      this.pageSize = 1;
+      this.index = 0;
+      this.limit = 5;
+      this.showLoadMore = true;
+      this.total = 0;
+      this.patients = [];
+      this.getPatients(this.limit);
+      const msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
       this._notification('Success', msg);
     }, error => {
 
@@ -255,7 +267,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.index++;
   }
   getShowing() {
-    let ret = this.index * this.limit
+    const ret = this.index * this.limit
     if (ret >= this.total && this.index > 0) {
       this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
       return;

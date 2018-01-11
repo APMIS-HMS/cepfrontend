@@ -175,6 +175,7 @@ export class AppointmentComponent implements OnInit {
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
+            console.log(this.filteredAppointments);
         }, error => {
             this._getAppointments(clinicIds);
         });
