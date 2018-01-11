@@ -108,4 +108,7 @@ export class FacilitypageWorkspaceComponent implements OnInit {
       });
     }
   }
+  newWorkspace_onClick() {
+    this.createWorkspace = true;
+  }
 }
