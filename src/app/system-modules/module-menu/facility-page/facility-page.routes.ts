@@ -34,7 +34,7 @@ const FACLITYPAGE_ROUTES: Routes = [
             //     loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
             // },
             { path: 'locations', component: FacilitypageLocationspageComponent, resolve: { locations: LocationsResolverService } },
-            { path: 'workspaces', component: FacilitypageWorkspaceComponent, resolve: { workSpaces: WorkspaceResolverService } },
+            { path: 'workspaces', component: FacilitypageWorkspaceComponent },
             { path: 'departments', component: FacilitypageDepartmentspageComponent, resolve: { facility: FacilityResolverService } },
             { path: 'options', component: FacilityOptionsComponent },
             { path: 'profession', component: ProfessionComponent },

@@ -70,7 +70,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   departments: any[] = [];
   constructor(private countryService: CountriesService,
     private employeeService: EmployeeService,
-    private facilityService: FacilitiesService,
+    public facilityService: FacilitiesService,
     private userService: UserService,
     private personService: PersonService,
     private router: Router, private route: ActivatedRoute,

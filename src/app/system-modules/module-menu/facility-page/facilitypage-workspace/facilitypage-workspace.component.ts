@@ -40,7 +40,7 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     private route: ActivatedRoute,
     private workspaceService: WorkSpaceService,
     public facilityService: FacilitiesService) {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.workspaceService.listenerCreate.subscribe(payload => {
       this.getWorkSpace();
     });
@@ -51,12 +51,12 @@ export class FacilitypageWorkspaceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      data['workSpaces'].subscribe((payload) => {
-        this.workSpaces = payload;
-      });
-    });
-
+    // this.route.data.subscribe(data => {
+    //   data['workSpaces'].subscribe((payload) => {
+    //     this.workSpaces = payload;
+    //   });
+    // });
+    this.getWorkSpace();
   }
   getWorkSpace() {
     this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 40 } })

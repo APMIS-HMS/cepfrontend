@@ -108,7 +108,7 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         patientManagerRoutes,
         MaterialModule,
         ChartsModule,
-        PdfViewerModule
+        // PdfViewerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,

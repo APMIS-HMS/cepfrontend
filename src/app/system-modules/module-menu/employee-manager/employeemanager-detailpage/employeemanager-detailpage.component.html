@@ -20,7 +20,10 @@
                         <div *ngIf="employee?.personDetails?.profileImageObject === undefined">
                             <img src="assets/images/users/default.png">
                         </div>
-                        <img *ngIf="employee?.personDetails?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(employee?.personDetails?.profileImageObject?.detailthumbnail)">
+                        <div *ngIf="employee?.personDetails?.profileImageObject !== undefined && employee?.personDetails?.profileImageObject !== null">
+                            <img class="shadow" [src]="facilityService.transform(employee?.personDetails?.profileImageObject?.detailthumbnail)">
+                        </div>
+
                     </div>
                 </div>
 
@@ -191,8 +194,12 @@
                 <div class="dataMix-wrap color2">
                     <div class="lhs">Home Address</div>
                     <div *ngIf="!contacts" class="rhs">
-                        {{employee?.personDetails?.homeAddress?.street}}<span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.city}}<span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>{{employee?.personDetails?.homeAddress?.state}}<span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>
-                        {{employee?.personDetails?.homeAddress?.country}}<span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">.</span>
+                        {{employee?.personDetails?.homeAddress?.street}}
+                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.city}}
+                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>{{employee?.personDetails?.homeAddress?.state}}
+                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>
+                        {{employee?.personDetails?.homeAddress?.country}}
+                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">.</span>
                     </div>
                     <div *ngIf="contacts" class="survery rhs">
                         <mat-form-field>

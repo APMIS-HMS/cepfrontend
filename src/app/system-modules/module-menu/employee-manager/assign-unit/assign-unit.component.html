@@ -8,12 +8,6 @@
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <form [formGroup]="frmNewEmp1" novalidate>
             <div class="frm-item-wrap">
-                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
-                <!--<label>Department</label>-->
-                <!--<select formControlName="dept">
-            <option value="" disabled selected>Department</option>
-            <option [disabled]="disableDepartment" *ngFor="let department of departments" [ngValue]="department">{{department.name}}</option>
-        </select>-->
                 <mat-form-field>
                     <mat-select placeholder="Department" formControlName="dept">
                         <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department.name">{{department.name}}</mat-option>
@@ -22,12 +16,6 @@
             </div>
 
             <div class="frm-item-wrap">
-                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
-                <!--<label>Unit</label>-->
-                <!--<select formControlName="unit">
-            <option value="" disabled selected>Unit</option>
-            <option *ngFor="let unit of units" [ngValue]="unit">{{unit.name}}</option>
-        </select>-->
                 <mat-form-field>
                     <mat-select placeholder="Unit" formControlName="unit">
                         <mat-option *ngFor="let unit of units" [value]="unit">{{unit.name}}</mat-option>
@@ -85,7 +73,7 @@
                             <td class="sel-all">
                                 <div class="dx-field">
                                     <div class="dx-field-value">
-                                        <mat-checkbox [formControl]="checkAll" (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></mat-checkbox>
+                                        <mat-checkbox [checked]="employee.isChecked" (change)="onValueChanged($event,employee)" [value]="employee.isChecked"></mat-checkbox>
                                     </div>
                                 </div>
                             </td>
@@ -100,7 +88,7 @@
                                     <div>{{employee.personDetails.lastName}} {{employee.personDetails.firstName}}</div>
                                 </div>
                             </td>
-                            <td>{{employee.personDetails.phoneNumber}}</td>
+                            <td>{{employee.personDetails.primaryContactPhoneNo}}</td>
                             <td>{{employee.personDetails.email}}</td>
                         </tr>
                     </tbody>
@@ -109,9 +97,9 @@
 
 
 
-            <div (click)="assignUnit(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
+            <button [disabled]="!frmNewEmp1.valid || !hasMinimumChecked()" (click)="assignUnit(frmNewEmp1.valid, frmNewEmp1.value)" [ngClass]="{'cta-1':frmNewEmp1.valid && hasMinimumChecked(), 'cta-1-disable':(!frmNewEmp1.valid || !hasMinimumChecked())}">
                 Assign Unit
-            </div>
+            </button>
 
         </form>
 
