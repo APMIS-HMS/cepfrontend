@@ -92,6 +92,8 @@ td{
     color: #194985;
     font-weight: bold;
     padding-top: 5px;
+    border-bottom: 1px solid #194985;
+    padding-bottom: 10px;
 }
 
 .completion-meter_step {
@@ -133,6 +135,12 @@ td{
 .network-list .basic-info-others{
     font-size: 10px !important;
     padding-left: 10px;
+}
+.network-list .tag{
+    color: #ff2500;
+    padding-right: 10px;
+    box-sizing: border-box;
+    text-align: right;
 }
 .wp-name{
     padding-left: 10px;
@@ -212,6 +220,9 @@ td{
 .mainmenu-content{
     width: 190px;
 }
+.cad-head{
+    background: #f1f1f1;
+}
 .card-edit{
     cursor: pointer;
     position: absolute;
@@ -219,6 +230,7 @@ td{
     right: 10px;
     font-size: 20px;
     color: #777;
+    z-index: 1;
 }
 .card-edit:hover{
     color: #2e6ebd;
