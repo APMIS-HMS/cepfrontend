@@ -45,7 +45,7 @@ export class CreateWorkspaceComponent implements OnInit {
     private locationService: LocationService,
     private employeeService: EmployeeService,
     private workspaceService: WorkSpaceService,
-    private systemModuleService:SystemModuleService,
+    private systemModuleService: SystemModuleService,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {
@@ -226,8 +226,28 @@ export class CreateWorkspaceComponent implements OnInit {
       this.systemModuleService.on();
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
-      const createArrays: Employee[] = [];
-      const updateArrays: Employee[] = [];
+      const facilityId = this.selectedFacility._id;
+      const majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+      const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
+
+      let body = {
+        filtered: filtered,
+        employeesId: employeesId,
+        facilityId: facilityId,
+        majorLocationId: majorLocationId,
+        minorLocationId: minorLocationId
+      }
+
+      this.workspaceService.assignworkspace(body).then(payload =>{
+        this.getWorkSpace();
+        this.systemModuleService.off();
+      }, error =>{
+        console.log(error);
+        this.systemModuleService.off();
+      });
+
+      // const createArrays: Employee[] = [];
+      // const updateArrays: Employee[] = [];
       // this.workspaceService.find({
       //   query:
       //     { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
