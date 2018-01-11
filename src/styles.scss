@@ -627,10 +627,10 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
+    width: 100%;
 }
 .frm-item-x2 .example-full-width{
-    width: 46%;
+    width: 49% !important;
 }
 
 .frm-singleItem-wrap {
