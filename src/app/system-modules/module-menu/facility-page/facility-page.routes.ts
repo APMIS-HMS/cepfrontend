@@ -1,3 +1,6 @@
+import { GenerateUserComponent } from './employees/employeemanager-detailpage/generate-user/generate-user.component';
+import { EmpmanagerDetailpageComponent } from './employees/employeemanager-detailpage/empmanager-detailpage.component';
+import { EmployeesResolverService } from './../../../resolvers/module-menu/employees-resolver.service';
 import { RouterModule, Routes } from '@angular/router';
 import { FacilityPageHomeComponent } from './facility-page-home.component';
 import { FacilitypageModulespageComponent } from './facilitypage-modulespage/facilitypage-modulespage.component';
@@ -12,6 +15,8 @@ import {
     LocationsResolverService
 } from '../../../resolvers/module-menu/index';
 import { FacilitypageHomepageComponent } from './facilitypage-homepage/facilitypage-homepage.component';
+import { EmpManagerComponent } from './employees/emp-manager.component';
+import { EditUserComponent } from './employees/employeemanager-detailpage/edit-user/edit-user.component';
 
 
 const FACLITYPAGE_ROUTES: Routes = [
@@ -24,15 +29,19 @@ const FACLITYPAGE_ROUTES: Routes = [
                     systemModules: SystemModulesResolverService,
                     facility: FacilityResolverService
                 }
-            }, 
-            {
-                path: 'employees',
-                loadChildren: '../../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
             },
-            // {
-            //     path: 'employees/:id',
-            //     loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-            // },
+            {
+                path: 'employees', component: EmpManagerComponent, resolve: { employees: EmployeesResolverService }
+            },
+            {
+                path: 'employees/:id', component: EmpmanagerDetailpageComponent
+            },
+            {
+                path: 'edit-user', component: EditUserComponent
+            },
+            { path: 'edit-user/:id/:personId/:empId', component: EditUserComponent },
+            { path: 'generate-user', component: GenerateUserComponent },
+            { path: 'generate-user/:id/:empId', component: GenerateUserComponent },
             { path: 'locations', component: FacilitypageLocationspageComponent, resolve: { locations: LocationsResolverService } },
             { path: 'workspaces', component: FacilitypageWorkspaceComponent },
             { path: 'departments', component: FacilitypageDepartmentspageComponent, resolve: { facility: FacilityResolverService } },

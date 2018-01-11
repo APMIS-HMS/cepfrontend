@@ -12,8 +12,8 @@
                 <div class="sec-1">
                     <div class="frm-item-wrap">
                         <mat-form-field>
-                            <mat-select [disabled]="disableDepartment" formControlName="dept" placeholder="Department">
-                                <mat-option *ngFor="let department of departments" [value]="department.name">
+                            <mat-select formControlName="dept" placeholder="Department">
+                                <mat-option [disabled]="disableDepartment"  *ngFor="let department of departments" [value]="department.name">
                                     {{department.name}}
                                 </mat-option>
                             </mat-select>
