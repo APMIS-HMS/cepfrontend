@@ -1,32 +1,33 @@
-@import "../facilitypage-departmentspage/facilitypage-departmentspage.component.scss";
+// @import "../facilitypage-departmentspage/facilitypage-departmentspage.component.scss";
 
-td{
-    padding: 10px;
-}
-.module-menu {
-    width: 100%;
-    .short-cut-link {
-        color: #153d70;
-        padding: 10px;
-        text-decoration: underline;
-        cursor: pointer;
-        width: 145px;
-        float: right;
-    }
-    .btn-1 {
-        float: right;
-        width: 180px;
-    }
+// td{
+//     padding: 10px;
+// }
+// .module-menu {
+//     width: 100%;
+//     .short-cut-link {
+//         color: #153d70;
+//         padding: 10px;
+//         text-decoration: underline;
+//         cursor: pointer;
+//         width: 145px;
+//         float: right;
+//     }
+//     .btn-1 {
+//         float: right;
+//         width: 180px;
+//     }
 
-}
-.display-flex {
-    display: flex;
-    align-items: center;
-}
-.edit-ico, .done-ico, .del-ico {
-    position: relative;
-    right: auto;
-    text-align: left;
-    cursor: pointer;
-    font-size: 18px;
-}
+// }
+// .display-flex {
+//     display: flex;
+//     align-items: center;
+// }
+// .edit-ico, .done-ico, .del-ico {
+//     position: relative;
+//     right: auto;
+//     text-align: left;
+//     cursor: pointer;
+//     font-size: 18px;
+// }
+@import "../facility-page-home.component.scss";

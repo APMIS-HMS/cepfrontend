@@ -22,14 +22,14 @@ import { EditUserComponent } from './employees/employeemanager-detailpage/edit-u
 const FACLITYPAGE_ROUTES: Routes = [
     {
         path: '', component: FacilityPageHomeComponent, children: [
-            { path: '', component: FacilitypageHomepageComponent },
-            { path: 'facility', component: FacilitypageHomepageComponent },
-            {
-                path: 'modules', component: FacilitypageModulespageComponent, resolve: {
-                    systemModules: SystemModulesResolverService,
-                    facility: FacilityResolverService
-                }
-            },
+            { path: '', component: EmpManagerComponent, resolve: { employees: EmployeesResolverService }},
+            // { path: 'facility', component: FacilitypageHomepageComponent },
+            // {
+            //     path: 'modules', component: FacilitypageModulespageComponent, resolve: {
+            //         systemModules: SystemModulesResolverService,
+            //         facility: FacilityResolverService
+            //     }
+            // },
             {
                 path: 'employees', component: EmpManagerComponent, resolve: { employees: EmployeesResolverService }
             },

@@ -21,7 +21,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   newSubLocModal_on = false;
 
   innerMenuShow = false;
-
+  showLoc = false;
   locationsObj: Location[] = [];
 
   locationObj: Location = <Location>{};
@@ -97,7 +97,15 @@ export class FacilitypageLocationspageComponent implements OnInit {
       });
     });
   }
-
+  showLoc_click() {
+    this.showLoc = true;
+  }
+  showLoc_hide() {
+    this.showLoc = false;
+  }
+  newLoc_onClick() {
+    this.newSubLocModal_on = true;
+  }
   getLocations() {
     this.locationService.findAll().then(payload => {
       this.locationsObj = payload.data;
