@@ -87,6 +87,7 @@ export class BillLookupComponent implements OnInit {
 
     this.invoiceService.receiveDiscount().subscribe((payload: any) => {
       const valueCheck = payload.valueCheck;
+      console.log(valueCheck);
       const modifier = payload.modifier;
       if (valueCheck === 'Percentage') {
         this.discount = ((modifier / 100) * this.total);

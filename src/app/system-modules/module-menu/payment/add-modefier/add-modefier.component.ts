@@ -26,7 +26,7 @@ export class AddModefierComponent implements OnInit {
   addNew() {
     this.frmAddModifier = this.formBuilder.group({
       modifier: ['', [<any>Validators.required]],
-      valueCheck: ['Percentage', [<any>Validators.required]]
+      valueCheck: ['', [<any>Validators.required]]
     });
   }
 
