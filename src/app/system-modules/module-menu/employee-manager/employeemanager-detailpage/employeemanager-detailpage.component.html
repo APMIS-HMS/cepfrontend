@@ -51,11 +51,13 @@
                         <i class="fa fa-edit"></i></span>
                     </div>
                     <div *ngIf="editDepartment" class="emp-dept">
-                        <mat-select placeholder="Departments" [(ngModel)]="selectedValue">
-                            <mat-option *ngFor="let department of departments" [value]="department._id">
-                                {{department.name}}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field>
+                            <mat-select placeholder="Departments" [(ngModel)]="selectedValue">
+                                <mat-option *ngFor="let department of departments" [value]="department._id">
+                                    {{department.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
@@ -104,11 +106,13 @@
                         <div class="lhs">Gender</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.gender.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <mat-select placeholder="Gender" [(ngModel)]="employee.employeeDetails.gender._id" name="food">
-                                <mat-option *ngFor="let gender of genders" [value]="gender._id">
-                                    {{gender.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Gender" [(ngModel)]="employee.employeeDetails.gender._id" name="food">
+                                    <mat-option *ngFor="let gender of genders" [value]="gender._id">
+                                        {{gender.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -117,11 +121,13 @@
                         <div class="lhs">Marital Status</div>
                         <div *ngIf="!biodatas" class="rhs"> {{employee?.employeeDetails?.maritalStatus.name}} </div>
                         <div *ngIf="biodatas" class="survery rhs">
-                            <mat-select placeholder="Marital Status" [(ngModel)]="employee.employeeDetails.maritalStatus._id" name="food">
-                                <mat-option *ngFor="let marital of maritalStatuses" [value]="marital._id">
-                                    {{marital.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Marital Status" [(ngModel)]="employee.employeeDetails.maritalStatus._id" name="food">
+                                    <mat-option *ngFor="let marital of maritalStatuses" [value]="marital._id">
+                                        {{marital.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -152,11 +158,13 @@
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.country}} </div>
                         <div *ngIf="contacts" class="survery rhs">
                             <div *ngIf="contacts">
-                                <mat-select placeholder="Nationality" [formControl]="countryControl" [(ngModel)]="employee.employeeDetails.nationalityId" name="food">
-                                    <mat-option *ngFor="let country of countries" [value]="country._id">
-                                        {{country.name}}
-                                    </mat-option>
-                                </mat-select>
+                                <mat-form-field>
+                                    <mat-select placeholder="Nationality" [formControl]="countryControl" [(ngModel)]="employee.employeeDetails.nationalityId" name="food">
+                                        <mat-option *ngFor="let country of countries" [value]="country._id">
+                                            {{country.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
@@ -167,11 +175,13 @@
                         <div class="lhs">State of Origin</div>
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.state}} </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.employeeDetails.stateOfOriginId" name="food">
-                                <mat-option *ngFor="let state of states" [value]="state._id">
-                                    {{state.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.employeeDetails.stateOfOriginId" name="food">
+                                    <mat-option *ngFor="let state of states" [value]="state._id">
+                                        {{state.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -181,11 +191,13 @@
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.addressObj?.lga}} </div>
                         <div class="survery rhs">
                             <div *ngIf="contacts" class="">
-                                <mat-select placeholder="LGA" [(ngModel)]="employee.employeeDetails.lgaOfOriginId" name="food">
-                                    <mat-option *ngFor="let lg of lgs" [value]="lg._id">
-                                        {{lg.name}}
-                                    </mat-option>
-                                </mat-select>
+                                <mat-form-field>
+                                    <mat-select placeholder="LGA" [(ngModel)]="employee.employeeDetails.lgaOfOriginId" name="food">
+                                        <mat-option *ngFor="let lg of lgs" [value]="lg._id">
+                                            {{lg.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
@@ -196,21 +208,27 @@
                         <div class="lhs">Home Address</div>
                         <div *ngIf="!contacts" class="rhs"> {{employee?.employeeDetails?.fullAddress}}. </div>
                         <div *ngIf="contacts" class="survery rhs">
-                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.employeeDetails.homeAddress.country" name="food">
-                                <mat-option *ngFor="let country of homeCountries" [value]="country._id">
-                                    {{country.name}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-select placeholder="State" [formControl]="homeStateControl" [(ngModel)]="employee.employeeDetails.homeAddress.state" name="food">
-                                <mat-option *ngFor="let state of homeStates" [value]="state._id">
-                                    {{state.name}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-select placeholder="City" [(ngModel)]="employee.employeeDetails.homeAddress.city" name="food">
-                                <mat-option *ngFor="let city of homeCities" [value]="city._id">
-                                    {{city.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.employeeDetails.homeAddress.country" name="food">
+                                    <mat-option *ngFor="let country of homeCountries" [value]="country._id">
+                                        {{country.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="State" [formControl]="homeStateControl" [(ngModel)]="employee.employeeDetails.homeAddress.state" name="food">
+                                    <mat-option *ngFor="let state of homeStates" [value]="state._id">
+                                        {{state.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="City" [(ngModel)]="employee.employeeDetails.homeAddress.city" name="food">
+                                    <mat-option *ngFor="let city of homeCities" [value]="city._id">
+                                        {{city.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-input-container class="example-full-width" name="street">
                                 <input matInput placeholder="Street" [(ngModel)]="employee.employeeDetails.homeAddress.street">
                             </mat-input-container>
@@ -263,11 +281,13 @@
                         <div class="lhs">Relationship</div>
                         <div *ngIf="!nextofkin" class="rhs"> {{getRelationship(item.relationship)}} </div>
                         <div *ngIf="nextofkin" class="survery rhs">
-                             <mat-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
-                                <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
-                                    {{relationship.name}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Relationship" [(ngModel)]="item.relationship" name="food">
+                                    <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                        {{relationship.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="clear"></div>
                     </div>

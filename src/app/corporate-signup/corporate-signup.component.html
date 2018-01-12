@@ -29,9 +29,11 @@
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-select placeholder="Select Country" formControlName="facilitycountry">
-                        <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Select Country" formControlName="facilitycountry">
+                            <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <div class="clear"></div>
@@ -43,20 +45,26 @@
         <form [formGroup]="facilityForm1_1" novalidate>
             <div class="lhs">
                 <div class="frm-item-wrap">
-                    <mat-select *ngIf="stateAvailable" placeholder="Facility State" formControlName="facilitystate" (change)="onStateChange($event.value)">
-                        <mat-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select *ngIf="stateAvailable" placeholder="Facility State" formControlName="facilitystate" (change)="onStateChange($event.value)">
+                            <mat-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                     <input [hidden]="stateAvailable" matInput mat-error placeholder="Facility State" formControlName="facilitystate">
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-select placeholder="City" *ngIf="stateAvailable" formControlName="facilitycity">
-                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="City" *ngIf="stateAvailable" formControlName="facilitycity">
+                            <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
-                    <mat-select placeholder="Local Government" *ngIf="stateAvailable" formControlName="facilitylga">
-                        <mat-option *ngFor="let item of lgas" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Local Government" *ngIf="stateAvailable" formControlName="facilitylga">
+                            <mat-option *ngFor="let item of lgas" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <mat-input-container>
@@ -108,7 +116,7 @@
 
     <div *ngIf="sg2_show" class="f_sg2 animated zoomIn">
         <ngb-alert [dismissible]="false" *ngIf="isSuccessful" type="success">
-           {{closeMsg}}
+            {{closeMsg}}
         </ngb-alert>
         <form *ngIf="!isSuccessful" [formGroup]="frm_numberVerifier" novalidate>
             <div class="frm-singleItem-wrap">

@@ -17,7 +17,7 @@ export class TreatementPlanComponent implements OnInit {
   facility: Facility = <Facility>{};
   miniFacility: Facility = <Facility>{};
   employeeDetails: any = <any>{};
-  treatmentSheet: any;
+  treatmentSheet: any = <any>{};
   user: User = <User>{};
 
   constructor(
@@ -43,16 +43,17 @@ export class TreatementPlanComponent implements OnInit {
 
   private getTreatmentSheet() {
     this._treatmentSheetService.find({
-      query: { 'personId._id': this.patient.personId }
+      query: {
+        personId: this.patient.personId,
+        facilityId: this.miniFacility._id,
+        completed: false,
+        $sort: { createdAt: -1 }
+      }
     }).then(res => {
       console.log(res);
-      // this.treatmentSheet = res.data;
-      // const o = this.treatmentSheet;
-      // const inves = o.investigations === undefined;
-      // const med = o.medications === undefined;
-      // const nur = o.nursingCares === undefined;
-      // const phy = o.physicianOrders === undefined;
-      // const pro = o.procedures === undefined;
+      if (res.data.length > 0) {
+        this.treatmentSheet = res.data[0].treatmentSheet;
+      }
     }).catch(err => {});
   }
 }

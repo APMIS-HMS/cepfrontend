@@ -31,17 +31,6 @@
                                         <input matInput placeholder="Investigation Name" formControlName="investigationName">
                                     </mat-input-container>
                                 </div>
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input matInput placeholder="Report Type" [matAutocomplete]="autoPatient" formControlName="reportType">
-                                    </mat-input-container>
-                                    <mat-autocomplete #autoPatient="matAutocomplete">
-                                        <mat-option *ngFor="let report of reportTypes" [value]="report">
-                                            {{ report }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </div>
                             </div>
                         </div>
 
@@ -105,7 +94,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="true" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
+                            <button mat-raised-button [disabled]="!frmNewPanel.valid" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
                                 {{panelBtnText}}
                             </button>
                         </div>

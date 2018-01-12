@@ -6,9 +6,11 @@
     <div class="padding"></div>
     <form [formGroup]="transferFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <mat-select placeholder="Select Ward" formControlName="ward">
-                <mat-option *ngFor="let ward of wards" [value]="ward">{{ward.name}}</mat-option>
-            </mat-select>
+            <mat-form-field>
+                <mat-select placeholder="Select Ward" formControlName="ward">
+                    <mat-option *ngFor="let ward of wards" [value]="ward">{{ward.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         <div class="btn-box">
             <button mat-raised-button [disabled]="!transferFormGroup.valid && disableTransferBtn" class="btn" (click)="onTransfer(transferFormGroup.value, transferFormGroup.valid)" [innerHtml]="transferBtnText"></button>

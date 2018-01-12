@@ -30,9 +30,11 @@
             </div>
 
             <div class="frm-item-wrap">
-                <mat-select placeholder="Gender" formControlName="gender">
-                    <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Gender" formControlName="gender">
+                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
             <div class="frm-item-wrap">
@@ -64,20 +66,26 @@
         <div class="rhs">
 
             <div class="frm-item-wrap">
-                <mat-select placeholder="Nationality" formControlName="nationality" (change)="onNationalityChange($event.value)">
-                    <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Nationality" formControlName="nationality" (change)="onNationalityChange($event.value)">
+                        <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
             <div class="frm-item-wrap">
-                <mat-select placeholder="State" formControlName="state">
-                    <mat-option *ngFor="let item of selectedCountry?.states" [value]="item">{{item.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="State" formControlName="state">
+                        <mat-option *ngFor="let item of selectedCountry?.states" [value]="item">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="frm-item-wrap">
-                <mat-select placeholder="Local Government" formControlName="lga">
-                    <mat-option *ngFor="let item of selectedState?.lgs" [value]="item._id">{{item.name}}</mat-option>
-                </mat-select>
+                <mat-form-field>
+                    <mat-select placeholder="Local Government" formControlName="lga">
+                        <mat-option *ngFor="let item of selectedState?.lgs" [value]="item._id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">

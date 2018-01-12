@@ -8,6 +8,23 @@ body {
     padding: 0;
 }
 
+.nice-scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: rgb(221, 221, 221);
+}
+
+.nice-scroll::-webkit-scrollbar {
+    width: 12px;
+    background-color: #256cc6;
+}
+
+.nice-scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #11315b;
+}
+
 a {
     text-decoration: none;
 }
@@ -27,6 +44,15 @@ input,
 select,
 textarea {
     font-size: 12px;
+}
+
+.clickable-ico {
+    cursor: pointer;
+    margin: 0 20px;
+}
+
+.clickable-ico:hover {
+    color: #0288D1;
 }
 
 
@@ -70,35 +96,40 @@ select {
 }
 
 .badge-green {
-    color: #fff;
-    background: green;
+    color: $white;
+    background: $green;
     padding: 3px 5px;
 }
 
 .badge-red {
     color: #fff;
-    background: #ff2500;
+    background: $red;
     padding: 3px 5px;
 }
 
-.bg-green {
-    background-color: green !important;
+.bg-primary {
+    background: $primaryColor !important;
 }
 
-.text-center {
-    text-align: center !important;
+.bg-danger,
+.bg-red {
+    background: $red !important;
+}
+
+.bg-green {
+    background: $green !important;
 }
 
 .text-green {
-    color: green !important;
+    color: $green !important;
 }
 
 .text-red {
-    color: red !important;
+    color: $red !important;
 }
 
 .text-blue {
-    color: blue !important;
+    color: $blue !important;
 }
 
 .padding {
@@ -150,11 +181,11 @@ select {
     height: 49px;
     cursor: pointer;
     background: #0288D1;
-    color: #fff;
+    color: $white;
     margin: 10px auto;
     border: 0;
     outline: 0;
-    border-right: 1px solid #fff;
+    border-right: 1px solid $white;
     border-radius: 30px;
     -moz-border-radius: 30px;
     -webkit-border-radius: 30px;
@@ -232,9 +263,21 @@ select {
 }
 
 .mat-lg-btn {
-    background-color: #0288D1 !important;
+    background-color: $primaryColor !important;
     color: #fff !important;
     padding: 12px 16px !important;
+}
+
+.mat-sm-btn {
+    color: #fff !important;
+    padding: 5px 10px !important;
+    min-width: 50px !important;
+}
+
+.mat-xs-btn {
+    color: #fff !important;
+    padding: 0px 8px !important;
+    min-width: 30px !important;
 }
 
 .btn-primary {
@@ -427,7 +470,7 @@ select {
 }
 
 .mat-select {
-    padding: 0 !important;
+    padding: 1.29688em 0;
     width: 100%;
     font-size: 12px;
     height: 20px;
@@ -515,15 +558,23 @@ select {
     height: 100%;
 }
 
-.modal-baseWrap {
+.modal-header-wrap {
     position: relative;
-    width: 800px;
+    padding: 10px;
+    background: #0288D1;
+    box-sizing: border-box;
+}
+
+.modal-baseWrap {
+    @extend .nice-scroll;
+    position: relative;
+    // width: 590px;
     min-width: 440px;
-    max-height: 90%;
+    height: auto;
+    max-height: 90vh;
     background: #fff;
     overflow: auto;
-    padding: 50px;
-    border-radius: 7px;
+    padding: 20px 50px;
     box-sizing: border-box;
     -webkit-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
     -moz-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);
@@ -537,7 +588,7 @@ select {
     top: 9px;
     right: 9px;
     font-size: 16px;
-    color: #8492a6;
+    color: #fff;
     padding: 5px;
 }
 
@@ -549,15 +600,14 @@ select {
     font-family: "Josefin Sans", sans-serif;
     margin: 0px auto;
     font-size: 20px;
-    color: #0D47A1;
+    color: #fff;
     text-align: center;
 }
 
 .modal_mini_title {
     margin: 0px auto;
     font-size: 14px;
-    margin-bottom: 20px;
-    color: #000;
+    color: #fff;
     text-align: center;
 }
 
@@ -569,6 +619,17 @@ select {
     color: #2E7D32;
     margin-bottom: 0;
     margin-top: 30px;
+}
+
+.frm-item-x2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+
+.frm-item-x2 .example-full-width {
+    width: 46%;
 }
 
 .frm-singleItem-wrap {
@@ -1164,7 +1225,7 @@ select {
 
 ul.topmenuwrap {
     position: absolute;
-    top: -35px;
+    top: -25px;
     right: 22px;
     font-size: 12px;
     color: #0288D1;
@@ -1210,8 +1271,8 @@ ul.topmenuwrap li:hover {
     display: none;
 }
 
-.mat-input-container {
-    // width: 90%;
+.modal-baseWrap .mat-input-container {
+    width: 375px;
 }
 
 .tr-act-btn {
@@ -1304,6 +1365,12 @@ ul.topmenuwrap li:hover {
     background: #fff;
     border: 1px solid #bebebe;
     z-index: 2;
+}
+
+.frm-x2 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .action-item {
@@ -1521,6 +1588,73 @@ ul.topmenuwrap li:hover {
     width: 80%;
 }
 
+.button-included {
+    padding-right: 0px!important;
+    box-sizing: border-box;
+}
+
+.custom-autocomplete__input input {
+    padding: 5px!important;
+    height: 30px !important;
+    border: 0px solid #ccc!important;
+    border-bottom: 1px solid #777!important;
+}
+
+.custom-autocomplete {
+    float: unset !important;
+}
+
+.search-icon {
+    display: none !important;
+}
+
+.custom-autocomplete__dropdown {
+    width: 90% !important;
+}
+
+.custom-autocomplete__dropdown .currentlocation a {
+    width: 98% !important;
+}
+
+.custom-autocomplete__dropdown .active a {
+    width: 98% !important;
+}
+
+.custom-autocomplete__dropdown li {
+    width: 97% !important;
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.upload-btn {
+    border: 2px solid #eee;
+    color: #aaa;
+    background-color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.upload-btn:hover {
+    background: #256cc6;
+    color: #fff;
+    border: 2px solid #256cc6;
+}
+
 @media only screen and (max-width: 600px) {
     .user-label {
         display: none;
@@ -1536,8 +1670,15 @@ ul.topmenuwrap li:hover {
 @media only screen and (max-width: 700px) {
     .modal-baseWrap {
         padding: 10px 20px;
-        min-width: 80%;
-        width: 80%;
+        min-width: 100%;
+        width: 100%;
+    }
+    .modal-header-wrap {
+        min-width: 100%;
+        width: 100%;
+    }
+    .pulse {
+        width: 90%;
     }
     form .lhs,
     form .rhs {
@@ -1639,6 +1780,11 @@ ul.topmenuwrap li:hover {
 #inner_circle img {
     height: 60px;
     animation: loading2 ease 1s infinite;
+}
+
+.mat-select {
+    padding: 0px;
+    height: 0px;
 }
 
 @keyframes loading {

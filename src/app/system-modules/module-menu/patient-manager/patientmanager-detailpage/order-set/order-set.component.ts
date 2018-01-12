@@ -1,11 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   FormsService, FacilitiesService, OrderSetTemplateService, DocumentationService, PersonService, PatientService, TreatmentSheetService
 } from 'app/services/facility-manager/setup';
-import { OrderSetTemplate, User, Facility } from '../../../../../models/index';
-import { ActivatedRoute } from '@angular/router';
+import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
+import { SharedService } from '../../../../../shared-module/shared.service';
+import { OrderSetTemplate, User, Facility, Prescription } from '../../../../../models/index';
 
 @Component({
   selector: 'app-order-set',
@@ -14,7 +16,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OrderSetComponent implements OnInit {
   @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedPatient: any;
+  prescriptionData: Prescription = <Prescription>{};
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
   facility: Facility = <Facility>{};
@@ -32,7 +36,7 @@ export class OrderSetComponent implements OnInit {
   popNursingCare = false;
   popPhysicianOrder = false;
   popProcedure = false;
-  showbill= false;
+  showBill= false;
   user: any = <any>{};
   orderSet: any = <any>{};
   selectedForm: any;
@@ -40,8 +44,10 @@ export class OrderSetComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _locker: CoolLocalStorage,
+    private _orderSetSharedService: OrderSetSharedService,
     private _orderSetTemplateService: OrderSetTemplateService,
     public facilityService: FacilitiesService,
+    private sharedService: SharedService,
     private _formService: FormsService,
     private _personService: PersonService,
     private _patientService: PatientService,
@@ -59,7 +65,23 @@ export class OrderSetComponent implements OnInit {
       this._getPatient(value.id);
     });
 
-    this._getDocumentationForm();
+    // Listen to the event from children components
+    this._orderSetSharedService.itemSubject.subscribe(value => {
+      console.log(value);
+      if (!!value.medications) {
+        this.orderSet.medications = value.medications;
+      } else if (!!value.investigations) {
+        this.orderSet.investigations = value.investigations;
+      } else if (!!value.procedures) {
+        this.orderSet.procedures = value.procedures;
+      } else if (!!value.nursingCares) {
+        this.orderSet.nursingCares = value.nursingCares;
+      } else if (!!value.physicianOrders) {
+        this.orderSet.physicianOrders = value.physicianOrders;
+      }
+
+      console.log(this.orderSet);
+    });
   }
 
   showOrderSetType(type: string) {
@@ -76,110 +98,20 @@ export class OrderSetComponent implements OnInit {
     }
   }
 
-  close_onClick(e){
-    this.popMed = false;
-    this.popInvestigation = false;
-    this.popNursingCare = false;
-    this.popPhysicianOrder = false;
-    this.popProcedure = false;
-    this.showbill = false;
-  }
-
   authorizerx() {
-    if (!!this.selectedForm._id) {
-      // Send to treatment sheet and Documentation
-      const saveDocument = {
-        documentType: this.selectedForm,
-        body: {}
-      };
+    const treatementSheet = {
+      personId: this.selectedPatient.personDetails._id,
+      treatmentSheet: this.orderSet,
+      facilityId: this.miniFacility._id,
+      createdBy: this.employeeDetails.employeeDetails._id,
+    };
 
-      Object.keys(this.orderSet).forEach(key => {
-        // I'm doing this because the data structure for medications is quite different.
-        if (key === 'medications') {
-          this.orderSet[key].forEach((it, i) => {
-            const length = this.orderSet[key].length - 1;
-            if (i === 0) {
-              saveDocument.body[key] = (i+1) +'. '+it.strength+' '+it.genericName+' - '+it.frequency+' for '+ it.duration+' ' +it.durationUnit+ ', ';
-            } else {
-              if (length === i) {
-                saveDocument.body[key] += (i+1) +'. '+it.strength+' '+it.genericName+' - '+it.frequency+' for '+ it.duration+' ' +it.durationUnit;
-              } else {
-                saveDocument.body[key] += (i+1) +'. '+it.strength+' '+it.genericName+' - '+it.frequency+' for '+ it.duration+' '+it.durationUnit+ ', ';
-              }
-            }
-          });
-        } else {
-          this.orderSet[key].forEach((item, i) => {
-            const length = this.orderSet[key].length - 1;
-            if (i === 0) {
-              saveDocument.body[key] = (i + 1) + '. ' + item.name +  ', ';
-            } else {
-              if (length === i) {
-                saveDocument.body[key] += ( i + 1) + '. ' + item.name;
-              } else {
-                saveDocument.body[key] += (i + 1) + '. ' + item.name +  ', ';
-              }
-            }
-          });
-        }
-      });
-
-      const patientDocumentation = {
-        document: saveDocument,
-        createdBy: this.employeeDetails.employeeDetails._id,
-        facilityId: this.miniFacility,
-        patientId: this._patientService.abridgePatient(this.selectedPatient),
-      };
-
-      const documentation = {
-        personId: this._personService.abridgePerson(this.selectedPatient.personDetails),
-        documentations: patientDocumentation,
-      };
-
-      // Check if documentation has been created for the user
-      this._documentationService.find({
-        query: { 'personId._id': this.selectedPatient.personDetails._id }
-      }).then(res => {
-        if (res.data.length > 0) {
-          res.data[0].documentations.push(patientDocumentation);
-          // Update the existing documentation
-          this._documentationService.update(res.data[0]).then(resUpdate => {
-            this._notification('Success', 'Treatment Plan has been saved successfully!');
-          });
-        } else {
-          // Save into documentation
-          this._documentationService.create(documentation).then(resCreate => {
-            this._notification('Success', 'Treatment Plan has been saved and uploaded successfully!');
-          });
-        }
-
-        /**
-         * Treatment Sheet
-         */
-        const patientTreatmentSheet = {
-          document: this.orderSet,
-          createdBy: this.employeeDetails.employeeDetails._id,
-          facilityId: this.miniFacility,
-          patientId: this._patientService.abridgePatient(this.selectedPatient),
-        };
-
-        const treatementSheet = {
-          personId: this._personService.abridgePerson(this.selectedPatient.personDetails),
-          treatmentSheets: patientTreatmentSheet,
-        };
-
-        this._treatmentSheetService.create(treatementSheet).then(treatment => {
-          console.log(treatment);
-        }).catch(err => {
-          console.log(err);
-        });
-      }).catch(err => {
-        console.log(err);
-      });
-    } else {
-      this._notification('Error', 'Please create document type of \'Treatment Plan\'');
-    }
-
+    this._treatmentSheetService.create(treatementSheet).then(treatment => {
+      this.sharedService.announceOrderSet(this.orderSet);
+      this.close_onClickModal();
+    }).catch(err => {
+      console.log(err);
+    });
     this.showDoc.emit(true);
   }
 
@@ -197,8 +129,11 @@ export class OrderSetComponent implements OnInit {
     });
   }
 
-  showbill_click(){
-    this.showbill = true;
+  onClickBillPrescription(index: number, value: any) {
+    console.log(value);
+    this.prescriptionData.index = index;
+    this.prescriptionData.prescriptionItems = this.orderSet.medications;
+    this.showBill = true;
   }
 
   apmisLookupHandleSelectedItem(value: any) {
@@ -206,8 +141,6 @@ export class OrderSetComponent implements OnInit {
     this.diagnosis.setValue('');
     this.template.setValue(value.name);
     this.orderSet = JSON.parse(value.body);
-    console.log(this.orderSet);
-    console.log(value);
   }
 
   apmisDLookupHandleSelectedItem(value: any) {
@@ -215,27 +148,13 @@ export class OrderSetComponent implements OnInit {
     this.template.setValue('');
     this.diagnosis.setValue(value.diagnosis);
     this.orderSet = JSON.parse(value.body);
-    console.log(value);
   }
 
-  private _getDocumentationForm() {
-    this._formService.findAll().then(res => {
-      console.log(res);
-      const selectedForm = res.data.filter(x => new RegExp('Treatment Plan', 'i').test(x.title));
-      if (selectedForm.length > 0) {
-        this.selectedForm = selectedForm[0];
-      } else {
-        this._notification('Error', 'Please create document type of \'Treatment Plan\'');
-      }
-      console.log(this.selectedForm);
-    }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
-  }
 
   private _getOrderSetTemplate() {
     this._orderSetTemplateService.find({
       query: { facilityId: this.facility._id }
     }).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         console.log(JSON.parse(res.data[0].body));
         this.orderSet = JSON.parse(res.data[0].body);
@@ -243,6 +162,19 @@ export class OrderSetComponent implements OnInit {
     }).catch(err => {
       console.log(err);
     });
+  }
+
+  close_onClick(e) {
+    this.popMed = false;
+    this.popInvestigation = false;
+    this.popNursingCare = false;
+    this.popPhysicianOrder = false;
+    this.popProcedure = false;
+    this.showBill = false;
+  }
+
+  close_onClickModal() {
+    this.closeModal.emit(true);
   }
 
   // Notification

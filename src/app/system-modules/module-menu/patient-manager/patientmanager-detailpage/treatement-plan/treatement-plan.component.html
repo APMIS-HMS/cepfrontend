@@ -6,9 +6,12 @@
             <div class="sect-title">Medication</div>
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <tbody>
+                    <tr *ngIf="treatmentSheet?.medications === undefined">
+                        <td class="text-center" colspan="5"> No data available in table</td>
+                    </tr>
                     <tr *ngFor="let medication of treatmentSheet?.medications;">
                         <td>{{ medication.genericName }} - {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
-                        <td>{{ medicaation.status}}</td>
+                        <td>{{ medication.status }}</td>
                         <td>2hrs 24mins 36secs to start</td>
                         <td>
                             <div class="frm-item-wrap">
@@ -40,14 +43,16 @@
                 </tbody>
             </table>
         </div>
-
         <div class="tbl-listWrap">
             <div class="sect-title">Nursing Care</div>
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <tbody>
-                    <tr>
-                        <td>paracetamol-strength-route-frequency-duration+unit-refil-startdate-enddate</td>
-                        <td>Not Done</td>
+                    <tr *ngIf="treatmentSheet?.nursingCares === undefined">
+                        <td class="text-center" colspan="4"> No data available in table</td>
+                    </tr>
+                    <tr *ngFor="let nursingCare of treatmentSheet?.nursingCares;">
+                        <td> {{ nursingCare.name }} </td>
+                        <td> {{ nursingCare.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
@@ -62,14 +67,40 @@
                 </tbody>
             </table>
         </div>
-
         <div class="tbl-listWrap">
             <div class="sect-title">Physician Order</div>
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <tbody>
-                    <tr>
-                        <td>paracetamol-strength-route-frequency-duration+unit-refil-startdate-enddate</td>
-                        <td>Not Done</td>
+                    <tr *ngIf="treatmentSheet?.physicianOrders === undefined">
+                        <td class="text-center" colspan="4"> No data available in table</td>
+                    </tr>
+                    <tr *ngFor="let physicianOrder of treatmentSheet?.physicianOrders;">
+                        <td> {{ physicianOrder.name }} </td>
+                        <td> {{ physicianOrder.status }}</td>
+                        <td>
+                            <div class="frm-item-wrap">
+                                <mat-input-container>
+                                    <input matInput placeholder="Comment">
+                                </mat-input-container>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tbl-listWrap">
+            <div class="sect-title">Procedure</div>
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <tbody>
+                    <tr *ngIf="treatmentSheet?.procedures === undefined">
+                        <td class="text-center" colspan="4"> No data available in table</td>
+                    </tr>
+                    <tr *ngFor="let procedure of treatmentSheet?.procedures;">
+                        <td> {{ procedure.name }} </td>
+                        <td> {{ procedure.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>

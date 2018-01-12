@@ -125,6 +125,7 @@ export class InvestigationPriceComponent implements OnInit {
     this.toastyService.info(toastOptions);
   }
   getInvestigations() {
+    console.log(this.checkingObject);
     this.investigationService.find({
       query: {
         'facilityId._id': this.selelctedFacility._id,

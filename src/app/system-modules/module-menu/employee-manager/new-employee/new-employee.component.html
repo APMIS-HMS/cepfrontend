@@ -15,9 +15,11 @@
             <div class="lhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
-                        <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Title" formControlName="empTitle" (change)="onEmpTitleChange($event.value)">
+                            <mat-option *ngFor="let item of titles" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
@@ -44,30 +46,39 @@
                     </mat-input-container>
                 </div>
                 <div class="frm-item-wrap">
+
                     <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                    <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
-                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Gender" formControlName="empGender" (change)="onEmpGenderChange($event.value)">
+                            <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <div class="rhs">
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
-                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Nationality" formControlName="empNationality" (change)="onEmpNationalityChange($event.value)">
+                            <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
-                        <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
+                            <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
-                        <mat-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="LGA" formControlName="empLga" (change)="onEmpLgaChange($event.value)">
+                            <mat-option *ngFor="let item of lgs" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
@@ -105,29 +116,37 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
-                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Marital Status" formControlName="empMaritalStatus" (change)="onEmpMaritalStatusChange($event.value)">
+                            <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <mat-select placeholder="Country (Residence)" formControlName="empCountry">
-                        <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Country (Residence)" formControlName="empCountry">
+                            <mat-option *ngFor="let item of countries" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <mat-select placeholder="State (Residence)" formControlName="empContactState">
-                        <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="State (Residence)" formControlName="empContactState">
+                            <mat-option *ngFor="let item of contactStates" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <mat-select placeholder="City (Residence)" formControlName="empCity">
-                        <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="City (Residence)" formControlName="empCity">
+                            <mat-option *ngFor="let item of cities" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
 
@@ -148,9 +167,11 @@
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Select security question" formControlName="secQst">
-                        <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Select security question" formControlName="secQst">
+                            <mat-option *ngFor="let item of maritalStatuses" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
@@ -224,9 +245,11 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-building-o" aria-hidden="true"></i>
-                    <mat-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
-                        <mat-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Relationship" formControlName="nok_relationship" (change)="onNokRelationshipChange($event.value)">
+                            <mat-option *ngFor="let item of relationships" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
             </div>
@@ -253,30 +276,38 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
-                        <mat-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Asign Department" formControlName="empDept" (change)="onEmpDeptChange($event.value)">
+                            <mat-option *ngFor="let item of departments" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
-                        <mat-option *ngFor="let item of units" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Asign Unit" formControlName="empUnit" (change)="onEmpDeptChange($event.value)">
+                            <mat-option *ngFor="let item of units" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
-                        <mat-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Asign Work Location" formControlName="empLoc" (change)="onEmpLocChange($event.value)">
+                            <mat-option *ngFor="let item of minorLocations" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
-                        <mat-option *ngFor="let item of professions" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Job Title" formControlName="empJobTitle" (change)="onEmpJobTitleChange($event.value)">
+                            <mat-option *ngFor="let item of professions" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
 
@@ -284,9 +315,11 @@
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-bullseye" aria-hidden="true"></i>
-                    <mat-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
-                        <mat-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Level" formControlName="empLevel" (change)="onEmpLevelChange($event.value)">
+                            <mat-option *ngFor="let item of cadres" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <div class="frm-item-wrap">

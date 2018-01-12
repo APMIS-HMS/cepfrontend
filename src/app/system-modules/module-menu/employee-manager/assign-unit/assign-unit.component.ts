@@ -41,7 +41,7 @@ export class AssignUnitComponent implements OnInit {
       dept: ['', []],
       unit: ['', []]
     });
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     if (this.selectedEmployee !== undefined) {
       this.disableDepartment = true;
@@ -119,15 +119,18 @@ export class AssignUnitComponent implements OnInit {
     employee.isChecked = e.value;
   }
   assignUnit(valid, value) {
+    console.log(valid);
     const checkedEmployees = this.filteredEmployees.filter(emp => emp.isChecked === true);
 
     checkedEmployees.forEach((emp, i) => {
+      console.log(i);
       if (emp.units === undefined) {
         emp.units = [];
       }
       emp.units.push(this.selectedUnit._id);
     });
     checkedEmployees.forEach((itemi, i) => {
+      console.log(i);
       this.employeeService.update(itemi).then(payload => {
         if (this.selectedEmployee === undefined) {
           this.getEmployees(this.selectedDepartment);
@@ -141,6 +144,8 @@ export class AssignUnitComponent implements OnInit {
 
       }, error => {
       });
+    }, error => {
+      console.log(error);
     });
     // this.employeeService.updateMany(checkedEmployees).then(payload => {
     // }, error => {

@@ -80,3 +80,22 @@
         padding: 5px 20px !important;
     }
 }
+
+.doc-mainWrap .pg-subtitle {
+    text-align: center;
+}
+
+.doc-contentArea {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.doc-mainWrap {
+    display: block;
+    margin-top: 0;
+    .pg-subtitle {
+        margin-top: 20px;
+        font-size: 20px;
+        width: 100%;
+    }
+}

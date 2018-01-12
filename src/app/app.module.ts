@@ -45,7 +45,8 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
-//import { IkeComponent } from './ike/ike.component';
+import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
+// import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
   ],
   exports: [
     // MaterialModule,
+    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     MaterialModule,
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
-    LoadingBarRouterModule
+    LoadingBarRouterModule,
+    // PdfViewerModule
   ],
   providers: [
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
@@ -95,11 +98,11 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
-    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
+    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
-    SetupService.TimeLineService
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
+    SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService
   ],
   bootstrap: [AppComponent]
 })

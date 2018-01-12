@@ -9,7 +9,8 @@
 </ul>
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-    <div class="inner-page-wrap">
+   <!--  <small class="facility-title" *ngIf="checkedInStore !== undefined" >You are checked into {{checkedInStore}}</small>
+     --><div class="inner-page-wrap">
         <!-- <div class="lhs inner-page-menuTab">
       <ul class="nav-group">
         <li [class.navActive]="initializeNavMenu" (click)="onInitialiseNavMenu()" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>

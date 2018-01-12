@@ -30,6 +30,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
+  checkedInStore: any;
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService,
@@ -37,6 +38,14 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+    console.log(checkIn.storeObject.name);
+    this.checkedInStore = checkIn.storeObject.name;
+    if(Object.keys(checkIn).length > 0){
+      console.log(checkIn);
+    }
+    
+    
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
       this.modal_on = true;
@@ -75,6 +84,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       }
 
     }
+
+
   }
 
   ngOnInit() {
@@ -156,6 +167,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     }
   }
 
+  
   // onClickInventoryNavMenu() {
   //   this.inventoryNavMenu = true;
   //   this.stockTakingNavMenu = false;
