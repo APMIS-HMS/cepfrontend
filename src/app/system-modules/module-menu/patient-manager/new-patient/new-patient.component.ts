@@ -776,6 +776,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
         person.lastName = this.frmNewEmp1.controls['empLastName'].value;
         person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+        person.wallet = {
+            balance: 0,
+            ledger: 0,
+            description: 'Initializing wallet'
+        }
         if (!this.skipNok) {
             person.nextOfKin.push(
                 {
@@ -917,6 +922,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
+            person.wallet = {
+                balance: 0,
+                ledger: 0,
+                description: 'Initializing wallet'
+            }
 
             /* console.log(planValue);
             this.planInput = planValue; */
@@ -1038,6 +1048,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         person._id = this.person_Id;
         person.lastName = this.frmNewEmp1.controls['empLastName'].value;
         person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+        person.wallet = {
+            balance: 0,
+            ledger: 0,
+            description: 'Initializing wallet'
+        }
         if (!this.skipNok) {
             person.nextOfKin.push(
                 {
@@ -1176,6 +1191,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         person._id = this.person_Id;
         person.lastName = this.frmNewEmp1.controls['empLastName'].value;
         person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+        person.wallet = {
+            balance: 0,
+            ledger: 0,
+            description: 'Initializing wallet'
+        }
         if (!this.skipNok) {
             person.nextOfKin.push(
                 {
