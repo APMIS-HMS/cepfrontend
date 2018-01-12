@@ -31,7 +31,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
   documents: PatientDocumentation[] = [];
-  auth:any;
+  auth: any;
   subscription: Subscription;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
@@ -123,6 +123,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       if ((documentation.document.documentType && documentation.document.documentType.isSide === false)
         || (documentation.document.documentType && documentation.document.documentType.isSide === undefined)) {
         this.documents.push(documentation);
+      } else {
+        if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Problems') {
+          console.log(documentation);
+          this.documents.push(documentation);
+        } else {
+          console.log(documentation);
+          this.documents.push(documentation);
+        }
       }
     });
     this.documents.reverse();
@@ -199,10 +207,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   }
 
   private _notification(type: string, text: string): void {
-		this.facilityService.announceNotification({
-			users: [this.auth._id],
-			type: type,
-			text: text
-		});
-	}
+    this.facilityService.announceNotification({
+      users: [this.auth._id],
+      type: type,
+      text: text
+    });
+  }
 }
