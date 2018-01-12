@@ -9,27 +9,27 @@
           <div class="modal_title">Fluid Intake</div>
 
           <div class="docCard-body">
-            <form [formGroup]="frmIntake" novalidate>
-
-              <div class="frm-item-wrap">
-                <mat-form-field>
-                  <mat-select placeholder="Fluid" formControlName="infusion">
-                    <mat-option [value]="1">Drip</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <div class="frm-item-wrap">
-                <mat-input-container>
-                  <input matInput mat-error placeholder="Volume" formControlName="infusion_volume">
-                </mat-input-container>
-              </div>
-
-              <button class="cta-1">
-                Add
-              </button>
-
-            </form>
+              <form [formGroup]="frmIntake" novalidate>
+                  
+                <div class="frm-item-wrap">
+                  <mat-form-field>
+                    <mat-select placeholder="Fluid" formControlName="infusion">
+                      <mat-option [value]="1">Drip</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+          
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                      <input matInput mat-error placeholder="Volume" formControlName="infusion_volume">
+                  </mat-input-container>
+                </div>
+          
+                <button class="cta-1">
+                  Add
+                </button>
+          
+              </form>            
           </div>
         </div>
 
@@ -37,69 +37,198 @@
           <div class="modal_title">Fluid Output</div>
 
           <div class="docCard-body">
-            <form [formGroup]="frmOutput" novalidate>
-
-              <div class="frm-item-wrap">
-                <mat-form-field>
-                  <mat-select placeholder="Fluid" formControlName="fluid">
-                    <mat-option [value]="1">Drip</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <div class="frm-item-wrap">
-                <mat-input-container>
-                  <input matInput mat-error placeholder="Volume" formControlName="output_volume">
-                </mat-input-container>
-              </div>
-
-              <button class="cta-1">
-                Add
-              </button>
-
-            </form>
+              <form [formGroup]="frmOutput" novalidate>
+                  
+                <div class="frm-item-wrap">
+                  <mat-form-field>
+                    <mat-select placeholder="Fluid" formControlName="fluid">
+                      <mat-option [value]="1">Drip</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+          
+                <div class="frm-item-wrap">
+                  <mat-input-container>
+                      <input matInput mat-error placeholder="Volume" formControlName="output_volume">
+                  </mat-input-container>
+                </div>
+          
+                <button class="cta-1">
+                  Add
+                </button>
+          
+              </form>   
           </div>
         </div>
       </div>
 
-      <div class="card-tbl">
+      <div class="card2-exo">
+        <div class="card-tbl">
+          <mat-form-field>
+            <mat-select placeholder="Time Interval" [formControl]="inInterval">
+              <mat-option [value]="1">Last 48Hours</mat-option>
+              <mat-option [value]="1">Last 24Hours</mat-option>
+              <mat-option [value]="1">Last 18Hours</mat-option>
+              <mat-option [value]="1">Last 12Hours</mat-option>
+              <mat-option [value]="1">Last 6Hours</mat-option>
+              <mat-option [value]="1">Last 4Hours</mat-option>
+              <mat-option [value]="1">Last 2Hours</mat-option>
+              <mat-option [value]="1">Last Hours</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr>
+                <th>Fluid</th>
+                <th>Volume</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+        
+            <tbody>
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+        
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-tbl">
+          <mat-form-field>
+            <mat-select placeholder="Time Interval" [formControl]="outInterval">
+              <mat-option [value]="1">Last 48Hours</mat-option>
+              <mat-option [value]="1">Last 24Hours</mat-option>
+              <mat-option [value]="1">Last 18Hours</mat-option>
+              <mat-option [value]="1">Last 12Hours</mat-option>
+              <mat-option [value]="1">Last 6Hours</mat-option>
+              <mat-option [value]="1">Last 4Hours</mat-option>
+              <mat-option [value]="1">Last 2Hours</mat-option>
+              <mat-option [value]="1">Last Hours</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr>
+                <th>Fluid</th>
+                <th>Volume</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+        
+            <tbody>
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+        
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+
+              <tr>
+                <td>Drip</td>
+                <td>20ml</td>
+                <td>11th Sept, 2017. 10:17am</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="summary-figs">
+        <div class="fig-item">
+          <div class="fig-label">Total Volume</div>
+          <div class="fig-val">400ml</div>
+        </div>
+        <div class="fig-item">
+          <div class="fig-label">Balance</div>
+          <div class="fig-val">300ml</div>
+        </div>
+        <div class="fig-item">
+          <div class="fig-label">Rate</div>
+          <div class="fig-val">40ml</div>
+        </div>
+      </div>
+
+      <!-- balance over fluid -->
+      <div class="col-md-6">
+        <canvas baseChart
+            [data]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [chartType]="lineChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+      </div>
+
+      <div class="card-tbl-full">
+        <div class="modal_title">Summary Table</div>
         <table cellpadding="0" cellspacing="0" border="0.5">
           <thead>
             <tr>
-              <th>Type</th>
               <th>Fluid</th>
-              <th>Volume</th>
-              <th>Date</th>
+              <th>Total Volume In</th>
+              <th>Total Volume Out</th>
+              <th>Balance</th>
             </tr>
           </thead>
-
+      
           <tbody>
             <tr>
-              <td>Intake</td>
               <td>Drip</td>
               <td>20ml</td>
-              <td>11th Sept, 2017. 10:17am</td>
+              <td>30ml</td>
+              <td>10ml</td>
+            </tr>
+      
+            <tr>
+              <td>Drip</td>
+              <td>20ml</td>
+              <td>30ml</td>
+              <td>10ml</td>
             </tr>
 
             <tr>
-              <td>Output</td>
               <td>Drip</td>
               <td>20ml</td>
-              <td>11th Sept, 2017. 10:17am</td>
+              <td>30ml</td>
+              <td>10ml</td>
             </tr>
 
             <tr>
-              <td>Intake</td>
               <td>Drip</td>
               <td>20ml</td>
-              <td>11th Sept, 2017. 10:17am</td>
-            </tr>
-
-            <tr>
-              <td>Intake</td>
-              <td>Drip</td>
-              <td>20ml</td>
-              <td>11th Sept, 2017. 10:17am</td>
+              <td>30ml</td>
+              <td>10ml</td>
             </tr>
           </tbody>
         </table>

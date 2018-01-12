@@ -1,0 +1,22 @@
+<div class="pg-subtitle">PATIENT VITALS</div>
+
+<div class="doc-mainWrap">
+  <div class="doc-contentArea">
+    <div class="doc-cardWrap">
+      <div class="doc-card2">
+        <div class="modal_title">Vital Signs <i (click)="addVitals_show($event)" class="fa fa-plus-circle" aria-hidden="true"></i></div>
+        <div class="row">
+          <div class="col-md-6">
+            <div style="display: block;">
+              <canvas baseChart style="width:100%;" height="300" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="addVitals_view" class="modal-overlay">
+    <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" class="form-modal center-center"></app-add-vitals>
+</div>
