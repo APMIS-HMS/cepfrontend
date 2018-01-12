@@ -38,7 +38,7 @@ export class CreateWorkspaceComponent implements OnInit {
   minorLocations: MinorLocation[] = [];
   workSpaces: WorkSpace[] = [];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedEmployee: any = <any>{};
+  @Input() selectedEmployee: any;
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
@@ -55,15 +55,20 @@ export class CreateWorkspaceComponent implements OnInit {
       majorLoc: ['', [Validators.required]],
       minorLoc: ['', [Validators.required]]
     });
-    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
-      this.selectedDepartment = value;
-      this.units = value.units;
+    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: any) => {
+      console.log(value);
+      // this.selectedDepartment = value;
+      this.departments = this.selectedFacility.departments;
+      const index = this.departments.findIndex(x => x.name === value);
+      this.selectedDepartment = this.departments[index];
+      this.units = this.selectedDepartment.units;
       this.employees = [];
       this.filteredEmployees = [];
     });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
       console.log(value);
       this.selectedUnit = value;
+      console.log(this.selectedEmployee)
 
       if (this.selectedEmployee === undefined) {
         this.employees = [];
@@ -131,7 +136,7 @@ export class CreateWorkspaceComponent implements OnInit {
     this.employeeService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        departmentId: dept,
+        departmentId: dept.name,
         units: unit
       }
     }).then(payload => {
