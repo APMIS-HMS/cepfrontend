@@ -53,7 +53,16 @@
                       <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
                       <div *ngFor="let key2 of document?.document?.body.problems | keys let k = index">
                           <div *ngIf="document?.document?.body !== undefined" class="sect-value">
-                              {{k+1}}: <span class="sect-key">{{document?.document?.body.problems[key2].problem}}</span> ({{document?.document?.body.problems[key2].status.name}}) {{document?.document?.body.problems[key2].note}}
+                              {{k+1}}:
+                              <span class="sect-key">{{document?.document?.body.problems[key2].problem}}</span> ({{document?.document?.body.problems[key2].status.name}})
+                              {{document?.document?.body.problems[key2].note}}
+                          </div>
+                      </div>
+                      <div *ngFor="let key2 of document?.document?.body.allergies | keys let k = index">
+                          <div *ngIf="document?.document?.body !== undefined" class="sect-value">
+                              {{k+1}}:
+                              <span class="sect-key">{{document?.document?.body.allergies[key2].allergy}}</span> ({{document?.document?.body.allergies[key2].severity.name}})
+                              {{document?.document?.body.allergies[key2].reaction}} || {{document?.document?.body.allergies[key2].note}}
                           </div>
                       </div>
                   </div>
