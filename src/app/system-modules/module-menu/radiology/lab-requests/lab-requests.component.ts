@@ -188,11 +188,11 @@ export class LabRequestsComponent implements OnInit {
           name: { $regex: value, '$options': 'i' },
         }
       }
-      this.validateForm();
+      //this.validateForm();
     })
 
     this.frmNewRequest.valueChanges.subscribe(value => {
-      this.validateForm();
+      //this.validateForm();
     })
 
     this.route.params.subscribe((params: any) => {
@@ -674,6 +674,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   validateForm() {
+    console.log(this.selectedPatient);
     if (this.frmNewRequest.valid) {
       this.isValidateForm =true;
     } else if (this.selectedPatient._id != undefined && this.selectedPatient._id.length > 0) {
