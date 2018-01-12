@@ -12,6 +12,7 @@ import { FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { IDateRange } from 'ng-pick-daterange';
 
 @Component({
   selector: 'app-patient-vitals',
