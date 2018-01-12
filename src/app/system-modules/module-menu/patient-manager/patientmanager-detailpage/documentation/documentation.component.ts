@@ -73,6 +73,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       doc.patientId = this.patient._id;
       this.patientDocumentation.documentations.push(doc);
       this.documentationService.update(this.patientDocumentation).then(pay => {
+        console.log(pay);
         this.getPersonDocumentation();
         this._notification('Success', 'Documentation successfully saved!');
       })

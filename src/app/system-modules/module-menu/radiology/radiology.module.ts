@@ -5,7 +5,7 @@ import { radiologyRoutes } from './radiology.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { SharedModule } from '../../../shared-module/shared.module';
-import { InvestigationPriceComponent } from './investigation-price/investigation-price.component';
+import { RadiologyInvestigationPriceComponent } from './radiology-investigation-price/radiology-investigation-price.component';
 import { PanelComponent } from './panel/panel.component';
 import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
 import { ReportComponent } from './report/report.component';
@@ -28,8 +28,8 @@ import { RadiologyInvestigationServiceComponent } from '../radiology/radiology-i
     MaterialModule
   ],
   declarations: [RadiologyComponent, LabRequestsComponent, RadiologyInvestigationServiceComponent, RadRequestDetailComponent,
-    InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
+    RadiologyInvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
     ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
-  providers: [LaboratoryRequestService, ScopeLevelService]
+  providers: [LaboratoryRequestService, ScopeLevelService,RadiologyInvestigationService]
 })
 export class RadiologyModule { }
