@@ -16,7 +16,7 @@ export class BillLookupComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
-  //fundAmount: FormControl;
+  // fundAmount: FormControl;
 
   public frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
@@ -81,6 +81,7 @@ export class BillLookupComponent implements OnInit {
       this.subTotal = 0;
       this.total = 0;
       this.discount = 0;
+      console.log(this.selectedPatient);
       this.getPatientBills();
     });
 
@@ -142,8 +143,8 @@ export class BillLookupComponent implements OnInit {
         this.isLoadingInvoice = true;
         var facility = {
           "_id": this.selectedFacility._id,
-          "isQuery": true,
-          "name": value
+          'isQuery': true,
+          'name': value
         }
         this._todayInvoiceService.get(facility).then(payload => {
           this.invoiceGroups = payload.data.invoices;
@@ -157,7 +158,7 @@ export class BillLookupComponent implements OnInit {
       .subscribe(value => {
         this.loadingPendingBills = true;
         var facility = {
-          "_id": this.selectedFacility._id,
+          '_id': this.selectedFacility._id,
           "isQuery": true,
           "name": value
         }
@@ -196,7 +197,9 @@ export class BillLookupComponent implements OnInit {
       billGroup.patientId = this.selectedPatient._id;
       console.log(this.billGroups);
       this.billGroups.forEach((itemg, g) => {
+        console.log(itemg)
         itemg.bills.forEach((itemb: BillModel, b) => {
+          console.log(itemb);
           if (itemb.isChecked) {
             itemb.billObject.isInvoiceGenerated = true;
             billGroup.billingIds
@@ -216,13 +219,13 @@ export class BillLookupComponent implements OnInit {
         billGroup.balance = this.total;
         console.log(billGroup);
         this.invoiceService.create(billGroup).then(payload => {
-          var len = this.checkBillitems.length - 1;
-          var len2 = this.listedBillItems.length - 1;
-          var filterCheckedBills = [];
-          for (var x = len; x >= 0; x--) {
-            for (var x2 = len2; x2 >= 0; x2--) {
-              let len3 = this.listedBillItems[x2].billItems.length - 1;
-              for (var x3 = len3; x3 >= 0; x3--) {
+          const len = this.checkBillitems.length - 1;
+          const len2 = this.listedBillItems.length - 1;
+          const filterCheckedBills = [];
+          for (let x = len; x >= 0; x--) {
+            for (let x2 = len2; x2 >= 0; x2--) {
+              const len3 = this.listedBillItems[x2].billItems.length - 1;
+              for (let x3 = len3; x3 >= 0; x3--) {
                 if (this.listedBillItems[x2].billItems[x3]._id == this.checkBillitems[x]) {
                   this.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
                   delete this.listedBillItems[x2].billItems[x3].paymentCompleted;
@@ -230,8 +233,8 @@ export class BillLookupComponent implements OnInit {
                   delete this.listedBillItems[x2].billItems[x3].payments;
                   filterCheckedBills.push(this.listedBillItems[x2]);
                   if (x == 0) {
-                    let len4 = filterCheckedBills.length - 1;
-                    for (var x4 = len4; x4 >= 0; x4--) {
+                    const len4 = filterCheckedBills.length - 1;
+                    for (let x4 = len4; x4 >= 0; x4--) {
                       this.billingService.update(filterCheckedBills[x4]).then(pd => {
                       });
                     }
@@ -245,7 +248,7 @@ export class BillLookupComponent implements OnInit {
         });
       }
     } else {
-      this._notification('Info', "No bill selected")
+      this._notification('Info', 'No bill selected')
     }
   }
 
@@ -355,13 +358,14 @@ export class BillLookupComponent implements OnInit {
     this.txtSelectAll.setValue(false);
     this.billingService.find({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then((payload) => {
+        console.log(payload);
         this.listedBillItems = payload.data
         this.masterBillGroups = [];
         this.billGroups = [];
         payload.data.forEach((itemi, i) => {
           this.masterBillGroups.push(itemi);
           itemi.billItems.forEach((itemj, j) => {
-            if (itemj.isInvoiceGenerated == false || itemj.isInvoiceGenerated == undefined) {
+            if (itemj.isInvoiceGenerated === false || itemj.isInvoiceGenerated === undefined) {
               this.fixedGroupExisting(itemj, itemi._id);
             }
           });
@@ -377,9 +381,9 @@ export class BillLookupComponent implements OnInit {
 
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
-    var facility = {
-      "_id": this.selectedFacility._id,
-      "isQuery": false
+    const facility = {
+      '_id': this.selectedFacility._id,
+      'isQuery': false
     }
     this._pendingBillService.get(facility)
       .then(res => {
@@ -390,9 +394,9 @@ export class BillLookupComponent implements OnInit {
 
   private _getAllInvoices() {
     this.isLoadingInvoice = true;
-    var facility = {
-      "_id": this.selectedFacility._id,
-      "isQuery": false
+    const facility = {
+      '_id': this.selectedFacility._id,
+      'isQuery': false
     }
     this._todayInvoiceService.get(facility).then(payload => {
       this.invoiceGroups = payload.data.invoices;
@@ -435,7 +439,7 @@ export class BillLookupComponent implements OnInit {
       itemi.isChecked = val;
       itemi.bills.forEach((itemj, j) => {
         itemj.isChecked = val;
-        if (val == true) {
+        if (val === true) {
           this.checkBillitems.push(itemj._id);
         } else {
           this.checkBillitems.splice(itemj._id, 1);
@@ -573,18 +577,18 @@ export class BillLookupComponent implements OnInit {
     this.priceItemDetailPopup = true;
   }
   makePayment_onclick() {
-    if (this.total != 0 && this.total != undefined) {
-      if (this.selectedPatient.personDetails.wallet != undefined) {
+    if (this.total !== 0 && this.total !== undefined) {
+      if (this.selectedPatient.personDetails.wallet !== undefined) {
         if (this.selectedPatient.personDetails.wallet.balance < this.total) {
-          this._notification('Info', "You donot have sufficient balance to make this payment")
+          this._notification('Info', 'You donot have sufficient balance to make this payment')
         } else {
           this.makePayment = true;
         }
       } else {
-        this._notification('Error', "Please fund your wallet");
+        this._notification('Error', 'Please fund your wallet');
       }
     } else {
-      this._notification('Info', "You cannot make payment for a Zero cost service, please select bill");
+      this._notification('Info', 'You cannot make payment for a Zero cost service, please select bill');
     }
   }
   close_onClick(e) {
