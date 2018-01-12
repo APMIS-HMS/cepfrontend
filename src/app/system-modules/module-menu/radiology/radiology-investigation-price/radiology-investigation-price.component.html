@@ -16,10 +16,6 @@
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div class="frm-item-wrap">
-                                    <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                                        [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
-                                </div>
-                                <div class="frm-item-wrap">
                                     <apmis-lookup formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Select Investigation" [isSocket]="false" [displayKey]="apmisInvestigationLookupDisplayKey"
                                         (selectedItem)="apmisInvestigationLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
@@ -43,16 +39,6 @@
                     <table cellpadding="0" cellspacing="0" border="0.5">
                         <thead>
                             <tr>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Laboratory</span>
-                                </th>
-                                <th>
-                                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                                    <span style="padding-left: 3px;">Workbench</span>
-                                </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
@@ -101,12 +87,10 @@
                                 </td>
                             </tr>
                             <tr *ngFor="let price of investigations">
-                                <td>{{getLaboratoryFromInvestigation(price.LaboratoryWorkbenches)}}</td>
-                                <td>{{getWorkbenchFromInvestigation(price.LaboratoryWorkbenches)}}</td>
                                 <td>{{price.name}}</td>
-                                <td>&#x20a6; {{gePriceFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>&#x20a6; {{price.serviceId.price}}</td>
                                 <td>Active</td>
-                                <td>11th July, 2017.</td>
+                                <td>{{price.createdAt|date:'medium'}}</td>
                                 <td class="action-placeholder">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">

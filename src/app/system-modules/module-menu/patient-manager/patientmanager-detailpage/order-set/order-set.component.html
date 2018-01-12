@@ -23,33 +23,27 @@
                             <tr *ngIf="orderSet?.medications === undefined">
                                 <td class="text-center" colspan="3"> No data available in table</td>
                             </tr>
-                            <tr *ngFor="let orderSetMed of orderSet?.medications">
+                            <tr *ngFor="let orderSetMed of orderSet?.medications; let i=index;">
                                 <td>{{ orderSetMed.genericName }}</td>
                                 <td>{{ orderSetMed.frequency }} for {{ orderSetMed.duration }} {{ orderSetMed.durationUnit }}</td>
-                                <td class="action-placeholder" style="text-align:center;width:30px;">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="popMed_show()" class="action-item">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            <span>Edit Item</span>
-                                        </div>
-
-                                        <div (click)="showbill_click()" class="action-item">
-                                            <i class="fa fa-money" aria-hidden="true"></i>
-                                            <span>Bill Item</span>
-                                        </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                            <span>Remove Item</span>
-                                        </div>
-                                    </div>
+                                <td class="action-placeholder" style="text-align:center;">
+                                  <button *ngIf="orderSetMed.isBilled ===undefined || !orderSetMed.isBilled" (click)="onClickBillPrescription(i, orderSetMed);" mat-raised-button class="text-white mat-xs-btn bg-primary ">
+                                      <span *ngIf="orderSetMed.isBilled === undefined || !orderSetMed.isBilled">Bill</span>
+                                      <span *ngIf="orderSetMed.isBilled">Billed</span>
+                                    </button>
+                                    <button *ngIf="orderSetMed.isBilled" (click)="onClickBillPrescription(i, orderSetMed);" mat-raised-button class="text-white mat-xs-btn bg-green ">
+                                      <span *ngIf="orderSetMed.isBilled === undefined || !orderSetMed.isBilled">Bill</span>
+                                      <span *ngIf="orderSetMed.isBilled">Billed</span>
+                                    </button>&nbsp;&nbsp;
+                                    <button mat-raised-button class="text-white bg-danger mat-xs-btn">
+                                      <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
                                 </td>
-                                <td *ngIf="showbill" style="background:#bebebe; position:relative;">
+                                <!-- <td *ngIf="showBill && i" style="background:#bebebe; position:relative;">
                                     <div class="billItemWrap shadow-tb">
                                         <app-order-bill-item (closeModal)="close_onClick($event)"></app-order-bill-item>
                                     </div>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -169,7 +163,10 @@
         </div>
     </div>
 </div>
-
+<div *ngIf="showBill">
+    <app-order-bill-item [prescriptionData]="prescriptionData" (closeModal)="close_onClick($event)"></app-order-bill-item>
+    <!-- <app-add-prescription [isDispensed]="isDispensed" [prescriptionItems]="prescriptionItems"></app-add-prescription> -->
+</div>
 <div *ngIf="popMed" class="modal-overlay">
     <app-edit-medication (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-medication>
 </div>

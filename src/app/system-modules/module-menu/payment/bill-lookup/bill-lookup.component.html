@@ -103,7 +103,7 @@
                         <div>
                             <div class="patientImgWrap">
                                 <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.detailthumbnail)">
+                                <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
                             </div>
                             <button (click)="fundWallet_pop()">Fund Wallet</button>
                         </div>
@@ -141,7 +141,7 @@
                                         <td>
                                             <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
                                         </td>
-                                        <td>{{bill.billObject.createdAt|date:'medium'}}</td>
+                                        <td>{{bill.billObject?.createdAt|date:'medium'}}</td>
                                         <td (click)="itemDetail(bill)">
                                             <div class="itemName">{{bill.itemName}}</div>
                                         </td>
@@ -222,7 +222,7 @@
     </div>
 </div>
 
-<!-- <app-global-patient-lookup></app-global-patient-lookup> -->
+<app-global-patient-lookup></app-global-patient-lookup>
 <div *ngIf="makePayment_modal" class="modal-overlay">
     <div class="modal-baseWrap animated pulse">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>

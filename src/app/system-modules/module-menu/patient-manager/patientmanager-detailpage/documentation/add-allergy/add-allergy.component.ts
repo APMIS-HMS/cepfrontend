@@ -13,6 +13,7 @@ import { SharedService } from '../../../../../../shared-module/shared.service';
   styleUrls: ['./add-allergy.component.scss']
 })
 export class AddAllergyComponent implements OnInit {
+  isSaving: boolean;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient;
@@ -76,10 +77,10 @@ export class AddAllergyComponent implements OnInit {
         } else {
           this.documentationService.find({
             query:
-            {
-              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-              // $select: ['documentations.documents', 'documentations.facilityId']
-            }
+              {
+                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                // $select: ['documentations.documents', 'documentations.facilityId']
+              }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
@@ -99,6 +100,7 @@ export class AddAllergyComponent implements OnInit {
     return severity ? severity.name : severity;
   }
   save() {
+    this.isSaving = true;
     let isExisting = false;
     this.patientDocumentation.documentations.forEach(documentation => {
       if (documentation.document.documentType._id === this.selectedForm._id) {
@@ -136,7 +138,10 @@ export class AddAllergyComponent implements OnInit {
       this.reactionFormCtrl.reset();
       this.severityFormCtrl.reset();
       this.noteFormCtrl.reset();
-      this.documentationService.announceDocumentation({});
+      this.documentationService.announceDocumentation({ type: 'Allergies' });
+      this.isSaving = false;
+    }, error => {
+      this.isSaving = false;
     })
   }
 }
