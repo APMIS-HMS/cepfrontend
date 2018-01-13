@@ -47,6 +47,7 @@ const FACLITYPAGE_ROUTES: Routes = [
             { path: 'departments', component: FacilitypageDepartmentspageComponent, resolve: { facility: FacilityResolverService } },
             { path: 'options', component: FacilityOptionsComponent },
             { path: 'profession', component: ProfessionComponent },
+            { path: 'modules', component: FacilitypageModulespageComponent },
         ]
     }
 ];

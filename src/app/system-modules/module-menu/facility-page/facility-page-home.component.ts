@@ -178,6 +178,16 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = true;
       this.empContentArea = false;
       // this.dashboardContentArea = false;
+    } else if(value == 'modules'){
+      this.modulesContentArea = true;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      // this.dashboardContentArea = false; 
     }
   }
   getModules() {
