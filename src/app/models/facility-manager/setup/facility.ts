@@ -27,4 +27,6 @@ export interface Facility {
     facilityOwnershipId: any;
     facilityModules: any;
     invitees: any;
+    country?:any;
+    wallet:any;
 }

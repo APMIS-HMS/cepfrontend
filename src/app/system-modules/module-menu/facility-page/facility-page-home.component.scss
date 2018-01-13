@@ -93,15 +93,11 @@ td{
     font-weight: bold;
     padding-top: 5px;
 }
-.work-places-list{
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-height: 80px;
-    min-width: 270px;
-    border: 1px solid #777;
-    background: #fff;
+
+.completion-meter_step {
+    width: 14.28571%;
+    border-left: 2px solid #fff;
+    float: left;
     z-index: 1;
 }
 .work-places-item{
@@ -137,6 +133,12 @@ td{
 .network-list .basic-info-others{
     font-size: 10px !important;
     padding-left: 10px;
+}
+.network-list .tag{
+    color: #ff2500;
+    padding-right: 10px;
+    box-sizing: border-box;
+    text-align: right;
 }
 .wp-name{
     padding-left: 10px;
@@ -216,6 +218,69 @@ td{
 .mainmenu-content{
     width: 190px;
 }
+.cad-head{
+    position: relative;
+    background: #f1f1f1;
+    overflow: hidden;
+}
+.head-tag{
+    font-size: 12px;
+    color: #777;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.oda-nets-link {
+    font-size: 12px;
+    color: #ff2500;
+    border: 1px solid #ff2500;
+    padding: 3px 5px;
+    width: 70%;
+    margin: 10px auto;
+    text-align: center;
+    cursor: pointer;
+}
+.oda-nets-link .fa-long-arrow-up{
+    display: none;
+    padding-left: 20px;
+}
+.oda-nets-link .fa-long-arrow-down{
+    display: inline-block;
+    padding-left: 20px;
+}
+.oda-nets-link:hover{
+    background: #ff2500;
+    color: #fff;
+    .fa-long-arrow-up{
+        display: inline-block;
+    }
+    .fa-long-arrow-down{
+        display: none;
+    }
+    + .oda-ul{
+        display: block !important; 
+        animation-name: stretch;
+        animation-duration: 0.5s; 
+        animation-timing-function: ease-out; 
+        animation-delay: 0;
+        animation-direction: alternate;
+        animation-iteration-count: 1;
+        animation-fill-mode: none;
+        animation-play-state: running;
+    }
+}
+.oda-ul {
+    display: none;
+    overflow: hidden;
+    padding: 10px;
+    border: 2px solid #fff;
+    margin: 0 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #777;
+    line-height: 1.5;
+}
 .card-edit{
     cursor: pointer;
     position: absolute;
@@ -223,6 +288,7 @@ td{
     right: 10px;
     font-size: 20px;
     color: #777;
+    z-index: 1;
 }
 .card-edit:hover{
     color: #2e6ebd;
@@ -372,4 +438,15 @@ th {
     height: 25px;
     background: transparent;
     border: 0.5px solid #ddd;
+}
+@keyframes stretch {
+    0% {
+        transform: scale(0);
+        background-color: #fff;
+        border-radius: 100%;
+    }
+    100% {
+        transform: scale(1);
+        background-color: #f1f1f1;
+    }
 }

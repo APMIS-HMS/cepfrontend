@@ -57,6 +57,6 @@ export class SupplierManagerComponent implements OnInit {
     this.newSupply = true;
   }
   refresh(): void {
-    window.location.reload();
+    // window.location.reload();
 }
 }

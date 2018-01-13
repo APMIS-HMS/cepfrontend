@@ -9,61 +9,67 @@
 
         <form [formGroup]="frm_supplierPayment" novalidate>
 
-            <div class="mainfrmwrap">
-                <div class="sec-1">
-                    <div class="frm-item-wrap">
-                        <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.amount.valid || frm_supplierPayment.controls.amount.pristine">
-                        Kindly enter amount.
-                        </small>
-                        <span class="frm-label">Amount</span>
-                        <input type="text" formControlName="amount" autocomplete="off">-->
-                        <mat-input-container class="example-full-width">
+    <form [formGroup]="frm_supplierPayment" novalidate>
+
+        <div class="mainfrmwrap">
+            <div class="sec-1">
+                <div class="frm-item-wrap">
+                    <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.amount.valid || frm_supplierPayment.controls.amount.pristine">
+                      Kindly enter amount.
+                    </small>
+                    <span class="frm-label">Amount</span>
+                    <input type="text" formControlName="amount" autocomplete="off">-->
+                    <mat-input-container class="example-full-width">
                         <input matInput formControlName="amount" autocomplete="off" placeholder="Amount">
-                        </mat-input-container>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.payment_type.valid || frm_supplierPayment.controls.payment_type.pristine">
-                        Kindly enter payment type.
-                        </small>
-                        <span class="frm-label">Payment Mode</span>
-                        <select formControlName="payment_type">
-                        </select>-->
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.payment_type.valid || frm_supplierPayment.controls.payment_type.pristine">
+                    Kindly enter payment type.
+                    </small>
+                    <span class="frm-label">Payment Mode</span>
+                    <select formControlName="payment_type">
+                    </select>-->
+                    <mat-form-field>
                         <mat-select placeholder="Payment Mode" name="food">
                             <mat-option *ngFor="let food of foods" [value]="food.value">
                                 {{food}}
                             </mat-option>
                         </mat-select>
-                    </div>
-                </div>
-                <div class="sec-2">
-                    
-                    <div class="frm-item-wrap">
-                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
-                            Kindly enter cheque.
-                        </small>
-                        <span class="frm-label">Cheque Number</span>
-                        <input type="text" formControlName="cheque_number">-->
-                        <mat-input-container class="example-full-width">
-                        <input matInput formControlName="cheque_number" placeholder="Cheque Number">
-                        </mat-input-container>
-                    </div>
-                    <div class="frm-item-wrap">
-                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
-                            Kindly enter transfer number.
-                        </small>
-                        <span class="frm-label">Transfer Number</span>
-                        <input type="text" formControlName="transfer_number">-->
-                        <mat-input-container class="example-full-width">
-                        <input matInput formControlName="transfer_number" placeholder="Transfer Number">
-                        </mat-input-container>
-                    </div>
-
+                    </mat-form-field>
                 </div>
             </div>
+            <div class="sec-2">
+
+                <div class="frm-item-wrap">
+                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
+                        Kindly enter cheque.
+                    </small>
+                    <span class="frm-label">Cheque Number</span>
+                    <input type="text" formControlName="cheque_number">-->
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="cheque_number" placeholder="Cheque Number">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
+                        Kindly enter transfer number.
+                    </small>
+                    <span class="frm-label">Transfer Number</span>
+                    <input type="text" formControlName="transfer_number">-->
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="transfer_number" placeholder="Transfer Number">
+                    </mat-input-container>
+                </div>
 
             <div (click)="login()" class="cta-1">
             Make Payment
             </div>
+        </div>
+
+        <div (click)="login()" class="cta-1">
+            Make Payment
+        </div>
 
         </form>
 

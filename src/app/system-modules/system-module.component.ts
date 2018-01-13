@@ -51,6 +51,11 @@ export class SystemModuleComponent implements OnInit {
 
       }
     });
+
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      this.checkedInObject = payload;
+    });
     let auth: any = this.locker.getObject('auth');
     let authData = auth.data;
     this.personService.get(authData.personId, {}).then(ppayload => {

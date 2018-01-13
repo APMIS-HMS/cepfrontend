@@ -94,3 +94,7 @@ export * from './pending-bills.service';
 export * from './today-invoices.service';
 export * from './loc-summary-cash.service';
 export * from './timeline.service';
+export * from './order-set-template.service';
+export * from './treatment-sheet.service';
+export * from './document-upload.service';
+export * from './radiologyinvestigation.service';

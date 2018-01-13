@@ -82,10 +82,12 @@
                                             <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <mat-select placeholder="Status">
-                                                <mat-option [value]="Active">Active</mat-option>
-                                                <mat-option [value]="Inactive">Inactive</mat-option>
-                                            </mat-select>
+                                            <mat-form-field>
+                                                <mat-select placeholder="Status">
+                                                    <mat-option [value]="Active">Active</mat-option>
+                                                    <mat-option [value]="Inactive">Inactive</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                 </td>
@@ -99,10 +101,10 @@
                                 </td>
                             </tr>
                             <tr *ngFor="let price of investigations">
-                                <td>{{getLaboratoryFromInvestigation(price.LaboratoryWorkbenches)}}</td>
-                                <td>{{getWorkbenchFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>{{getRadiologyFromInvestigation(price.radiologyWorkbenches)}}</td>
+                                <td>{{getWorkbenchFromInvestigation(price.radiologyWorkbenches)}}</td>
                                 <td>{{price.name}}</td>
-                                <td>&#x20a6; {{gePriceFromInvestigation(price.LaboratoryWorkbenches)}}</td>
+                                <td>&#x20a6; {{gePriceFromInvestigation(price.radiologyWorkbenches)}}</td>
                                 <td>Active</td>
                                 <td>11th July, 2017.</td>
                                 <td class="action-placeholder">

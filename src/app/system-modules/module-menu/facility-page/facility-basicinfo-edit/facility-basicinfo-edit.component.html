@@ -19,17 +19,6 @@
             <button class="upload-btn">Change Logo</button>
             <input type="file" name="myfile" />
         </div>
-
-        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <div class="menuBar-facilityName">
-            <div class="menubar_facilityLogo orgLogo-wrap">
-                <img src="../../../../assets/images/logos/default.png">
-            </div>
-            <div class="upload-btn-wrapper">
-                <button class="upload-btn">Change Logo</button>
-                <input type="file" name="myfile" />
-            </div>
-        </div>
         <form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1.value)">
 
             <div class="frm-item-wrap">
@@ -105,15 +94,17 @@
                     <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
                 </mat-input-container>
             </div>
-            <div class="frm-item-wrap">
-                <mat-input-container>
-                    <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
-                </mat-input-container>
+            <div class="frm-item-x2">
+                <div class="frm-item-wrap example-full-width">
+                    <mat-input-container>
+                        <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
+                    </mat-input-container>
+                </div>
+                <label class="control control--checkbox">Network
+                    <input type="checkbox"  formControlName="network" />
+                    <div class="control__indicator"></div>
+                </label>
             </div>
-            <!-- <label class="control control--checkbox">Network
-            <input type="checkbox"  formControlName="network" />
-            <div class="control__indicator"></div>
-        </label> -->
 
             <button [disabled]="!facilityForm1.valid" [ngClass]="{'cta-1':facilityForm1.valid, 'cta-1-disable':!facilityForm1.valid}">
                 SIGN UP

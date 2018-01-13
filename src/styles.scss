@@ -94,13 +94,12 @@ select {
     min-height: 100vh;
 }
 
-.badge-green {
+.badge-green{
     color: #fff;
     background: green;
     padding: 3px 5px;
 }
-
-.badge-red {
+.badge-red{
     color: #fff;
     background: #ff2500;
     padding: 3px 5px;
@@ -384,8 +383,7 @@ select {
 .btn-1 i {
     padding-right: 7px;
 }
-
-.btn-center {
+.btn-center{
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -465,6 +463,7 @@ select {
 .modal-overlay {
     position: absolute;
     top: 0px;
+    left: 0;
     z-index: 10;
     width: 100%;
     height: 100vh;
@@ -477,7 +476,7 @@ select {
 }
 
 .mat-select {
-    padding: 0 !important;
+    padding: 1.29688em 0;
     width: 100%;
     font-size: 12px;
     height: 20px;
@@ -574,7 +573,7 @@ select {
 .modal-baseWrap {
     @extend .nice-scroll;
     position: relative;
-    width: 800px;
+    // width: 590px;
     min-width: 440px;
     height: auto;
     max-height: 90vh;
@@ -597,8 +596,7 @@ select {
     color: #fff;
     padding: 5px;
 }
-
-.modal-close-ico:hover {
+.modal-close-ico:hover{
     color: #ff2500;
 }
 
@@ -630,10 +628,10 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
+    width: 100%;
 }
 .frm-item-x2 .example-full-width{
-    width: 46%;
+    width: 49% !important;
 }
 
 .frm-singleItem-wrap {
@@ -1229,7 +1227,7 @@ select {
 
 ul.topmenuwrap {
     position: absolute;
-    top: -35px;
+    top: -25px;
     right: 22px;
     font-size: 12px;
     color: #0288D1;
@@ -1370,7 +1368,11 @@ ul.topmenuwrap li:hover {
     border: 1px solid #bebebe;
     z-index: 2;
 }
-
+.frm-x2{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
 .action-item {
     padding: 4px 10px;
     cursor: pointer;
@@ -1478,6 +1480,108 @@ ul.topmenuwrap li:hover {
 //   transition: ease-out;
 //   transition-delay: .3s;
 // }
+.control-group {
+	display: inline-block;
+    width: 200px;
+    margin: 10px;
+    padding: 30px;
+    text-align: left;
+    vertical-align: top;
+    background: rgba(255,255,255,0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+.control {
+	font-size: 18px;
+	position: relative;
+	display: block;
+	margin-bottom: 15px;
+	padding-left: 30px;
+	cursor: pointer;
+}
+
+.control input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+.control__indicator {
+	position: absolute;
+	top: 2px;
+	left: 0;
+	width: 20px;
+	height: 20px;
+	background: #f5f5f5;
+}
+
+.control--radio .control__indicator {
+	border-radius: 50%;
+}
+/* Hover and focus states */
+.control:hover input ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+	background: #EEEEEE;
+}
+
+/* Checked state */
+.control input:checked ~ .control__indicator {
+	background: #2aa1c0;
+}
+
+/* Hover state whilst checked */
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+	background: #0e647d;
+}
+
+/* Disabled state */
+.control input:disabled ~ .control__indicator {
+	pointer-events: none;
+	opacity: .6;
+	background: #e6e6e6;
+}
+
+/* Check mark */
+.control__indicator:after {
+	position: absolute;
+	display: none;
+	content: '';
+}
+
+/* Show check mark */
+.control input:checked ~ .control__indicator:after {
+	display: block;
+}
+
+/* Checkbox tick */
+.control--checkbox .control__indicator:after {
+	top: 4px;
+	left: 8px;
+	width: 3px;
+	height: 8px;
+	transform: rotate(45deg);
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+}
+
+/* Disabled tick colour */
+.control--checkbox input:disabled ~ .control__indicator:after {
+	border-color: #7b7b7b;
+}
+
+/* Radio button inner circle */
+.control--radio .control__indicator:after {
+	top: 7px;
+	left: 7px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #fff;
+}
+
+/* Disabled circle colour */
+.control--radio input:disabled ~ .control__indicator:after {
+	background: #7b7b7b;
+}
 .search-wrap {
     position: relative;
     width: 96%;
@@ -1543,7 +1647,6 @@ ul.topmenuwrap li:hover {
     justify-content: center;
     align-items: center;
 }
-
 .plus {
     position: absolute;
     top: auto;
@@ -1578,8 +1681,7 @@ ul.topmenuwrap li:hover {
         border: 4px solid lighten($primaryColor, 20%);
     }
 }
-
-.filters-wraper {
+.filters-wraper{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1644,17 +1746,15 @@ ul.topmenuwrap li:hover {
   
 
 @media only screen and (max-width: 600px) {
-    .user-label {
+    .user-label{
         display: none;
     }
 }
-
 @media only screen and (max-width: 670px) {
-    .filters-wraper {
+    .filters-wraper{
         width: auto;
     }
 }
-
 @media only screen and (max-width: 700px) {
     .modal-baseWrap{
         padding: 10px 20px;
@@ -1699,15 +1799,14 @@ ul.topmenuwrap li:hover {
         font-size: 10px;
     }
 }
-
 @media only screen and (max-width: 900px) {
-    .search-wrap {
+    .search-wrap{
         display: none;
     }
 }
-
 //Loading animation
-.loading_screen {
+
+.loading_screen{
     position: absolute;
     height: 100%;
     width: 100%;
@@ -1728,16 +1827,16 @@ ul.topmenuwrap li:hover {
     background-color: rgb(234, 234, 234);
     box-shadow: 0 0 20px lightgrey;
     animation: loading3 linear 2s infinite;
-}
-
-#animated_circle {
+  }
+  
+  #animated_circle {
     position: absolute;
     border-radius: 100%;
     background-color: rgb(0, 161, 223);
     animation: loading ease 1s infinite;
-}
-
-#inner_circle {
+  }
+  
+  #inner_circle {
     color: grey;
     -webkit-font-family: "Segoe UI Light";
     font-family: "Segoe UI";
@@ -1751,10 +1850,9 @@ ul.topmenuwrap li:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-#inner_circle span,
-#outer_circle span {
+  }
+  
+  #inner_circle span, #outer_circle span {
     font-family: "Segoe UI Light", "Segoe UI";
     padding-top: 15px;
     padding-left: 29px;
@@ -1763,10 +1861,10 @@ ul.topmenuwrap li:hover {
     font-weight: lighter;
     font-size: x-large;
     animation: loading2 ease 1s infinite;
-}
+  }
 
-#inner_circle img {
-    height: 60px;
+  #inner_circle img {
+    height:60px;
     animation: loading2 ease 1s infinite;
   }
 .mat-select {
@@ -1774,45 +1872,44 @@ ul.topmenuwrap li:hover {
     height: 0px;
 }
   
-
 @keyframes loading {
     0% {
-        width: 130px;
-        height: 130px;
-        margin: 35px;
+      width: 130px;
+      height: 130px;
+      margin: 35px;
     }
     50% {
-        width: 190px;
-        height: 190px;
-        margin: 5px;
+      width: 190px;
+      height: 190px;
+      margin: 5px;
     }
     100% {
-        width: 130px;
-        height: 130px;
-        margin: 35px;
+      width: 130px;
+      height: 130px;
+      margin: 35px;
     }
-}
-
-@keyframes loading2 {
+  }
+  
+  @keyframes loading2 {
     0% {
-        color: black;
+      color: black;
     }
     50% {
-        color: rgb(0, 161, 223);
+      color: rgb(0, 161, 223);
     }
     100% {
-        color: black;
+      color: black;
     }
-}
-
-@keyframes loading3 {
+  }
+  
+  @keyframes loading3 {
     0% {
-        border-color: rgb(0, 161, 223);
+      border-color: rgb(0, 161, 223);
     }
     50% {
-        border-color: lightgrey;
+      border-color: lightgrey;
     }
     100% {
-        border-color: rgb(0, 161, 223);
+      border-color: rgb(0, 161, 223);
     }
-}
+  }

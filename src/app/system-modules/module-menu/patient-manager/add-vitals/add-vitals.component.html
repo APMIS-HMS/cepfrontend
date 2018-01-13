@@ -15,7 +15,7 @@
             <div class="frmGroupTitle">Pulse Rate</div>
             <div class="frm-item-wrap">
               <!--<label class="side-label">Pulse Rate<br>(80-100)</label>
-                <input type="text" formControlName="pulseRate" autocomplete="off">-->
+              <input type="text" formControlName="pulseRate" autocomplete="off">-->
               <mat-input-container class="example-full-width">
                 <input type="number" matInput placeholder="Pulse Rate (80-100)" formControlName="pulseRate">
               </mat-input-container>
@@ -51,7 +51,7 @@
             <div class="frmGroupTitle">Respiratory Rate</div>
             <div class="frm-item-wrap">
               <!--<label class="side-label">Respiratory Rate<br>(12-20)</label>
-                <input type="number" formControlName="respiratoryRate" autocomplete="off">-->
+              <input type="number" formControlName="respiratoryRate" autocomplete="off">-->
               <mat-input-container class="example-full-width">
                 <input matInput type="number" placeholder="Respiratory Rate (12-20)" formControlName="respiratoryRate">
               </mat-input-container>
@@ -59,7 +59,7 @@
             <div class="frmGroupTitle">Temperature</div>
             <div class="frm-item-wrap">
               <!--<label class="side-label">Temperature<br>(92-101) &#8451;</label>
-                <input type="number" formControlName="temp" autocomplete="off">-->
+              <input type="number" formControlName="temp" autocomplete="off">-->
               <mat-input-container class="example-full-width">
                 <input matInput type="number" placeholder="Temperature (92-101)" formControlName="temp">
               </mat-input-container>
@@ -70,27 +70,27 @@
             <div class="frmGroupTitle">Height/Weight</div>
             <div class="frm-item-wrap">
               <!--<label class="side-label">Height (m)</label>
-                <input type="number" formControlName="height" value="">-->
+              <input type="number" formControlName="height" value="">-->
               <mat-input-container class="example-full-width">
                 <input matInput type="number" placeholder="Height (m)" formControlName="height">
               </mat-input-container>
             </div>
             <div class="frm-item-wrap">
               <!--<label class="side-label">Weight (kg)</label>
-                <input type="number" formControlName="weight" value="">-->
+              <input type="number" formControlName="weight" value="">-->
               <mat-input-container class="example-full-width">
                 <input matInput type="number" placeholder="Weight (kg)" formControlName="weight">
               </mat-input-container>
             </div>
             <div class="frm-item-wrap">
               <!--<label class="side-label">BMI</label>
-                <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">-->
+              <input type="number" [value]="bmi" [class.warning-flag]="isWarning" [readonly]="true" autocomplete="off">-->
               <mat-input-container class="example-full-width">
                 <input matInput type="number" [class.warning-flag]="isWarning" [value]="bmi" placeholder="BMI" [readonly]="true" formControlName="weight">
               </mat-input-container>
               <small class="alert-label" *ngIf="isWarning">
-                {{bmiWarningMssg}}
-              </small>
+              {{bmiWarningMssg}}
+            </small>
             </div>
           </div>
 
@@ -109,9 +109,7 @@
                 </div>
                 <div class="frm-slash">
                   <div class="frm-item-wrap">
-                    <span class="slash">
-                      <div class="frm-item-wrap">/</div>
-                    </span>
+                    <span class="slash"><div class="frm-item-wrap">/</div></span>
                   </div>
                 </div>
                 <div class="frm-item">
@@ -142,7 +140,7 @@
 
           </div>
 
-          <div class="frmGroupWrap bpGroup bp">
+          <div style="width:100%;" class="frmGroupWrap bpGroup bp">
             <div class="frmGroupTitle">Abdominal Condition</div>
             <div class="frm-row">
               <div class="itemGrp">
@@ -168,8 +166,7 @@
           </div>
         </div>
 
-        <button [disabled]="!frmAddVitals.valid || diabledSaveBtn" (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1"
-          [innerHtml]="saveBtnText"></button>
+        <button [disabled]="!frmAddVitals.valid || diabledSaveBtn" (click)="addVitals(frmAddVitals.valid, frmAddVitals.value)" class="cta-1" [innerHtml]="saveBtnText"></button>
 
       </form>
     </div>

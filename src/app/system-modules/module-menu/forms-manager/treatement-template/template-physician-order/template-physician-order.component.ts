@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
   selector: 'app-template-physician-order',
@@ -7,17 +8,19 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./template-physician-order.component.scss']
 })
 export class TemplatePhysicianOrderComponent implements OnInit {
-
   addPhysicianOrderForm: FormGroup;
   addProcedureForm: FormGroup;
   apmisLookupQuery = {};
   apmisLookupUrl = '';
   apmisLookupDisplayKey = '';
   apmisLookupText = '';
-
   newTemplate = true;
+  physicianOrders: any = [];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private _orderSetSharedService: OrderSetSharedService
+  ) {}
 
   ngOnInit() {
     this.addPhysicianOrderForm = this.fb.group({
@@ -25,21 +28,27 @@ export class TemplatePhysicianOrderComponent implements OnInit {
     });
   }
 
-  apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.name;
-    let isExisting = false;
-    // this.loginHMOListObject.companyCovers.forEach(item => {
-    //   if (item._id === value._id) {
-    //     isExisting = true;
-    //   }
-    // });
-    // if (!isExisting) {
-    //   this.selectedCompanyCover = value;
-    // } else {
-    //   this.selectedCompanyCover = <any>{};
-    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
-    // }
-  }
+  onClickAddPhysicianOrder(valid: boolean, value: any) {
+    if (valid) {
+      const physicianOrder = {
+        name: value.physicianOrder,
+        comment: '',
+        status: 'Not Done',
+        completed: false
+      };
 
+      if (this.physicianOrders.length > 0) {
+        // Check if generic has been added already.
+        const containsGeneric = this.physicianOrders.filter(x => x.name === value.physicianOrder);
+        if (containsGeneric.length < 1) {
+          this.physicianOrders.push(physicianOrder);
+          this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders });
+        }
+      } else {
+        this.physicianOrders.push(physicianOrder);
+        this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders});
+      }
+      this.addPhysicianOrderForm.reset();
+    }
+  }
 }
-  

@@ -18,10 +18,24 @@ export enum TransactionType {
     Dr,
     Cr
 }
+
+export enum TransactionType2 {
+    Dr,
+    Cr
+}
 export const TransactionStatus = {
     'Incomplete': 'Incomplete',
     'Complete': 'Complete'
 };
+
+export const PaymentPlan = {
+    'outOfPocket': 'wallet',
+    'insurance': 'insurance',
+    'company': 'company',
+    'family': 'family',
+    'waved':'waved'
+};
+
 export enum EntityType {
     Facility,
     Person,

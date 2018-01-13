@@ -1,8 +1,6 @@
 <div class="pg-subtitle">DOCUMENTATION</div>
-
 <div *ngIf="showDoc" class="doc-mainWrap">
     <div class="doc-contentArea">
-
         <div class="clinicalNoteWrap">
             <div class="actSect">
                 <div (click)="clinicalNote_show()" class="act-wrap">
@@ -11,20 +9,15 @@
                     <span>Add Clinical Note</span>
                 </div>
             </div>
-
             <app-clinical-note (showOrderset)="showOrderset_onClick($event)" [patient]="patient" *ngIf="clinicalNote_view"></app-clinical-note>
         </div>
-
         <ul class="doc-cardWrap">
-
             <li class="doc-card shadow" *ngFor="let document of documents">
                 <div class="modal_title">
                     {{document?.document?.documentType?.title}}
                     <div class="doc-subtitle">{{document?.facilityId?.name}}</div>
                 </div>
-                
                 <div class="docCard-header">
-
                     <div class="empWrap">
                         <div class="list-img">
                             <img *ngIf="document?.createdBy?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
@@ -35,54 +28,44 @@
                             <div class="list-label">{{document?.createdBy?.employeeDetails?.personFullName}}</div>
                         </div>
                     </div>
-
                     <div>
                         <div class="val-tag">Status</div>
                         <div class="list-label">Draft</div>
                     </div>
-
                     <div>
                         <div class="val-tag">Date/Time</div>
                         <div class="list-label">{{document.createdAt | date:'shortDate'}}. <span class="time">{{document.createdAt | date:'shortTime'}}</span></div>
                     </div>
-
                     <ul class="topmenuwrap">
                         <li (click)="docDetail_show(document)">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <span>View</span>
                         </li>
                     </ul>
-
                     <div class="docCard-ctaWrap">
                         <i class="edit-ico-color fa fa-pencil-square" aria-hidden="true"></i>
                         <i class="del-ico-color fa fa-trash" aria-hidden="true"></i>
                     </div>
-
                 </div>
-
                 <div class="docCard-body">
-
                     <div class="cardSect-wrap">
-
                         <div class="card-sect">
                             <div class="docCard-sectContent">
                                 <div *ngFor="let key of document?.document?.body | keys">
-                                    <div class="sect-key">{{key}}:</div>
-                                    <div class="sect-value">{{document?.document?.body[key]}}</div>
+                                    <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
+                                    <div *ngIf="document?.document?.body !== undefined" class="sect-value">{{document?.document?.body[key]}}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="docCard-foot"><i (click)="docDetail_show(document)" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
             </li>
         </ul>
     </div>
     <div class="doc-rArea">
         <app-right-tab [patient]="patient" (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)" (addVitals)="addVitals_show($event)"></app-right-tab>
-    </div> 
+    </div>
 
     <div *ngIf="docDetail_view" class="modal-overlay">
         <app-documentation-detail [document]="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>

@@ -31,8 +31,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
   documents: PatientDocumentation[] = [];
-
-  subscription:Subscription;
+  auth:any;
+  subscription: Subscription;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
@@ -43,6 +43,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
+      console.log(payload);
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.document = {
         documentType: this.selectedForm,
@@ -73,6 +74,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this.patientDocumentation.documentations.push(doc);
       this.documentationService.update(this.patientDocumentation).then(pay => {
         this.getPersonDocumentation();
+        this._notification('Success', 'Documentation successfully saved!');
       })
     });
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
@@ -82,6 +84,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getPersonDocumentation();
+    this.auth = this.locker.getObject('auth');
   }
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
@@ -97,10 +100,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         } else {
           this.documentationService.find({
             query:
-            {
-              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-              // $select: ['documentations.documents', 'documentations.facilityId']
-            }
+              {
+                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                // $select: ['documentations.documents', 'documentations.facilityId']
+              }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
@@ -182,15 +185,23 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.addVitals_view = false;
   }
 
-  showOrderset_onClick(e){
+  showOrderset_onClick(e) {
     this.showDoc = false;
     this.showOrderSet = true;
   }
-  showDoc_onClick(e){
+  showDoc_onClick(e) {
     this.showDoc = true;
     this.showOrderSet = false;
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  private _notification(type: string, text: string): void {
+		this.facilityService.announceNotification({
+			users: [this.auth._id],
+			type: type,
+			text: text
+		});
+	}
 }

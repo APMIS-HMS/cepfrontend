@@ -1,9 +1,11 @@
 <div class="survery">
     <div class="row margin-bottom" style="position:absolute;width: 100%;top: -50px;display: block;">
         <div class="col-sm-4 col-md-4 col-xs-12">
-            <mat-select class="example-full-width" placeholder="Choose">
-                <mat-option></mat-option>
-            </mat-select>
+            <mat-form-field>
+                <mat-select class="example-full-width" placeholder="Choose">
+                    <mat-option></mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         <div class="col-sm-4 col-md-4 col-xs-12 pull-right">
             <mat-input-container class="example-full-width">
@@ -11,7 +13,7 @@
             </mat-input-container>
         </div>
     </div>
-    
+
     <div class="product-parentWrap">
         <div class="prod-row prodParent-header">
             <div class="prod-rowItem item1">Transfer To</div>
@@ -26,7 +28,7 @@
                     <div (click)="onShowBatch(producthistory)" class="prod-rowItem item1">{{producthistory.destinationStoreObject?.name}}</div>
                     <div (click)="onShowBatch(producthistory)" class="prod-rowItem item4">{{producthistory.totalCostPrice|number:'1.2-2'}}</div>
                     <div (click)="onShowBatch(producthistory)" class="prod-rowItem item2">{{producthistory.createdAt|date:'short'}}</div>
-                    <div (click)="onShowBatch(producthistory)" class="prod-rowItem item3">{{producthistory.transferByObject?.employeeFullName}}</div>
+                    <div (click)="onShowBatch(producthistory)" class="prod-rowItem item3">{{producthistory.storeObject?.name}}</div>
                 </div>
                 <div *ngIf="producthistory.isOpen===true && (selectedInventoryTransfer._id === producthistory._id)" class="prodBatch-wrap animated flipInX">
                     <div class="prodBatch-row batchHeader">

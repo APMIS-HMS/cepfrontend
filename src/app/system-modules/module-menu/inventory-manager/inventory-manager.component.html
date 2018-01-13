@@ -9,7 +9,8 @@
 </ul> 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-    <div class="inner-page-wrap">
+   <!--  <small class="facility-title" *ngIf="checkedInStore !== undefined" >You are checked into {{checkedInStore}}</small>
+     --><div class="inner-page-wrap">
         <!-- <div class="lhs inner-page-menuTab">
       <ul class="nav-group">
         <li [class.navActive]="initializeNavMenu" (click)="onInitialiseNavMenu()" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
@@ -22,7 +23,7 @@
         <li [class.navActive]="purchaseManagerNavMenu" routerLink="/dashboard/purchase-manager/orders">Purchase Manager</li>
       </ul>
     </div> -->
-        <button style="position: absolute;top: 37px;right: 20px" class="small-btn" (click)="onChangeCheckedIn()" mat-raised-button>Check In</button>
+    <button style="position: absolute;top: 37px;right: 20px" class="small-btn" (click)="onChangeCheckedIn()" mat-raised-button>Check In</button>    
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>
         </div>

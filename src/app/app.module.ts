@@ -54,6 +54,8 @@ import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/servi
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 
 //import { IkeComponent } from './ike/ike.component';
+import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
+// import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,7 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
   ],
   exports: [
     // MaterialModule,
+    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
@@ -78,7 +81,8 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
     MaterialModule,
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
-    LoadingBarRouterModule
+    LoadingBarRouterModule,
+    // PdfViewerModule
   ],
   providers: [
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
@@ -110,7 +114,7 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
     CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
-    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService
+    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService
   ],
   bootstrap: [AppComponent]
 })

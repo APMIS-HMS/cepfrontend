@@ -6,33 +6,36 @@
     </div>
     <div class="modal-baseWrap">
 
-        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend *ngIf="selectedRoom === undefined" class="modal_title">Add Room</legend>
-        <legend *ngIf="selectedRoom !== undefined" class="modal_title">Edit Room</legend>
-        <!-- <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div> -->
-        <div class="survery">
-            <div class="row">
-                <div class="col-xs-12">
-                    <form [formGroup]="addRoomFormGroup" novalidate>
-                        <div class="padding-up">
-                            <div class="frm-item-wrap">
-                                <mat-input-container>
-                                    <input matInput mat-error placeholder="Room Name" formControlName="room">
-                                </mat-input-container>
-                            </div>
-                            <div class="frm-item-wrap">
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend *ngIf="selectedRoom === undefined" class="modal_title">Add Room</legend>
+    <legend *ngIf="selectedRoom !== undefined" class="modal_title">Edit Room</legend>
+    <!-- <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div> -->
+    <div class="survery">
+        <div class="row">
+            <div class="col-xs-12">
+                <form [formGroup]="addRoomFormGroup" novalidate>
+                    <div class="padding-up">
+                        <div class="frm-item-wrap">
+                            <mat-input-container>
+                                <input matInput mat-error placeholder="Room Name" formControlName="room">
+                            </mat-input-container>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <mat-form-field>
                                 <mat-select placeholder="Group" formControlName="group" [(ngModel)]="groupId">
                                     <mat-option *ngFor="let group of groups" [value]="group">{{group.name}}</mat-option>
                                 </mat-select>
-                            </div>
-                            <div class="frm-item-wrap" style="margin-top: 30px;">
+                            </mat-form-field>
+                        </div>
+                        <div class="frm-item-wrap" style="margin-top: 30px;">
+                            <mat-form-field>
                                 <mat-select placeholder="Select Service" formControlName="service">
                                     <mat-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.service.name}} &#x20A6;{{service.price}}</mat-option>
                                 </mat-select>
-                            </div>
-                            <div class="btn-box">
-                                <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
-                            </div>
+                            </mat-form-field>
+                        </div>
+                        <div class="btn-box">
+                            <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
                         </div>
                     </form>
                 </div>

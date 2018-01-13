@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 // tslint:disable-next-line:max-line-length
-import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
+import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
   InventoryTransfer, Employee
 } from '../../../../models/index';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -29,6 +30,7 @@ export class StockTransferComponent implements OnInit {
   products: any[] = [];
   productTables: any[] = [];
   stores: any[] = [];
+  user: any = <any>{};
 
   frmDestinationStore: FormControl = new FormControl();
   product: FormControl = new FormControl();
@@ -45,10 +47,13 @@ export class StockTransferComponent implements OnInit {
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService,
     private route: ActivatedRoute, private storeService: StoreService,
-    private locker: CoolLocalStorage, private formBuilder: FormBuilder
+    private locker: CoolLocalStorage, private formBuilder: FormBuilder,
+    private facilityService:FacilitiesService,
+    private toastr: ToastsManager
   ) { }
 
   ngOnInit() {
+    this.user = this.locker.getObject('auth');
     this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
@@ -312,6 +317,7 @@ export class StockTransferComponent implements OnInit {
   populateInventoryTransferTransactions() {
     this.newTransfer.inventoryTransferTransactions = [];
     this.newTransfer.destinationStoreId = this.frmDestinationStore.value;
+    console.log(this.frmDestinationStore.value);
     this.newTransfer.totalCostPrice = 0;
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
       const transferTransaction: InventoryTransferTransaction = <InventoryTransferTransaction>{};
@@ -334,6 +340,7 @@ export class StockTransferComponent implements OnInit {
     this.previewObject.products = [];
     this.stores.forEach((itemi, i) => {
       if (itemi._id === this.newTransfer.storeId) {
+        console.log(itemi);
         this.previewObject.store = itemi.name;
       }
       if (itemi._id === this.newTransfer.destinationStoreId) {
@@ -363,9 +370,20 @@ export class StockTransferComponent implements OnInit {
     });
   }
   saveTransfer() {
-    this.inventoryTransferService.create(this.newTransfer).subscribe(payload => {
+    this.populateInventoryTransferTransactions();
+    this.inventoryTransferService.create(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
+      this._notification("Success","Your transfer was successful");
+      this.frmDestinationStore.reset();
+    });
+  }
+
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 }
