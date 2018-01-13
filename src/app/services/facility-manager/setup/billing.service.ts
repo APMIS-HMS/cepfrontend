@@ -20,7 +20,7 @@ export class BillingService {
     this._rest = _restService.getService('billings');
     this._socket = _socketService.getService('billings');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
-     this._socket.timeout = 90000;
+    this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
 
     });
@@ -52,5 +52,9 @@ export class BillingService {
 
   update(billing: any) {
     return this._socket.update(billing._id, billing);
+  }
+
+  patch(_id: any, data: any, param: any) {
+    return this._socket.patch(_id, data, param);
   }
 }
