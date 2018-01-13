@@ -1,3 +1,4 @@
+import { DateRangePickerModule } from 'ng-pick-daterange';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
@@ -115,8 +116,7 @@ import { DateTimePickerModule } from 'ng-pick-datetime';
         MaterialModule,
         ChartsModule,
         PdfViewerModule,
-        DateRangePickerModule,
-        DateTimePickerModule
+        DateRangePickerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,
