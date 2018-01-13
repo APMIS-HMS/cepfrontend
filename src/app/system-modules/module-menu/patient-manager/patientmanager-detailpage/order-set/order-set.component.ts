@@ -7,7 +7,7 @@ import {
 } from 'app/services/facility-manager/setup';
 import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
 import { SharedService } from '../../../../../shared-module/shared.service';
-import { OrderSetTemplate, User, Facility } from '../../../../../models/index';
+import { OrderSetTemplate, User, Facility, Prescription } from '../../../../../models/index';
 
 @Component({
   selector: 'app-order-set',
@@ -18,6 +18,7 @@ export class OrderSetComponent implements OnInit {
   @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedPatient: any;
+  prescriptionData: Prescription = <Prescription>{};
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
   facility: Facility = <Facility>{};
@@ -35,7 +36,7 @@ export class OrderSetComponent implements OnInit {
   popNursingCare = false;
   popPhysicianOrder = false;
   popProcedure = false;
-  showbill= false;
+  showBill= false;
   user: any = <any>{};
   orderSet: any = <any>{};
   selectedForm: any;
@@ -128,8 +129,11 @@ export class OrderSetComponent implements OnInit {
     });
   }
 
-  showbill_click(){
-    this.showbill = true;
+  onClickBillPrescription(index: number, value: any) {
+    console.log(value);
+    this.prescriptionData.index = index;
+    this.prescriptionData.prescriptionItems = this.orderSet.medications;
+    this.showBill = true;
   }
 
   apmisLookupHandleSelectedItem(value: any) {
@@ -160,13 +164,13 @@ export class OrderSetComponent implements OnInit {
     });
   }
 
-  close_onClick(e){
+  close_onClick(e) {
     this.popMed = false;
     this.popInvestigation = false;
     this.popNursingCare = false;
     this.popPhysicianOrder = false;
     this.popProcedure = false;
-    this.showbill = false;
+    this.showBill = false;
   }
 
   close_onClickModal() {

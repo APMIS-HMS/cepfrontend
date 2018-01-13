@@ -116,7 +116,7 @@ export class ContactInfoComponent implements OnInit {
 				this.errMsg = 'you left out a required field';
 			} else if (val.password !== val.repass) {
 				this.mainErr = false;
-				this.errMsg = 'your passwords do not match'; 
+				this.errMsg = 'your passwords do not match';
 			} else {
 				if (this.inputFacility._id === undefined) {
 					const model: Facility = <Facility>{
@@ -194,19 +194,19 @@ export class ContactInfoComponent implements OnInit {
 	}
 
 	onCheckEmailAddress(value) {
-		if(value.length > 4){
-			let email = this.facilityForm1_1.controls['facilityemail'];
-			if(value.includes("@")){
+		if (value.length > 4) {
+			const email = this.facilityForm1_1.controls['facilityemail'];
+			if (value.includes('@')) {
 				this.facilityService.find({ query: { email: value } }).then(payload => {
 					if (payload.data.length > 0) {
-						//this.isEmailExist = false;
-						email.setErrors({duplicate: true});
+						// this.isEmailExist = false;
+						email.setErrors({ duplicate: true });
 					} else {
-						//this.isEmailExist = true;
+						// this.isEmailExist = true;
 					}
 				});
-			}else{
-				email.setErrors({invalid: true});
+			} else {
+				email.setErrors({ invalid: true });
 			}
 		}
 	}

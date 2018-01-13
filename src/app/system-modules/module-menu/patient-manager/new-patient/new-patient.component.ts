@@ -911,6 +911,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
+            person.wallet = {
+                balance: 0,
+                ledger: 0,
+                description: 'Initializing wallet'
+            }
 
             /* console.log(planValue);
             this.planInput = planValue; */

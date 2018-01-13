@@ -19,6 +19,7 @@ export interface Person {
     dateOfBirth: Date;
     profileImageObject: any;
     personFullName:any;
+    wallet: object;
 }
 
 export interface nextOfKin {

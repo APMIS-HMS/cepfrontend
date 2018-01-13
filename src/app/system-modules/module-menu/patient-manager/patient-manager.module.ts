@@ -1,3 +1,4 @@
+
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
@@ -63,6 +64,8 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
 import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
 import { DateRangePickerModule } from 'ng-pick-daterange';
 import { DateTimePickerModule } from 'ng-pick-datetime';
+
+
 @NgModule({
     declarations: [
         PatientManagerComponent,
