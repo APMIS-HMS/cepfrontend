@@ -1,3 +1,5 @@
+import { LaboratoryRequestService } from './../../../../../../services/facility-manager/setup/laboratoryrequest.service';
+import { InvestigationService } from './../../../../../../services/facility-manager/setup/investigation.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { OrderStatusService } from '../../../../../../services/module-manager/setup/index';
 import { OrderStatus } from '../../../../../../models/index';
@@ -15,6 +17,10 @@ import { SharedService } from '../../../../../../shared-module/shared.service';
     styleUrls: ['./right-tab.component.scss']
 })
 export class RightTabComponent implements OnInit {
+    laboratoryLoading: boolean;
+    labRequests: any[];
+    allergiesLoading: boolean;
+    problemLoading: boolean;
 
     @Output() addProblem: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() addAllergy: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -37,17 +43,31 @@ export class RightTabComponent implements OnInit {
         private formService: FormsService, private locker: CoolLocalStorage,
         private documentationService: DocumentationService, private appointmentService: AppointmentService,
         private formTypeService: FormTypeService, private sharedService: SharedService,
+        private labRequestService: LaboratoryRequestService,
         private facilityService: FacilitiesService) {
         this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
         this.documentationService.announceDocumentation$.subscribe(payload => {
-            this.getPersonDocumentation();
+            this.getPersonDocumentation(payload);
         })
     }
 
     ngOnInit() {
         this.getPersonDocumentation();
     }
-    getPersonDocumentation() {
+    getPersonDocumentation(value?: any) {
+        if (value === undefined) {
+            this.problemLoading = true;
+            this.allergiesLoading = true;
+            this.laboratoryLoading = true;
+        } else {
+            if (value.type === 'Problem') {
+                this.problemLoading = true;
+            } else if (value.type === 'Allergies') {
+                this.allergiesLoading = true;
+            } else if (value.type === 'Laboratory') {
+                this.laboratoryLoading = true;
+            }
+        }
         Observable.fromPromise(this.documentationService.find({ query: { 'personId._id': this.patient.personId } }))
             .subscribe((payload: any) => {
                 if (payload.data.length === 0) {
@@ -60,16 +80,20 @@ export class RightTabComponent implements OnInit {
                     this.getAllergies();
                     this.getPastAppointments();
                     this.getFutureAppointments();
+                    this.getLabInvestigation();
                 } else {
                     if (payload.data[0].documentations.length === 0) {
                         this.patientDocumentation = payload.data[0];
+                        this.problemLoading = false;
+                        this.allergiesLoading = false;
+                        this.laboratoryLoading = false;
                     } else {
                         Observable.fromPromise(this.documentationService.find({
                             query:
-                            {
-                                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-                                // $select: ['documentations.documents', 'documentations.facilityId']
-                            }
+                                {
+                                    'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                                    // $select: ['documentations.documents', 'documentations.facilityId']
+                                }
                         })).subscribe((mload: any) => {
                             if (mload.data.length > 0) {
                                 this.patientDocumentation = mload.data[0];
@@ -77,12 +101,25 @@ export class RightTabComponent implements OnInit {
                                 this.getAllergies();
                                 this.getPastAppointments();
                                 this.getFutureAppointments();
+                                this.getLabInvestigation();
+                            } else {
+                                this.problemLoading = false;
+                                this.allergiesLoading = false;
+                                this.laboratoryLoading = false;
                             }
+                        }, error => {
+                            this.problemLoading = false;
+                            this.allergiesLoading = false;
+                            this.laboratoryLoading = false;
                         })
                     }
 
                 }
 
+            }, error => {
+                this.problemLoading = false;
+                this.allergiesLoading = false;
+                this.laboratoryLoading = false;
             })
     }
     getProblems() {
@@ -90,20 +127,49 @@ export class RightTabComponent implements OnInit {
         this.patientDocumentation.documentations.forEach(documentation => {
             if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
-                    this.problems.push(problem);
+                    if (problem.status.name === 'Active') {
+                        this.problems.push(problem);
+                    }
                 })
             }
         });
+        this.problemLoading = false;
     }
     getAllergies() {
         this.allergies = [];
-        this.patientDocumentation.documentations.forEach(documentation => {
-            if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Allergies') {
-                documentation.document.body.allergies.forEach(allergy => {
-                    this.allergies.push(allergy);
-                })
+        try {
+            this.patientDocumentation.documentations.forEach(documentation => {
+                if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Allergies') {
+                    documentation.document.body.allergies.forEach(allergy => {
+                        this.allergies.push(allergy);
+                    })
+                }
+            });
+            this.allergiesLoading = false;
+        } catch (error) {
+            this.allergiesLoading = false;
+        }
+    }
+    getLabInvestigation() {
+        this.labRequests = [];
+        this.labRequestService.find({
+            query: {
+                'patientId._id': this.patient._id
             }
-        });
+        }).subscribe(payload => {
+            const reqList = payload.data;
+            // reqList.
+            let l = reqList.length;
+            while (l--) {
+                this.populateLaboratoryInvestigations(reqList[l]);
+            }
+        }, error => {
+            console.log(error);
+        })
+        this.laboratoryLoading = false;
+    }
+    populateLaboratoryInvestigations(request) {
+        this.labRequests.push(request);
     }
     getPastAppointments() {
         this.pastAppointments = [];
