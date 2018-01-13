@@ -60,6 +60,7 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
 import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc-uploads.component';
 import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
 import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
+import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         FluidComponent,
         DocUploadsComponent,
         DocUploadComponent,
-        DocUploadDetailComponent
+        DocUploadDetailComponent,
+        PatientVitalsComponent
     ],
     exports: [
     ],
