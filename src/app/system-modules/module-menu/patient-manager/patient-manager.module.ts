@@ -61,6 +61,8 @@ import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc
 import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
 import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
 import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
+import { DateRangePickerModule } from 'ng-pick-daterange';
+import { DateTimePickerModule } from 'ng-pick-datetime';
 
 
 @NgModule({
@@ -112,7 +114,9 @@ import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vita
         patientManagerRoutes,
         MaterialModule,
         ChartsModule,
-        PdfViewerModule
+        PdfViewerModule,
+        DateRangePickerModule,
+        DateTimePickerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,
