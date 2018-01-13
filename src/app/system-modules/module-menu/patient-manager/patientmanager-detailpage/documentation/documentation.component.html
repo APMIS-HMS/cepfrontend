@@ -20,8 +20,11 @@
                 <div class="docCard-header">
                     <div class="empWrap">
                         <div class="list-img">
-                            <img *ngIf="document?.createdBy?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                            <div *ngIf="document?.createdBy?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(document?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                            <img *ngIf="document?.createdBy === undefined || document?.createdBy?.employeeDetails?.profileImageObject === undefined"
+                                src="assets/images/users/default.png">
+                            <div *ngIf="document?.createdBy !== undefined  && document?.createdBy?.employeeDetails?.profileImageObject !== undefined">
+                                <img class="shadow" [src]="facilityService.transform(document?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
+                            </div>
                         </div>
                         <div>
                             <div class="val-tag">Practitioner</div>
@@ -34,7 +37,9 @@
                     </div>
                     <div>
                         <div class="val-tag">Date/Time</div>
-                        <div class="list-label">{{document.createdAt | date:'shortDate'}}. <span class="time">{{document.createdAt | date:'shortTime'}}</span></div>
+                        <div class="list-label">{{document.createdAt | date:'shortDate'}}.
+                            <span class="time">{{document.createdAt | date:'shortTime'}}</span>
+                        </div>
                     </div>
                     <ul class="topmenuwrap">
                         <li (click)="docDetail_show(document)">
@@ -51,20 +56,44 @@
                     <div class="cardSect-wrap">
                         <div class="card-sect">
                             <div class="docCard-sectContent">
-                                <div *ngFor="let key of document?.document?.body | keys">
-                                    <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
-                                    <div *ngIf="document?.document?.body !== undefined" class="sect-value">{{document?.document?.body[key]}}</div>
+                                <div *ngIf="document?.document?.documentType?.isSide === false || document?.document?.documentType?.isSide === undefined">
+                                    <div *ngFor="let key of document?.document?.body | keys">
+                                        <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
+                                        <div *ngIf="document?.document?.body !== undefined" class="sect-value">{{document?.document?.body[key]}}</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="document?.document?.documentType?.isSide === true">
+                                    <div *ngFor="let key of document?.document?.body | keys">
+                                        <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
+                                        <div *ngFor="let key2 of document?.document?.body.problems | keys let k = index">
+                                            <div *ngIf="document?.document?.body !== undefined" class="sect-value">
+                                                {{k+1}}:
+                                                <span class="sect-key">{{document?.document?.body.problems[key2].problem}}</span> ({{document?.document?.body.problems[key2].status.name}})
+                                                {{document?.document?.body.problems[key2].note}}
+                                            </div>
+                                        </div>
+                                        <div *ngFor="let key2 of document?.document?.body.allergies | keys let k = index">
+                                            <div *ngIf="document?.document?.body !== undefined" class="sect-value">
+                                                {{k+1}}:
+                                                <span class="sect-key">{{document?.document?.body.allergies[key2].allergy}}</span> ({{document?.document?.body.allergies[key2].severity.name}})
+                                                {{document?.document?.body.allergies[key2].reaction}} || {{document?.document?.body.allergies[key2].note}}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="docCard-foot"><i (click)="docDetail_show(document)" class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+                <div class="docCard-foot">
+                    <i (click)="docDetail_show(document)" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </div>
             </li>
         </ul>
     </div>
     <div class="doc-rArea">
-        <app-right-tab [patient]="patient" (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)" (addVitals)="addVitals_show($event)"></app-right-tab>
+        <app-right-tab [patient]="patient" (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)"
+            (addVitals)="addVitals_show($event)"></app-right-tab>
     </div>
 
     <div *ngIf="docDetail_view" class="modal-overlay">

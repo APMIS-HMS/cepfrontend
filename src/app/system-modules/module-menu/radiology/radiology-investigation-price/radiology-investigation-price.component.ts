@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
-  FacilitiesService, WorkbenchService, ServicePriceService, TagService, RadiologyInvestigationService
+  FacilitiesService, WorkbenchService, ServicePriceService, TagService, RadiologyInvestigationService, FacilitiesServiceCategoryService
 } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
@@ -9,6 +9,7 @@ import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User } fr
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { error } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-radiology-investigation-price',
@@ -56,7 +57,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
     private investigationService: RadiologyInvestigationService, private workbenchService: WorkbenchService,
     private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
-    private _facilityService: FacilitiesService
+    private _facilityService: FacilitiesService, private facilitiesServiceCtyService: FacilitiesServiceCategoryService
   ) { }
 
   ngOnInit() {
@@ -65,8 +66,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.frmNewPrice = this.formBuilder.group({
       price: ['', [Validators.required]],
-      investigation: ['', [Validators.required]],
-      workbench: ['', [Validators.required]]
+      investigation: ['', [Validators.required]]
     });
     this.frmNewPrice.controls['investigation'].valueChanges.subscribe(value => {
       if (value !== null && value.length === 0) {
@@ -81,20 +81,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
         }
       }
     });
-    this.frmNewPrice.controls['workbench'].valueChanges.subscribe(value => {
-      if (value !== null && value.length === 0) {
-        this.apmisLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
-          name: { $regex: -1, '$options': 'i' },
-        }
-      } else {
-        this.apmisLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
-          'radiologyCenterId._id': { $in: this.locationIds },
-          name: { $regex: value, '$options': 'i' },
-        }
-      }
-    });
+
     if (this.loginEmployee.workSpaces !== undefined) {
       this.loginEmployee.workSpaces.forEach(work => {
         work.locations.forEach(loc => {
@@ -125,9 +112,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
   getInvestigations() {
     this.investigationService.find({
       query: {
-        'facilityId._id': this.selelctedFacility._id,
-        'radiologyWorkbenches.radiologyCenterId._id': this.checkingObject.typeObject.minorLocationObject._id
-        // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id } }
+        'facilityId._id': this.selelctedFacility._id
       }
     }).then(payload => {
       this.loading = false;
@@ -197,42 +182,10 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
     this.selectedWorkBench = value;
   }
   apmisInvestigationLookupHandleSelectedItem(value) {
-    this.selectedModifier = undefined;
-    this.selectedModifierIndex = -1;
-    this.foundPrice = false;
-    this.apmisInvestigationLookupText = value.name;
     this.selectedInvestigation = value;
-    if (this.selectedInvestigation.radiologyWorkbenches === undefined) {
-      this.selectedInvestigation.radiologyWorkbenches = [];
-      this.frmNewPrice.controls['price'].setValue(0);
-    }
-    console.log(this.selectedInvestigation);
-    this.facilityPriceService.find({ query: { serviceId: this.selectedInvestigation.serviceId._id } }).then(payload => {
-      console.log(payload);
-      this.selectedFacilityServicePrice = payload.data.length > 0 ? payload.data[0] : undefined;
-      console.log(this.selectedFacilityServicePrice);
-      this.selectedFacilityServicePrice.modifiers.forEach((item, i) => {
-        if (item.tagDetails !== undefined) {
-          delete item.tagDetails;
-        }
-        if (item.tagId != undefined) {
-          console.log(item.tagId);
-          console.log(this.selectedTag);
-          if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Radiology Location'
-            && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
-            this.foundPrice = true;
-            this.selectedModifier = item;
-            this.selectedModifierIndex = i;
-            this.frmNewPrice.controls['price'].setValue(item.modifierValue);
-          }
-        }
-      })
-      if (!this.foundPrice) {
-        this.frmNewPrice.controls['price'].setValue(0);
-      }
-    });
-
+    this.apmisInvestigationLookupText = value.name;
   }
+
   pricing_show() {
     this.pricing_view = !this.pricing_view;
   }
@@ -241,67 +194,31 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
 
   }
   setPrice(valid, value) {
-    if (this.selectedTag.tagDetails !== undefined) {
-      delete this.selectedTag.tagDetails;
-    }
-    if (this.foundPrice) {
-      this.selectedModifier.modifierValue = this.frmNewPrice.controls['price'].value;
-      this.selectedFacilityServicePrice.modifiers[this.selectedModifierIndex] = this.selectedModifier;
-    } else {
-      const modifier: any = <any>{};
-      modifier.tagId = this.selectedTag;
-      modifier.modifierType = 'Amount';
-      modifier.modifierValue = this.frmNewPrice.controls['price'].value;
-      this.selectedFacilityServicePrice.modifiers.push(modifier);
-    }
-    const iExisting = false;
-    let radCollectionObject: any;
-    console.log(this.selectedInvestigation.radiologyWorkbenches);
-    console.log(this.checkingObject.typeObject.minorLocationObject);
-    const radIndex = this.selectedInvestigation.radiologyWorkbenches.findIndex(x => x.radiologyCenterId._id === this.checkingObject.typeObject.minorLocationObject._id);
-    if (radIndex === -1) {
-      // is not existing
-      // create a new collection object;
-      radCollectionObject = {
-        radiologyCenterId: this.checkingObject.typeObject.minorLocationObject,
-        workbenches: [{ workBench: this.selectedWorkBench, price: this.frmNewPrice.controls['price'].value }],
-      }
-      this.selectedInvestigation.radiologyWorkbenches.push(radCollectionObject);
-
-    } else {
-      // is existing
-      radCollectionObject = this.selectedInvestigation.radiologyWorkbenches[radIndex];
-      console.log(radCollectionObject);
-      const index = radCollectionObject.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
-      console.log(index);
-      radCollectionObject.workbenches[index].price = this.frmNewPrice.controls['price'].value;
-      // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
-      this.selectedInvestigation.radiologyWorkbenches[radIndex] = radCollectionObject;
-    }
-
-    const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
-    const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
-
-    Observable.forkJoin([updateInvestigation$, updatePrice$]).subscribe((result: any) => {
-      console.log(result);
-      this.selectedInvestigation = result[0];
-      this.selectedFacilityServicePrice = result[1];
-
-
-      this.frmNewPrice.reset();
-      this.frmNewPrice.controls['investigation'].reset();
-      this.frmNewPrice.controls['workbench'].reset();
-      this.getInvestigations();
-      // this.addToast('Price set/updated successfully');
-      this._notification('Success', 'Price set/updated successfully');
-    })
-
-    // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
-    //   this.selectedFacilityServicePrice = payload;
-    //   this.frmNewPrice.reset();
-    //   this.frmNewPrice.controls['investigation'].reset();
-    //   this.frmNewPrice.controls['workbench'].reset();
-    // });
+    // facilityServiceId: { type: Schema.Types.ObjectId, require: true },
+    // categoryId: { type: Schema.Types.ObjectId, require: true },
+    // serviceId: { type: Schema.Types.ObjectId, require: true },
+    // facilityId:{ type: Schema.Types.ObjectId, require: true },
+    // modifiers :  [Schema.Types.Mixed],
+    // price:{ type: Number, require: true },
+    this.facilitiesServiceCtyService.get(this.selectedInvestigation.facilityServiceId, {}).then(payload => {
+      var ctgy = payload.categories.filter(x => x.name == 'Radiology');
+      console.log(ctgy);
+      var priceObj = {
+        'facilityServiceId': this.selectedInvestigation.facilityServiceId,
+        'categoryId': ctgy[0]._id,
+        'serviceId': this.selectedInvestigation.serviceId,
+        'facilityId': this.selelctedFacility._id,
+        'price': this.frmNewPrice.controls['price'].value
+      };
+      this.facilityPriceService.create(priceObj).then(payload2 => {
+        this._notification("Success", "Price created successful");
+        this.apmisInvestigationLookupText = "";
+        this.frmNewPrice.reset();
+        this.getInvestigations();
+      }, error => {
+        this._notification("Error", "Fail to created price");
+      })
+    });
   }
 
   private _notification(type: string, text: string): void {
