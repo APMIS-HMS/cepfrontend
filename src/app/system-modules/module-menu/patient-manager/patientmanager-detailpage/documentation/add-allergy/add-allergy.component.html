@@ -35,7 +35,9 @@
                 </mat-input-container>
             </div>
 
-            <div (click)="save()" class="cta-1">SAVE</div>
-        </div>
+        <button [disabled]="!allergyFormCtrl.valid || !reactionFormCtrl.valid || !noteFormCtrl.valid" (click)="save()" [ngClass]="{'cta-1':allergyFormCtrl.valid, 'cta-1-disable':!allergyFormCtrl.valid}">
+            SAVE
+            <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
+        </button>
     </div>
 </div>
