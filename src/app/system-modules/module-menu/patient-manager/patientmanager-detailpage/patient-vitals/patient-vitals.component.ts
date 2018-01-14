@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import {
   CountriesService, EmployeeService, FormsService,
   FacilitiesService, UserService, PersonService,
@@ -23,7 +23,7 @@ export class PatientVitalsComponent implements OnInit {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
-  public lineChartData:Array<any> = [
+  public lineChartData: Array<any> = [
     [65, 59, 80, 81, 56, 55, 40],
     [28, 48, 40, 19, 86, 27, 90],
     [78, 68, 10, 99, 46, 37, 20],
@@ -115,6 +115,9 @@ export class PatientVitalsComponent implements OnInit {
   vitalsTemp = [];
   vitalChartData = [];
 
+  dateRange: any;
+  loadIndicatorVisible: any;
+
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
@@ -160,7 +163,7 @@ export class PatientVitalsComponent implements OnInit {
         payload.data[0].documentations.forEach(documentItem => {
           if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
             vitalsObjArray = documentItem.document.body.vitals;
-            if(vitalsObjArray !== undefined){
+            if (vitalsObjArray !== undefined) {
               vitalsObjArray.forEach(item => {
                 this.lineChartData[0].data.push(item.bloodPressure.systolic);
                 this.lineChartData[0].label = "Systolic";
@@ -178,13 +181,13 @@ export class PatientVitalsComponent implements OnInit {
                 let dt = this.dateFormater(d);
                 this.lineChartLabels.push(dt);
               });
-              this.lineChartData =  this.refreshVitalsGraph(this.lineChartData);
+              this.lineChartData = this.refreshVitalsGraph(this.lineChartData);
             }
 
           }
         });
       }
-    }, error =>{
+    }, error => {
 
     });
   }
@@ -196,7 +199,7 @@ export class PatientVitalsComponent implements OnInit {
       d.getSeconds()].join(':');
     return dt;
   }
-  refreshVitalsGraph(lineChartData:any[]) {
+  refreshVitalsGraph(lineChartData: any[]) {
     let _lineChartData: Array<any> = new Array(lineChartData.length);
     for (let i = 0; i < lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
@@ -221,5 +224,8 @@ export class PatientVitalsComponent implements OnInit {
   }
 
   public chartHovered(e: any): void {
+  }
+  setReturnValue(e) {
+
   }
 }
