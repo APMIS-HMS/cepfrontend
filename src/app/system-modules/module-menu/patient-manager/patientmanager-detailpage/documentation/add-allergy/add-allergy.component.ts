@@ -42,7 +42,8 @@ export class AddAllergyComponent implements OnInit {
     this.severityFormCtrl = new FormControl();
     this.reactionFormCtrl = new FormControl();
     this.noteFormCtrl = new FormControl();
-
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
   ngOnInit() {
@@ -114,6 +115,9 @@ export class AddAllergyComponent implements OnInit {
       }
     });
     if (!isExisting) {
+      console.log('shce');
+      console.log(this.loginEmployee);
+      console.log(this.selectedFacility);
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.facilityId = this.selectedFacility;
       doc.createdBy = this.loginEmployee;

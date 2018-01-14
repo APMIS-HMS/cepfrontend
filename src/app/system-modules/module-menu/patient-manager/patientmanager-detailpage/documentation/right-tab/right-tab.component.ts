@@ -84,6 +84,9 @@ export class RightTabComponent implements OnInit {
                 } else {
                     if (payload.data[0].documentations.length === 0) {
                         this.patientDocumentation = payload.data[0];
+                        this.problemLoading = false;
+                        this.allergiesLoading = false;
+                        this.laboratoryLoading = false;
                     } else {
                         Observable.fromPromise(this.documentationService.find({
                             query:
@@ -99,6 +102,10 @@ export class RightTabComponent implements OnInit {
                                 this.getPastAppointments();
                                 this.getFutureAppointments();
                                 this.getLabInvestigation();
+                            } else {
+                                this.problemLoading = false;
+                                this.allergiesLoading = false;
+                                this.laboratoryLoading = false;
                             }
                         }, error => {
                             this.problemLoading = false;
@@ -116,12 +123,13 @@ export class RightTabComponent implements OnInit {
             })
     }
     getProblems() {
-        console.log('inin')
         this.problems = [];
         this.patientDocumentation.documentations.forEach(documentation => {
             if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
-                    this.problems.push(problem);
+                    if (problem.status.name === 'Active') {
+                        this.problems.push(problem);
+                    }
                 })
             }
         });
@@ -130,7 +138,6 @@ export class RightTabComponent implements OnInit {
     getAllergies() {
         this.allergies = [];
         try {
-            console.log('in')
             this.patientDocumentation.documentations.forEach(documentation => {
                 if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Allergies') {
                     documentation.document.body.allergies.forEach(allergy => {
@@ -138,7 +145,6 @@ export class RightTabComponent implements OnInit {
                     })
                 }
             });
-            console.log('out')
             this.allergiesLoading = false;
         } catch (error) {
             this.allergiesLoading = false;
@@ -157,9 +163,6 @@ export class RightTabComponent implements OnInit {
             while (l--) {
                 this.populateLaboratoryInvestigations(reqList[l]);
             }
-
-            console.log(payload);
-            console.log(this.labRequests);
         }, error => {
             console.log(error);
         })
