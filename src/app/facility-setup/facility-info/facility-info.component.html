@@ -6,12 +6,12 @@
         <div class="lhs">
             <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Facility Name" formControlName="facilityname" value="inputFacility.name">
+                    <input matInput mat-error placeholder="Facility Name" formControlName="facilityname">
                 </mat-input-container>
             </div>
             <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Facility Short Name" formControlName="facilityalias" value="inputFacility.shortName">
+                    <input matInput mat-error placeholder="Facility Short Name" formControlName="facilityalias">
                 </mat-input-container>
             </div>
             <div class="frm-item-wrap">
@@ -40,12 +40,12 @@
             </div>
             <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">
-                    <input type="email" matInput mat-error placeholder="Facility Email" formControlName="facilityemail" value="inputFacility.email" (keyup)="onCheckEmailAddress($event.target.value)">
+                    <input type="email" matInput mat-error placeholder="Facility Email" formControlName="facilityemail" (keyup)="onCheckEmailAddress($event.target.value)">
                 </mat-input-container>
             </div>
             <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">
-                    <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite" value="inputFacility.website">
+                    <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
                 </mat-input-container>
             </div>
             <div class="frm-item-wrap">
@@ -66,4 +66,4 @@
 
     </form>
 </div>
-<!-- <app-contact-info *ngIf="sg1_1_show" (closeModal)="close_onClick($event)" [inputFacility] = "inputFacility"></app-contact-info> -->
+<app-contact-info *ngIf="sg1_1_show" (closeModal)="close_onClick($event)" [inputFacility] = "inputFacility"></app-contact-info>

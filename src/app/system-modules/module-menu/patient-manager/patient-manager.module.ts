@@ -48,6 +48,9 @@ import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-paym
 import { OrderSetComponent } from './patientmanager-detailpage/order-set/order-set.component';
 import { EditMedicationComponent } from './patientmanager-detailpage/order-set/edit-medication/edit-medication.component';
 import { EditInvestigationComponent } from './patientmanager-detailpage/order-set/edit-investigation/edit-investigation.component';
+import {
+  BillInvestigationComponent
+} from './patientmanager-detailpage/order-set/edit-investigation/bill-investigation/bill-investigation.component';
 import { EditProcedureComponent } from './patientmanager-detailpage/order-set/edit-procedure/edit-procedure.component';
 import { EditNursingCareComponent } from './patientmanager-detailpage/order-set/edit-nursing-care/edit-nursing-care.component';
 import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-set/edit-physician-order/edit-physician-order.component';
@@ -60,6 +63,9 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
 import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc-uploads.component';
 import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
 import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
+import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
+import { DateRangePickerModule } from 'ng-pick-daterange';
+import { DateTimePickerModule } from 'ng-pick-datetime';
 
 
 @NgModule({
@@ -91,6 +97,7 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         OrderSetComponent,
         EditMedicationComponent,
         EditInvestigationComponent,
+        BillInvestigationComponent,
         EditProcedureComponent,
         EditNursingCareComponent,
         EditPhysicianOrderComponent,
@@ -101,7 +108,8 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         FluidComponent,
         DocUploadsComponent,
         DocUploadComponent,
-        DocUploadDetailComponent
+        DocUploadDetailComponent,
+        PatientVitalsComponent
     ],
     exports: [
     ],
@@ -110,7 +118,8 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
         patientManagerRoutes,
         MaterialModule,
         ChartsModule,
-        PdfViewerModule
+        PdfViewerModule,
+        DateRangePickerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,

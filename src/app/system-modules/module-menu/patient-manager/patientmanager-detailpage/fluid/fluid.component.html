@@ -155,6 +155,7 @@
             </div>
 
             <div class="summary-figs">
+              <div class="card2-exo">
                 <div class="fig-item">
                     <div class="fig-label">Total Intake Volume</div>
                     <div class="fig-val">{{totalPatientIntakeFluid}} ml</div>
@@ -175,19 +176,14 @@
                     <div class="fig-val">{{totalPatientOutputFluid}} ml</div>
                 </div>
                 <div class="fig-item">
-                    <div class="fig-label">Balance</div>
-                    <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml</div>
-                </div>
-                <div class="fig-item">
                     <div class="fig-label">Rate</div>
                     <div class="fig-val">{{rateOfOutputFluid}} ml/hr</div>
                 </div>
-            </div>
-
-            <!-- balance over fluid -->
-            <div class="col-md-6">
-                <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [chartType]="lineChartType"
-                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+              </div>
+              <div class="fig-item">
+                  <div class="fig-label">Balance</div>
+                  <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml</div>
+              </div>
             </div>
 
             <div class="card-tbl-full">
@@ -232,6 +228,11 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+             <!-- balance over fluid -->
+             <div class="col-md-6">
+                <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
     </div>

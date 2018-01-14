@@ -48,7 +48,7 @@ export * from './facility-manager/setup/roommodel';
 export * from './facility-manager/setup/timeline';
 export * from './facility-manager/setup/inpatient';
 export * from './facility-manager/setup/warddetail';
-export * from './facility-manager/setup/Room';
+export * from './facility-manager/setup/room';
 export * from './facility-manager/setup/ward-room';
 export * from './facility-manager/setup/bed';
 export * from './facility-manager/setup/workspace';

@@ -19,6 +19,7 @@ export class OrderSetComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedPatient: any;
   prescriptionData: Prescription = <Prescription>{};
+  investigationData: any = <any>{};
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
   facility: Facility = <Facility>{};
@@ -36,7 +37,8 @@ export class OrderSetComponent implements OnInit {
   popNursingCare = false;
   popPhysicianOrder = false;
   popProcedure = false;
-  showBill= false;
+  showMedicationBill= false;
+  showInvestigationBill= false;
   user: any = <any>{};
   orderSet: any = <any>{};
   selectedForm: any;
@@ -67,7 +69,6 @@ export class OrderSetComponent implements OnInit {
 
     // Listen to the event from children components
     this._orderSetSharedService.itemSubject.subscribe(value => {
-      console.log(value);
       if (!!value.medications) {
         this.orderSet.medications = value.medications;
       } else if (!!value.investigations) {
@@ -79,8 +80,6 @@ export class OrderSetComponent implements OnInit {
       } else if (!!value.physicianOrders) {
         this.orderSet.physicianOrders = value.physicianOrders;
       }
-
-      console.log(this.orderSet);
     });
   }
 
@@ -133,7 +132,14 @@ export class OrderSetComponent implements OnInit {
     console.log(value);
     this.prescriptionData.index = index;
     this.prescriptionData.prescriptionItems = this.orderSet.medications;
-    this.showBill = true;
+    this.showMedicationBill = true;
+  }
+
+  onClickBillInvestigation(index: number, value: any) {
+    console.log(value);
+    this.investigationData.index = index;
+    this.investigationData.investigationItems = this.orderSet.investigations;
+    this.showInvestigationBill = !this.showInvestigationBill;
   }
 
   apmisLookupHandleSelectedItem(value: any) {
@@ -170,7 +176,8 @@ export class OrderSetComponent implements OnInit {
     this.popNursingCare = false;
     this.popPhysicianOrder = false;
     this.popProcedure = false;
-    this.showBill = false;
+    this.showMedicationBill = false;
+    this.showInvestigationBill = false;
   }
 
   close_onClickModal() {
