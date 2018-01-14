@@ -85,9 +85,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       doc.patientId = this.patient._id;
       this.patientDocumentation.documentations.push(doc);
       // Get the raw orderset data and send to different destination.
+      this._listenAndSaveRawOrderSetData();
       this.documentationService.update(this.patientDocumentation).then(pay => {
         console.log(pay);
-        this._listenAndSaveRawOrderSetData();
         this.getPersonDocumentation();
         this._notification('Success', 'Documentation successfully saved!');
       });

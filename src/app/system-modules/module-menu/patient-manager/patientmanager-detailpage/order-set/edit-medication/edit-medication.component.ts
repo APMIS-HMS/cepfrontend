@@ -11,17 +11,17 @@ import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillIt
 import { DurationUnits } from '../../../../../../shared-module/helpers/global-config';
 
 @Component({
-  selector: "app-edit-medication",
-  templateUrl: "./edit-medication.component.html",
-  styleUrls: ["./edit-medication.component.scss"]
+  selector: 'app-edit-medication',
+  templateUrl: './edit-medication.component.html',
+  styleUrls: ['./edit-medication.component.scss']
 })
 export class EditMedicationComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   addPrescriptionForm: FormGroup;
   apmisLookupQuery = {};
-  apmisLookupUrl = "";
-  apmisLookupDisplayKey = "";
-  apmisLookupText = "";
+  apmisLookupUrl = '';
+  apmisLookupDisplayKey = '';
+  apmisLookupText = '';
   currentDate: Date = new Date();
   minDate: Date = new Date();
   newTemplate = true;
@@ -30,9 +30,9 @@ export class EditMedicationComponent implements OnInit {
   frequencies: string[] = [];
   durationUnits: any[] = [];
   selectedDuration: any;
-  drugId: string = "";
+  drugId: string = '';
   refillCount = 0;
-  selectedForm = "";
+  selectedForm = '';
   selectedIngredients: any = [];
   medications: any = [];
 
@@ -95,19 +95,8 @@ export class EditMedicationComponent implements OnInit {
         form: this.selectedForm
       };
 
-      if (this.medications.length > 0) {
-        // Check if generic has been added already.
-        const containsGeneric = this.medications.filter(
-          x => medication.genericName === x.genericName
-        );
-        if (containsGeneric.length < 1) {
-          this.medications.push(medication);
-          this._orderSetSharedService.saveItem({ medications: this.medications});
-        }
-      } else {
-        this.medications.push(medication);
-        this._orderSetSharedService.saveItem({ medications: this.medications});
-      }
+      this.medications.push(medication);
+      this._orderSetSharedService.saveItem({ medications: this.medications});
 
       this.addPrescriptionForm.reset();
       this.addPrescriptionForm.controls['refillCount'].reset(0);
@@ -122,7 +111,6 @@ export class EditMedicationComponent implements OnInit {
     this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
         let sRes = res.data;
         if (res.status === 'success') {
-          console.log(sRes);
           if (!!sRes.ingredients && sRes.ingredients.length > 0) {
             this.selectedForm = sRes.form;
             this.selectedIngredients = sRes.ingredients;
@@ -150,14 +138,12 @@ export class EditMedicationComponent implements OnInit {
 
   private _getAllRoutes() {
     this._routeService.findAll().then(res => {
-        console.log(res);
         this.routes = res.data;
       }).catch(err => console.error(err));
   }
 
   private _getAllFrequencies() {
     this._frequencyService.findAll().then(res => {
-        console.log(res);
         this.frequencies = res.data;
       }).catch(err => console.error(err));
   }
