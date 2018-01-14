@@ -9,7 +9,9 @@ export class OrderSetSharedService {
   // announcedItem = this._itemAnnounceSource.asObservable();
   // items: any[] = [];
 
-  constructor() {}
+  constructor() {
+    console.log('INstantiated');
+  }
 
   // setItem(value: any) {
   //   console.log(value);

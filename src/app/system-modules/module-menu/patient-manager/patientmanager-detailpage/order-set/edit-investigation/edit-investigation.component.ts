@@ -44,17 +44,17 @@ export class EditInvestigationComponent implements OnInit {
       this.selectedInvestigation.status = 'Not Done';
       this.selectedInvestigation.completed = false;
 
-      if (this.investigations.length > 0) {
-        // Check if generic has been added already.
-        const containsGeneric = this.investigations.filter(x => x._id === value.selectedInvestigation._id);
-        if (containsGeneric.length < 1) {
-          this.investigations.push(this.selectedInvestigation);
-          this._orderSetSharedService.saveItem({ investigations: this.investigations});
-        }
-      } else {
+      // if (this.investigations.length > 0) {
+      //   // Check if generic has been added already.
+      //   const containsGeneric = this.investigations.filter(x => x._id === value.selectedInvestigation._id);
+      //   if (containsGeneric.length < 1) {
+      //     this.investigations.push(this.selectedInvestigation);
+      //     this._orderSetSharedService.saveItem({ investigations: this.investigations});
+      //   }
+      // } else {
         this.investigations.push(this.selectedInvestigation);
         this._orderSetSharedService.saveItem({ investigations: this.investigations});
-      }
+      // }
       this.apmisLookupText = '';
       this.addInvestigationForm.reset();
       this.addInvestigationForm.controls['investigation'].setValue('');
