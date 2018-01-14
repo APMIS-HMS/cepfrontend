@@ -19,7 +19,7 @@ export class BillInvestigationComponent implements OnInit {
 	addBillForm: FormGroup;
 	investigations: InvestigationModel[] = [];
   bindInvestigations: InvestigationModel[] = [];
-	selectedDrug: string = '';
+	// selectedDrug: string = '';
 	itemCost: number = 0;
 	title: string = '';
 	cost: number = 0; // Unit price for each drug.
@@ -57,32 +57,33 @@ export class BillInvestigationComponent implements OnInit {
 	}
 
 	//
-	onClickSaveCost(valid: boolean, value: any) {
-    console.log(value);
-		if (valid) {
-			if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
-				let index = this.investigationData.index;
-				this.investigationData.prescriptionItems[index].productId = value.drug;
-				this.investigationData.prescriptionItems[index].serviceId = this.serviceId;
-				this.investigationData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
-				this.investigationData.prescriptionItems[index].categoryId = this.categoryId;
-				this.investigationData.prescriptionItems[index].productName = this.selectedDrug;
-				this.investigationData.prescriptionItems[index].quantity = value.qty;
-				this.investigationData.prescriptionItems[index].quantityDispensed = 0;
-				this.investigationData.prescriptionItems[index].cost = this.cost;
-				this.investigationData.prescriptionItems[index].totalCost = this.cost * value.qty;
-				this.investigationData.prescriptionItems[index].isBilled = true;
-				this.investigationData.prescriptionItems[index].facilityId = this.facility._id;
-				this.investigationData.totalCost += this.totalCost;
-				this.investigationData.totalQuantity += this.totalQuantity;
+	onClickSaveCost() {
+    console.log(this.investigationData);
+    this.onClickClose(true);
+		// if (valid) {
+		// 	if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+		// 		let index = this.investigationData.index;
+		// 		this.investigationData.prescriptionItems[index].productId = value.drug;
+		// 		this.investigationData.prescriptionItems[index].serviceId = this.serviceId;
+		// 		this.investigationData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
+		// 		this.investigationData.prescriptionItems[index].categoryId = this.categoryId;
+		// 		// this.investigationData.prescriptionItems[index].productName = this.selectedDrug;
+		// 		this.investigationData.prescriptionItems[index].quantity = value.qty;
+		// 		this.investigationData.prescriptionItems[index].quantityDispensed = 0;
+		// 		this.investigationData.prescriptionItems[index].cost = this.cost;
+		// 		this.investigationData.prescriptionItems[index].totalCost = this.cost * value.qty;
+		// 		this.investigationData.prescriptionItems[index].isBilled = true;
+		// 		this.investigationData.prescriptionItems[index].facilityId = this.facility._id;
+		// 		this.investigationData.totalCost += this.totalCost;
+		// 		this.investigationData.totalQuantity += this.totalQuantity;
 
-				this.closeModal.emit(true);
-			} else {
-				this._notification('Error', 'Unit price or Quantity is less than 0!');
-			}
-		} else {
-			this.mainErr = false;
-		}
+		// 		this.closeModal.emit(true);
+		// 	} else {
+		// 		this._notification('Error', 'Unit price or Quantity is less than 0!');
+		// 	}
+		// } else {
+		// 	this.mainErr = false;
+		// }
 	}
 
   getInvestigationPrice() {
@@ -231,58 +232,62 @@ export class BillInvestigationComponent implements OnInit {
     }
   }
 
-  markExternal(event, investigation: InvestigationModel) {
-    if (event.checked) {
-      delete investigation.location;
-      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-      if (indexToRemove > -1) {
-        this.bindInvestigations.splice(indexToRemove, 1)
-      }
+  // markExternal(event, investigation: InvestigationModel) {
+  //   if (event.checked) {
+  //     delete investigation.location;
+  //     const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+  //     if (indexToRemove > -1) {
+  //       this.bindInvestigations.splice(indexToRemove, 1)
+  //     }
 
-      investigation.isExternal = true;
-      const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
-      delete copyBindInvestigation.LaboratoryWorkbenches;
-      delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
-      this.bindInvestigations.push(copyBindInvestigation);
-    } else {
-      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-      if (indexToRemove > -1) {
-        this.bindInvestigations.splice(indexToRemove, 1)
-      }
-      investigation.isExternal = false;
-      this.investigationChanged({ checked: true }, investigation);
-    }
-  }
+  //     investigation.isExternal = true;
+  //     const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+  //     delete copyBindInvestigation.LaboratoryWorkbenches;
+  //     delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
+  //     this.bindInvestigations.push(copyBindInvestigation);
+  //   } else {
+  //     const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+  //     if (indexToRemove > -1) {
+  //       this.bindInvestigations.splice(indexToRemove, 1)
+  //     }
+  //     investigation.isExternal = false;
+  //     this.investigationChanged({ checked: true }, investigation);
+  //   }
+  // }
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
+    console.log($event);
+    console.log(investigation);
+    console.log(location);
+    console.log(LaboratoryWorkbenches);
     const ids: any[] = [];
-    if (investigation.investigation.isPanel) {
-      const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-      if (isInBind > -1) {
-        this.bindInvestigations.splice(isInBind, 1);
-      }
-      investigation.investigation.panel.forEach((child, k) => {
-        // child.isChecked = true;
-        ids.push(child.investigation._id);
-      });
+    // if (investigation.investigation.isPanel) {
+    //   const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    //   if (isInBind > -1) {
+    //     this.bindInvestigations.splice(isInBind, 1);
+    //   }
+    //   investigation.investigation.panel.forEach((child, k) => {
+    //     // child.isChecked = true;
+    //     ids.push(child.investigation._id);
+    //   });
 
-      // i need prices for the two children investigation and their prices
-      const labId = location.laboratoryId._id;
-      this._investigationService.find({ query: { '_id': { $in: ids } } }).then(payload => {
-        const tempList: any[] = [];
-        payload.data.forEach((item, j) => {
-          const index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
-          if (index > -1) {
-            const withId = item.LaboratoryWorkbenches[index];
-            withId.investigationId = item._id
-            tempList.push(withId);
-          }
-        })
-        investigation.temporaryInvestigationList = tempList;
-      })
-      investigation.location = location;
-      this.bindInvestigations.push(investigation);
-    } else {
+    //   // i need prices for the two children investigation and their prices
+    //   const labId = location.laboratoryId._id;
+    //   this._investigationService.find({ query: { '_id': { $in: ids } } }).then(payload => {
+    //     const tempList: any[] = [];
+    //     payload.data.forEach((item, j) => {
+    //       const index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
+    //       if (index > -1) {
+    //         const withId = item.LaboratoryWorkbenches[index];
+    //         withId.investigationId = item._id
+    //         tempList.push(withId);
+    //       }
+    //     })
+    //     investigation.temporaryInvestigationList = tempList;
+    //   })
+    //   investigation.location = location;
+    //   this.bindInvestigations.push(investigation);
+    // } else {
       const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
       if (isInBind > -1) {
         this.bindInvestigations.splice(isInBind, 1);
@@ -292,8 +297,14 @@ export class BillInvestigationComponent implements OnInit {
       copyBindInvestigation.LaboratoryWorkbenches = [];
       copyBindInvestigation.LaboratoryWorkbenches.push(location);
       copyBindInvestigation.investigation.LaboratoryWorkbenches = copyBindInvestigation.LaboratoryWorkbenches;
+      copyBindInvestigation.isBilled = true;
+      const index = this.investigationData.index;
+      this.investigationData.investigationItems[index].investigation = copyBindInvestigation;
+      this.investigationData.investigationItems[index].isBilled = true;
       this.bindInvestigations.push(copyBindInvestigation);
-    }
+      console.log(copyBindInvestigation);
+      console.log(this.investigationData);
+    // }
   }
 
   getPrice(workbenches) {

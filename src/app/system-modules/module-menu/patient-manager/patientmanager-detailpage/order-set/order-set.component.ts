@@ -69,7 +69,6 @@ export class OrderSetComponent implements OnInit {
 
     // Listen to the event from children components
     this._orderSetSharedService.itemSubject.subscribe(value => {
-      console.log(value);
       if (!!value.medications) {
         this.orderSet.medications = value.medications;
       } else if (!!value.investigations) {
@@ -81,8 +80,6 @@ export class OrderSetComponent implements OnInit {
       } else if (!!value.physicianOrders) {
         this.orderSet.physicianOrders = value.physicianOrders;
       }
-
-      console.log(this.orderSet);
     });
   }
 

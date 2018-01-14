@@ -13,6 +13,7 @@
                             <div class="border-box" *ngIf="investigations.length > 0 && !loading">
                                 <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                 <div class="row">
+                                    <div class="col-sm-12 col-md-12 invest-header">List of Locations that does {{ title }} investigation.</div>
                                     <div class="col-sm-12 col-md-12">
                                         <div *ngFor="let investigation of investigations" class="list-item investigation">
                                             <div class="txt-innerWrap">
@@ -22,7 +23,7 @@
                                                 </div> -->
 
                                                 <div class="inner-radio">
-                                                    <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
+                                                    <!-- <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox> -->
                                                     <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
                                                         <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
                                                             <div class="opt-inner">
@@ -33,6 +34,14 @@
                                                     </mat-radio-group>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12" style="padding:20px;">
+                                        <div class="col-xs-6 no-padding">
+                                            <button mat-raised-button [disabled]="" (click)="onClickSaveCost();" class="btn btn-default">Save</button>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <button mat-raised-button (click)="onClickClose($event);" class="btn btn-default">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
