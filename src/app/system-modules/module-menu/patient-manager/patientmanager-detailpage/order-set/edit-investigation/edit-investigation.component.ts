@@ -18,6 +18,7 @@ export class EditInvestigationComponent implements OnInit {
   apmisLookupText = '';
   newTemplate = true;
   investigations: any = <any>[];
+  selectedInvestigation: any = <any>{};
 
   constructor(
     private fb: FormBuilder,
@@ -32,30 +33,29 @@ export class EditInvestigationComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
+    this.selectedInvestigation = value;
     this.addInvestigationForm.controls['investigation'].setValue(value.name);
     console.log(value);
   }
 
   onClickAddInvestigation(valid: boolean, value: any) {
     if (valid) {
-      const investigation = {
-        name: value.investigation,
-        comment: '',
-        status: 'Not Done',
-        completed: false,
-      };
+      this.selectedInvestigation.comment = '';
+      this.selectedInvestigation.status = 'Not Done';
+      this.selectedInvestigation.completed = false;
 
-      if (this.investigations.length > 0) {
-        // Check if generic has been added already.
-        const containsGeneric = this.investigations.filter( x => investigation.name === x.name );
-        if (containsGeneric.length < 1) {
-          this.investigations.push(investigation);
-          this._orderSetSharedService.saveItem({ investigations: this.investigations});
-        }
-      } else {
-        this.investigations.push(investigation);
+      // if (this.investigations.length > 0) {
+      //   // Check if generic has been added already.
+      //   const containsGeneric = this.investigations.filter(x => x._id === value.selectedInvestigation._id);
+      //   if (containsGeneric.length < 1) {
+      //     this.investigations.push(this.selectedInvestigation);
+      //     this._orderSetSharedService.saveItem({ investigations: this.investigations});
+      //   }
+      // } else {
+        this.investigations.push(this.selectedInvestigation);
         this._orderSetSharedService.saveItem({ investigations: this.investigations});
-      }
+      // }
+      this.apmisLookupText = '';
       this.addInvestigationForm.reset();
       this.addInvestigationForm.controls['investigation'].setValue('');
     }

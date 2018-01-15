@@ -1,0 +1,51 @@
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Fluid Type</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+        <div>
+            <form [formGroup]="frm_addfluid" novalidate>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Fluid" formControlName="fluidname">
+                    </mat-input-container>
+                </div>
+                <div class="example-full-width act-btn-wrap" id="example-full-width">
+                    <button class="small-btn" mat-raised-button>Add Fluid</button>
+                </div>
+            </form>
+        </div>
+
+        <table cellpadding="0" cellspacing="0" border="0.5">
+          <thead>
+              <tr>
+                  <th>Fluid</th>
+                  <th style="text-align:center;">Action</th>
+              </tr>
+          </thead>
+
+          <tbody>
+              <tr>
+                  <td>Water</td>
+                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
+              </tr>
+              <tr>
+                  <td>Drip</td>
+                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
+              </tr>
+              <tr>
+                  <td>Saline</td>
+                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
+              </tr>
+              <tr>
+                  <td>Water</td>
+                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+</div>
