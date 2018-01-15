@@ -40,6 +40,8 @@ export class BillLookupComponent implements OnInit {
   selectAll = false;
   isProcessing = false;
 
+  recentBillModelId;
+
   cat1 = false;
   cat2 = false;
   cat3 = false;
@@ -98,11 +100,14 @@ export class BillLookupComponent implements OnInit {
     });
 
     this.invoiceService.receiveInvoice().subscribe((payload: any) => {
+      console.log(payload);
       payload.forEach((itemi, i) => {
+
         if (itemi.isModified !== undefined) {
           this.fixedModifiedBill(itemi);
         } else {
           this.fixedGroup(itemi);
+          console.log("adding new item");
         }
       });
 
@@ -191,16 +196,14 @@ export class BillLookupComponent implements OnInit {
   }
 
   onGenerateInvoice() {
+    var newBillItems = [];
     if (this.checkBillitems.length > 0) {
       this.isProcessing = true;
       const billGroup: Invoice = <Invoice>{ billingIds: [] };
       billGroup.facilityId = this.selectedFacility._id;
       billGroup.patientId = this.selectedPatient._id;
-      console.log(this.billGroups);
       this.billGroups.forEach((itemg, g) => {
-        console.log(itemg)
         itemg.bills.forEach((itemb: BillModel, b) => {
-          console.log(itemb);
           if (itemb.isChecked) {
             itemb.billObject.isInvoiceGenerated = true;
             billGroup.billingIds
@@ -278,6 +281,9 @@ export class BillLookupComponent implements OnInit {
         this.subTotal = this.subTotal + existingGroup.total;
         this.total = this.subTotal - this.discount;
       }
+      console.log(this.total);
+      console.log(bill);
+      this.setNewBillItem(bill);
       existingGroup.isOpened = false;
       this.toggleCurrentCategory(existingGroup);
     } else {
@@ -287,12 +293,81 @@ export class BillLookupComponent implements OnInit {
       };
       bill.isChecked = false;
       group.bills.push(bill);
+      console.log(group);
       this.billGroups.push(group);
       this.total = this.subTotal - this.discount;
+      console.log(bill);
+      this.setNewBillItem(bill);
       group.isOpened = false;
       this.toggleCurrentCategory(group);
     }
+    //this.reCalculateBillTotal();
+    console.log(this.billGroups);
   }
+
+  getItemSum(items, key) {
+    var total = 0;
+    for (let k = items.length - 1; k >= 0; k--) {
+      total += items[k][key];
+    }
+    return total;
+  }
+
+  setNewBillItem(bill) {
+    if (bill._id == undefined) {
+      console.log("am here");
+      var newBillItem = {
+        "facilityServiceId": bill.facilityServiceObject.facilityServiceId,
+        "serviceId": bill.facilityServiceObject.serviceId,
+        "facilityId": this.selectedFacility._id,
+        "patientId": this.selectedPatient._id,
+        "description": bill.itemName,
+        "quantity": bill.qty,
+        "totalPrice": bill.amount,
+        "unitPrice": bill.unitPrice
+      };
+      if (this.recentBillModelId != undefined) {
+        console.log(this.recentBillModelId);
+        this.billingService.get(this.recentBillModelId, {}).then((recentBill: any) => {
+          if (recentBill._id != undefined) {
+            recentBill.subTotal += bill.amount;
+            recentBill.grandTotal += bill.amount;
+            recentBill.billItems.push(newBillItem);
+            console.log(recentBill);
+            this.billingService.update(recentBill).then((updatedBill: any) => {
+              console.log(updatedBill);
+              this.getPatientBills();
+              this.isProcessing = false;
+              this._notification("Success", "Updated newly added item(s) to existing billitems");
+            }, error => {
+              console.log(error);
+              this.isProcessing = false;
+              this._notification("Error", "Failed to update newly added item(s) to existing billitems");
+            });
+          }
+        });
+      } else {
+        var newBills = {
+          "facilityId": this.selectedFacility._id,
+          "patientId": this.selectedPatient._id,
+          "billItems": newBillItem,
+          "subTotal": bill.amount,
+          "grandTotal": bill.amount
+        }
+        this.billingService.create(newBills).then(newBills_payload => {
+          this.getPatientBills();
+          this.isProcessing = false;
+          this._notification("Success", "Created new billitems");
+        }, error => {
+          console.log(error);
+          this.isProcessing = false;
+          this._notification("Error", "Failed to create new billitems");
+        });
+      }
+
+    }
+  }
+
 
   fixedGroupExisting(bill: BillItem, _id) {
     const inBill: BillModel = <BillModel>{};
@@ -361,6 +436,9 @@ export class BillLookupComponent implements OnInit {
       .then((payload) => {
         console.log(payload);
         this.listedBillItems = payload.data
+        if (payload.data.length > 0) {
+          this.recentBillModelId = payload.data[payload.data.length - 1]._id;
+        }
         this.masterBillGroups = [];
         this.billGroups = [];
         payload.data.forEach((itemi, i) => {
@@ -425,6 +503,7 @@ export class BillLookupComponent implements OnInit {
       });
     });
     this.total = (this.subTotal - this.discount);
+    console.log(this.total);
   }
 
   onRemoveBill(bill: BillModel, group: any) {

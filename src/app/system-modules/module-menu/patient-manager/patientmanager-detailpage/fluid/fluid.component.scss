@@ -16,7 +16,12 @@
     min-height: 94px;
 }
 .doc-cardWrap{
+    position: relative;
     margin-top: 0;
+}
+.fluid-btn{
+    margin-bottom: 10px;
+    color: #fff;
 }
 .body-divide{
     width: 47%;
@@ -34,25 +39,24 @@
 }
 .doc-contentArea{
     width: 100%;
-}
-form{
-    display: flex;
+    position: relative;
 }
 .cta-1{
     height: 26px;
     width: 68px;
 }
 .frm-item-wrap{
-    width: 33%;
-    margin-left: 10px;
+    width: 90%;
+    margin: 0 auto;
 }
 .mat-form-field {
-    width: 93px;
+    width: 100%;
 }
 .card-tbl .mat-form-field {
-    width: 80% !important;
+    width: 120px !important;
 }
 .card-tbl{
+    position: relative;
     padding: 5px;
     background: #fff;
     box-sizing: border-box;
@@ -76,9 +80,8 @@ th{
     border-bottom: 1px solid #ff2500;
 }
 .summary-figs {
-    background: #eee;
+    background: #f8f8f8;
     margin: 20px auto;
-    padding: 10px;
 }
 .fig-item {
     display: flex;
@@ -92,4 +95,15 @@ th{
     color: rgb(121, 121, 121);
     font-size: 14px;
     font-weight: bold;
+}
+.intr-tag {
+    font-size: 12px;
+    background: #ff2500;
+    color: #fff;
+    padding: 5px;
+}
+.intr-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

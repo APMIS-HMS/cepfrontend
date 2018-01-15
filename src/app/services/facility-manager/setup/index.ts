@@ -98,3 +98,4 @@ export * from './order-set-template.service';
 export * from './treatment-sheet.service';
 export * from './document-upload.service';
 export * from './radiologyinvestigation.service';
+export * from './fluid.service';

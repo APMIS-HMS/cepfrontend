@@ -1,5 +1,6 @@
 <div class="pg-subtitle">TREATEMENT PLAN</div>
 
+
 <div class="doc-mainWrap">
     <div class="doc-contentArea">
         <div class="tbl-listWrap">
@@ -56,12 +57,15 @@
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput [(ngModel)]="nursingCare.comment" placeholder="Comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td>
-                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                            <div (click)="save(nursingCare)" class="tbl-actn-btn">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Done <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
