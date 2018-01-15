@@ -1,7 +1,8 @@
 <div class="modal-baseWrap animated pulse">
-
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Assign Employee Unit</legend>
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Assign Employee Unit</legend>
+    </div>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
 

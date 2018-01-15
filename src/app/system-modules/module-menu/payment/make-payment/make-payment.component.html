@@ -169,59 +169,56 @@
                         </div>
                     </div>
                 </div>
+                <div class="btn-wrap">
+                    <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing" (click)="onOutOfPocket()">
+                        <span class="makepaymentbtn" >
+                            <div [hidden]="isProcessing">
+                            Complete
+                            </div>
+                            <div [hidden]="!isProcessing">
+                            Processing...
+                            <i class='fa fa-spinner fa-spin'></i>
+                            </div>
+                        </span>
+                    </button>
 
-                <button mat-raised-btn class="btn btn-primary" *ngIf="tabWallet" [disabled]="isProcessing" (click)="onOutOfPocket()">
-          <span class="makepaymentbtn" >
-            <div [hidden]="isProcessing">
-              Complete
-            </div>
-            <div [hidden]="!isProcessing">
-              Processing...
-              <i class='fa fa-spinner fa-spin'></i>
-            </div>
-          </span>
-        </button>
+                    <button mat-raised-btn class="btn btn-primary" *ngIf="tabInsurance" [hidden]="!insurancePlan.valid" [disabled]="isProcessing" (click)="onInsuranceCover()">
+                        <span>
+                            <div [hidden]="isProcessing">
+                            Complete
+                            </div>
+                            <div [hidden]="!isProcessing">
+                            Processing...
+                            <i class='fa fa-spinner fa-spin'></i>
+                            </div>
+                        </span>
+                    </button>
 
+                    <button mat-raised-btn class="btn btn-primary" *ngIf="tabCompany" [hidden]="!companyPlan.valid" [disabled]="isProcessing" (click)="onCompanyCover()">
+                        <span>
+                            <div [hidden]="isProcessing">
+                            Complete
+                            </div>
+                            <div [hidden]="!isProcessing">
+                            Processing...
+                            <i class='fa fa-spinner fa-spin'></i>
+                            </div>
+                        </span>
+                    </button>
 
-                <button mat-raised-btn class="btn btn-primary" *ngIf="tabInsurance" [hidden]="!insurancePlan.valid" [disabled]="isProcessing" (click)="onInsuranceCover()">
-          <span>
-            <div [hidden]="isProcessing">
-              Complete
-            </div>
-            <div [hidden]="!isProcessing">
-              Processing...
-              <i class='fa fa-spinner fa-spin'></i>
-            </div>
-          </span>
-        </button>
-
-
-                <button mat-raised-btn class="btn btn-primary" *ngIf="tabCompany" [hidden]="!companyPlan.valid" [disabled]="isProcessing" (click)="onCompanyCover()">
-          <span>
-            <div [hidden]="isProcessing">
-              Complete
-            </div>
-            <div [hidden]="!isProcessing">
-              Processing...
-              <i class='fa fa-spinner fa-spin'></i>
-            </div>
-          </span>
-        </button>
-
-
-                <button mat-raised-btn class="btn btn-primary" *ngIf="tabFamily" [disabled]="isProcessing" (click)="onFamilyCover()">
-          <span>
-            <div [hidden]="isProcessing">
-              Complete
-            </div>
-            <div [hidden]="!isProcessing">
-              Processing...
-              <i class='fa fa-spinner fa-spin'></i>
-            </div>
-          </span>
-        </button>
-                <button class="btn btn-red" (click)="close_onClick()">Cancel</button>
-
+                    <button mat-raised-btn class="btn btn-primary" *ngIf="tabFamily" [disabled]="isProcessing" (click)="onFamilyCover()">
+                        <span>
+                            <div [hidden]="isProcessing">
+                            Complete
+                            </div>
+                            <div [hidden]="!isProcessing">
+                            Processing...
+                            <i class='fa fa-spinner fa-spin'></i>
+                            </div>
+                        </span>
+                    </button>
+                    <button class="btn btn-red" (click)="close_onClick()">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
