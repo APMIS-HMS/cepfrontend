@@ -183,14 +183,9 @@ export class PatientVitalsComponent implements OnInit {
                 const d = new Date(vitalsObjArray[l].updatedAt);
                 let dt = this.dateFormater(d);
                 this.lineChartLabels.push(dt);
-<<<<<<< HEAD
               };
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
               console.log(this.lineChartLabels)
-=======
-              });
-              this.lineChartData = this.refreshVitalsGraph(this.lineChartData);
->>>>>>> 38a7984e784b4731bf00b380bfb61fe7956148c0
             }
 
           }
