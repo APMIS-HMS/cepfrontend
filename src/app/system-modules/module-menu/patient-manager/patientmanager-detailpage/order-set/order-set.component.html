@@ -36,7 +36,7 @@
                                       <span *ngIf="orderSetMed.isBilled === undefined || !orderSetMed.isBilled">Bill</span>
                                       <span *ngIf="orderSetMed.isBilled">Billed</span>
                                     </button>&nbsp;&nbsp;
-                                    <button mat-raised-button class="text-white bg-danger mat-xs-btn">
+                                    <button mat-raised-button (click)="deleteOrderSetItem(i, orderSetMed, 'medication')" class="text-white bg-danger mat-xs-btn">
                                       <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -69,7 +69,7 @@
                                       <span *ngIf="orderSetInves.isBilled === undefined || !orderSetInves.isBilled">Bill</span>
                                       <span *ngIf="orderSetInves.isBilled">Billed</span>
                                     </button>&nbsp;&nbsp;
-                                    <button mat-raised-button class="text-white bg-danger mat-xs-btn">
+                                    <button mat-raised-button (click)="deleteOrderSetItem(i, orderSetInves, 'investigation')" class="text-white bg-danger mat-xs-btn">
                                       <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -124,7 +124,7 @@
                             <tr *ngFor="let orderSetNur of orderSet?.nursingCares; let i=index">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
                                 <td>{{ orderSetNur.name }}</td>
-                                <td class="action-placeholder" style="text-align:center;width:30px;">
+                                <td class="action-placeholder" (click)="deleteOrderSetItem(i, orderSetNur, 'nursingCare')" style="text-align:center;width:30px;">
                                     <div>
                                         <i class="fa fa-close" aria-hidden="true"></i>
                                     </div>
@@ -145,7 +145,7 @@
                             <tr *ngFor="let orderSetPhy of orderSet?.physicianOrders; let i=index">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
                                 <td>{{ orderSetPhy.name }}</td>
-                                <td class="action-placeholder" style="text-align:center;width:30px;">
+                                <td class="action-placeholder" (click)="deleteOrderSetItem(i, orderSetPhy, 'physicianOrder')" style="text-align:center;width:30px;">
                                     <div>
                                         <i class="fa fa-close" aria-hidden="true"></i>
                                     </div>

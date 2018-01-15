@@ -23,6 +23,8 @@ export class FluidComponent implements OnInit {
   inInterval = new FormControl();
   outInterval = new FormControl();
 
+  lineChartOptions: any;
+
   intakeFluidList;
   outputFluidList;
 

@@ -37,23 +37,8 @@ export class EditNursingCareComponent implements OnInit {
         completed: false
       };
 
-      if (this.nursingCares.length > 0) {
-        // Check if generic has been added already.
-        const containsGeneric = this.nursingCares.filter(
-          x => x.name === value.nursingCare
-        );
-        if (containsGeneric.length < 1) {
-          this.nursingCares.push(nursingCare);
-          this._orderSetSharedService.saveItem({
-            nursingCares: this.nursingCares
-          });
-        }
-      } else {
-        this.nursingCares.push(nursingCare);
-        this._orderSetSharedService.saveItem({
-          nursingCares: this.nursingCares
-        });
-      }
+      this.nursingCares.push(nursingCare);
+      this._orderSetSharedService.saveItem({ nursingCares: this.nursingCares });
       this.addNursingCareForm.reset();
     }
   }

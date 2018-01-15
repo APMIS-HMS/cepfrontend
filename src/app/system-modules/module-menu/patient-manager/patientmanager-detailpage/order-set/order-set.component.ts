@@ -69,16 +69,53 @@ export class OrderSetComponent implements OnInit {
 
     // Listen to the event from children components
     this._orderSetSharedService.itemSubject.subscribe(value => {
+      console.log(value);
       if (!!value.medications) {
-        this.orderSet.medications = value.medications;
+        if (!!this.orderSet.medications) {
+            const findItem = this.orderSet.medications
+            .filter(x => x.genericName === value.medications[0].genericName && x.strength === value.medications[0].strength);
+            if (findItem.length === 0) {
+              this.orderSet.medications.push(value.medications[0]);
+            }
+        } else {
+          this.orderSet.medications = value.medications;
+        }
       } else if (!!value.investigations) {
-        this.orderSet.investigations = value.investigations;
+        if (!!this.orderSet.investigations) {
+          const findItem = this.orderSet.investigations.filter(x => x._id === value.investigations[0]._id);
+          if (findItem.length === 0) {
+            this.orderSet.investigations.push(value.investigations[0]);
+          }
+        } else {
+          this.orderSet.investigations = value.investigations;
+        }
       } else if (!!value.procedures) {
-        this.orderSet.procedures = value.procedures;
+        if (!!this.orderSet.procedures) {
+          const findItem = this.orderSet.procedures.filter(x => x._id === value.procedures[0]._id);
+          if (findItem.length === 0) {
+            this.orderSet.procedures.push(value.procedures[0]);
+          }
+        } else {
+          this.orderSet.procedures = value.procedures;
+        }
       } else if (!!value.nursingCares) {
-        this.orderSet.nursingCares = value.nursingCares;
+        if (!!this.orderSet.nursingCares) {
+          const findItem = this.orderSet.nursingCares.filter(x => x.name === value.nursingCares[0].name);
+          if (findItem.length === 0) {
+            this.orderSet.nursingCares.push(value.nursingCares[0]);
+          }
+        } else {
+          this.orderSet.nursingCares = value.nursingCares;
+        }
       } else if (!!value.physicianOrders) {
-        this.orderSet.physicianOrders = value.physicianOrders;
+        if (!!this.orderSet.physicianOrders) {
+          const findItem = this.orderSet.physicianOrders.filter(x => x.name === value.physicianOrders[0].name);
+          if (findItem.length === 0) {
+            this.orderSet.physicianOrders.push(value.physicianOrders[0]);
+          }
+        } else {
+          this.orderSet.physicianOrders = value.physicianOrders;
+        }
       }
     });
   }
@@ -112,6 +149,41 @@ export class OrderSetComponent implements OnInit {
       console.log(err);
     });
     this.showDoc.emit(true);
+  }
+
+  deleteOrderSetItem(index: number, value: any, type: string) {
+    if (type === 'medication') {
+      const findItem = this.orderSet.medications.filter(x => x.genericName === value.genericName && x.strength === value.strength);
+
+      if (findItem.length > 0) {
+        this.orderSet.medications.splice(index, 1);
+      }
+    } else if (type === 'investigation') {
+      const findItem = this.orderSet.investigations.filter( x => x._id === value._id );
+
+      if (findItem.length > 0) {
+        this.orderSet.investigations.splice(index, 1);
+      }
+    } else if (type === 'procedure') {
+      const findItem = this.orderSet.procedures.filter(x => x._id === value._id);
+
+      if (findItem.length > 0) {
+        this.orderSet.procedures.splice(index, 1);
+      }
+    } else if (type === 'nursingCare') {
+      const findItem = this.orderSet.nursingCares.filter(x => x.name === value.name);
+
+      if (findItem.length > 0) {
+        this.orderSet.nursingCares.splice(index, 1);
+      }
+    } else if (type === 'physicianOrder') {
+      const findItem = this.orderSet.physicianOrders.filter(x => x.name === value.name);
+
+      if (findItem.length > 0) {
+        this.orderSet.physicianOrders.splice(index, 1);
+      }
+    }
+    console.log(this.orderSet);
   }
 
   private _getPatient(id) {

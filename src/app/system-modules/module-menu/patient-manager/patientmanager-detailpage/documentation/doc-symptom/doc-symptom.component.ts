@@ -10,9 +10,9 @@ export class DocSymptomComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() symptom: EventEmitter<any> = new EventEmitter<any>();
-  
+
   _tempSympton;
-  
+
   addSymptomForm: FormGroup;
   apmisLookupQuery = {};
   apmisLookupUrl = 'symptoms';
@@ -57,6 +57,10 @@ export class DocSymptomComponent implements OnInit {
     //   this.selectedCompanyCover = <any>{};
     //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
     // }
+  }
+
+  login_show() {
+
   }
 
 }
