@@ -54,7 +54,7 @@
     <div class="card-title">Application Modules</div>
 
     <div class="card2-exo">
-        <div class="card-tbl shadow-grey">
+        <div class="card-tbl shadow-grey tbl-active">
             <div class="card-title">Active Modules</div>
             <!-- <mat-form-field>
             <mat-select placeholder="Time Interval" [formControl]="inInterval">
@@ -69,43 +69,45 @@
             </mat-select>
             </mat-form-field> -->
             <table cellpadding="0" cellspacing="0" border="0.5">
-            <thead>
-                <tr>
-                <th>Fluid</th>
-                <th>Volume</th>
-                <th>Date</th>
-                </tr>
-            </thead>
-        
-            <tbody>
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-        
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-            </tbody>
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th style="text-align:center;">Action</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    <tr>
+                        <td>Pharmacy</td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Laboratory</td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Store</td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Radiology
+                        </td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
-        <div class="card-tbl shadow-grey">
+        <div class="card-tbl shadow-grey tbl-inactive">
             <div class="card-title">Inactive Modules</div>
             <!-- <mat-form-field>
             <mat-select placeholder="Time Interval" [formControl]="outInterval">
@@ -120,39 +122,47 @@
             </mat-select>
             </mat-form-field> -->
             <table cellpadding="0" cellspacing="0" border="0.5">
-            <thead>
-                <tr>
-                <th>Fluid</th>
-                <th>Volume</th>
-                <th>Date</th>
-                </tr>
-            </thead>
-        
-            <tbody>
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-        
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-
-                <tr>
-                <td>Drip</td>
-                <td>20ml</td>
-                <td>11th Sept, 2017. 10:17am</td>
-                </tr>
-            </tbody>
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th style="text-align:center;">Action</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    <tr>
+                        <td>
+                            Payment
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Telemedicine
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Payment
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Payment
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
