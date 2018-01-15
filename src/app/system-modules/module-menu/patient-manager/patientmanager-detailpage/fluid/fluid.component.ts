@@ -22,6 +22,8 @@ export class FluidComponent implements OnInit {
   inInterval = new FormControl();
   outInterval = new FormControl();
 
+  lineChartOptions: any;
+
   intakeFluidList;
   outputFluidList;
 
@@ -261,11 +263,11 @@ export class FluidComponent implements OnInit {
         if (newArr[i] == payload.data[i].fluid.name) {
           newArr[i].name = payload.data[i].fluid.name;
           newArr[i].volume.push(payload.data[i].volume);
-          
+
         } else {
-          newArr.push({name: payload.data[i].fluid.name, volume: []});
+          newArr.push({ name: payload.data[i].fluid.name, volume: [] });
         }
-        
+
       }
 
       console.log(newArr);
