@@ -9,6 +9,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 
 var moment = require("moment");
+var _ = require("lodash");
 
 @Component({
   selector: 'app-fluid',
@@ -45,6 +46,9 @@ export class FluidComponent implements OnInit {
 
   rateOfIntakeFluid;
   rateOfOutputFluid;
+
+  patientFluidSummary;
+  lineChartSummary: Array<any> = [];
 
   // lineChart
   public lineChartData: Array<any> = [
@@ -140,6 +144,7 @@ export class FluidComponent implements OnInit {
     this.fluidService.createPatientFluid(fluidsCont).then(payload => {
       this.loading = false;
       this.frmIntake.reset();
+      this.getPatientFluids(type);
     }).catch(err => {
       console.log(err);
       this.loading = false;
@@ -153,7 +158,10 @@ export class FluidComponent implements OnInit {
       query: {
         "facilityId": this.facility._id,
         "patientId": this.patient._id,
-        "type": type
+        "type": type,
+        $sort: {
+          createdAt: -1
+        }
       }
     }).then((payload) => {
       if (type == "intake") {
@@ -165,6 +173,11 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientIntakeFluid = lol;
         this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / 24);
+        /* let len1 = this.patientOutputFluidList.length - 1;
+        let groupItem = [];
+        for (let l = len1; l >= 0; l--) {
+          let index = groupItem.filter(x => x._id.toS)
+        } */
         console.log(this.patientIntakeFluidList);
       } else if (type == "output") {
         this.patientOutputFluidList = payload.data;
@@ -197,7 +210,10 @@ export class FluidComponent implements OnInit {
       query: {
         "facilityId": this.facility._id,
         "patientId": this.patient._id,
-        "type": type
+        "type": type,
+        $sort: {
+          createdAt: -1
+        }
       }
     }).then((payload) => {
       var a = moment();
@@ -254,25 +270,53 @@ export class FluidComponent implements OnInit {
       query: {
         "facilityId": this.facility._id,
         "patientId": this.patient._id,
-        "type": 'intake'
+        "type": 'intake',
+        $sort: {
+          createdAt: -1
+        }
       }
     }).then(payload => {
-      let newArr = [];
-      let arr;
-      let len = payload.data.length;
-      for (let i = len - 1; i >= 0; i--) {
-        if (newArr[i] == payload.data[i].fluid.name) {
-          newArr[i].name = payload.data[i].fluid.name;
-          newArr[i].volume.push(payload.data[i].volume);
+
+      var result = [];
+      let len1 = this.patientIntakeFluidList.length - 1;
+      let index;
+      for (let i = len1; i >= 0; i--) {
+        const val = this.patientIntakeFluidList[i];
+        index = result.filter(x => x.name.toString() === val.fluid.name.toString());
+        if (index.length > 0) {
+          index[0].sum += val.volume;
+          index[0].volumes.push(val.volume);
+          this.lineChartSummary[0].data.push(val.volume)
 
         } else {
-          newArr.push({ name: payload.data[i].fluid.name, volume: [] });
+          result.push(
+            {
+              _id: this.patientIntakeFluidList[i].fluid._id,
+              name: this.patientIntakeFluidList[i].fluid.name,
+              sum: this.patientIntakeFluidList[i].volume,
+              measurement: this.patientIntakeFluidList[i].measurement,
+              volumes: [this.patientIntakeFluidList[i].volume]
+            }
+          );
+          this.lineChartSummary.push({data: [this.patientIntakeFluidList[i].volume], label: this.patientIntakeFluidList[i].fluid.name});
         }
-
       }
-
-      console.log(newArr);
+      this.patientFluidSummary = result;
+      console.log(result);
+      console.log(this.lineChartSummary);
     });
+  }
+
+  lineChartInfo(){
+    this.fluidService.findPatientFluid({
+      query: {
+        "facilityId": this.facility._id,
+        "patientId": this.patient._id,
+        "type": 'intake'
+      }
+    }).then(lineChartPayload => {
+
+    })
   }
 
   fluidType_show(){

@@ -178,6 +178,8 @@
                 </div> -->
             </div>
 
+            <!--                                                                -->
+
             <div class="summary-figs">
                 <div class="fig-item">
                     <div class="fig-label">Total Output Volume</div>
@@ -207,30 +209,9 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>Drip</td>
-                            <td>20ml</td>
-                            <td>30ml</td>
-                            <td>10ml</td>
-                        </tr>
-
-                        <tr>
-                            <td>Drip</td>
-                            <td>20ml</td>
-                            <td>30ml</td>
-                            <td>10ml</td>
-                        </tr>
-
-                        <tr>
-                            <td>Drip</td>
-                            <td>20ml</td>
-                            <td>30ml</td>
-                            <td>10ml</td>
-                        </tr>
-
-                        <tr>
-                            <td>Drip</td>
-                            <td>20ml</td>
+                        <tr *ngFor="let summary of patientFluidSummary">
+                            <td>{{summary.name}}</td>
+                            <td>{{summary.sum}}</td>
                             <td>30ml</td>
                             <td>10ml</td>
                         </tr>
