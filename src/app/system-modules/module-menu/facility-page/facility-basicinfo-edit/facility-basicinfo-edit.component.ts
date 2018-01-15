@@ -45,7 +45,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 			facilityname: [this.selectedFacility.name, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
 			facilityemail: [this.selectedFacility.email, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
 			facilitywebsite: [this.selectedFacility.website, [<any>Validators.pattern(WEBSITE_REGEX)]],
-			// network: ['', [<any>Validators.minLength(2)]],
+			network: ['', []],
 			address: ['', []],
 			cac: [this.selectedFacility.cacNo, [<any>Validators.required]],
 			facilitystreet: [this.selectedFacility.street, [<any>Validators.required]],
