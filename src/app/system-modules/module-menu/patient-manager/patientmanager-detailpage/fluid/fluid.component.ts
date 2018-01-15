@@ -9,6 +9,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 
 var moment = require("moment");
+var _ = require("lodash");
 
 @Component({
   selector: 'app-fluid',
@@ -42,6 +43,8 @@ export class FluidComponent implements OnInit {
 
   rateOfIntakeFluid;
   rateOfOutputFluid;
+
+  patientFluidSummary;
 
   // lineChart
   public lineChartData: Array<any> = [
@@ -162,6 +165,11 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientIntakeFluid = lol;
         this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / 24);
+        /* let len1 = this.patientOutputFluidList.length - 1;
+        let groupItem = [];
+        for (let l = len1; l >= 0; l--) {
+          let index = groupItem.filter(x => x._id.toS)
+        } */
         console.log(this.patientIntakeFluidList);
       } else if (type == "output") {
         this.patientOutputFluidList = payload.data;
@@ -254,21 +262,27 @@ export class FluidComponent implements OnInit {
         "type": 'intake'
       }
     }).then(payload => {
-      let newArr = [];
-      let arr;
-      let len = payload.data.length;
-      for (let i = len - 1; i >= 0; i--) {
-        if (newArr[i] == payload.data[i].fluid.name) {
-          newArr[i].name = payload.data[i].fluid.name;
-          newArr[i].volume.push(payload.data[i].volume);
-          
-        } else {
-          newArr.push({name: payload.data[i].fluid.name, volume: []});
-        }
-        
-      }
 
-      console.log(newArr);
+      var result = [];
+      let len1 = this.patientIntakeFluidList.length - 1;
+      let index;
+      for (let i = len1; i >= 0; i--) {
+        const val = this.patientIntakeFluidList[i];
+        index = result.filter(x => x.name.toString() === val.fluid.name.toString());
+        if (index.length > 0) {
+          index[0].sum += val.volume;
+
+        } else {
+          result.push(
+            {
+              _id: this.patientIntakeFluidList[i].fluid._id,
+              name: this.patientIntakeFluidList[i].fluid.name,
+              sum: this.patientIntakeFluidList[i].volume
+            }
+          );
+        }
+      }
+      this.patientFluidSummary = result;
     });
   }
 

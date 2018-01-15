@@ -170,21 +170,23 @@
                 </div>
             </div>
 
+            <!--                                                                -->
+
             <div class="summary-figs">
-                <div class="fig-item">
-                    <div class="fig-label">Total Output Volume</div>
-                    <div class="fig-val">{{totalPatientOutputFluid}} ml</div>
-                </div>
-                <div class="fig-item">
-                    <div class="fig-label">Rate</div>
-                    <div class="fig-val">{{rateOfOutputFluid}} ml/hr</div>
-                </div>
+                <div class="card2-exo">
+                  <div class="fig-item">
+                      <div class="fig-label">Total Output Volume</div>
+                      <div class="fig-val">{{totalPatientOutputFluid}} ml</div>
+                  </div>
+                  <div class="fig-item">
+                      <div class="fig-label">Balance</div>
+                      <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml</div>
+                  </div>
+                  <div class="fig-item">
+                      <div class="fig-label">Rate</div>
+                      <div class="fig-val">{{rateOfOutputFluid}} ml/hr</div>
+                  </div>
               </div>
-              <div class="fig-item">
-                  <div class="fig-label">Balance</div>
-                  <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml</div>
-              </div>
-            </div>
 
             <div class="card-tbl-full">
                 <div class="modal_title">Summary Table</div>
