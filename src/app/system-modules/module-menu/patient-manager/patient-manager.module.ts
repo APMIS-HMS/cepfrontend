@@ -66,6 +66,7 @@ import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-upload
 import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
 import { DateRangePickerModule } from 'ng-pick-daterange';
 import { DateTimePickerModule } from 'ng-pick-datetime';
+import { FluidTypeComponent } from './patientmanager-detailpage/fluid/fluid-type/fluid-type.component';
 
 
 @NgModule({
@@ -109,7 +110,8 @@ import { DateTimePickerModule } from 'ng-pick-datetime';
         DocUploadsComponent,
         DocUploadComponent,
         DocUploadDetailComponent,
-        PatientVitalsComponent
+        PatientVitalsComponent,
+        FluidTypeComponent
     ],
     exports: [
     ],

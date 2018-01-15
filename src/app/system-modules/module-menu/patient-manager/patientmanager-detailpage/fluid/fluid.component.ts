@@ -21,6 +21,7 @@ export class FluidComponent implements OnInit {
   public frmOutput: FormGroup;
   inInterval = new FormControl();
   outInterval = new FormControl();
+  fluidType_pop = false;
 
   lineChartOptions: any;
 
@@ -272,6 +273,13 @@ export class FluidComponent implements OnInit {
 
       console.log(newArr);
     });
+  }
+
+  fluidType_show(){
+    this.fluidType_pop = true;
+  }
+  close_onClick(message: boolean): void {
+    this.fluidType_pop = false;
   }
 
 
