@@ -293,6 +293,7 @@ export class FluidComponent implements OnInit {
               _id: this.patientIntakeFluidList[i].fluid._id,
               name: this.patientIntakeFluidList[i].fluid.name,
               sum: this.patientIntakeFluidList[i].volume,
+              measurement: this.patientIntakeFluidList[i].measurement,
               volumes: [this.patientIntakeFluidList[i].volume]
             }
           );
