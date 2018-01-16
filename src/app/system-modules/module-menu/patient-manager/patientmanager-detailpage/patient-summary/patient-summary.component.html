@@ -294,6 +294,6 @@
     </div>
 
     <div *ngIf="addVitals_view" class="modal-overlay">
-        <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" class="form-modal center-center"></app-add-vitals>
+        <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" (refreshVitalsChanged)="refreshVitalsChanged($event)" class="form-modal center-center"></app-add-vitals>
     </div>
 </div>

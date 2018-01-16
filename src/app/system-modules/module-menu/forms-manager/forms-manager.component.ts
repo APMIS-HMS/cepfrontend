@@ -7,9 +7,7 @@ import { Router, Event, NavigationStart, ActivatedRoute, NavigationEnd, Navigati
   styleUrls: ['./forms-manager.component.scss']
 })
 export class FormsManagerComponent implements OnInit {
-
   pageInView = 'Treatement Template Manager';
-  
   treatementTemplate = true;
   formGen = false;
 
@@ -23,25 +21,25 @@ export class FormsManagerComponent implements OnInit {
   treatementTemplate_show() {
     this.treatementTemplate = true;
     this.formGen = false;
-    this.pageInView = "Treatement Template Manager";
+    this.pageInView = 'Treatement Template Manager';
     this.router.navigate(['/dashboard/forms-manager/treatement-template']);
   }
   formGen_show() {
     this.treatementTemplate = false;
     this.formGen = true;
-    this.pageInView = "Form Generator";
+    this.pageInView = 'Form Generator';
     this.router.navigate(['/dashboard/forms-manager/forms']);
   }
   private checkPageUrl(param: string) {
 		if (param.includes('treatement-template')) {
 			this.treatementTemplate = true;
       this.formGen = false;
-      this.pageInView = "Treatement Template Manager";
+      this.pageInView = 'Treatement Template Manager';
 		} else if (param.includes('forms')) {
 			this.treatementTemplate = false;
       this.formGen = true;
-      this.pageInView = "Form Generator";
-		} 
+      this.pageInView = 'Form Generator';
+		}
 	}
 
 }

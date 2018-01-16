@@ -13,6 +13,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { IDateRange } from 'ng-pick-daterange';
+import * as format from 'date-fns/format';
 
 @Component({
   selector: 'app-patient-vitals',
@@ -130,7 +131,6 @@ export class PatientVitalsComponent implements OnInit {
 
   ngOnInit() {
     if (this.patient !== undefined) {
-      console.log(this.patient);
       this.bindVitalsDataToChart();
     }
 
@@ -158,16 +158,13 @@ export class PatientVitalsComponent implements OnInit {
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
         let len2 = payload.data[0].documentations.length - 1;
-        console.log(payload.data[0].documentations);
         for (let k = len2; k >= 0; k--) {
           if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
             vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
             this.tableChartData = vitalsObjArray;
-            console.log(vitalsObjArray);
             if (vitalsObjArray !== undefined) {
               let len3 = vitalsObjArray.length - 1;
-              console.log(len3);
-              for (let l = len3; l >= 0; l--) {
+              for (let l = 0; l <= len3; l++) {
                 this.lineChartData[0].data.push(vitalsObjArray[l].bloodPressure.systolic);
                 this.lineChartData[0].label = "Systolic";
                 this.lineChartData[1].data.push(vitalsObjArray[l].bloodPressure.diastolic);
@@ -181,11 +178,11 @@ export class PatientVitalsComponent implements OnInit {
                 this.lineChartData[5].data.push(vitalsObjArray[l].bodyMass.bmi);
                 this.lineChartData[5].label = "BMI";
                 const d = new Date(vitalsObjArray[l].updatedAt);
-                let dt = this.dateFormater(d);
+                let dt = format(d, 'DD/MM/YY HH:mm:ss a');
                 this.lineChartLabels.push(dt);
               };
+              this.lineChartLabels.splice(0, 1);
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
-              console.log(this.lineChartLabels)
             }
 
           }
@@ -196,21 +193,6 @@ export class PatientVitalsComponent implements OnInit {
     });
   }
 
-  getTableChartData() {
-    let len5 = this.lineChartData.length - 1;
-    for (let j = len5; j >= 0; j--) {
-this.tableChartData.push()
-    }
-  }
-
-  dateFormater(d) {
-    var dt = [d.getDate(),
-    d.getMonth() + 1].join('/') + ' ' +
-      [d.getHours(),
-      d.getMinutes(),
-      d.getSeconds()].join(':');
-    return dt;
-  }
   refreshVitalsGraph(lineChartData: any[]) {
     let _lineChartData: Array<any> = new Array(lineChartData.length);
     for (let i = 0; i < lineChartData.length; i++) {
@@ -220,6 +202,11 @@ this.tableChartData.push()
       }
     }
     return _lineChartData;
+  }
+
+  refreshVitalsChanged(value) {
+    this.lineChartLabels = [''];
+    this.bindVitalsDataToChart();
   }
 
   addVitals_show(e) {

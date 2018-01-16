@@ -16,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AddVitalsComponent implements OnInit {
   @Input() patient: any = <any>{};
+  @Output() refreshVitalsChanged = new EventEmitter();
   mainErr = true;
   errMsg = 'you have unresolved errors';
   vitalRythm: any[] = [];
@@ -239,6 +240,7 @@ export class AddVitalsComponent implements OnInit {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
         this.saveBtnText = "Add Vitals";
+        this.refreshVitalsChanged.emit(payload);
         this._notification('Success', 'Vitals saved successfully');
       },error=>{
         console.log(error);
