@@ -5,6 +5,10 @@ label {
     color: #797D7F;
 }
 
+.modal-baseWrap .mat-input-container {
+    width: auto;
+}
+
 .modal-baseWrap {
     max-width: 730px;
     padding: 30px;
@@ -38,6 +42,7 @@ label {
     background: #ccc;
     border-radius: 30px;
     padding: 5px 0;
+    margin-bottom: 20px;
 }
 
 .strapUser {
