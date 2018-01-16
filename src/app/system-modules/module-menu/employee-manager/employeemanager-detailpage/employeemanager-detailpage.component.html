@@ -58,7 +58,22 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"></i></a>
+                        <a *ngIf="editDepartment" (click)="updateEmployee()"><i class="fa fa-check"><span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span></i></a>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="emp-dept">{{employee?.professionObject?.name}}
+                        <span *ngIf="!editProfession" (click)="toggleProfessionShow()" class="editButton">
+                        <i class="fa fa-edit"></i></span>
+                    </div>
+                    <div *ngIf="editProfession" class="emp-dept">
+                        <mat-form-field>
+                            <mat-select placeholder="Professions" [(ngModel)]="selectedProfessionValue">
+                                <mat-option *ngFor="let profession of professions" [value]="profession._id">
+                                    {{profession.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <a *ngIf="editProfession" (click)="updateEmployeeProfession()"><i class="fa fa-check"></i><span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span></a>
                     </div>
                     <div class="emp-email">{{employee?.employeeDetails?.email}}</div>
                     <div class="emp-number">{{employee?.employeeDetails?.phoneNumber}}</div>
