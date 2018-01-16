@@ -1,52 +1,54 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
         <legend class="modal_title">Individual Account</legend>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
-    <div *ngIf="success" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!</div>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <form [formGroup]="frmPerson" novalidate>
+    <div class="modal-baseWrap">
+        <div *ngIf="success" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!</div>
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-        <div class="lhs">
+        <form [formGroup]="frmPerson" novalidate>
 
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="First Name" formControlName="firstname">
-                </mat-input-container>
-            </div>
+            <div class="lhs">
 
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Last Name" formControlName="lastname">
-                </mat-input-container>
-            </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="First Name" formControlName="firstname">
+                    </mat-input-container>
+                </div>
 
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input matInput placeholder="Other Names" formControlName="othernames">
-                </mat-input-container>
-            </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Last Name" formControlName="lastname">
+                    </mat-input-container>
+                </div>
 
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Gender" formControlName="gender">
-                        <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput placeholder="Other Names" formControlName="othernames">
+                    </mat-input-container>
+                </div>
 
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input matInput [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob">
-                    <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
-                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                </mat-input-container>
-                <mat-datepicker #picker></mat-datepicker>
-            </div>
+                <div class="frm-item-wrap">
+                    <mat-form-field>
+                        <mat-select placeholder="Gender" formControlName="gender">
+                            <mat-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-            <!-- <div class="frm-item-wrap">
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob">
+                        <!-- <button mdSuffix [matDatepickerToggle]="picker"></button> -->
+                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                    </mat-input-container>
+                    <mat-datepicker #picker></mat-datepicker>
+                </div>
+
+                <!-- <div class="frm-item-wrap">
                 <mat-input-container class="example-full-width">
                     <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
                     <input type="password" matInput mat-error formControlName="password" #showhideinput placeholder="Password">
@@ -61,57 +63,58 @@
                     <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
                 </mat-input-container>
             </div> -->
-        </div>
-
-        <div class="rhs">
-
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Nationality" formControlName="nationality" (change)="onNationalityChange($event.value)">
-                        <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
             </div>
 
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="State" formControlName="state">
-                        <mat-option *ngFor="let item of selectedCountry?.states" [value]="item">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Local Government" formControlName="lga">
-                        <mat-option *ngFor="let item of selectedState?.lgs" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Home Address" formControlName="address">
-                </mat-input-container>
+            <div class="rhs">
+
+                <div class="frm-item-wrap">
+                    <mat-form-field>
+                        <mat-select placeholder="Nationality" formControlName="nationality" (change)="onNationalityChange($event.value)">
+                            <mat-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <mat-form-field>
+                        <mat-select placeholder="State" formControlName="state">
+                            <mat-option *ngFor="let item of selectedCountry?.states" [value]="item">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-form-field>
+                        <mat-select placeholder="Local Government" formControlName="lga">
+                            <mat-option *ngFor="let item of selectedState?.lgs" [value]="item._id">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Home Address" formControlName="address">
+                    </mat-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="email" matInput mat-error placeholder="Email Address" formControlName="email">
+                    </mat-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="phone">
+                    </mat-input-container>
+                </div>
+
             </div>
 
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input type="email" matInput mat-error placeholder="Email Address" formControlName="email">
-                </mat-input-container>
+            <div class="clear"></div>
+            <!--<button mat-raised-button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">Sign Up</button>-->
+            <div (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
+                Register
             </div>
 
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="phone">
-                </mat-input-container>
-            </div>
-
-        </div>
-
-        <div class="clear"></div>
-        <!--<button mat-raised-button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">Sign Up</button>-->
-        <div (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
-            Register
-        </div>
-
-    </form>
+        </form>
+    </div>
 </div>

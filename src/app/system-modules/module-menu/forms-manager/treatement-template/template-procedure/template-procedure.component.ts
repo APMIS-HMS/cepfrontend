@@ -1,26 +1,13 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  Output,
-  Input,
-  ElementRef
-} from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
-import {
-  FacilitiesService,
-  FacilitiesServiceCategoryService
-} from '../../../../../services/facility-manager/setup/index';
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FacilitiesService, FacilitiesServiceCategoryService } from '../../../../../services/facility-manager/setup/index';
+
 @Component({
   selector: 'app-template-procedure',
   templateUrl: './template-procedure.component.html',
   styleUrls: ['./template-procedure.component.scss']
 })
+
 export class TemplateProcedureComponent implements OnInit {
   addProcedureForm: FormGroup;
   apmisLookupQuery = {};
@@ -33,32 +20,25 @@ export class TemplateProcedureComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    // private _socketService: SocketService,
-    // private _restService: RestService,
     private _facilityServiceCategoryService: FacilitiesServiceCategoryService
   ) {
-    this.apmisLookupQuery = {
-      query: {
-        'categories.name': 'Procedure',
-        $select: { 'categories.$': 1 }
-      }
-    };
-    this._facilityServiceCategoryService
-      .find({
-        query: {
-          'categories.name': 'Procedure',
-          'categories.services.name': 'Minor Wound Dressing',
-          $select: { 'categories.services.$': 1 }
-        }
-      })
-      .then(
-        payload => {
-          console.log(payload);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    // this.apmisLookupQuery = {
+    //   query: {
+    //     'categories.name': 'Procedure',
+    //     $select: { 'categories.$': 1 }
+    //   }
+    // };
+    // this._facilityServiceCategoryService .find({
+    //   query: {
+    //     'categories.name': 'Procedure',
+    //     'categories.services.name': 'Minor Wound Dressing',
+    //     $select: { 'categories.services.$': 1 }
+    //   }
+    // }).then(payload => {
+    //   console.log(payload);
+    // }, error => {
+    //   console.log(error);
+    // });
   }
 
   ngOnInit() {
@@ -66,19 +46,19 @@ export class TemplateProcedureComponent implements OnInit {
       procedure: ['', [<any>Validators.required]]
     });
 
-    // this.addProcedureForm.controls["procedure"].valueChanges
-    //   .debounceTime(200)
-    //   .distinctUntilChanged()
-    //   .switchMap(value => this._socket.find(query))
-    //   .subscribe((payload: any) => {
-    //     console.log(payload);
-    //     this.cuDropdownLoading = false;
-    //     if (payload !== undefined && payload.data !== undefined) {
-    //       this.results = payload.data;
-    //     } else {
-    //       this.results = payload;
-    //     }
-    //   });
+    this.addProcedureForm.controls['procedure'].valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .switchMap(value => this._facilityServiceCategoryService.searchProcedure(value))
+      .subscribe((payload: any) => {
+        console.log(payload);
+        // this.cuDropdownLoading = false;
+        // if (payload !== undefined && payload.data !== undefined) {
+        //   this.results = payload.data;
+        // } else {
+        //   this.results = payload;
+        // }
+      });
   }
 
   // onClickAddPhysicianOrder(valid: boolean, value: any) {

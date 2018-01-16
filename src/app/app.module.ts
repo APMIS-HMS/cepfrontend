@@ -2,7 +2,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
 import { PolicyService } from './services/facility-manager/setup/policy.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
@@ -27,6 +27,8 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { SignupComponent } from './signup/signup.component';
 import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/services/clinic-helper.service';
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
+
+import { ApmisErrorHandler } from './services/facility-manager/error-handler.service';
 // import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
@@ -76,6 +78,7 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
     // PdfViewerModule
   ],
   providers: [
+    { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.UserService, SetupService.GenderService,

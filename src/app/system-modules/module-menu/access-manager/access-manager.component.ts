@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class AccessManagerComponent implements OnInit {
 
   accessUsers = true;
+  
 
   searchControl = new FormControl();
 

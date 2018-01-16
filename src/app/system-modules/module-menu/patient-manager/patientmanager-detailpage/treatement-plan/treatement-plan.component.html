@@ -24,22 +24,26 @@
                         <td class="action-placeholder" style="text-align:center;">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <div class="action-container shadow-RB">
-                                <div (click)="administer(medication, m)" class="action-item">
+                                <div *ngIf="medication.status!=='Suspended' && medication.status!=='Discontinued' && medication.status!=='Completed'" (click)="administer(medication, m)" class="action-item">
                                     <i class="fa fa-user-md" aria-hidden="true"></i>
                                     <span>Administer</span>
                                 </div>
 
-                                <div (click)="suspendMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status!=='Completed' && medication.status!=='Discontinued' && medication.status !=='Suspended'" (click)="suspendMedication(medication, m)" class="action-item">
                                     <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
                                     <span>Suspend</span>
                                 </div>
+                                 <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)" class="action-item">
+                                    <i class="fa fa-play text-green" aria-hidden="true"></i>
+                                    <span>Activate</span>
+                                </div>
 
-                                <div (click)="discontinueMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'" (click)="discontinueMedication(medication, m)" class="action-item">
                                     <i class="fa fa-ban text-red" aria-hidden="true"></i>
                                     <span>Discontinue</span>
                                 </div>
 
-                                <div (click)="completeMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'" (click)="completeMedication(medication, m)" class="action-item">
                                     <i class="fa fa-check text-green" aria-hidden="true"></i>
                                     <span>Completed</span>
                                 </div>
