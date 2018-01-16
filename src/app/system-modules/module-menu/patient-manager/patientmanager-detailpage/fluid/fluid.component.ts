@@ -144,6 +144,7 @@ export class FluidComponent implements OnInit {
       this.loading = false;
       this.frmIntake.reset();
       this.getPatientFluids(type);
+      this.getFluidSummary();
     }).catch(err => {
       console.log(err);
       this.loading = false;
