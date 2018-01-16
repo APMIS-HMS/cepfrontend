@@ -132,6 +132,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
           'patientId.timeLines': 0,
           'attendance.createdAt': 0, 'attendance.updateddAt': 0
         },
+        $sort:{createdAt:-1}
       }
     })
       .then(payload => {
@@ -244,7 +245,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
           return Observable.fromPromise(this.employeeService.find({
             query: {
               facilityId: this.selectedFacility._id,
-              professionId: result.data[0].name
+              professionId: result.data[0]._id
             }
           }))
         }
