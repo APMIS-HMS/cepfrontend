@@ -120,7 +120,7 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    //SetupService.FluidService
+    SetupService.FluidService
   ],
   bootstrap: [AppComponent]
 })
