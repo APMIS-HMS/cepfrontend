@@ -1,5 +1,6 @@
 <div class="pg-subtitle">TREATEMENT PLAN</div>
 
+
 <div class="doc-mainWrap">
     <div class="doc-contentArea">
         <div class="tbl-listWrap">
@@ -9,33 +10,42 @@
                     <tr *ngIf="treatmentSheet?.medications === undefined">
                         <td class="text-center" colspan="5"> No data available in table</td>
                     </tr>
-                    <tr *ngFor="let medication of treatmentSheet?.medications;">
+                    <tr *ngFor="let medication of treatmentSheet?.medications; let m = index">
                         <td>{{ medication.genericName }} - {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
                         <td>{{ medication.status }}</td>
                         <td>2hrs 24mins 36secs to start</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput [(ngModel)]="medication.comment" placeholder="Comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td class="action-placeholder" style="text-align:center;">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <div class="action-container shadow-RB">
-                                <div (click)="slideEdit(patient)" class="action-item">
+                                <div *ngIf="medication.status!=='Suspended' && medication.status!=='Discontinued' && medication.status!=='Completed'" (click)="administer(medication, m)" class="action-item">
                                     <i class="fa fa-user-md" aria-hidden="true"></i>
                                     <span>Administer</span>
                                 </div>
 
-                                <div (click)="setAppointment(patient)" class="action-item">
-                                    <i class="fa fa-pause" aria-hidden="true"></i>
+                                <div *ngIf="medication.status!=='Completed' && medication.status!=='Discontinued' && medication.status !=='Suspended'" (click)="suspendMedication(medication, m)" class="action-item">
+                                    <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
                                     <span>Suspend</span>
                                 </div>
+                                 <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)" class="action-item">
+                                    <i class="fa fa-play text-green" aria-hidden="true"></i>
+                                    <span>Activate</span>
+                                </div>
 
-                                <div (click)="payPlanShow(patient)" class="action-item">
-                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'" (click)="discontinueMedication(medication, m)" class="action-item">
+                                    <i class="fa fa-ban text-red" aria-hidden="true"></i>
                                     <span>Discontinue</span>
+                                </div>
+
+                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'" (click)="completeMedication(medication, m)" class="action-item">
+                                    <i class="fa fa-check text-green" aria-hidden="true"></i>
+                                    <span>Completed</span>
                                 </div>
                             </div>
                         </td>
@@ -56,12 +66,15 @@
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput [(ngModel)]="nursingCare.comment" placeholder="Comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td>
-                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                            <div (click)="save(nursingCare)" class="tbl-actn-btn">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Done <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

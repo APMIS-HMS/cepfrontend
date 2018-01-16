@@ -37,17 +37,8 @@ export class EditPhysicianOrderComponent implements OnInit {
         completed: false
       };
 
-      if (this.physicianOrders.length > 0) {
-        // Check if generic has been added already.
-        const containsGeneric = this.physicianOrders.filter(x => x.name === value.physicianOrder);
-        if (containsGeneric.length < 1) {
-          this.physicianOrders.push(physicianOrder);
-          this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders });
-        }
-      } else {
-        this.physicianOrders.push(physicianOrder);
-        this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders});
-      }
+      this.physicianOrders.push(physicianOrder);
+      this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders});
       this.addPhysicianOrderForm.reset();
     }
   }

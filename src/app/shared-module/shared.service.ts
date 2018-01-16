@@ -18,6 +18,10 @@ export class SharedService {
 
   private announceOrderSetSource = new Subject<Object>();
   announceOrderSetSource$ = this.announceOrderSetSource.asObservable();
+
+  private announceBilledOrderSetSource = new Subject<Object>();
+  announceBilledOrderSet$ = this.announceBilledOrderSetSource.asObservable();
+
   private announceDiagnosisSystemOrderSource = new Subject<Object>();
   announceDiagnosisSystemOrder$ = this.announceDiagnosisSystemOrderSource.asObservable();
 
@@ -37,6 +41,10 @@ export class SharedService {
 
   announceOrderSet(orderSet) {
     this.announceOrderSetSource.next(orderSet);
+  }
+
+  announceBilledOrderSet(orderSet) {
+    this.announceBilledOrderSetSource.next(orderSet);
   }
 
   submitForm(form: Object) {

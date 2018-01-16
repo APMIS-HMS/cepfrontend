@@ -73,7 +73,7 @@
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
         <app-fluid *ngIf="menuFluid"></app-fluid>
-        <app-patient-vitals *ngIf="menuVitals"></app-patient-vitals>
+        <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>
         <app-doc-uploads [patient]=patient *ngIf="menuUploads"></app-doc-uploads>
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>

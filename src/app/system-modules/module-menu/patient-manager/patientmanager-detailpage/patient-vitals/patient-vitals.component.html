@@ -38,48 +38,15 @@
             </thead>
         
             <tbody>
-              <tr>
-                <td>12th Jan, 2018. 11:09am</td>
-                <td>2</td>
-                <td>55</td>
-                <td>43</td>
-                <td>23</td>
-                <td>2</td>
-                <td>55</td>
-                <td>43</td>
-              </tr>
-        
-              <tr>
-                  <td>12th Jan, 2018. 11:09am</td>
-                  <td>2</td>
-                  <td>55</td>
-                  <td>43</td>
-                  <td>23</td>
-                  <td>2</td>
-                  <td>55</td>
-                  <td>43</td>
-              </tr>
-
-              <tr>
-                  <td>12th Jan, 2018. 11:09am</td>
-                  <td>2</td>
-                  <td>55</td>
-                  <td>43</td>
-                  <td>23</td>
-                  <td>2</td>
-                  <td>55</td>
-                  <td>43</td>
-              </tr>
-
-              <tr>
-                  <td>12th Jan, 2018. 11:09am</td>
-                  <td>2</td>
-                  <td>55</td>
-                  <td>43</td>
-                  <td>23</td>
-                  <td>2</td>
-                  <td>55</td>
-                  <td>43</td>
+              <tr *ngFor="let item of tableChartData">
+                <td>{{item.updatedAt|date:'medium'}}</td>
+                <td>{{item.temperature}}</td>
+                <td>{{item.pulseRate.pulseRateValue}}</td>
+                <td>{{item.respiratoryRate}}</td>
+                <td>S: {{item.bloodPressure.systolic}} D: {{item.bloodPressure.diastolic}}</td>
+                <td>{{item.bodyMass.weight}}</td>
+                <td>{{item.bodyMass.height}}</td>
+                <td>{{item.bodyMass.bmi}}</td>
               </tr>
             </tbody>
           </table>
@@ -89,5 +56,5 @@
   </div>
 </div>
 <div *ngIf="addVitals_view" class="modal-overlay">
-    <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" class="form-modal center-center"></app-add-vitals>
+    <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" (refreshVitalsChanged)="refreshVitalsChanged($event)" class="form-modal center-center"></app-add-vitals>
 </div>
