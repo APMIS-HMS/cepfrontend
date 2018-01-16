@@ -19,12 +19,28 @@ export class DocSymptomComponent implements OnInit {
   apmisLookupDisplayKey = 'name';
   apmisLookupText = '';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit() {
     this.addSymptomForm = this.fb.group({
       symptom: ['', [<any>Validators.required]],
       symptomDuration: ['', [<any>Validators.required]]
+    });
+
+    this.addSymptomForm.controls['symptom'].valueChanges.subscribe(value => {
+
+      if (value !== null && value.length === 0) {
+        this.apmisLookupQuery = {
+          name: { $regex: -1, '$options': 'i' },
+          $limit: 100
+        }
+      } else {
+        this.apmisLookupQuery = {
+          name: { $regex: value, '$options': 'i' },
+          $limit: 100
+        }
+      }
     });
   }
 
@@ -40,7 +56,7 @@ export class DocSymptomComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
-    let isExisting = false;
+    const isExisting = false;
     this._tempSympton = value;
     console.log(this._tempSympton);
 

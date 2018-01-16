@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./treatement-plan.component.scss']
 })
 export class TreatementPlanComponent implements OnInit {
+  treatmentSheetData: any;
   isSaving: boolean;
   @Input() patient: any;
   facility: Facility = <Facility>{};
@@ -68,6 +69,8 @@ export class TreatementPlanComponent implements OnInit {
       }
     }).then(res => {
       if (res.data.length > 0) {
+        console.log(res.data)
+        this.treatmentSheetData = res.data[0];
         this.treatmentSheet = res.data[0].treatmentSheet;
       }
     }).catch(err => { });
@@ -105,45 +108,26 @@ export class TreatementPlanComponent implements OnInit {
   }
   save(nursingCare) {
     this.isSaving = true;
-    if (true) {
-      console.log(nursingCare);
-      console.log(this.loginEmployee);
-      console.log(this.selectedFacility);
 
-
-      // documentType:{
-      //   facilityId:
-      //   isSide:false
-      //   title:'Nursing Care'
-      //   }
-
-      //   body:{
-      //   'Nursing Care': value,
-      //   Action:Done on dateandtime,
-      //   'comment':value
-      //   }
-
-
-
-      const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.facilityId = this.selectedFacility;
-      doc.createdBy = this.loginEmployee;
-      doc.patientId = this.patient._id;
-      doc.document = {
-        documentType: {
-          facilityId: this.selectedFacility._id,
-          isSide: false,
-          title: 'Nursing Care'
-        },
-        body: {
-          'Nursing Care': nursingCare.name,
-          Done: new Date().toLocaleString('en_NG'),
-          'comment': nursingCare.comment
-        }
+    const doc: PatientDocumentation = <PatientDocumentation>{};
+    doc.facilityId = this.selectedFacility;
+    doc.createdBy = this.loginEmployee;
+    doc.patientId = this.patient._id;
+    doc.document = {
+      documentType: {
+        facilityId: this.selectedFacility._id,
+        isSide: false,
+        title: 'Nursing Care'
+      },
+      body: {
+        'Nursing Care': nursingCare.name,
+        Done: 'By ' + this.loginEmployee.employeeDetails.lastName + ' ' + this.loginEmployee.employeeDetails.firstName +
+          ' at ' + new Date().toLocaleString(),
+        'comment': nursingCare.comment
       }
-
-      this.patientDocumentation.documentations.push(doc);
     }
+
+    this.patientDocumentation.documentations.push(doc);
     console.log(this.patientDocumentation.documentations)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
       nursingCare.comment = '';
@@ -152,6 +136,126 @@ export class TreatementPlanComponent implements OnInit {
       this.isSaving = false;
     }, error => {
       this.isSaving = false;
+    });
+  }
+  administer(medication, index) {
+    console.log(medication);
+    medication.staus = 'Started';
+    const doc: PatientDocumentation = <PatientDocumentation>{};
+    doc.facilityId = this.selectedFacility;
+    doc.createdBy = this.loginEmployee;
+    doc.patientId = this.patient._id;
+    doc.document = {
+      documentType: {
+        facilityId: this.selectedFacility._id,
+        isSide: false,
+        title: 'Medication Order'
+      },
+      body: {
+        'Doctor Instruction': 'Give ' + medication.genericName + ' ' + medication.form + ' '
+          + medication.frequency + ' for ' + medication.duration + ' ' + medication.durationUnit,
+        Done: 'By ' + this.loginEmployee.employeeDetails.lastName + ' ' + this.loginEmployee.employeeDetails.firstName +
+          ' at ' + new Date().toLocaleString(),
+        'comment': medication.comment
+      }
+    }
+    console.log(doc);
+
+    this.patientDocumentation.documentations.push(doc);
+
+    console.log(this.patientDocumentation.documentations)
+    this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+      medication.comment = '';
+      this.patientDocumentation = payload;
+      this.documentationService.announceDocumentation({ type: 'Allergies' });
+      this.isSaving = false;
+      this._updateTreatmentSheet(medication, index);
+    }, error => {
+      this.isSaving = false;
+    });
+  }
+
+  _updateTreatmentSheet(medication, index) {
+    this.isSaving = true;
+    const medicationObj = this.treatmentSheet.medications[index];
+    medicationObj.status = 'Started';
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
+    });
+  }
+
+  completeMedication(medication, index) {
+    console.log(medication);
+    const medicationObj = this.treatmentSheet.medications[index];
+    this.isSaving = true;
+    medicationObj.status = 'Completed';
+    medicationObj.completed = true;
+
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
+    });
+  }
+  discontinueMedication(medication, index) {
+    console.log(medication);
+    const medicationObj = this.treatmentSheet.medications[index];
+    this.isSaving = true;
+    medicationObj.status = 'Discontinued';
+    medicationObj.completed = true;
+
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
+    })
+  }
+  suspendMedication(medication, index) {
+    console.log(medication);
+    const medicationObj = this.treatmentSheet.medications[index];
+    this.isSaving = true;
+    medicationObj.status = 'Suspended';
+    medicationObj.completed = true;
+
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
+    })
+  }
+  activateMedication(medication, index){
+    console.log(medication);
+    const medicationObj = this.treatmentSheet.medications[index];
+    this.isSaving = true;
+    medicationObj.status = 'Started';
+    medicationObj.completed = true;
+
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
     });
   }
 }

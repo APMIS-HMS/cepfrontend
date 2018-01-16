@@ -128,13 +128,11 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
         $select: {
           'facilityId': 0, 'attendance.employeeId': 0, 'appointmentTypeId': 0,
           'category': 0, 'clinicInteractions': 0, 'encounters': 0, 'patientId.clientsNo': 0,
-          ' patientId.personDetails.gender': 0, 'patientId.personDetails.title': 0,
-          'patientId.personDetails.age': 0, 'patientId.personDetails.apmisId': 0,
-          'patientId.personDetails.dateOfBirth': 0, 'patientId.personDetails.genderId': 0,
-          'patientId.personDetails.email': 0, 'patientId.personDetails.firstName': 0,
-          'patientId.personDetails.lastName': 0, 'patientId.timeLines': 0,
+          'patientId.personDetails.age': 0, 'patientId.personDetails.genderId': 0,
+          'patientId.timeLines': 0,
           'attendance.createdAt': 0, 'attendance.updateddAt': 0
         },
+        $sort:{createdAt:-1}
       }
     })
       .then(payload => {
@@ -247,7 +245,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
           return Observable.fromPromise(this.employeeService.find({
             query: {
               facilityId: this.selectedFacility._id,
-              professionId: result.data[0].name
+              professionId: result.data[0]._id
             }
           }))
         }
@@ -342,7 +340,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       this.locker.setObject('appointment', '');
       this.locker.setObject('appointment', appointment);
       if (isOnList.length > 0) {
-        
+
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientId.personDetails._id, { checkInId: isOnList[0]._id }])
           .then((payload) => {

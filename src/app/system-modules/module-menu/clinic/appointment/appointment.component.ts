@@ -98,7 +98,7 @@ export class AppointmentComponent implements OnInit {
 
     getClinics() {
         this.clinics = [];
-        const clinicIds = []; 
+        const clinicIds = [];
 
         this.selectedFacility.departments.forEach((itemi, i) => {
             itemi.units.forEach((itemj, j) => {
@@ -166,8 +166,7 @@ export class AppointmentComponent implements OnInit {
                         ' patientId.personDetails.gender': 0, 'patientId.personDetails.title': 0,
                         'patientId.personDetails.age': 0, 'patientId.personDetails.apmisId': 0,
                         'patientId.personDetails.dateOfBirth': 0, 'patientId.personDetails.genderId': 0,
-                        'patientId.personDetails.email': 0, 'patientId.personDetails.firstName': 0,
-                        'patientId.personDetails.lastName': 0, 'patientId.timeLines': 0, 'attendance.dateCheckIn': 0,
+                        'patientId.personDetails.email': 0, 'patientId.timeLines': 0, 'attendance.dateCheckIn': 0,
                         'attendance.createdAt': 0, 'attendance.updateddAt': 0
                     },
                     $sort: { 'createdAt': -1 }
