@@ -47,7 +47,10 @@ export class FluidComponent implements OnInit {
   rateOfOutputFluid;
 
   patientFluidSummary;
-  lineChartSummary: Array<any> = [];
+  lineChartSummary: Array<any> = [{
+    data: [],
+    label: ''
+  }];
 
   // lineChart
   public lineChartData: Array<any> = [
