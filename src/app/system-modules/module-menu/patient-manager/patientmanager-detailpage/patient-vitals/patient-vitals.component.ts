@@ -25,6 +25,7 @@ export class PatientVitalsComponent implements OnInit {
   @Input() patient: Patient;
 
   public lineChartData = [];
+  public tableChartData = [];
   public lineChartLabels: Array<any> = [''];
   public lineChartOptions: any = {
     responsive: true
@@ -159,6 +160,7 @@ export class PatientVitalsComponent implements OnInit {
         for (let k = len2; k >= 0; k--) {
           if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
             vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
+            this.tableChartData = vitalsObjArray;
             if (vitalsObjArray !== undefined) {
               let len3 = vitalsObjArray.length - 1;
               for (let l = len3; l >= 0; l--) {
