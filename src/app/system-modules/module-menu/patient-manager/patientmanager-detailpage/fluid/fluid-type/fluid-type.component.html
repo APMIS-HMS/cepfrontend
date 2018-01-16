@@ -10,42 +10,40 @@
         <div>
             <form [formGroup]="frm_addfluid" novalidate>
                 <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
+                    <mat-input-container>
                         <input matInput mat-error placeholder="Fluid" formControlName="fluidname">
                     </mat-input-container>
                 </div>
-                <div class="example-full-width act-btn-wrap" id="example-full-width">
-                    <button class="small-btn" mat-raised-button>Add Fluid</button>
+                <div class="frm-item-wrap">
+                    <mat-input-container>
+                        <mat-select placeholder="Type" formControlName="fluidType">
+                            <mat-option [value]="'intake'">Intake</mat-option>
+                            <mat-option [value]="'output'">output</mat-option>
+                        </mat-select>
+                    </mat-input-container>
+                </div>
+                <div class="act-btn-wrap">
+                    <button class="small-btn" mat-raised-button (click)="addFluids()">Add Fluid</button>
                 </div>
             </form>
         </div>
 
         <table cellpadding="0" cellspacing="0" border="0.5">
-          <thead>
-              <tr>
-                  <th>Fluid</th>
-                  <th style="text-align:center;">Action</th>
-              </tr>
-          </thead>
+            <thead>
+                <tr>
+                    <th>Fluid</th>
+                    <th>Type</th>
+                    <th style="text-align:center;">Action</th>
+                </tr>
+            </thead>
 
-          <tbody>
-              <tr>
-                  <td>Water</td>
-                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
-              </tr>
-              <tr>
-                  <td>Drip</td>
-                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
-              </tr>
-              <tr>
-                  <td>Saline</td>
-                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
-              </tr>
-              <tr>
-                  <td>Water</td>
-                  <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true"></i></div></td>
-              </tr>
-          </tbody>
+            <tbody>
+                <tr *ngFor="let list of fluidsList">
+                    <td>{{list.name}}</td>
+                    <td>{{list.type}}</td>
+                    <td><div class="tbl-action"><i class="fa fa-trash" aria-hidden="true" (click)="deleteFluid(list._id)"></i></div></td>
+                </tr>
+            </tbody>
       </table>
     </div>
 </div>
