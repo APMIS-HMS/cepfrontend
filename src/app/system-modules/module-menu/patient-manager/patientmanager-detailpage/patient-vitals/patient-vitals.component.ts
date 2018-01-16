@@ -25,7 +25,6 @@ export class PatientVitalsComponent implements OnInit {
   @Input() patient: Patient;
 
   public lineChartData = [];
-  public tableChartData = [];
   public lineChartLabels: Array<any> = [''];
   public lineChartOptions: any = {
     responsive: true
@@ -130,7 +129,6 @@ export class PatientVitalsComponent implements OnInit {
 
   ngOnInit() {
     if (this.patient !== undefined) {
-      console.log(this.patient);
       this.bindVitalsDataToChart();
     }
 
@@ -158,15 +156,11 @@ export class PatientVitalsComponent implements OnInit {
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
         let len2 = payload.data[0].documentations.length - 1;
-        console.log(payload.data[0].documentations);
         for (let k = len2; k >= 0; k--) {
           if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
             vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
-            this.tableChartData = vitalsObjArray;
-            console.log(vitalsObjArray);
             if (vitalsObjArray !== undefined) {
               let len3 = vitalsObjArray.length - 1;
-              console.log(len3);
               for (let l = len3; l >= 0; l--) {
                 this.lineChartData[0].data.push(vitalsObjArray[l].bloodPressure.systolic);
                 this.lineChartData[0].label = "Systolic";
@@ -184,8 +178,8 @@ export class PatientVitalsComponent implements OnInit {
                 let dt = this.dateFormater(d);
                 this.lineChartLabels.push(dt);
               };
+              this.lineChartLabels.splice(0,1);
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
-              console.log(this.lineChartLabels)
             }
 
           }
@@ -195,13 +189,7 @@ export class PatientVitalsComponent implements OnInit {
 
     });
   }
-
-  getTableChartData() {
-    let len5 = this.lineChartData.length - 1;
-    for (let j = len5; j >= 0; j--) {
-this.tableChartData.push()
-    }
-  }
+  
 
   dateFormater(d) {
     var dt = [d.getDate(),
