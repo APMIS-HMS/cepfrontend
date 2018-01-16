@@ -1,7 +1,9 @@
 <div class="modal-baseWrap animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <div class="facility-title">Add employee to health cover</div>
+    </div>
 
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <div class="facility-title">Add employee to health cover</div>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <div class="f_sg1">

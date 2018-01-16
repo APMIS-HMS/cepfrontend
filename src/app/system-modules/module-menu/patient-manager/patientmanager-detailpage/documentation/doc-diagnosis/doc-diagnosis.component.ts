@@ -64,6 +64,21 @@ export class DocDiagnosisComponent implements OnInit {
       type: ['', [<any>Validators.required]],
       diagnosis: ['', [<any>Validators.required]]
     });
+
+    this.addDiagnosisForm.controls['diagnosis'].valueChanges.subscribe(value => {
+
+      if (value !== null && value.length === 0) {
+        this.apmisLookupQuery = {
+          name: { $regex: -1, '$options': 'i' },
+          $limit: 100
+        }
+      } else {
+        this.apmisLookupQuery = {
+          name: { $regex: value, '$options': 'i' },
+          $limit: 100
+        }
+      }
+    });
   }
 
   tabAll_click() {
