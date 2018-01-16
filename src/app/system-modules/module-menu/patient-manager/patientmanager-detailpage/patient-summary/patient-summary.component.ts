@@ -13,6 +13,7 @@ import {
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import * as format from 'date-fns/format';
 
 @Component({
   selector: 'app-patient-summary',
@@ -232,7 +233,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
         let len2 = payload.data[0].documentations.length - 1;
-        for (let k = len2; k >= 0; k--) {
+        for (let k = 0; k <= len2; k++) {
           if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
             vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
             if (vitalsObjArray !== undefined) {
@@ -251,10 +252,10 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
                 this.lineChartData[5].data.push(vitalsObjArray[l].bodyMass.bmi);
                 this.lineChartData[5].label = "BMI";
                 const d = new Date(vitalsObjArray[l].updatedAt);
-                let dt = this.dateFormater(d);
+                let dt = format(d, 'DD/MM/YY HH:mm:ss a');
                 this.lineChartLabels.push(dt);
               };
-              this.lineChartLabels.splice(0,1);
+              this.lineChartLabels.splice(0, 1);
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
             }
 
@@ -266,16 +267,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     });
   }
 
-  dateFormater(d) {
-    var dt = [d.getDate(),
-    d.getMonth() + 1].join('/') + ' ' +
-      [d.getHours(),
-      d.getMinutes(),
-      d.getSeconds()].join(':');
-    return dt;
-  }
-
-  refreshVitalsGraph(lineChartData:any[]) {
+  refreshVitalsGraph(lineChartData: any[]) {
     let _lineChartData: Array<any> = new Array(lineChartData.length);
     for (let i = 0; i < lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
@@ -284,6 +276,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       }
     }
     return _lineChartData;
+  }
+
+  refreshVitalsChanged(value) {
+    this.lineChartLabels = [''];
+    this.bindVitalsDataToChart();
   }
 
   getForms() {
