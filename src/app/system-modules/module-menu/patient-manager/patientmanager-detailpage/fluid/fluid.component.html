@@ -104,7 +104,7 @@
                             <mat-option [value]="1">Last Hour</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div class="intr-tag">Showing for the last 48hrs</div>
+                    <div class="intr-tag">Showing for {{intakeFilterTime}}</div>
                   </div>
                   <table cellpadding="0" cellspacing="0" border="0.5">
                       <thead>
@@ -128,7 +128,7 @@
                 <div class="card-tbl">
                   <div class="intr-wrap">
                     <mat-form-field>
-                        <mat-select placeholder="Time Interval" [formControl]="inInterval" #intakeInterval (change)="filterByTime('intake', intakeInterval.value)">
+                        <mat-select placeholder="Time Interval" [formControl]="outInterval" #outputInterval (change)="filterByTime('output', outputInterval.value)">
                             <mat-option [value]="0">All</mat-option>
                             <mat-option [value]="48">Last 48 Hours</mat-option>
                             <mat-option [value]="24">Last 24 Hours</mat-option>
@@ -140,7 +140,7 @@
                             <mat-option [value]="1">Last Hour</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div class="intr-tag">Showing for the last 48hrs</div>
+                    <div class="intr-tag">Showing for {{outputFilterTime}}</div>
                   </div>
                   <table cellpadding="0" cellspacing="0" border="0.5">
                       <thead>
