@@ -16,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AddVitalsComponent implements OnInit {
   @Input() patient: any = <any>{};
+  @Output() refreshVitalsChanged = new EventEmitter();
   mainErr = true;
   errMsg = 'you have unresolved errors';
   vitalRythm: any[] = [];
@@ -198,6 +199,7 @@ export class AddVitalsComponent implements OnInit {
 
   addVitals(valid, value) {
     if (valid) {
+      console.log(this.patient);
       this.disableSaveBtn = true;
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
       let isExisting = false;
@@ -233,11 +235,15 @@ export class AddVitalsComponent implements OnInit {
         patientId: this.patient._id,
         personId: this.patient.personDetails._id
       }
+      console.log(vitalValue);
       this._vitalService.post(vitalValue, params).then(payload => {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
         this.saveBtnText = "Add Vitals";
+        this.refreshVitalsChanged.emit(payload);
         this._notification('Success', 'Vitals saved successfully');
+      },error=>{
+        console.log(error);
       })
 
       // this._ServerDateService.find({ query: {} }).then(datePayload => {

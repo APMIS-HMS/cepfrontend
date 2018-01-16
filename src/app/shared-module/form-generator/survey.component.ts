@@ -216,13 +216,13 @@ export class SurveyComponent implements OnInit, OnDestroy {
             }
 
             this.shareService.submitForm(obj);
+            this.shareService.announceBilledOrderSet(this.orderSet);
             this.json = null;
             this.symptoms = [];
         } else {
             document.getElementById('surveyElement').innerHTML = '';
             const resultAsString = JSON.stringify(this.surveyModel.data);
             this.symptoms.forEach((item, i) => {
-                console.log(i);
                 this.surveyModel.data.symptoms = '(' + i + 1 + ') ' + item.name + '(' + item.code + ')';
             });
             console.log(this.surveyModel.data);

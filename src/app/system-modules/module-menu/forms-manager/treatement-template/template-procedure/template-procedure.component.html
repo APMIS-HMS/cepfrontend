@@ -5,7 +5,7 @@
                 <apmis-lookup formControlName="procedure" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Procedure" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                 <!-- <div class="cu-search-box">
                     <mat-input-container>
-                        <input matInput formControlName="searchtext" class="cu-search" placeholder="{{placeholder}}" (focus)="focusSearch()" (focusout)="focusOutSearch()" [value]="valueString" (change)="onChange($event)" (keyup)="onChange($event)" autocomplete="off">
+                        <input matInput formControlName="procedure" class="cu-search" placeholder="{{placeholder}}" (focus)="focusSearch()" (focusout)="focusOutSearch()" [value]="valueString" (change)="onChange($event)" (keyup)="onChange($event)" autocomplete="off">
                     </mat-input-container>
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
@@ -38,9 +38,8 @@
             </div>
         </div>
     </div>
-
-    <div class="addDrugBtn" (click)="onClickAddProcedure(addProcedureForm.valid, addProcedureForm.value);">
-        <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
-        <span>ADD PROCEDURE</span>
-    </div>
 </form>
+<div class="addDrugBtn" (click)="onClickAddProcedure(addProcedureForm.valid, addProcedureForm.value);">
+    <i [hidden]="newTemplate" class="fa fa-plus" aria-hidden="true"></i>
+    <span>ADD PROCEDURE</span>
+</div>

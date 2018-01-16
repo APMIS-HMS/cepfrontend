@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import {
   CountriesService, EmployeeService, FormsService,
   FacilitiesService, UserService, PersonService,
@@ -13,6 +13,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { IDateRange } from 'ng-pick-daterange';
+import * as format from 'date-fns/format';
 
 @Component({
   selector: 'app-patient-vitals',
@@ -23,13 +24,9 @@ export class PatientVitalsComponent implements OnInit {
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient: Patient;
-  public lineChartData:Array<any> = [
-    [65, 59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90],
-    [78, 68, 10, 99, 46, 37, 20],
-    [68, 48, 30, 29, 86, 27, 60],
-    [18, 58, 80, 49, 56, 17, 10]
-  ];
+
+  public lineChartData = [];
+  public tableChartData = [];
   public lineChartLabels: Array<any> = [''];
   public lineChartOptions: any = {
     responsive: true
@@ -100,8 +97,10 @@ export class PatientVitalsComponent implements OnInit {
       pointHoverBorderColor: 'rgba(229,115,115,0.8)'
     }
   ];
+
   public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
+
   addVitals_view = false;
   addVitalsPop = false;
 
@@ -114,6 +113,9 @@ export class PatientVitalsComponent implements OnInit {
   vitalsDiastolic = [];
   vitalsTemp = [];
   vitalChartData = [];
+
+  dateRange: any;
+  loadIndicatorVisible: any;
 
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
@@ -128,11 +130,9 @@ export class PatientVitalsComponent implements OnInit {
     private _DocumentationService: DocumentationService) { }
 
   ngOnInit() {
-    // this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    // if (this.patient !== undefined) {
-    //   this.getCurrentUser();
-    //   this.bindVitalsDataToChart();
-    // }
+    if (this.patient !== undefined) {
+      this.bindVitalsDataToChart();
+    }
 
     this._DocumentationService.listenerCreate.subscribe(payload => {
       //this.bindVitalsDataToChart();
@@ -157,46 +157,43 @@ export class PatientVitalsComponent implements OnInit {
     ];
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
-        payload.data[0].documentations.forEach(documentItem => {
-          if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
-            vitalsObjArray = documentItem.document.body.vitals;
-            if(vitalsObjArray !== undefined){
-              vitalsObjArray.forEach(item => {
-                this.lineChartData[0].data.push(item.bloodPressure.systolic);
+        let len2 = payload.data[0].documentations.length - 1;
+        for (let k = len2; k >= 0; k--) {
+          if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
+            vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
+            this.tableChartData = vitalsObjArray;
+            if (vitalsObjArray !== undefined) {
+              let len3 = vitalsObjArray.length - 1;
+              for (let l = 0; l <= len3; l++) {
+                this.lineChartData[0].data.push(vitalsObjArray[l].bloodPressure.systolic);
                 this.lineChartData[0].label = "Systolic";
-                this.lineChartData[1].data.push(item.bloodPressure.diastolic);
+                this.lineChartData[1].data.push(vitalsObjArray[l].bloodPressure.diastolic);
                 this.lineChartData[1].label = "Diastolic";
-                this.lineChartData[2].data.push(item.temperature);
+                this.lineChartData[2].data.push(vitalsObjArray[l].temperature);
                 this.lineChartData[2].label = "Temperature";
-                this.lineChartData[3].data.push(item.bodyMass.height);
+                this.lineChartData[3].data.push(vitalsObjArray[l].bodyMass.height);
                 this.lineChartData[3].label = "Height";
-                this.lineChartData[4].data.push(item.bodyMass.weight);
+                this.lineChartData[4].data.push(vitalsObjArray[l].bodyMass.weight);
                 this.lineChartData[4].label = "Weight";
-                this.lineChartData[5].data.push(item.bodyMass.bmi);
+                this.lineChartData[5].data.push(vitalsObjArray[l].bodyMass.bmi);
                 this.lineChartData[5].label = "BMI";
-                const d = new Date(item.updatedAt);
-                let dt = this.dateFormater(d);
+                const d = new Date(vitalsObjArray[l].updatedAt);
+                let dt = format(d, 'DD/MM/YY HH:mm:ss a');
                 this.lineChartLabels.push(dt);
-              });
-              this.lineChartData =  this.refreshVitalsGraph(this.lineChartData);
+              };
+              this.lineChartLabels.splice(0, 1);
+              this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
             }
 
           }
-        });
+        }
       }
-    }, error =>{
+    }, error => {
 
     });
   }
-  dateFormater(d) {
-    var dt = [d.getDate(),
-    d.getMonth() + 1].join('/') + ' ' +
-      [d.getHours(),
-      d.getMinutes(),
-      d.getSeconds()].join(':');
-    return dt;
-  }
-  refreshVitalsGraph(lineChartData:any[]) {
+
+  refreshVitalsGraph(lineChartData: any[]) {
     let _lineChartData: Array<any> = new Array(lineChartData.length);
     for (let i = 0; i < lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
@@ -205,6 +202,11 @@ export class PatientVitalsComponent implements OnInit {
       }
     }
     return _lineChartData;
+  }
+
+  refreshVitalsChanged(value) {
+    this.lineChartLabels = [''];
+    this.bindVitalsDataToChart();
   }
 
   addVitals_show(e) {
@@ -221,5 +223,8 @@ export class PatientVitalsComponent implements OnInit {
   }
 
   public chartHovered(e: any): void {
+  }
+  setReturnValue(e) {
+
   }
 }

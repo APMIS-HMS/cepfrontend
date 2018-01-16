@@ -1,6 +1,8 @@
 <div class="modal-baseWrap animated pulse">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">New Patient</legend>
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">New Patient</legend>
+    </div>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <div *ngIf="apmisId_show" class="newEmp-idWrap">
@@ -103,8 +105,7 @@
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
-                    <button class="small-btn" (click)="nextCompanyCover(ccPlanId.value, ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading"
-                        mat-raised-button>
+                    <button class="small-btn" (click)="nextCompanyCover(ccPlanId.value, ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button>
                         <span *ngIf="!loading">Next</span>
                         <span *ngIf="loading">Loading...</span>
                     </button>
@@ -351,8 +352,7 @@
                 <div *ngIf="loading" class="backBtn">Loading</div>
             </div>
             <div class="btn-box">
-                <button class="small-btn" [disabled]="!frmNewEmp3.valid || loading" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);"
-                    mat-raised-button>CONTINUE</button>
+                <button class="small-btn" [disabled]="!frmNewEmp3.valid || loading" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" mat-raised-button>CONTINUE</button>
             </div>
             <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
         </form>

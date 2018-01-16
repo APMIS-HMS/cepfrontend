@@ -6,9 +6,9 @@
     <form [formGroup]="addSymptomForm" novalidate>
 
         <div class="frm-x2">
-            <mat-input-container class="example-full-width">
+            <!-- <mat-input-container class="example-full-width">
                 <input matInput mat-error type="number" placeholder="Duration" min="1" formControlName="symptomDuration">
-            </mat-input-container>
+            </mat-input-container> -->
             <div class="frm-item-wrap">
                 <apmis-lookup [(ngModel)]="apmisLookupText" formControlName="symptom" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom"
                     (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
@@ -20,7 +20,7 @@
             <span>ADD SYMPTOM</span>
         </div>
 
-        <div class="tbl-wrap">
+        <!-- <div class="tbl-wrap">
             <table class="table" cellpadding="0" cellspacing="0" border="0.5">
                 <thead class="thead">
                     <tr class="tr">
@@ -40,7 +40,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> -->
 
         <button (click)="login_show()" class="big-btn" mat-raised-button>Login</button>
     </form>

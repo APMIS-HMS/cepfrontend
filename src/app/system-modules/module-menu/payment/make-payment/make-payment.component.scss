@@ -23,7 +23,7 @@
 
 .modal-baseWrap {
     padding: 25px;
-    height: 350px;
+    height: auto;
 }
 
 .plan-checker {
@@ -54,6 +54,17 @@
     justify-content: space-around;
     align-items: center;
     border-bottom: 1px solid #b3b3b3;
+}
+
+.btn-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn-wrap button {
+    margin: 0 5px;
 }
 
 .tab-item {
