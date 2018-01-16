@@ -1,9 +1,10 @@
 <div class="modal-baseWrap animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
 
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Corporate Facility</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-
+        <legend class="modal_title">Corporate Facility</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
     <div *ngIf="sg1_1_1_show" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied below</div>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
