@@ -77,6 +77,7 @@ const dispense = require('./dispense/dispense.service.js');
 const dispenseAssessment = require('./dispense-assessment/dispense-assessment.service.js');
 const docUpload = require('./doc-upload/doc-upload.service.js');
 const drugStrength = require('./drug-strength/drug-strength.service.js');
+const externalPrescription = require('./external-prescription/external-prescription.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -157,4 +158,5 @@ module.exports = function (app) {
   app.configure(dispenseAssessment);
   app.configure(docUpload);
   app.configure(drugStrength);
+  app.configure(externalPrescription);
 };
