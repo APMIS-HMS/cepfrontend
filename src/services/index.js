@@ -68,6 +68,8 @@ const bedTypes = require('./bed-types/bed-types.service.js');
 const clientTypes = require('./client-types/client-types.service.js');
 const companycovers = require('./companycovers/companycovers.service.js');
 const companycovercategories = require('./companycovercategories/companycovercategories.service.js');
+const companyHealthCover = require('./company-health-cover/company-health-cover.service.js');
+const consultingRoom = require('./consulting-room/consulting-room.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -139,4 +141,6 @@ module.exports = function (app) {
   app.configure(clientTypes);
   app.configure(companycovers);
   app.configure(companycovercategories);
+  app.configure(companyHealthCover);
+  app.configure(consultingRoom);
 };
