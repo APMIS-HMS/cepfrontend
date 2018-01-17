@@ -75,7 +75,8 @@ export class FluidComponent implements OnInit {
   getFluids(type: any) {
     this.fluidService.find({
       query: {
-        "type": type
+        "type": type,
+        "facilityId": this.facility._id,
       }
     }).then(payload => {
       console.log(payload);

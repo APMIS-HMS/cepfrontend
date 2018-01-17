@@ -249,6 +249,7 @@ export class BillLookupComponent implements OnInit {
           }
           this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
         }, error => {
+          console.log(error);
         });
       }
     } else {

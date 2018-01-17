@@ -254,7 +254,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
                 this.lineChartData[5].label = "BMI";
                 const d = new Date(vitalsObjArray[l].updatedAt);
                 let dt = format(d, 'DD/MM/YY HH:mm:ss a');
-                this.lineChartLabels.push(dt);
+                JSON.parse(JSON.stringify(this.lineChartLabels.push(dt)));
               };
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
             }
