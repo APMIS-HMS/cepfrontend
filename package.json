@@ -59,7 +59,6 @@
     "ng4-geoautocomplete": "^0.1.0",
     "ngx-pipes": "~1.6.1",
     "ngx-uploader": "^2.0.0",
-    "npm": "^5.6.0",
     "rxjs": "^5.1.0",
     "style-loader": "~0.18.2",
     "superagent": "~3.5.2",
@@ -86,6 +85,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
-    "typescript": "^2.3.2"
+    "typescript": "2.3.4"
   }
 }
