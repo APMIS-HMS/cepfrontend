@@ -201,14 +201,12 @@ export class OrderSetComponent implements OnInit {
   }
 
   onClickBillPrescription(index: number, value: any) {
-    console.log(value);
     this.prescriptionData.index = index;
     this.prescriptionData.prescriptionItems = this.orderSet.medications;
     this.showMedicationBill = true;
   }
 
   onClickBillInvestigation(index: number, value: any) {
-    console.log(value);
     this.investigationData.index = index;
     this.investigationData.investigationItems = this.orderSet.investigations;
     this.showInvestigationBill = !this.showInvestigationBill;

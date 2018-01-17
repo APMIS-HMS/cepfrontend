@@ -97,38 +97,22 @@ export class TemplateMedicationComponent implements OnInit {
         completed: false,
       };
 
-      if (this.medications.length > 0) {
-        // Check if generic has been added already.
-        const containsGeneric = this.medications.filter(
-          x => medication.genericName === x.genericName
-        );
-        if (containsGeneric.length < 1) {
-          this.medications.push(medication);
-          this._orderSetSharedService.saveItem({ medications: this.medications});
-        }
-      } else {
-        this.medications.push(medication);
-        this._orderSetSharedService.saveItem({ medications: this.medications});
-      }
+      this.medications.push(medication);
+      this._orderSetSharedService.saveItem({ medications: this.medications});
 
       this.addPrescriptionForm.reset();
       this.addPrescriptionForm.controls['refillCount'].reset(0);
       this.addPrescriptionForm.controls['duration'].reset(0);
       this.addPrescriptionForm.controls['startDate'].reset(new Date());
-      this.addPrescriptionForm.controls['durationUnit'].reset(
-        this.durationUnits[1].name
-      );
+      this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
     }
   }
 
   apmisLookupHandleSelectedItem(item) {
     this.apmisLookupText = item.details;
-    this._drugDetailsApi
-      .find({ query: { productId: item.productId } })
-      .then(res => {
+    this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
         let sRes = res.data;
         if (res.status === 'success') {
-          console.log(sRes);
           if (!!sRes.ingredients && sRes.ingredients.length > 0) {
             this.selectedForm = sRes.form;
             this.selectedIngredients = sRes.ingredients;
@@ -151,23 +135,18 @@ export class TemplateMedicationComponent implements OnInit {
             this.addPrescriptionForm.controls['route'].setValue(sRes.route);
           }
         }
-      })
-      .catch(err => console.error(err));
+      }).catch(err => console.error(err));
   }
 
   private _getAllRoutes() {
     this._routeService.findAll().then(res => {
-        console.log(res);
         this.routes = res.data;
-      })
-      .catch(err => console.error(err));
+      }).catch(err => console.error(err));
   }
 
   private _getAllFrequencies() {
     this._frequencyService.findAll().then(res => {
-        console.log(res);
-        this.frequencies = res.data;
-      })
-      .catch(err => console.error(err));
+      this.frequencies = res.data;
+    }).catch(err => console.error(err));
   }
 }
