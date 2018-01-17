@@ -15,6 +15,7 @@
                             <input matInput mat-error placeholder="Name" formControlName="name">
                         </mat-input-container>
                     </div>
+                </div>
 
                 <div class="frm-item-wrap">
                     <mat-form-field>
@@ -29,13 +30,14 @@
                     </mat-input-container>
                 </div>
                 <div class="sec-2">
-
                     <div class="frm-item-wrap">
                         <span class="frm-label">Product Type</span>
                         <div class="chk-group-wrap">
                             <div class="checkbox-wrap">
                                 <div *ngFor="let productType of productTypes" class="check-item">
-                                    <mat-checkbox (change)="onValueChanged($event,productType)" [checked]="productType.isChecked"><span class="chk-label">{{productType.name}}</span></mat-checkbox>
+                                    <mat-checkbox (change)="onValueChanged($event,productType)" [checked]="productType.isChecked">
+                                        <span class="chk-label">{{productType.name}}</span>
+                                    </mat-checkbox>
                                 </div>
                             </div>
                         </div>
@@ -43,10 +45,14 @@
 
                     <div class="checkbox-wrap chkwrap">
                         <div class="check-item">
-                            <mat-checkbox formControlName="canDespense"> <span class="chk-label">Dispense</span></mat-checkbox>
+                            <mat-checkbox formControlName="canDespense">
+                                <span class="chk-label">Dispense</span>
+                            </mat-checkbox>
                         </div>
                         <div class="check-item">
-                            <mat-checkbox formControlName="canReceivePurchaseOrder"> <span class="chk-label">Recieve Purchase</span></mat-checkbox>
+                            <mat-checkbox formControlName="canReceivePurchaseOrder">
+                                <span class="chk-label">Recieve Purchase</span>
+                            </mat-checkbox>
                         </div>
                     </div>
 
