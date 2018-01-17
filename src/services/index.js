@@ -73,6 +73,7 @@ const consultingRoom = require('./consulting-room/consulting-room.service.js');
 const corperateFacility = require('./corperate-facility/corperate-facility.service.js');
 const dictionary = require('./dictionary/dictionary.service.js');
 const dischargeType = require('./discharge-type/discharge-type.service.js');
+const dispense = require('./dispense/dispense.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -149,4 +150,5 @@ module.exports = function (app) {
   app.configure(corperateFacility);
   app.configure(dictionary);
   app.configure(dischargeType);
+  app.configure(dispense);
 };

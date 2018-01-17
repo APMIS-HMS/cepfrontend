@@ -1,0 +1,23 @@
+// dispense-model.js - A mongoose model
+// 
+// See http://mongoosejs.com/docs/models.html
+// for more of what you can do here.
+const prescriptionItem = require('../../models/dispensebyprescription');
+const nonPrescriptionItem = require('../../models/dispensebynonprescriptn');
+
+module.exports = function (app) {
+  const mongooseClient = app.get('mongooseClient');
+  const { Schema } = mongooseClient;
+  const dispense = new Schema({
+    facilityId: { type: Schema.Types.ObjectId, required: true },
+    prescription: prescriptionItem,
+    nonPrescription: nonPrescriptionItem,
+    isPrescription: { type: Boolean, 'default': false },
+    createdAt: { type: Date, 'default': Date.now },
+    updatedAt: { type: Date, 'default': Date.now }
+  }, {
+    timestamps: true
+  });
+
+  return mongooseClient.model('dispense', dispense);
+};
