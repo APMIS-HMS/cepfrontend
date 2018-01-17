@@ -8,7 +8,11 @@ module.exports = function (app) {
     Schema
   } = mongooseClient;
   const drugStrength = new Schema({
-    strenght: {
+    facilityId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    strength: {
       type: String,
       required: true
     },
@@ -19,6 +23,10 @@ module.exports = function (app) {
     updatedAt: {
       type: Date,
       'default': Date.now
+    },
+    isActive: {
+      type: Boolean,
+      'default': true
     }
   }, {
     timestamps: true
