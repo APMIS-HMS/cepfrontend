@@ -3,7 +3,7 @@ import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angu
 import { FormControl } from '@angular/forms';
 import {
   CountriesService, FacilitiesService, UserService,
-  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService,
+  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService, ProfessionService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -18,12 +18,14 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   selectedValue: string;
+  selectedProfessionValue:string;
 
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() employee: Employee;
 
   editDepartment = false;
+  editProfession = false;
   biodatas = false;
   contacts = false;
   nextofkin = false;
@@ -66,6 +68,8 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
   employeeSubscription: Subscription;
   departments: any[] = [];
+  professions:any[] = [];
+  isSaving = false;
   constructor(private countryService: CountriesService,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -77,6 +81,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private maritalStatusService: MaritalStatusService,
     private systemService:SystemModuleService,
+    private professionService:ProfessionService,
     private locker: CoolLocalStorage) {
     this.employeeService.listner.subscribe(payload => {
       this.getEmployees();
@@ -132,13 +137,15 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     const relationship$ = Observable.fromPromise(this.relationshipService.findAll());
     const maritalStatus$ = Observable.fromPromise(this.maritalStatusService.findAll());
     const country$ = Observable.fromPromise(this.countryService.findAll());
+    const profession$ = Observable.fromPromise(this.professionService.findAll());
 
-    Observable.forkJoin([gender$, relationship$, maritalStatus$, country$]).subscribe((results: any) => {
+    Observable.forkJoin([gender$, relationship$, maritalStatus$, country$, profession$]).subscribe((results: any) => {
       this.genders = results[0].data;
       this.relationships = results[1].data;
       this.maritalStatuses = results[2].data;
       this.countries = results[3].data;
       this.homeCountries = results[3].data;
+      this.professions = results[4].data;
       this.systemService.off();
     },error =>{
       this.systemService.off();
@@ -154,7 +161,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
       this.selectedPerson = <Person>{};
       this.loadIndicatorVisible = false;
       this.employee = <any>results[0];
+      console.log(this.employee);
       this.selectedValue = this.employee.departmentId;
+      this.selectedProfessionValue = this.employee.professionId;
       this.selectedPerson = this.employee.employeeDetails;
       this.getCurrentUser(results[1]);
       this.systemService.off();
@@ -271,10 +280,25 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
     this.employeeSubscription.unsubscribe();
   }
   updateEmployee() {
+    this.isSaving = true;
     this.employee.departmentId = this.selectedValue;
-    this.employeeService.update(this.employee).subscribe(value => {
+    this.employeeService.update(this.employee).then(value => {
       this.employee = value;
+      this.isSaving = false;
       this.editDepartment = !this.editDepartment;
+    }, error =>{
+      this.isSaving = false;
+    });
+  }
+  updateEmployeeProfession() {
+    this.isSaving = true;
+    this.employee.professionId = this.selectedProfessionValue;
+    this.employeeService.update(this.employee).then(value => {
+      this.employee = value;
+      this.isSaving = false;
+      this.editProfession = !this.editProfession;
+    },error =>{
+      this.isSaving = false;
     });
   }
   UpdatePerson() {
@@ -297,6 +321,9 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   toggleDepartmentShow() {
     this.editDepartment = !this.editDepartment;
+  }
+  toggleProfessionShow() {
+    this.editProfession = !this.editProfession;
   }
   bioDataShow() {
     this.biodatas = !this.biodatas;

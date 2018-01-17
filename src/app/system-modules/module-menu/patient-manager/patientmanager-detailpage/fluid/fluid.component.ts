@@ -47,8 +47,11 @@ export class FluidComponent implements OnInit {
   rateOfIntakeFluid;
   rateOfOutputFluid;
 
+  intakeFilterTime;
+  outputFilterTime;
+
   patientFluidSummary;
-  lineChartSummary: Array<any> = [];
+  lineChartSummary: Array<any>;
 
   // lineChart
   public lineChartData: Array<any> = [
@@ -145,6 +148,7 @@ export class FluidComponent implements OnInit {
       this.loading = false;
       this.frmIntake.reset();
       this.getPatientFluids(type);
+      this.getFluidSummary();
     }).catch(err => {
       console.log(err);
       this.loading = false;
@@ -173,12 +177,7 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientIntakeFluid = lol;
         this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / 24);
-        /* let len1 = this.patientOutputFluidList.length - 1;
-        let groupItem = [];
-        for (let l = len1; l >= 0; l--) {
-          let index = groupItem.filter(x => x._id.toS)
-        } */
-        console.log(this.patientIntakeFluidList);
+        this.intakeFilterTime = "All";
       } else if (type == "output") {
         this.patientOutputFluidList = payload.data;
         let len = this.patientOutputFluidList.length;
@@ -188,9 +187,8 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientOutputFluid = lol;
         this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / 24);
-        console.log(this.patientOutputFluidList);
         this.patientOutputFluidList = payload.data;
-        console.log(this.patientOutputFluidList);
+        this.outputFilterTime = "All";
       }
       console.log(payload);
     }).catch(err => {
@@ -221,42 +219,48 @@ export class FluidComponent implements OnInit {
       let len = payload.data.length;
       let lol = 0;
 
-      if (type == "intake") {
+      if (time == 0) {
+        this.getPatientFluids(type);
+      } else {
+        if (type == "intake") {
 
-        this.filterIntakeLoading = false;
+          this.filterIntakeLoading = false;
 
-        this.patientIntakeFluidList = [];
+          this.patientIntakeFluidList = [];
 
-        for (var i = len - 1; i >= 0; i--) {
-          b = moment(payload.data[i].createdAt);
-          let mm2 = a.diff(b, 'hours');
-          console.log(mm2);
-          if (mm2 <= time) {
-            this.patientIntakeFluidList.push(payload.data[i]);
-            //console.log(payload.data[i].volume);
-            lol += Number(payload.data[i].volume);
+          for (var i = len - 1; i >= 0; i--) {
+            b = moment(payload.data[i].createdAt);
+            let mm2 = a.diff(b, 'hours');
+            console.log(mm2);
+            if (mm2 <= time) {
+              this.patientIntakeFluidList.push(payload.data[i]);
+              //console.log(payload.data[i].volume);
+              lol += Number(payload.data[i].volume);
+            }
           }
-        }
-        this.totalPatientIntakeFluid = lol;
-        this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / time);
-        console.log(this.patientIntakeFluidList);
+          this.totalPatientIntakeFluid = lol;
+          this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / time);
+          this.intakeFilterTime = `the last ${time}hrs`;
+          console.log(this.patientIntakeFluidList);
 
-      } else if (type == "output") {
-        this.filterOutputLoading = false;
-        this.patientOutputFluidList = [];
+        } else if (type == "output") {
+          this.filterOutputLoading = false;
+          this.patientOutputFluidList = [];
 
-        for (var i = len - 1; i >= 0; i--) {
-          b = moment(payload.data[i].createdAt);
-          let mm2 = a.diff(b, 'hours');
-          console.log(mm2);
-          if (mm2 <= time) {
-            this.patientOutputFluidList.push(payload.data[i]);
-            lol += Number(payload.data[i].volume);
+          for (var i = len - 1; i >= 0; i--) {
+            b = moment(payload.data[i].createdAt);
+            let mm2 = a.diff(b, 'hours');
+            console.log(mm2);
+            if (mm2 <= time) {
+              this.patientOutputFluidList.push(payload.data[i]);
+              lol += Number(payload.data[i].volume);
+            }
           }
+          this.totalPatientOutputFluid = lol;
+          this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / time);
+          this.outputFilterTime = `the last ${time}hrs`;
+          console.log(this.patientOutputFluidList);
         }
-        this.totalPatientOutputFluid = lol;
-        this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / time);
-        console.log(this.patientOutputFluidList);
       }
     }).catch(err => {
       this.filterIntakeLoading = false;
@@ -266,6 +270,15 @@ export class FluidComponent implements OnInit {
   }
 
   getFluidSummary() {
+    this.lineChartSummary = [
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' },
+      { data: [], label: '' }
+
+    ];
     this.fluidService.findPatientFluid({
       query: {
         "facilityId": this.facility._id,
@@ -298,7 +311,7 @@ export class FluidComponent implements OnInit {
               volumes: [this.patientIntakeFluidList[i].volume]
             }
           );
-          this.lineChartSummary.push({data: [this.patientIntakeFluidList[i].volume], label: this.patientIntakeFluidList[i].fluid.name});
+          this.lineChartSummary.push({ data: [this.patientIntakeFluidList[i].volume], label: this.patientIntakeFluidList[i].fluid.name });
         }
       }
       this.patientFluidSummary = result;
@@ -307,7 +320,7 @@ export class FluidComponent implements OnInit {
     });
   }
 
-  lineChartInfo(){
+  lineChartInfo() {
     this.fluidService.findPatientFluid({
       query: {
         "facilityId": this.facility._id,
@@ -319,7 +332,7 @@ export class FluidComponent implements OnInit {
     })
   }
 
-  fluidType_show(){
+  fluidType_show() {
     this.fluidType_pop = true;
   }
   close_onClick(message: boolean): void {

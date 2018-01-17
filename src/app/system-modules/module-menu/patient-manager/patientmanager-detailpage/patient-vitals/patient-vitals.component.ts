@@ -14,6 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { IDateRange } from 'ng-pick-daterange';
 import * as format from 'date-fns/format';
+import * as isWithinRange from 'date-fns/is_within_range'
 
 @Component({
   selector: 'app-patient-vitals',
@@ -27,7 +28,7 @@ export class PatientVitalsComponent implements OnInit {
 
   public lineChartData = [];
   public tableChartData = [];
-  public lineChartLabels: Array<any> = [''];
+  public lineChartLabels: Array<any> = [];
   public lineChartOptions: any = {
     responsive: true
   };
@@ -101,6 +102,8 @@ export class PatientVitalsComponent implements OnInit {
   public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
 
+  isChart = false;
+
   addVitals_view = false;
   addVitalsPop = false;
 
@@ -146,6 +149,7 @@ export class PatientVitalsComponent implements OnInit {
 
   bindVitalsDataToChart() {
     var vitalsObjArray = [];
+    this.lineChartLabels = [];
     this.lineChartData = [
       { data: [], label: '' },
       { data: [], label: '' },
@@ -181,7 +185,6 @@ export class PatientVitalsComponent implements OnInit {
                 let dt = format(d, 'DD/MM/YY HH:mm:ss a');
                 this.lineChartLabels.push(dt);
               };
-              this.lineChartLabels.splice(0, 1);
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
             }
 
@@ -205,7 +208,6 @@ export class PatientVitalsComponent implements OnInit {
   }
 
   refreshVitalsChanged(value) {
-    this.lineChartLabels = [''];
     this.bindVitalsDataToChart();
   }
 
@@ -224,7 +226,19 @@ export class PatientVitalsComponent implements OnInit {
 
   public chartHovered(e: any): void {
   }
-  setReturnValue(e) {
 
+  setReturnValue(e) {
+    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
+      if (payload.data.length !== 0) {
+        let len2 = payload.data[0].documentations.length - 1;
+        for (let k = len2; k >= 0; k--) {
+          if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
+            var _tableChartData = payload.data[0].documentations[k].document.body.vitals;
+            this.tableChartData = _tableChartData.filter(x => isWithinRange(x.updatedAt, e.from, e.to) == true);
+          }
+        }
+      }
+    });
   }
+  
 }

@@ -225,6 +225,37 @@ export class TreatementPlanComponent implements OnInit {
     })
   }
   suspendMedication(medication, index) {
+    console.log(medication);
+    const medicationObj = this.treatmentSheet.medications[index];
+    this.isSaving = true;
+    medicationObj.status = 'Suspended';
+    medicationObj.completed = true;
 
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
+    })
+  }
+  activateMedication(medication, index){
+    console.log(medication);
+    const medicationObj = this.treatmentSheet.medications[index];
+    this.isSaving = true;
+    medicationObj.status = 'Started';
+    medicationObj.completed = true;
+
+    this.treatmentSheet.medications[index] = medicationObj;
+    this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
+    this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
+      console.log(payload);
+      this.isSaving = false;
+    }).catch(error => {
+      this.isSaving = false;
+      console.log(error);
+    });
   }
 }

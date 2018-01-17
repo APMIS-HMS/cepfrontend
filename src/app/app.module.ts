@@ -106,7 +106,7 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    //SetupService.FluidService
+    SetupService.FluidService
   ],
   bootstrap: [AppComponent]
 })
