@@ -70,6 +70,7 @@ const companycovers = require('./companycovers/companycovers.service.js');
 const companycovercategories = require('./companycovercategories/companycovercategories.service.js');
 const companyHealthCover = require('./company-health-cover/company-health-cover.service.js');
 const consultingRoom = require('./consulting-room/consulting-room.service.js');
+const corperateFacility = require('./corperate-facility/corperate-facility.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -143,4 +144,5 @@ module.exports = function (app) {
   app.configure(companycovercategories);
   app.configure(companyHealthCover);
   app.configure(consultingRoom);
+  app.configure(corperateFacility);
 };
