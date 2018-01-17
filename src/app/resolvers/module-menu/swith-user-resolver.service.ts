@@ -22,11 +22,16 @@ export class SwitchUserResolverService implements Resolve<Facility> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const auth: any = this.locker.getObject('auth');
     this.authData = auth.data;
+    if (auth == null || auth === undefined) {
+      this.router.navigate(['/']);
+      return Observable.of(null);
+    }
     return this.personService.get(this.authData.personId, {}).then(payloadp => {
       this.selectedPerson = payloadp;
       if (auth == null || auth === undefined) {
         this.router.navigate(['/']);
-      } else if (auth.data.corporateOrganisationId == null || auth.data.corporateOrganisationId === undefined) {
+      } else if (auth.corporateOrganisationId == null || auth.corporateOrganisationId === undefined) {
+        console.log(auth);
         const facilities = auth.data.facilitiesRole;
         const facilityList = [];
         facilities.forEach((item, i) => {
@@ -36,8 +41,6 @@ export class SwitchUserResolverService implements Resolve<Facility> {
           .then(payload => {
             this.listOfFacilities = payload.data;
             if (this.listOfFacilities.length === 1) {
-
-
               this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
               if (this.listOfFacilities[0].isTokenVerified === true) {
                 // this.router.navigate(['dashboard']);
@@ -56,7 +59,7 @@ export class SwitchUserResolverService implements Resolve<Facility> {
             }
           });
       } else {
-        return this.corporateFacilityService.get(auth.data.corporateOrganisationId, {}).then(single => {
+        return this.corporateFacilityService.get(auth.corporateOrganisationId, {}).then(single => {
           this.locker.setObject('selectedFacility', single);
           this.locker.setObject('isCorporate', true);
           this.router.navigate(['/dashboard/corporate']);

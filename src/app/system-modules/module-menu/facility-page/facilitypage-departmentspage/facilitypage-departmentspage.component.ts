@@ -14,7 +14,6 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
   styleUrls: ['./facilitypage-departmentspage.component.scss']
 })
 export class FacilitypageDepartmentspageComponent implements OnInit {
-
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('unititem') unititem;
   modal_on = false;
@@ -52,6 +51,10 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   selectedLocation: Location = <Location>{};
   minorLocations: MinorLocation[] = [];
   selectedUnit: any = <any>{};
+  selectedDepartment: any;
+  showUnit = false;
+  newDept = false;
+  newUnit = false;
   constructor(public facilityService: FacilitiesService,
     private locationService: LocationService,
     private route: ActivatedRoute,
@@ -215,10 +218,8 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.innerMenuShow = false;
   }
   close_onClick(message: boolean): void {
-    this.modal_on = false;
-    this.newUnitModal_on = false;
-    this.newDeptModal_on = false;
-    this.selectedUnit = <any>{};
+    this.newDept = false;
+    this.newUnit = false;
   }
   editUnit(unit) {
     this.selectedUnit = unit;
@@ -236,5 +237,33 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   }
   getClinicCount(unit) {
     return unit.clinics.length;
+  }
+
+  showUnit_selectedDepartmentUnit(dept) {
+    if (this.selectedDepartment !== undefined) {
+      return dept._id === this.selectedDepartment._id;
+    }
+    return false;
+  }
+  showUnit_click(dept) {
+    this.showUnit = false;
+    this.selectedDepartment = dept;
+    this.showUnit = true;
+  }
+  showUnit_hide() {
+    this.showUnit = false;
+    this.selectedDepartment = undefined;
+  }
+  newDept_onClick() {
+    this.newDept = true;
+  }
+  newUnit_onClick(dept) {
+    this.selectedDepartment = dept;
+    this.newUnit = true;
+  }
+  editUnit_onClick(dept, unit) {
+    this.selectedDepartment = dept;
+    this.selectedUnit = unit;
+    this.newUnit = true;
   }
 }

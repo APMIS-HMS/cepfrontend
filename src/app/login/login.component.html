@@ -3,9 +3,7 @@
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
         <legend class="modal_title">System Login</legend>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
-
     </div>
-
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
@@ -31,6 +29,7 @@
                 </div>
             </form>
         </div>
+
     </div>
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">

@@ -1,17 +1,20 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">New Store</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">New Store</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <form [formGroup]="frm_newStore" novalidate>
-        <div class="mainfrmwrap">
-            <div class="sec-1">
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Name" formControlName="name">
-                    </mat-input-container>
+        <form [formGroup]="frm_newStore" novalidate>
+            <div class="mainfrmwrap">
+                <div class="sec-1">
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Name" formControlName="name">
+                        </mat-input-container>
+                    </div>
                 </div>
 
                 <div class="frm-item-wrap">
@@ -26,36 +29,41 @@
                         <textarea formControlName="description" matInput placeholder="Description"></textarea>
                     </mat-input-container>
                 </div>
-            </div>
-            <div class="sec-2">
-
-                <div class="frm-item-wrap">
-                    <span class="frm-label">Product Type</span>
-                    <div class="chk-group-wrap">
-                        <div class="checkbox-wrap">
-                            <div *ngFor="let productType of productTypes" class="check-item">
-                                <mat-checkbox (change)="onValueChanged($event,productType)" [checked]="productType.isChecked"><span class="chk-label">{{productType.name}}</span></mat-checkbox>
+                <div class="sec-2">
+                    <div class="frm-item-wrap">
+                        <span class="frm-label">Product Type</span>
+                        <div class="chk-group-wrap">
+                            <div class="checkbox-wrap">
+                                <div *ngFor="let productType of productTypes" class="check-item">
+                                    <mat-checkbox (change)="onValueChanged($event,productType)" [checked]="productType.isChecked">
+                                        <span class="chk-label">{{productType.name}}</span>
+                                    </mat-checkbox>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="checkbox-wrap chkwrap">
-                    <div class="check-item">
-                        <mat-checkbox formControlName="canDespense"> <span class="chk-label">Dispense</span></mat-checkbox>
+                    <div class="checkbox-wrap chkwrap">
+                        <div class="check-item">
+                            <mat-checkbox formControlName="canDespense">
+                                <span class="chk-label">Dispense</span>
+                            </mat-checkbox>
+                        </div>
+                        <div class="check-item">
+                            <mat-checkbox formControlName="canReceivePurchaseOrder">
+                                <span class="chk-label">Recieve Purchase</span>
+                            </mat-checkbox>
+                        </div>
                     </div>
-                    <div class="check-item">
-                        <mat-checkbox formControlName="canReceivePurchaseOrder"> <span class="chk-label">Recieve Purchase</span></mat-checkbox>
-                    </div>
-                </div>
 
+                </div>
             </div>
-        </div>
-        <div class="text-center">
-            <button mat-raised-button class="mat-lg-btn" (click)="create(frm_newStore.valid, frm_newStore.value)">{{createText}}</button>
-        </div>
-    </form>
+            <div class="text-center">
+                <button mat-raised-button class="mat-lg-btn" (click)="create(frm_newStore.valid, frm_newStore.value)">{{createText}}</button>
+            </div>
+        </form>
 
+    </div>
 </div>
 <div *ngIf="loadIndicatorVisible" class="div_loading">
     <mat-spinner id="large-indicator" height="60" width="60"></mat-spinner>

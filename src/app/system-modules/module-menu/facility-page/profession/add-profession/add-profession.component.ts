@@ -88,8 +88,8 @@ export class AddProfessionComponent implements OnInit {
         });
         const profession: Profession = <Profession>{};
         profession.name = val.profession;
-        profession.cadres = [];
-        profession.cadres = cadreList;
+        profession.caders = [];
+        profession.caders = cadreList;
           this.professionService.create(profession).then((payload) => {
             this.frm_profession.reset();
             this.cadreForm.controls['cadreArray'] = this.formBuilder.array([]);

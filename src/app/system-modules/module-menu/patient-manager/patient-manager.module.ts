@@ -1,3 +1,4 @@
+
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
@@ -121,7 +122,8 @@ import { FluidTypeComponent } from './patientmanager-detailpage/fluid/fluid-type
         MaterialModule,
         ChartsModule,
         PdfViewerModule,
-        DateRangePickerModule
+        DateRangePickerModule,
+        DateTimePickerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,

@@ -145,17 +145,17 @@ export class ContactInfoComponent implements OnInit {
 						this.inputFacility = payload;
 
 						const personModel = <Person>{
-							titleId: this.titles[0]._id,
+							title: this.titles[0]._id,
 							firstName: this.facilityForm1_1.controls['contactFName'].value,
 							lastName: this.facilityForm1_1.controls['contactLName'].value,
-							genderId: this.genders[0]._id,
+							gender: this.genders[0]._id,
 							homeAddress: model.address,
-							phoneNumber: model.contactPhoneNo,
+							primaryContactPhoneNo: model.contactPhoneNo,
 							lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
 							nationalityId: this.inputFacility.address.country,
 							stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
 							email: this.facilityForm1_1.controls['contactEmail'].value,
-							maritalStatusId: this.maritalStatuses[0]._id
+							maritalStatus: this.maritalStatuses[0].name
 						};
 						const userModel = <User>{
 							email: this.facilityForm1_1.controls['contactEmail'].value,

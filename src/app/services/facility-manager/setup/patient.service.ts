@@ -58,7 +58,7 @@ export class PatientService {
   }
   find(query: any) {
     this.reload();
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {

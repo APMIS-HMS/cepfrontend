@@ -1,30 +1,34 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+    <legend class="modal_title">Set Workspace</legend>
+    <div class="modal_mini_title">All Purpose Medical Information System</div>
+  </div>
+  <div class="modal-baseWrap">
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-  <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-  <legend class="modal_title">Set Workspace</legend>
-  <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <form [formGroup]="frmNewEmp1" novalidate> 
+      <div class="frm-item-wrap">
+        <i class="fa fa-building-o" aria-hidden="true"></i>
+        <label>Major Location</label>
+        <select formControlName="majorLoc">
+          <option>Ear</option>
+        </select>
+      </div>
 
-  <form [formGroup]="frmNewEmp1" novalidate> 
-    <div class="frm-item-wrap">
-      <i class="fa fa-building-o" aria-hidden="true"></i>
-      <label>Major Location</label>
-      <select formControlName="majorLoc">
-        <option>Ear</option>
-      </select>
-    </div>
+      <div class="frm-item-wrap">
+        <i class="fa fa-circle-o" aria-hidden="true"></i>
+        <label>Minor Location</label>
+        <select formControlName="minorLoc">
+          <option>Block B</option>
+        </select>
+      </div>
 
-    <div class="frm-item-wrap">
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
-      <label>Minor Location</label>
-      <select formControlName="minorLoc">
-        <option>Block B</option>
-      </select>
-    </div>
+      <div class="cta-1">
+        Set Workspace
+      </div>
 
-    <div class="cta-1">
-      Set Workspace
-    </div>
+    </form>
 
-  </form>
-
+  </div>
 </div>

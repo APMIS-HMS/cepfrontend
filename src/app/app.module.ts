@@ -1,3 +1,4 @@
+import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
 import { PolicyService } from './services/facility-manager/setup/policy.service';
@@ -12,6 +13,7 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { } from './facility-setup/facility-setup.module';
 // import {            } from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
@@ -47,8 +49,16 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
+import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
+import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
+import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
+
+//import { IkeComponent } from './ike/ike.component';
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -75,6 +85,12 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
     LoadingBarRouterModule,
+    SweetAlert2Module.forRoot({
+      buttonsStyling: false,
+      customClass: 'modal-content',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn'
+  })
     // PdfViewerModule
   ],
   providers: [
@@ -104,6 +120,11 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
+    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.FluidService

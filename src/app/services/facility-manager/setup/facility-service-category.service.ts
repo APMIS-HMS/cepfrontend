@@ -22,8 +22,8 @@ export class FacilitiesServiceCategoryService {
     private locker: CoolLocalStorage,
     private _http: Http
   ) {
-    this._rest = _restService.getService('facilityservices');
-    this._socket = _socketService.getService('facilityservices');
+    this._rest = _restService.getService('organisation-services');
+    this._socket = _socketService.getService('organisation-services');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');

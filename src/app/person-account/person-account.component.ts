@@ -1,7 +1,15 @@
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { UserFacadeService } from './../system-modules/service-facade/user-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Title } from './../models/facility-manager/setup/title';
+import { TitleGenderFacadeService } from './../system-modules/service-facade/title-gender-facade.service';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CountriesService, GenderService, PersonService, UserService, FacilitiesService } from '../services/facility-manager/setup/index';
 import { Gender, User, Person, Address } from '../models/index';
+import { EMAIL_REGEX, PHONE_REGEX } from 'app/shared-module/helpers/global-config';
 
 @Component({
   selector: 'app-person-account',
@@ -19,64 +27,63 @@ export class PersonAccountComponent implements OnInit {
   selectedCountry: any = <any>{};
   selectedState: any = <any>{};
   genders: Gender[] = [];
+  titles: Title[] = [];
   errMsg: string;
   mainErr = true;
-  success = false;
+  isSuccessful = false;
 
+  counterSubscription: Subscription;
+  countDown = 10;
   public frmPerson: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private countriesService: CountriesService,
-    private genderService: GenderService,
+    private titleGenderFacadeService: TitleGenderFacadeService,
     private personService: PersonService,
     private userService: UserService,
-    private facilitiesService: FacilitiesService
-  ) { }
+    private userServiceFacade: UserFacadeService,
+    private facilitiesService: FacilitiesService,
+    private systemModuleService: SystemModuleService,
+    private vcr: ViewContainerRef, private toastr: ToastsManager
+  ) {
+    this.toastr.setRootViewContainerRef(vcr);
+  }
 
   ngOnInit() {
     this.getGenders();
-    this.getCountries();
+    this.getTitles();
     this.frmPerson = this.formBuilder.group({
-
+      persontitle: [new Date(), [<any>Validators.required]],
       firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-      othernames: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(200)]],
-      // password: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
-      // repassword: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(20)]],
       gender: [[<any>Validators.minLength(2)]],
       dob: [new Date(), [<any>Validators.required]],
-      nationality: ['', [<any>Validators.required]],
-
-      state: ['', [<any>Validators.required]],
-      lga: ['', [<any>Validators.required]],
-      address: ['', [<any>Validators.required]],
-      email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
-      phone: ['', [<any>Validators.required]]
+      email: ['', [<any>Validators.required, <any>Validators.pattern(EMAIL_REGEX)]],
+      phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
     });
 
-    this.frmPerson.controls['state'].valueChanges.subscribe((value: any) => {
-      this.selectedState = value;
-    })
+    this.frmPerson.valueChanges.subscribe(value => {
+      if (!this.mainErr) {
+        this.isSuccessful = false;
+      }
 
-    this.frmPerson.valueChanges.subscribe(value =>{
-      this.success = false;
+      this.mainErr = true;
+      this.errMsg = '';
     })
   }
 
 
   getGenders() {
-    this.genderService.findAll().then((payload) => {
-      this.genders = payload.data;
+    this.titleGenderFacadeService.getGenders().then((payload: any) => {
+      this.genders = payload;
     })
   }
 
-  getCountries() {
-    this.countriesService.findAll().then((payload) => {
-      this.countries = payload.data;
+  getTitles() {
+    this.titleGenderFacadeService.getTitles().then((payload: any) => {
+      this.titles = payload;
     })
   }
-
   onNationalityChange(value: any) {
     const country = this.countries.find(item => item._id === value);
     this.selectedCountry = country;
@@ -84,46 +91,60 @@ export class PersonAccountComponent implements OnInit {
 
   submit(valid, val) {
     if (valid) {
+      this.systemModuleService.on();
       const personModel = <any>{
+        title: this.frmPerson.controls['persontitle'].value,
         firstName: this.frmPerson.controls['firstname'].value,
         lastName: this.frmPerson.controls['lastname'].value,
-        otherNames: this.frmPerson.controls['othernames'].value,
-        genderId: this.genders[0]._id,
+        gender: this.frmPerson.controls['lastname'].value,
         dateOfBirth: this.frmPerson.controls['dob'].value,
-        homeAddress: <Address>({
-          street: this.frmPerson.controls['address'].value,
-        }),
         email: this.frmPerson.controls['email'].value,
-        phoneNumber: this.frmPerson.controls['phone'].value,
-        nationalityId: this.frmPerson.controls['nationality'].value,
-        stateOfOriginId: this.frmPerson.controls['state'].value._id,
-        lgaOfOriginId: this.frmPerson.controls['lga'].value
+        primaryContactPhoneNo: this.frmPerson.controls['phone'].value
       };
+      console.log(personModel);
+      // const userModel = <User>{
+      //   email: personModel.apmisId
+      // };
+      // userModel.personId = ppayload._id;
+      let body = {
+        person: personModel
+      }
 
-      this.personService.create(personModel).then((ppayload) => {
-        const userModel = <User>{
-          email: ppayload.apmisId
-        };
-        userModel.personId = ppayload._id;
-        this.userService.create(userModel).then((upayload) => {
-          this.frmPerson.reset();
-          this.success = true;
-          this.facilitiesService.announceNotification({
-            type: 'Success',
-            text: this.frmPerson.controls['firstname'].value + ' '
-            + this.frmPerson.controls['othernames'].value + ' '
-            + this.frmPerson.controls['lastname'].value + ' '
-            + 'added successful'
-          });
-        }, error => {
-          this.mainErr = false;
-          this.errMsg = 'An error has occured, please check and try again!';
+      this.personService.createPerson(body).then((ppayload) => {
+
+        this.isSuccessful = true;
+        let text = this.frmPerson.controls['firstname'].value + ' '
+          + this.frmPerson.controls['lastname'].value + ' '
+          + 'added successful'
+        this.success(text);
+        this.frmPerson.reset();
+        this.systemModuleService.off();
+
+        this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
+          this.countDown = this.countDown - 1;
+          console.log(this.countDown);
+          if (rx === 9) {
+            this.close_onClick();
+            this.counterSubscription.unsubscribe();
+          }
+
         });
+        // this.userService.create(userModel).then((upayload) => {
+
+        // }, error => {
+        //   console.log(error);
+        //   this.systemModuleService.off();
+        //   // this.mainErr = false;
+        //   // this.errMsg = 'An error has occured, please check and try again!';
+        // });
       }, err => {
+        console.log(err);
+        this.systemModuleService.off();
       });
     } else {
       this.mainErr = false;
       this.errMsg = 'An error has occured, please check and try again!';
+      this.systemModuleService.off();
     }
   }
 
@@ -139,5 +160,16 @@ export class PersonAccountComponent implements OnInit {
       this.input.nativeElement.type = 'password';
     }
   }
-
+  success(text) {
+    this.toastr.success(text, 'Success!');
+  }
+  error(text) {
+    this.toastr.error(text, 'Error!');
+  }
+  info(text) {
+    this.toastr.info(text, 'Info');
+  }
+  warning(text) {
+    this.toastr.warning(text, 'Warning');
+  }
 }

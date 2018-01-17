@@ -1,1 +1,40 @@
-@import "../facility-page.component.scss";
+@import "../facility-page-home.component.scss";
+@import "../../patient-manager/patientmanager-detailpage/fluid/fluid.component.scss";
+
+.tbl-active tr:hover {background-color: #d1ffd1}
+.tbl-active tr:nth-child(even) {background-color: #d1ffd1}
+.tbl-active tr{
+    background-color: #e5ffe5;
+}
+
+.tbl-inactive tr:hover {background-color: #f2bfbf}
+.tbl-inactive tr:nth-child(even) {background-color: #f2bfbf}
+.tbl-inactive tr{
+    background-color: #fae5e5;
+}
+.tbl-btn-red{
+    border: 1px solid #ff2500;
+    color: #ff2500;
+    padding: 3px;
+    text-align: center;
+    width: 100px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.tbl-btn-red:hover{
+    background: #ff2500;
+    color: #fff;
+}
+.tbl-btn-green{
+    border: 1px solid #388E3C;
+    color: #388E3C;
+    padding: 3px;
+    text-align: center;
+    width: 100px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.tbl-btn-green:hover{
+    background: #388E3C;
+    color: #fff;
+}

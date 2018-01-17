@@ -1,3 +1,4 @@
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService } from '../../services/facility-manager/setup/index';
@@ -27,6 +28,7 @@ export class VerifyTokenComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _route: ActivatedRoute,
     private _facilityService: FacilitiesService,
+    private locker: CoolLocalStorage
   ) { }
 
   ngOnInit() {
@@ -49,7 +51,9 @@ export class VerifyTokenComponent implements OnInit {
             this.sg3_show = true;
             this.verify_show = false;
             this.inputFacility.isTokenVerified = true;
-            this._facilityService.update(this.inputFacility).then(payload2 => { });
+            this._facilityService.update(this.inputFacility).then(payload2 => {
+              this.locker.setObject('selectedFacility', payload2);
+             });
           } else {
             this.mainErr = false;
             this.errMsg = 'Wrong Token, try again.';
@@ -60,6 +64,15 @@ export class VerifyTokenComponent implements OnInit {
       this.mainErr = false;
     }
   }
+  resendToken(){
+    console.log(this.facility);
+     let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this._facilityService.resendToken(selectedFacility).then(payload =>{
+      console.log(payload);
+    }).catch(error =>{
+      console.log(error);
+    })
+  }
 
   back_verifier() {
     this.sg3_show = false;
@@ -69,6 +82,9 @@ export class VerifyTokenComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+    this.verify_show = false;
+    this.back_verify_show = false;
+    this.sg3_show= false;
   }
 
 }

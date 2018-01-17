@@ -1,0 +1,129 @@
+<div class="pp-card shadow-grey">
+
+    <i (click)="editBasicInfo_onClick()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+
+    <div class="card-seperator">
+        <div class="patient-img-wrap">
+            <img src="../../../../../assets/images/logos/default.png">
+        </div>
+
+        <div class="basic-info-wrap">
+            <div class="basic-info-name">{{selectedFacility.name}}</div>
+            <div class="name-class">
+                <div class="basic-info-others">{{selectedFacility.facilityClassId}}</div>
+                <div class="basic-info-others">{{selectedFacility.facilityTypeId}}</div>
+                <div class="basic-info-others">{{selectedFacility.street}}.</div>
+            </div>
+            <div class="basic-info-group">
+                <div class="basic-info-others">{{selectedFacility.shortName}}</div>
+            </div>
+            <div class="basic-info-group">
+                <div class="basic-info-others">
+                    <i class="fa fa-registered" aria-hidden="true"></i>{{selectedFacility.cacNo}}</div>
+                <div class="basic-info-others">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>{{selectedFacility.email}}</div>
+                <div *ngIf="selectedFacility.website" class="basic-info-others">
+                    <i class="fa fa-globe" aria-hidden="true"></i>{{selectedFacility.website}}</div>
+                <div class="basic-info-others">
+                    <i class="fa fa-phone" aria-hidden="true"></i>{{selectedFacility.primaryContactPhoneNo}}</div>
+            </div>
+        </div>
+    </div> 
+</div> 
+
+<div class="pp-card shadow-grey">
+
+    <i (click)="editBasicInfo_onClick()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+
+    <!-- <div *ngIf="selectedFacility.isNetworkFacility" class="facility-count-sect card-seperator clickable-sect"> -->
+    <div class="facility-count-sect card-seperator">
+        <div class="cad-head">
+            <div class="isnetwork-wrap">
+                <div *ngIf="selectedFacility.isNetworkFacility" class="isnetwork">NETWORK</div>
+                <div *ngIf="selectedFacility.isNetworkFacility" class="network-membership">HOST</div>
+            </div>
+            <div class="facility-count">{{selectedFacility.memberFacilities.length}}</div>
+            <div class="count-label">Facilities In Network</div>
+            <div class="head-tag">HOST</div>
+            <div class="oda-nets-link">
+                Other Networks
+                <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+            </div>
+
+            <ul class="oda-ul">
+                <li>Tertiary Healthcare Network</li>
+                <li>The International Authopedic Network</li>
+                <li>Healthcare Interconnect</li>
+                <li>Global Consult</li>
+                <li>Tertiary Healthcare Network</li>
+                <li>The International Authopedic Network</li>
+                <li>Healthcare Interconnect</li>
+                <li>Global Consult</li>
+            </ul>
+        </div>
+        <ul class="work-places-list">
+            <li class="work-places-item">
+                <div class="wp-img-wrap">
+                    <img src="../../../../../assets/images/logos/lagoon.png">
+                </div>
+                <div class="network-list">
+                    <div class="wp-name">Lagoon Hospital</div>
+                    <div class="basic-info-others tag">HOST</div>
+                    <div class="basic-info-others">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                    <div class="basic-info-others">
+                        <i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                </div>
+            </li>
+            <li class="work-places-item">
+                <div class="wp-img-wrap">
+                    <img src="../../../../../assets/images/logos/lagoon.png">
+                </div>
+                <div class="network-list">
+                    <div class="wp-name">Lagoon Hospital</div>
+                    <div class="basic-info-others tag">MEMBER</div>
+                    <div class="basic-info-others">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                    <div class="basic-info-others">
+                        <i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                </div>
+            </li>
+            <li class="work-places-item">
+                <div class="wp-img-wrap">
+                    <img src="../../../../../assets/images/logos/lagoon.png">
+                </div>
+                <div class="network-list">
+                    <div class="wp-name">Lagoon Hospital</div>
+                    <div class="basic-info-others tag">MEMBER</div>
+                    <div class="basic-info-others">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>info@continental.com</div>
+                    <div class="basic-info-others">
+                        <i class="fa fa-phone" aria-hidden="true"></i>080999009988, 08099887766</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="pp-card shadow-grey">
+    <div class="card-title">Activities Feed</div>
+    <ul class="feed-ul">
+        <li class="feed-li">
+            You was scheduled for a blood count test on the 16th dec, 2017, 9:00am at Clinix Diagnostics
+            <div class="feed-time">16th Dec, 2017. 08:00am</div>
+        </li>
+        <li class="feed-li">
+            &#8358;1500 was debited from your wallet for your blood count test at Clinix Diagnostics
+            <div class="feed-time">16th Dec, 2017. 08:01am</div>
+        </li>
+        <li class="feed-li">
+            Your blood count test results from Clinix Diagnostics is available
+            <div class="feed-time">16th Dec, 2017. 08:00am</div>
+        </li>
+    </ul>
+</div>
+
+<div *ngIf="editBasicInfo" class="modal-overlay">
+    <app-facility-basicinfo-edit [selectedFacility]="selectedFacility" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-facility-basicinfo-edit>
+</div>

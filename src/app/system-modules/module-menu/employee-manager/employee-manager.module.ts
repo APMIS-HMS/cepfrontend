@@ -21,6 +21,8 @@ import { WorkspaceHistoryComponent } from './workspace-history/workspace-history
 import { AssignUnitComponent } from './assign-unit/assign-unit.component';
 import { EmployeesResolverService, LoginEmployeeResolverService } from '../../../resolvers/module-menu/index'
 import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { EditEmpBasicComponent } from './employeemanager-detailpage/edit-emp-basic/edit-emp-basic.component';
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 
 @NgModule({
     declarations: [
@@ -39,13 +41,15 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
         EditUserFeaturesComponent,
         NewWorkspaceComponent,
         WorkspaceHistoryComponent,
-        AssignUnitComponent
+        AssignUnitComponent,
+        EditEmpBasicComponent
     ],
     exports: [
     ],
     imports: [
         employeeManagerRoutes,
-        MaterialModule
+        MaterialModule,
+        Ng4GeoautocompleteModule
     ],
     providers: [EmployeesResolverService, LoginEmployeeResolverService]
 })

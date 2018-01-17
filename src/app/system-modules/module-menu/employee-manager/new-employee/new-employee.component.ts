@@ -1,13 +1,14 @@
+import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService,
-    PersonService,UserService
+    PersonService, UserService
 } from '../../../../services/facility-manager/setup/index';
 
 import {
-    Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country,User, Role
+    Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country, User, Role
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
@@ -70,7 +71,8 @@ export class NewEmployeeComponent implements OnInit {
         private relationshipService: RelationshipService,
         private professionService: ProfessionService,
         private locker: CoolLocalStorage, private employeeService: EmployeeService,
-        private personService: PersonService, private userService: UserService
+        private personService: PersonService, private userService: UserService,
+        private countryFacadeService: CountryServiceFacadeService
     ) {
         this.cropperSettings = new CropperSettings();
         this.cropperSettings.width = 400;
@@ -106,7 +108,7 @@ export class NewEmployeeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.facility =  <Facility> this.locker.getObject('selectedFacility');
+        this.facility = <Facility>this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.prime();
@@ -132,12 +134,20 @@ export class NewEmployeeComponent implements OnInit {
 
         });
 
-        this.frmNewEmp1.controls['empNationality'].valueChanges.subscribe((value: Country) => {
-            this.states = value.states;
+        this.frmNewEmp1.controls['empNationality'].valueChanges.subscribe((value: any) => {
+
+            this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
+                this.states = states;
+            }).catch(err => { });
         });
 
         this.frmNewEmp1.controls['empState'].valueChanges.subscribe((value: any) => {
-            this.lgs = value.lgs;
+            let country = this.frmNewEmp1.controls['empNationality'].value;
+            this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
+                this.lgs = lgsAndCities.lgs;
+            }).catch(err => {
+                console.log(err);
+            });
         });
 
         this.frmNewEmp2 = this.formBuilder.group({
@@ -147,14 +157,21 @@ export class NewEmployeeComponent implements OnInit {
             empCity: ['', [<any>Validators.required]],
             empHomeAddress: ['', [<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]],
             empDOB: [new Date(), [<any>Validators.required]],
-            secQst: ['',[]],
-            secAns: ['',[]]
+            secQst: ['', []],
+            secAns: ['', []]
         });
         this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
-            this.contactStates = value.states;
+            this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
+                this.contactStates = states;
+            }).catch(err => { });
         });
         this.frmNewEmp2.controls['empContactState'].valueChanges.subscribe((value) => {
-            this.cities = value.cities;
+            let country = this.frmNewEmp2.controls['empCountry'].value;
+            this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
+                this.cities = lgsAndCities.cities;
+            }).catch(err => {
+                console.log(err);
+            });
         });
         this.frmNewEmp3 = this.formBuilder.group({
 
@@ -315,25 +332,25 @@ export class NewEmployeeComponent implements OnInit {
     }
     newPerson1(valid, val) {
         if (valid) {
-          if (val.confirmEmpEmail === val.empEmail) {
-            if (val.empTitle === '' || val.empTitle === ' ' || val.empFirstName === ''
-                || val.empFirstName === ' ' || val.empLastName === '' || val.empLastName === ' '
-                || val.empPhonNo === ' ' || val.empPhonNo === ''
-                || val.empGender === '' || val.empNationality === '' || val.empLga === '' || val.empState === '') {
-                this.mainErr = false;
-                this.errMsg = 'You left out a required field';
+            if (val.confirmEmpEmail === val.empEmail) {
+                if (val.empTitle === '' || val.empTitle === ' ' || val.empFirstName === ''
+                    || val.empFirstName === ' ' || val.empLastName === '' || val.empLastName === ' '
+                    || val.empPhonNo === ' ' || val.empPhonNo === ''
+                    || val.empGender === '' || val.empNationality === '' || val.empLga === '' || val.empState === '') {
+                    this.mainErr = false;
+                    this.errMsg = 'You left out a required field';
+                } else {
+                    this.frmNewPerson1_show = false;
+                    this.frmNewPerson2_show = true;
+                    this.frmNewPerson3_show = false;
+                    this.frmNewEmp4_show = false;
+                    this.apmisId_show = false;
+                    this.mainErr = true;
+                }
             } else {
-                this.frmNewPerson1_show = false;
-                this.frmNewPerson2_show = true;
-                this.frmNewPerson3_show = false;
-                this.frmNewEmp4_show = false;
-                this.apmisId_show = false;
-                this.mainErr = true;
+                this.mainErr = false;
+                this.errMsg = 'Email address must match Confirm email address';
             }
-          } else {
-            this.mainErr = false;
-            this.errMsg = 'Email address must match Confirm email address';
-          }
         } else {
             this.mainErr = false;
         }
@@ -382,7 +399,7 @@ export class NewEmployeeComponent implements OnInit {
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value.momentObj;
             person.email = this.frmNewEmp1.controls['empEmail'].value;
             person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
-            person.genderId = this.frmNewEmp1.controls['empGender'].value;
+            person.gender = this.frmNewEmp1.controls['empGender'].value;
             person.homeAddress = <Address>{
                 street: this.frmNewEmp2.controls['empHomeAddress'].value,
                 city: this.frmNewEmp2.controls['empCity'].value,
@@ -392,7 +409,7 @@ export class NewEmployeeComponent implements OnInit {
 
             };
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatusId = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
             if (!this.skipNok) {
                 person.nextOfKin.push(
                     {
@@ -405,21 +422,24 @@ export class NewEmployeeComponent implements OnInit {
             }
 
             person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
-            person.phoneNumber = this.frmNewEmp1.controls['empPhonNo'].value;
-            person.titleId = this.frmNewEmp1.controls['empTitle'].value;
+            person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
+            person.title = this.frmNewEmp1.controls['empTitle'].value;
             person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
             // person.profileImage = this.empImg.image;
-
-            this.personService.create(person).then(payload => {
+            let body = {
+                person: person,
+                facilityId: this.facility._id
+            }
+            this.personService.createPerson(body).then(payload => {
                 this.selectedPerson = payload;
-                this.user.email = this.selectedPerson.apmisId;
-                this.user.personId = this.selectedPerson._id;
-                this.user.facilitiesRole = [];
-                this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
-                this.userService.create(this.user).then((upayload) => {
-                });
+                // this.user.email = this.selectedPerson.apmisId;
+                // this.user.personId = this.selectedPerson._id;
+                // this.user.facilitiesRole = [];
+                // this.user.facilitiesRole.push(<Role>{ facilityId: this.facility._id });
+                // this.userService.create(this.user).then((upayload) => {
+                // });
                 if (this.skipNok) {
                     this.saveEmployee();
                 }
@@ -500,11 +520,19 @@ export class NewEmployeeComponent implements OnInit {
         model.officialContactNumber = this.frmNewEmp4.controls['empWorkPhonNo'].value;
         model.officialEmailAddress = this.frmNewEmp4.controls['empWorkEmail'].value;
         model.personId = this.selectedPerson._id;
-        model.professionId = this.frmNewEmp4.controls['empJobTitle'].value._id;
+        model.professionId = this.frmNewEmp4.controls['empJobTitle'].value;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
         this.employeeService.create(model).then(payload => {
+            console.log(payload);
+            this.frmNewPerson1_show = false;
+            this.frmNewPerson2_show = false;
+            this.frmNewPerson3_show = false;
+            this.frmNewEmp4_show = false;
+            this.apmisId_show = false;
+            this.mainErr = true;
 
+            this.closeModal.emit(true);
         });
     }
     newEmp4(valid, val) {
@@ -520,14 +548,14 @@ export class NewEmployeeComponent implements OnInit {
 
                 }
 
-                this.frmNewPerson1_show = false;
-                this.frmNewPerson2_show = false;
-                this.frmNewPerson3_show = false;
-                this.frmNewEmp4_show = false;
-                this.apmisId_show = false;
-                this.mainErr = true;
+                // this.frmNewPerson1_show = false;
+                // this.frmNewPerson2_show = false;
+                // this.frmNewPerson3_show = false;
+                // this.frmNewEmp4_show = false;
+                // this.apmisId_show = false;
+                // this.mainErr = true;
 
-                this.closeModal.emit(true);
+                // this.closeModal.emit(true);
 
             }
         } else {
@@ -543,10 +571,32 @@ export class NewEmployeeComponent implements OnInit {
     onEmpStateChange(val) { }
     onEmpLgaChange(val) { }
     onEmpMaritalStatusChange(val) { }
-    onEmpDeptChange(val) { }
+    onEmpDeptChange(val) {
+        console.log(val)
+        this.units = [];
+        if (val !== undefined) {
+            let deptIndex = this.facility.departments.findIndex(x => x.name === val);
+            console.log(deptIndex)
+            if (deptIndex > -1) {
+                console.log(this.facility.departments[deptIndex].units);
+                this.units = this.facility.departments[deptIndex].units;
+            }
+
+        }
+    }
     onEmpLocChange(val) { }
     onNokRelationshipChange(val) { }
-    onEmpJobTitleChange(val) { }
+    onEmpJobTitleChange(val) {
+        this.cadres = [];
+        if (val !== undefined) {
+            let proIndex = this.professions.findIndex(x => x.name === val);
+            console.log(proIndex);
+            if (proIndex > -1) {
+                console.log(this.professions[proIndex])
+                this.cadres = this.professions[proIndex].caders;
+            }
+        }
+    }
     onEmpLevelChange(val) { }
 
     close_onClick() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, Department } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -38,18 +38,18 @@ export class AssignUnitComponent implements OnInit {
 
   ngOnInit() {
     this.frmNewEmp1 = this.formBuilder.group({
-      dept: ['', []],
-      unit: ['', []]
+      dept: ['', [Validators.required]],
+      unit: ['', [Validators.required]]
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     if (this.selectedEmployee !== undefined) {
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.departmentId);
+      const deptList = this.departments.filter(x => x.name === this.selectedEmployee.departmentId);
       if (deptList.length > 0) {
-        this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
+        this.frmNewEmp1.controls['dept'].setValue(deptList[0].name);
+        this.units = deptList[0].units;
       }
-      this.units = this.frmNewEmp1.controls['dept'].value.units;
       this.selectedEmployee.isChecked = false;
       this.employees.push(this.selectedEmployee);
       this.filteredEmployees = this.employees;
@@ -61,13 +61,13 @@ export class AssignUnitComponent implements OnInit {
       this.selectedUnit = value;
       this.filterDownEmployees(this.selectedUnit);
     });
-    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
-      this.selectedDepartment = value;
-      this.units = value.units;
+    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: any) => {
+      const deptIndex = this.departments.findIndex(x => x.name === value);
+      this.selectedDepartment = this.departments[deptIndex];
+      this.units =  this.selectedDepartment.units;
       if (this.selectedEmployee === undefined) {
         this.getEmployees(value);
       }
-
     });
     this.checkAll.valueChanges.subscribe(value => {
       this.checkAllEmployees(value);
@@ -96,12 +96,11 @@ export class AssignUnitComponent implements OnInit {
     });
     this.filteredEmployees = this.employees;
   }
-  getEmployees(dept: Department) {
+  getEmployees(dept: any) {
     this.employeeService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        departmentId: dept._id,
-        showsliminfo: true
+        departmentId: dept
       }
     }).then(payload => {
       this.employees = payload.data;
@@ -109,46 +108,27 @@ export class AssignUnitComponent implements OnInit {
         itemi.isChecked = false;
       });
       this.filteredEmployees = this.employees;
-      // this.filterDownEmployees(this.selectedUnit);
+      if (this.selectedUnit !== undefined) {
+        this.filterDownEmployees(this.selectedUnit);
+      }
     });
+  }
+  hasMinimumChecked() {
+    return this.filteredEmployees.filter(x => x.isChecked).length > 0;
   }
   close_onClick() {
     this.closeModal.emit(true);
   }
   onValueChanged(e, employee: Employee) {
-    employee.isChecked = e.value;
+    employee.isChecked = e.checked;
   }
   assignUnit(valid, value) {
-    console.log(valid);
     const checkedEmployees = this.filteredEmployees.filter(emp => emp.isChecked === true);
 
-    checkedEmployees.forEach((emp, i) => {
-      console.log(i);
-      if (emp.units === undefined) {
-        emp.units = [];
-      }
-      emp.units.push(this.selectedUnit._id);
-    });
-    checkedEmployees.forEach((itemi, i) => {
-      console.log(i);
-      this.employeeService.update(itemi).then(payload => {
-        if (this.selectedEmployee === undefined) {
-          this.getEmployees(this.selectedDepartment);
-        } else {
-          this.employees = [];
-          this.filteredEmployees = [];
-          this.selectedEmployee.isChecked = false;
-          this.employees.push(this.selectedEmployee);
-          this.frmNewEmp1.controls['unit'].reset();
-        }
-
-      }, error => {
-      });
+    this.employeeService.assignUnit({ unitId: this.selectedUnit._id, employees: checkedEmployees }).then(payload => {
+      this.getEmployees(this.selectedDepartment.name);
     }, error => {
       console.log(error);
     });
-    // this.employeeService.updateMany(checkedEmployees).then(payload => {
-    // }, error => {
-    // });
   }
 }

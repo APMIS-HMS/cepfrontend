@@ -8,7 +8,7 @@ import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+
 
 @Component({
   selector: 'app-investigation-price',
@@ -54,7 +54,6 @@ export class InvestigationPriceComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
-    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
     private _facilityService: FacilitiesService
   ) { }
@@ -113,17 +112,7 @@ export class InvestigationPriceComponent implements OnInit {
     this.getTags();
     this.getInvestigations();
   }
-  addToast(msg: string) {
-    const toastOptions: ToastOptions = {
-      title: 'Apmis',
-      msg: msg,
-      showClose: true,
-      timeout: 5000,
-      theme: 'default',
-    };
 
-    this.toastyService.info(toastOptions);
-  }
   getInvestigations() {
     console.log(this.checkingObject);
     this.investigationService.find({

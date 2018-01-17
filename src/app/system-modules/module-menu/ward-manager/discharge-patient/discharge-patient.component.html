@@ -1,26 +1,25 @@
-<div class="modal-baseWrap animated pulse">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Discharge {{ selectedPatient?.patientId?.personDetails?.personFullName }}</legend>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Discharge Patient</legend>
+        <div class="modal_mini_title">{{ selectedPatient?.patientId?.personDetails?.personFullName }}</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <form [formGroup]="dischargeFormGroup" novalidate>
-        <div class="frm-item-wrap">
-            <mat-form-field>
-                <mat-select placeholder="Discharge Type" formControlName="dischargeType">
-                    <mat-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge">{{discharge.name}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-input-container>
-                <textarea matInput formControlName="comment" placeholder="Reason for discharge"></textarea>
-            </mat-input-container>
-        </div>
-    </form>
-    <div class="btn-box">
-        <button mat-raised-button [disabled]="disableBtn || !dischargeFormGroup.valid" (click)="onDischarge(dischargeFormGroup.value, dischargeFormGroup.valid)" class="btn">
-          <span *ngIf="dischargeText">Discharge Patient</span>
-          <span *ngIf="dischargingText">Discharge Patient...<i class="fa fa-spinner fa-spin"></i></span>
-        </button>
+        <form [formGroup]="dischargeFormGroup" novalidate>
+            <div class="frm-item-wrap">
+                <mat-form-field>
+                    <mat-select placeholder="Discharge Type" formControlName="dischargeType">
+                        <mat-option *ngFor="let discharge of dischargeTypeItems" [value]="discharge">{{discharge.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-input-container>
+                    <textarea matInput formControlName="comment" placeholder="Reason for discharge"></textarea>
+                </mat-input-container>
+            </div>
+        </form>
     </div>
 </div>

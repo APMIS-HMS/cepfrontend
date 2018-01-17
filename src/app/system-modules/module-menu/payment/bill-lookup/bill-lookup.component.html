@@ -224,36 +224,41 @@
 
 <app-global-patient-lookup></app-global-patient-lookup>
 <div *ngIf="makePayment_modal" class="modal-overlay">
-    <div class="modal-baseWrap animated pulse">
-        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend class="modal_title">Fund Wallet</legend>
-        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="animated pulse">
+        <div class="modal-header-wrap">
+            <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+            <legend class="modal_title">Fund Wallet</legend>
+            <div class="modal_mini_title">All Purpose Medical Information System</div>
+        </div>
+        <div class="modal-baseWrap">
+            <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-        <div style="width:100%;">
-            <div class="frm-item-wrap">
-                <mat-input-container>
-                    <input type="text" matInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
-                </mat-input-container>
-            </div>
-            <ul class="topmenuwrap">
-                <li (click)="fundWallet()">
-                    <i class="fa fa-money" aria-hidden="true"></i>
-                    <span>Cash</span>
-                </li>
-                <li (click)="onClickEPayment()">
-                    <i class="fa fa-credit-card" aria-hidden="true"></i>
-                    <span>e-Payment</span>
-                </li>
-            </ul>
-            <div class="epayment-box" *ngIf="ePayment">
-                <!-- <div>
-                    <angular-4-flutterwave *ngIf="withPaystack" [amount]="fundAmount.value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
-                        [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
-                </div> -->
-                <!-- <div>
-                    <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
-                        (callback)="paymentDone($event)">e-Payment</angular4-paystack>
-                </div> -->
+            <div style="width:100%;">
+                <div class="frm-item-wrap">
+                    <mat-input-container>
+                        <input type="text" matInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
+                    </mat-input-container>
+                </div>
+                <ul class="topmenuwrap">
+                    <li (click)="fundWallet()">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        <span>Cash</span>
+                    </li>
+                    <li (click)="onClickEPayment()">
+                        <i class="fa fa-credit-card" aria-hidden="true"></i>
+                        <span>e-Payment</span>
+                    </li>
+                </ul>
+                <div class="epayment-box" *ngIf="ePayment">
+                    <!-- <div>
+                        <angular-4-flutterwave *ngIf="withPaystack" [amount]="fundAmount.value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
+                            [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
+                    </div> -->
+                    <!-- <div>
+                        <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
+                            (callback)="paymentDone($event)">e-Payment</angular4-paystack>
+                    </div> -->
+                </div>
             </div>
         </div>
     </div>

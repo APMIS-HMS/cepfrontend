@@ -1,69 +1,67 @@
-<div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-<div *ngIf="sg1_show" class="f_sg1">
+<div class="modal-baseWrap">
+    <div class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied
+      below</div>
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1.value)">
 
-    <form [formGroup]="facilityForm1" novalidate>
-
-        <div class="lhs">
-            <div class="frm-item-wrap">
+        <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="Facility Name" formControlName="facilityname">
+            </mat-input-container>
+        </div>
+        <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+        <div class="frm-item-wrap">
+            <div class="frm-item-x2">
                 <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Facility Name" formControlName="facilityname">
+                    <input matInput mat-error placeholder="Street Address" formControlName="facilitystreet">
+                </mat-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="City" formControlName="facilitycity">
                 </mat-input-container>
             </div>
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input matInput mat-error placeholder="Facility Short Name" formControlName="facilityalias">
-                </mat-input-container>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Type of Facility" formControlName="facilitytype" (change)="onFacilityTypeChange($event.value._id)">
-                        <mat-option *ngFor="let item of facilityTypes" selected="inputFacility.facilityTypeId" [value]="item">{{item.name}}</mat-option>
+        </div>
+        <div class="frm-item-wrap">
+            <div class="frm-item-x2">
+                <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Country" formControlName="facilitycountry">
+                        <mat-option  [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Facility Category" formControlName="facilitycategory">
-                        <mat-option *ngFor="let item of selectedFacilityType?.facilityClasses" [value]="item._id">{{item.name}}</mat-option>
+                <mat-form-field class="example-full-width">
+                    <mat-select placeholder="State" formControlName="facilitystate" [compareWith]="compareState">
+                        <mat-option [value]="state.name" *ngFor="let state of states">{{state.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
-
-        <div class="rhs">
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Facility Ownership" formControlName="facilityownership">
-                        <mat-option *ngFor="let item of ownerships" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input type="email" matInput mat-error placeholder="Facility Email" formControlName="facilityemail" (keyup)="onCheckEmailAddress($event.target.value)">
-                </mat-input-container>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
-                </mat-input-container>
-            </div>
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select placeholder="Select Country" formControlName="facilitycountry">
-                        <mat-option *ngFor="let item of countries" selected="inputFacility.address.country" [value]="item._id">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
+        <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+                <input type="email" matInput mat-error placeholder="Email Address" formControlName="facilityemail">
+            </mat-input-container>
         </div>
+        <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="CAC Reg No" formControlName="cac">
+            </mat-input-container>
+        </div>
+        <!-- <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+                <input type="url" matInput mat-error placeholder="Official Website" formControlName="facilitywebsite">
+            </mat-input-container>
+        </div> -->
+        <div class="frm-item-wrap">
+            <mat-input-container>
+                <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="facilityphonNo">
+            </mat-input-container>
+        </div>
+        <!-- <label class="control control--checkbox">Network
+            <input type="checkbox"  formControlName="network" />
+            <div class="control__indicator"></div>
+        </label> -->
 
-        <div class="clear"></div>
+        <button [disabled]="!facilityForm1.valid" class="cta-1"> 
+        SIGN UP
+        </button>
 
-        <button (click)="facilitySetup1(facilityForm1.valid, facilityForm1.value, selectedCountry.value)" [disabled]="!facilityForm1.valid" class="cta-1">
-        CONTINUE
-      </button>
-
-    </form>
+    </form> 
 </div>
-<app-contact-info *ngIf="sg1_1_show" (closeModal)="close_onClick($event)" [inputFacility] = "inputFacility"></app-contact-info>

@@ -9,8 +9,8 @@ export class FacilityTypesService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('facilitytypes');
-    this._socket = _socketService.getService('facilitytypes');
+    this._rest = _restService.getService('facility-types');
+    this._socket = _socketService.getService('facility-types');
     this._socket.timeout = 30000;
   }
 

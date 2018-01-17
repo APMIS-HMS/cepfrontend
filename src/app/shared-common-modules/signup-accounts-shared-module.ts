@@ -1,3 +1,4 @@
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,7 +35,8 @@ import { MaterialModule } from './material-module';
         ReactiveFormsModule,
         FormsModule,
         SharedModuleSignUpAccountModule,
-        MaterialModule
+        MaterialModule,
+        Ng4GeoautocompleteModule.forRoot()
     ],
     providers: []
 })

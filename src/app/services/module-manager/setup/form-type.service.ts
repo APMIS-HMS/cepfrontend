@@ -9,8 +9,8 @@ export class FormTypeService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('formtypes');
-    this._socket = _socketService.getService('formtypes');
+    this._rest = _restService.getService('form-types');
+    this._socket = _socketService.getService('form-types');
     this._socket.on('created', function (facilityownership) {
     });
   }

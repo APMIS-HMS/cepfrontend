@@ -47,6 +47,9 @@ export class ModuleMenuComponent implements OnInit {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     });
+    this.facilityService.patchListner.subscribe(payload => {
+      this.facilityObj = payload;
+    });
     // router.events.subscribe((routerEvent: Event) => {
     //   this.checkRouterEvent(routerEvent);
     // });

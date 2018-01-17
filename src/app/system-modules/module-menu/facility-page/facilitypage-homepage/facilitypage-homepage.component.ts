@@ -180,8 +180,8 @@ export class FacilitypageHomepageComponent implements OnInit {
   getCountries() {
     this.countryService.findAll().then((payload) => {
       this.countries = payload.data;
-
-      this.facilityCountryEdit.setValue(this.facilityObj.countryItem._id);
+      console.log(this.facilityObj);
+      this.facilityCountryEdit.setValue(this.facilityObj.country);
       this.states = this.facilityObj.countryItem.states;
       const stateObj = this.states.find(x => x._id === this.facilityObj.address.state.toString());
       this.selectedState = stateObj;

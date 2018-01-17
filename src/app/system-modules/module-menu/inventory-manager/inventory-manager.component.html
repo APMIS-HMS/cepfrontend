@@ -6,7 +6,7 @@
     <li [class.pg-menuActive]="stockHistoryNavMenu" routerLink="/dashboard/inventory-manager/stock-history" (click)="changeRoute('/dashboard/inventory-manager/stock-history')">Transfer History</li>
     <li [class.pg-menuActive]="receiveStockNavMenu" routerLink="/dashboard/inventory-manager/receive-stock" (click)="changeRoute('/dashboard/inventory-manager/receive-stock')">Receive Stock</li>
     <li [class.pg-menuActive]="requisitionNavMenu" routerLink="/dashboard/inventory-manager/requisition" (click)="changeRoute('/dashboard/inventory-manager/requisition')">Requisition</li>
-</ul>
+</ul> 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
    <!--  <small class="facility-title" *ngIf="checkedInStore !== undefined" >You are checked into {{checkedInStore}}</small>

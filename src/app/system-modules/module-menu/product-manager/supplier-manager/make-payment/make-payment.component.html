@@ -1,74 +1,54 @@
-<div class="modal-baseWrap animated pulse">
-
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title" style="color:#0d47a1;;text-align:center;">Make Payment</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-    <div class="supplierTitle">B&B Pharmaceuticals LTD</div>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <form [formGroup]="frm_supplierPayment" novalidate>
-
-        <div class="mainfrmwrap">
-            <div class="sec-1">
-                <div class="frm-item-wrap">
-                    <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.amount.valid || frm_supplierPayment.controls.amount.pristine">
-                      Kindly enter amount.
-                    </small>
-                    <span class="frm-label">Amount</span>
-                    <input type="text" formControlName="amount" autocomplete="off">-->
-                    <mat-input-container class="example-full-width">
-                        <input matInput formControlName="amount" autocomplete="off" placeholder="Amount">
-                    </mat-input-container>
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">B&B Pharmaceuticals LTD</legend>
+        <div class="modal_mini_title">Make Payment</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+        <form [formGroup]="frm_supplierPayment" novalidate>
+            <div class="mainfrmwrap">
+                <div class="sec-1">
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput formControlName="amount" autocomplete="off" placeholder="Amount">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-form-field>
+                            <mat-select placeholder="Payment Mode" name="food">
+                                <mat-option *ngFor="let food of foods" [value]="food.value">
+                                    {{food}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
-                <div class="frm-item-wrap">
-                    <!--<small class="alert-label" [hidden]="frm_supplierPayment.controls.payment_type.valid || frm_supplierPayment.controls.payment_type.pristine">
-                    Kindly enter payment type.
-                    </small>
-                    <span class="frm-label">Payment Mode</span>
-                    <select formControlName="payment_type">
-                    </select>-->
-                    <mat-form-field>
-                        <mat-select placeholder="Payment Mode" name="food">
-                            <mat-option *ngFor="let food of foods" [value]="food.value">
-                                {{food}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <div class="sec-2">
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput formControlName="cheque_number" placeholder="Cheque Number">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <input matInput formControlName="transfer_number" placeholder="Transfer Number">
+                        </mat-input-container>
+                    </div>
+
+                    <div (click)="login()" class="cta-1">
+                        Make Payment
+                    </div>
+                </div>
+
+                <div (click)="login()" class="cta-1">
+                    Make Payment
                 </div>
             </div>
-            <div class="sec-2">
+        </form>
 
-                <div class="frm-item-wrap">
-                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.cheque_number.valid || frm_supplierPayment.controls.cheque_number.pristine">
-                        Kindly enter cheque.
-                    </small>
-                    <span class="frm-label">Cheque Number</span>
-                    <input type="text" formControlName="cheque_number">-->
-                    <mat-input-container class="example-full-width">
-                        <input matInput formControlName="cheque_number" placeholder="Cheque Number">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <!-- <small class="alert-label" [hidden]="frm_supplierPayment.controls.transfer_number.valid || frm_supplierPayment.controls.transfer_number.pristine">
-                        Kindly enter transfer number.
-                    </small>
-                    <span class="frm-label">Transfer Number</span>
-                    <input type="text" formControlName="transfer_number">-->
-                    <mat-input-container class="example-full-width">
-                        <input matInput formControlName="transfer_number" placeholder="Transfer Number">
-                    </mat-input-container>
-                </div>
-
-            </div>
-        </div>
-
-        <div (click)="login()" class="cta-1">
-            Make Payment
-        </div>
-
-    </form>
-
-</div>
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <!--<dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>-->
+    </div>
+    <div *ngIf="loadIndicatorVisible" class="div_loading">
+        <!--<dx-load-indicator id="large-indicator" height="60" width="60"></dx-load-indicator>-->
+    </div>
 </div>

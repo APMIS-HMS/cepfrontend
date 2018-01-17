@@ -7,7 +7,7 @@ import { Facility, MinorLocation, FacilityService, FacilityServicePrice, User } 
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+
 
 @Component({
   selector: 'app-investigation-service',
@@ -47,7 +47,6 @@ export class InvestigationServiceComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private specimenService: InvestigationSpecimenService,
-    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private locker: CoolLocalStorage, private investigationService: InvestigationService,
     private dragulaService: DragulaService, private _facilityService: FacilitiesService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private servicePriceService: ServicePriceService) {
@@ -107,17 +106,7 @@ export class InvestigationServiceComponent implements OnInit {
     this.getInvestigations();
     this.getServiceCategories();
   }
-  addToast(msg: string) {
-    const toastOptions: ToastOptions = {
-      title: 'Apmis',
-      msg: msg,
-      showClose: true,
-      timeout: 5000,
-      theme: 'default',
-    };
 
-    this.toastyService.info(toastOptions);
-  }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
       this.loading = false;

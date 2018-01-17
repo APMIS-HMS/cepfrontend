@@ -1,4 +1,10 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Add Room</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
 
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend *ngIf="selectedRoom === undefined" class="modal_title">Add Room</legend>
@@ -31,8 +37,9 @@
                         <div class="btn-box">
                             <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
                         </div>
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

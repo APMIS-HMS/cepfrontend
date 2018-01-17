@@ -50,19 +50,23 @@
             <td class="pointer" (click)="navEpDetail(patient)">
                 <div class="empWrap">
                     <div class="list-img">
-                        <div *ngIf="patient?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                        <div *ngIf="patient?.personDetails?.profileImageObject != undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
+                        <div *ngIf="patient?.personDetails?.profileImageObject == undefined">
+                            <img src="assets/images/users/default.png">
+                        </div>
+                        <div *ngIf="patient?.personDetails?.profileImageObject != undefined">
+                            <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                        </div>
                     </div>
                     <div>{{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</div>
                 </div>
             </td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.age}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">
-                <span *ngIf="patient.personDetails?.gender?.name==='Male'">M</span>
-                <span *ngIf="patient.personDetails?.gender?.name==='Female'">F</span>
-                <span *ngIf="patient.personDetails?.gender?.name!='Female' && patient.personDetails?.gender?.name!='Male'">N</span>
+                <span *ngIf="patient.personDetails?.gender ==='Male'">M</span>
+                <span *ngIf="patient.personDetails?.gender ==='Female'">F</span>
+                <span *ngIf="patient.personDetails?.gender!='Female' && patient.personDetails?.gender!='Male'">N</span>
             </td>
-            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.phoneNumber}}</td>
+            <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.primaryContactPhoneNo}}</td>
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.email}}</td>
             <!-- <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td> -->
             <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.dateOfBirth | date}}</td>
@@ -84,12 +88,13 @@
                         <i class="fa fa-money" aria-hidden="true"></i>
                         <span>Payment Plans</span>
                     </div>
-                    <div (click)="newUpload_show(patient)" class="action-item">
+
+                    <div (click)="newUpload_show()" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload File</span>
                     </div>
                     <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                </div>
+                </div> 
             </td>
         </tr>
         <tr *ngIf="patients.length === 0 && !loading">
@@ -132,7 +137,7 @@
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select formControlName="title" placeholder="Title">
-                                                                <mat-option *ngFor="let title of titles" [value]="title">
+                                                                <mat-option *ngFor="let title of titles" [value]="title.name">
                                                                     {{title.name}}
                                                                 </mat-option>
                                                             </mat-select>
@@ -155,55 +160,55 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-input-container>
-                                                            <input matInput type="number" formControlName="phoneNumber" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.phoneNumber">
+                                                            <input matInput type="number" formControlName="phoneNumber" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.primaryContactPhoneNo">
                                                         </mat-input-container>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select formControlName="gender" placeholder="Gender">
-                                                                <mat-option *ngFor="let gender of genders" [value]="gender">
+                                                                <mat-option *ngFor="let gender of genders" [value]="gender.name">
                                                                     {{gender.name}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: 20px;">
+                                                    <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select placeholder="Country" formControlName="country">
-                                                                <mat-option *ngFor="let country of countries" [value]="country">
+                                                                <mat-option *ngFor="let country of countries" [value]="country.name">
                                                                     {{country.name}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: -40px;">
+                                                    <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="State" formControlName="state">
-                                                                <mat-option *ngFor="let state of states" [value]="state">
+                                                            <mat-select placeholder="State" formControlName="state" [compareWith]="compareState">
+                                                                <mat-option *ngFor="let state of states" [value]="state.name">
                                                                     {{state.name}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: 20px;">
+                                                    <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="City" formControlName="city">
-                                                                <mat-option *ngFor="let city of cities" [value]="city">
+                                                            <mat-select placeholder="City" formControlName="city" [compareWith]="compareState">
+                                                                <mat-option *ngFor="let city of cities" [value]="city.name">
                                                                     {{city.name}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col-sm-6" style="margin-top: 20px;">
+                                                    <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="L.G.A" formControlName="lga">
-                                                                <mat-option *ngFor="let lga of lgas" [value]="lga">
+                                                            <mat-select placeholder="L.G.A" formControlName="lga" [compareWith]="compareState">
+                                                                <mat-option *ngFor="let lga of lgas" [value]="lga.name">
                                                                     {{lga.name}}
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                                    <div class="col-xs-12">
                                                         <mat-input-container style="width: 100%;">
                                                             <textarea matInput placeholder="Street" formControlName="street"></textarea>
                                                         </mat-input-container>
@@ -217,8 +222,8 @@
                                                             <div class="panel-heading">
                                                                 <span>Next Of Kin {{i + 1}}</span>
                                                                 <span *ngIf="patientEditForm.controls.nextOfKin.controls.length > 1" (click)="removeNextOfKin(i)" style="float: right;">
-                                                                        <i class="fa fa-times"></i>
-                                                                    </span>
+                                                                    <i class="fa fa-times"></i>
+                                                                </span>
                                                             </div>
                                                             <div class="panel-body" [formGroupName]="i">
                                                                 <mat-input-container class="example-full-width">
@@ -286,7 +291,9 @@
                                                     </form>
                                                 </div> -->
                                                 <div class="add-next-of-kin-box">
-                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin <i class="fa fa-plus"></i></a>
+                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
                                                 </div>
                                             </mat-tab>
                                             <mat-tab label="Plan">
@@ -298,7 +305,8 @@
                                     </form>
                                 </div>
                                 <div class="example-full-width" id="example-full-width">
-                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" mat-raised-button [innerHtml]="updatePatientBtnText"></button>
+                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue"
+                                        mat-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
                             </div>
                         </div>

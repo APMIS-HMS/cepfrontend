@@ -2,8 +2,8 @@
     <div class="modal-header-wrap">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
         <div class="facility-title">New Modifier</div>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
-
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
@@ -40,11 +40,11 @@
 
 
                     <!--<div style=" font-size: 12px; color: #0288D1; width: 80px; display: inline-block;">
-                    <input style="width: 60px;" type="radio" formControlName="valueCheck" value="Percentage"> %
-                </div>
-                <div style=" font-size: 12px; color: #0288D1; width: 110px; display: inline-block;">
-                    <input style="width: 60px;" type="radio" formControlName="valueCheck" value="Amount" checked>Amount
-                </div>-->
+                        <input style="width: 60px;" type="radio" formControlName="valueCheck" value="Percentage"> %
+                    </div>
+                    <div style=" font-size: 12px; color: #0288D1; width: 110px; display: inline-block;">
+                        <input style="width: 60px;" type="radio" formControlName="valueCheck" value="Amount" checked>Amount
+                    </div>-->
                 </div>
 
                 <div class="frm-item-wrap">
@@ -55,11 +55,11 @@
                 </div>
                 <div class="text-center">
                     <button mat-raised-button (click)="newModefier(frmNewmodefier.value, frmNewmodefier.valid)" class="cta-1 mat-lg-btn">
-                  CREATE MODIFIER
-                </button>
+                        CREATE MODIFIER
+                    </button>
                 </div>
             </form>
         </div>
-    </div>
 
+    </div>
 </div>

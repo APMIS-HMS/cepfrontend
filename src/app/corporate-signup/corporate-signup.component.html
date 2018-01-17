@@ -1,18 +1,17 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-
         <legend class="modal_title">Corporate Facility</legend>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
-
     <div class="modal-baseWrap">
+
         <div *ngIf="sg1_1_1_show" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied below</div>
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
         <div *ngIf="sg1_show" class="f_sg1">
             <form [formGroup]="facilityForm1" novalidate>
-                <div class="lhs">
+                <div>
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
                             <input matInput mat-error placeholder="Company Name" formControlName="facilityname">
@@ -46,7 +45,7 @@
 
         <div *ngIf="sg1_1_show" class="f_sg_1 animated zoomIn">
             <form [formGroup]="facilityForm1_1" novalidate>
-                <div class="lhs">
+                <div>
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select *ngIf="stateAvailable" placeholder="Facility State" formControlName="facilitystate" (change)="onStateChange($event.value)">
@@ -119,7 +118,7 @@
 
         <div *ngIf="sg2_show" class="f_sg2 animated zoomIn">
             <ngb-alert [dismissible]="false" *ngIf="isSuccessful" type="success">
-                {{closeMsg}}
+            {{closeMsg}}
             </ngb-alert>
             <form *ngIf="!isSuccessful" [formGroup]="frm_numberVerifier" novalidate>
                 <div class="frm-singleItem-wrap">
@@ -135,11 +134,12 @@
                 <div (click)="numberVerifier(frm_numberVerifier.valid)" class="cta-1">VERIFY & COMPLETE</div>
             </form>
         </div>
-    </div>
-    <div *ngIf="sg3_show" class="f_sg3 animated zoomIn">
-        <!-- file uploader -->
-        <input type="file" (change)="imageChange($event)">
-        <div (click)="back_logoUp()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
-        <div (click)="f_sg4_show()" class="cta-1">CONTINUE</div>
+
+        <div *ngIf="sg3_show" class="f_sg3 animated zoomIn">
+            <!-- file uploader -->
+            <input type="file" (change)="imageChange($event)">
+            <div (click)="back_logoUp()" class="backBtn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</div>
+            <div (click)="f_sg4_show()" class="cta-1">CONTINUE</div>
+        </div>
     </div>
 </div>

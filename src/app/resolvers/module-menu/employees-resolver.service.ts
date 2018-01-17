@@ -33,7 +33,6 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
       query: {
         facilityId: this.selectedFacility._id, 
         $limit: this.limit,
-        showbasicinfo: true
       }
     }).then(payload => {
       if (payload.data.length > 0) {

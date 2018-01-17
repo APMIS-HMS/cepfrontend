@@ -19,9 +19,8 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { NewTagComponent } from '../system-modules/module-menu/billing/services/new-tag/new-tag.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTagComponent } from '../system-modules/module-menu/add-tag/add-tag.component';
-import { MomentModule } from 'angular2-moment';
+// import { MomentModule } from 'angular2-moment';
 import { Ng2PaginationModule } from 'ng2-pagination';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { AddVitalsComponent } from '../system-modules/module-menu/patient-manager/add-vitals/add-vitals.component';
 import { GlobalDialogComponent } from './global-dialog/global-dialog.component';
 import { SurveyComponent } from './form-generator/survey.component';
@@ -91,9 +90,8 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     NgPipesModule,
     // NewTagComponent,
     // AddTagComponent,
-    MomentModule,
+    // MomentModule,
     Ng2PaginationModule,
-    InfiniteScrollModule,
     SurveyComponent,
     SurveyEditorComponent,
     CommonModule,
@@ -120,9 +118,8 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     FormsModule,
     NgUploaderModule,
     NgPipesModule,
-    MomentModule,
+    // MomentModule,
     Ng2PaginationModule,
-    InfiniteScrollModule,
     ImageCropperModule,
     MaterialModule
     // DragulaModule

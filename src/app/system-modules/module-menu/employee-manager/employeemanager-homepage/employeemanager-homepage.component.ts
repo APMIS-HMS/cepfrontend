@@ -64,6 +64,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
 
   ngOnInit() {
     this.route.data.subscribe(data => {
+      console.log(data);
       data['employees'].subscribe((payload) => {
         if (payload !== null) {
           this.total = payload.total;
@@ -88,7 +89,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
     this.getByDepartment(department);
   }
   navEpDetail(val) {
-    this.router.navigate(['/dashboard/employee-manager/employee-manager-detail', val._id]).then(result => {
+    this.router.navigate(['/dashboard/facility/employees/detail', val._id]).then(result => {
       // this.employeeService.announceEmployee(val);
     });
   }
@@ -123,6 +124,7 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
     });
   }
   getEmployees(limit?, isUp?) {
+    console.log('mmmsd')
     //let skip = this.employees.length;
     this.systemService.on();
     this.loadIndicatorVisible = true;
@@ -131,9 +133,9 @@ export class EmployeemanagerHomepageComponent implements OnInit, OnDestroy, OnCh
         facilityId: this.facility._id, 
         $limit: this.limit, 
         $skip: this.index * this.limit,
-        showbasicinfo: true 
       } 
     }).then(payload => {
+      console.log(payload);
       this.total = payload.total;
       if(this.resetData !== true)
       {

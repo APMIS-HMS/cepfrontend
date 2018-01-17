@@ -9,8 +9,8 @@ export class FacilityOwnershipService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('facilityownerships');
-    this._socket = _socketService.getService('facilityownerships');
+    this._rest = _restService.getService('facility-ownerships');
+    this._socket = _socketService.getService('facility-ownerships');
     this._socket.on('created', function (facilityownership) {
     });
   }

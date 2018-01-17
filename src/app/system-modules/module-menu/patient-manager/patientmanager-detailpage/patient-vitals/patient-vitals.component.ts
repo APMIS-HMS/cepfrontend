@@ -240,5 +240,4 @@ export class PatientVitalsComponent implements OnInit {
       }
     });
   }
-  
 }
