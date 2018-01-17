@@ -62,6 +62,8 @@ const presentations = require('./presentations/presentations.service.js');
 const productRoutes = require('./product-routes/product-routes.service.js');
 const productTypes = require('./product-types/product-types.service.js');
 const productVariants = require('./product-variants/product-variants.service.js');
+const assignWorkspace = require('./assign-workspace/assign-workspace.service.js');
+const workspaces = require('./workspaces/workspaces.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -127,4 +129,6 @@ module.exports = function (app) {
   app.configure(productRoutes);
   app.configure(productTypes);
   app.configure(productVariants);
+  app.configure(assignWorkspace);
+  app.configure(workspaces);
 };
