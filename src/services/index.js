@@ -74,6 +74,9 @@ const corperateFacility = require('./corperate-facility/corperate-facility.servi
 const dictionary = require('./dictionary/dictionary.service.js');
 const dischargeType = require('./discharge-type/discharge-type.service.js');
 const dispense = require('./dispense/dispense.service.js');
+const dispenseAssessment = require('./dispense-assessment/dispense-assessment.service.js');
+const docUpload = require('./doc-upload/doc-upload.service.js');
+const drugStrength = require('./drug-strength/drug-strength.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -151,4 +154,7 @@ module.exports = function (app) {
   app.configure(dictionary);
   app.configure(dischargeType);
   app.configure(dispense);
+  app.configure(dispenseAssessment);
+  app.configure(docUpload);
+  app.configure(drugStrength);
 };
