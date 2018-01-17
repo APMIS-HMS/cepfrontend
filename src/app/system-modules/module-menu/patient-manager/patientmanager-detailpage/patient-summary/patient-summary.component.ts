@@ -26,7 +26,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   @Input() patient: Patient;
   // @Input() vitalDocuments: any;
   lineChartData = [];
-  public lineChartLabels: Array<any> = [''];
+  public lineChartLabels: Array<any> = [];
   public lineChartOptions: any = {
     responsive: true
   };
@@ -221,6 +221,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   bindVitalsDataToChart() {
     var vitalsObjArray = [];
+    this.lineChartLabels = [];
     this.lineChartData = [
       { data: [], label: '' },
       { data: [], label: '' },
@@ -233,12 +234,12 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
         let len2 = payload.data[0].documentations.length - 1;
-        for (let k = 0; k <= len2; k++) {
+        for (let k = len2; k >= 0; k--) {
           if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
             vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
             if (vitalsObjArray !== undefined) {
               let len3 = vitalsObjArray.length - 1;
-              for (let l = len3; l >= 0; l--) {
+              for (let l = 0; l <= len3; l++) {
                 this.lineChartData[0].data.push(vitalsObjArray[l].bloodPressure.systolic);
                 this.lineChartData[0].label = "Systolic";
                 this.lineChartData[1].data.push(vitalsObjArray[l].bloodPressure.diastolic);
@@ -253,9 +254,8 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
                 this.lineChartData[5].label = "BMI";
                 const d = new Date(vitalsObjArray[l].updatedAt);
                 let dt = format(d, 'DD/MM/YY HH:mm:ss a');
-                this.lineChartLabels.push(dt);
+                JSON.parse(JSON.stringify(this.lineChartLabels.push(dt)));
               };
-              this.lineChartLabels.splice(0, 1);
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
             }
 
@@ -279,7 +279,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   }
 
   refreshVitalsChanged(value) {
-    this.lineChartLabels = [''];
     this.bindVitalsDataToChart();
   }
 
