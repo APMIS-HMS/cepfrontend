@@ -489,7 +489,7 @@ select {
 }
 
 .modal-overlay {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0;
     z-index: 10;
