@@ -116,15 +116,60 @@ export class TreatementTemplateComponent implements OnInit {
     this._orderSetSharedService.itemSubject.subscribe(value => {
       console.log(value);
       if (!!value.medications) {
-        this.orderSet.medications = value.medications;
+        if (!!this.orderSet.medications) {
+            const findItem = this.orderSet.medications
+            .filter(x => x.genericName === value.medications[0].genericName && x.strength === value.medications[0].strength);
+            if (findItem.length === 0) {
+              this.orderSet.medications.push(value.medications[0]);
+            }
+        } else {
+          this.orderSet.medications = [];
+          this.orderSet.medications.push(value.medications[0]);
+        }
       } else if (!!value.investigations) {
-        this.orderSet.investigations = value.investigations;
+        if (!!this.orderSet.investigations) {
+          const findItem = this.orderSet.investigations.filter(x => x._id === value.investigations[0]._id);
+          if (findItem.length === 0) {
+            this.orderSet.investigations.push(value.investigations[0]);
+          }
+        } else {
+          this.orderSet.investigations = [];
+          this.orderSet.investigations.push(value.investigations[0]);
+        }
       } else if (!!value.procedures) {
-        this.orderSet.procedures = value.procedures;
+        if (!!this.orderSet.procedures) {
+          if (this.orderSet.procedures.length > 0) {
+            const findItem = this.orderSet.procedures.filter(x => x._id === value.procedures[0]._id);
+            if (findItem.length === 0) {
+              this.orderSet.procedures.push(value.procedures[0]);
+            }
+          } else {
+            this.orderSet.procedures.push(value.procedures[0]);
+          }
+        } else {
+          // this.orderSet.procedures = [];
+          this.orderSet.procedures = value.procedures;
+        }
       } else if (!!value.nursingCares) {
-        this.orderSet.nursingCares = value.nursingCares;
+        if (!!this.orderSet.nursingCares) {
+          const findItem = this.orderSet.nursingCares.filter(x => x.name === value.nursingCares[0].name);
+          if (findItem.length === 0) {
+            this.orderSet.nursingCares.push(value.nursingCares[0]);
+          }
+        } else {
+          this.orderSet.nursingCares = [];
+          this.orderSet.nursingCares.push(value.nursingCares[0]);
+        }
       } else if (!!value.physicianOrders) {
-        this.orderSet.physicianOrders = value.physicianOrders;
+        if (!!this.orderSet.physicianOrders) {
+          const findItem = this.orderSet.physicianOrders.filter(x => x.name === value.physicianOrders[0].name);
+          if (findItem.length === 0) {
+            this.orderSet.physicianOrders.push(value.physicianOrders[0]);
+          }
+        } else {
+          this.orderSet.physicianOrders = [];
+          this.orderSet.physicianOrders.push(value.physicianOrders[0]);
+        }
       }
 
       console.log(this.orderSet);
@@ -132,7 +177,6 @@ export class TreatementTemplateComponent implements OnInit {
   }
 
   save(valid: boolean, value: any) {
-    console.log(value);
     // validate form
     const validateForm = this.validateForm(value, 'Order Set');
     if (validateForm) {
@@ -147,10 +191,9 @@ export class TreatementTemplateComponent implements OnInit {
         editedByOthers:  value.isEditable ? true : false,
         body: orderSet,
       };
-      console.log(payload);
+
       // Save to database
       this._orderSetTemplateService.create(payload).then(res => {
-        console.log(res);
         if (res._id) {
           this.orderSet = <OrderSetTemplate>{};
           this.onClickRadioBtn('medication');
@@ -166,6 +209,51 @@ export class TreatementTemplateComponent implements OnInit {
     } else {
       this._notification('Error', 'Some fields are required! Please fill all required fields.');
     }
+  }
+
+  deleteOrderSetItem(index: number, value: any, type: string) {
+    if (type === 'medication') {
+      const findItem = this.orderSet.medications.filter(x => x.genericName === value.genericName && x.strength === value.strength);
+
+      if (findItem.length > 0) {
+        this.orderSet.medications.splice(index, 1);
+      }
+    } else if (type === 'investigation') {
+      const findItem = this.orderSet.investigations.filter( x => x._id === value._id );
+
+      if (findItem.length > 0) {
+        this.orderSet.investigations.splice(index, 1);
+      }
+    } else if (type === 'procedure') {
+      const findItem = this.orderSet.procedures.filter(x => x._id === value._id);
+
+      if (findItem.length > 0) {
+        this.orderSet.procedures.splice(index, 1);
+      }
+    } else if (type === 'nursingCare') {
+      const findItem = this.orderSet.nursingCares.filter(x => x.name === value.name);
+
+      if (findItem.length > 0) {
+        this.orderSet.nursingCares.splice(index, 1);
+      }
+    } else if (type === 'physicianOrder') {
+      const findItem = this.orderSet.physicianOrders.filter(x => x.name === value.name);
+
+      if (findItem.length > 0) {
+        this.orderSet.physicianOrders.splice(index, 1);
+      }
+    }
+    console.log(this.orderSet);
+  }
+
+  getCondition() {
+    if ((this.orderSet.medications === undefined || this.orderSet.medications.length === 0)
+    && (this.orderSet.procedures === undefined || this.orderSet.procedures.length === 0)
+    && (this.orderSet.investigations === undefined || this.orderSet.investigations.length === 0)
+    && (this.orderSet.physicianOrders === undefined || this.orderSet.physicianOrders.length === 0)
+    && (this.orderSet.nursingCares === undefined || this.orderSet.nursingCares.length === 0)) {
+      return true;
+    } else { return false; }
   }
 
   validateForm(form, type) {
@@ -199,8 +287,7 @@ export class TreatementTemplateComponent implements OnInit {
       const formType$ = Observable.fromPromise(
         this.formTypeService.find({ query: { name: 'Documentation' } })
       );
-      formType$
-        .mergeMap((formTypes: any) =>
+      formType$.mergeMap((formTypes: any) =>
           Observable.fromPromise(
             this.formService.find({
               query: {
@@ -211,12 +298,9 @@ export class TreatementTemplateComponent implements OnInit {
               }
             })
           )
-        )
-        .subscribe(
-          (results: any) => {
+        ).subscribe((results: any) => {
             this.forms = results.data;
-          },
-          error => {
+          },error => {
             this._getForms();
           }
         );

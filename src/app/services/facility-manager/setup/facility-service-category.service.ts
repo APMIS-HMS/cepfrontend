@@ -63,17 +63,16 @@ export class FacilitiesServiceCategoryService {
       .query({ facilityid: facilityId, searchtext: searchText });
   }
 
-  public searchProcedure(payload: string): Promise<any> {
+  public searchProcedure(payload: any): Promise<any> {
     const host = this._restService.getHost() + '/procedure-search';
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    return this._http.get(host, payload).toPromise()
+    return this._http.post(host, payload, { headers: headers}).toPromise()
       .then((res) => this.extractData(res)).catch(error => this.handleErrorPromise(error));
   }
 
   private extractData(res: Response) {
-    console.log(res);
     let body = res.json();
     return body || {};
   }

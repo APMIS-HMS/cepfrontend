@@ -24,6 +24,7 @@ export class InvoiceComponent implements OnInit {
     isPaidClass = false;
     isWaved = false;
     addItem = false;
+    paidStatus = "UNPAID";
     itemEditShow = false;
     itemEditShow2 = false;
     itemEditShow3 = false;
@@ -143,6 +144,10 @@ export class InvoiceComponent implements OnInit {
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
         console.log(this.selectedInvoiceGroup);
+        if (this.selectedInvoiceGroup.paymentStatus != undefined) {
+            this.paidStatus = this.selectedInvoiceGroup.paymentStatus;
+        }
+
         if (this.selectedInvoiceGroup.paymentCompleted == true) {
             this.isPaidClass = true;
         }
@@ -154,16 +159,18 @@ export class InvoiceComponent implements OnInit {
                 this.isPaidClass = false;
             }
         }
-        
+
         this.isPaymentMade = false;
     }
 
     onPersonValueUpdated(person) {
+        console.log(person);
         this.selectedPatient.personDetails = person;
         this.isLoadingInvoice = false;
         this.isLoadingOtherInvoice = false;
         this.isPaidClass = person.isPaid;
         this.isWaved = person.isWaved;
+        this.paidStatus = person.paidStatus;
         this.isPaymentMade = true;
         this.getPatientInvoices();
     }

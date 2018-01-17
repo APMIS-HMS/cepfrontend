@@ -1,5 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FacilitiesService, FacilitiesServiceCategoryService } from '../../../../../../services/facility-manager/setup/index';
+import { Facility } from '../../../../../../models/facility-manager/setup/facility';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { OrderSetSharedService } from '../../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
   selector: 'app-edit-procedure',
@@ -7,44 +11,71 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./edit-procedure.component.scss']
 })
 export class EditProcedureComponent implements OnInit {
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  
-  addInvestigationForm: FormGroup;
-  apmisLookupQuery = {};
-  apmisLookupUrl = '';
-  apmisLookupDisplayKey = '';
-  apmisLookupText = '';
-
+  addProcedureForm: FormGroup;
+  facility: Facility = <Facility>{};
+  selectedProcedure: any = <any>{};
+  cuDropdownLoading: boolean = false;
+  showCuDropdown: boolean = false;
+  results: any = [];
+  procedures: any = <any>[];
   newTemplate = true;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private _locker: CoolLocalStorage,
+    private _fb: FormBuilder,
+    private _orderSetSharedService: OrderSetSharedService,
+    private _facilityServiceCategoryService: FacilitiesServiceCategoryService
+  ) { }
 
   ngOnInit() {
-    this.addInvestigationForm = this.fb.group({
-      investigation: ['', [<any>Validators.required]]
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
+    this.addProcedureForm = this._fb.group({
+      procedure: ['', [<any>Validators.required]]
     });
+
+    this.addProcedureForm.controls['procedure'].valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .switchMap(value => this._facilityServiceCategoryService.searchProcedure({'text': value, facilityId: this.facility._id }))
+      .subscribe((res: any) => {
+        this.cuDropdownLoading = false;
+        if (res.status === 'success') {
+          this.results = res.data;
+        }
+      });
+  }
+
+  onClickAddProcedure(valid: boolean, value: any) {
+    if (valid) {
+      this.selectedProcedure.comment = '';
+      this.selectedProcedure.status = 'Not Done';
+      this.selectedProcedure.completed = false;
+
+      this.procedures.push(this.selectedProcedure);
+      this._orderSetSharedService.saveItem({ procedures: this.procedures });
+
+      this.addProcedureForm.reset();
+      this.addProcedureForm.controls['procedure'].setValue('');
+    }
+  }
+
+  apmisLookupHandleSelectedItem(value) {
+    this.selectedProcedure = value;
+    this.addProcedureForm.controls['procedure'].setValue(value.name);
+  }
+
+  focusSearch() {
+    this.showCuDropdown = !this.showCuDropdown;
+  }
+
+  focusOutSearch() {
+    setTimeout(() => {
+      this.showCuDropdown = !this.showCuDropdown;
+    }, 300);
   }
 
   close_onClick() {
     this.closeModal.emit(true);
   }
-
-  apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.name;
-    let isExisting = false;
-    // this.loginHMOListObject.companyCovers.forEach(item => {
-    //   if (item._id === value._id) {
-    //     isExisting = true;
-    //   }
-    // });
-    // if (!isExisting) {
-    //   this.selectedCompanyCover = value;
-    // } else {
-    //   this.selectedCompanyCover = <any>{};
-    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
-    // }
-  }
-
 }
-  

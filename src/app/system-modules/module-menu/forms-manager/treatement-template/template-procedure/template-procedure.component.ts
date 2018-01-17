@@ -1,6 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, FacilitiesServiceCategoryService } from '../../../../../services/facility-manager/setup/index';
+import { Facility } from '../../../../../models/facility-manager/setup/facility';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
   selector: 'app-template-procedure',
@@ -10,16 +13,18 @@ import { FacilitiesService, FacilitiesServiceCategoryService } from '../../../..
 
 export class TemplateProcedureComponent implements OnInit {
   addProcedureForm: FormGroup;
-  apmisLookupQuery = {};
-  apmisLookupUrl = 'facilityservices';
-  apmisLookupDisplayKey = '';
-  apmisLookupText = '';
+  facility: Facility = <Facility>{};
+  selectedProcedure: any = <any>{};
   cuDropdownLoading: boolean = false;
+  showCuDropdown: boolean = false;
   results: any = [];
+  procedures: any = <any>[];
   newTemplate = true;
 
   constructor(
+    private _locker: CoolLocalStorage,
     private _fb: FormBuilder,
+    private _orderSetSharedService: OrderSetSharedService,
     private _facilityServiceCategoryService: FacilitiesServiceCategoryService
   ) {
     // this.apmisLookupQuery = {
@@ -42,6 +47,7 @@ export class TemplateProcedureComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.addProcedureForm = this._fb.group({
       procedure: ['', [<any>Validators.required]]
     });
@@ -49,51 +55,41 @@ export class TemplateProcedureComponent implements OnInit {
     this.addProcedureForm.controls['procedure'].valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap(value => this._facilityServiceCategoryService.searchProcedure(value))
-      .subscribe((payload: any) => {
-        console.log(payload);
-        // this.cuDropdownLoading = false;
-        // if (payload !== undefined && payload.data !== undefined) {
-        //   this.results = payload.data;
-        // } else {
-        //   this.results = payload;
-        // }
+      .switchMap(value => this._facilityServiceCategoryService.searchProcedure({'text': value, facilityId: this.facility._id }))
+      .subscribe((res: any) => {
+        this.cuDropdownLoading = false;
+        if (res.status === 'success') {
+          this.results = res.data;
+        }
       });
   }
 
-  // onClickAddPhysicianOrder(valid: boolean, value: any) {
-  //   if (valid) {
-  //     const physicianOrder = {
-  //       name: value.physicianOrder,
-  //       comment: '',
-  //       status: 'Not Done',
-  //       completed: false
-  //     };
+  onClickAddProcedure(valid: boolean, value: any) {
+    if (valid) {
+      this.selectedProcedure.comment = '';
+      this.selectedProcedure.status = 'Not Done';
+      this.selectedProcedure.completed = false;
 
-  //   //   if (this.physicianOrders.length > 0) {
-  //   //     // Check if generic has been added already.
-  //   //     const containsGeneric = this.physicianOrders.filter(x => x.name === value.physicianOrder);
-  //   //     if (containsGeneric.length < 1) {
-  //   //       this.physicianOrders.push(physicianOrder);
-  //   //       this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders });
-  //   //     }
-  //   //   } else {
-  //   //     this.physicianOrders.push(physicianOrder);
-  //   //     this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders});
-  //   //   }
-  //   //   this.addPhysicianOrderForm.reset();
-  //   }
-  // }
+      this.procedures.push(this.selectedProcedure);
+      this._orderSetSharedService.saveItem({ procedures: this.procedures });
 
-  apmisLookupHandleSelectedItem(value) {
-    console.log(value);
+      this.addProcedureForm.reset();
+      this.addProcedureForm.controls['procedure'].setValue('');
+    }
   }
 
-  // onSelectedItem(item) {
-  //   console.log(item);
-  // }
+  apmisLookupHandleSelectedItem(value) {
+    this.selectedProcedure = value;
+    this.addProcedureForm.controls['procedure'].setValue(value.name);
+  }
 
-  onClickAddProcedure(valid: boolean, value: any) {
-    console.log(value);
+  focusSearch() {
+    this.showCuDropdown = !this.showCuDropdown;
+  }
+
+  focusOutSearch() {
+    setTimeout(() => {
+      this.showCuDropdown = !this.showCuDropdown;
+    }, 300);
   }
 }

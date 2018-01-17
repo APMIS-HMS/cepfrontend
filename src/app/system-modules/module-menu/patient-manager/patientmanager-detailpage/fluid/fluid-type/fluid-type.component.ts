@@ -50,6 +50,7 @@ export class FluidTypeComponent implements OnInit {
   getFluids() {
     this.fluidService.find({
       query: {
+        "facilityId": this.selectedFacility._id,
         $sort: {
           createdAt: -1
         }
@@ -75,7 +76,8 @@ export class FluidTypeComponent implements OnInit {
 
     let fluids = {
       name: fluid,
-      type: type
+      type: type,
+      facilityId: this.selectedFacility._id
     }
 
     this.fluidService.create(fluids).then(payload => {
