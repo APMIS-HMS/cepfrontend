@@ -63,6 +63,11 @@ const productRoutes = require('./product-routes/product-routes.service.js');
 const productTypes = require('./product-types/product-types.service.js');
 const productVariants = require('./product-variants/product-variants.service.js');
 const appointmentTypes = require('./appointment-types/appointment-types.service.js');
+const auditTray = require('./audit-tray/audit-tray.service.js');
+const bedTypes = require('./bed-types/bed-types.service.js');
+const clientTypes = require('./client-types/client-types.service.js');
+const companycovers = require('./companycovers/companycovers.service.js');
+const companycovercategories = require('./companycovercategories/companycovercategories.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -129,4 +134,9 @@ module.exports = function (app) {
   app.configure(productTypes);
   app.configure(productVariants);
   app.configure(appointmentTypes);
+  app.configure(auditTray);
+  app.configure(bedTypes);
+  app.configure(clientTypes);
+  app.configure(companycovers);
+  app.configure(companycovercategories);
 };
