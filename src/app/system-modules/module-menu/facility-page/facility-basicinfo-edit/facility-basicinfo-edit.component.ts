@@ -3,11 +3,13 @@ import { FacilityOwnershipService } from './../../../../services/module-manager/
 import { FacilityTypeFacilityClassFacadeService } from './../../../service-facade/facility-type-facility-class-facade.service';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
+import swal from 'sweetalert2';
 
- 
+
 @Component({
 	selector: 'app-facility-basicinfo-edit',
 	templateUrl: './facility-basicinfo-edit.component.html',
@@ -17,6 +19,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 	selectedLocation: any;
 	@Input() selectedFacility: any = <any>{};
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@ViewChild('successSwal') private deleteSwal: SwalComponent;
 	mainErr = true;
 	errMsg = "";
 	countries: any[] = [];
@@ -55,7 +58,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 			facilityTypeId: [this.selectedFacility.facilityTypeId, []],
 			facilityClassId: [this.selectedFacility.facilityClassId, []],
 			facilityOwnershipId: [this.selectedFacility.facilityOwnershipId, []],
-			facilityShortName:[this.selectedFacility.shortName, []],
+			facilityShortName: [this.selectedFacility.shortName, []],
 			_id: [this.selectedFacility._id, []],
 			facilityphonNo: [this.selectedFacility.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
@@ -125,16 +128,18 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 			country: form.facilitycountry,
 			state: form.facilitystate,
 			city: form.facilitycity,
-			shortName:form.facilityShortName,
+			shortName: form.facilityShortName,
 			street: form.facilitystreet,
 			facilityTypeId: form.facilityTypeId,
 			facilityClassId: form.facilityClassId,
 			facilityOwnershipId: form.facilityOwnershipId,
+			website: form.facilitywebsite,
 			_id: form._id
 		}
 		this.systemModuleService.on();
 		this.facilityService.patch(facility._id, facility, {}).then(payload => {
 			this.systemModuleService.off();
+			swal({ title: 'Keep things simple :)' });
 		}, error => {
 			console.log(error);
 			this.systemModuleService.off();

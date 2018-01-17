@@ -1,3 +1,4 @@
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { ApmisCheckboxFeatureComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox-feature.component';
 import { ApmisCheckboxComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox.component';
 import { EditUserAccessControlComponent } from './employees/employeemanager-detailpage/edit-user/edit-user-access-control.component';
@@ -83,7 +84,8 @@ import { ApmisCheckboxChildComponent } from './employees/employeemanager-detailp
         facilityPageRoutes,
         facilityPageRoutes,
         MaterialModule,
-        Ng4GeoautocompleteModule
+        Ng4GeoautocompleteModule,
+        SweetAlert2Module
     ],
     providers: [
         WorkspaceResolverService, LocationsResolverService,

@@ -14,7 +14,6 @@ import {
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import * as getDay from 'date-fns/get_day';
 import * as setDay from 'date-fns/set_day'
 import * as getHours from 'date-fns/get_hours';
@@ -106,7 +105,7 @@ export class ScheduleFrmComponent implements OnInit {
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
-        private toastyService: ToastyService, private toastyConfig: ToastyConfig, private orderStatusService: OrderStatusService,
+      private orderStatusService: OrderStatusService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService,
         private _smsAlertService: SmsAlertService,
         private route: ActivatedRoute) {
@@ -186,21 +185,7 @@ export class ScheduleFrmComponent implements OnInit {
         })
     }
 
-    addToast(msg: string) {
-        const toastOptions: ToastOptions = {
-            title: 'Apmis',
-            msg: msg,
-            showClose: true,
-            timeout: 5000,
-            theme: 'default',
-            onAdd: (toast: ToastData) => {
-            },
-            onRemove: function (toast: ToastData) {
-            }
-        };
 
-        this.toastyService.info(toastOptions);
-    }
 
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -672,7 +657,6 @@ export class ScheduleFrmComponent implements OnInit {
                                     this.updateAppointment = false;
                                     this.saveAppointment = true;
                                     this.savingAppointment = false;
-                                this.addToast('Appointment updated successfully');
                                 this.router.navigate(['/dashboard/clinic/appointment']);
                             })
                     } else {
@@ -684,7 +668,6 @@ export class ScheduleFrmComponent implements OnInit {
                         this.savingAppointment = false;
                         this.newSchedule();
                         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                        this.addToast('Appointment updated successfully');
                         this.setValueSmsAlert(
                             patient.personDetails.personFullName,
                             this.appointment.startDate,
@@ -710,7 +693,6 @@ export class ScheduleFrmComponent implements OnInit {
                               this.updateAppointment = false;
                               this.saveAppointment = true;
                               this.savingAppointment = false;
-                                this.addToast('Appointment updated successfully');
                                 this.setValueSmsAlert(
                                     patient.personDetails.personFullName,
                                     this.appointment.startDate,
@@ -730,7 +712,6 @@ export class ScheduleFrmComponent implements OnInit {
                         this.updateAppointment = false;
                         this.saveAppointment = true;
                         this.savingAppointment = false;
-                        this.addToast('Appointment scheduled successfully');
                         this.setValueSmsAlert(
                             patient.personDetails.personFullName,
                             this.appointment.startDate,

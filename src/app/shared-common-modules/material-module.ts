@@ -26,10 +26,9 @@ import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup
 import { ApmisLookupMultiselectComponent } from '../shared-module/apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { LabCheckInComponent } from '../shared-module/lab-check-in/lab-check-in.component';
-import { MomentModule } from 'angular2-moment';
+// import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
-import { ToastyModule } from 'ng2-toasty';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import { KeysPipe } from './keypipe';
 import { ThousandDecimalPipe } from './thousand-pipe';
@@ -97,11 +96,10 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         LabCheckInComponent,
-        MomentModule,
+        // MomentModule,
         ToastModule,
         CoolStorageModule,
         MatError,
-        ToastyModule,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
         ThousandDecimalPipe,
@@ -133,7 +131,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         NgbModule.forRoot(),
         ToastModule.forRoot(),
         CoolStorageModule,
-        MomentModule,
+        // MomentModule,
 
 
         CommonModule,
@@ -142,7 +140,6 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         ImageCropperModule,
         NgUploaderModule,
         CurrencyMaskModule,
-        ToastyModule.forRoot(),
         DragulaModule,
         NgPipesModule
     ],

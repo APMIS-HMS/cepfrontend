@@ -58,6 +58,7 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
 //import { IkeComponent } from './ike/ike.component';
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,12 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
     LoadingBarRouterModule,
+    SweetAlert2Module.forRoot({
+      buttonsStyling: false,
+      customClass: 'modal-content',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn'
+  })
     // PdfViewerModule
   ],
   providers: [

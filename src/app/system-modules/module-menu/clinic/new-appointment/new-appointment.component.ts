@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-var _ = require('lodash');
+// var _ = require('lodash');
 
 import {
     FacilitiesService, SchedulerService, AppointmentService, PatientService, AppointmentTypeService, ProfessionService,

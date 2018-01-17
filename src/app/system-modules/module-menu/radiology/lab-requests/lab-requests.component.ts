@@ -11,7 +11,6 @@ import {
   BillIGroup, BillItem, BillModel, PendingLaboratoryRequest
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -78,7 +77,7 @@ export class LabRequestsComponent implements OnInit {
 
   totalPrice: Number = 0;
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-    private toastyService: ToastyService, private toastyConfig: ToastyConfig, private route: ActivatedRoute,
+     private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
     private _router: Router,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
@@ -274,21 +273,7 @@ export class LabRequestsComponent implements OnInit {
   extList_close() {
     this.extList = false;
   }
-  addToast(msg: string) {
-    const toastOptions: ToastOptions = {
-      title: 'Apmis',
-      msg: msg,
-      showClose: true,
-      timeout: 5000,
-      theme: 'default',
-      onAdd: (toast: ToastData) => {
-      },
-      onRemove: function (toast: ToastData) {
-      }
-    };
 
-    this.toastyService.info(toastOptions);
-  }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
       payload.data.forEach(item => {
@@ -799,7 +784,6 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-          this.addToast('Request sent successfully');
         }).catch(ex =>{
         })
 
@@ -811,7 +795,6 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-        this.addToast('Request sent successfully');
       },err=>{
       })
     }
