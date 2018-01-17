@@ -2,7 +2,7 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const toLower = require('../helpers/tolower');
+const toLower = require('../helpers/toLower');
 const departmentSchema = require('../custom-models/department-model');
 const walletSchema = require('../custom-models/wallet-model');
 const locationSchema = require('../custom-models/minorlocation-model');
