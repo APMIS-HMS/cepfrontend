@@ -1,7 +1,5 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
-import 'rxjs/Rx';
-
 @Injectable()
 export class InventoryTransactionTypeService {
   public _socket;

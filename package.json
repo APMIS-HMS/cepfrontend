@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "config": "ts-node ./src/set-env.ts",
-    "start": "npm run config -- --environment=prod.tertiary && ng serve --environment=prod.tertiary",
+    "start": "npm run config -- --environment=prod.tertiary && ng serve --prod --environment=prod.tertiary",
     "build": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer --vendor-chunk --named-chunks --environment=prod.tertiary",
     "test": "ng test",
     "lint": "ng lint",
@@ -68,7 +68,7 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@angular/cli": "^1.4.9",
+    "@angular/cli": "^1.6.4",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.0.0",
     "@types/jasmine": "2.5.45",
