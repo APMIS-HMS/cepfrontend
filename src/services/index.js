@@ -71,6 +71,8 @@ const companycovercategories = require('./companycovercategories/companycovercat
 const companyHealthCover = require('./company-health-cover/company-health-cover.service.js');
 const consultingRoom = require('./consulting-room/consulting-room.service.js');
 const corperateFacility = require('./corperate-facility/corperate-facility.service.js');
+const dictionary = require('./dictionary/dictionary.service.js');
+const dischargeType = require('./discharge-type/discharge-type.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -145,4 +147,6 @@ module.exports = function (app) {
   app.configure(companyHealthCover);
   app.configure(consultingRoom);
   app.configure(corperateFacility);
+  app.configure(dictionary);
+  app.configure(dischargeType);
 };
