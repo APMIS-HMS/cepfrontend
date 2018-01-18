@@ -26,7 +26,7 @@ import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup
 import { ApmisLookupMultiselectComponent } from '../shared-module/apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { LabCheckInComponent } from '../shared-module/lab-check-in/lab-check-in.component';
-// import { MomentModule } from 'angular2-moment';
+import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
@@ -96,7 +96,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         GlobalPatientLookupComponent,
         StoreCheckInComponent,
         LabCheckInComponent,
-        // MomentModule,
+        MomentModule,
         ToastModule,
         CoolStorageModule,
         MatError,

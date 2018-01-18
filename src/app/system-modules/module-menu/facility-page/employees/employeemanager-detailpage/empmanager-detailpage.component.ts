@@ -23,7 +23,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
 
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() employee: Employee;
+  @Input() employee: any;
 
   editDepartment = false;
   biodatas = false;

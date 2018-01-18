@@ -13,7 +13,7 @@ import {
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import * as format from 'date-fns/format';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-patient-summary',

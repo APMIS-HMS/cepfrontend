@@ -9,7 +9,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 
 var moment = require("moment");
-var _ = require("lodash");
+// var _ = require("lodash");
 
 @Component({
   selector: 'app-fluid',

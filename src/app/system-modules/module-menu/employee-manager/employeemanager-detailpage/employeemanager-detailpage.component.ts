@@ -24,7 +24,7 @@ export class EmployeemanagerDetailpageComponent implements OnInit, OnDestroy {
 
 
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() employee: Employee;
+  @Input() employee: any;
 
   editDepartment = false;
   editProfession = false;

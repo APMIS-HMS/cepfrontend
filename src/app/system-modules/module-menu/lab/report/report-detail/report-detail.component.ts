@@ -27,4 +27,7 @@ export class ReportDetailComponent implements OnInit {
   showImageBrowseDlg(){
     
   }
+  onChange(event){
+    
+  }
 }

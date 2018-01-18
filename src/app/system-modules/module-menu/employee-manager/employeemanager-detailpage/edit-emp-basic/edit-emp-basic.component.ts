@@ -38,8 +38,12 @@ export class EditEmpBasicComponent implements OnInit {
 		});
   }
 
-  close_onClick() {
+  close_onClick(event) {
     this.closeModal.emit(true);
-  }
+	}
+	
+	save(form){
+		
+	}
 
 }
