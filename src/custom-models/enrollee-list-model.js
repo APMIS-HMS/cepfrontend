@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const enrolleeItemSchema = require('../custom-models/enrollee-list-item-model');
+const enrolleeItemSchema = require('./enrollee-list-item-model');
 
 const enrolleeListSchema = new Schema({
   hmo: {
