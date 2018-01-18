@@ -57,7 +57,7 @@
 
   <div class="net-inwrap">
     <div class="net-itemA">
-      <div class="plus">+</div>
+      <div (click)="addMember_click()" class="plus">+</div>
       <div class="card-title">Network Members</div>
       <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">  
         <tbody>
@@ -125,7 +125,7 @@
       </table>
     </div>
     <div class="net-itemB">
-      <div class="plus">+</div>
+      <div (click)="addOther_click()" class="plus">+</div>
       <div class="card-title">Other Networks</div>
       <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
         <tbody>
@@ -165,11 +165,17 @@
   </div>
 </div>
 
-<div *ngIf="createWorkspace" class="modal-overlay">
+<!-- <div *ngIf="createWorkspace" class="modal-overlay">
   <app-create-workspace (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
 </div>
 
 <div *ngIf="globalDialog">
   <app-global-dialog (deleteRecord)="delete_onClick($event)" [gdTitle]="gdTitle" [gdItem]="gdItem" [gdComponent]="gdComponent"
       (closeModal)="close_onClick($event)"></app-global-dialog>
+</div> -->
+<div *ngIf="addMember" class="modal-overlay">
+    <app-add-member (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-member>
+</div>
+<div *ngIf="addOther" class="modal-overlay">
+    <app-add-other (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-other>
 </div>
