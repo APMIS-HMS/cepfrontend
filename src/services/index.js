@@ -86,6 +86,8 @@ const facilityServiceRender = require('./facility-service-render/facility-servic
 const family = require('./family/family.service.js');
 const familyHealthCover = require('./family-health-cover/family-health-cover.service.js');
 const fluid = require('./fluid/fluid.service.js');
+const frequency = require('./frequency/frequency.service.js');
+const genericName = require('./generic-name/generic-name.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -175,4 +177,6 @@ module.exports = function (app) {
   app.configure(family);
   app.configure(familyHealthCover);
   app.configure(fluid);
+  app.configure(frequency);
+  app.configure(genericName);
 };
