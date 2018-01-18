@@ -13,7 +13,7 @@ module.exports = function (app) {
     personId: { type: Schema.Types.ObjectId, required: true },
     passwordToken: { type: String, required: false },
     isTokenVerified: { type: Boolean, 'default': false },
-    facilitiesRole: [roleSchema],
+    facilitiesRole: [roleSchema]
 
   }, {
     timestamps: true
