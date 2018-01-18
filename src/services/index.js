@@ -84,6 +84,8 @@ const facilityAccessControl = require('./facility-access-control/facility-access
 const feature = require('./feature/feature.service.js');
 const facilityServiceRender = require('./facility-service-render/facility-service-render.service.js');
 const family = require('./family/family.service.js');
+const familyHealthCover = require('./family-health-cover/family-health-cover.service.js');
+const fluid = require('./fluid/fluid.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -171,4 +173,6 @@ module.exports = function (app) {
   app.configure(feature);
   app.configure(facilityServiceRender);
   app.configure(family);
+  app.configure(familyHealthCover);
+  app.configure(fluid);
 };
