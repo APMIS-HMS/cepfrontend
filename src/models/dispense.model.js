@@ -2,8 +2,8 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const prescriptionItem = require('../../models/dispensebyprescription');
-const nonPrescriptionItem = require('../../models/dispensebynonprescriptn');
+const prescriptionItem = require('../custom-models/dispensebyprescription');
+const nonPrescriptionItem = require('../custom-models/dispensebynonprescriptn');
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
