@@ -2,7 +2,7 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const roomModel = require('../../custom-models/consulting-room-item-model');
+const roomModel = require('../custom-models/consulting-room-item-model');
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');

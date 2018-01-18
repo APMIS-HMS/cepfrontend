@@ -2,7 +2,7 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const personPrincipalSchema = require('../../custom-models/personfacilityprincipal-model');
+const personPrincipalSchema = require('../custom-models/personfacilityprincipal-model');
 
 
 module.exports = function (app) {

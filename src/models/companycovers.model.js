@@ -2,7 +2,7 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const enrolleeSchema = require('../../custom-models/enrollee-list-model');
+const enrolleeSchema = require('../custom-models/enrollee-list-model');
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');

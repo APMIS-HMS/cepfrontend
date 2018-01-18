@@ -2,11 +2,11 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const departmentSchema = require('../../models/department-model');
-const imageSchema = require('../../models/image-model');
-const addressSchema = require('../../models/address-model');
-const bankItem = require('../../models/bank-detail-model');
-const toLower = require('../../helpers/toLower');
+const departmentSchema = require('../custom-models/department-model');
+const imageSchema = require('../custom-models/image-model');
+const addressSchema = require('../custom-models/address-model');
+const bankItem = require('../custom-models/bank-detail-model');
+const toLower = require('../helpers/toLower');
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
