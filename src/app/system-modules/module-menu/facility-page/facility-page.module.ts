@@ -44,6 +44,7 @@ import { EmployeeLookupComponent } from './employees/employeemanager-detailpage/
 import { EditUserFeaturesComponent } from './employees/employeemanager-detailpage/edit-user/edit-user-features.component';
 import { GenerateUserComponent } from './employees/employeemanager-detailpage/generate-user/generate-user.component';
 import { ApmisCheckboxChildComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox-child.component';
+import { FacilityNetworkComponent } from './facility-network/facility-network.component';
 
 @NgModule({
     declarations: [
@@ -76,7 +77,8 @@ import { ApmisCheckboxChildComponent } from './employees/employeemanager-detailp
         GenerateUserComponent,
         ApmisCheckboxComponent,
         ApmisCheckboxFeatureComponent,
-        ApmisCheckboxChildComponent
+        ApmisCheckboxChildComponent,
+        FacilityNetworkComponent
     ],
     exports: [
     ],
