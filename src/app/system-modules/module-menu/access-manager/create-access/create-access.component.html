@@ -1,26 +1,145 @@
 <div (click)="innerMenuHide($event)" class="inner-wrap-b body-wrap">
-    <div class="facility-title">User Access Manager</div>
+    <div class="facility-title">User Role Manager</div>
 
     <div class="inner-page-wrap">
-        <div>
+        <div>        
             <legend class="page-title">Create Group Role</legend>
-            
-            <div class="featuresMainWrap">
-                <div class="accessInputWrap">
-                    <mat-input-container class="">
-                        <input type="text" matInput mat-error placeholder="Supply Access Name" [formControl]="txtAccessName">
-                    </mat-input-container>
-                    <!--<input id="txtAccessName" class="top-tab-search" type="text" autofocus placeholder="Supply Access Name" [formControl]="txtAccessName">-->
-                </div>
-                <legend class="title-label">Select accessible features</legend>
+            <div class="btn-back" [routerLink]="['/dashboard/access-manager/access-role-details']">
+                <i class="fa fa-chevron-circle-left fa-2x" aria-hidden="true"></i>
+                <span class="span">back</span>
+            </div>
+            <div class="featuresMainWrap shadow-grey">
+                    <div class="filters-wraper">
+                            <mat-input-container class="">
+                                    <input type="text" matInput mat-error placeholder="Role name" [formControl]="txtAccessName">
+                            </mat-input-container>                           
+                    </div> 
+                        <div class="access-content-sect">                        
+                            <div class="moduleside-sect shadow-grey">                            
+                                <div class="as-count-sect card-seperator">
+                                    <div class="cad-head">
+                                        <div class="module-label">MODULES</div>
+                                    </div>
+                                    <ul class="work-places-list">
+                                        <li class="work-places-item">
+                                            <div class="network-list">
+                                                <div class="wp-name">Facility Module</div>                                            
+                                            </div>
+                                        </li>
+                                        <li class="work-places-item">
+                                            <div class="network-list">
+                                                <div class="wp-name">Laboratory</div>
+                                            </div>
+                                        </li>
+                                        <li class="work-places-item">
+                                            <div class="network-list">
+                                                <div class="wp-name">Pharmacy</div>
+                                            </div>
+                                        </li>
+                                        <li class="work-places-item">
+                                            <div class="network-list">
+                                                <div class="wp-name">Blood Bank</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="right-column shadow-grey">
+                                <div class="checkwrap">
+                                    <label class="container">Access One
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Two
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Three
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Four
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Five
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Six
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Seven
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="container">Access Eight
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <table cellpadding="0 " cellspacing="0" border="0.4 ">
+                                <thead>
+                                    <tr class="table-header ">
+                                        <th>
+                                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                            <span>Module</span>
+                                        </th>
+                                        <th>
+                                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                            <span>Accessibilities</span>
+                                        </th>
+                                        <th>
+                                            <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                            <span>Action</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-content">Facility Module</td>
+                                        <td class="table-content">
+                                            <span>Access One</span>
+                                        </td>
+                                        <td class="fa fa-trash-o tr-act-btn"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-content">Laboratory Module</td>
+                                        <td class="table-content">
+                                                <span>External Requests</span>
+                                        </td>
+                                        <td class="fa fa-trash-o tr-act-btn"></td>
+                                    </tr>
+                                    <tr>
+                                            <td class="table-content">Radiology Module</td>
+                                            <td class="table-content">
+                                                    <span>Make Requests</span>
+                                            </td>
+                                            <td class="fa fa-trash-o tr-act-btn"></td>
+                                    </tr>
+                                    <tr>
+                                                <td class="table-content">Radiology Module</td>
+                                                <td class="table-content">
+                                                        <span>Write Report</span>
+                                                </td>
+                                                <td class="fa fa-trash-o tr-act-btn"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                <!-- <legend class="title-label">Select accessible features</legend>
                 <div class="searchWrap">
                     <mat-input-container *ngIf="searchfeatureActive" class="animated fadeIn">
                         <input type="text" matInput mat-error placeholder="Search for Feature" [formControl]="searchFeature">
                     </mat-input-container>
                     <!--<input *ngIf="searchfeatureActive" class="top-tab-search animated fadeIn" type="search" placeholder="Search for Feature" [formControl]="searchFeature">-->
-                    <i (click)="searchFeatureToggle()" [hidden]="searchfeatureActive" style="margin-top: 7px;" class="fa fa-search-plus" aria-hidden="true"></i>
+                    <!-- <i (click)="searchFeatureToggle()" [hidden]="searchfeatureActive" style="margin-top: 7px;" class="fa fa-search-plus" aria-hidden="true"></i>
                     <i (click)="searchFeatureToggle()" *ngIf="searchfeatureActive" class="fa fa-search-minus" aria-hidden="true"></i>
-                </div>
+                </div> -->
                 <div class="modal-content-wrap">
                     <div class="control-group" *ngFor="let group of superGroups">
                         <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
