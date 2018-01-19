@@ -9,7 +9,7 @@ import { FacilitypageLocationspageComponent } from './facilitypage-locationspage
 import { FacilitypageWorkspaceComponent } from './facilitypage-workspace/facilitypage-workspace.component';
 import { FacilityOptionsComponent } from './facility-options/facility-options.component';
 import { ProfessionComponent } from './profession/profession.component';
-
+import { FacilityNetworkComponent } from './facility-network/facility-network.component';
 import {
     WorkspaceResolverService, FacilityResolverService, SystemModulesResolverService,
     LocationsResolverService
@@ -48,6 +48,7 @@ const FACLITYPAGE_ROUTES: Routes = [
             { path: 'options', component: FacilityOptionsComponent },
             { path: 'profession', component: ProfessionComponent },
             { path: 'modules', component: FacilitypageModulespageComponent },
+            { path: 'network', component: FacilityNetworkComponent },
         ]
     }
 ];
