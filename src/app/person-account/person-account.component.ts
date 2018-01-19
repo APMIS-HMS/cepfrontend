@@ -22,11 +22,13 @@ import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/help
       state('normal', style({
         'background-color': 'blue',
         'display': 'block',
+        'margin-top': '-40px',
         transform: 'translateX(0) scale(0)'
       })),
       state('highlighted', style({
         'background-color': 'red',
         'display': 'block',
+        'margin-top': '0px',
         transform: 'translateX(0) scale(1)'
       })),
       transition('normal <=> highlighted', animate(300)),
