@@ -28,7 +28,7 @@ import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/help
         'display': 'block',
         transform: 'translateX(0) scale(1)'
       })),
-      transition('normal <=> highlighted', animate(800)),
+      transition('normal <=> highlighted', animate(300)),
       // transition('highlighted => normal', animate(800))
     ])
   ]
