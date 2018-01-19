@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const serviceSchema = require('../custom-models/service-model');
+const serviceSchema = require('./service-model');
 
 const categorySchema = new Schema({
   name: { type: String, required: true },

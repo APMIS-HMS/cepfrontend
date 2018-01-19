@@ -82,6 +82,14 @@ const drugStrength = require('./drug-strength/drug-strength.service.js');
 const externalPrescription = require('./external-prescription/external-prescription.service.js');
 const facilityAccessControl = require('./facility-access-control/facility-access-control.service.js');
 const feature = require('./feature/feature.service.js');
+const facilityServiceRender = require('./facility-service-render/facility-service-render.service.js');
+const family = require('./family/family.service.js');
+const familyHealthCover = require('./family-health-cover/family-health-cover.service.js');
+const fluid = require('./fluid/fluid.service.js');
+const frequency = require('./frequency/frequency.service.js');
+const genericName = require('./generic-name/generic-name.service.js');
+const globalService = require('./global-service/global-service.service.js');
+const hiaplan = require('./hiaplan/hiaplan.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -167,4 +175,12 @@ module.exports = function (app) {
   app.configure(externalPrescription);
   app.configure(facilityAccessControl);
   app.configure(feature);
+  app.configure(facilityServiceRender);
+  app.configure(family);
+  app.configure(familyHealthCover);
+  app.configure(fluid);
+  app.configure(frequency);
+  app.configure(genericName);
+  app.configure(globalService);
+  app.configure(hiaplan);
 };
