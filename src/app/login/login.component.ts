@@ -75,12 +75,14 @@ export class LoginComponent implements OnInit {
             this.userService.isLoggedIn = true;
             this.userService.announceMission('in');
             this.systemModule.off();
+            this.frm_login.controls['password'].reset();
           });
         }, error => {
           this.systemModule.off();
           console.log(error);
         }).catch(merr => {
           this.systemModule.off();
+          this.frm_login.controls['password'].reset();
           console.log(merr);
         });
       },
@@ -88,6 +90,8 @@ export class LoginComponent implements OnInit {
           this.loadIndicatorVisible = false;
           this.mainErr = false;
           this.errMsg = 'wrong login credentials';
+          this.frm_login.controls['password'].reset();
+          this.systemModule.off();
         });
       // this.userService.login(query).then(result => {
       //   this.locker.setObject('auth', result);

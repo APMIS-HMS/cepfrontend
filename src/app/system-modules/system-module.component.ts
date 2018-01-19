@@ -39,7 +39,6 @@ export class SystemModuleComponent implements OnInit {
     this.facilityService.patchListner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
       if (facility._id === payload._id) {
-        console.log('yes')
         this.locker.setObject('selectedFacility', payload);
       }
     });
