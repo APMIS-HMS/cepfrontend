@@ -7,7 +7,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { error } from 'selenium-webdriver';
 
 @Component({

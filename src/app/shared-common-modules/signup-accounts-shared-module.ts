@@ -25,16 +25,16 @@ import { MaterialModule } from './material-module';
         ContactInfoComponent,
         FacilityInfoComponent,
         AddFacilityModuleComponent,
-        CommonModule,
+        // CommonModule,
         SharedModuleSignUpAccountModule,
         LoginComponent,
-        MaterialModule
+        // MaterialModule
     ],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SharedModuleSignUpAccountModule,
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // SharedModuleSignUpAccountModule,
         MaterialModule,
         Ng4GeoautocompleteModule.forRoot()
     ],

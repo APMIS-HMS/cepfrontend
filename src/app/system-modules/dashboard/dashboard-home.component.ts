@@ -5,7 +5,8 @@ import { FacilitiesService, UserService, EmployeeService, WorkSpaceService } fro
 import { Facility, Employee } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-dashboard-home',

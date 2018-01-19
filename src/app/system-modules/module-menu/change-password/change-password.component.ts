@@ -68,7 +68,7 @@ export class ChangePasswordComponent implements OnInit {
       });
     }
   }
-  close_onClick() {
+  close_onClick(event) {
     this.closeModal.emit(true);
   }
   toggleShow(e) {

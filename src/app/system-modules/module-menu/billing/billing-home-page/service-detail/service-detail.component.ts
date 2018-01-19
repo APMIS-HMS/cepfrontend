@@ -24,7 +24,7 @@ export class ServiceDetailComponent implements OnInit {
     this.servicePriceService.update(this.selectedFacilityServicePrice).then(payload => {
     });
   }
-  close_onClick() {
+  close_onClick(event) {
     this.closeModal.emit(true);
   }
 
