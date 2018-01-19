@@ -160,13 +160,13 @@ export class PersonAccountComponent implements OnInit {
     this.state === 'normal' ? this.state = 'highlighted' : this.state = 'normal';
 
     console.log(this.state);
-    this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
-      this.countDown = this.countDown - 1;
-      if (rx === 9) {
-        this.close_onClick();
-        this.counterSubscription.unsubscribe();
-      }
-    });
+    // this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
+    //   this.countDown = this.countDown - 1;
+    //   if (rx === 9) {
+    //     this.close_onClick();
+    //     this.counterSubscription.unsubscribe();
+    //   }
+    // });
 
   }
   animateShow() {
