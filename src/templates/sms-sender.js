@@ -1,6 +1,5 @@
 'use strict';
 const request = require('request');
-const logger = require('winston');
 
 function sender(mesage, data, isScheduler) {
   var url = 'http://portal.bulksmsnigeria.net/api/?username=apmis&password=apmis&message=' + mesage + '&sender=APMIS&mobiles=@@' + data.primaryContactPhoneNo + '@@';
@@ -23,8 +22,6 @@ function sendToken(data) {
 }
 
 function sendApmisId(data) {
-  logger.info(62);
-  logger.info(data);
   const message = 'This is to notify you that ' + data.apmisId + ' is your personal APMIS identification number. Visit www.apmis.ng/details for details';
   sender(message, data, false);
 }

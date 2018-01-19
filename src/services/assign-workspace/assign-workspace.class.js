@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const logger = require('winston');
 class Service {
   constructor(options) {
     this.options = options || {};
@@ -16,7 +15,6 @@ class Service {
   }
 
   create(data, params) {
-    // logger.info(id);
     const employeeService = this.app.service('employees');
     const workspaceService = this.app.service('workspaces');
 
