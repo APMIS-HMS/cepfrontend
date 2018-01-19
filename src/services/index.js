@@ -82,6 +82,7 @@ const drugStrength = require('./drug-strength/drug-strength.service.js');
 const externalPrescription = require('./external-prescription/external-prescription.service.js');
 const facilityAccessControl = require('./facility-access-control/facility-access-control.service.js');
 const feature = require('./feature/feature.service.js');
+const changePassword = require('./change-password/change-password.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -167,4 +168,5 @@ module.exports = function (app) {
   app.configure(externalPrescription);
   app.configure(facilityAccessControl);
   app.configure(feature);
+  app.configure(changePassword);
 };
