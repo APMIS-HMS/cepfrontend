@@ -11,7 +11,8 @@ import {
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ClinicHelperService } from '../services/clinic-helper.service';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
 @Component({
   selector: 'app-check-in-patient',
   templateUrl: './check-in-patient.component.html',

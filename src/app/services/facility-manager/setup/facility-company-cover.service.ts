@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 const request = require('superagent');
-// import 'rxjs/Rx';
 
 @Injectable()
 export class FacilityCompanyCoverService {

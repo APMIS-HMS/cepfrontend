@@ -6,7 +6,7 @@ import {
 import { Facility, MinorLocation, FacilityService, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({

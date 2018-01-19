@@ -5,7 +5,8 @@ import { LocationService } from '../../../services/module-manager/setup/index';
 import { Profession, Employee, Facility, Location, MinorLocation } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ClinicHelperService } from './services/clinic-helper.service';
-import { Observable, Subject } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable'
+import { Subject } from 'rxjs/Subject'
 
 
 @Component({

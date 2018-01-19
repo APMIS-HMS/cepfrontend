@@ -68,17 +68,17 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         this.workSpaces = result;
       });
   }
-  removeLocation(location, workSpace: WorkSpace, i) {
-    workSpace.locations[i].isActive = false;
+  removeLocation() {
+    // workSpace.locations[i].isActive = false;
 
-    this.workspaceService.update(workSpace).then(payload => {
-      this.getWorkSpace();
-    });
+    // this.workspaceService.update(workSpace).then(payload => {
+    //   this.getWorkSpace();
+    // });
   }
-  deletion_popup(workSpace) {
-    this.selectedWorkSpace = workSpace;
-    this.gdItem = workSpace.employeeObject.employeeDetails.lastName + ' ' + workSpace.employeeObject.employeeDetails.firstName;
-    this.globalDialog = true;
+  deletion_popup() {
+    // this.selectedWorkSpace = workSpace;
+    // this.gdItem = workSpace.employeeObject.employeeDetails.lastName + ' ' + workSpace.employeeObject.employeeDetails.firstName;
+    // this.globalDialog = true;
   }
   createWorkspace_pop() {
     this.createWorkspace = true;

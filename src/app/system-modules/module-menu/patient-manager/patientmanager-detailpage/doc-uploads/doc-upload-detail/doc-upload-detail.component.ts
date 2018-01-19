@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { BrowserModule, DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
+import { BrowserModule } from '@angular/platform-browser'
 import { CoolLocalStorage } from 'angular2-cool-storage/src/cool-local-storage';
-import { PDFProgressData } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-doc-upload-detail',
@@ -21,7 +20,7 @@ export class DocUploadDetailComponent implements OnInit {
   docPdf:any;
   docImg:any;
 
-  constructor(private domSanitizer: DomSanitizer, private locker: CoolLocalStorage) { }
+  constructor(private locker: CoolLocalStorage) { }
 
   ngOnInit() {
     this.auth = this.locker.getObject('auth');
@@ -50,7 +49,7 @@ export class DocUploadDetailComponent implements OnInit {
     this.loading = false;
     this.loadingError = true;
   }
-  onProgress(progressData: PDFProgressData) {
+  onProgress(progressData: any) {
     // console.log(event);
   }
 }

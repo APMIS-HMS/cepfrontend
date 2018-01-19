@@ -85,7 +85,7 @@ export class RequestDetailComponent implements OnInit {
   onChange() {
     //upload file
   }
-  close_onClick() {
+  close_onClick(event) {
     this.closeModal.emit(true);
   }
   takeSample() {
