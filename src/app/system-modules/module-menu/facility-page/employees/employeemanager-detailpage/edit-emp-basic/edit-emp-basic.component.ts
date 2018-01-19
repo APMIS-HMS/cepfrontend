@@ -21,6 +21,11 @@ export class EditEmpBasicComponent implements OnInit {
 	mainErr = true;
 	errMsg = "";
 
+	facility;
+	departments:any;
+	selectedEmployee;
+	loading:any;
+
 	public facilityForm1: FormGroup;
 	userSettings: any = {
 		geoCountryRestriction: [GEO_LOCATIONS],
@@ -38,6 +43,7 @@ export class EditEmpBasicComponent implements OnInit {
 		private locker: CoolLocalStorage) { }
 
 	ngOnInit() {
+		this.facility = <any>this.locker.getObject("selectedFacility");
 		if (this.departmentBool) {
 			this.facilityForm1 = this.formBuilder.group({
 
@@ -77,14 +83,10 @@ export class EditEmpBasicComponent implements OnInit {
 				dept: ['', [<any>Validators.required]],
 				phone: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 			});
-
-			this.getDepartments();
-
-
 		}
 
-
-		console.log(this.departmentBool);
+		this.getDepartments();
+		this.selectedEmployee = this.locker.getObject("selectedEmployee");
 	}
 
 	close_onClick() {
@@ -92,20 +94,20 @@ export class EditEmpBasicComponent implements OnInit {
 		this.departmentBool = false;
 	}
 	save() {
-		let person = {
-			
-		}
-		//this.personService.create()
+		this.loading = true;
+		this.selectedEmployee.departmentId = this.facilityForm1.controls["dept"].value;
+		
+		this.employeeService.update(this.selectedEmployee).then(payload => {
+			this.loading = true;
+			this.close_onClick();
+		});
 	}
 
 	getDepartments(){
-		let facility = <any>this.locker.getObject("selected");
-		this.facilityService.find({
-			query: {
-				"_id": facility._id
-			}
-		}).then(payload => {
-			console.log(payload);
+		this.facilityService.get(this.facility._id, {}).then(payload => {
+			this.departments = payload.departments;
+		}).catch(err => {
+			console.log(err);
 		});
 	}
 

@@ -39,7 +39,7 @@
         </div>
         <mat-form-field>
             <mat-select placeholder="Department" formControlName="dept">
-                <mat-option>Surgery</mat-option>
+                <mat-option *ngFor="let depts of departments" [value]="depts._id">{{depts.name}}</mat-option>
             </mat-select>
         </mat-form-field>
         <div class="frm-item-wrap">
@@ -53,13 +53,14 @@
             </mat-input-container>
         </div>
         
-        <label class="control control--checkbox">Activate Employee
+        <!-- <label class="control control--checkbox">Activate Employee
             <input type="checkbox"  formControlName="status" />
             <div class="control__indicator"></div>
-        </label>
+        </label> -->
     
-        <button class="cta-1"> 
-        UPDATE
+        <button class="cta-1" [disabled]="!facilityForm1.valid || loading"> 
+        <span *ngIf="!loading">UPDATE</span>
+        <span *ngIf="loading">Loading...</span>
         </button>
     
     </form> 
