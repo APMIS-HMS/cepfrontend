@@ -5,8 +5,9 @@ import { UserFacadeService } from './../system-modules/service-facade/user-facad
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Title } from './../models/facility-manager/setup/title';
 import { TitleGenderFacadeService } from './../system-modules/service-facade/title-gender-facade.service';
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild, ViewContainerRef, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { animate, trigger, state, style, transition } from '@angular/animations'
 import { CountriesService, GenderService, PersonService, UserService, FacilitiesService } from '../services/facility-manager/setup/index';
 import { Gender, User, Person, Address } from '../models/index';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
@@ -28,7 +29,9 @@ import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/help
         'display': 'block',
         transform: 'translateX(0) scale(1)'
       })),
-      transition('normal <=> highlighted', animate(800)),
+      transition('normal <=> highlighted', animate(500, style({
+        borderRadius:'50px'
+      }))),
       // transition('highlighted => normal', animate(800))
     ])
   ]
@@ -154,7 +157,7 @@ export class PersonAccountComponent implements OnInit {
     console.log(result);
     console.log(this.state);
     this.isSaving = false;
-    this.isSuccessful = true; 
+    this.isSuccessful = true;
     this.frmPerson.reset();
     this.systemModuleService.off();
     this.state === 'normal' ? this.state = 'highlighted' : this.state = 'normal';
