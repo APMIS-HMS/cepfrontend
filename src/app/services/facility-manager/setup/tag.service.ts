@@ -8,15 +8,18 @@ export class TagService {
   public listner;
   public createListener;
   public _socket;
+  public _socketSearch;
   private _rest;
   private _restLogin;
   constructor(
     private _socketService: SocketService,
+    private _socketSearchService: SocketService,
     private _restService: RestService,
     private locker: CoolLocalStorage
   ) {
     this._rest = _restService.getService('service-tags');
     this._socket = _socketService.getService('service-tags');
+    this._socketSearch = _socketSearchService.getService('search-tags');
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.createListener = Observable.fromEvent(this._socket, 'created');
@@ -37,6 +40,9 @@ export class TagService {
   }
   create(tag: any) {
     return this._socket.create(tag);
+  }
+  serach(query) {
+    return this._socketSearch.find(query);
   }
   update(tag: any) {
     return this._socket.update(tag._id, tag);

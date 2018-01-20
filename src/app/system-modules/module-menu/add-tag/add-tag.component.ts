@@ -24,15 +24,15 @@ export class AddTagComponent implements OnInit {
 
   ngOnInit() {
 
-    this.facility = <Facility> this._locker.getObject('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getTags();
 
     const subscribeForTag = this.searchTag.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: Tag[]) => this._tagService.find({
+      .switchMap(value => this._tagService.serach({
         query:
-        { search: this.searchTag.value, facilityId: this.facility._id }
+          { search: this.searchTag.value, facilityId: this.facility._id }
       }).
         then(payload => {
           this.tags = payload.data;
@@ -50,6 +50,11 @@ export class AddTagComponent implements OnInit {
   newTagPopup_show() {
     this.newTagPopup = true;
   }
+
+  onTagValueChange() {
+    this.getTags();
+  }
+
   close_onClick(e) {
     this.newServicePopup = false;
     this.newCategoryPopup = false;

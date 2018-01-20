@@ -13,7 +13,7 @@ import { error } from 'selenium-webdriver';
 export class NewTagComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Output() tagValueChanged = new EventEmitter();
   mainErr = true;
   errMsg = 'you have unresolved errors';
   facility: Facility = <Facility>{};
@@ -72,7 +72,7 @@ export class NewTagComponent implements OnInit {
       tag.createdBy = auth._id;
       console.log(tag);
       this._tagService.create(tag).then(callback => {
-        console.log(callback);
+        this.tagValueChanged.emit(true);
         this.frmNewtag.controls['tagName'].setValue('');
       }, error => {
         console.log(error);

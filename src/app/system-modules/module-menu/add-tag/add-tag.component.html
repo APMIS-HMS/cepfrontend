@@ -38,7 +38,7 @@
     </div>
 
     <div *ngIf="newTagPopup" class="modal-overlay">
-        <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-tag>
+        <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" (tagValueChanged)="onTagValueChange()" class="form-modal center-center"></app-new-tag>
     </div>
 
 </div>
