@@ -20,8 +20,6 @@ export class UserService {
         this._socket = _socketService.getService('users');
         this._socket.timeout = 30000;
         this._restLogin = _restService.getService('auth/local');
-        // this._socket.on('created', function (user) {
-        // });
     }
     announceMission(mission: string) {
         this.missionAnnouncedSource.next(mission);
@@ -32,13 +30,7 @@ export class UserService {
     }
     login(query: any) {
         return this._restService.loginIntoApp(query);
-        // return this._restLogin.create(query);
     }
-    
-    // authenticateResource(){
-    //     return this._socketService.authenticateService();
-    //     // this._restService.authenticateService();
-    // }
 
     find(query: any) {
         return this._socket.find(query);
@@ -66,11 +58,14 @@ export class UserService {
         return this._socket.remove(id, query);
     }
     changePassword(body: any) {
-        const host = this._restService.getHost();
-        const path = host + '/changepassword';
-        return request
-            .post(path)
-            .send(body);
+        // const host = this._restService.getHost();
+        // const path = host + '/changepassword';
+        // return request
+        //     .post(path)
+        //     .send(body);
+        console.log(body);
+        return this._socketService.getService('change-password')
+            .update(body._id, { 'oldpassword': body.oldpassword, 'password': body.password });
     }
     resetPassword(body: any) {
         const host = this._restService.getHost();

@@ -139,13 +139,16 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 		this.systemModuleService.on();
 		this.facilityService.patch(facility._id, facility, {}).then(payload => {
 			this.systemModuleService.off();
-			swal({ title: 'Keep things simple :)' });
+			this.systemModuleService.announceSweetProxy('Thanks for saving', 'info');
 		}, error => {
 			console.log(error);
 			this.systemModuleService.off();
 		});
 	}
-
+	
+	public callBack(value){
+		console.log(value);
+	}
 	autoCompleteCallback1(selectedData: any) {
 		if (selectedData.response) {
 			let res = selectedData;

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Tag, Facility } from '../../../../../models/index';
 import { TagService, TagDictionaryService } from '../../../../../services/facility-manager/setup/index';
+import { error } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-new-tag',
@@ -30,7 +31,7 @@ export class NewTagComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap((term: any[]) => this.tagDictionaryService.find({
         query:
-        { word: { $regex: this.frmNewtag.controls['tagName'].value, '$options': 'i' } }
+          { word: { $regex: this.frmNewtag.controls['tagName'].value, '$options': 'i' } }
       }).
         then(payload => {
           if (this.frmNewtag.controls['tagName'].value.length === 0) {
@@ -61,6 +62,7 @@ export class NewTagComponent implements OnInit {
     this.frmNewtag.controls['tagName'].setValue(dic.word);
   }
   newTag(model: any, valid: boolean) {
+    console.log(valid);
     if (valid) {
       const tag: Tag = <Tag>{};
       tag.name = this.frmNewtag.controls['tagName'].value;
@@ -68,9 +70,12 @@ export class NewTagComponent implements OnInit {
       const authObj: any = this._locker.getObject('auth')
       const auth: any = authObj.data;
       tag.createdBy = auth._id;
-
+      console.log(tag);
       this._tagService.create(tag).then(callback => {
+        console.log(callback);
         this.frmNewtag.controls['tagName'].setValue('');
+      }, error => {
+        console.log(error);
       });
       if (this.dictionaries.length === 0) {
         this.tagDictionaryService.create({ word: this.frmNewtag.controls['tagName'].value }).then(inPayload => {
