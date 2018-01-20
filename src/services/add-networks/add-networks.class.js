@@ -49,6 +49,10 @@ class Service {
       id
     });
   }
+
+  setup(app) {
+    this.app = app;
+  }
 }
 
 module.exports = function (options) {
