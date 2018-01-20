@@ -91,6 +91,7 @@ const genericName = require('./generic-name/generic-name.service.js');
 const globalService = require('./global-service/global-service.service.js');
 const hiaplan = require('./hiaplan/hiaplan.service.js');
 const tagDictioneries = require('./tag-dictioneries/tag-dictioneries.service.js');
+const searchTags = require('./search-tags/search-tags.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -185,4 +186,5 @@ module.exports = function (app) {
   app.configure(globalService);
   app.configure(hiaplan);
   app.configure(tagDictioneries);
+  app.configure(searchTags);
 };
