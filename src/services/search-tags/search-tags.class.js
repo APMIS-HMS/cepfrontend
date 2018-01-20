@@ -6,16 +6,16 @@ class Service {
   }
 
   find (params) {
-    logger.info(params.search);
     const serviceTagService = this.app.service('service-tags');
     return new Promise(function (resolve, reject) {
       serviceTagService.find({
         query: {
-          facilityId: params.facilityId,
-          name: params.search
+          facilityId: params.query.facilityId,
+          'name': { $regex: params.query.search, '$options': 'i' }
         }
       }).then(payload => {
-        resolve(payload.data);
+        var data = payload;
+        resolve(data);
       }, error => {
         reject(error);
       });
