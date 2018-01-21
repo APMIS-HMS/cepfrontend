@@ -29,8 +29,8 @@
                 <tr *ngFor="let tag of tags">
                     <td>{{tag.name}}</td>
                     <td>
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="onTagEdit(tag)"></i>
+                        <i class="fa fa-trash" aria-hidden="true" (click)="onTagRemove(tag)"></i>
                     </td>
                 </tr>
             </tbody>
@@ -38,7 +38,7 @@
     </div>
 
     <div *ngIf="newTagPopup" class="modal-overlay">
-        <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" (tagValueChanged)="onTagValueChange()" class="form-modal center-center"></app-new-tag>
+        <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" (tagValueChanged)="onTagValueChange()" [tag]="editedTag" class="form-modal center-center"></app-new-tag>
     </div>
 
 </div>

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FacilitiesServiceCategoryService, TagService } from '../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, Tag } from '../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
+import { error } from 'util';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-tag',
@@ -16,7 +19,10 @@ export class AddTagComponent implements OnInit {
   newServicePopup = false;
   newCategoryPopup = false;
   newTagPopup = false;
-  constructor(private _locker: CoolLocalStorage, private _tagService: TagService) {
+  editedTag = {};
+  constructor(private _locker: CoolLocalStorage,
+    private systemModuleService: SystemModuleService,
+    private _tagService: TagService) {
     this._tagService.createListener.subscribe(payload => {
       this.getTags();
     });
@@ -43,7 +49,9 @@ export class AddTagComponent implements OnInit {
 
   }
   getTags() {
+    this.systemModuleService.on;
     this._tagService.find({ query: { facilityId: this.facility._id } }).then(payload => {
+      this.systemModuleService.off;
       this.tags = payload.data;
     });
   }
@@ -55,9 +63,41 @@ export class AddTagComponent implements OnInit {
     this.getTags();
   }
 
+  onTagEdit(tag) {
+    console.log(tag);
+    let text = "You are about to edit " + tag.name.toUpperCase() + " tag";
+    this.systemModuleService.announceSweetProxy(text, 'info', this);
+    this.editedTag = tag;
+    this.newTagPopup = true;
+  }
+
+  onTagRemove(tag) {
+    this.systemModuleService.on;
+    swal({                                                  //Temporary line of code for Warning alert pending the time 
+      title: 'Are you sure?',                               // SystemModuleService warning alert callback is resolved
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result) {
+        this._tagService.remove(tag._id, {}).then(callback_remove => {
+          this.systemModuleService.announceSweetProxy(tag.name+" is deleted",'success',this);
+          this.systemModuleService.off;
+          this.getTags();
+        }, error => {
+          this.systemModuleService.off;
+        });
+      }
+    });
+  }
+
   close_onClick(e) {
     this.newServicePopup = false;
     this.newCategoryPopup = false;
     this.newTagPopup = false;
+    this.editedTag = {};
   }
 }

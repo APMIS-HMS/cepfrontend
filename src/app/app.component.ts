@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 import swal from 'sweetalert2';
+import { bindCallback } from 'rxjs/observable/bindCallback';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -93,6 +94,7 @@ export class AppComponent implements OnInit {
     } else if (value.type === 'info') {
       swal({ title: value.title, type: 'info' });
     } else if (value.type === 'warning') {
+      console.log(value);
       swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -103,7 +105,9 @@ export class AppComponent implements OnInit {
         confirmButtonText: 'Yes, delete it!'
       })
         .then((result) => {
-          value.cp.sweetAlertCallback(result);
+          value.cp.sweetAlertCallback=result;
+          console.log(value);
+          console.log(result);
           // if (result.value) {
           //   swal(
           //     'Deleted!',
