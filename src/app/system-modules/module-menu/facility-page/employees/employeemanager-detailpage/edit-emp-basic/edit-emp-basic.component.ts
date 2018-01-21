@@ -44,49 +44,36 @@ export class EditEmpBasicComponent implements OnInit {
 
 	ngOnInit() {
 		this.facility = <any>this.locker.getObject("selectedFacility");
-		if (this.departmentBool) {
-			this.facilityForm1 = this.formBuilder.group({
+		this.selectedEmployee = this.locker.getObject("selectedEmployee");
+		
+		this.facilityForm1 = this.formBuilder.group({
 
-				firstname: [{
-					value: this.selectedPerson.firstName, 
-					disabled: this.departmentBool
-				}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-				lastname: [{
-					value: this.selectedPerson.lastName,
-					disabled: this.departmentBool
-				}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-				othernames: [{
-					value: this.selectedPerson.otherNames,
-					disabled: this.departmentBool
-				}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-				email: [{
-					value: this.selectedPerson.email,
-					disabled: this.departmentBool
-				}, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
-				// network: ['', [<any>Validators.minLength(2)]],
-				status: ['', [<any>Validators.required]],
-				dept: ['', [<any>Validators.required]],
-				phone: [{
-					value: this.selectedPerson.primaryContactPhoneNo,
-					disabled: this.departmentBool
-				}, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
-			});
-		} else {
-			this.facilityForm1 = this.formBuilder.group({
-
-				firstname: [this.selectedPerson.firstName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-				lastname: [this.selectedPerson.lastName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-				othernames: [this.selectedPerson.otherNames, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-				email: [this.selectedPerson.email, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
-				// network: ['', [<any>Validators.minLength(2)]],
-				status: ['', [<any>Validators.required]],
-				dept: ['', [<any>Validators.required]],
-				phone: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
-			});
-		}
+			firstname: [{
+				value: this.selectedPerson.firstName, 
+				disabled: this.departmentBool
+			}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			lastname: [{
+				value: this.selectedPerson.lastName,
+				disabled: this.departmentBool
+			}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			othernames: [{
+				value: this.selectedPerson.otherNames,
+				disabled: this.departmentBool
+			}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			email: [{
+				value: this.selectedPerson.email,
+				disabled: this.departmentBool
+			}, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
+			// network: ['', [<any>Validators.minLength(2)]],
+			//status: ['', [<any>Validators.required]],
+			dept: [this.selectedEmployee.departmentId, [<any>Validators.required]],
+			phone: [{
+				value: this.selectedPerson.primaryContactPhoneNo,
+				disabled: this.departmentBool
+			}, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
+		});
 
 		this.getDepartments();
-		this.selectedEmployee = this.locker.getObject("selectedEmployee");
 	}
 
 	close_onClick() {

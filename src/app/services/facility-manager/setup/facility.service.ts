@@ -15,6 +15,7 @@ export class FacilitiesService {
   public _sendFacilityTokenSocket;
   private _rest;
   private _restLogin;
+  private _socketNetwork;
 
   private sliderAnnouncedSource = new Subject<Object>();
   sliderAnnounced$ = this.sliderAnnouncedSource.asObservable();
@@ -36,6 +37,8 @@ export class FacilitiesService {
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
+    this._socketNetwork = _socketService.getService('add-network');
+    this._socketNetwork.timeout = 30000;
     // client.service('messages').on('created', addMessage);
 
   }
@@ -163,5 +166,16 @@ export class FacilitiesService {
     return request
       .post(path)
       .send(formData);
+  }
+  post(body: any, params: any) {
+    const host = this._socketService.HOST;
+    const path = host + '/add-networks';
+    return request
+      .post(path)
+      .send(body);
+  }
+
+  addNetwork(netw: any){
+    return this._socketNetwork.create(netw);
   }
 }

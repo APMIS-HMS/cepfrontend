@@ -58,9 +58,9 @@
             <div class="control__indicator"></div>
         </label> -->
     
-        <button class="cta-1" [disabled]="!facilityForm1.valid || loading"> 
-        <span *ngIf="!loading">UPDATE</span>
-        <span *ngIf="loading">Loading...</span>
+        <button class="cta-1" (click)="save()" [disabled]="!facilityForm1.valid || loading" > 
+            <span *ngIf="!loading">UPDATE</span>
+            <span *ngIf="loading">Loading...</span>
         </button>
     
     </form> 
