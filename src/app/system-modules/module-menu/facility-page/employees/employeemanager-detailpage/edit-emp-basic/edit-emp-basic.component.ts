@@ -12,8 +12,11 @@ export class EditEmpBasicComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	mainErr = true;
 	errMsg = "";
+	editEmployeeDetails = false;
 
 	public facilityForm1: FormGroup;
+	public facilityForm2: FormGroup;
+
 	userSettings: any = {
 		geoCountryRestriction: [GEO_LOCATIONS],
 		showCurrentLocation: false,
@@ -26,15 +29,28 @@ export class EditEmpBasicComponent implements OnInit {
 
 	ngOnInit() {
 		this.facilityForm1 = this.formBuilder.group({
+			dept: ['', [<any>Validators.required]],
+		});
 
-			firstname: [this.selectedPerson.firstName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			lastname: [this.selectedPerson.lastName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			othernames: [this.selectedPerson.otherNames, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+		this.facilityForm2 = this.formBuilder.group({
+
+			firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			othernames: ['', []],
+			gender: ['', [<any>Validators.required]],
+			maritalStatus: ['', [<any>Validators.required]],
+			date: ['', [<any>Validators.required]],
+			nationality: ['', [<any>Validators.required]],
+			stateofOrigin: ['', [<any>Validators.required]],
+			localgovtarea: ['', [<any>Validators.required]],
+			homeaddress: ['', [<any>Validators.required]],
+			stateofresidence: ['', [<any>Validators.required]],
+			lgaofresidence: ['', [<any>Validators.required]],
+			phone: ['', [<any>Validators.required]],
 			email: [this.selectedPerson.email, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
 			status: ['', [<any>Validators.required]],
-			dept: ['', [<any>Validators.required]],
-			phone: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
+			phoneno: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 	}
 

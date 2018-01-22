@@ -28,6 +28,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   biodatas = false;
   contacts = false;
   nextofkin = false;
+  
 
   externalContentArea = false;
   contentSecMenuShow = false;
@@ -65,6 +66,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   createWorkspace = false;
   assignUnitPop = false;
   editBasicPop = false;
+  
 
   employeeSubscription: Subscription;
   departments: any[] = [];
