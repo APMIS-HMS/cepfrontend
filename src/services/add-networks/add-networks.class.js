@@ -15,12 +15,15 @@ class Service {
 
   get(id, params) {
     const facilitiesService = this.app.service('facilities');
+    console.log(params.query);
     if (params.query.ismemberof) {
       var members = [];
       return new Promise(function (resolve, reject) {
-        facilitiesService.get(data.hostId, {}).then(networkMember => {
+        facilitiesService.get(id, {}).then(networkMember => {
+          console.log(networkMember.memberof.length);
           networkMember.memberof.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
+              console.log("----- Any String ---------");
               members.push(networkMemberOf);
               if (i == networkMember.memberof.length - 1) {
                 resolve(members)
@@ -36,7 +39,7 @@ class Service {
     } else {
       var members = [];
       return new Promise(function (resolve, reject) {
-        facilitiesService.get(data.hostId, {}).then(networkMember => {
+        facilitiesService.get(id, {}).then(networkMember => {
           networkMember.memberFacilities.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
               members.push(networkMemberOf);
