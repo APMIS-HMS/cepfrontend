@@ -18,8 +18,12 @@
                         <input matInput mat-error placeholder="Search for facility" formControlName="facilitySearch">
                     </mat-input-container>
                 </div>
-                <button class="cta-1" [disabled]="checkboxLen !> 1" (click)="add()">
+                <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="!uncheck" (click)="add()">
                     <span *ngIf="!loading">Add</span>
+                    <span *ngIf="loading">Loading...</span>
+                </button>
+                <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="uncheck" (click)="update()">
+                    <span *ngIf="!loading">Update</span>
                     <span *ngIf="loading">Loading...</span>
                 </button>
             </form>
@@ -36,6 +40,7 @@
                         </td>
                         <td>
                             <label class="control control--checkbox">
+                                    <!-- <i class="fa fa-check" aria-hidden="true" *ngIf="LoggedInFacility.memberFacilities.includes(facility._id)"></i> -->
                                 <input type="checkbox" [checked]="LoggedInFacility.memberFacilities.includes(facility._id)" (change)="pickMemberFacilities($event,facility._id)" />
                                 <div class="control__indicator"></div>
                             </label>

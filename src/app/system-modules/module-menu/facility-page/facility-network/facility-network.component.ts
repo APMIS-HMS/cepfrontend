@@ -45,10 +45,24 @@ export class FacilityNetworkComponent implements OnInit {
 
   leaveNetwork(id){
     console.log(id);
+    let fac = {
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: [id]
+    }
+    this.facilityService.joinNetwork(fac, true).then(payl => {
+      this.getNetworks(true);
+    })
   }
 
   removeMember(id){
     console.log(id);
+    let fac = {
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: [id]
+    }
+    this.facilityService.addNetwork(fac, true).then(payl => {
+      this.getNetworks(false);
+    })
   }
 
   getNetworks(isMemberOf){

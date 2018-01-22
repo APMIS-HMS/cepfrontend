@@ -174,12 +174,24 @@ export class FacilitiesService {
       .send(body);
   }
   
-  addNetwork(facility: any) {
+  addNetwork(facility: any, isDelete) {
     let that = this;
     return new Promise(function (resolve, reject) {
-      resolve(that._socketAddNetwork.create(facility))
+      resolve(that._socketAddNetwork.create(facility, {query: {
+        'isdelete': isDelete
+      }}))
     });
   }
+
+  joinNetwork(facility: any, isDelete) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.createNetwork(facility, {query: {
+        'isdelete': isDelete
+      }}))
+    });
+  }
+
   getNetwork(fac, isMemberOf){
     let that = this;
     return new Promise(function (resolve, reject) {
@@ -189,13 +201,5 @@ export class FacilitiesService {
         }
       }))
     });
-  }
-  joinNetwork(facility){
-
-    let that = this;
-    return new Promise(function (resolve, reject) {
-      resolve(that._socketAddNetwork.createNetwork(facility))
-    });
-
   }
 }

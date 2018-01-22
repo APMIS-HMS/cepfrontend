@@ -27,7 +27,10 @@ export class AddMemberComponent implements OnInit {
   facilityMember;
   searchedLength;
 
+  removeFacilities = [];
+
   checboxLen;
+  uncheck;
 
   loading;
 
@@ -63,21 +66,37 @@ export class AddMemberComponent implements OnInit {
 
   pickMemberFacilities(event, id) {
     //console.log(this.checboxBool);
+    this.uncheck = true;
     var checkedStatus = event.srcElement.checked;
+    console.log(checkedStatus);
     if (checkedStatus) {
       // let index = this.selectedFacilityIds.filter(x=>x.toString()==id.toString());
       let ind = this.selectedFacilityIds.indexOf(id.toString());
+      let indr = this.removeFacilities.indexOf(id.toString());
+      this.removeFacilities.splice(indr, 1);
       console.log(ind);
       if (ind > -1) {
-        this.selectedFacilityIds.splice(ind, 1);
+        
       } else {
         this.selectedFacilityIds.push(id.toString());
+      }
+    }else{
+      let ind = this.selectedFacilityIds.indexOf(id.toString());
+      this.selectedFacilityIds.splice(ind, 1);
+      console.log(ind); 
+
+      let indr = this.removeFacilities.indexOf(id.toString());
+      if (indr > -1) {
+        
+      } else {
+        this.removeFacilities.push(id.toString());
       }
     }
 
     this.checboxLen = this.selectedFacilityIds.length;
 
     console.log(this.selectedFacilityIds);
+    console.log(this.removeFacilities);
 
   }
 
@@ -87,10 +106,45 @@ export class AddMemberComponent implements OnInit {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.selectedFacilityIds
     }
-    this.facilityService.addNetwork(fac).then(payload => {
+    this.facilityService.addNetwork(fac, false).then(payload => {
       console.log(payload);
-      this.loading = false;
-      this.close_onClick();
+      this.facilityService.get(fac.hostId, {}).then(payl => {
+        this.loading = false;
+        let facc = payl.data;
+        console.log(payl);
+        this.close_onClick();
+      })
+      
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  update(){
+    this.loading = true;
+    let facRemove = {
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: this.removeFacilities
+    }
+    let fac = {
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: this.selectedFacilityIds
+    }
+    this.facilityService.addNetwork(facRemove, true).then(paylRemove => {
+      console.log(paylRemove);
+      this.facilityService.addNetwork(fac, false).then(payload => {
+        console.log(payload);
+        this.facilityService.get(fac.hostId, {}).then(payl => {
+          this.loading = false;
+          let facc = payl.data;
+          console.log(payl);
+          this.close_onClick();
+        })
+        
+      }, error => {
+        console.log(error);
+      });
+      
     }, error => {
       console.log(error);
     });

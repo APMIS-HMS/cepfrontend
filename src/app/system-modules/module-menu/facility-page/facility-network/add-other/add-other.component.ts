@@ -27,7 +27,10 @@ export class AddOtherComponent implements OnInit {
   facilityMember;
   searchedLength;
 
+  removeFacilities = [];
+
   checboxLen;
+  uncheck;
 
   loading;
 
@@ -65,12 +68,48 @@ export class AddOtherComponent implements OnInit {
   add() {
     this.loading = true;
     let fac = {
-      facilityId: this.LoggedInFacility._id,
-      networkId: this.selectedFacilityIds
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: this.selectedFacilityIds
     }
-    this.facilityService.addNetwork(fac).then(payload => {
-      this.loading = false;
-      this.close_onClick();
+    this.facilityService.joinNetwork(fac, false).then(payload => {
+      console.log(payload);
+      this.facilityService.get(fac.hostId, {}).then(payl => {
+        this.loading = false;
+        let facc = payl.data;
+        console.log(payl);
+        this.close_onClick();
+      })
+      
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  update(){
+    this.loading = true;
+    let facRemove = {
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: this.removeFacilities
+    }
+    let fac = {
+      hostId: this.LoggedInFacility._id,
+      memberFacilities: this.selectedFacilityIds
+    }
+    this.facilityService.joinNetwork(facRemove, true).then(paylRemove => {
+      console.log(paylRemove);
+      this.facilityService.joinNetwork(fac, false).then(payload => {
+        console.log(payload);
+        this.facilityService.get(fac.hostId, {}).then(payl => {
+          this.loading = false;
+          let facc = payl.data;
+          console.log(payl);
+          this.close_onClick();
+        })
+        
+      }, error => {
+        console.log(error);
+      });
+      
     }, error => {
       console.log(error);
     });
