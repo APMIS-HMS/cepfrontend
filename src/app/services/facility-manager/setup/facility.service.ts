@@ -185,7 +185,7 @@ export class FacilitiesService {
     return new Promise(function (resolve, reject) {
       resolve(that._socketAddNetwork.get(fac, {
         query:{
-          'ismemberof': isMemberOf
+          'ismember': isMemberOf
         }
       }))
     });
