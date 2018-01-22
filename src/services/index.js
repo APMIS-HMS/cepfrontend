@@ -90,12 +90,12 @@ const fluid = require('./fluid/fluid.service.js');
 const frequency = require('./frequency/frequency.service.js');
 const genericName = require('./generic-name/generic-name.service.js');
 const globalService = require('./global-service/global-service.service.js');
-const addNetworks = require('./add-networks/add-networks.service.js');
 const passwordReset = require('./password-reset/password-reset.service.js');
 const hmos = require('./hmos/hmos.service.js');
+const hiaplan = require('./hiaplan/hiaplan.service.js');
+const searchTags = require('./search-tags/search-tags.service.js');
 module.exports = function (app) {
   app.configure(users);
-  app.configure(facilityOwnerships);
   app.configure(facilityTypes);
   app.configure(facilityClasses);
   app.configure(facilityModules);
@@ -189,4 +189,7 @@ module.exports = function (app) {
   app.configure(addNetworks);
   app.configure(passwordReset);
   app.configure(hmos);
+  app.configure(hiaplan);
+  app.configure(tagDictioneries);
+  app.configure(searchTags);
 };
