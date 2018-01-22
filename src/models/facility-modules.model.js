@@ -6,7 +6,8 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const facilityModules = new Schema({
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    code: { type: String, required: true }
   }, {
     timestamps: true
   });
