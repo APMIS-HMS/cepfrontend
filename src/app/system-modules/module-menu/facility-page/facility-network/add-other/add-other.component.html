@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             <label class="control control--checkbox">
-                                <input type="checkbox" (change)="pickFacilitiesMemberOf($event,facility._id)" />
+                                <input type="checkbox" [checked]="facility.memberof.includes(LoggedInFacility._id)" (change)="pickFacilitiesMemberOf($event,facility._id)" />
                                 <div class="control__indicator"></div>
                             </label>
                         </td>

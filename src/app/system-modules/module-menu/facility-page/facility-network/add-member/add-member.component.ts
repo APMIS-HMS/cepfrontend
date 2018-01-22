@@ -85,6 +85,7 @@ export class AddMemberComponent implements OnInit {
       memberFacilities: this.selectedFacilityIds
     }
     this.facilityService.addNetwork(fac).then(payload => {
+      console.log(payload);
       this.loading = false;
       this.close_onClick();
     }, error => {
