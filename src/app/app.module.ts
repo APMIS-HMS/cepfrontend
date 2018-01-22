@@ -64,7 +64,6 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
   declarations: [
     AppComponent,
     HomeComponent,
-    PasswordResetComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent
   ],

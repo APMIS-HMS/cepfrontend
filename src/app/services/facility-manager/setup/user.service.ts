@@ -58,21 +58,16 @@ export class UserService {
         return this._socket.remove(id, query);
     }
     changePassword(body: any) {
-        // const host = this._restService.getHost();
-        // const path = host + '/changepassword';
-        // return request
-        //     .post(path)
-        //     .send(body);
-        console.log(body);
         return this._socketService.getService('change-password')
             .update(body._id, { 'oldpassword': body.oldpassword, 'password': body.password });
     }
+    verifyUser(body: any) {
+        return this._socketService.getService('password-reset')
+            .update(body.apmisId, body);
+    }
     resetPassword(body: any) {
-        const host = this._restService.getHost();
-        const path = host + '/passwordreset';
-        return request
-            .post(path)
-            .send(body);
+        return this._socketService.getService('password-reset')
+            .create(body);
     }
 
 }

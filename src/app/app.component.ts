@@ -81,22 +81,27 @@ export class AppComponent implements OnInit {
     });
 
   }
+
   _sweetNotification(value) {
     if (value.type === 'success') {
-      swal({ title: value.title, type: 'success' }).then(result =>{
-        if(value.cp !== undefined){
+      swal({ title: value.title, type: 'success', text: value.text, html: value.html }).then(result => {
+        if (value.cp !== undefined) {
           value.cp.sweetAlertCallback(result);
         }
       });
     } else if (value.type === 'error') {
-      swal({ title: value.title, type: 'error' });
+      swal({ title: value.title, type: 'error', text: value.text, html: value.html });
     } else if (value.type === 'info') {
-      swal({ title: value.title, type: 'info' });
+      swal({ title: value.title, type: 'info', text: value.text, html: value.html });
     } else if (value.type === 'warning') {
+      swal({ title: value.title, type: 'warning', text: value.text, html: value.html });
+    }
+    else if (value.type === 'question') {
       swal({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
+        title: value.title,
+        text: value.text,
+        type: value.type,
+        html: value.html,
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -104,13 +109,6 @@ export class AppComponent implements OnInit {
       })
         .then((result) => {
           value.cp.sweetAlertCallback(result);
-          // if (result.value) {
-          //   swal(
-          //     'Deleted!',
-          //     'Your file has been deleted.',
-          //     'success'
-          //   )
-          // }
         })
     }
   }

@@ -65,7 +65,6 @@ export class LoginComponent implements OnInit {
       };
       this.userService.login(query).then(result => {
         this.userServiceFacade.authenticateResource().then(payload => {
-          console.log(payload)
           let auth = {
             data: result.user
           };
@@ -79,11 +78,9 @@ export class LoginComponent implements OnInit {
           });
         }, error => {
           this.systemModule.off();
-          console.log(error);
         }).catch(merr => {
           this.systemModule.off();
           this.frm_login.controls['password'].reset();
-          console.log(merr);
         });
       },
         error => {
@@ -93,18 +90,6 @@ export class LoginComponent implements OnInit {
           this.frm_login.controls['password'].reset();
           this.systemModule.off();
         });
-      // this.userService.login(query).then(result => {
-      //   this.locker.setObject('auth', result);
-      //   this.userService.isLoggedIn = true;
-      //   this.userService.reload();
-      //   this.getFacility();
-      //   this.router.navigate(['/modules']);
-
-      // },
-      //   error => {
-      //     this.mainErr = false;
-      //     this.errMsg = 'wrong login credentials';
-      //   });
     } else {
       this.mainErr = false;
     }
