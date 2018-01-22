@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private vcr: ViewContainerRef, private toastr: ToastsManager,
     private employeeService: EmployeeService, private workSpaceService: WorkSpaceService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage,
-    private userServiceFacade: UserFacadeService, private joinService:JoinChannelService,
+    private userServiceFacade: UserFacadeService, private joinService: JoinChannelService,
     private systemModuleService: SystemModuleService, private loadingService: LoadingBarService, ) {
     this.toastr.setRootViewContainerRef(vcr);
     this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
@@ -59,15 +60,19 @@ export class AppComponent implements OnInit {
       } else {
         this.loadingService.complete();
       }
-    })
+    });
+
+    this.systemModuleService.sweetAnnounced$.subscribe((value: any) => {
+      this._sweetNotification(value);
+    });
   }
   ngOnInit() {
     this.userServiceFacade.authenticateResource().then((result) => {
       console.log(result);
-    
+
       this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.auth = <any>this.locker.getObject('auth');
-      this.joinService.create({_id:this.selectedFacility._id, userId: this.auth.data._id}).then(paylo =>{
+      this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
         console.log(paylo);
       });
     }).catch(err => {
@@ -75,6 +80,39 @@ export class AppComponent implements OnInit {
       this.router.navigate(['/']);
     });
 
+  }
+  _sweetNotification(value) {
+    if (value.type === 'success') {
+      swal({ title: value.title, type: 'success' }).then(result =>{
+        if(value.cp !== undefined){
+          value.cp.sweetAlertCallback(result);
+        }
+      });
+    } else if (value.type === 'error') {
+      swal({ title: value.title, type: 'error' });
+    } else if (value.type === 'info') {
+      swal({ title: value.title, type: 'info' });
+    } else if (value.type === 'warning') {
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
+        .then((result) => {
+          value.cp.sweetAlertCallback(result);
+          // if (result.value) {
+          //   swal(
+          //     'Deleted!',
+          //     'Your file has been deleted.',
+          //     'success'
+          //   )
+          // }
+        })
+    }
   }
   success(text) {
     this.toastr.success(text, 'Success!');
