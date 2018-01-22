@@ -112,7 +112,6 @@ export class PersonAccountComponent implements OnInit {
   }
 
   submit(valid, val) {
-    console.log('click');
     if (valid) {
 
       this.isSaving = true;
@@ -130,22 +129,20 @@ export class PersonAccountComponent implements OnInit {
         person: personModel
       }
 
-      this.systemModuleService.announceSweetProxy("Welcome to Apmis", 'success', this);
-
-      // this.personService.createPerson(body).then((ppayload) => {
-      //   console.log(ppayload)
-      //   this.isSuccessful = true;
-      //   let text = this.frmPerson.controls['firstname'].value + ' '
-      //     + this.frmPerson.controls['lastname'].value + ' '
-      //     + 'added successful';
-      //   this.frmPerson.reset();
-      //   this.systemModuleService.off();
-      //   this.systemModuleService.announceSweetProxy(text, 'success', this);
-      // }, err => {
-      //   console.log(err);
-      //   this.isSaving = false;
-      //   this.systemModuleService.off();
-      // });
+      this.personService.createPerson(body).then((ppayload) => {
+        console.log(ppayload)
+        this.isSuccessful = true;
+        let text = this.frmPerson.controls['firstname'].value + ' '
+          + this.frmPerson.controls['lastname'].value + ' '
+          + 'added successful';
+        this.frmPerson.reset();
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy(text, 'success', this);
+      }, err => {
+        console.log(err);
+        this.isSaving = false;
+        this.systemModuleService.off();
+      });
     } else {
       this.isSaving = false;
       this.mainErr = false;
@@ -154,12 +151,12 @@ export class PersonAccountComponent implements OnInit {
     }
   }
   sweetAlertCallback(result) {
-    console.log(result);
-    console.log(this.state);
-    this.isSaving = false;
-    this.isSuccessful = true;
-    this.frmPerson.reset();
-    this.systemModuleService.off();
+    // console.log(result);
+    // console.log(this.state);
+    // this.isSaving = false;
+    // this.isSuccessful = true;
+    // this.frmPerson.reset();
+    // this.systemModuleService.off();
     this.state === 'normal' ? this.state = 'highlighted' : this.state = 'normal';
 
     console.log(this.state);
