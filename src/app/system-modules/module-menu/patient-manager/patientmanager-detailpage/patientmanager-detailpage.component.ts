@@ -87,6 +87,8 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   routeId: any;
   checkedIn:any;
 
+  menuResp = false;
+
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
@@ -673,6 +675,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
       });
     }
+  }
+
+  patientMenu(){
+    this.menuResp = !this.menuResp;
   }
 
 }

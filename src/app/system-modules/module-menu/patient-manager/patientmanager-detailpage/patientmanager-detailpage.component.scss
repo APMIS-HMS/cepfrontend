@@ -137,10 +137,13 @@
     color: #154360;
 }
 
-.sideTab-nav {
+.sideTab-nav, .sideTab-nav-resp {
     background: #f4f4f4;
     padding: 10px;
     box-sizing: border-box;
+}
+.sideTab-nav-resp{
+    display: none;
 }
 
 .menu-sect {
@@ -328,12 +331,52 @@ ul.topmenuwrap li{
 ul.topmenuwrap li i{
     padding-right: 5px;
 }
+.patientMenuResponsive{
+    display: none;
+}
 // .profile-mobile{
 //     display: none;
 //     position: absolute;
 //     left: 15px;
 //     color: #194985;
 // }
+@media only screen and (max-width: 900px) {
+    .patientPage-mainWrap{
+        display: block;
+    }
+    .patientPage-sideTab{
+        width: 100%;
+        margin-top: 0;
+    }
+    .patientPage-contentArea{
+        width: 100%;
+    }
+    .header-secA {
+        max-width: 413px;
+        margin: 0 auto;
+        border-bottom: 4px solid #fff;
+        padding-bottom: 20px;
+    }
+    ul.topmenuwrap{
+        display: flex;
+        justify-content: center;
+    }
+    ul.topmenuwrap li{
+        margin: 0 5px;
+    }
+    .patientMenuResponsive{
+        display: flex;
+    }
+    .sideTab-nav{
+        display: none;
+    }
+    .sideTab-nav-resp{
+        display: block;
+    }
+    .page-title{
+        display: none;
+    }
+}
 @media only screen and (max-width: 1100px) {
     
     // .patientPage-contentArea{
