@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const dependantSchema = new Schema({
     dependantPersonId: { type: Schema.Types.ObjectId, required: false },
