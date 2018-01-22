@@ -105,16 +105,8 @@ export class AppComponent implements OnInit {
         confirmButtonText: 'Yes, delete it!'
       })
         .then((result) => {
-          value.cp.sweetAlertCallback=result;
-          console.log(value);
-          console.log(result);
-          // if (result.value) {
-          //   swal(
-          //     'Deleted!',
-          //     'Your file has been deleted.',
-          //     'success'
-          //   )
-          // }
+          value.cp.sweetAlertCallback(result);
+          
         })
     }
   }
