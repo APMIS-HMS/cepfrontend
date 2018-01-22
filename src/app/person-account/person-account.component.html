@@ -65,12 +65,6 @@
                 </mat-input-container>
             </div>
 
-            <!-- <div class="frm-item-wrap">
-                <mat-input-container class="example-full-width">
-                    <input type="email" matInput mat-error placeholder="Email Address" formControlName="email">
-                </mat-input-container>
-            </div> -->
-
             <div class="clear"></div>
 
             <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':(frmPerson.valid && !isSaving), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving}">

@@ -21,9 +21,9 @@
             <input matInput formControlName="tagName" placeholder="Tag Name" autocomplete="off">
           </mat-input-container>
           <div class="suggestionFeeds">
-              <div *ngFor="let dic of dictionaries" class="suggestedItem">
-                <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
-              </div>
+            <div *ngFor="let dic of dictionaries" class="suggestedItem">
+              <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
+            </div>
           </div>
         </div>
 
@@ -31,7 +31,9 @@
           CREATE TAG
         </button>-->
         <div class="example-full-width" id="example-full-width">
-            <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" mat-raised-button>CREATE TAG</button>
+          <button (click)="newTag(frmNewtag.value, frmNewtag.valid)" mat-raised-button>
+           {{btnLabel}}
+          </button>
         </div>
 
       </form>
