@@ -61,18 +61,18 @@
       <div class="card-title">Network Members</div>
       <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">  
         <tbody>
-            <tr>
+            <tr *ngFor="let networkMembers of members">
                 <td>
                     <div class="empWrap">
                         <div class="list-img">
                             <img src="../../../../../assets/images/logos/default.png">
                         </div>
-                        <div>Tertiary Healthcare Network</div>
+                        <div>{{networkMembers.name}}</div>
                     </div>
                 </td>
                 <td>
                     <div class="td-ctaWrap">
-                        <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"> Remove</i>
+                        <i (click)="removeMember(networkMembers._id)" class="fa fa-trash" aria-hidden="true"> Remove</i>
                     </div>
                 </td>
             </tr>
@@ -129,33 +129,18 @@
       <div class="card-title">Other Networks</div>
       <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
         <tbody>
-            <tr>
+            <tr *ngFor="let networkJoined of others">
                 <td>
                     <div class="empWrap">
                         <div class="list-img">
                             <img src="../../../../../assets/images/logos/default.png">
                         </div>
-                        <div>Continental Hospital Jos</div>
+                        <div>{{networkJoined.name}}</div>
                     </div>
                 </td>
                 <td>
                     <div class="td-ctaWrap">
-                        <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"> Leave</i> 
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="empWrap">
-                        <div class="list-img">
-                            <img src="../../../../../assets/images/logos/default.png">
-                        </div>
-                        <div>Tertiary Healthcare Network</div>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-ctaWrap">
-                        <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"> leave</i>
+                        <i (click)="leaveNetwork(networkJoined._id)" class="fa fa-trash" aria-hidden="true"> Leave</i> 
                     </div>
                 </td>
             </tr>

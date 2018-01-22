@@ -180,4 +180,22 @@ export class FacilitiesService {
       resolve(that._socketAddNetwork.create(facility))
     });
   }
+  getNetwork(fac, isMemberOf){
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.get(fac, {
+        query:{
+          'ismemberof': isMemberOf
+        }
+      }))
+    });
+  }
+  joinNetwork(facility){
+
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.createNetwork(facility))
+    });
+
+  }
 }

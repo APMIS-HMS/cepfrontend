@@ -80,20 +80,11 @@ export class AddMemberComponent implements OnInit {
 
   add() {
     this.loading = true;
-    //this.LoggedInFacility.memberFacilities = this.selectedFacilityIds;
-    //console.log(this.LoggedInFacility);
-    /* this.facilityService.update(this.LoggedInFacility).then(payload => {
-      console.log(payload);
-      this.loading = false;
-      this.close_onClick();
-    }) */
     let fac = {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.selectedFacilityIds
     }
-    console.log(fac);
     this.facilityService.addNetwork(fac).then(payload => {
-      console.log(payload);
       this.loading = false;
       this.close_onClick();
     }, error => {

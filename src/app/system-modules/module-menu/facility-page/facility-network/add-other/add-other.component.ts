@@ -39,6 +39,7 @@ export class AddOtherComponent implements OnInit {
     private locker: CoolLocalStorage) { }
 
   ngOnInit() {
+    this.LoggedInFacility = <any>this.locker.getObject("selectedFacility");
     this.facilityForm1 = this.formBuilder.group({
       facilitySearch: ['', []]
     });
@@ -63,13 +64,16 @@ export class AddOtherComponent implements OnInit {
 
   add() {
     this.loading = true;
-    this.LoggedInFacility.memberOf = this.selectedFacilityIds;
-    console.log(this.LoggedInFacility);
-    this.facilityService.update(this.LoggedInFacility).then(payload => {
-      console.log(payload);
+    let fac = {
+      facilityId: this.LoggedInFacility._id,
+      networkId: this.selectedFacilityIds
+    }
+    this.facilityService.addNetwork(fac).then(payload => {
       this.loading = false;
       this.close_onClick();
-    })
+    }, error => {
+      console.log(error);
+    });
   }
 
 
