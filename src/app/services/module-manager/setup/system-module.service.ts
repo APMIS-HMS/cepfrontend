@@ -39,11 +39,14 @@ export class SystemModuleService {
   on() {
     this.announceLoading({ status: 'On' });
   }
-  announceSweetProxy(title, type, cp?) {
+  announceSweetProxy(title, type, cp?, html?, text?) {
     this.announceSweet({
       title: title,
       type: type,
-      cp
+      cp,
+      html:html,
+      text:text
     });
   }
+
 }

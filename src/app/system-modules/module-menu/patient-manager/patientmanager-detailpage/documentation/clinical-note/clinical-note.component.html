@@ -57,7 +57,7 @@
 
     <div class="cont-wrap">
         <div class="docCard-body">
-            <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 12px; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
+            <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 1.2rem; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
             <div *ngIf="symptoms.length !== 0">Symptoms <br>
                 <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp; <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i> </button>
             </div>

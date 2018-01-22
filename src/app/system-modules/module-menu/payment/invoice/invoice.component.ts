@@ -270,7 +270,7 @@ export class InvoiceComponent implements OnInit {
                 .cta-1{
                     width: 130px;
                     height: 30px;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                 }
                 .feedsWrap .frm-item-wrap{
                     padding-bottom: 10px;
@@ -303,7 +303,7 @@ export class InvoiceComponent implements OnInit {
                     background: #9E9E9E;
                 }
                 .suggetedName {
-                    font-size: 12px;
+                    font-size: 1.2rem;
                 }
                 .billHeader{
                     font-family: $font-titles;
@@ -325,27 +325,27 @@ export class InvoiceComponent implements OnInit {
                 }
                 .BillfacilityName{
                     color: #fff;
-                    font-size: 16px;
+                    font-size: 1.6rem;
                 }
                 .billContact{
                     display: flex;
                     align-items: center;
                     color: #03A9F4;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                     margin: 5px;
                 }
                 .billContact i{
                     margin-right: 10px;
                 }
                 .invoiceLabel{
-                    font-size: 25px;
+                    font-size: 2.5rem;
                     color: #BCAAA4;
                 }
                 .billBody{
                     margin: 20px 0;
                 }
                 .topsecInnerWrap{
-                    font-size: 11px;
+                    font-size: 1.1rem;
                     color: #37474F;
                     line-height: 1.5;
                     margin-left: 10px;
@@ -356,7 +356,7 @@ export class InvoiceComponent implements OnInit {
                     text-transform: uppercase;
                     border-bottom: 1px solid #EEEEEE;
                     padding: 0 0 5px 5px;
-                    font-size: 20px;
+                    font-size: 2rem;
                     color: #01579B;
                     margin-bottom: 5px;
                 }
@@ -380,7 +380,7 @@ export class InvoiceComponent implements OnInit {
                 }
                 .rhsSectB {
                     text-align: right;
-                    font-size: 14px;
+                    font-size: 1.4rem;
                     color: #000;
                     margin: 5px 10px 0 0;
                 }
@@ -407,7 +407,7 @@ export class InvoiceComponent implements OnInit {
                     border-bottom: 0.1px solid #F5F5F5;
                 }
                 thead{
-                    font-size: 16px;
+                    font-size: 1.6rem;
                     border-bottom: 2px solid #BDBDBD;
                 }
                 thead .col1{
@@ -459,11 +459,11 @@ export class InvoiceComponent implements OnInit {
                     padding: 0 5px;
                 }
                 .itemName{
-                    font-size: 14px;
+                    font-size: 1.4rem;
                     font-weight: bold;
                 }
                 .itemDesc{
-                    font-size: 10px;
+                    font-size: 1rem;
                     font-weight: normal;
                     color: #BDBDBD;
                     max-width: 170px;
@@ -492,12 +492,12 @@ export class InvoiceComponent implements OnInit {
                 }
                 .summaryItem .label, .grandTotalWrap .label{
                     padding-right: 20px;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                 }
                 .summaryItem .data, .grandTotalWrap .data{
                     width: 150px;
                     font-weight: bold;
-                    font-size: 16px;
+                    font-size: 1.6rem;
                 }
                 .grandTotalWrap .label, .grandTotalWrap .data{
                     color: #fff;
@@ -520,7 +520,7 @@ export class InvoiceComponent implements OnInit {
                     margin-right: 10px;
                 }
                 .BillfooterTxt{
-                    font-size: 10px;
+                    font-size: 1rem;
                     color: #757575;
                 }
                 .modal-overlay{
@@ -535,12 +535,12 @@ export class InvoiceComponent implements OnInit {
                     width: auto;
                     height: auto;
                     padding: 3px 5px;
-                    font-size: 10px;
+                    font-size: 1rem;
                 }
                 .printIco {
                     position: absolute;
                     right: 5px;
-                    font-size: 26px;
+                    font-size: 2.6rem;
                     top: 0px;
                     color: #424242;
                     cursor: pointer;

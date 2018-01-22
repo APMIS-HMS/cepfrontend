@@ -42,7 +42,7 @@
         border-bottom-right-radius: 5px;
         color: #333;
         font-weight: normal;
-        font-size: 14px;
+        font-size: 1.4rem;
         font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Verdana, sans-serif;
         line-height: 1.35715;
         .cu-header {
@@ -61,7 +61,7 @@
                     /* Add some padding */
                     text-decoration: none;
                     /* Remove default text underline */
-                    font-size: 18px;
+                    font-size: 1.8rem;
                     /* Increase the font-size */
                     color: #333;
                     /* Add a black text color */
@@ -71,7 +71,7 @@
                     -ms-text-overflow: ellipsis;
                     text-overflow: ellipsis;
                     white-space: nowrap;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                     &.header {
                         background-color: #e2e2e2;
                         /* Add a darker background color for headers */

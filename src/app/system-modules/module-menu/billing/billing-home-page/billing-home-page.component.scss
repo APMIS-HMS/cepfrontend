@@ -8,7 +8,7 @@
 }
 .tblBg {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    font-size: 12px;
+    font-size: 1.2rem;
     width: auto;
     text-align: left;
     border-collapse: collapse; 
@@ -18,7 +18,7 @@
 }
 .tblBg th {
     font-weight: normal;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #000;
     padding: 12px;
 }
@@ -33,7 +33,7 @@ tbody tr:hover{
 }
 td i{
     margin-right: 5px;
-    font-size: 16px;
+    font-size: 1.6rem;
     cursor: pointer;
 }
 td i:hover{
@@ -41,7 +41,7 @@ td i:hover{
 }
 span.scope {
     position: absolute;
-    font-size: 8px;
+    font-size: 0.8rem;
     color: #00BCD4;
     top: 0;
     right: 0;
@@ -59,7 +59,7 @@ span.scope {
     width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.6rem;
     margin-bottom: 20px;
 }
 .btn-1 {

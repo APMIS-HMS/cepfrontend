@@ -15,8 +15,8 @@ export class TagDictionaryService {
     private _restService: RestService,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('tagdictioneries');
-    this._socket = _socketService.getService('tagdictioneries');
+    this._rest = _restService.getService('tag-dictioneries');
+    this._socket = _socketService.getService('tag-dictioneries');
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.createListener = Observable.fromEvent(this._socket, 'created');

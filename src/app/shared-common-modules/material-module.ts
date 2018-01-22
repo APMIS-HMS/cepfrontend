@@ -1,3 +1,4 @@
+import { PasswordResetComponent } from './../password-reset/password-reset.component';
 import { NgModule } from '@angular/core';
 import {
     MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatError, MatDatepickerToggle,
@@ -56,7 +57,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         // MdDatepickerToggle,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
-        CheckoutPatientComponent
+        CheckoutPatientComponent,
+        PasswordResetComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -107,7 +109,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         LabRequestsComponent, RequestDetailComponent,
         DragulaModule,
         NgPipesModule,
-        CheckoutPatientComponent
+        CheckoutPatientComponent,
+        PasswordResetComponent
 
         // SurveyComponent, SurveyEditorComponent
     ],
