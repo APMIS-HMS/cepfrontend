@@ -280,3 +280,47 @@ ul.topmenuwrap{
 td .empWrap .list-img{
     margin: 0;
 }
+@media only screen and (max-width: 1160px) {
+    .doc-mainWrap{
+        display: block;
+    }
+    .doc-rArea{
+        width: 100%;
+        width: 90%;
+        margin: 20px auto;
+    }
+    .doc-contentArea{
+        width: 100%;
+    }
+    .rAreaCard-header{
+        width: 100%;
+        padding: 5px;
+    }
+    .rArea-card{
+        padding: 0px;
+        border: 2px solid #fff;
+    }
+    .rAreaCard-body{
+        margin: 20px;
+    }
+    .rAreaCard-status, .rAreaCard-content{
+        display: none;
+    }
+    .rAreaCard-detailWrap{
+        display: block;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        width: 100%;
+    }
+    .rAreaCard-item{
+        border-bottom: 0;
+        border-radius: 0;
+    }
+    .rAreaCard-item .shadow-RB{
+        -moz-box-shadow: 0px 0px 0px 0px transparent;
+        -webkit-box-shadow: 0px 0px 0px 0px transparent;
+        box-shadow: 0px 0px 0px 0px transparent;
+    }
+}
