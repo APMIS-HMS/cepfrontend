@@ -19,18 +19,22 @@ class Service {
 
   get(id, params) {
     const facilitiesService = this.app.service('facilities');
-    if (params.query.isMemberof) {
+    if (params.query.ismemberof) {
       var members = [];
       return new Promise(function (resolve, reject) {
         facilitiesService.get(data.hostId, {}).then(networkMember => {
-          networkMember.memberFacilities.forEach((item, i) => {
-            members.push(members);
-            if (i == networkMember.memberFacilities.length - 1) {
-              resolve(members)
-            }
-          }, error => {
-            reject(error);
+          networkMember.memberof.forEach((item, i) => {
+            facilitiesService.get(item, {}).then(networkMemberOf => {
+              members.push(networkMemberOf);
+              if (i == networkMember.memberof.length - 1) {
+                resolve(members)
+              }
+            }, error => {
+              reject(error);
+            });
           });
+        }, error => {
+          reject(error);
         });
       });
     } else {
@@ -47,6 +51,8 @@ class Service {
               reject(error);
             });
           });
+        }, error => {
+          reject(error);
         });
       });
     }
