@@ -16,13 +16,13 @@
 }
 .basic-info-name{
     font-family: $font-titles;
-    font-size: 20px;
+    font-size: 2rem;
     width: 100%;
     text-align: center;
     color: #777;
 }
 .basic-info-others {
-    font-size: 13px;
+    font-size: 1.3rem;
     width: 100%;
     text-align: center;
     color: #194985;
@@ -40,7 +40,7 @@
 }
 .facility-count {
     color: #194985;
-    font-size: 26px;
+    font-size: 2.6rem;
     width: 100%;
     text-align: center;
     padding-top: 10px;
@@ -59,7 +59,7 @@
     }
 }
 .count-label{
-    font-size: 13px;
+    font-size: 1.3rem;
     width: 100%;
     text-align: center;
     color: #194985;
@@ -103,10 +103,10 @@
 .wp-name{
     padding-left: 10px;
     font-family: $font-titles;
-    font-size: 20px;
+    font-size: 2rem;
     text-align: left;
     color: #777;
-    font-size: 18px;
+    font-size: 1.8rem;
     width: 210px;
 }
 .feed-ul{
@@ -114,7 +114,7 @@
     overflow-y: auto;
 }
 .feed-li {
-    font-size: 12px;
+    font-size: 1.2rem;
     padding: 5px 10px;
     cursor: pointer;
     color: #194985;

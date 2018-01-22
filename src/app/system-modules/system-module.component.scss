@@ -27,7 +27,7 @@
 }
 
 .menu-ico {
-  font-size: 14px;
+  font-size: 1.4rem;
 }
 
 .menu-ico:hover {
@@ -49,7 +49,7 @@
 
 .apmis {
   color: #03A9F4;
-  font-size: 16px;
+  font-size: 1.6rem;
   margin-left: 5px;
 }
 
@@ -59,7 +59,7 @@
 
 .menu-options {
   display: none;
-  font-size: 14px;
+  font-size: 1.4rem;
 }
 
 .menu-options li {
@@ -81,7 +81,7 @@
   position: absolute;
   bottom: -56px;
   width: 100%;
-  font-size: 54px;
+  font-size: 5.4rem;
   color: #4bb8ef;
 }
 
@@ -128,7 +128,7 @@
   color: #fff;
   top: 2px;
   right: 19px;
-  font-size: 16px;
+  font-size: 1.6rem;
   cursor: pointer;
 }
 
@@ -141,7 +141,7 @@
   border: 0;
   margin-right: 10px;
   padding: 5px 30px;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: $primaryColor;
   width: 278px;
 }
@@ -171,7 +171,7 @@
 .user-label {
   text-align: right;
   margin-right: 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #eee;
   min-width: 150px;
 }
@@ -183,7 +183,7 @@
 }
 
 .top-icons-wrap i {
-  font-size: 18px;
+  font-size: 1.8rem;
   color: #bebebe;
   border-right: 1px solid #bebebe;
   padding: 0 10px;
@@ -191,7 +191,7 @@
 }
 
 .top-icons-wrap span {
-  font-size: 10px;
+  font-size: 1rem;
   color: #fff;
   padding: 0 10px;
   cursor: pointer;
@@ -217,7 +217,7 @@
 .fronting .loggedIn-user {
   position: absolute;
   right: 35px; // bottom: -3px;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #B3B6B7;
 }
 
@@ -237,7 +237,7 @@
 
 .inRoom {
   position: absolute;
-  font-size: 10px;
+  font-size: 1rem;
   width: 100%;
   text-align: center;
   background: #aaa;
@@ -247,7 +247,7 @@
 
 .roomLabel {
   font-style: italic;
-  font-size: 9px;
+  font-size: 0.9rem;
   padding-right: 5px;
   color: #eee;
 }
@@ -270,7 +270,7 @@
   border: 1px solid rgba(0, 0, 0, .15);
   background-clip: padding-box;
   margin: 2px 0 0;
-  font-size: 14px;
+  font-size: 1.4rem;
   text-align: left;
   list-style: none;
   background-color: #fff;
@@ -308,7 +308,7 @@ li.user-header>p {
   z-index: 5;
   color: #fff;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 17px;
+  font-size: 1.7rem;
   margin-top: 10px;
 }
 

@@ -1,5 +1,5 @@
 .survery .well span{
-	font-size: 13px;
+	font-size: 1.3rem;
     color: #676a6c;
 }
 .survery h1, .survery h2,.survery h3,.survery h4,.survery h5, .survery h6,
@@ -42,11 +42,11 @@
     color: #676a6c;
 } 
 .survery label {
-    font-size: 13px;
+    font-size: 1.3rem;
     color: #676a6c;
 }
 .survery .modal-body span {
-    font-size: 13px;
+    font-size: 1.3rem;
     color: #676a6c;
 }
 .survery .btn-group {

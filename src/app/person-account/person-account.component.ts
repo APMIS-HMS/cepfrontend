@@ -1,3 +1,4 @@
+import { HTML_SAVE_PATIENT } from './../shared-module/helpers/global-config';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -130,16 +131,15 @@ export class PersonAccountComponent implements OnInit {
       }
 
       this.personService.createPerson(body).then((ppayload) => {
-        console.log(ppayload)
         this.isSuccessful = true;
         let text = this.frmPerson.controls['firstname'].value + ' '
           + this.frmPerson.controls['lastname'].value + ' '
           + 'added successful';
         this.frmPerson.reset();
+        this.isSaving = false;
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy(text, 'success', this);
+        this.systemModuleService.announceSweetProxy(text, 'success', this,HTML_SAVE_PATIENT);
       }, err => {
-        console.log(err);
         this.isSaving = false;
         this.systemModuleService.off();
       });
@@ -151,26 +151,7 @@ export class PersonAccountComponent implements OnInit {
     }
   }
   sweetAlertCallback(result) {
-    // console.log(result);
-    // console.log(this.state);
-    // this.isSaving = false;
-    // this.isSuccessful = true;
-    // this.frmPerson.reset();
-    // this.systemModuleService.off();
-    this.state === 'normal' ? this.state = 'highlighted' : this.state = 'normal';
-
-    console.log(this.state);
-    // this.counterSubscription = Observable.interval(1000).throttleTime(1000).subscribe(rx => {
-    //   this.countDown = this.countDown - 1;
-    //   if (rx === 9) {
-    //     this.close_onClick();
-    //     this.counterSubscription.unsubscribe();
-    //   }
-    // });
-
-  }
-  animateShow() {
-    this.sweetAlertCallback({ value: true });
+    this.close_onClick();
   }
   close_onClick() {
     this.closeModal.emit(true);

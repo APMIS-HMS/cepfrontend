@@ -1064,12 +1064,12 @@
   box-sizing: border-box;
 }
 .survery html {
-  font-size: 10px;
+  font-size: 1rem;
   -webkit-tap-highlight-color: transparent;
 }
 .survery body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
@@ -1250,40 +1250,40 @@
 }
 .survery h1,
 .survery .h1 {
-  font-size: 36px;
+  font-size: 3.6rem;
 }
 .survery h2,
 .survery .h2 {
-  font-size: 30px;
+  font-size: 3rem;
 }
 .survery h3,
 .survery .h3 {
-  font-size: 24px;
+  font-size: 2.4rem;
 }
 .survery h4,
 .survery .h4 {
-  font-size: 18px;
+  font-size: 1.8rem;
 }
 .survery h5,
 .survery .h5 {
-  font-size: 14px;
+  font-size: 1.4rem;
 }
 .survery h6,
 .survery .h6 {
-  font-size: 12px;
+  font-size: 1.2rem;
 }
 .survery p {
   margin: 0 0 10px;
 }
 .survery .lead {
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 300;
   line-height: 1.4;
 }
 @media (min-width: 768px) {
   .survery .lead {
-    font-size: 21px;
+    font-size: 2.1rem;
   }
 }
 .survery small,
@@ -1546,7 +1546,7 @@
   display: block;
   padding: 9.5px;
   margin: 0 0 10px;
-  font-size: 13px;
+  font-size: 1.3rem;
   line-height: 1.42857143;
   color: #333;
   word-break: break-all;
@@ -2485,7 +2485,7 @@
   width: 100%;
   padding: 0;
   margin-bottom: 20px;
-  font-size: 21px;
+  font-size: 2.1rem;
   line-height: inherit;
   color: #333;
   border: 0;
@@ -2528,7 +2528,7 @@
 .survery output {
   display: block;
   padding-top: 7px;
-  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 1.42857143;
   color: #555;
 }
@@ -2537,7 +2537,7 @@
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 1.42857143;
   color: #555;
   background-color: #fff;
@@ -2693,7 +2693,7 @@
 .survery .input-sm {
   height: 30px;
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -2708,7 +2708,7 @@
 .survery .form-group-sm .form-control {
   height: 30px;
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -2724,13 +2724,13 @@
   height: 30px;
   min-height: 32px;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
 }
 .survery .input-lg {
   height: 46px;
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
@@ -2745,7 +2745,7 @@
 .survery .form-group-lg .form-control {
   height: 46px;
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
@@ -2761,7 +2761,7 @@
   height: 46px;
   min-height: 38px;
   padding: 11px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.3333333;
 }
 .survery .has-feedback {
@@ -2977,20 +2977,20 @@
 @media (min-width: 768px) {
   .survery .form-horizontal .form-group-lg .control-label {
     padding-top: 11px;
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 }
 @media (min-width: 768px) {
   .survery .form-horizontal .form-group-sm .control-label {
     padding-top: 6px;
-    font-size: 12px;
+    font-size: 1.2rem;
   }
 }
 .survery .btn {
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: normal;
   line-height: 1.42857143;
   text-align: center;
@@ -3420,21 +3420,21 @@
 .survery .btn-lg,
 .survery .btn-group-lg > .btn {
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
 .survery .btn-sm,
 .survery .btn-group-sm > .btn {
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
   border-radius: 3px;
 }
 .survery .btn-xs,
 .survery .btn-group-xs > .btn {
   padding: 1px 5px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -3513,7 +3513,7 @@
   min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
-  font-size: 14px;
+  font-size: 1.4rem;
   text-align: left;
   list-style: none;
   background-color: #fff;
@@ -3588,7 +3588,7 @@
 .survery .dropdown-header {
   display: block;
   padding: 3px 20px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.42857143;
   color: #777;
   white-space: nowrap;
@@ -3824,7 +3824,7 @@
 .survery .input-group-lg > .input-group-btn > .btn {
   height: 46px;
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
@@ -3847,7 +3847,7 @@
 .survery .input-group-sm > .input-group-btn > .btn {
   height: 30px;
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -3883,7 +3883,7 @@
 }
 .survery .input-group-addon {
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: normal;
   line-height: 1;
   color: #555;
@@ -3894,12 +3894,12 @@
 }
 .survery .input-group-addon.input-sm {
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   border-radius: 3px;
 }
 .survery .input-group-addon.input-lg {
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   border-radius: 6px;
 }
 .survery .input-group-addon input[type="radio"],
@@ -4261,7 +4261,7 @@
   float: left;
   height: 50px;
   padding: 15px 15px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 20px;
 }
 .survery .navbar-brand:hover,
@@ -4761,7 +4761,7 @@
 .survery .pagination-lg > li > a,
 .survery .pagination-lg > li > span {
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.3333333;
 }
 .survery .pagination-lg > li:first-child > a,
@@ -4777,7 +4777,7 @@
 .survery .pagination-sm > li > a,
 .survery .pagination-sm > li > span {
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.5;
 }
 .survery .pagination-sm > li:first-child > a,
@@ -4899,7 +4899,7 @@
   display: inline-block;
   min-width: 10px;
   padding: 3px 7px;
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: bold;
   line-height: 1;
   color: #fff;
@@ -4954,7 +4954,7 @@
 }
 .survery .jumbotron p {
   margin-bottom: 15px;
-  font-size: 21px;
+  font-size: 2.1rem;
   font-weight: 200;
 }
 .survery .jumbotron > hr {
@@ -5122,7 +5122,7 @@
   float: left;
   width: 0;
   height: 100%;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 20px;
   color: #fff;
   text-align: center;
@@ -5456,7 +5456,7 @@
 .survery .panel-title {
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 16px;
+  font-size: 1.6rem;
   color: inherit;
 }
 .survery .panel-title > a,
@@ -5826,7 +5826,7 @@
 }
 .survery .close {
   float: right;
-  font-size: 21px;
+  font-size: 2.1rem;
   font-weight: bold;
   line-height: 1;
   color: #000;
@@ -5977,7 +5977,7 @@
   z-index: 1070;
   display: block;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-size: 1.2rem;
   font-style: normal;
   font-weight: normal;
   line-height: 1.42857143;
@@ -6095,7 +6095,7 @@
   max-width: 276px;
   padding: 1px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-style: normal;
   font-weight: normal;
   line-height: 1.42857143;
@@ -6134,7 +6134,7 @@
 .survery .popover-title {
   padding: 8px 14px;
   margin: 0;
-  font-size: 14px;
+  font-size: 1.4rem;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
   border-radius: 5px 5px 0 0;
@@ -6303,7 +6303,7 @@
   bottom: 0;
   left: 0;
   width: 15%;
-  font-size: 20px;
+  font-size: 2rem;
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
@@ -6422,7 +6422,7 @@
     width: 30px;
     height: 30px;
     margin-top: -10px;
-    font-size: 30px;
+    font-size: 3rem;
   }
   .survery .carousel-control .glyphicon-chevron-left,
   .survery .carousel-control .icon-prev {
