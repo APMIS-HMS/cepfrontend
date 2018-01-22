@@ -19,7 +19,7 @@ export class AddTagComponent implements OnInit {
   newServicePopup = false;
   newCategoryPopup = false;
   newTagPopup = false;
-  editedTag = {};
+  editedTag =<any>{};
   constructor(private _locker: CoolLocalStorage,
     private systemModuleService: SystemModuleService,
     private _tagService: TagService) {
@@ -73,26 +73,39 @@ export class AddTagComponent implements OnInit {
 
   onTagRemove(tag) {
     this.systemModuleService.on;
-    swal({                                                  //Temporary line of code for Warning alert pending the time 
-      title: 'Are you sure?',                               // SystemModuleService warning alert callback is resolved
-      text: "You won't be able to revert this!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result) {
-        this._tagService.remove(tag._id, {}).then(callback_remove => {
-          this.systemModuleService.announceSweetProxy(tag.name+" is deleted",'success',this);
-          this.systemModuleService.off;
-          this.getTags();
-        }, error => {
-          this.systemModuleService.off;
-        });
-      }
+    this.systemModuleService.announceSweetProxy('', 'warning', this);
+    this.editedTag = tag;
+    // swal({                                                  //Temporary line of code for Warning alert pending the time 
+    //   title: 'Are you sure?',                               // SystemModuleService warning alert callback is resolved
+    //   text: "You won't be able to revert this!",
+    //   type: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, delete it!'
+    // }).then((result) => {
+    //   if (result) {
+    //     this._tagService.remove(tag._id, {}).then(callback_remove => {
+    //       this.systemModuleService.announceSweetProxy(tag.name + " is deleted", 'success', this);
+    //       this.systemModuleService.off;
+    //       this.getTags();
+    //     }, error => {
+    //       this.systemModuleService.off;
+    //     });
+    //   }
+    // });
+  }
+  sweetAlertCallback(result) {
+    console.log(result);
+    this._tagService.remove(this.editedTag._id, {}).then(callback_remove => {
+      this.systemModuleService.announceSweetProxy(this.editedTag.name + " is deleted", 'success', this);
+      this.systemModuleService.off;
+      this.getTags();
+    }, error => {
+      this.systemModuleService.off;
     });
   }
+
 
   close_onClick(e) {
     this.newServicePopup = false;
