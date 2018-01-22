@@ -23,6 +23,7 @@ import { EmployeesResolverService, LoginEmployeeResolverService } from '../../..
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { EditEmpBasicComponent } from './employeemanager-detailpage/edit-emp-basic/edit-emp-basic.component';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { DeleteComponent } from './delete/delete.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
         NewWorkspaceComponent,
         WorkspaceHistoryComponent,
         AssignUnitComponent,
-        EditEmpBasicComponent
+        EditEmpBasicComponent,
+        DeleteComponent
     ],
     exports: [
     ],

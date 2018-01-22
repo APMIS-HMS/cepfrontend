@@ -6,7 +6,8 @@ import {
 } from '../services/facility-manager/setup/index';
 import { Address, CorporateFacility, Gender, ModuleViewModel, User, Title, MaritalStatus, Person } from '../models/index';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs/Rx'
+import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
   selector: 'app-corporate-signup',
@@ -127,7 +128,7 @@ export class CorporateSignupComponent implements OnInit {
           this.mainErr = false;
         } else {
           this.isDuplicateEmail = false;
-           this.errMsg = '';
+          this.errMsg = '';
           this.mainErr = true;
         }
       });

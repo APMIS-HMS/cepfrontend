@@ -34,7 +34,7 @@ export class UserAccountsInnerPopupComponent implements OnInit {
     })
   }
 
-  close_onClick() {
+  close_onClick(event) {
     this.closeModal.emit(true);
   }
   isEmployeeInFacility() {

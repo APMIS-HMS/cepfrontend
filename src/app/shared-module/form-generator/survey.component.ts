@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import * as Survey from 'survey-angular';
+import { Survey, ReactSurveyModel, SurveyNG } from 'survey-angular';
 import { SharedService } from '../shared.service';
 import { DocumentationService } from '../../services/facility-manager/setup/index';
 
@@ -18,9 +18,9 @@ export class SurveyComponent implements OnInit, OnDestroy {
     constructor(private shareService: SharedService, private documentationService: DocumentationService) {
         this.shareService.newFormAnnounced$.subscribe((payload: any) => {
             this.json = payload.json;
-            this.surveyModel = new Survey.ReactSurveyModel(payload.json);
-            Survey.Survey.cssType = 'bootstrap';
-            Survey.Survey.cssType = 'bootstrap';
+            this.surveyModel = new ReactSurveyModel(payload.json);
+            Survey.cssType = 'bootstrap';
+            Survey.cssType = 'bootstrap';
             this.surveyModel.onComplete.add(() => {
                 this.surveyResult();
             });
@@ -69,15 +69,15 @@ export class SurveyComponent implements OnInit, OnDestroy {
 
         this.shareService.announceTemplate$.subscribe((payload: any) => {
             this.surveyModel.data = payload.data;
-            Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
+            SurveyNG.render('surveyElement', { model: this.surveyModel });
         })
     }
 
     ngOnInit() {
-        this.surveyModel = new Survey.ReactSurveyModel(JSON.parse(this.json));
-        Survey.Survey.cssType = 'bootstrap';
-        Survey.SurveyNG.render('surveyElement', { model: this.surveyModel });
-        Survey.Survey.cssType = 'bootstrap';
+        this.surveyModel = new ReactSurveyModel(JSON.parse(this.json));
+        Survey.cssType = 'bootstrap';
+        SurveyNG.render('surveyElement', { model: this.surveyModel });
+        Survey.cssType = 'bootstrap';
 
         this.surveyModel.onComplete.add(() => {
             this.surveyResult();
@@ -243,7 +243,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.surveyModel = undefined;
+    this.surveyModel = undefined;
         this.isTemplate = false;
         this.ngOnInit();
     }

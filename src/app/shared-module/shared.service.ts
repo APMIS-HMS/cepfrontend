@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subject } from 'rxjs/Subject';
 

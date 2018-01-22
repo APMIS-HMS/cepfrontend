@@ -2,7 +2,6 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FamilyHealthCover } from '../../../models/facility-manager/setup/familyhealthcover';
-import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 const request = require('superagent');
 

@@ -10,7 +10,6 @@ import {
   Facility, User, Patient, Employee, MinorLocation, Appointment, Country, ClinicInteraction,
   Documentation
 } from '../../../../models/index';
-import { Observable } from 'rxjs/Observable';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 @Component({
