@@ -44,6 +44,9 @@ export class AddMemberComponent implements OnInit {
       facilitySearch: ['', []]
     });
 
+    this.selectedFacilityIds = this.LoggedInFacility.memberFacilities;
+    console.log(this.selectedFacilityIds);
+
     this.facilityForm1.controls['facilitySearch'].valueChanges
       .debounceTime(400)
       .distinctUntilChanged()

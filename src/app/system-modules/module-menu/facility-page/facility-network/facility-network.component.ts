@@ -53,14 +53,14 @@ export class FacilityNetworkComponent implements OnInit {
 
   getNetworks(isMemberOf){
     this.facilityService.getNetwork(this.LoggedInFacility._id, isMemberOf).then(payload => {
-      /* if(isMemberOf){
+      if(isMemberOf){
         this.others = payload;
         console.log(this.others);
       }else{
         this.members = payload;
         console.log(this.members);
-      } */
-      console.log(payload);
+      }
+      //console.log(payload);
     });
   }
 
