@@ -14,10 +14,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 import swal from 'sweetalert2';
-<<<<<<< HEAD
-=======
-import { bindCallback } from 'rxjs/observable/bindCallback';
->>>>>>> remotes/origin/feature-facility-setting
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
