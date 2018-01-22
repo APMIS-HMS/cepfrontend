@@ -102,30 +102,39 @@ class Service {
 
   createNetwork(data, params) {
     const facilitiesService = this.app.service('facilities');
+    var memberofs = [];
+    var _memberFacilities = [];
     return new Promise(function (resolve, reject) {
-      facilitiesService.get(data.facilityId, {}).then(networkMember => {
-        let memberof = [];
-        memberof.push(data.hostId);
-        facilitiesService.patch(networkMember._id, {
-          memberof: memberof
-        }).then(updateNetworkMember => {
-          facilitiesService.get(data.hostId, {}).then(networkHost => {
-            let memberFacilities = [];
-            memberFacilities.push(data.facilityId);
-            facilitiesService.patch(networkHost._id, {
-              memberFacilities: memberFacilities
-            }).then(payload => {
-              var success = {
-                "members": updateNetworkMember,
-                "host": payload
-              }
-              resolve(success);
-            }, error => {
-              reject(error);
+      data.facilityIds.forEach((current, i) => {
+        facilitiesService.get(current, {}).then(networkMember => {
+          let memberFacilities = [];
+          memberFacilities.push(data.hostId);
+          facilitiesService.patch(networkMember._id, {
+            memberFacilities: memberFacilities
+          }).then(updateNetworkMember => {
+            _memberFacilities.push(updateNetworkMember);
+            facilitiesService.get(data.hostId, {}).then(networkHost => {
+              let memberof = [];
+              memberof.push(current);
+              facilitiesService.patch(networkHost._id, {
+                memberof: memberof
+              }).then(payload => {
+                memberofs.push(payload);
+                var success = {
+                  "members": memberofs,
+                  "hosts": _memberFacilities
+                }
+                if (i == data.facilityIds.length - 1) {
+                  resolve(success);
+                }
+
+              }, error => {
+                reject(error);
+              });
             });
+          }, error => {
+            reject(error);
           });
-        }, error => {
-          reject(error);
         });
       });
     });
