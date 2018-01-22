@@ -62,17 +62,15 @@ class Service {
     return new Promise(function (resolve, reject) {
       data.memberFacilities.forEach((current, i) => {
         facilitiesService.get(current, {}).then(networkMember => {
-          let memberof = [];
-          memberof.push(data.hostId);
+          networkMember.memberof.push(data.hostId);
           facilitiesService.patch(networkMember._id, {
-            memberof: memberof
+            memberof: networkMember.memberof
           }).then(updatedNetworkMember => {
             results.push(updatedNetworkMember);
             facilitiesService.get(data.hostId, {}).then(networkHost => {
-              let memberFacilities = [];
-              memberFacilities.push(current);
+              networkHost.memberFacilities.push(current);
               facilitiesService.patch(networkHost._id, {
-                memberFacilities: memberFacilities
+                memberFacilities: networkHost.memberFacilities
               }).then(payload => {
                 var success = {
                   "members": results,
@@ -98,27 +96,23 @@ class Service {
 
   createNetwork(data, params) {
     const facilitiesService = this.app.service('facilities');
-    var memberofs = [];
     var _memberFacilities = [];
     return new Promise(function (resolve, reject) {
       data.facilityIds.forEach((current, i) => {
         facilitiesService.get(current, {}).then(networkMember => {
-          let memberFacilities = [];
-          memberFacilities.push(data.hostId);
+          networkMember.memberFacilities.push(data.hostId);
           facilitiesService.patch(networkMember._id, {
-            memberFacilities: memberFacilities
+            memberFacilities: networkMember.memberFacilities
           }).then(updateNetworkMember => {
             _memberFacilities.push(updateNetworkMember);
             facilitiesService.get(data.hostId, {}).then(networkHost => {
-              let memberof = [];
-              memberof.push(current);
+              networkHost.memberof.push(current);
               facilitiesService.patch(networkHost._id, {
-                memberof: memberof
+                memberof: networkHost.memberof
               }).then(payload => {
-                memberofs.push(payload);
                 var success = {
                   "members": memberofs,
-                  "hosts": _memberFacilities
+                  "hosts": payload
                 }
                 if (i == data.facilityIds.length - 1) {
                   resolve(success);
