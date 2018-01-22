@@ -6,6 +6,10 @@ body {
     font-family: $font-main;
     margin: 0;
     padding: 0;
+    font-size: 10px;
+}
+input, select, textarea {
+    font-size: 1.2rem !important;
 }
 
 .nice-scroll::-webkit-scrollbar-track {
@@ -43,7 +47,7 @@ li {
 input,
 select,
 textarea {
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .clickable-ico {
@@ -64,7 +68,7 @@ select {
     border-bottom: 0.5px solid #37474F;
     background: transparent;
     padding: 5px;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #37474F;
     width: 245px;
 }*/
@@ -161,7 +165,7 @@ select {
     position: relative;
     .c-page-title {
         display: inline-block;
-        font-size: 18px;
+        font-size: 1.8rem;
         font-weight: normal;
         margin: 10px 0 10px 0;
         line-height: 1;
@@ -260,7 +264,7 @@ select {
     margin: 0 10px;
     cursor: pointer;
     color: #fff;
-    font-size: 12px;
+    font-size: 1.2rem;
     border: 0;
     outline: 0;
     border-right: 1px solid #fff;
@@ -273,7 +277,7 @@ select {
     display: inline-block;
     padding: 6px 12px;
     margin-bottom: 0;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: normal;
     line-height: 1.42857143;
     text-align: center;
@@ -506,7 +510,7 @@ select {
 .mat-select {
     padding: 1.29688em 0;
     width: 100%;
-    font-size: 12px;
+    font-size: 1.2rem;
     height: 20px;
 }
 
@@ -519,7 +523,7 @@ select {
 
 .frm-item-wrap small,
 .frm-singleItem-wrap small {
-    font-size: 9px;
+    font-size: 0.9rem;
     color: #ff2500;
     position: absolute;
     bottom: 8px;
@@ -532,7 +536,7 @@ select {
     background: #FF7043;
     padding: 5px;
     margin-bottom: 20px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .infoAlert {
@@ -545,12 +549,12 @@ select {
     padding: 4px;
     text-align: center;
     margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .infoAlert i {
     padding-right: 15px;
-    font-size: 20px;
+    font-size: 2rem;
 }
 
 .successAlert {
@@ -562,12 +566,12 @@ select {
     background: #A5D6A7;
     padding: 2px;
     margin-bottom: 5px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .successAlert i {
     padding-right: 15px;
-    font-size: 20px;
+    font-size: 2rem;
     color: #388E3C;
 }
 
@@ -622,7 +626,7 @@ select {
     z-index: 1;
     top: 9px;
     right: 9px;
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #fff;
     padding: 5px;
 }
@@ -634,20 +638,20 @@ select {
 .modal_title {
     font-family: "Josefin Sans", sans-serif;
     margin: 0px auto;
-    font-size: 20px;
+    font-size: 2rem;
     color: #fff;
     text-align: center;
 }
 
 .modal_mini_title {
     margin: 0px auto;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #fff;
     text-align: center;
 }
 
 .modal_mini_title2 {
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: normal;
     width: 100%;
     text-align: center;
@@ -676,7 +680,7 @@ select {
 }
 
 .frm-item-wrap i {
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #37474F;
 }
 
@@ -721,7 +725,7 @@ select {
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.7);
-    font-size: 12px;
+    font-size: 1.2rem;
     letter-spacing: 0;
 }
 
@@ -729,7 +733,7 @@ select {
     font-family: $font-titles;
     width: 100%;
     text-align: center;
-    font-size: 22px;
+    font-size: 2.2rem;
     color: #424242;
     letter-spacing: 1.5px;
     margin-top: 20px;
@@ -740,7 +744,7 @@ select {
     text-align: center;
     position: relative;
     top: -20px;
-    font-size: 12px;
+    font-size: 1.2rem;
     width: 100%;
     color: #A6ACAF;
 }
@@ -753,7 +757,7 @@ select {
 }
 
 .checker-wrap span {
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .checkOpt-outter {
@@ -842,7 +846,7 @@ select {
     padding: 5px;
     cursor: pointer;
     font-family: $font-titles;
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #fff;
     width: 95%;
     box-sizing: border-box;
@@ -862,7 +866,7 @@ select {
 .dataMix-wrap {
     position: relative;
     padding: 5px 20px;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-family: $font-titles;
     color: #424242;
 }
@@ -890,7 +894,7 @@ select {
     right: 10px;
     text-align: right;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.8rem;
 }
 
 .edit-ico {
@@ -922,7 +926,7 @@ select {
     border-radius: 0;
     border: 1px solid #9E9E9E;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .navActive {
@@ -930,7 +934,7 @@ select {
 }
 
 .moduleNav {
-    font-size: 16px;
+    font-size: 1.6rem;
     font-family: $font-titles;
     color: #BDBDBD;
     margin: 0;
@@ -948,7 +952,7 @@ select {
 
 .moduleNav li i {
     padding-right: 10px;
-    font-size: 22px;
+    font-size: 2.2rem;
 }
 
 .moduleNav-active {
@@ -980,7 +984,7 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 1.4rem;
     cursor: pointer;
 }
 
@@ -989,7 +993,7 @@ select {
 }
 
 .backBtn i {
-    font-size: 28px;
+    font-size: 2.8rem;
     padding-right: 10px;
 }
 
@@ -997,7 +1001,7 @@ select {
     width: auto;
     position: absolute;
     color: #9E9E9E;
-    font-size: 16px;
+    font-size: 1.6rem;
     cursor: pointer;
     right: 20px;
     top: -20px;
@@ -1007,7 +1011,7 @@ select {
     width: 100%;
     text-align: right;
     color: #9E9E9E;
-    font-size: 16px;
+    font-size: 1.6rem;
     cursor: pointer;
 }
 
@@ -1018,7 +1022,7 @@ select {
     padding: 7px 0;
     background: rgba(33, 33, 33, 0.9);
     color: #fff;
-    font-size: 14px;
+    font-size: 1.4rem;
     border-radius: 7px;
     z-index: 100;
     position: relative;
@@ -1042,7 +1046,7 @@ select {
     background: rgba(0, 0, 0, 0.5);
     ;
     cursor: default;
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: center;
 }
 
@@ -1061,7 +1065,7 @@ select {
     padding: 5px 10px;
     align-items: center;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .tbl-row:hover {
@@ -1107,7 +1111,7 @@ select {
 
 .date-inputLabel {
     color: #757575;
-    font-size: 14px;
+    font-size: 1.4rem;
     display: block;
 }
 
@@ -1131,7 +1135,7 @@ select {
 
 .roleSrcModule {
     display: block;
-    font-size: 10px;
+    font-size: 1rem;
     color: #ff2500;
     margin-bottom: 5px;
 }
@@ -1144,7 +1148,7 @@ select {
     padding: 0;
     display: flex;
     justify-content: flex-end;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .verticalTextMenu-ul li {
@@ -1163,7 +1167,7 @@ select {
     background: #E5E7E9;
     padding: 5px;
     text-align: center;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #37474F;
 }
 
@@ -1221,11 +1225,11 @@ select {
 .gd-title {
     color: #ff2500;
     font-family: $font-titles;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .gd-desc {
-    font-size: 10px;
+    font-size: 1rem;
     color: #424242;
     margin-top: 10px;
 }
@@ -1262,7 +1266,7 @@ ul.topmenuwrap {
     position: absolute;
     top: -25px;
     right: 22px;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #0288D1;
 }
 
@@ -1285,7 +1289,7 @@ ul.topmenuwrap li:hover {
     background: #E5E7E9;
     padding: 5px;
     text-align: center;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #37474F;
 }
 
@@ -1354,7 +1358,7 @@ ul.topmenuwrap li:hover {
 }
 
 .td-iconCta-wrap i {
-    font-size: 14px;
+    font-size: 1.4rem;
     margin: 0 5px;
 }
 
@@ -1376,7 +1380,7 @@ ul.topmenuwrap li:hover {
 
 .action-placeholder {
     position: relative;
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #0288D1;
     cursor: pointer;
 }
@@ -1395,7 +1399,7 @@ ul.topmenuwrap li:hover {
     right: 0;
     top: 50%;
     text-align: left;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #333;
     background: #fff;
     border: 1px solid #bebebe;
@@ -1444,7 +1448,7 @@ ul.topmenuwrap li:hover {
     justify-content: center;
     width: auto;
     height: auto;
-    font-size: 12px;
+    font-size: 1.2rem;
     padding: 5px 20px;
     cursor: pointer;
     margin: 10px auto;
@@ -1495,7 +1499,7 @@ ul.topmenuwrap li:hover {
 //     color: #0288d1;
 //     background: transparent;
 //     padding: 10px 10px;
-//     font-size: 12px;
+//     font-size: 1.2rem;
 //     text-decoration: none;
 //     letter-spacing: 2px;
 //     text-transform: uppercase;
@@ -1526,7 +1530,7 @@ ul.topmenuwrap li:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 .control {
-	font-size: 18px;
+	font-size: 1.8rem;
 	position: relative;
 	display: block;
 	margin-bottom: 15px;
@@ -1637,7 +1641,7 @@ ul.topmenuwrap li:hover {
     color: #777;
     top: 5px;
     right: 9px;
-    font-size: 16px;
+    font-size: 1.6rem;
     cursor: pointer;
 }
 
@@ -1659,7 +1663,7 @@ ul.topmenuwrap li:hover {
 .pg-menuWrap li {
     cursor: pointer;
     padding: 5px 20px;
-    font-size: 12px;
+    font-size: 1.2rem;
     margin: 0;
 }
 
@@ -1670,7 +1674,7 @@ ul.topmenuwrap li:hover {
 }
 
 .pg-menuWrap li i {
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .welcome-wrap {
@@ -1694,7 +1698,7 @@ ul.topmenuwrap li:hover {
     padding: 0;
     margin: 0 !important;
     line-height: 46px;
-    font-size: 38px;
+    font-size: 3.8rem;
     font-weight: 300;
     animation: plus-out 0.3s;
     transition: all 0.3s;
@@ -1781,7 +1785,7 @@ ul.topmenuwrap li:hover {
     background-color: white;
     padding: 8px 10px;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
 }
@@ -1830,7 +1834,7 @@ ul.topmenuwrap li:hover {
     .cta-1 {
         width: 80%;
         height: 35px;
-        font-size: 13px;
+        font-size: 1.3rem;
     }
     .modal_mini_title {
         display: none;
@@ -1840,12 +1844,12 @@ ul.topmenuwrap li:hover {
     }
     .frm-item-wrap small,
     .frm-singleItem-wrap small {
-        font-size: 8px;
+        font-size: 0.8rem;
         bottom: 3px;
     }
     .mainErr {
         margin-bottom: 2px;
-        font-size: 10px;
+        font-size: 1rem;
     }
 }
 
