@@ -1,7 +1,3 @@
-import {
-  error
-} from 'util';
-
 /* eslint-disable no-unused-vars */
 const logger = require('winston');
 class Service {
