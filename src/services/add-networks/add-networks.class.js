@@ -19,8 +19,8 @@ class Service {
 
   get(id, params) {
     const facilitiesService = this.app.service('facilities');
-    var members = [];
     if (params.query.isMemberof) {
+      var members = [];
       return new Promise(function (resolve, reject) {
         facilitiesService.get(data.hostId, {}).then(networkMember => {
           networkMember.memberFacilities.forEach((item, i) => {
@@ -34,6 +34,7 @@ class Service {
         });
       });
     } else {
+      var members = [];
       return new Promise(function (resolve, reject) {
         facilitiesService.get(data.hostId, {}).then(networkMember => {
           networkMember.memberFacilities.forEach((item, i) => {
