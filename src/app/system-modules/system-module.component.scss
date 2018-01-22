@@ -331,3 +331,9 @@ li.user-header>p {
 .modal-overlay {
   position: fixed;
 }
+
+@media only screen and (max-width: 900px) {
+  .primary-tab{
+    position: fixed;
+  }
+}

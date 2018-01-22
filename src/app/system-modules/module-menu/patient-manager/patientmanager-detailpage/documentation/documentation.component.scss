@@ -299,6 +299,7 @@ td .empWrap .list-img{
     .rArea-card{
         padding: 0px;
         border: 2px solid #fff;
+        overflow-y: auto;
     }
     .rAreaCard-status, .rAreaCard-content{
         display: none;
@@ -310,6 +311,8 @@ td .empWrap .list-img{
         left: auto;
         right: auto;
         width: 100%;
+        min-width: 520px;
+        overflow-y: auto; 
     }
     .rAreaCard-item{
         border-bottom: 0;

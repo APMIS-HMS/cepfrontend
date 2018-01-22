@@ -334,12 +334,10 @@ ul.topmenuwrap li i{
 .patientMenuResponsive{
     display: none;
 }
-// .profile-mobile{
-//     display: none;
-//     position: absolute;
-//     left: 15px;
-//     color: #194985;
-// }
+.modal_title{
+    color:#000;
+}
+
 @media only screen and (max-width: 900px) {
     .patientPage-mainWrap{
         display: block;
@@ -347,9 +345,17 @@ ul.topmenuwrap li i{
     .patientPage-sideTab{
         width: 100%;
         margin-top: 0;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 87px;
     }
     .patientPage-contentArea{
         width: 100%;
+        padding-top: 306px;
+    }
+    .pg-subtitle{
+        text-align: center;
     }
     .header-secA {
         max-width: 413px;
@@ -370,26 +376,17 @@ ul.topmenuwrap li i{
     .sideTab-nav{
         display: none;
     }
+    .sideTab-header{
+        border-bottom: 2px solid #777;
+        -webkit-box-shadow: 0 8px 6px -6px black;
+        -moz-box-shadow: 0 8px 6px -6px black;
+        box-shadow: 0 8px 6px -6px black;
+    }
     .sideTab-nav-resp{
         display: block;
+        margin-top: -28px;
     }
     .page-title{
         display: none;
     }
-}
-@media only screen and (max-width: 1100px) {
-    
-    // .patientPage-contentArea{
-    //     width: 100%;
-    // }
-    // .pg-subtitle{
-    //     text-align: center;
-    // }
-    // .profile-mobile{
-    //     display: block;
-    // }
-}
-
-.modal_title{
-    color:#000;
 }

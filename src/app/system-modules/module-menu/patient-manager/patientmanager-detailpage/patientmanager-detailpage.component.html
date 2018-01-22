@@ -74,7 +74,9 @@
                 <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
             </div>
         </div>
+    </div>
 
+    <div class="patientPage-contentArea">
         <div *ngIf="menuResp" class="sideTab-nav-resp">
             <div class="menu-sect">
                 <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
@@ -98,9 +100,7 @@
                 <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
             </div>
         </div>
-    </div>
 
-    <div class="patientPage-contentArea">
         <app-patient-summary [patient]="patient" *ngIf="menuSummary && patient !== undefined"></app-patient-summary>
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
