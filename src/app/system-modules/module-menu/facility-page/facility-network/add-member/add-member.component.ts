@@ -60,16 +60,15 @@ export class AddMemberComponent implements OnInit {
 
   pickMemberFacilities(event, id) {
     //console.log(this.checboxBool);
-    var checkedStatus = event.target.value;
-    console.log(checkedStatus);
+    var checkedStatus = event.srcElement.checked;
     if (checkedStatus) {
-      let index = this.selectedFacilityIds.filter(x=>x==id);
-      let ind = this.selectedFacilityIds.indexOf(id);
+      // let index = this.selectedFacilityIds.filter(x=>x.toString()==id.toString());
+      let ind = this.selectedFacilityIds.indexOf(id.toString());
       console.log(ind);
-      if(ind > -1){
+      if (ind > -1) {
         this.selectedFacilityIds.splice(ind, 1);
-      }else{
-        this.selectedFacilityIds.push(id);
+      } else {
+        this.selectedFacilityIds.push(id.toString());
       }
     }
 
@@ -79,7 +78,7 @@ export class AddMemberComponent implements OnInit {
 
   }
 
-  add(){
+  add() {
     this.loading = true;
     //this.LoggedInFacility.memberFacilities = this.selectedFacilityIds;
     //console.log(this.LoggedInFacility);
@@ -92,11 +91,13 @@ export class AddMemberComponent implements OnInit {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.selectedFacilityIds
     }
-
+    console.log(fac);
     this.facilityService.addNetwork(fac).then(payload => {
       console.log(payload);
       this.loading = false;
       this.close_onClick();
+    }, error => {
+      console.log(error);
     });
   }
 
