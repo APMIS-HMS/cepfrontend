@@ -15,12 +15,15 @@ class Service {
 
   get(id, params) {
     const facilitiesService = this.app.service('facilities');
-    console.log(params.query);
-    if (params.query.ismemberof) {
-      var members = [];
+    var members = [];
+    if (params.query.ismember.toString() == 'true') { 
+      logger.info('Am here');
       return new Promise(function (resolve, reject) {
-        facilitiesService.get(id, {}).then(networkMember => {
-          console.log(networkMember.memberof.length);
+        facilitiesService.get(id,{}).then(networkMember => {
+          logger.info(networkMember.memberof.length);
+          if(networkMember.memberof.length ==0){
+            resolve([]);
+          }
           networkMember.memberof.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
               console.log("----- Any String ---------");
@@ -37,11 +40,14 @@ class Service {
         });
       });
     } else {
-      var members = [];
+      logger.info('Am here 2');
       return new Promise(function (resolve, reject) {
         facilitiesService.get(id, {}).then(networkMember => {
           networkMember.memberFacilities.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
+              if(networkMember.memberFacilities.length ==0){
+                resolve([]);
+              }
               members.push(networkMemberOf);
               if (i == networkMember.memberFacilities.length - 1) {
                 resolve(members)
@@ -141,9 +147,45 @@ class Service {
     return Promise.resolve(data);
   }
 
-  remove(id, params) {
-    return Promise.resolve({
-      id
+  remove(id,params) {
+    logger.info(params.memberFacilities);
+    const facilitiesService = this.app.service('facilities');
+    var results = [];
+    var errors = [];
+    return new Promise(function (resolve, reject) {
+      params.memberFacilities.forEach((current, i) => {
+        facilitiesService.get(current, {}).then(networkMember => {
+          let index = networkMember.memberof.indexOf(id);
+          networkMember.memberof.splice(index,1);
+          facilitiesService.patch(networkMember._id, {
+            memberof: networkMember.memberof
+          }).then(updatedNetworkMember => {
+            results.push(updatedNetworkMember);
+            facilitiesService.get(id, {}).then(networkHost => {
+              let index2 = networkHost.memberFacilities.indexOf(current);
+              networkHost.memberFacilities.splice(index2,1);
+              facilitiesService.patch(networkHost._id, {
+                memberFacilities: networkHost.memberFacilities
+              }).then(payload => {
+                var success = {
+                  "members": results,
+                  "host": payload
+                }
+                if (i == data.memberFacilities.length - 1) {
+                  resolve(success);
+                }
+              }, error => {
+                errors.push(error);
+                if (i == data.memberFacilities.length - 1) {
+                  reject(errors);
+                }
+              });
+            });
+          }, error => {
+            reject(error);
+          });
+        });
+      });
     });
   }
 }
