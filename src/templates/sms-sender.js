@@ -1,5 +1,6 @@
 'use strict';
 const request = require('request');
+const logger = require('winston');
 
 function sender(mesage, data, isScheduler) {
   var url = 'http://portal.bulksmsnigeria.net/api/?username=apmis&password=apmis&message=' + mesage + '&sender=APMIS&mobiles=@@' + data.primaryContactPhoneNo + '@@';
@@ -18,6 +19,12 @@ function sender(mesage, data, isScheduler) {
 
 function sendToken(data) {
   const message = 'Kindly login to www.apmis.com with your APMISID or email address to complete your registration by verifing your account with this OTP code: ' + data.verificationToken + ' to complete your registration';
+  sender(message, data, false);
+}
+
+function sendPasswordResetToken(data) {
+  logger.info(data);
+  const message = 'Complete your password reset by verifing your account with this OTP: ' + data.verificationToken + ' to complete your registration';
   sender(message, data, false);
 }
 
@@ -47,6 +54,9 @@ function sendScheduleAppointment(date, data) {
 module.exports = {
   sendToken(data) {
     sendToken(data);
+  },
+  sendPasswordResetToken(data) {
+    sendPasswordResetToken(data);
   },
   sendApmisId(data) {
     sendApmisId(data);

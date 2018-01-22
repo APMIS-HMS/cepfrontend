@@ -56,6 +56,8 @@ class Service {
       this.generateId(data);
     } else if (id.toString() === tokenLabel.tokenType.autoPassword.toString()) {
       this.generateAutoPassword(data);
+    }else if (id.toString() === tokenLabel.tokenType.userVerification.toString()) {
+      data.result = this.generateOtp();
     }
     return Promise.resolve(data);
   }

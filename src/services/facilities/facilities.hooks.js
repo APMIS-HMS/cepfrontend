@@ -8,7 +8,7 @@ const alerts = require('../../hooks/alerts');
 module.exports = {
   before: {
     all: [],
-    find: [authenticate('jwt')],
+    find: [],
     get: [authenticate('jwt')],
     create: [facilityToken()],
     update: [authenticate('jwt')],
