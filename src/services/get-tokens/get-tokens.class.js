@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const logger = require('winston');
 const tokenLabel = require('../../parameters/token-label');
 class Service {
   constructor(options) {

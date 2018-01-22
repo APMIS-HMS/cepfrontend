@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const logger  = require('winston');
 class Service {
   constructor(options) {
     this.options = options || {};
@@ -24,7 +23,6 @@ class Service {
   }
 
   update(id, data, params) {
-    logger.info(id);
     const employeeService = this.app.service('employees');
 
     return new Promise(function (resolve, reject) {
@@ -38,12 +36,9 @@ class Service {
       });
       
       checkedEmployees.forEach(emp =>{
-        logger.info(emp);
         employeeService.update(emp._id, emp, {}).then(payload => {
-          logger.info(payload);
           resolve(payload);
         }, error => {
-          logger.error(error);
           reject(error);
         });
       });

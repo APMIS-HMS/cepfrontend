@@ -28,7 +28,6 @@ class Service {
         if (getFac) {
           getTokenService.get(tokenLabel.tokenType.facilityVerification, {}).then(tokenPayload => {
             getFac.verificationToken = tokenPayload.result;
-            logger.info(tokenPayload.result);
             facilityService.patch(getFac._id, {verificationToken:tokenPayload.result}).then(facPayload => {
               sms.sendToken(getFac);
               resolve(facPayload);
@@ -36,7 +35,6 @@ class Service {
               reject(facError);
             });
           }, error => {
-            logger.error(error.message);
             reject(error);
           });
         }else{
