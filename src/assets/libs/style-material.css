@@ -99,13 +99,13 @@
 
 #toasty .toast.toasty-theme-material {
   font-family: 'Roboto', sans-serif !important;
-  font-size: 12px;
+  font-size: 1.2rem;
   background-color: #323232;
 }
 #toasty .toast.toasty-theme-material .close-button:after {
   content: 'x';
   color: #ffffff;
-  font-size: 17px;
+  font-size: 1.7rem;
   font-weight: 100;
 }
 #toasty .toast.toasty-theme-material .toast-text {
@@ -113,7 +113,7 @@
 }
 #toasty .toast.toasty-theme-material .toast-text .toast-title {
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 1.3rem;
 }
 #toasty .toast.toasty-theme-material .toast-text .toast-msg {
   /**/

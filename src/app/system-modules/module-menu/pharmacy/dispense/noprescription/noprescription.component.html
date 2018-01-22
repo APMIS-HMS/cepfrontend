@@ -167,7 +167,7 @@
                 <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
                 <td class="table-content">&#x20A6;{{ prescription.qty * prescription.unitPrice }}</td>
                 <td class="table-content">
-                    <a style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
+                    <a style="margin-right: 5px;font-size: 2rem;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
                 </td>
             </tr>
             <tr *ngIf="prescriptions.length === 0">

@@ -14,7 +14,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #777;
     width: 170px;
     margin: 20px auto;
@@ -49,7 +49,7 @@ table {
     width: 100%;
     position: relative;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: #fff;
 }
 
@@ -114,7 +114,7 @@ tr:nth-child(even) {
 // .tbl-actionRow .tbl-title{
 //     position: absolute;
 //     left: 10px;
-//     font-size: 14px;
+//     font-size: 1.4rem;
 //     color: #0288D1;
 // }
 // .tbl-actionRow .tbl-search{
@@ -182,7 +182,7 @@ td .empWrap .list-img {
     width: 150px;
     position: relative;
     padding: 8px;
-    // font-size: 12px;
+    // font-size: 1.2rem;
     text-align: center;
     color: #bebebe;
     display: flex;
@@ -249,7 +249,7 @@ td .empWrap .list-img {
 .cta-1 {
     width: 139px;
     height: 33px;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: #fff;
     color: #0288D1;
     border: 1px solid #0288D1;
@@ -282,7 +282,7 @@ td .empWrap .list-img {
 }
 
 .lab-btn {
-    font-size: 12px;
+    font-size: 1.2rem;
     border: 1px solid #03A9F4;
     text-align: center;
     padding: 2px;
@@ -342,11 +342,11 @@ input {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .txt-label {
-    font-size: 14px;
+    font-size: 1.4rem;
     font-family: "Josefin Sans", sans-serif;
     color: #8e8e8e;
     width: 30%;
@@ -360,7 +360,7 @@ input {
 }
 
 .txt-val {
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #333;
     width: 69%;
 }
@@ -379,7 +379,7 @@ input {
 
 .status-wrap {
     text-align: left;
-    font-size: 10px;
+    font-size: 1rem;
     padding: 0 5px;
 }
 
@@ -438,7 +438,7 @@ input {
     justify-content: flex-start;
     color: #777;
     margin-bottom: 20px;
-    font-size: 10px;
+    font-size: 1rem;
     align-items: center;
     .invstn {
         color: #0288D1;
@@ -519,7 +519,7 @@ input {
 }
 
 .child-item {
-    font-size: 12px;
+    font-size: 1.2rem;
     margin: 5px;
     margin-left: 15px;
     color: #777;
@@ -528,7 +528,7 @@ input {
 }
 
 .sel-list-title {
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #333;
     margin-bottom: 10px;
     width: 100%;
@@ -563,7 +563,7 @@ input {
 }
 
 .actions-wrapa .txt-label {
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .selected-list,
@@ -574,7 +574,7 @@ input {
 
 .inner-radio {
     margin-left: 40px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .opt {
@@ -591,7 +591,7 @@ input {
 }
 
 .child-list .opt-inner {
-    font-size: 12px;
+    font-size: 1.2rem;
     display: flex;
     align-items: center
 }
@@ -606,14 +606,14 @@ input {
     right: 4px;
     top: 4px;
     color: #777;
-    font-size: 10px;
+    font-size: 1rem;
     cursor: pointer;
 }
 
 .sel-total {
     width: 100%;
     text-align: right;
-    font-size: 12px;
+    font-size: 1.2rem;
     margin-bottom: 10px;
     color: #ff2500;
 }
@@ -641,7 +641,7 @@ input {
     top: 9px;
     right: 14px;
     color: #03A9F4;
-    font-size: 12px;
+    font-size: 1.2rem;
     cursor: pointer;
     text-decoration: underline;
 }

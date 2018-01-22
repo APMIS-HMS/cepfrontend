@@ -2,7 +2,7 @@
 @import '../wallet/wallet.component.scss';
 
 .label {
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #b3b3b3;
 }
 .top-sect-wrap .frm-item-wrap{
@@ -21,15 +21,15 @@
 }
 .hmo-name {
     font-family: $font-titles;
-    font-size: 20px;
+    font-size: 2rem;
     color: #333;
 }
 .id {
-    font-size: 10px;
+    font-size: 1rem;
     color: #EF6C00;
 }
 .plan, .isprincipal {
-    font-size: 10px;
+    font-size: 1rem;
     color: #333;
 }
 .isprincipal-children{
@@ -47,7 +47,7 @@
     background: #f8f8f8;
 }
 .status {
-    font-size: 10px;
+    font-size: 1rem;
     color: #2E7D32;
 }
 .empWrap {
