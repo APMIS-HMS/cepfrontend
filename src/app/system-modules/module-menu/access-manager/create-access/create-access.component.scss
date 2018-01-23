@@ -1,62 +1,77 @@
 @import "../../employee-manager/employeemanager-detailpage/generate-user/generate-user.component.scss";
-
+.btn-box {
+  text-align: center;
+  padding: 30px;
+}
 .inner-menu1-wrap {
     top: auto;
 }
-.title-label{
+
+.title-label {
     margin: 0 auto;
     margin-top: 20px;
 }
+
 .top-tab-search {
     margin-top: 20px;
     padding: 10px;
     border: 1px solid #bdbdbd;
     width: 200px;
 }
+
 .modal_title {
     font-size: 16px;
 }
-.modal-content-wrap{
-	justify-content: center;
+
+.modal-content-wrap {
+    justify-content: center;
 }
-.inner-menu1-wrap{
+
+.inner-menu1-wrap {
     right: 20px;
     left: auto;
 }
-.inner-menu1-wrap i{
+
+.inner-menu1-wrap i {
     text-align: right;
 }
-.searchWrap{
+
+.searchWrap {
     top: 36px;
 }
 
-.noToken_wrap{
+.noToken_wrap {
     width: 100%;
     text-align: center;
     margin-bottom: 30px;
     font-size: 12px;
     color: #616161;
 }
-.noToken_txt1 span{
+
+.noToken_txt1 span {
     border-bottom: 1px solid;
     color: #0D47A1;
     margin: 0px 5px;
     cursor: pointer;
 }
-.noToken_txt1 span:hover{
+
+.noToken_txt1 span:hover {
     color: #ff2500;
 }
-.noToken_txt2{
+
+.noToken_txt2 {
     text-decoration: underline;
     color: #ff2500;
     cursor: pointer;
     width: 105px;
     margin: 10px auto;
 }
-.noToken_txt2:hover{
+
+.noToken_txt2:hover {
     color: #0D47A1;
 }
-.file-over{
+
+.file-over {
     height: 200px;
     border: dotted 3px red;
     margin-top: 10px;
@@ -66,110 +81,135 @@
     align-items: center;
     color: #616161;
 }
-.f_sg3 input{
+
+.f_sg3 input {
     border-bottom: 0px;
 }
+
 .control-group {
-	display: inline-block;
+    display: inline-block;
     width: 200px;
     margin: 10px;
     padding: 30px;
     text-align: left;
     vertical-align: top;
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
+
 .control {
-	font-size: 18px;
-	position: relative;
-	display: block;
-	margin-bottom: 15px;
-	padding-left: 30px;
-	cursor: pointer;
+    font-size: 18px;
+    position: relative;
+    display: block;
+    margin-bottom: 15px;
+    padding-left: 30px;
+    cursor: pointer;
 }
 
 .control input {
-	position: absolute;
-	z-index: -1;
-	opacity: 0;
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
 }
+
 .control__indicator {
-	position: absolute;
-	top: 2px;
-	left: 0;
-	width: 20px;
-	height: 20px;
-	background: #f5f5f5;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: #f5f5f5;
 }
 
 .control--radio .control__indicator {
-	border-radius: 50%;
+    border-radius: 50%;
 }
+
+
 /* Hover and focus states */
-.control:hover input ~ .control__indicator,
-.control input:focus ~ .control__indicator {
-	background: #EEEEEE;
+
+.control:hover input~.control__indicator,
+.control input:focus~.control__indicator {
+    background: #EEEEEE;
 }
+
 
 /* Checked state */
-.control input:checked ~ .control__indicator {
-	background: #2aa1c0;
+
+.control input:checked~.control__indicator {
+    background: #2aa1c0;
 }
+
 
 /* Hover state whilst checked */
-.control:hover input:not([disabled]):checked ~ .control__indicator,
-.control input:checked:focus ~ .control__indicator {
-	background: #0e647d;
+
+.control:hover input:not([disabled]):checked~.control__indicator,
+.control input:checked:focus~.control__indicator {
+    background: #0e647d;
 }
+
 
 /* Disabled state */
-.control input:disabled ~ .control__indicator {
-	pointer-events: none;
-	opacity: .6;
-	background: #e6e6e6;
+
+.control input:disabled~.control__indicator {
+    pointer-events: none;
+    opacity: .6;
+    background: #e6e6e6;
 }
+
 
 /* Check mark */
+
 .control__indicator:after {
-	position: absolute;
-	display: none;
-	content: '';
+    position: absolute;
+    display: none;
+    content: '';
 }
+
 
 /* Show check mark */
-.control input:checked ~ .control__indicator:after {
-	display: block;
+
+.control input:checked~.control__indicator:after {
+    display: block;
 }
+
 
 /* Checkbox tick */
+
 .control--checkbox .control__indicator:after {
-	top: 4px;
-	left: 8px;
-	width: 3px;
-	height: 8px;
-	transform: rotate(45deg);
-	border: solid #fff;
-	border-width: 0 2px 2px 0;
+    top: 4px;
+    left: 8px;
+    width: 3px;
+    height: 8px;
+    transform: rotate(45deg);
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
 }
+
 
 /* Disabled tick colour */
-.control--checkbox input:disabled ~ .control__indicator:after {
-	border-color: #7b7b7b;
+
+.control--checkbox input:disabled~.control__indicator:after {
+    border-color: #7b7b7b;
 }
+
 
 /* Radio button inner circle */
+
 .control--radio .control__indicator:after {
-	top: 7px;
-	left: 7px;
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background: #fff;
+    top: 7px;
+    left: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
 }
 
+
 /* Disabled circle colour */
-.control--radio input:disabled ~ .control__indicator:after {
-	background: #7b7b7b;
+
+.control--radio input:disabled~.control__indicator:after {
+    background: #7b7b7b;
 }
 
 .searchWrap {
@@ -179,43 +219,45 @@
     top: 86px;
     right: 22px;
 }
-.searchWrap i{
+
+.searchWrap i {
     color: #bdbdbd;
     font-size: 24px;
     padding-left: 10px;
     cursor: pointer;
 }
-.searchWrap i, .searchWrap input{
+
+.searchWrap i,
+.searchWrap input {
     margin: 0;
 }
 
-.featuresMainWrap{
+.featuresMainWrap {
     position: relative;
-    border: 2px solid #bdbdbd; 
-    margin-top: -15px; 
-    margin-right: 200px;
-    margin-left: 200px;
+    border: 2px solid #bdbdbd;
+    margin-top: -5px;
+    margin-right: 50px;
+    margin-left: 50px;
     padding: 10px;
 }
-
 
 .btn-back {
     width: 20px;
     display: inline-flex;
     margin-left: 200px;
-    margin-bottom: 20px;  
-    font-size: 16px;  
+    margin-bottom: 20px;
+    font-size: 16px;
 }
-.span{
+
+.span {
     font-size: 14px;
     font-weight: bold;
     font-family: monotype;
     font-style: italic;
     margin-top: 10px;
-    
 }
 
-.as-card{
+.as-card {
     position: relative;
     background: #fff;
     width: 20%;
@@ -224,25 +266,25 @@
     margin-bottom: 20px;
 }
 
-.as-count-sect{
+.as-count-sect {
     position: relative;
     padding-bottom: 15px;
 }
-.card-seperator{
+
+.card-seperator {
     width: 100%;
     border-bottom: 1px solid rgb(224, 224, 224);
 }
 
-.cad-head{
+.cad-head {
     position: relative;
     background: #f1f1f1;
     overflow: hidden;
     height: 40px;
     border-bottom: 1px solid rgb(139, 138, 138);
-
 }
 
-.module-label{
+.module-label {
     font-size: 17px;
     width: 100%;
     text-align: center;
@@ -251,17 +293,17 @@
     padding-top: 10px;
 }
 
-.access-wrap{
+.access-wrap {
     background: #f1f1f1;
     min-height: 100vh;
 }
 
-.access-content-sect{
+.access-content-sect {
     width: 100%;
     display: flex;
 }
 
-.moduleside-sect{
+.moduleside-sect {
     width: 25%;
     padding: 10px;
     box-sizing: border-box;
@@ -270,7 +312,6 @@
 .table-content {
     padding: 10px;
     font-size: 14px;
-    
 }
 
 table {
@@ -307,7 +348,7 @@ tr:nth-child(even) {
     background-color: $tr-stripe
 }
 
-.right-column{
+.right-column {
     float: left;
     width: 40%;
     padding-top: 10px;
@@ -331,14 +372,18 @@ tr:nth-child(even) {
     user-select: none;
 }
 
+
 /* Hide the browser's default checkbox */
+
 .container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
 
+
 /* Create a custom checkbox */
+
 .checkmark {
     position: absolute;
     top: 0;
@@ -348,29 +393,39 @@ tr:nth-child(even) {
     background-color: #eee;
 }
 
+
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
+
+.container:hover input~.checkmark {
     background-color: #ccc;
 }
 
+
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
+
+.container input:checked~.checkmark {
     background-color: #2196F3;
 }
 
+
 /* Create the checkmark/indicator (hidden when not checked) */
+
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
 
+
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+
+.container input:checked~.checkmark:after {
     display: block;
 }
 
+
 /* Style the checkmark/indicator */
+
 .container .checkmark:after {
     left: 9px;
     top: 5px;
@@ -383,7 +438,7 @@ tr:nth-child(even) {
     transform: rotate(45deg);
 }
 
-#txtAccessName{
+#txtAccessName {
     border-radius: 0;
     border: 0;
     border: 1px solid #bdbdbd;
@@ -393,11 +448,12 @@ tr:nth-child(even) {
     border-radius: 20px;
     text-align: center;
 }
+
 .btn-create {
     border: 1px solid #0288d1;
 }
 
-.btning{
+.btning {
     color: #0288d1;
     background: transparent;
     padding: 10px 10px;
@@ -406,18 +462,20 @@ tr:nth-child(even) {
     letter-spacing: 2px;
     text-transform: uppercase;
 }
+
 .second-menu {
     margin: 27px auto 0;
     width: 90%;
     text-align: center;
 }
-.btning:hover{
-  background:rgba(0, 0, 0, 0.4);
-  background:#fff;
-  padding:10px 10px;
-  color:#1b1b1b;
-  border: 1px solid #0288d1; 
-  cursor: pointer;
-  transition: ease-out;
-  transition-delay: .3s;
+
+.btning:hover {
+    background: rgba(0, 0, 0, 0.4);
+    background: #fff;
+    padding: 10px 10px;
+    color: #1b1b1b;
+    border: 1px solid #0288d1;
+    cursor: pointer;
+    transition: ease-out;
+    transition-delay: .3s;
 }
