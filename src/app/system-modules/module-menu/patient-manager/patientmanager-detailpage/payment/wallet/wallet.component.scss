@@ -180,6 +180,9 @@
         position: relative;
         display: block;
     }
+    .tbl-header .frm-item-wrap{
+        width: 100%;
+    }
 }
 @media only screen and (max-width:600px){
     .head{
@@ -191,9 +194,6 @@
     }
     .tbl-header{
         display: block;
-    }
-    .tbl-header .frm-item-wrap{
-        width: 100%;
     }
 }
 @media only screen and (max-width: 700px) {
