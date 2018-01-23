@@ -63,25 +63,25 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       };
 
       // limit loginEmployee detail
-      const logEmp: any = this.loginEmployee;
-      delete logEmp.department;
-      delete logEmp.employeeFacilityDetails;
-      delete logEmp.role;
-      delete logEmp.units;
-      delete logEmp.consultingRoomCheckIn;
-      delete logEmp.storeCheckIn;
-      delete logEmp.unitDetails;
-      delete logEmp.professionObject;
-      delete logEmp.employeeDetails.countryItem;
-      delete logEmp.employeeDetails.homeAddress;
-      delete logEmp.employeeDetails.gender;
-      delete logEmp.employeeDetails.maritalStatus;
-      delete logEmp.employeeDetails.nationality;
-      delete logEmp.employeeDetails.nationalityObject;
-      delete logEmp.employeeDetails.nextOfKin;
+      // const logEmp: any = this.loginEmployee;
+      // delete logEmp.department;
+      // delete logEmp.employeeFacilityDetails;
+      // delete logEmp.role;
+      // delete logEmp.units;
+      // delete logEmp.consultingRoomCheckIn;
+      // delete logEmp.storeCheckIn;
+      // delete logEmp.unitDetails;
+      // delete logEmp.professionObject;
+      // delete logEmp.employeeDetails.countryItem;
+      // delete logEmp.employeeDetails.homeAddress;
+      // delete logEmp.employeeDetails.gender;
+      // delete logEmp.employeeDetails.maritalStatus;
+      // delete logEmp.employeeDetails.nationality;
+      // delete logEmp.employeeDetails.nationalityObject;
+      // delete logEmp.employeeDetails.nextOfKin;
 
-      doc.createdBy = logEmp;
-      doc.facilityId = this.selectedMiniFacility;
+      doc.createdBy = this.loginEmployee._id;
+      doc.facilityId = this.selectedMiniFacility._id;
       doc.patientId = this.patient._id;
       this.patientDocumentation.documentations.push(doc);
       // Get the raw orderset data and send to different destination.
