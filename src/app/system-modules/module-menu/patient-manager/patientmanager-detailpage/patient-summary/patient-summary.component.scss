@@ -63,3 +63,13 @@
 .modal_title i:hover{
     color: #0288D1;
 }
+
+@media only screen and (max-width: 900px) {
+    .subsect-val{
+        white-space: pre-wrap;      /* CSS3 */   
+        white-space: -moz-pre-wrap; /* Firefox */    
+        white-space: -pre-wrap;     /* Opera <7 */   
+        white-space: -o-pre-wrap;   /* Opera 7 */    
+        word-wrap: break-word;      /* IE */
+    }
+}
