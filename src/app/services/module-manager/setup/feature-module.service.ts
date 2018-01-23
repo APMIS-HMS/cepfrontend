@@ -9,10 +9,11 @@ export class FeatureModuleService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('featuremodules');
-    this._socket = _socketService.getService('featuremodules');
+    // this._rest = _restService.getService('featuremodules');
+    this._rest = _restService.getService('features');
+    this._socket = _socketService.getService('features');
     this._socket.timeout = 30000;
-    this._socket.on('created', function (featuremodule) {
+    this._socket.on('created', function (features) {
     });
   }
 
@@ -27,8 +28,8 @@ export class FeatureModuleService {
     return this._socket.get(id, query);
   }
 
-  create(featuremodule: any) {
-    return this._socket.create(featuremodule);
+  create(features: any) {
+    return this._socket.create(features);
   }
 
   remove(id: string, query: any) {
