@@ -26,6 +26,7 @@ class Service {
           }
           networkMember.memberof.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
+              
               members.push(networkMemberOf);
               if (i == networkMember.memberof.length - 1) {
                 resolve(members)
