@@ -72,3 +72,19 @@
     border-bottom: 1px solid #b3b3b3;
     padding: 5px 0;
 }
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 850px;
+}
+
+@media only screen and (max-width:500px){
+    .top-sect-wrap .frm-item-wrap{
+        width: 100%;
+    } 
+    .mat-form-field {
+        width: 100%;
+    }
+}

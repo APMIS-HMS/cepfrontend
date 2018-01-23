@@ -61,6 +61,7 @@
     background: #fff;
     box-sizing: border-box;
     width: 49.5%;
+    overflow-y: auto;
 }
 .card-tbl-full {
     padding: 5px;
@@ -106,4 +107,18 @@ th{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.card-tbl table{
+    min-width: 500px;
+}
+
+@media only screen and (max-width: 600px){
+    .card2-exo{
+        display: block;
+    }
+    .doc-card2, .card-tbl{
+        width: 100%;
+        box-sizing: border-box;
+        margin: 20px 0;
+    }
 }
