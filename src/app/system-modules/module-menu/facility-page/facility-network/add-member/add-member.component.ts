@@ -21,6 +21,7 @@ export class AddMemberComponent implements OnInit {
   errMsg = "";
   public facilityForm1: FormGroup;
 
+<<<<<<< HEAD
   searchedFacilities: any;
   LoggedInFacility;
   selectedFacilityIds = [];
@@ -149,5 +150,17 @@ export class AddMemberComponent implements OnInit {
       console.log(error);
     });
   }
+=======
+  constructor(private formBuilder: FormBuilder) { }
+
+  ngOnInit() {
+    this.facilityForm1 = this.formBuilder.group({
+			facilitySearch: ['', []]
+		});
+  }
+  close_onClick() {
+		this.closeModal.emit(true);
+	}
+>>>>>>> 3df60e0830bfff39d793124a8e94a1fc57ce803b
 
 }

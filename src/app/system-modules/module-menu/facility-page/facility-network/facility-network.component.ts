@@ -17,6 +17,7 @@ export class FacilityNetworkComponent implements OnInit {
   addMember = false;
   addOther = false;
 
+<<<<<<< HEAD
   LoggedInFacility;
 
   members:any;
@@ -29,6 +30,11 @@ export class FacilityNetworkComponent implements OnInit {
 
     this.getNetworks(true);
     this.getNetworks(false);
+=======
+  constructor() { }
+
+  ngOnInit() {
+>>>>>>> 3df60e0830bfff39d793124a8e94a1fc57ce803b
   }
 
   close_onClick(e){
@@ -43,6 +49,7 @@ export class FacilityNetworkComponent implements OnInit {
     this.addOther = true;
   }
 
+<<<<<<< HEAD
   leaveNetwork(id){
     console.log(id);
     let fac = {
@@ -78,4 +85,6 @@ export class FacilityNetworkComponent implements OnInit {
     });
   }
 
+=======
+>>>>>>> 3df60e0830bfff39d793124a8e94a1fc57ce803b
 }

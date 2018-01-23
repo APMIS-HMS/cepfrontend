@@ -20,6 +20,7 @@ export class EditEmpBasicComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	mainErr = true;
 	errMsg = "";
+	editEmployeeDetails = false;
 
 	facility;
 	departments:any;
@@ -27,6 +28,8 @@ export class EditEmpBasicComponent implements OnInit {
 	loading:any;
 
 	public facilityForm1: FormGroup;
+	public facilityForm2: FormGroup;
+
 	userSettings: any = {
 		geoCountryRestriction: [GEO_LOCATIONS],
 		showCurrentLocation: false,
@@ -47,30 +50,28 @@ export class EditEmpBasicComponent implements OnInit {
 		this.selectedEmployee = this.locker.getObject("selectedEmployee");
 		
 		this.facilityForm1 = this.formBuilder.group({
+			dept: ['', [<any>Validators.required]],
+		});
 
-			firstname: [{
-				value: this.selectedPerson.firstName, 
-				disabled: this.departmentBool
-			}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			lastname: [{
-				value: this.selectedPerson.lastName,
-				disabled: this.departmentBool
-			}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			othernames: [{
-				value: this.selectedPerson.otherNames,
-				disabled: this.departmentBool
-			}, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			email: [{
-				value: this.selectedPerson.email,
-				disabled: this.departmentBool
-			}, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
+		this.facilityForm2 = this.formBuilder.group({
+
+			firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+			othernames: ['', []],
+			gender: ['', [<any>Validators.required]],
+			maritalStatus: ['', [<any>Validators.required]],
+			date: ['', [<any>Validators.required]],
+			nationality: ['', [<any>Validators.required]],
+			stateofOrigin: ['', [<any>Validators.required]],
+			localgovtarea: ['', [<any>Validators.required]],
+			homeaddress: ['', [<any>Validators.required]],
+			stateofresidence: ['', [<any>Validators.required]],
+			lgaofresidence: ['', [<any>Validators.required]],
+			phone: ['', [<any>Validators.required]],
+			email: [this.selectedPerson.email, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
-			//status: ['', [<any>Validators.required]],
-			dept: [this.selectedEmployee.departmentId, [<any>Validators.required]],
-			phone: [{
-				value: this.selectedPerson.primaryContactPhoneNo,
-				disabled: this.departmentBool
-			}, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
+			status: ['', [<any>Validators.required]],
+			phoneno: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 
 		this.getDepartments();
