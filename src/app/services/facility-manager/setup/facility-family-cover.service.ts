@@ -60,7 +60,7 @@ export class FacilityFamilyCoverService {
       .query({ facilityId: facilityId, search: search });
   }
   updateBeneficiaryList(formData) {
-    return this._socketService.getService('families').create(formData);
+    return this._socketService.getService('family-beneficiaries').create(formData);
   }
 
 }

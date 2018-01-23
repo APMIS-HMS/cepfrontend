@@ -193,7 +193,10 @@ ul.topmenuwrap{
     color: #fff;
 }
 .rAreaCard-body {
-    margin: 10px 0;
+    margin:  0;
+}
+.rAreaCard-item:last-child {
+    margin-bottom: 0;
 }
 .rAreaCard-item {
     position: relative;

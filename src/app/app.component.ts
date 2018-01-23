@@ -68,15 +68,13 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     this.userServiceFacade.authenticateResource().then((result) => {
-      console.log(result);
 
       this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.auth = <any>this.locker.getObject('auth');
       this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
-        console.log(paylo);
       });
     }).catch(err => {
-      this.warning("Authentication is required, please log-in with your credentials");
+      this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials','warning');
       this.router.navigate(['/']);
     });
 
