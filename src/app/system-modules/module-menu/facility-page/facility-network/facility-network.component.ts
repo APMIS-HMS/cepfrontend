@@ -43,7 +43,6 @@ export class FacilityNetworkComponent implements OnInit {
     this.addOther = true;
   }
 
-<<<<<<< HEAD
   leaveNetwork(id){
     console.log(id);
     let fac = {
@@ -79,6 +78,4 @@ export class FacilityNetworkComponent implements OnInit {
     });
   }
 
-=======
->>>>>>> 3df60e0830bfff39d793124a8e94a1fc57ce803b
 }
