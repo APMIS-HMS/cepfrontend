@@ -44,7 +44,6 @@ class Service {
               reject(facError);
             });
           }, error => {
-            logger.error(error.message);
             reject(error);
           });
         }

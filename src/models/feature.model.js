@@ -16,9 +16,19 @@ module.exports = function (app) {
       type: Schema.Types.Mixed,
       required: true
     },
-    actions: [{
+    moduleCode: {
       type: String,
-      required: true,
+      required: true
+    },
+    actions: [{
+      name: {
+        type: String,
+        required: true,
+      },
+      code: {
+        type: String,
+        required:true
+      }
     }],
     createdAt: {
       type: Date,

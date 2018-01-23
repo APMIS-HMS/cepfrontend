@@ -22,9 +22,13 @@ function sendToken(data) {
   sender(message, data, false);
 }
 
-function sendApmisId(data) {
-  logger.info(62);
+function sendPasswordResetToken(data) {
   logger.info(data);
+  const message = 'Complete your password reset by verifing your account with this OTP: ' + data.verificationToken + ' to complete your registration';
+  sender(message, data, false);
+}
+
+function sendApmisId(data) {
   const message = 'This is to notify you that ' + data.apmisId + ' is your personal APMIS identification number. Visit www.apmis.ng/details for details';
   sender(message, data, false);
 }
@@ -50,6 +54,9 @@ function sendScheduleAppointment(date, data) {
 module.exports = {
   sendToken(data) {
     sendToken(data);
+  },
+  sendPasswordResetToken(data) {
+    sendPasswordResetToken(data);
   },
   sendApmisId(data) {
     sendApmisId(data);

@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const logger = require('winston');
 const tokenLabel = require('../../parameters/token-label');
 class Service {
   constructor(options) {
@@ -57,6 +56,8 @@ class Service {
       this.generateId(data);
     } else if (id.toString() === tokenLabel.tokenType.autoPassword.toString()) {
       this.generateAutoPassword(data);
+    }else if (id.toString() === tokenLabel.tokenType.userVerification.toString()) {
+      data.result = this.generateOtp();
     }
     return Promise.resolve(data);
   }
