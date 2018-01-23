@@ -7,7 +7,8 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const facilityAccessControl = new Schema({
     name: { type: String, required: true },
-    features:[{ type: Schema.Types.Mixed, required: false }],
+    facilityId:{type:Schema.Types.ObjectId, required:true},
+    features:[{ type: Schema.Types.Mixed, required: true }],
     createdAt: { type: Date, 'default': Date.now },
     updatedAt: { type: Date, 'default': Date.now }
   }, {
