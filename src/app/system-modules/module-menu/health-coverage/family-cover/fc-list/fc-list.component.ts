@@ -58,7 +58,7 @@ export class FcListComponent implements OnInit {
     private familyCoverService: FacilityFamilyCoverService, private facilityService: FacilitiesService) { }
 
   ngOnInit() {
-    this.selectedFacility = <any>this.locker.getObject('miniFacility');
+    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.frmNewBeneficiary = this.formBuilder.group({
       surname: ['', [Validators.required]],
