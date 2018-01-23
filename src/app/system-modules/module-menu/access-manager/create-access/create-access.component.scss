@@ -1,8 +1,9 @@
 @import "../../employee-manager/employeemanager-detailpage/generate-user/generate-user.component.scss";
 .btn-box {
-  text-align: center;
-  padding: 30px;
+    text-align: center;
+    padding: 30px;
 }
+
 .inner-menu1-wrap {
     top: auto;
 }
@@ -20,7 +21,7 @@
 }
 
 .modal_title {
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .modal-content-wrap {
@@ -44,7 +45,7 @@
     width: 100%;
     text-align: center;
     margin-bottom: 30px;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #616161;
 }
 
@@ -222,7 +223,7 @@
 
 .searchWrap i {
     color: #bdbdbd;
-    font-size: 24px;
+    font-size: 2.4rem;
     padding-left: 10px;
     cursor: pointer;
 }
@@ -318,7 +319,7 @@ table {
     width: 100%;
     position: relative;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: #fff;
     margin-top: 20px;
 }
@@ -365,7 +366,7 @@ tr:nth-child(even) {
     margin-left: 10px;
     margin-bottom: 12px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1.4rem;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -443,7 +444,7 @@ tr:nth-child(even) {
     border: 0;
     border: 1px solid #bdbdbd;
     background: transparent;
-    font-size: 18px;
+    font-size: 1.8rem;
     width: 520px;
     border-radius: 20px;
     text-align: center;
@@ -457,7 +458,7 @@ tr:nth-child(even) {
     color: #0288d1;
     background: transparent;
     padding: 10px 10px;
-    font-size: 12px;
+    font-size: 1.2rem;
     text-decoration: none;
     letter-spacing: 2px;
     text-transform: uppercase;

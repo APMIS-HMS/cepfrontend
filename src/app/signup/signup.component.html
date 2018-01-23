@@ -39,3 +39,6 @@
 <div *ngIf="login_on" class="modal-overlay">
     <app-login (closeModal)="close_onClick($event)" (pwordReset)="pwdReset_show($event)" id="form-modal" class="form-modal center-center"></app-login>
 </div>
+<div *ngIf="pwdReset_on" class="modal-overlay">
+    <app-password-reset (closeModal)="close_onClick($event)" (loginEmit)="login_show()" id="form-modal" class="form-modal center-center"></app-password-reset>
+</div>

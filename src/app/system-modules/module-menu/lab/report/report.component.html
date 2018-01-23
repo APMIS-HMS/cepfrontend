@@ -37,7 +37,7 @@
                                         <img class="shadow" *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div class="sel-patient-details">
-                                        <div style="font-size: 14px;"><b>{{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</b></div>
+                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</b></div>
                                         <div class="patient-details-left">{{ selectedPatient?.personDetails?.apmisId }}</div>
                                         <div class="patient-details-right">{{ selectedPatient?.personDetails?.age }} year(s)</div>
                                         <div class="patient-details-left">{{ selectedPatient?.personDetails?.phoneNumber }}</div>

@@ -99,20 +99,20 @@
 
 #toasty .toast.toasty-theme-default {
   font-family: Tahoma, Geneva, sans-serif !important;
-  font-size: 12px;
+  font-size: 1.2rem;
   border-radius: 0px;
 }
 #toasty .toast.toasty-theme-default .close-button:after {
   content: 'x';
   color: #ffffff;
-  font-size: 17px;
+  font-size: 1.7rem;
   font-weight: 100;
 }
 #toasty .toast.toasty-theme-default .toast-text {
   color: #ffffff;
 }
 #toasty .toast.toasty-theme-default .toast-text .toast-title {
-  font-size: 13px;
+  font-size: 1.3rem;
 }
 #toasty .toast.toasty-theme-default .toast-text .toast-msg {
   /**/

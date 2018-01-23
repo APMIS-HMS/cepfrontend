@@ -1,3 +1,5 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { PasswordValidation } from './../shared-common-modules/password-validation';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService, PersonService } from '../services/facility-manager/setup/index';
@@ -27,23 +29,23 @@ export class PasswordResetComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private userService: UserService,
+    private systemModuleService: SystemModuleService,
     private personService: PersonService) { }
 
   ngOnInit() {
-    const EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
     this.frm_pwdReset1 = this.formBuilder.group({
       apmisid: ['', [<any>Validators.required]],
-      email: ['', [<any>Validators.pattern(EMAIL_REGEXP)]],
-      // email: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
     });
 
     this.frm_pwdReset2 = this.formBuilder.group({
       token: ['', [<any>Validators.required, <any>Validators.minLength(6),
       <any>Validators.maxLength(7)]],
-      password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-      repassword: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
-    });
+      password: ['', [<any>Validators.required, <any>Validators.minLength(7)]],
+      cpassword: ['', [<any>Validators.required, <any>Validators.minLength(7)]]
+    }, {
+        validator: PasswordValidation.MatchPassword
+      });
 
     this.frm_pwdReset1.valueChanges.subscribe(value => {
       this.showInfo = true;
@@ -53,55 +55,49 @@ export class PasswordResetComponent implements OnInit {
 
   verify(valid, val) {
     if (valid) {
+      this.systemModuleService.on();
       this.isTokenAvailable = false;
       const apmisId = this.frm_pwdReset1.controls['apmisid'].value;
       const telephone = this.frm_pwdReset1.controls['phoneNo'].value;
-      this.personService.find({ query: { apmisId: apmisId, phoneNumber: telephone } })
+      this.userService.verifyUser({ apmisId: apmisId, primaryContactPhoneNo: telephone })
         .then(payload => {
-          if (payload.data.length > 0) {
-            this.selectedPerson = payload.data[0];
-            this.userService.resetPassword({ personId: this.selectedPerson._id }).then(tokenPayload => {
-              this.isTokenAvailable = tokenPayload.text;
-              if (this.isTokenAvailable !== false) {
-                this.modal1_show = false;
-                this.modal2_show = true;
-              } else {
-                this.mainErr = false;
-                this.errMsg = 'Error while generating isTokenAvailable, please try again!';
-              }
-            }, error => {
-            });
-
+          this.isTokenAvailable = payload.isToken;
+          if (this.isTokenAvailable !== false) {
+            this.modal1_show = false;
+            this.modal2_show = true;
+            this.systemModuleService.off();
           } else {
             this.mainErr = false;
-            this.showInfo = false;
-            this.errMsg = 'Invalid APMISID or Telephone Number supplied, correct and try again!';
+            this.errMsg = 'Error while generating isTokenAvailable, please try again!';
+            this.systemModuleService.off();
           }
         });
     } else {
       this.mainErr = false;
       this.showInfo = false;
+      this.systemModuleService.off();
     }
 
   }
 
   reset(valid: Boolean, val: any) {
-    this.userService.find({ query: { personId: this.selectedPerson._id } }).then(payload => {
-      if (payload.length > 0) {
-        const user: User = payload[0];
-        const inputToken = this.frm_pwdReset2.controls['token'].value;
-        const realToken = user.passwordToken;
-        if (inputToken === realToken) {
-          this.userService.patch(user._id, { password: this.frm_pwdReset2.controls['password'].value }, {})
-            .then(ppayload => {
-              this.modal1_show = false;
-              this.modal2_show = false;
-              this.close_onClick();
-            });
-        }
+    this.systemModuleService.on();
+    const inputToken = this.frm_pwdReset2.controls['token'].value;
+    const password = this.frm_pwdReset2.controls['password'].value;
+    this.userService.resetPassword({ token: inputToken, password: password }).then(payload => {
+      if (payload) {
+        this.modal1_show = false;
+        this.modal2_show = false;
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy('Your Password Has Been Reset Successfully', 'success', this);
       }
     }, error => {
+      this.systemModuleService.off();
     });
+  }
+
+  sweetAlertCallback(result) {
+    this.close_onClick();
   }
 
   back_resetFrm1() {
