@@ -453,3 +453,22 @@ th {
 .modal-overlay{
     position: fixed;
 }
+
+@media only screen and (max-width: 900px) {
+    .card-hider{
+        display: none;
+    }
+    .content-sect{
+        display: block;
+    }
+    .side-sect, .mid-sect{
+        width: 95%;
+        margin: 0 auto;
+    }
+    .fac-card{
+        background: #f1f1f1;
+        width: 95%;
+        border: 2px solid #fff;
+        margin: 0 auto;
+    }
+}

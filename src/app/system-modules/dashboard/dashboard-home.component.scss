@@ -487,3 +487,9 @@
     font-size: 1.1rem;
     color: #fff;
   }
+
+  @media only screen and (max-width: 900px) {
+    .menu-content-wrap{
+        padding-top: 82px;
+    }
+  }

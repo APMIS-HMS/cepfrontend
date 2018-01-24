@@ -6,15 +6,8 @@ body {
     font-family: $font-main;
     margin: 0;
     padding: 0;
-    font-size: 11px;
+    font-size: 10px;
 }
-// div{
-//     white-space: pre-wrap;      /* CSS3 */   
-//     white-space: -moz-pre-wrap; /* Firefox */    
-//     white-space: -pre-wrap;     /* Opera <7 */   
-//     white-space: -o-pre-wrap;   /* Opera 7 */    
-//     word-wrap: break-word;      /* IE */
-// }
 input, select, textarea, .mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button, .mat-form-field {
     font-size: 1.5rem !important;
     font-size: 10px;
@@ -1575,7 +1568,7 @@ ul.topmenuwrap li:hover {
     left: 0;
     width: 20px;
     height: 20px;
-    background: #f5f5f5;
+    background: #d6d6d6;
 }
 
 .control--radio .control__indicator {
@@ -1696,8 +1689,10 @@ ul.topmenuwrap li:hover {
 .search-wrap .x:hover {
     color: #ff2500;
 }
-
-.pg-menuWrap {
+.pg-menuWrap-mobile{
+    display: none;
+}
+.pg-menuWrap, .pg-menuWrap-mobile {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -1708,7 +1703,7 @@ ul.topmenuwrap li:hover {
     box-sizing: border-box;
 }
 
-.pg-menuWrap li {
+.pg-menuWrap li, .pg-menuWrap-mobile li {
     cursor: pointer;
     padding: 5px 20px;
     font-size: 1.2rem;
@@ -1721,7 +1716,7 @@ ul.topmenuwrap li:hover {
     color: #fff;
 }
 
-.pg-menuWrap li i {
+.pg-menuWrap li i, .pg-menuWrap-mobile li i {
     font-size: 1.6rem;
 }
 
@@ -1900,14 +1895,54 @@ ul.topmenuwrap li:hover {
         font-size: 1rem;
     }
 }
+.pgMenu-wrap{
+    display: none;
+    position: relative;
+}
+.pgMenu-ico{
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 46px;
+    z-index: 10;
+    font-size: 1.8rem;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #fff;
+}
 
 @media only screen and (max-width: 900px) {
     .search-wrap {
         display: none;
     }
-    .secondary-tab{
+    .pg-menuWrapa{
+        position: relative;
+        display: block;
+    }
+    .pg-menuWrap{
+        display: none;
+    }
+    .pg-menuWrap-mobile{
+        display: block;
+        position: absolute;
+        z-index: 2;
+        background: #0288D1;
+        padding: 10px 0;
+        -webkit-box-shadow: 2px 16px 31px 0px #777;
+        -moz-box-shadow: 2px 16px 31px 0px #777;
+        box-shadow: 2px 16px 31px 0px #777;
+    }
+    .secondary-tab li{
+        padding: 10px 0;
+        margin: 5px 0;
+    }
+    .secondary-tab {
         position: fixed;
         top: 40px;
+    }
+    .pgMenu-ico{
+        display: block;
     }
 }
 
