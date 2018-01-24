@@ -8,7 +8,7 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const documentations = new Schema({
-    personId: {  type: Schema.Types.Mixed, required: true  },
+    personId: {  type: Schema.Types.ObjectId, required: true  },
     documentations: [patientDocumentationSchema],
   }, {
     timestamps: true

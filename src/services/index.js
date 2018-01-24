@@ -96,6 +96,8 @@ const hmos = require('./hmos/hmos.service.js');
 // const hiaplan = require('./hiaplan/hiaplan.service.js');
 const tagDictioneries = require('./tag-dictioneries/tag-dictioneries.service.js');
 const searchTags = require('./search-tags/search-tags.service.js');
+const uploadExcel = require('./upload-excel/upload-excel.service.js');
+const familyBeneficiaries = require('./family-beneficiaries/family-beneficiaries.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -194,4 +196,6 @@ module.exports = function (app) {
   app.configure(hmos);
   app.configure(tagDictioneries);
   app.configure(searchTags);
+  app.configure(uploadExcel);
+  app.configure(familyBeneficiaries);
 };
