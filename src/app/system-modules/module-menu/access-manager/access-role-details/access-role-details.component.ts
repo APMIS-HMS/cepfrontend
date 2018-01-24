@@ -35,7 +35,6 @@ export class AccessRoleDetailsComponent implements OnInit {
   }
 
   private _getAllRoles() {
-    console.log(this.selectedFacility._id);
     this._accessControlService.find({ query: {facilityId: this.selectedFacility._id } }).then(res => {
       console.log(res);
       this.loading = false;

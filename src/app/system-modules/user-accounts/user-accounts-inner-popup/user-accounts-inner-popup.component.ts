@@ -38,7 +38,6 @@ export class UserAccountsInnerPopupComponent implements OnInit {
     this.closeModal.emit(true);
   }
   isEmployeeInFacility() {
-    console.log(this.loginEmployee);
     if (this.loginEmployee === undefined) {
       return false;
     } else {
