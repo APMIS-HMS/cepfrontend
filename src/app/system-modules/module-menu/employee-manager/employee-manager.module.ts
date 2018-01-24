@@ -24,6 +24,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { EditEmpBasicComponent } from './employeemanager-detailpage/edit-emp-basic/edit-emp-basic.component';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { DeleteComponent } from './delete/delete.component';
+import { EmployeeAccessRolesComponent } from './employeemanager-detailpage/employee-access-roles/employee-access-roles.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +45,8 @@ import { DeleteComponent } from './delete/delete.component';
         WorkspaceHistoryComponent,
         AssignUnitComponent,
         EditEmpBasicComponent,
-        DeleteComponent
+        DeleteComponent,
+        EmployeeAccessRolesComponent
     ],
     exports: [
     ],
