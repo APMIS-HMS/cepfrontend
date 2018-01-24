@@ -11,6 +11,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class FacilitypageSidesectComponent implements OnInit {
   @Input() selectedFacility: any = <any>{};
   editBasicInfo = false;
+  membersOf: any;
+  memberFacilities:any = [];
 
   constructor(private facilityService:FacilitiesService, private locker:CoolLocalStorage) {
     this.facilityService.patchListner.subscribe(payload =>{
@@ -21,6 +23,8 @@ export class FacilitypageSidesectComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.getNetworkMembers(false);
+    this.getNetworkMembers(true);
   }
 
   close_onClick(e){
@@ -28,6 +32,19 @@ export class FacilitypageSidesectComponent implements OnInit {
   }
   editBasicInfo_onClick(){
     this.editBasicInfo = true;
+  }
+
+  getNetworkMembers(isMemberOf){
+    this.facilityService.getNetwork(this.selectedFacility._id, isMemberOf).then(payload => {
+      if(isMemberOf){
+        this.membersOf = payload;
+        console.log(this.membersOf);
+      }else{
+        this.memberFacilities = payload;
+        console.log(this.memberFacilities);
+      }
+      //console.log(payload);
+    });
   }
 
 }

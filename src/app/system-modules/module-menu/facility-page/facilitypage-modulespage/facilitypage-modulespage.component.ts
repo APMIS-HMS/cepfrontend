@@ -25,7 +25,8 @@ export class FacilitypageModulespageComponent implements OnInit {
 
   ngOnInit() {
     this.pageInView.emit('Facility Modules');
-    this.route.data.subscribe(data => {
+    /* this.route.data.subscribe(data => {
+      console.log(data);
       data['systemModules'].subscribe((payload: any[]) => {
         this.systemModules = payload;
       });
@@ -34,7 +35,7 @@ export class FacilitypageModulespageComponent implements OnInit {
           this.facilityModules = payload.facilityModules;
         }
       });
-    });
+    }); */
   }
   isIntegrated(value: any): boolean {
     let obj = this.facilityModules.find(x => x._id === value.toString());

@@ -12,7 +12,7 @@
     <div class="x2-card-wrap">
         <div class="pp-card shadow-grey card-a3">
 
-            <i (click)="editBasicPop_show()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+            <i (click)="editBasicPop_show(true)" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
 
             <div class="card-seperator">
                 <div class="patient-img-wrap">
@@ -50,16 +50,16 @@
                     <button (click)="generateUnit()" [class.pg-menuActive]="externalContentArea" mat-raised-button>Assign Unit</button>
                     <button (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea" mat-raised-button>Assign Workspace</button>
                     <button *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>
-                    <button *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea" style="color:#E53935;" mat-raised-button>Deactivate Employee</button>
+                    <button *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea" style="background-color:#E53935 !important;" mat-raised-button>Deactivate Employee</button>
                     <!-- <button [hidden]="employee?.isActive" [class.pg-menuActive]="investigationContentArea" style="color:#E53935;" mat-raised-button>Deactivate Employee</button> -->
-                    <button [hidden]="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea" mat-raised-button>Activate Employee</button>
+                    <button *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea" style="background-color: #43A047 !important;" mat-raised-button>Activate Employee</button>
                 </div>
             </div>
         </div>
 
         <div class="pp-card shadow-grey card-a7">
             <div class="card-title">Employee Profile</div>
-            <i (click)="editBasicInfo_onClick()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+            <i (click)="editBasicPop_show(false)" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
 
             <div class="empData-block emp-bioData">
                 <div class="empDataBlock-title">Bio Data
@@ -70,7 +70,7 @@
                         <i class="fa fa-check"></i>
                     </div>
                 </div>
-                <div class="menuBar-facilityName">
+                <!-- <div class="menuBar-facilityName">
                     <div class="menubar_facilityLogo orgLogo-wrap">
                         <img src="../../../../../../assets/images/users/default.png">
                     </div>
@@ -78,7 +78,7 @@
                         <button class="upload-btn">Image</button>
                         <input type="file" name="myfile" />
                     </div>
-                </div>
+                </div> -->
 
                 <div class="dataMix-wrap color1">
                     <div class="lhs">Full Name</div>
