@@ -49,7 +49,8 @@
                     <button *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" [class.pg-menuActive]="requestContentArea" mat-raised-button>Generate User</button>
                     <button (click)="generateUnit()" [class.pg-menuActive]="externalContentArea" mat-raised-button>Assign Unit</button>
                     <button (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea" mat-raised-button>Assign Workspace</button>
-                    <button *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>
+                    <!-- <button *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>-->
+                    <button (click)="employeeAccessRoleShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>
                     <button *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea" mat-raised-button>Deactivate Employee</button>
                     <button *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea" mat-raised-button>Activate Employee</button>
                 </div>
@@ -162,8 +163,7 @@
                     <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.stateOfOrigin}} </div>
                     <div *ngIf="contacts" class="survery rhs">
                         <mat-form-field>
-                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.personDetails.stateOfOrigin"
-                                name="food">
+                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.personDetails.stateOfOrigin" name="food">
                                 <mat-option *ngFor="let state of states" [value]="state.name">
                                     {{state.name}}
                                 </mat-option>
@@ -197,14 +197,12 @@
                         {{employee?.personDetails?.homeAddress?.street}}
                         <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.city}}
                         <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>{{employee?.personDetails?.homeAddress?.state}}
-                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>
-                        {{employee?.personDetails?.homeAddress?.country}}
+                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.country}}
                         <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">.</span>
                     </div>
                     <div *ngIf="contacts" class="survery rhs">
                         <mat-form-field>
-                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.personDetails?.homeAddress.country"
-                                name="food">
+                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.personDetails?.homeAddress.country" name="food">
                                 <mat-option *ngFor="let country of homeCountries" [value]="country.name">
                                     {{country.name}}
                                 </mat-option>
@@ -328,5 +326,8 @@
     </div>
     <div *ngIf="editBasicPop" class="modal-overlay">
         <app-edit-emp-basic (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-emp-basic>
+    </div>
+    <div *ngIf="userPrivileges" class="modal-overlay">
+        <app-employee-access-roles (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-employee-access-roles>
     </div>
 </div>
