@@ -106,7 +106,13 @@
 .head-others-transition {
     height: 170px;
 }
-
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 850px;
+}
 .epayment-transition {
     height: 70px;
 }
@@ -174,8 +180,22 @@
         position: relative;
         display: block;
     }
+    .tbl-header .frm-item-wrap{
+        width: 100%;
+    }
 }
-
+@media only screen and (max-width:600px){
+    .head{
+        display: block;
+    }
+    .head-others{
+        margin-top: 10px;
+        width: 100%;
+    }
+    .tbl-header{
+        display: block;
+    }
+}
 @media only screen and (max-width: 700px) {
     .modal_title {
         position: relative;

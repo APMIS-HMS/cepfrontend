@@ -38,7 +38,7 @@ export class CcListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selelctedFacility = <Facility>this.locker.getObject('miniFacility');
+    this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.frmAddCompany = this.formBuilder.group({
       name: ['', [Validators.required]],

@@ -9,8 +9,8 @@ export class PrescriptionPriorityService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('prescriptionpriorities');
-    this._socket = _socketService.getService('prescriptionpriorities');
+    this._rest = _restService.getService('prescription-priorities');
+    this._socket = _socketService.getService('prescription-priorities');
     this._socket.on('created', function (prescriptionpriorities) {
     });
   }

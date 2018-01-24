@@ -160,11 +160,13 @@ export class FacilitiesService {
     return logEmp;
   }
   upload(formData, id) {
-    const host = this._restService.getHost();
-    const path = host + '/uploadexcel';
-    return request
-      .post(path)
-      .send(formData);
+    // const host = this._restService.getHost();
+    // const path = host + '/uploadexcel';
+    // return request
+    //   .post(path)
+    //   .send(formData);
+
+      return this._socketService.getService('upload-excel').create(formData, id);
   }
   post(body: any, params: any) {
     const host = this._socketService.HOST;

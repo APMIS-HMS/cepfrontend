@@ -20,6 +20,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   nextOfKinForm: FormGroup;
   patientEditForm: FormGroup;
 
+  
+  isEdit:boolean = false;
+  tabWallet = true;
+  tabInsurance = false;
+  tabCompany = false;
+  tabFamily = false;
+
   editPatient = false;
   payPlan = false;
   newUpload = false;
@@ -464,5 +471,35 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   compareState(l1: any, l2: any) {
 		return l1.includes(l2);
-	}
+  }
+  
+
+
+  tabWallet_click() {
+    this.tabWallet = true;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+}
+tabCompany_click() {
+    this.tabWallet = false;
+    this.tabCompany = true;
+    this.tabFamily = false;
+    this.tabInsurance = false;
+}
+tabFamily_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = true;
+    this.tabInsurance = false;
+}
+tabInsurance_click() {
+    this.tabWallet = false;
+    this.tabCompany = false;
+    this.tabFamily = false;
+    this.tabInsurance = true;
+}
+
+
+
 }

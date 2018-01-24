@@ -1,5 +1,11 @@
 @import "../patient-summary/patient-summary.component.scss";
-
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 500px;
+}
 .doc-contentArea {
     width: 100%;
 }

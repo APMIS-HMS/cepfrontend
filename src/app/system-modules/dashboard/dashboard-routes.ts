@@ -51,10 +51,10 @@ const appRoutes: Routes = [
                 path: 'payment',
                 loadChildren: '../module-menu/payment/payment.module#PaymentModule'
             },
-            // {
-            //     path: 'wallet',
-            //     loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
-            // },
+            {
+                path: 'wallet',
+                loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
+            },
             {
                 path: 'clinic',
                 loadChildren: '../module-menu/clinic/clinic.module#ClinicModule'

@@ -90,6 +90,7 @@
 
             <div class="card2-exo">
                 <div class="card-tbl">
+                  <div class="modal_title">Fluid Intake</div>
                   <div class="intr-wrap">
                     <mat-form-field>
                         <mat-select placeholder="Time Interval" [formControl]="inInterval" #intakeInterval (change)="filterByTime('intake', intakeInterval.value)">
@@ -126,6 +127,7 @@
                 </div>
 
                 <div class="card-tbl">
+                  <div class="modal_title">Fluid Output</div>
                   <div class="intr-wrap">
                     <mat-form-field>
                         <mat-select placeholder="Time Interval" [formControl]="outInterval" #outputInterval (change)="filterByTime('output', outputInterval.value)">
