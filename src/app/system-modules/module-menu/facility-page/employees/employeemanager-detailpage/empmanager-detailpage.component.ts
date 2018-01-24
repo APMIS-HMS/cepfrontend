@@ -67,6 +67,8 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   assignUnitPop = false;
   editBasicPop = false;
 
+  departmentbool = false;
+
   employeeSubscription: Subscription;
   departments: any[] = [];
   constructor(private countryService: CountriesService,
@@ -343,6 +345,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   editBasicPop_show() {
     this.editBasicPop = true;
+    this.departmentbool = true;
   }
   contactShow() {
     this.contacts = !this.contacts;
