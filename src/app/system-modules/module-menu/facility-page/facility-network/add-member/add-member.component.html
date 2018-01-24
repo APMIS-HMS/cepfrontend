@@ -18,14 +18,6 @@
                         <input matInput mat-error placeholder="Search for facility" formControlName="facilitySearch">
                     </mat-input-container>
                 </div>
-                <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="!uncheck" (click)="add()">
-                    <span *ngIf="!loading">Add</span>
-                    <span *ngIf="loading">Loading...</span>
-                </button>
-                <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="uncheck" (click)="update()">
-                    <span *ngIf="!loading">Update</span>
-                    <span *ngIf="loading">Loading...</span>
-                </button>
             </form>
             <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5" *ngIf="searchedLength > 0">
                 <tbody>
@@ -78,5 +70,13 @@
                     </tr> -->
                 </tbody>
             </table>
+            <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="!uncheck" (click)="add()">
+                <span *ngIf="!loading">Add</span>
+                <span *ngIf="loading">Loading...</span>
+            </button>
+            <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="uncheck" (click)="update()">
+                <span *ngIf="!loading">Update</span>
+                <span *ngIf="loading">Loading...</span>
+            </button>
         </div>
     </div>

@@ -50,7 +50,7 @@
                     <button (click)="generateUnit()" [class.pg-menuActive]="externalContentArea" mat-raised-button>Assign Unit</button>
                     <button (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea" mat-raised-button>Assign Workspace</button>
                     <button *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>
-                    <button *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea" mat-raised-button>Deactivate Employee</button>
+                    <button *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea" class="btn btn-danger" mat-raised-button>Deactivate Employee</button>
                     <button *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea" mat-raised-button>Activate Employee</button>
                 </div>
             </div>
@@ -61,7 +61,7 @@
             <!-- <i (click)="editBasicInfo_onClick()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i> -->
             <div class="empData-block emp-bioData">
                 <div class="empDataBlock-title">Bio Data
-                    <div *ngIf="!biodatas" (click)="bioDataShow()" class="editButton">
+                    <div *ngIf="editemployeeDetails" (click)="bioDataShow()" class="editButton">
                         <i class="fa fa-edit"></i>
                     </div>
                     <div *ngIf="biodatas" (click)="UpdatePerson()" class="editButton">
@@ -133,7 +133,7 @@
             <div class="empData-block emp-bioData">
                 <div class="empDataBlock-title">Contact Information
                     <span *ngIf="!contacts" (click)="contactShow()" class="editButton">
-                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-edit"></i> 
                     </span>
                     <span *ngIf="contacts" (click)="UpdatePersonContact()" class="editButton">
                         <i class="fa fa-check"></i>
@@ -162,8 +162,7 @@
                     <div *ngIf="!contacts" class="rhs"> {{employee?.personDetails?.stateOfOrigin}} </div>
                     <div *ngIf="contacts" class="survery rhs">
                         <mat-form-field>
-                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.personDetails.stateOfOrigin"
-                                name="food">
+                            <mat-select placeholder="State of Origin" [formControl]="stateControl" [(ngModel)]="employee.personDetails.stateOfOrigin" name="food">
                                 <mat-option *ngFor="let state of states" [value]="state.name">
                                     {{state.name}}
                                 </mat-option>
@@ -197,14 +196,12 @@
                         {{employee?.personDetails?.homeAddress?.street}}
                         <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.city}}
                         <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>{{employee?.personDetails?.homeAddress?.state}}
-                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>
-                        {{employee?.personDetails?.homeAddress?.country}}
+                        <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.country}}
                         <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">.</span>
                     </div>
                     <div *ngIf="contacts" class="survery rhs">
                         <mat-form-field>
-                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.personDetails?.homeAddress.country"
-                                name="food">
+                            <mat-select placeholder="Country" [formControl]="homeCountryControl" [(ngModel)]="employee.personDetails?.homeAddress.country" name="food">
                                 <mat-option *ngFor="let country of homeCountries" [value]="country.name">
                                     {{country.name}}
                                 </mat-option>
@@ -328,5 +325,8 @@
     </div>
     <div *ngIf="editBasicPop" class="modal-overlay">
         <app-edit-emp-basic (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-emp-basic>
+    </div>
+    <div *ngIf="editEmployeeDetails" class="modal-overlay">
+        <app-edit-emp-basic [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-emp-basic>
     </div>
 </div>
