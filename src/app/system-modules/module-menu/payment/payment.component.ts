@@ -55,7 +55,7 @@ export class PaymentComponent implements OnInit {
         this.searchInvestigation = new FormControl('', []);
 
         this._getBills();
-        this._getInvoices();
+        // this._getInvoices();
 
         this.searchPendingInvoices.valueChanges
             .debounceTime(400)

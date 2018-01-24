@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class PendingBillService {
-  private _rest;
-  constructor(private _restService: RestService) {
-    this._rest = _restService.getService('pending-bills');
+  private _socket;
+  constructor(private _socketService: SocketService) {
+    this._socket = _socketService.getService('pending-bills');
   }
 
   get(obj: any) {
-    return this._rest.create(obj);
+    return this._socket.create(obj);
   }
 
 }
