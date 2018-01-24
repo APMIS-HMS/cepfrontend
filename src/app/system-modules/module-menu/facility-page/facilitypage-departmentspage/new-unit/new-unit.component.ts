@@ -65,7 +65,7 @@ export class NewUnitComponent implements OnInit {
       this.btnText = 'UPDATE UNIT';
       this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
       this.frmNewUnit.controls['unitAlias'].setValue(this.unit.shortName);
-      this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
+      //this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
       this.frmNewUnit.controls['_id'].setValue(this.unit._id);
       if (this.unit.clinics.length > 0) {
         this.frmNewUnit.controls['isClinic'].setValue(true);

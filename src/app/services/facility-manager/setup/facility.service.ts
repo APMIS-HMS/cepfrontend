@@ -15,6 +15,7 @@ export class FacilitiesService {
   public _sendFacilityTokenSocket;
   private _rest;
   private _restLogin;
+  private _socketAddNetwork;
 
   private sliderAnnouncedSource = new Subject<Object>();
   sliderAnnounced$ = this.sliderAnnouncedSource.asObservable();
@@ -36,6 +37,7 @@ export class FacilitiesService {
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
+    this._socketAddNetwork = _socketService.getService('add-networks');
     // client.service('messages').on('created', addMessage);
 
   }
@@ -165,5 +167,41 @@ export class FacilitiesService {
     //   .send(formData);
 
       return this._socketService.getService('upload-excel').create(formData, id);
+  }
+  post(body: any, params: any) {
+    const host = this._socketService.HOST;
+    const path = host + '/add-networks';
+    return request
+      .post(path)
+      .send(body);
+  }
+  
+  addNetwork(facility: any, isDelete) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.create(facility, {query: {
+        'isdelete': isDelete
+      }}))
+    });
+  }
+
+  joinNetwork(facility: any, isDelete) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.createNetwork(facility, {query: {
+        'isdelete': isDelete
+      }}))
+    });
+  }
+
+  getNetwork(fac, isMemberOf){
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.get(fac, {
+        query:{
+          'ismember': isMemberOf
+        }
+      }))
+    });
   }
 }
