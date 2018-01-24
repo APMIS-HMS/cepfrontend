@@ -91,6 +91,7 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
   navEpDetail(val) {
     this.router.navigate(['/dashboard/facility/employees', val._id]).then(result => {
       // this.employeeService.announceEmployee(val);
+      this.locker.setObject('selectedEmployee', val);
     });
   }
   getByDepartment(departmentId: string) {
