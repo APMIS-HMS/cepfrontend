@@ -47,7 +47,6 @@ import { ApmisCheckboxChildComponent } from './employees/employeemanager-detailp
 import { FacilityNetworkComponent } from './facility-network/facility-network.component';
 import { AddMemberComponent } from './facility-network/add-member/add-member.component';
 import { AddOtherComponent } from './facility-network/add-other/add-other.component';
-import { NewFacEmployeeComponent } from 'app/system-modules/module-menu/facility-page/employees/new-fac-employee/new-fac-employee.component';
 
 @NgModule({
     declarations: [
@@ -83,8 +82,7 @@ import { NewFacEmployeeComponent } from 'app/system-modules/module-menu/facility
         ApmisCheckboxChildComponent,
         FacilityNetworkComponent,
         AddMemberComponent,
-        AddOtherComponent,
-        NewFacEmployeeComponent
+        AddOtherComponent
     ],
     exports: [
     ],
