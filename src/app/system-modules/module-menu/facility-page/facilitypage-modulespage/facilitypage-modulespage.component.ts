@@ -58,6 +58,29 @@ export class FacilitypageModulespageComponent implements OnInit {
       })
   }
 
+  activate(id){
+    let facility = <any>this.locker.getObject("selectedFacility");
+    facility.facilityModulesId.push(id);
+
+    this.facilityService.update(facility).then(payload => {
+      this.getModules();
+      this.getFacility();
+    });
+
+  }
+
+  deactivate(id){
+    let facility = <any>this.locker.getObject("selectedFacility");
+    let ind = facility.facilityModulesId.indexOf(id.toString());
+
+    facility.facilityModulesId.splice(ind, 1);
+    this.facilityService.update(facility).then(payload => {
+      this.getModules();
+      this.getFacility();
+    });
+
+  }
+
   allModuleTab() {
     this.allModulesShow = true;
     this.integratedModulesShow = false;

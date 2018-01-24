@@ -130,12 +130,12 @@
                 </thead>
             
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let module of systemModules">
                         <td>
-                            Payment
+                            {{modules.name}}
                         </td>
                         <td>
-                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true" (click)="activate(modules._id)"></i> Activate</div>
                         </td>
                     </tr>
                     <tr>
