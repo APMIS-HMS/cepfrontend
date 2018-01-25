@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilitiesService } from './../../services/facility-manager/setup/facility.service';
 
 import { CountryServiceFacadeService } from './../../system-modules/service-facade/country-service-facade.service';
@@ -36,7 +37,8 @@ export class FacilityInfoComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _countryServiceFacade: CountryServiceFacadeService,
 		private _facilityService: FacilitiesService,
-		private _facilityServiceFacade: FacilityFacadeService
+		private _facilityServiceFacade: FacilityFacadeService,
+		private _systemModuleService: SystemModuleService
 	) { }
 
 	ngOnInit() {
@@ -107,7 +109,7 @@ export class FacilityInfoComponent implements OnInit {
 	}
 
 	save(form) {
-		console.log(form)
+		this._systemModuleService.on();
 		let facility: any = {
 			name: form.facilityname,
 			email: form.facilityemail,
@@ -121,15 +123,19 @@ export class FacilityInfoComponent implements OnInit {
 		}
 		let payload = {
 			facility: facility,
-			apmisId:this._facilityServiceFacade.facilityCreatorApmisID,
-			personId:this._facilityServiceFacade.facilityCreatorPersonId
+			apmisId: this._facilityServiceFacade.facilityCreatorApmisID,
+			personId: this._facilityServiceFacade.facilityCreatorPersonId
 		}
 		this._facilityServiceFacade.saveFacility(payload).then(payload => {
 			this.facilityForm1.reset();
-			this.userSettings['inputString']='';
+			this.userSettings['inputString'] = '';
+			this._systemModuleService.off();
+			this.close_onClick();
+			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
 		}, error => {
-			console.log(error);
+			this._systemModuleService.off();
+			const errMsg = 'There was an error while creating the facility, try again!';
+			this._systemModuleService.announceSweetProxy(errMsg, 'success');
 		})
-		console.log(facility);
 	}
 }

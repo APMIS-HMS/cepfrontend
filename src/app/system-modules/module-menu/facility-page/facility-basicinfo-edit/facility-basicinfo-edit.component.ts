@@ -143,7 +143,8 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 		this.systemModuleService.on();
 		this.facilityService.patch(facility._id, facility, {}).then(payload => {
 			this.systemModuleService.off();
-			this.systemModuleService.announceSweetProxy('Thanks for saving', 'info');
+			this.systemModuleService.announceSweetProxy('Facility updated successfully', 'success');
+			this.close_onClick();
 		}, error => {
 			console.log(error);
 			this.systemModuleService.off();
