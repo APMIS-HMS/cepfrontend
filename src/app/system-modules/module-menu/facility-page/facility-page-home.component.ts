@@ -235,7 +235,7 @@ export class FacilityPageHomeComponent implements OnInit {
     })
   }
 
-  private checkPageUrl(param: string) {
+  private checkPageUrl(param: string) { 
     console.log(param);
     if (param.includes('facility/modules')) {
       this.modulesContentArea = true;

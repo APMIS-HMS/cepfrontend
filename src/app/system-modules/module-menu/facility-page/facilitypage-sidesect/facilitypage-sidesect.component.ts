@@ -2,6 +2,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Facility } from './../../../../models/facility-manager/setup/facility';
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-facilitypage-sidesect',
@@ -13,8 +15,8 @@ export class FacilitypageSidesectComponent implements OnInit {
   editBasicInfo = false;
   membersOf: any;
   memberFacilities:any = [];
-
-  constructor(private facilityService:FacilitiesService, private locker:CoolLocalStorage) {
+  isemppage = true;
+  constructor(private router: Router, private facilityService:FacilitiesService, private locker:CoolLocalStorage) {
     this.facilityService.patchListner.subscribe(payload =>{
       console.log(payload);
       this.selectedFacility = payload;

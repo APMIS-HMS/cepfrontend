@@ -1838,114 +1838,6 @@ ul.topmenuwrap li:hover {
     color: #fff;
     border: 2px solid #256cc6;
 }
-
-@media only screen and (max-width: 600px) {
-    .user-label {
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 670px) {
-    .filters-wraper {
-        width: auto;
-    }
-}
-
-@media only screen and (max-width: 700px) {
-    .modal-baseWrap {
-        padding: 10px 20px;
-        min-width: 100%;
-        width: 100%;
-    }
-    .modal-header-wrap {
-        min-width: 100%;
-        width: 100%;
-    }
-    .pulse {
-        width: 90%;
-    }
-    form .lhs,
-    form .rhs {
-        float: none;
-    }
-    .frm-item-wrap {
-        padding-bottom: 15px;
-    }
-    .CTAs-wrap {
-        margin-top: 10px;
-    }
-    .cta-1 {
-        width: 80%;
-        height: 35px;
-        font-size: 1.3rem;
-    }
-    .modal_mini_title {
-        display: none;
-    }
-    .modal_title {
-        margin-bottom: 10px;
-    }
-    .frm-item-wrap small,
-    .frm-singleItem-wrap small {
-        font-size: 0.8rem;
-        bottom: 3px;
-    }
-    .mainErr {
-        margin-bottom: 2px;
-        font-size: 1rem;
-    }
-}
-.pgMenu-wrap{
-    display: none;
-    position: relative;
-}
-.pgMenu-ico{
-    display: none;
-    position: absolute;
-    right: 10px;
-    top: 46px;
-    z-index: 10;
-    font-size: 1.8rem;
-    color: #fff;
-    cursor: pointer;
-    padding: 5px;
-    border: 1px solid #fff;
-}
-
-@media only screen and (max-width: 900px) {
-    .search-wrap {
-        display: none;
-    }
-    .pg-menuWrapa{
-        position: relative;
-        display: block;
-    }
-    .pg-menuWrap{
-        display: none;
-    }
-    .pg-menuWrap-mobile{
-        display: block;
-        position: absolute;
-        z-index: 2;
-        background: #0288D1;
-        padding: 10px 0;
-        -webkit-box-shadow: 2px 16px 31px 0px #777;
-        -moz-box-shadow: 2px 16px 31px 0px #777;
-        box-shadow: 2px 16px 31px 0px #777;
-    }
-    .secondary-tab li{
-        padding: 10px 0;
-        margin: 5px 0;
-    }
-    .secondary-tab {
-        position: fixed;
-        top: 40px;
-    }
-    .pgMenu-ico{
-        display: block;
-    }
-}
-
 //Loading animation
 .loading_screen {
     position: absolute;
@@ -2056,3 +1948,111 @@ ul.topmenuwrap li:hover {
         border-color: rgb(0, 161, 223);
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .user-label {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+    .filters-wraper {
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .modal-baseWrap {
+        padding: 10px 20px !important;
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+    .modal-header-wrap {
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+    .pulse {
+        width: 90%;
+    }
+    form .lhs,
+    form .rhs {
+        float: none;
+    }
+    .frm-item-wrap {
+        padding-bottom: 15px;
+    }
+    .CTAs-wrap {
+        margin-top: 10px;
+    }
+    .cta-1 {
+        width: 80%;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+    .modal_mini_title {
+        display: none;
+    }
+    .modal_title {
+        margin-bottom: 10px;
+    }
+    .frm-item-wrap small,
+    .frm-singleItem-wrap small {
+        font-size: 0.8rem;
+        bottom: 3px;
+    }
+    .mainErr {
+        margin-bottom: 2px;
+        font-size: 1rem;
+    }
+}
+.pgMenu-wrap{
+    display: none;
+    position: relative;
+}
+.pgMenu-ico{
+    display: none;
+    position: fixed;
+    right: 10px;
+    top: 46px;
+    z-index: 10;
+    font-size: 1.8rem;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #fff;
+}
+
+@media only screen and (max-width: 900px) {
+    .search-wrap {
+        display: none;
+    }
+    .pg-menuWrapa{
+        position: relative;
+        display: block;
+    }
+    .pg-menuWrap{
+        display: none;
+    }
+    .pg-menuWrap-mobile{
+        display: block;
+        position: absolute;
+        z-index: 2;
+        background: #0288D1;
+        padding: 10px 0;
+        -webkit-box-shadow: 2px 16px 31px 0px #777;
+        -moz-box-shadow: 2px 16px 31px 0px #777;
+        box-shadow: 2px 16px 31px 0px #777;
+    }
+    .secondary-tab li{
+        padding: 10px 0;
+        margin: 5px 0;
+    }
+    .secondary-tab {
+        position: fixed;
+        top: 40px;
+    }
+    .pgMenu-ico{
+        display: block;
+    }
+}
+
