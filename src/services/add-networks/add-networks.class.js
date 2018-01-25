@@ -14,30 +14,19 @@ class Service {
   }
 
   get(id, params) {
-    logger.info(1);
     const facilitiesService = this.app.service('facilities');
     var members = [];
     if (params.query.ismember.toString() == 'true') {
-      logger.info(2);
-      // logger.info('Am here');
       return new Promise(function (resolve, reject) {
-        logger.info(3);
         facilitiesService.get(id, {}).then(networkMember => {
-          logger.info(4);
-          logger.info(networkMember.memberof.length);
           if (networkMember.memberof.length == 0) {
-            logger.info(5);
             resolve([]);
           } else {
             networkMember.memberof.forEach((item, i) => {
               facilitiesService.get(item, {}).then(networkMemberOf => {
-                logger.info(6);
                 members.push(networkMemberOf);
                 if (i == networkMember.memberof.length - 1) {
-                  logger.info(7);
                   resolve(members);
-                } else {
-                  logger.info('not me');
                 }
               }, error => {
                 reject(error);
@@ -50,11 +39,8 @@ class Service {
         });
       });
     } else {
-      // logger.info('Am here 2');
-      logger.info(2);
       return new Promise(function (resolve, reject) {
         facilitiesService.get(id, {}).then(networkMember => {
-          logger.info(3);
           networkMember.memberFacilities.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
               if (networkMember.memberFacilities.length == 0) {
@@ -63,11 +49,8 @@ class Service {
                 members.push(networkMemberOf);
                 if (i == networkMember.memberFacilities.length - 1) {
                   resolve(members);
-                } else {
-                  logger.info('wowow this is the error');
                 }
               }
-
             }, error => {
               reject(error);
             });
