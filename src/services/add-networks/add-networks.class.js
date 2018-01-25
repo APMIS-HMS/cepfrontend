@@ -14,48 +14,67 @@ class Service {
   }
 
   get(id, params) {
+    logger.info(1);
     const facilitiesService = this.app.service('facilities');
     var members = [];
     if (params.query.ismember.toString() == 'true') {
-      logger.info('Am here');
+      logger.info(2);
+      // logger.info('Am here');
       return new Promise(function (resolve, reject) {
+        logger.info(3);
         facilitiesService.get(id, {}).then(networkMember => {
+          logger.info(4);
           logger.info(networkMember.memberof.length);
           if (networkMember.memberof.length == 0) {
+            logger.info(5);
             resolve([]);
-          }
-          networkMember.memberof.forEach((item, i) => {
-            facilitiesService.get(item, {}).then(networkMemberOf => {
-              
-              members.push(networkMemberOf);
-              if (i == networkMember.memberof.length - 1) {
-                resolve(members)
-              }
-            }, error => {
-              reject(error);
+          } else {
+            networkMember.memberof.forEach((item, i) => {
+              facilitiesService.get(item, {}).then(networkMemberOf => {
+                logger.info(6);
+                members.push(networkMemberOf);
+                if (i == networkMember.memberof.length - 1) {
+                  logger.info(7);
+                  resolve(members);
+                } else {
+                  logger.info('not me');
+                }
+              }, error => {
+                reject(error);
+              });
             });
-          });
+          }
+
         }, error => {
           reject(error);
         });
       });
     } else {
-      logger.info('Am here 2');
+      // logger.info('Am here 2');
+      logger.info(2);
       return new Promise(function (resolve, reject) {
         facilitiesService.get(id, {}).then(networkMember => {
+          logger.info(3);
           networkMember.memberFacilities.forEach((item, i) => {
             facilitiesService.get(item, {}).then(networkMemberOf => {
               if (networkMember.memberFacilities.length == 0) {
                 resolve([]);
+              } else {
+                members.push(networkMemberOf);
+                if (i == networkMember.memberFacilities.length - 1) {
+                  resolve(members);
+                } else {
+                  logger.info('wowow this is the error');
+                }
               }
-              members.push(networkMemberOf);
-              if (i == networkMember.memberFacilities.length - 1) {
-                resolve(members)
-              }
+
             }, error => {
               reject(error);
             });
           });
+          if(networkMember.memberFacilities.length == 0){
+            resolve([]);
+          }
         }, error => {
           reject(error);
         });
@@ -73,7 +92,6 @@ class Service {
         data.memberFacilities.forEach((current, i) => {
           facilitiesService.get(current, {}).then(networkMember => {
             let checkId = networkMember.memberof.filter(x => x.toString() == data.hostId.toString());
-            console.log(checkId);
             if (checkId.length == 0) {
               networkMember.memberof.push(data.hostId);
             }
@@ -167,7 +185,6 @@ class Service {
         data.facilityIds.forEach((current, i) => {
           facilitiesService.get(current, {}).then(networkMember => {
             let checkId = networkMember.memberFacilities.filter(x => x.toString() == data.hostId.toString());
-            console.log(checkId);
             if (checkId.length == 0) {
               networkMember.memberFacilities.push(data.hostId);
             }
@@ -242,44 +259,6 @@ class Service {
         });
       });
     }
-    return new Promise(function (resolve, reject) {
-      data.facilityIds.forEach((current, i) => {
-        facilitiesService.get(current, {}).then(networkMember => {
-          let checkId = networkMember.memberFacilities.filter(x => x.toString() == data.hostId.toString());
-          console.log(checkId);
-          if (checkId.length == 0) {
-            networkMember.memberFacilities.push(data.hostId);
-          }
-          facilitiesService.patch(networkMember._id, {
-            memberFacilities: networkMember.memberFacilities
-          }).then(updateNetworkMember => {
-            _memberFacilities.push(updateNetworkMember);
-            facilitiesService.get(data.hostId, {}).then(networkHost => {
-              let checkId2 = networkHost.memberof.filter(x => x.toString() == current.toString());
-              if (checkId2.length == 0) {
-                networkHost.memberof.push(current);
-              }
-              facilitiesService.patch(networkHost._id, {
-                memberof: networkHost.memberof
-              }).then(payload => {
-                var success = {
-                  "members": memberofs,
-                  "hosts": payload
-                }
-                if (i == data.facilityIds.length - 1) {
-                  resolve(success);
-                }
-
-              }, error => {
-                reject(error);
-              });
-            });
-          }, error => {
-            reject(error);
-          });
-        });
-      });
-    });
   }
 
   update(id, data, params) {
