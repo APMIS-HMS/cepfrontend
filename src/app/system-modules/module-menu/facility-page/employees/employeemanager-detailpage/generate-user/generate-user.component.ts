@@ -8,6 +8,7 @@ import { FeatureModuleService } from '../../../../../../services/module-manager/
 import { AccessControlService } from '../../../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-generate-user',
@@ -35,6 +36,7 @@ export class GenerateUserComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     public facilityService: FacilitiesService,
+    private systemModuleService:SystemModuleService,
     private accessControlService: AccessControlService) {
     this.route.params.subscribe(params => {
       const id = params['id'];
@@ -120,6 +122,7 @@ export class GenerateUserComponent implements OnInit {
     this.router.navigate(['/dashboard/facility/employees', this.selectedEmployeeId]);
   }
   generate() {
+    this.systemModuleService.on();
     const user = <User>{
       email: this.selectedPerson.apmisId,
       personId: this.selectedPerson._id,
@@ -132,7 +135,12 @@ export class GenerateUserComponent implements OnInit {
       });
     });
     this.userService.generateUser(user).then(payload => {
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('User Generated Successfully','success');
       this.getAccessList();
+    },error =>{
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('There was a problem creating user. Please try again later.','error');
     });
   }
 }
