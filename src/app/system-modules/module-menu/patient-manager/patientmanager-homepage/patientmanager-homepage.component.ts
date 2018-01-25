@@ -1,3 +1,5 @@
+import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
+import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input } from '@angular/core';
@@ -311,6 +313,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
   updatePatient(value: any, valid: boolean) {
+    console.log(value);
     this.updatePatientBtnText = 'Updating... <i class="fa fa-spinner fa-spin"></i>';
     const nextOfKinArray = [];
     this.selectedPatient['firstName'] = value.firstName;
@@ -334,6 +337,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     if (value.nextOfKin.length > 0) {
       value.nextOfKin.forEach(element => {
+        console.log(element);
         nextOfKinArray.push(element);
       });
     }
@@ -351,47 +355,16 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   private _populateAndSelectData(value: any) {
-    // this.patientEditForm.reset();
+    console.log(value);
     this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
     this.patientEditForm.controls['phoneNumber'].setValue(value.primaryContactPhoneNo);
 
     this.patientEditForm.controls['title'].setValue(value.title);
-    // this.titles.forEach(item => {
-    //   if (item._id === value.titleId) {
-    //     this.patientEditForm.controls['title'].setValue(item);
-    //   }
-    // });
     this.patientEditForm.controls['gender'].setValue(value.gender);
-    // this.genders.forEach(item => {
-    //   if (item._id === value.gender._id) {
-    //     this.patientEditForm.controls['gender'].setValue(item);
-    //   }
-    // });
     this.patientEditForm.controls['country'].setValue(value.homeAddress.country);
-    // this.countries.forEach(item => {
-    //   if (item._id === value.homeAddress.country) {
-    //     this.patientEditForm.controls['country'].setValue(item);
-    //   }
-    // });
     this.patientEditForm.controls['state'].setValue(value.homeAddress.state);
-    // this.states.forEach(item => {
-    //   if (item._id === value.homeAddress.state) {
-    //     this.patientEditForm.controls['state'].setValue(item);
-    //   }
-    // });
-
-    this.cities.forEach(item => {
-      if (item._id === value.homeAddress.city) {
-        this.patientEditForm.controls['city'].setValue(item);
-      }
-    });
-
-    this.lgas.forEach(item => {
-      this.patientEditForm.controls['lga'].reset();
-      if (item._id === value.homeAddress.lga) {
-        this.patientEditForm.controls['lga'].setValue(item);
-      }
-    });
+    this.patientEditForm.controls['city'].setValue(value.homeAddress.city);
+    this.patientEditForm.controls['lga'].setValue(value.homeAddress.lga);
   }
 
   private _populateNextOfKin(nextOfKin) {
@@ -407,9 +380,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   private _initNextOfKin() {
     return this.formBuilder.group({
       address: ['', [<any>Validators.required]],
-      email: ['', []],
-      fullName: ['', [<any>Validators.required]],
-      phoneNumber: ['', [<any>Validators.required]],
+      email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+      fullName: ['', [<any>Validators.required, <any>Validators.pattern(ALPHABET_REGEX)]],
+      phoneNumber: ['', [<any>Validators.required, <any>Validators.pattern(NUMERIC_REGEX)]],
       relationship: ['', [<any>Validators.required]]
     });
   }

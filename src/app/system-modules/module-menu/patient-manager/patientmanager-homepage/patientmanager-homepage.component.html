@@ -221,7 +221,7 @@
                                                         <div *ngFor="let nextOfKin of patientEditForm.controls.nextOfKin.controls; let i=index" class="next-of-kin panel panel-default">
                                                             <div class="panel-heading">
                                                                 <span>Next Of Kin {{i + 1}}</span>
-                                                                <span *ngIf="patientEditForm.controls.nextOfKin.controls.length > 1" (click)="removeNextOfKin(i)" style="float: right;">
+                                                                <span (click)="removeNextOfKin(i)" style="float: right;">
                                                                     <i class="fa fa-times"></i>
                                                                 </span>
                                                             </div>
@@ -233,14 +233,14 @@
                                                                     <input matInput placeholder="Address" formControlName="address">
                                                                 </mat-input-container>
                                                                 <mat-input-container class="example-full-width">
-                                                                    <input matInput type="number" placeholder="Mobile Number" formControlName="phoneNumber">
+                                                                    <input matInput type="tel" placeholder="Mobile Number" formControlName="phoneNumber">
                                                                 </mat-input-container>
                                                                 <mat-input-container class="example-full-width" style="margin-left: 5px;">
                                                                     <input matInput type="email" placeholder="Email" formControlName="email">
                                                                 </mat-input-container>
                                                                 <mat-form-field>
                                                                     <mat-select placeholder="Relationship" formControlName="relationship">
-                                                                        <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
+                                                                        <mat-option *ngFor="let relationship of relationships" [value]="relationship.name">
                                                                             {{relationship.name}}
                                                                         </mat-option>
                                                                     </mat-select>
@@ -250,46 +250,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- <div *ngFor="let next of selectedPatient.nextOfKin">
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput type="text" [(ngModel)]="next.fullName" name="fullName" placeholder="Full Name">
-                                                    </mat-input-container>
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput placeholder="Address" [(ngModel)]="next.address" name="address">
-                                                    </mat-input-container>
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput type="number" placeholder="Mobile Number" [(ngModel)]="next.phoneNumber" name="phoneNumber">
-                                                    </mat-input-container>
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput type="email" placeholder="Email" [(ngModel)]="next.email" name="email">
-                                                    </mat-input-container>
-                                                    <mat-select placeholder="Relationship" [(ngModel)]="next.relationship" name="relationship">
-                                                        <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
-                                                            {{relationship.name}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </div>
-                                                <div *ngIf="selectedPatient.nextOfKin.length == 0">
-                                                    <form [formGroup]="nextOfKinForm">
-                                                        <mat-input-container class="example-full-width">
-                                                            <input matInput type="text" formControlName="fullName" placeholder="Full Name">
-                                                        </mat-input-container>
-                                                        <mat-input-container class="example-full-width">
-                                                            <input matInput placeholder="Address" formControlName="address">
-                                                        </mat-input-container>
-                                                        <mat-input-container class="example-full-width">
-                                                            <input matInput type="number" placeholder="Mobile Number" formControlName="phoneNumber">
-                                                        </mat-input-container>
-                                                        <mat-input-container class="example-full-width">
-                                                            <input matInput type="email" placeholder="Email" formControlName="email">
-                                                        </mat-input-container>
-                                                        <mat-select placeholder="Relationship" formControlName="relationship" name="relationship">
-                                                            <mat-option *ngFor="let relationship of relationships" [value]="relationship._id">
-                                                                {{relationship.name}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </form>
-                                                </div> -->
+                                               
                                                 <div class="add-next-of-kin-box">
                                                     <a (click)="addNewNextOfKin();"> Add Next Of Kin
                                                         <i class="fa fa-plus"></i>

@@ -29,6 +29,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   biodatas = false;
   contacts = false;
   nextofkin = false;
+  
 
   externalContentArea = false;
   contentSecMenuShow = false;
@@ -67,6 +68,9 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   assignUnitPop = false;
   editBasicPop = false;
   userPrivileges = false;
+  
+
+  departmentbool = false;
 
   employeeSubscription: Subscription;
   departments: any[] = [];
@@ -344,8 +348,14 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   bioDataShow() {
     this.biodatas = !this.biodatas;
   }
-  editBasicPop_show() {
+  editBasicPop_show(dept) {
     this.editBasicPop = true;
+    if(dept === true){
+      this.departmentbool = true;
+    }else{
+      this.departmentbool = false;
+    }
+    
   }
   contactShow() {
     this.contacts = !this.contacts;

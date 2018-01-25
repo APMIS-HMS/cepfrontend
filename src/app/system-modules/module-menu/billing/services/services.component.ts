@@ -17,6 +17,7 @@ export class ServicesComponent implements OnInit {
   categories: FacilityService[] = [];
   tags: Tag[] = [];
   globalCategories: CustomCategory[] = [];
+  globalCategoriesToBePaginated: CustomCategory[] = [];
   searchCategory = new FormControl();
   searchService = new FormControl();
   searchTag = new FormControl();
@@ -26,6 +27,11 @@ export class ServicesComponent implements OnInit {
 
   selectedService: any = <any>{};
   selectedCategory: any = <any>{};
+
+  index = 1;
+  pageSize = 10;
+
+  showLoadMore: Boolean = true;
 
   constructor(private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
     private _locker: CoolLocalStorage, private _tagService: TagService) {
@@ -75,9 +81,11 @@ export class ServicesComponent implements OnInit {
       }).
         then(payload => {
           this.filterOutService(payload);
+          console.log(payload);
         }));
 
     subscribeForService.subscribe((payload: any) => {
+      console.log(payload);
     });
 
 
@@ -151,28 +159,36 @@ export class ServicesComponent implements OnInit {
     })
       .then(payload => {
         this.categories = [];
-        this.globalCategories = [];
+        let goo = [];
+        console.log(payload);
         payload.data.forEach((itemi, i) => {
-          itemi.categories.forEach((itemj, j) => {
-            if (itemi.facilityId !== undefined) {
-              this.categories.push(itemj);
+        itemi.categories.forEach((itemj, j) => {
+          if (itemi.facilityId !== undefined) {
+            this.categories.push(itemj);
+          }
+          itemj.services.forEach((itemk, k) => {
+            const customCategory: CustomCategory = <CustomCategory>{};
+            customCategory.facilityService = itemi;
+            customCategory.service = itemk.name;
+            customCategory.serviceId = itemk._id;
+            customCategory.category = itemj.name;
+            customCategory.categoryId = itemj._id;
+            customCategory.serviceCode = itemk.code;
+            if (itemi.facilityId === undefined) {
+              customCategory.isGlobal = true;
+            } else {
+              customCategory.isGlobal = false;
             }
-            itemj.services.forEach((itemk, k) => {
-              const customCategory: CustomCategory = <CustomCategory>{};
-              customCategory.facilityService = itemi;
-              customCategory.service = itemk.name;
-              customCategory.serviceId = itemk._id;
-              customCategory.category = itemj.name;
-              customCategory.categoryId = itemj._id;
-              customCategory.serviceCode = itemk.code;
-              if (itemi.facilityId === undefined) {
-                customCategory.isGlobal = true;
-              } else {
-                customCategory.isGlobal = false;
-              }
-              this.globalCategories.push(customCategory);
-            });
+            this.globalCategoriesToBePaginated.push(customCategory);
+            
           });
+        });
+        if(this.globalCategoriesToBePaginated.length <= this.globalCategories.length){
+          this.showLoadMore = false;
+        }
+        console.log(this.globalCategoriesToBePaginated);
+        this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
+        console.log(this.globalCategories);
         });
       });
   }
@@ -216,6 +232,23 @@ export class ServicesComponent implements OnInit {
     this.newServicePopup = false;
     this.newCategoryPopup = false;
     this.newTagPopup = false;
+  }
+
+  paginate (array, page_size, page_number) {
+    --page_number; // because pages logically start with 1, but technically with 0
+    return array.slice(page_number * page_size, (page_number + 1) * page_size);
+  }
+
+  loadMoreGlobalCategories(){
+    if(this.globalCategoriesToBePaginated.length <= this.globalCategories.length){
+      this.showLoadMore = false;
+    }else{
+      let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
+      console.log(goo);
+      this.globalCategories.push(...goo);
+      this.index++;
+    }
+    console.log(this.index);
   }
 
 }

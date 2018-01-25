@@ -34,15 +34,15 @@ export class AccessManagerComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    // this.searchControl.valueChanges.subscribe(value => {
-    //   // do something with value here
-    // });
     this.getUsers(this.limit);
   }
   getUsers(limit) {
+    console.log(limit)
     const facilityId = this.selectedFacility._id;
-    this.userService.find({ query: { 'facilitiesRole.facilityId': facilityId, $limit: limit } }).then(payload => {
+    console.log(facilityId);
+    this.userService.find({query: { 'facilitiesRole.facilityId': facilityId } }).then(payload => {
       this.users = payload.data;
+      console.log(payload);
     });
   }
   edit(item: any) {

@@ -1,8 +1,8 @@
 <div (click)="innerMenuHide($event)" class="inner-wrap-b body-wrap">
-    <div class="facility-title">User Role Details</div>
+    <div class="facility-title">User Role List</div>
     <div class="inner-page-wrap">
         <div>
-            <div class="mainWrap shadow-grey">
+            <div class="mainWrap">
                 <table cellpadding="0 " cellspacing="0" border="0.4 ">
                     <thead>
                         <tr class="table-header ">
@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                         <tr *ngIf="roles.length===0 && !loading">
-                            <td class="table-content " colspan="4" style="text-align: center "> No data available in table</td>
+                            <td class="table-content" colspan="4" style="text-align: center "> No data available in table</td>
                         </tr>
                         <tr *ngIf="roles.length===0 && loading">
                             <td class="table-content " colspan="4" style="text-align: center ">

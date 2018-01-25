@@ -1,4 +1,15 @@
-@import "../../employee-manager/employeemanager-detailpage/generate-user/generate-user.component.scss";
+@import "../../facility-page/employees/employeemanager-detailpage/generate-user/generate-user.component.scss";
+
+
+.pp-card{
+    position: relative;
+    background: #fff;
+    width: 30%;
+    min-height: 300px;
+    border: 1px solid #bebebe;
+    margin-bottom: 20px;
+}
+
 .btn-box {
     text-align: center;
     padding: 30px;
@@ -235,7 +246,7 @@
 
 .featuresMainWrap {
     position: relative;
-    border: 2px solid #bdbdbd;
+    border: 1px solid #bdbdbd;
     margin-top: -5px;
     margin-right: 50px;
     margin-left: 50px;
@@ -244,18 +255,11 @@
 
 .btn-back {
     width: 20px;
-    display: inline-flex;
-    margin-left: 200px;
-    margin-bottom: 20px;
-    font-size: 16px;
-}
-
-.span {
-    font-size: 14px;
-    font-weight: bold;
-    font-family: monotype;
-    font-style: italic;
-    margin-top: 10px;
+    display: block;
+    color: rgba(16, 150, 212, 0.89);  
+    padding-left: 50px;
+    padding-bottom: 10px; 
+    font-size: 20px ;
 }
 
 .as-card {
@@ -351,11 +355,10 @@ tr:nth-child(even) {
 
 .right-column {
     float: left;
-    width: 40%;
+    width: 50%;
     padding-top: 10px;
     padding-bottom: 10px;
     box-sizing: border-box;
-    background: #f5f5f5;
     margin-left: 50px;
 }
 
@@ -479,4 +482,14 @@ tr:nth-child(even) {
     cursor: pointer;
     transition: ease-out;
     transition-delay: .3s;
+}
+.checkwrap{
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 5px;
+}
+
+.active{
+    background-color: #eee;
 }
