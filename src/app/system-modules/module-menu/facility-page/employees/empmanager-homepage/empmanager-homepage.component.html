@@ -25,7 +25,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody *ngIf="employees.length > 0">
         <tr  *ngFor="let item of employees">
             <td class="pointer" (click)="navEpDetail(item)">                
                 <div class="empWrap">
@@ -45,6 +45,11 @@
             <td>
                 <div *ngIf="!item.isActive" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i>Activate</div>
             </td>
+        </tr>
+    </tbody>
+    <tbody *ngIf="employees.length == 0">
+        <tr>
+            <span>Content Empty.</span>
         </tr>
     </tbody>
 </table>
