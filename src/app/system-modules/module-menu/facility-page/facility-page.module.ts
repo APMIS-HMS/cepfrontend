@@ -48,6 +48,7 @@ import { FacilityNetworkComponent } from './facility-network/facility-network.co
 import { AddMemberComponent } from './facility-network/add-member/add-member.component';
 import { AddOtherComponent } from './facility-network/add-other/add-other.component';
 import { NewFacEmployeeComponent } from 'app/system-modules/module-menu/facility-page/employees/new-fac-employee/new-fac-employee.component';
+import { EmployeeAccessRolesComponent } from './employees/employeemanager-detailpage/employee-access-roles/employee-access-roles.component';
 
 @NgModule({
     declarations: [
@@ -84,7 +85,8 @@ import { NewFacEmployeeComponent } from 'app/system-modules/module-menu/facility
         FacilityNetworkComponent,
         AddMemberComponent,
         AddOtherComponent,
-        NewFacEmployeeComponent
+        NewFacEmployeeComponent,
+        EmployeeAccessRolesComponent
     ],
     exports: [
     ],
