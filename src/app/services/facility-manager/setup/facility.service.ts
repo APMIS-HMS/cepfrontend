@@ -166,7 +166,7 @@ export class FacilitiesService {
     //   .post(path)
     //   .send(formData);
 
-      return this._socketService.getService('upload-excel').create(formData, id);
+    return this._socketService.getService('upload-excel').create(formData, id);
   }
   post(body: any, params: any) {
     const host = this._socketService.HOST;
@@ -175,33 +175,31 @@ export class FacilitiesService {
       .post(path)
       .send(body);
   }
-  
+
   addNetwork(facility: any, isDelete) {
     let that = this;
     return new Promise(function (resolve, reject) {
-      resolve(that._socketAddNetwork.create(facility, {query: {
-        'isdelete': isDelete
-      }}))
+      resolve(that._socketAddNetwork.create(facility, {
+        query: {
+          'isdelete': isDelete
+        }
+      }))
     });
   }
 
   joinNetwork(facility: any, isDelete) {
-    let that = this;
-    return new Promise(function (resolve, reject) {
-      resolve(that._socketAddNetwork.createNetwork(facility, {query: {
+    return this._socketAddNetwork.createNetwork(facility, {
+      query: {
         'isdelete': isDelete
-      }}))
-    });
+      }
+    })
   }
 
-  getNetwork(fac, isMemberOf){
-    let that = this;
-    return new Promise(function (resolve, reject) {
-      resolve(that._socketAddNetwork.get(fac, {
-        query:{
-          'ismember': isMemberOf
-        }
-      }))
-    });
+  getNetwork(fac, isMemberOf) {
+    return this._socketAddNetwork.get(fac, {
+      query: {
+        'ismember': isMemberOf
+      }
+    })
   }
 }

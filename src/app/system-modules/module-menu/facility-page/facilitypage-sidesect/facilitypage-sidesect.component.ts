@@ -44,6 +44,8 @@ export class FacilitypageSidesectComponent implements OnInit {
         console.log(this.memberFacilities);
       }
       //console.log(payload);
+    },error =>{
+      console.log(error);
     });
   }
 
