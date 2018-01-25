@@ -131,7 +131,7 @@ export class GenerateUserComponent implements OnInit {
         user.facilitiesRole.push(q);
       });
     });
-    this.userService.create(user).then(payload => {
+    this.userService.generateUser(user).then(payload => {
       this.getAccessList();
     });
   }

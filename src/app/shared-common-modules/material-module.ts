@@ -1,3 +1,4 @@
+import { ImageUpdateComponent } from './../system-modules/module-menu/facility-page/employees/image-update/image-update.component';
 import { PasswordResetComponent } from './../password-reset/password-reset.component';
 import { NgModule } from '@angular/core';
 import {
@@ -13,7 +14,6 @@ import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility
 import { GlobalDialogComponent } from '../shared-module/global-dialog/global-dialog.component';
 import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
 import { ImageCropperModule } from 'ng2-img-cropper';
-import { ImageUpdateComponent } from '../system-modules/module-menu/employee-manager/image-update/image-update.component';
 import { NgUploaderModule } from 'ngx-uploader';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { AddVitalsComponent } from '../system-modules/module-menu/patient-manager/add-vitals/add-vitals.component';
