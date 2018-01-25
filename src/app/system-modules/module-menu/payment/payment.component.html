@@ -14,13 +14,13 @@
                             </div>
                         </div>
                         <ul class="pending-bills">
-                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" routerLink="/dashboard/payment/bill/{{pendingBill.patientItem.personId }}">
+                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" routerLink="/dashboard/payment/bill/{{pendingBill.personDetails._id }}">
                                 <div class="list-img">
-                                    <img *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                    <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
+                                    <img *ngIf="pendingBill?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                    <img class="shadow" *ngIf="pendingBill?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{pendingBill?.patientItem?.personDetails?.firstName}} {{ pendingBill?.patientItem?.personDetails?.lastName}}</div>
+                                    <div class="pending-name">{{pendingBill?.personDetails?.firstName}} {{ pendingBill?.personDetails?.lastName}}</div>
                                     <div class="oda">
                                         <div class="pending-date">{{ pendingBill?.createdAt |date:'medium'}}</div>
                                         <div class="pending-amount" *ngIf="pendingBill.grandTotalExcludeInvoice!=0">
@@ -65,15 +65,15 @@
                             <ul class="pending-bills" *ngFor="let invoice of invoiceGroups">
                                 <li class="empWrap" (click)="onSelectedInvoice(invoice)">
                                     <div class="list-img">
-                                        <img *ngIf="invoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                                        <img *ngIf="invoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
+                                        <img *ngIf="invoice?.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.profileImageObject.thumbnail)">
+                                        <img *ngIf="invoice?.personDetails.profileImageObject == undefined" src="assets/images/users/default.png">
                                     </div>
                                     <div class="list-labels">
-                                        <div class="pending-name">{{invoice?.personDetails.personDetails.firstName}} {{invoice?.personDetails?.personDetails?.lastName}}</div>
+                                        <div class="pending-name">{{invoice?.personDetails.firstName}} {{invoice?.personDetails?.lastName}}</div>
                                         <div class="oda">
                                             <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
                                             <div class="pending-amount">
-                                                <span>&#x20a6;</span>{{invoice.totalPrice|numberThr}}</div>
+                                                <span>&#x20a6;</span>{{invoice.balance|numberThr}}</div>
                                         </div>
                                     </div>
                                 </li>

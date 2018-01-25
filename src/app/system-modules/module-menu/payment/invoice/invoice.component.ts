@@ -84,12 +84,12 @@ export class InvoiceComponent implements OnInit {
             }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
 
         this.isLoadingOtherInvoice = true;
-        var facility = {
-            "_id": this.selectedFacility._id,
-            "isQuery": false
-        }
-        this._todayInvoiceService.get(facility).then(payload => {
-            this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
+        this._todayInvoiceService.get(this.selectedFacility._id,{
+            query:{
+                "isQuery": false  
+            }
+        }).then(payload => {
+            this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
             this.isLoadingOtherInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
 
@@ -114,13 +114,13 @@ export class InvoiceComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingOtherInvoice = true;
-                var facility = {
-                    "_id": this.selectedFacility._id,
-                    "isQuery": true,
-                    "name": value
-                }
-                this._todayInvoiceService.get(facility).then(payload => {
-                    this.otherInvoiceGroups = payload.data.invoices.filter(x => x.personDetails._id != this.selectedPatient._id);
+                this._todayInvoiceService.get(this.selectedFacility._id, {
+                    query: {
+                        "isQuery": true,
+                        "name": value
+                    }
+                }).then(payload => {
+                    this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
                     this.isLoadingOtherInvoice = false;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });

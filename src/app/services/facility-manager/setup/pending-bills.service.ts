@@ -8,8 +8,8 @@ export class PendingBillService {
     this._socket = _socketService.getService('pending-bills');
   }
 
-  get(obj: any) {
-    return this._socket.create(obj);
+  get(id: string, query: any) {
+    return this._socket.get(id, query);
   }
 
 }

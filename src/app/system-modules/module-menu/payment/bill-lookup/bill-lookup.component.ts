@@ -147,13 +147,13 @@ export class BillLookupComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(value => {
         this.isLoadingInvoice = true;
-        var facility = {
-          "_id": this.selectedFacility._id,
-          'isQuery': true,
-          'name': value
-        }
-        this._todayInvoiceService.get(facility).then(payload => {
-          this.invoiceGroups = payload.data.invoices;
+        this._todayInvoiceService.get(this.selectedFacility._id, {
+          query: {
+              "isQuery": true,
+              'name': value
+          }
+      }).then(payload => {
+          this.invoiceGroups = payload.invoices;
           this.isLoadingInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
       });
@@ -163,16 +163,15 @@ export class BillLookupComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(value => {
         this.loadingPendingBills = true;
-        var facility = {
-          '_id': this.selectedFacility._id,
-          "isQuery": true,
-          "name": value
-        }
-        this._pendingBillService.get(facility)
-          .then(res => {
-            this.pendingBills = res.data.bills;
-            this.loadingPendingBills = false;
-          }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+        this._pendingBillService.get(this.selectedFacility._id, {
+          query: {
+            "isQuery": true,
+            'name': value
+          }
+        }).then((res: any) => {
+          this.pendingBills = res.bills;
+          this.loadingPendingBills = false;
+        }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
       });
   }
 
@@ -461,25 +460,24 @@ export class BillLookupComponent implements OnInit {
 
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
-    const facility = {
-      '_id': this.selectedFacility._id,
-      'isQuery': false
-    }
-    this._pendingBillService.get(facility)
-      .then(res => {
-        this.pendingBills = res.data.bills;
-        this.loadingPendingBills = false;
-      }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+    this._pendingBillService.get(this.selectedFacility._id, {
+      query: {
+        "isQuery": false
+      }
+    }).then((res: any) => {
+      this.pendingBills = res.bills;
+      this.loadingPendingBills = false;
+    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
   }
 
   private _getAllInvoices() {
     this.isLoadingInvoice = true;
-    const facility = {
-      '_id': this.selectedFacility._id,
-      'isQuery': false
-    }
-    this._todayInvoiceService.get(facility).then(payload => {
-      this.invoiceGroups = payload.data.invoices;
+    this._todayInvoiceService.get(this.selectedFacility._id,{
+      query:{
+        'isQuery': false
+      }
+    }).then(payload => {
+      this.invoiceGroups = payload.invoices;
       this.isLoadingInvoice = false;
     }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
   }
