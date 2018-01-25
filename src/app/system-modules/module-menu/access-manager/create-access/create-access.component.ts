@@ -195,7 +195,7 @@ export class CreateAccessComponent implements OnInit {
   }
 
 
-  onClickModule(module: FeatureModule) {
+  onClickModule(module: FeatureModule, i) {
     this.selectedModule = module;
     this.actions = module.actions;
   }
