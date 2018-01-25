@@ -1,5 +1,3 @@
-
-
 /* eslint-disable no-unused-vars */
 const logger = require('winston');
 class Service {
@@ -14,7 +12,8 @@ class Service {
   get(id, params) {
 
     return Promise.resolve({
-      id, text: `A new message with ID: ${id}!`
+      id,
+      text: `A new message with ID: ${id}!`
     });
   }
 
@@ -22,7 +21,6 @@ class Service {
     // logger.info(data.personId);
     const userService = this.app.service('users');
     const facilityService = this.app.service('facilities');
-
 
     return new Promise(function (resolve, reject) {
 
@@ -41,7 +39,9 @@ class Service {
             let facilitiesRole = [];
             facilitiesRole.push(facilityRole);
 
-            userService.patch(user._id, { facilitiesRole: facilitiesRole }).then(userPayload => {
+            userService.patch(user._id, {
+              facilitiesRole: facilitiesRole
+            }).then(userPayload => {
               resolve(facPayload);
             }, userError => {
               reject(userError);
@@ -72,7 +72,9 @@ class Service {
   }
 
   remove(id, params) {
-    return Promise.resolve({ id });
+    return Promise.resolve({
+      id
+    });
   }
   setup(app) {
     this.app = app;
