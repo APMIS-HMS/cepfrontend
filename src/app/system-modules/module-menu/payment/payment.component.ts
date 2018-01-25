@@ -62,13 +62,13 @@ export class PaymentComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingInvoice = true;
-                var facility = {
-                    "_id": this.selectedFacility._id,
-                    "isQuery": true,
-                    "name": value
-                }
-                this._todayInvoiceService.get(facility).then(payload => {
-                    this.invoiceGroups = payload.data.invoices;
+                this._todayInvoiceService.get(this.selectedFacility._id, {
+                    query: {
+                        "isQuery": true,
+
+                    }
+                }).then(payload => {
+                    this.invoiceGroups = payload.invoices;
                     this.isLoadingInvoice = false;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });
@@ -78,77 +78,76 @@ export class PaymentComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.loadingPendingBills = true;
-                var facility = {
-                    "_id": this.selectedFacility._id,
-                    "isQuery": true,
-                    "name": value
-                }
-                this._pendingBillService.get(facility)
-                    .then(res => {
-                        this.pendingBills = res.data.bills;
-                        this.loadingPendingBills = false;
-                    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+                this._pendingBillService.get(this.selectedFacility._id, {
+                    query: {
+                        "isQuery": true
+                    }
+                }).then((res: any) => {
+                    this.pendingBills = res.bills;
+                    this.loadingPendingBills = false;
+                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });
     }
 
     private _getInvoices() {
         this.isLoadingInvoice = true;
-        var facility = {
-            "_id": this.selectedFacility._id,
-            "isQuery": false
-        }
-        this._todayInvoiceService.get(facility).then(payload => {
-            this.invoiceGroups = payload.data.invoices;
+        this._todayInvoiceService.get(this.selectedFacility._id, {
+            query: {
+                "isQuery": false
+            }
+        }).then(payload => {
+            console.log(payload);
+            this.invoiceGroups = payload.invoices;
             console.log(this.invoiceGroups);
-            this.totalAmountReceived = payload.data.amountReceived;
+            this.totalAmountReceived = payload.amountReceived;
             console.log(this.totalAmountReceived);
             this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
-        }).catch(err => this._notification('Error', 'There was a problem getting invoices, Please try again later!'));
+        }).catch(err => {
+            console.log(err);
+            this._notification('Error', 'There was a problem getting invoices, Please try again later!');
+        });
     }
 
     private _getBills() {
         this.loadingPendingBills = true;
-        var facility = {
-            "_id": this.selectedFacility._id,
-            "isQuery": false
-        }
-        this._pendingBillService.get(facility)
-            .then(res => {
-                this.pendingBills = res.data.bills;
-                console.log(this.pendingBills);
-                this.totalAmountBilled = res.data.amountBilled;
+        this._pendingBillService.get(this.selectedFacility._id, {
+            query: {
+                "isQuery": false
+            }
+        })
+            .then((res: any) => {
+                this.pendingBills = res.bills;
+                this.totalAmountBilled = res.amountBilled;
                 this.loadingPendingBills = false;
             }).catch(err => {
-                this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
+                console.log(err);
+                this._notification('Error', err);
             });
     }
 
     private _getLocAmountAccrued() {
         this.loadingLocAmountAccrued = true;
-        var facility = {
-            "_id": this.selectedFacility._id
-        }
-        this._locSummaryCashService.get(facility)
+        this._locSummaryCashService.get(this.selectedFacility._id,{})
             .then(payload2 => {
                 console.log(payload2);
                 this.loadingLocAmountAccrued = false;
-                this.barChartLabels = payload2.data.barChartLabels;
-                if (payload2.data.barChartData.length > 0) {
+                this.barChartLabels = payload2.barChartLabels;
+                if (payload2.barChartData.length > 0) {
                     this.barChartData.splice(0, 1);
                 }
-
-                for (let k = 0; k < payload2.data.barChartData.length; k++) {
+                for (let k = 0; k < payload2.barChartData.length; k++) {
                     this.barChartData.push({ "data": [0], "label": "" });
                 }
-                for (let i = 0; i < payload2.data.barChartData.length; i++) {
-                    for (let j = 0; j < payload2.data.barChartData[i].data.length; j++) {
-                        this.barChartData[i].data.push(payload2.data.barChartData[i].data[j]);
+                for (let i = 0; i < payload2.barChartData.length; i++) {
+                    for (let j = 0; j < payload2.barChartData[i].data.length; j++) {
+                        this.barChartData[i].data.push(payload2.barChartData[i].data[j]);
                     }
-                    this.barChartData[i].label = payload2.data.barChartData[i].label;
+                    this.barChartData[i].label = payload2.barChartData[i].label;
                 }
 
             }).catch(err => {
+                console.log(err);
                 this.loadingLocAmountAccrued = false;
                 this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
             });
