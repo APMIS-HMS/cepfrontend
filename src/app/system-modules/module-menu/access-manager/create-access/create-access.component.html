@@ -3,20 +3,23 @@
 
     <div class="inner-page-wrap">
         <div>
-            <legend class="page-title">Create Group Role</legend>
-            <div class="btn-back" [routerLink]="['/dashboard/access-manager/access-role-details']">
-                <i class="fa fa-arrow-left " aria-hidden="true"></i>
-                <!-- <span class="span">back</span> -->
-            </div>
+            <legend class="page-title">Create Group Role</legend>            
             <div class="featuresMainWrap">
                 <div class="filters-wraper">
                     <mat-input-container class="">
                         <input type="text" matInput mat-error placeholder="Enter role name" [formControl]="txtAccessName">
                     </mat-input-container>
+                    <!-- <div class="btn-box">
+                            <button style="padding: 0px 20px;" mat-raised-button class="mat-sm-btn" [routerLink]="['/dashboard/access-manager/access-role-details']">
+                                <i class="fa fa-arrow-left " aria-hidden="true"></i>Back</button>
+                    </div> -->
+                    <!-- <div class="btn-back">
+                        <i class="fa fa-arrow-left " aria-hidden="true"></i>
+                        <span class="span">back</span>
+                    </div> -->
                 </div>
                 <div class="access-content-sect">
                     <div class="pp-card shadow-grey">
-                        <div class="as-count-sect card-seperator">
                             <div class="cad-head">
                                 <div class="module-label">MODULES</div>
                             </div>
@@ -39,9 +42,9 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
                     </div>
-                    <div class="right-column card-seperator">
+                    <div class="pp-card shadow-grey"  style="float: right; margin-left:20px; width:100%;">
+                        <div class="as-count-sect card-seperator">
                         <div class="cad-head">
                             <div class="module-label">ACCESS</div>
                         </div>
@@ -60,42 +63,43 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <table cellpadding="0 " cellspacing="0" border="0.4 ">
-                    <thead>
-                        <tr class="table-header">
-                            <th>
-                                <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                <span>No</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                <span>Module</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                <span>Accessibilities</span>
-                            </th>
-                            <th>
-                                <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                <span>Action</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let selectedItem of selectedItems; let i = index;">
-                            <td class="table-content">{{ i+1 }}</td>
-                            <td class="table-content">{{ selectedItem.moduleName }}</td>
-                            <td class="table-content">{{ selectedItem.accessName }}</td>
-                            <td><i class="fa fa-trash fa-icon "></i></td>
-                        </tr>
-                        <tr *ngIf="selectedItems.length === 0">
-                            <td colspan="4">
-                                <div style="width: 100%; padding: 10px; text-align:center; font-size: 10px;">No data to display</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    </div>                   
+                </div>  
+                <table cellpadding="0"  cellspacing="0" border="0.4 ">
+                        <thead>
+                            <tr class="table-header">
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>S/N</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Module</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Accessibilities</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span>Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let selectedItem of selectedItems; let i = index;">
+                                <td class="table-content">{{ i+1 }}</td>
+                                <td class="table-content">{{ selectedItem.moduleName }}</td>
+                                <td class="table-content">{{ selectedItem.accessName }}</td>
+                                <td><i class="fa fa-trash fa-icon "></i></td>
+                            </tr>
+                            <tr *ngIf="selectedItems.length === 0">
+                                <td colspan="4">
+                                    <div style="width: 100%; padding: 10px; text-align:center; font-size: 10px;">No data to display</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>           
 
                 <div class="btn-box">
                     <button mat-raised-button class="mat-sm-btn" (click)="create();" [disabled]="selectedItems.length === 0 || disableBtn" style="padding: 0px 20px !important;">
