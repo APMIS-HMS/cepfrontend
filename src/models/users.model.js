@@ -15,7 +15,7 @@ module.exports = function (app) {
     personId: { type: Schema.Types.ObjectId, required: true },
     verificationToken: { type: String, required: false },
     isTokenVerified: { type: Boolean, 'default': false },
-    facilitiesRole: [{ type: String }]
+    facilitiesRole: [{ type: Schema.Types.Mixed }]
   },
   {
     timestamps: true

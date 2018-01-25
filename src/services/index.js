@@ -98,6 +98,7 @@ const searchTags = require('./search-tags/search-tags.service.js');
 const uploadExcel = require('./upload-excel/upload-excel.service.js');
 const familyBeneficiaries = require('./family-beneficiaries/family-beneficiaries.service.js');
 const searchNetworkFacilities = require('./search-network-facilities/search-network-facilities.service.js');
+const generateUser = require('./generate-user/generate-user.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -199,4 +200,5 @@ module.exports = function (app) {
   app.configure(uploadExcel);
   app.configure(familyBeneficiaries);
   app.configure(searchNetworkFacilities);
+  app.configure(generateUser);
 };
