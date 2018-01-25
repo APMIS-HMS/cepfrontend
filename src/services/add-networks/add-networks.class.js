@@ -72,7 +72,7 @@ class Service {
               reject(error);
             });
           });
-          if(networkMember.memberFacilities.length == 0){
+          if (networkMember.memberFacilities.length == 0) {
             resolve([]);
           }
         }, error => {
@@ -89,89 +89,98 @@ class Service {
     var errors = [];
     if (params.query.isdelete.toString() == 'false') {
       return new Promise(function (resolve, reject) {
-        data.memberFacilities.forEach((current, i) => {
-          facilitiesService.get(current, {}).then(networkMember => {
-            let checkId = networkMember.memberof.filter(x => x.toString() == data.hostId.toString());
-            if (checkId.length == 0) {
-              networkMember.memberof.push(data.hostId);
-            }
-            facilitiesService.patch(networkMember._id, {
-              memberof: networkMember.memberof
-            }).then(updatedNetworkMember => {
-              results.push(updatedNetworkMember);
-              facilitiesService.get(data.hostId, {}).then(networkHost => {
-                let checkId2 = networkHost.memberFacilities.filter(x => x.toString() == current.toString());
-                if (checkId2.length == 0) {
-                  networkHost.memberFacilities.push(current);
-                }
-                facilitiesService.patch(networkHost._id, {
-                  memberFacilities: networkHost.memberFacilities
-                }).then(payload => {
-                  var success = {
-                    "members": results,
-                    "host": payload
+        if (data.memberFacilities.length > 0) {
+          data.memberFacilities.forEach((current, i) => {
+            facilitiesService.get(current, {}).then(networkMember => {
+              let checkId = networkMember.memberof.filter(x => x.toString() == data.hostId.toString());
+              if (checkId.length == 0) {
+                networkMember.memberof.push(data.hostId);
+              }
+              facilitiesService.patch(networkMember._id, {
+                memberof: networkMember.memberof
+              }).then(updatedNetworkMember => {
+                results.push(updatedNetworkMember);
+                facilitiesService.get(data.hostId, {}).then(networkHost => {
+                  let checkId2 = networkHost.memberFacilities.filter(x => x.toString() == current.toString());
+                  if (checkId2.length == 0) {
+                    networkHost.memberFacilities.push(current);
                   }
-                  if (i == data.memberFacilities.length - 1) {
-                    resolve(success);
-                  }
-                }, error => {
-                  errors.push(error);
-                  if (i == data.memberFacilities.length - 1) {
-                    reject(errors);
-                  }
+                  facilitiesService.patch(networkHost._id, {
+                    memberFacilities: networkHost.memberFacilities
+                  }).then(payload => {
+                    var success = {
+                      "members": results,
+                      "host": payload
+                    }
+                    if (i == data.memberFacilities.length - 1) {
+                      resolve(success);
+                    }
+                  }, error => {
+                    errors.push(error);
+                    if (i == data.memberFacilities.length - 1) {
+                      reject(errors);
+                    }
+                  });
+
                 });
-
+              }, error => {
+                reject(error);
               });
-            }, error => {
-              reject(error);
-            });
 
+            });
           });
-        });
+        } else {
+          resolve({});
+        }
+
       });
     } else {
       return new Promise(function (resolve, reject) {
-        data.memberFacilities.forEach((current, i) => {
-          facilitiesService.get(current, {}).then(networkMember => {
-            let checkId = networkMember.memberof.filter(x => x.toString() == data.hostId.toString());
-            if (checkId.length > 0) {
-              let index = networkMember.memberof.indexOf(data.hostId);
-              networkMember.memberof.splice(index, 1);
-            }
-            facilitiesService.patch(networkMember._id, {
-              memberof: networkMember.memberof
-            }).then(updatedNetworkMember => {
-              results.push(updatedNetworkMember);
-              facilitiesService.get(data.hostId, {}).then(networkHost => {
-                let checkId2 = networkHost.memberFacilities.filter(x => x.toString() == current.toString());
-                if (checkId2.length > 0) {
-                  let index2 = networkHost.memberFacilities.indexOf(current);
-                  networkHost.memberFacilities.splice(index2, 1);
-                }
-                facilitiesService.patch(networkHost._id, {
-                  memberFacilities: networkHost.memberFacilities
-                }).then(payload => {
-                  var success = {
-                    "members": results,
-                    "host": payload
+        if (data.memberFacilities.length > 0) {
+          data.memberFacilities.forEach((current, i) => {
+            facilitiesService.get(current, {}).then(networkMember => {
+              let checkId = networkMember.memberof.filter(x => x.toString() == data.hostId.toString());
+              if (checkId.length > 0) {
+                let index = networkMember.memberof.indexOf(data.hostId);
+                networkMember.memberof.splice(index, 1);
+              }
+              facilitiesService.patch(networkMember._id, {
+                memberof: networkMember.memberof
+              }).then(updatedNetworkMember => {
+                results.push(updatedNetworkMember);
+                facilitiesService.get(data.hostId, {}).then(networkHost => {
+                  let checkId2 = networkHost.memberFacilities.filter(x => x.toString() == current.toString());
+                  if (checkId2.length > 0) {
+                    let index2 = networkHost.memberFacilities.indexOf(current);
+                    networkHost.memberFacilities.splice(index2, 1);
                   }
-                  if (i == data.memberFacilities.length - 1) {
-                    resolve(success);
-                  }
-                }, error => {
-                  errors.push(error);
-                  if (i == data.memberFacilities.length - 1) {
-                    reject(errors);
-                  }
+                  facilitiesService.patch(networkHost._id, {
+                    memberFacilities: networkHost.memberFacilities
+                  }).then(payload => {
+                    var success = {
+                      "members": results,
+                      "host": payload
+                    }
+                    if (i == data.memberFacilities.length - 1) {
+                      resolve(success);
+                    }
+                  }, error => {
+                    errors.push(error);
+                    if (i == data.memberFacilities.length - 1) {
+                      reject(errors);
+                    }
+                  });
+
                 });
-
+              }, error => {
+                reject(error);
               });
-            }, error => {
-              reject(error);
-            });
 
+            });
           });
-        });
+        } else {
+          resolve({});
+        }
       });
     }
 
