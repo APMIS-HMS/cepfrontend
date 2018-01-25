@@ -96,6 +96,10 @@ const hmos = require('./hmos/hmos.service.js');
 // const hiaplan = require('./hiaplan/hiaplan.service.js');
 const tagDictioneries = require('./tag-dictioneries/tag-dictioneries.service.js');
 const searchTags = require('./search-tags/search-tags.service.js');
+const pendingBills = require('./pending-bills/pending-bills.service.js');
+const todayInvoices = require('./today-invoices/today-invoices.service.js');
+const locSummaryCashes = require('./loc-summary-cashes/loc-summary-cashes.service.js');
+const makePayments = require('./make-payments/make-payments.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -194,4 +198,8 @@ module.exports = function (app) {
   app.configure(hmos);
   app.configure(tagDictioneries);
   app.configure(searchTags);
+  app.configure(pendingBills);
+  app.configure(todayInvoices);
+  app.configure(locSummaryCashes);
+  app.configure(makePayments);
 };
