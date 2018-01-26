@@ -1,8 +1,9 @@
+import { PersonService } from './../../../../../services/facility-manager/setup/person.service';
+import { ImageUploaderEnum } from './../../../../../shared-module/helpers/image-uploader-enum';
+import { Person } from './../../../../../models/facility-manager/setup/person';
+import { Employee } from './../../../../../models/facility-manager/setup/employee';
 import { Component, OnInit, EventEmitter, Output, ViewChild, Input } from '@angular/core';
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
-import { PersonService } from '../../../../services/facility-manager/setup/index';
-import { Employee, Person } from '../../../../models/index';
-import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { NgUploaderOptions } from 'ngx-uploader';
 
 @Component({

@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./user-accounts.component.scss',]
 })
 export class UserAccountsComponent implements OnInit {
+  item: any;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   popup_listing = false;
@@ -85,9 +86,11 @@ export class UserAccountsComponent implements OnInit {
     // }
   }
 
+
   popListing(item: any) {
     const auth: any = this.locker.getObject('auth');
     console.log(auth);
+    this.item = item;
     this.facilityService.get(item._id,{}).then(payload =>{
       this.selectedFacility = payload;
       if (this.selectedFacility.isTokenVerified === false) {
@@ -112,6 +115,14 @@ export class UserAccountsComponent implements OnInit {
     this.popup_listing = false;
     this.logoutConfirm_on = false;
     this.popup_verifyToken = false;
+  }
+  close_onClick2(){
+    this.popup_verifyToken = false;
+    console.log('am called again')
+    if(this.item !== undefined && this.item._id !== undefined){
+      console.log('am called again2')
+      this.popListing(this.item); 
+    }
   }
   logoutConfirm_show() {
     this.popup_listing = false;

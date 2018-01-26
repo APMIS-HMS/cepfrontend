@@ -3,7 +3,6 @@ import { LogoutConfirmComponent } from '../system-modules/module-menu/logout-con
 import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { CommonModule, } from '@angular/common';
-import { ImageUpdateComponent } from '../system-modules/module-menu/employee-manager/image-update/image-update.component';
 import { NgUploaderModule } from 'ngx-uploader';
 import { GlobalPatientLookupComponent } from './global-patient-lookup/global-patient-lookup.component';
 import { VerifyTokenComponent } from '../facility-setup/verify-token/verify-token.component';

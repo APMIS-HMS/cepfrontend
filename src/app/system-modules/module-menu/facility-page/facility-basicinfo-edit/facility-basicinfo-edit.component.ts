@@ -134,12 +134,17 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 			facilityClassId: form.facilityClassId,
 			facilityOwnershipId: form.facilityOwnershipId,
 			website: form.facilitywebsite,
-			_id: form._id
+			_id: form._id,
+			isHostFacility: form.network,
+			isNetworkFacility: (form.network === true) ? true : false
+			
 		}
+		console.log(facility);
 		this.systemModuleService.on();
 		this.facilityService.patch(facility._id, facility, {}).then(payload => {
 			this.systemModuleService.off();
-			this.systemModuleService.announceSweetProxy('Thanks for saving', 'info');
+			this.systemModuleService.announceSweetProxy('Facility updated successfully', 'success');
+			this.close_onClick();
 		}, error => {
 			console.log(error);
 			this.systemModuleService.off();

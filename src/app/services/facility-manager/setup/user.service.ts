@@ -69,5 +69,9 @@ export class UserService {
         return this._socketService.getService('password-reset')
             .create(body);
     }
+    generateUser(data){
+        return this._socketService.getService('generate-user')
+        .create(data);
+    }
 
 }
