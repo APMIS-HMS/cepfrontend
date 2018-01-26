@@ -246,11 +246,10 @@
 
 .featuresMainWrap {
     position: relative;
-    border: 1px solid #bdbdbd;
     margin-top: -5px;
-    margin-right: 50px;
-    margin-left: 50px;
-    padding: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 15px;
 }
 
 .btn-back {
@@ -355,11 +354,22 @@ tr:nth-child(even) {
 
 .right-column {
     float: left;
-    width: 50%;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    // width: 50%;
+    // padding-top: 10px;
+    // padding-bottom: 10px;
     box-sizing: border-box;
     margin-left: 50px;
+    // position: relative;
+    // background: #fff;
+    // min-height: 300px;
+    // margin-bottom: 20px;
+
+    position: relative;
+    background: #fff;
+    width: 100%;
+    min-height: 300px;
+    border: 1px solid #bebebe;
+    margin-bottom: 20px;
 }
 
 .container {
