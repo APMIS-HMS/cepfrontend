@@ -36,6 +36,13 @@
     cursor: pointer;
     color: #194985;
 }
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 500px;
+}
 
 @media only screen and (max-width: 900px) {
     .net-inwrap{
