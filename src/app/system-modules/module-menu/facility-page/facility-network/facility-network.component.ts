@@ -6,6 +6,7 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-facility-network',
