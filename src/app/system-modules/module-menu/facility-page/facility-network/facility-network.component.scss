@@ -36,3 +36,15 @@
     cursor: pointer;
     color: #194985;
 }
+
+@media only screen and (max-width: 900px) {
+    .net-inwrap{
+        display: block;
+    }
+    .net-itemA{
+        margin-bottom: 10px;
+    }
+    .net-itemA, .net-itemB{
+        width: 100%;
+    }
+}

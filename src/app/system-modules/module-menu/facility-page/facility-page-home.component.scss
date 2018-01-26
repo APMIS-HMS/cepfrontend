@@ -453,6 +453,23 @@ th {
 .modal-overlay{
     position: fixed;
 }
+.dept-name{
+    width: 100%;
+    padding-right: 80px;
+    box-sizing: border-box;
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */    
+    white-space: -pre-wrap;     /* Opera <7 */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
+}
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 850px;
+}
 
 @media only screen and (max-width: 900px) {
     .card-hider{
@@ -470,5 +487,11 @@ th {
         width: 95%;
         border: 2px solid #fff;
         margin: 0 auto;
+    }
+}
+@media only screen and (max-width: 500px){
+    .action-icons{
+        position: absolute;
+        right: 10px;
     }
 }

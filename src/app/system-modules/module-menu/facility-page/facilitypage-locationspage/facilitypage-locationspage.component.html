@@ -14,35 +14,37 @@
                 </div>
             </div>
             <div *ngIf="showLoc" class="dept-units">
-                <table cellpadding="0" cellspacing="0" border="0.5"> 
-                    <thead>
-                        <tr>
-                            <th>
-                                <span style="padding-left: 3px;">Minor Location</span>
-                            </th>
-                            <th>
-                                <span style="padding-left: 3px;">Short Name</span>
-                            </th>
-                            <th>
-                                <span style="padding-left: 3px;">Describtion</span>
-                            </th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-    
-                    <tbody>
-                        <tr>
-                            <td> Surgical Out Patient Unit</td>
-                            <td>SOP Unit</td>
-                            <td>All them surgicall operations takes place right here at this department</td>
-                            <td class="action-icons">
-                                <i (click)="newLoc_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>
+                <div class="tbl-resp-wrap">
+                    <table cellpadding="0" cellspacing="0" border="0.5"> 
+                        <thead>
+                            <tr>
+                                <th>
+                                    <span style="padding-left: 3px;">Minor Location</span>
+                                </th>
+                                <th>
+                                    <span style="padding-left: 3px;">Short Name</span>
+                                </th>
+                                <th>
+                                    <span style="padding-left: 3px;">Describtion</span>
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            <tr>
+                                <td> Surgical Out Patient Unit</td>
+                                <td>SOP Unit</td>
+                                <td>All them surgicall operations takes place right here at this department</td>
+                                <td class="action-icons">
+                                    <i (click)="newLoc_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </li>
     </ul>

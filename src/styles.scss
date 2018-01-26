@@ -1694,6 +1694,7 @@ ul.topmenuwrap li:hover {
 }
 .pg-menuWrap, .pg-menuWrap-mobile {
     width: 100%;
+    position: fixed;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -2035,7 +2036,7 @@ ul.topmenuwrap li:hover {
     }
     .pg-menuWrap-mobile{
         display: block;
-        position: absolute;
+        position: fixed;
         z-index: 2;
         background: #0288D1;
         padding: 10px 0;

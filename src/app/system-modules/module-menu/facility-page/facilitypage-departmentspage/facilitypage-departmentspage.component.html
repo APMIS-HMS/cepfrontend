@@ -15,64 +15,66 @@
                     </div>
                 </div> 
                 <div *ngIf="showUnit_selectedDepartmentUnit(dept)" class="dept-units">
-                    <table cellpadding="0" cellspacing="0" border="0.5"> 
-                        <thead>
-                            <tr *ngIf="dept.units.length > 0">
-                                <th>
-                                    <span style="padding-left: 3px;">Unit</span>
-                                </th>
-                                <th>
-                                    <span style="padding-left: 3px;">Short Name</span>
-                                </th>
-                                <!-- <th>
-                                    <span style="padding-left: 3px;">Describtion</span>
-                                </th> -->
-                                <!-- <th style="min-width:120px;">
-                                    <span style="padding-left: 3px;">Clinic</span>
-                                </th> -->
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-        
-                        <tbody>
-                            <tr *ngFor="let unit of dept.units">
-                                <td> {{unit.name}}</td>
-                                <td>{{unit.shortName}}</td>
-                                <!-- <td>All them surgicall operations takes place right here at this department</td> -->
-                                <!-- <td class="td-worspace">
-                                    <div class="workspace-count">
-                                        <div class="workspace-count">3 Clinic(s)</div>
+                    <div class="tbl-resp-wrap">
+                        <table cellpadding="0" cellspacing="0" border="0.5"> 
+                            <thead>
+                                <tr *ngIf="dept.units.length > 0">
+                                    <th>
+                                        <span style="padding-left: 3px;">Unit</span>
+                                    </th>
+                                    <th>
+                                        <span style="padding-left: 3px;">Short Name</span>
+                                    </th>
+                                    <!-- <th>
+                                        <span style="padding-left: 3px;">Describtion</span>
+                                    </th> -->
+                                    <!-- <th style="min-width:120px;">
+                                        <span style="padding-left: 3px;">Clinic</span>
+                                    </th> -->
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+            
+                            <tbody>
+                                <tr *ngFor="let unit of dept.units">
+                                    <td> {{unit.name}}</td>
+                                    <td>{{unit.shortName}}</td>
+                                    <!-- <td>All them surgicall operations takes place right here at this department</td> -->
+                                    <!-- <td class="td-worspace">
+                                        <div class="workspace-count">
+                                            <div class="workspace-count">3 Clinic(s)</div>
+                                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                                <li class="workspace-listItem">
+                                                    <ng-container>
+                                                        <span>Clinic 1</span>
+                                                    </ng-container>
+                                                </li>
+                                                <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                            </ul>
+                                        </div>
                                         <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                             <li class="workspace-listItem">
                                                 <ng-container>
-                                                    <span>Clinic 1</span>
+                                                    <span>Workspace 1</span>
+                                                </ng-container>
+                                            </li>
+                                            <li class="workspace-listItem">
+                                                <ng-container>
+                                                    <span>Workspace 2</span>
                                                 </ng-container>
                                             </li>
                                             <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
                                         </ul>
-                                    </div>
-                                    <ul class="shadow-RB workspace-listWrap animated zoomIn">
-                                        <li class="workspace-listItem">
-                                            <ng-container>
-                                                <span>Workspace 1</span>
-                                            </ng-container>
-                                        </li>
-                                        <li class="workspace-listItem">
-                                            <ng-container>
-                                                <span>Workspace 2</span>
-                                            </ng-container>
-                                        </li>
-                                        <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                                    </ul>
-                                </td> -->
-                                <td class="action-icons">
-                                    <i (click)="editUnit_onClick(dept, unit)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </td>
-                            </tr> 
-                        </tbody>
-                    </table>
+                                    </td> -->
+                                    <td class="action-icons">
+                                        <i (click)="editUnit_onClick(dept, unit)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
            

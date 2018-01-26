@@ -368,3 +368,11 @@ th {
     background: transparent;
     border: 0.5px solid #ddd;
 }
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 850px;
+}
+
