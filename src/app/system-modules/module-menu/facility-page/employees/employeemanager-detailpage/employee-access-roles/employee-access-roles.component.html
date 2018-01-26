@@ -7,11 +7,12 @@
 
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <form novalidate>
-            <mat-checkbox value="CMD" name="role" aria-checked>CMD</mat-checkbox><br>
+        <form [formGroup]="userPrivileges" novalidate>
+            <mat-checkbox value="CMD" name="role" aria-checked>CMD</mat-checkbox>
+            <br/>
         </form>
         <div class="example-full-width" id="example-full-width">
-            <button mat-raised-button>
+            <button (click)="employeeAccessRoleShow()" class="btn-saveroles" mat-raised-button>
                 Save
             </button>
         </div>
