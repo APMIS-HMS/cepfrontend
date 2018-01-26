@@ -365,7 +365,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   employeeAccessRoleShow() {
     this.userPrivileges = !this.userPrivileges;
-    console.log("nnbb");
+    
   }
 
 }

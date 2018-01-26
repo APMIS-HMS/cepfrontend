@@ -14,7 +14,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
   mainErr = true;
   errMsg = "";
 
-  constructor( private formBuilder: FormBuilder) { }
+  constructor( private formBuilder: FormBuilder,) { }
 
   ngOnInit() {
     this.userPrivileges = this.FormBuilder.group({
