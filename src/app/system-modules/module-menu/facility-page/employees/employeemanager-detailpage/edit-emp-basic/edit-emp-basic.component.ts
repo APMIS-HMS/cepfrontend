@@ -9,6 +9,7 @@ import {
 } from '../../../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-edit-emp-basic',
@@ -60,7 +61,8 @@ export class EditEmpBasicComponent implements OnInit {
 		private titleService: TitleService,
 		private maritalStatusService: MaritalStatusService,
 		private personService: PersonService,
-		private locker: CoolLocalStorage) { }
+		private locker: CoolLocalStorage,
+	private systemModulesService: SystemModuleService) { }
 
 	ngOnInit() {
 		console.log(this.selectedPerson);
@@ -156,7 +158,10 @@ export class EditEmpBasicComponent implements OnInit {
 
 		this.employeeService.update(this.selectedEmployee).then(payload => {
 			this.loading = false;
+			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
 			this.close_onClick();
+		}).catch(err => {
+			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
 		});
 	}
 
@@ -195,8 +200,11 @@ export class EditEmpBasicComponent implements OnInit {
 				console.log(payload);
 				this.selectedEmployee.personDetails = payload;
 				this.locker.setObject('selectedEmployee', this.selectedEmployee);
+				this.systemModulesService.announceSweetProxy('Person Information Successfully Saved.', 'success');
 				this.loading = false;
 				this.close_onClick();
+			}).catch(err => {
+				this.systemModulesService.announceSweetProxy('Error occured while saving information, please check it and try again.', 'error');
 			});
 		}
 	}

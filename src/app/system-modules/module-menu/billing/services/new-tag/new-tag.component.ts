@@ -81,7 +81,7 @@ export class NewTagComponent implements OnInit {
         const authObj: any = this._locker.getObject('auth')
         const auth: any = authObj.data;
         tag.createdBy = auth._id;
-        console.log(tag);
+        console.log(tag); 
         this._tagService.create(tag).then(callback => {
           this.systemModuleService.off;
           this.tagValueChanged.emit(true);

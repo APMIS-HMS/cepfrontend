@@ -7,6 +7,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-add-member',
@@ -39,7 +40,8 @@ export class AddMemberComponent implements OnInit {
     public facilityService: FacilitiesService,
     private userService: UserService,
     private personService: PersonService,
-    private locker: CoolLocalStorage) { }
+    private locker: CoolLocalStorage,
+  private systemService: SystemModuleService) { }
 
   ngOnInit() {
     this.LoggedInFacility = <any>this.locker.getObject("selectedFacility");
@@ -111,12 +113,14 @@ export class AddMemberComponent implements OnInit {
       this.facilityService.get(fac.hostId, {}).then(payl => {
         this.loading = false;
         let facc = payl.data;
+        this.systemService.announceSweetProxy('Facilities has successfully been added to your Network!.', 'success');
         console.log(payl);
         this.close_onClick();
       })
       
     }, error => {
       console.log(error);
+      this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
     });
   }
 
@@ -137,16 +141,19 @@ export class AddMemberComponent implements OnInit {
         this.facilityService.get(fac.hostId, {}).then(payl => {
           this.loading = false;
           let facc = payl.data;
+          this.systemService.announceSweetProxy('Network has successfully been Updated!.', 'success');
           console.log(payl);
           this.close_onClick();
         })
         
       }, error => {
         console.log(error);
+        this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
       });
       
     }, error => {
       console.log(error);
+      this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
     });
   }
 
