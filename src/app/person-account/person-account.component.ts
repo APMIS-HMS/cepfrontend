@@ -12,6 +12,8 @@ import { animate, trigger, state, style, transition } from '@angular/animations'
 import { CountriesService, GenderService, PersonService, UserService, FacilitiesService } from '../services/facility-manager/setup/index';
 import { Gender, User, Person, Address } from '../models/index';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
+import { SecurityQuestionsService } from 'app/services/facility-manager/setup/security-questions.service';
+import { TitleCasePipe } from '@angular/common';
 
 
 @Component({
@@ -49,6 +51,7 @@ export class PersonAccountComponent implements OnInit {
   selectedState: any = <any>{};
   genders: Gender[] = [];
   titles: Title[] = [];
+  securityQuestions: any[] = [];
   errMsg: string;
   mainErr = true;
   isSuccessful = false;
@@ -67,7 +70,9 @@ export class PersonAccountComponent implements OnInit {
     private userServiceFacade: UserFacadeService,
     private facilitiesService: FacilitiesService,
     private systemModuleService: SystemModuleService,
-    private vcr: ViewContainerRef, private toastr: ToastsManager
+    private securityQuestionService: SecurityQuestionsService,
+    private vcr: ViewContainerRef, private toastr: ToastsManager,
+    private titleCasePipe:TitleCasePipe
   ) {
     this.toastr.setRootViewContainerRef(vcr);
   }
@@ -75,12 +80,16 @@ export class PersonAccountComponent implements OnInit {
   ngOnInit() {
     this.getGenders();
     this.getTitles();
+    this.getSecurityQuestions();
     this.frmPerson = this.formBuilder.group({
       persontitle: [new Date(), [<any>Validators.required]],
       firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       gender: [[<any>Validators.minLength(2)]],
       dob: [new Date(), [<any>Validators.required]],
+      motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+      securityQuestion: ['', [<any>Validators.required]],
+      securityAnswer: ['', [<any>Validators.required]],
       // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
       phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
     });
@@ -107,6 +116,14 @@ export class PersonAccountComponent implements OnInit {
       this.titles = payload;
     })
   }
+  getSecurityQuestions() {
+    this.securityQuestionService.find({})
+      .then(payload => {
+        this.securityQuestions = payload.data;
+      }, error => {
+
+      });
+  }
   onNationalityChange(value: any) {
     const country = this.countries.find(item => item._id === value);
     this.selectedCountry = country;
@@ -118,13 +135,16 @@ export class PersonAccountComponent implements OnInit {
       this.isSaving = true;
       this.systemModuleService.on();
       const personModel = <any>{
-        title: this.frmPerson.controls['persontitle'].value,
-        firstName: this.frmPerson.controls['firstname'].value,
-        lastName: this.frmPerson.controls['lastname'].value,
-        gender: this.frmPerson.controls['lastname'].value,
+        title: this.titleCasePipe.transform(this.frmPerson.controls['persontitle'].value),
+        firstName: this.titleCasePipe.transform(this.frmPerson.controls['firstname'].value),
+        lastName: this.titleCasePipe.transform(this.frmPerson.controls['lastname'].value),
+        gender: this.frmPerson.controls['gender'].value,
         dateOfBirth: this.frmPerson.controls['dob'].value,
+        motherMaidenName: this.titleCasePipe.transform(this.frmPerson.controls['motherMaidenName'].value),
         // email: this.frmPerson.controls['email'].value,
-        primaryContactPhoneNo: this.frmPerson.controls['phone'].value
+        primaryContactPhoneNo: this.frmPerson.controls['phone'].value,
+        securityQuestion: this.frmPerson.controls['securityQuestion'].value,
+        securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
       };
       let body = {
         person: personModel
