@@ -105,6 +105,7 @@ const locSummaryCashes = require('./loc-summary-cashes/loc-summary-cashes.servic
 const makePayments = require('./make-payments/make-payments.service.js');
 const fundWallet = require('./fund-wallet/fund-wallet.service.js');
 const joinNetwork = require('./join-network/join-network.service.js');
+const securityQuestion = require('./security-question/security-question.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -213,4 +214,5 @@ module.exports = function (app) {
   app.configure(makePayments);
   app.configure(fundWallet);
   app.configure(joinNetwork);
+  app.configure(securityQuestion);
 };

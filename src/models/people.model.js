@@ -14,6 +14,8 @@ module.exports = function (app) {
     lastName: { type: String, required: true },
     gender: { type: String, required: true },
     motherMaidenName: { type: String, required: true },
+    securityQuestion: { type: String, required: true },
+    securityAnswer: { type: String, required: true },
     primaryContactPhoneNo: { type: String, required: true },
     secondaryContactPhoneNo: [{ type: String, required: false }],
     dateOfBirth: { type: Date, require: false },
@@ -27,7 +29,7 @@ module.exports = function (app) {
     homeAddress: { type: Schema.Types.Mixed, required: false },
     maritalStatus: { type: Schema.Types.String, required: false },
     nextOfKin: [{ type: Schema.Types.Mixed, required: false }],
-    wallet:  walletSchema
+    wallet: walletSchema
   }, {
     timestamps: true
   });
