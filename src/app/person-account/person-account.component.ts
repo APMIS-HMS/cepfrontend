@@ -129,7 +129,7 @@ export class PersonAccountComponent implements OnInit {
       let body = {
         person: personModel
       }
-
+      const errMsg = 'There was an error while creating person, try again!';
       this.personService.createPerson(body).then((ppayload) => {
         this.isSuccessful = true;
         let text = this.frmPerson.controls['firstname'].value + ' '
@@ -138,10 +138,15 @@ export class PersonAccountComponent implements OnInit {
         this.frmPerson.reset();
         this.isSaving = false;
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy(text, 'success', this,HTML_SAVE_PATIENT);
+        this.systemModuleService.announceSweetProxy(text, 'success', this, HTML_SAVE_PATIENT);
       }, err => {
         this.isSaving = false;
         this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy(errMsg, 'error');
+      }).catch(err => {
+        this.isSaving = false;
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy(errMsg, 'error');
       });
     } else {
       this.isSaving = false;
