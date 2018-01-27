@@ -8,36 +8,13 @@ module.exports = function (app) {
     Schema
   } = mongooseClient;
   const feature = new Schema({
-    name: {
-      type: String,
-      required: true
-    },
-    moduleId: {
-      type: Schema.Types.Mixed,
-      required: true
-    },
-    moduleCode: {
-      type: String,
-      required: true
-    },
+    name: { type: String, required: true },
+    moduleId: { type: Schema.Types.Mixed, required: true },
+    moduleCode: { type: String, required: true },
     actions: [{
-      name: {
-        type: String,
-        required: true,
-      },
-      code: {
-        type: String,
-        required:true
-      }
-    }],
-    createdAt: {
-      type: Date,
-      'default': Date.now
-    },
-    updatedAt: {
-      type: Date,
-      'default': Date.now
-    }
+      name: { type: String, required: true, },
+      code: { type: String, required: true }
+    }]
   }, {
     timestamps: true
   });
