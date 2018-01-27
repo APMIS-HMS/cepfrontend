@@ -13,6 +13,7 @@ module.exports = function (app) {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     gender: { type: String, required: true },
+    motherMaidenName: { type: String, required: true },
     primaryContactPhoneNo: { type: String, required: true },
     secondaryContactPhoneNo: [{ type: String, required: false }],
     dateOfBirth: { type: Date, require: false },
