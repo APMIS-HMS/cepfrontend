@@ -38,7 +38,20 @@ class Service {
                 if (person.firstName.toLowerCase().includes(params.query.name.toLowerCase()) ||
                   person.lastName.toLowerCase().includes(params.query.name.toLowerCase())) {
                   billings.push(payload.data[i]);
-
+                  var result = [];
+                  var totalAmountBilled = 0;
+                  for (let i = billings.length - 1; i >= 0; i--) {
+                    const val = billings[i];
+                    patientService.get(val.patientId, {}).then(patient => {
+                      peopleService.get(patient.personId, {}).then(person => {
+                        val.personDetails = person;
+                        result.push(val);
+                        if (i == 0) {
+                          GetBillData(resolve, result, totalAmountBilled, bill);
+                        }
+                      });
+                    });
+                  }
                 }
               });
             });
