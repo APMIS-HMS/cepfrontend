@@ -43,7 +43,7 @@ class Service {
                   }
                   moneyBasedLoc.push({
                     "location": payload.data[i].billingIds[j].billObject.facilityServiceObject,
-                    "createdAt": dateFormater(payload.data[i].billingIds[j].billObject.createdAt),
+                    "updatedAt": dateFormater(payload.data[i].billingIds[j].billObject.updatedAt),
                     "totalPrice": amtPerItem
                   })
                 }
@@ -60,9 +60,9 @@ class Service {
             if (index.length > 0) {
               index[0].data.push(moneyBasedLoc[i].totalPrice);
               index[0].label = moneyBasedLoc[i].location.category;
-              dates.push(moneyBasedLoc[i].createdAt);
+              dates.push(moneyBasedLoc[i].updatedAt);
             } else {
-              dates.push(moneyBasedLoc[i].createdAt);
+              dates.push(moneyBasedLoc[i].updatedAt);
               var data = [];
               data.push(moneyBasedLoc[i].totalPrice);
               var label = moneyBasedLoc[i].location.category;

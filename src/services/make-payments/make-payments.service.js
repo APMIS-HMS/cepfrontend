@@ -3,12 +3,13 @@ const createService = require('./make-payments.class.js');
 const hooks = require('./make-payments.hooks');
 
 module.exports = function (app) {
-  
+
   const paginate = app.get('paginate');
 
   const options = {
     name: 'make-payments',
-    paginate
+    paginate,
+    app: app
   };
 
   // Initialize our service with any options it requires
