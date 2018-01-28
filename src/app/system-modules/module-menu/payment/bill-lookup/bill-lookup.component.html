@@ -14,15 +14,15 @@
                             </div>
                         </div>
                         <ul class="pending-bills">
-                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill);">
+                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill)">
                                 <div class="list-img">
-                                    <img *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                    <img class="shadow" *ngIf="pendingBill?.patientItem?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.patientItem?.personDetails?.profileImageObject?.thumbnail)">
+                                    <img *ngIf="pendingBill?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                    <img class="shadow" *ngIf="pendingBill?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.patientItem?.personDetails?.firstName }} {{ pendingBill?.patientItem?.personDetails?.lastName }}</div>
+                                    <div class="pending-name">{{ pendingBill?.personDetails?.firstName }} {{ pendingBill?.personDetails?.lastName }}</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{ pendingBill?.createdAt | date:'medium' }}</div>
+                                        <div class="pending-date">{{ pendingBill?.updatedAt | date:'medium' }}</div>
                                         <div class="pending-amount">
                                             <span>&#x20a6;</span>{{pendingBill?.grandTotalExcludeInvoice|numberThr }}</div>
                                     </div>
@@ -66,11 +66,11 @@
                         <ul class="pending-bills" *ngFor="let invoice of invoiceGroups">
                             <li class="empWrap" (click)="onSelectedInvoice(invoice)">
                                 <div class="list-img">
-                                    <img *ngIf="invoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                                    <img *ngIf="invoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
+                                    <img *ngIf="invoice?.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.profileImageObject.thumbnail)">
+                                    <img *ngIf="invoice?.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ invoice?.personDetails?.personDetails?.firstName }} {{ invoice?.personDetails?.personDetails?.lastName}}</div>
+                                    <div class="pending-name">{{ invoice?.personDetails?.firstName }} {{ invoice?.personDetails?.lastName}}</div>
                                     <div class="oda">
                                         <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
                                         <div class="pending-amount">
@@ -94,7 +94,7 @@
                                 </span>
                             </div>
                             <div class="clientAddress">
-                                <div>{{selectedPatient?.street}}, {{selectedPatient?.city}}, {{selectedPatient?.lga}}. {{selectedPatient?.state}}, {{selectedPatient?.country}}
+                                <div>{{selectedPatient?.personDetails.homeAddress.street}}, {{selectedPatient?.personDetails.homeAddress.city}}, {{selectedPatient?.personDetails.homeAddress.lga}}. {{selectedPatient?.personDetails.homeAddress.state}}, {{selectedPatient?.personDetails.homeAddress.country}}
                                 </div>
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
@@ -141,7 +141,7 @@
                                         <td>
                                             <input type="checkbox" (change)="checkBill($event,bill, group)" [checked]="bill.isChecked" [formControl]="select1">
                                         </td>
-                                        <td>{{bill.billObject?.createdAt|date:'medium'}}</td>
+                                        <td>{{bill.billObject?.updatedAt|date:'medium'}}</td>
                                         <td (click)="itemDetail(bill)">
                                             <div class="itemName">{{bill.itemName}}</div>
                                         </td>

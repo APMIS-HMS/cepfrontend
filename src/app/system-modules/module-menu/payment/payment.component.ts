@@ -55,7 +55,6 @@ export class PaymentComponent implements OnInit {
         this.searchInvestigation = new FormControl('', []);
 
         this._getBills();
-        this._getInvoices();
 
         this.searchPendingInvoices.valueChanges
             .debounceTime(400)
@@ -65,7 +64,7 @@ export class PaymentComponent implements OnInit {
                 this._todayInvoiceService.get(this.selectedFacility._id, {
                     query: {
                         "isQuery": true,
-
+                        "name": value
                     }
                 }).then(payload => {
                     this.invoiceGroups = payload.invoices;
@@ -80,12 +79,16 @@ export class PaymentComponent implements OnInit {
                 this.loadingPendingBills = true;
                 this._pendingBillService.get(this.selectedFacility._id, {
                     query: {
-                        "isQuery": true
+                        "isQuery": true,
+                        "name": value
                     }
                 }).then((res: any) => {
                     this.pendingBills = res.bills;
                     this.loadingPendingBills = false;
-                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+                }).catch(err => {
+                    console.log(err);
+                    this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
+                });
             });
     }
 
@@ -105,6 +108,8 @@ export class PaymentComponent implements OnInit {
             this._getLocAmountAccrued();
         }).catch(err => {
             console.log(err);
+
+            this.isLoadingInvoice = false;
             this._notification('Error', 'There was a problem getting invoices, Please try again later!');
         });
     }
@@ -115,20 +120,22 @@ export class PaymentComponent implements OnInit {
             query: {
                 "isQuery": false
             }
-        })
-            .then((res: any) => {
-                this.pendingBills = res.bills;
-                this.totalAmountBilled = res.amountBilled;
-                this.loadingPendingBills = false;
-            }).catch(err => {
-                console.log(err);
-                this._notification('Error', err);
-            });
+        }).then((res: any) => {
+            console.log(res);
+            this.pendingBills = res.bills;
+            this.totalAmountBilled = res.amountBilled;
+            this.loadingPendingBills = false;
+            this._getInvoices();
+        }).catch(err => {
+            console.log(err);
+            this.loadingPendingBills = false;
+            this._notification('Error', err);
+        });
     }
 
     private _getLocAmountAccrued() {
         this.loadingLocAmountAccrued = true;
-        this._locSummaryCashService.get(this.selectedFacility._id,{})
+        this._locSummaryCashService.get(this.selectedFacility._id, {})
             .then(payload2 => {
                 console.log(payload2);
                 this.loadingLocAmountAccrued = false;
@@ -154,7 +161,7 @@ export class PaymentComponent implements OnInit {
     }
 
     onSelectedInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]);
+        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]);
     }
 
     // Notification

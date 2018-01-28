@@ -23,7 +23,7 @@ export class FacilitypageSidesectComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.getNetworkMembers(false);
+    //this.getNetworkMembers(false);
     this.getNetworkMembers(true);
   }
 

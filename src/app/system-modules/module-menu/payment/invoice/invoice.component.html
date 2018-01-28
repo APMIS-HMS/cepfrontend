@@ -55,8 +55,8 @@
                       </div>
                     </div>
                     <div class="pay-status pending-amount">
-                      <span class="badge-green" *ngIf="invoice.paymentCompleted">PAID</span>
-                      <span class="badge-red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
+                      <span class="badge-green" *ngIf="invoice.paymentCompleted">{{invoice.paymentStatus}}</span>
+                      <span class="badge-red" *ngIf="!invoice.paymentCompleted">{{invoice.paymentStatus}}</span>
                     </div>
                   </div>
                 </div>
@@ -79,11 +79,11 @@
           <div class="headerContactWrap">
             <div class="billContact">
               <i class="fa fa-map-marker" aria-hidden="true"></i>
-              <div>{{selectedFacility.address.street}}, {{selectedFacility.addressObj.city}}, {{selectedFacility.addressObj.state}}.</div>
+              <div>{{selectedFacility?.address?.description}}.</div>
             </div>
             <div class="billContact">
               <i class="fa fa-phone" aria-hidden="true"></i>
-              <div>{{selectedFacility?.contactPhoneNo}}</div>
+              <div>{{selectedFacility?.primaryContactPhoneNo}}</div>
             </div>
             <div class="billContact">
               <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -98,10 +98,10 @@
               <span>INVOICE TO</span>
               <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
               <div class="clientAddress">
-                <div *ngIf="selectedPatient?.personDetails?.homeAddress?.street?.length > 0">{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails?.addressObj?.city}}
-                  {{selectedPatient?.personDetails?.addressObj?.state}}, {{selectedPatient?.personDetails?.addressObj?.country}}</div>
+                <div>{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails?.homeAddress?.city}}
+                  {{selectedPatient?.personDetails?.homeAddress?.state}}, {{selectedPatient?.personDetails?.homeAddress?.country}}</div>
                 <div>{{selectedPatient?.personDetails?.email}}</div>
-                <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
+                <div>{{selectedPatient?.personDetails?.primaryContactPhoneNo}}</div>
               </div>
             </div>
             <div class="rhs topsecInnerWrap">
@@ -116,9 +116,9 @@
                 </div>
               </div>
               <div class="rhsSectB">
-                <div>TOTAL AMOUNT</div>
+                <div>TOTAL OUTSTANDING</div>
                 <div class="topTotal">
-                  <span>&#x20a6;</span>{{selectedInvoiceGroup.totalPrice | numberThr}}</div>
+                  <span>&#x20a6;</span>{{selectedInvoiceGroup.balance | numberThr}}</div>
               </div>
             </div>
             <div class="clear"></div>
@@ -131,14 +131,13 @@
                   </div>-->
               <i (click)="print()" class="fa fa-print printIco" aria-hidden="true"></i>
               <table class="tblBg">
-                <div  class="pay-tag">{{paidStatus}}</div>
+                <div  class="pay-tag">{{selectedInvoiceGroup.paymentStatus}}</div>
                 <thead>
                   <tr>
                     <th class="col1">Item Description</th>
                     <th class="col2">Unit Price</th>
                     <th class="col3">Quantity</th>
                     <th class="col4">Total Price</th>
-                    <th class="col3">Status</th>
                     <!--<th class="col5">Actions</th>-->
                   </tr>
                 </thead>
@@ -161,14 +160,6 @@
                     <td class="col4">
                       <div class="topTotal">
                         <span>&#8358;</span>{{billItem.billObject?.totalPrice|numberThr}}</div>
-                    </td>
-                    <td class="col3">
-                      <div class="topTotal" *ngIf="billItem.billObject?.isServiceEnjoyed && !isPaidClass || isWaved">
-                        WAVED</div>
-                      <div class="topTotal" *ngIf="!billItem.billObject?.isServiceEnjoyed && !isPaidClass">
-                        UNPAID</div>
-                      <div class="topTotal" *ngIf="isPaidClass">
-                        PAID</div>
                     </td>
                     <!--<td class="col5">
                           <i [hidden]="itemEditShow" (click)="itemEditToggle()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -238,13 +229,13 @@
               <div [hidden]="otherInvoiceGroups.length==0">
                 <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups" (click)="onSelectedOtherPatientInvoice(otherInvoice)">
                   <div class="list-img">
-                    <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                    <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
+                    <img *ngIf="otherInvoice?.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.profileImageObject.thumbnail)">
+                    <img *ngIf="otherInvoice?.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
                   </div>
                   <div class="list-labels">
-                    <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
+                    <div class="pending-name">{{otherInvoice.personDetails.firstName}} {{otherInvoice.personDetails.lastName}}</div>
                     <div class="oda">
-                      <div class="pending-date">{{otherInvoice.createdAt | date :'medium'}}</div>
+                      <div class="pending-date">{{otherInvoice.updatedAt | date :'medium'}}</div>
                       <div class="pending-amount" *ngIf="otherInvoice.totalPrice!=0">
                         <span>&#x20a6;</span>{{otherInvoice.totalPrice|numberThr}}</div>
                     </div>
