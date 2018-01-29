@@ -30,7 +30,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
 
   }
 
-  close_onClick(event) {
+  close_onClick($event) {
     this.closeModal.emit(true);
   }
 

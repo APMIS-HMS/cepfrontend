@@ -71,7 +71,7 @@ export class AddOtherComponent implements OnInit {
     }
     return this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } })
   }
-  close_onClick() {
+  close_onClick($event) {
     this.closeModal.emit(true);
   }
 
@@ -90,17 +90,17 @@ export class AddOtherComponent implements OnInit {
         let facc = payl.data;
         console.log(payl);
         this.systemService.announceSweetProxy('You have Successfully Joined A Network!.', 'success', this);
-        this.close_onClick();
+        this.close_onClick(true);
         this.systemModuleService.off();
       }, error => {
         this.systemModuleService.off();
       })
-      
+
     }).catch(err => {
       this.loading = false;
       console.log(err);
       this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
-				
+
     });
   }
 
@@ -124,7 +124,7 @@ export class AddOtherComponent implements OnInit {
           let facc = payl.data;
           console.log(payl);
           this.systemService.announceSweetProxy('Network has successfully been Updated!', 'success', this);
-          this.close_onClick();
+          this.close_onClick(true);
           this.systemModuleService.off();
         }, error => {
           this.systemModuleService.off();
@@ -156,18 +156,18 @@ export class AddOtherComponent implements OnInit {
       this.removeFacilities.splice(indr, 1);
       console.log(ind);
       if (ind > -1) {
-        
+
       } else {
         this.selectedFacilityIds.push(id.toString());
       }
     }else{
       let ind = this.selectedFacilityIds.indexOf(id.toString());
       this.selectedFacilityIds.splice(ind, 1);
-      console.log(ind); 
+      console.log(ind);
 
       let indr = this.removeFacilities.indexOf(id.toString());
       if (indr > -1) {
-        
+
       } else {
         this.removeFacilities.push(id.toString());
       }
@@ -180,7 +180,7 @@ export class AddOtherComponent implements OnInit {
 
   }
 
-  sweetAlertCallback(result){
+  sweetAlertCallback(result) {
     this.networkJoined.emit(true);
   }
   confirmUpdate(from) {
