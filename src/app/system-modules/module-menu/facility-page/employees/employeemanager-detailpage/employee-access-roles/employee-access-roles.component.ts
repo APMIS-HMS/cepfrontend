@@ -19,6 +19,10 @@ export class EmployeeAccessRolesComponent implements OnInit {
   errMsg = "";
   roles: any;
 
+  rolesPicked:any = [];
+  checboxLen:any;
+  rolesRemoved:any = [];
+
   constructor(private formBuilder: FormBuilder, private featureService: FeatureModuleService) { }
 
   ngOnInit() {
@@ -41,7 +45,42 @@ export class EmployeeAccessRolesComponent implements OnInit {
     });
   }
 
+  pickRoles(event, id) {
+    //console.log(this.checboxBool);
+    //this.uncheck = true;
+    console.log(event.checked);
+    var checkedStatus = event.checked;
+    console.log(checkedStatus);
+    if (checkedStatus) {
+      // let index = this.selectedFacilityIds.filter(x=>x.toString()==id.toString());
+      let ind = this.rolesPicked.indexOf(id.toString());
+      /* let indr = this.rolesRemoved.indexOf(id.toString());
+      this.rolesRemoved.splice(indr, 1); */
+      console.log(ind);
+      if (ind > -1) {
+        
+      } else {
+        this.rolesPicked.push(id.toString());
+      }
+    }else{
+      let ind = this.rolesPicked.indexOf(id.toString());
+      this.rolesPicked.splice(ind, 1);
+      console.log(ind); 
 
+      let indr = this.rolesRemoved.indexOf(id.toString());
+      if (indr > -1) {
+        
+      } else {
+        this.rolesRemoved.push(id.toString());
+      }
+    }
+
+    this.checboxLen = this.rolesPicked.length;
+
+    console.log(this.rolesPicked);
+    console.log(this.rolesRemoved);
+
+  }
 
 
 }
