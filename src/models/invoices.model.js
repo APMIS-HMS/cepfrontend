@@ -12,7 +12,7 @@ module.exports = function (app) {
     isWalkIn: { type: Boolean, 'default': false },
     billingIds: [{ type: Schema.Types.Mixed, required: true }],
     payments: [{ type: Schema.Types.Mixed, required: true }],
-    paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
+    paymentStatus: { type: String,default: 'UNPAID' },
     paymentCompleted: { type: Schema.Types.Boolean, 'default': false },
     invoiceNo: { type: String, require: false },
     balance: { type: Number, require: false },
