@@ -40,6 +40,8 @@ export class FacilitiesService {
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
     this._socketAddNetwork = _socketService.getService('add-networks');
     this._socketJoinNetwork = _socketService.getService('join-network');
+    // client.service('messages').on('created', addMessage);
+
   }
   announceSlider(slider: Object) {
     this.sliderAnnouncedSource.next(slider);
@@ -185,7 +187,7 @@ export class FacilitiesService {
         }
       }))
     });
-  }
+  } 
 
   joinNetwork(facility: any, isDelete) {
     console.log(facility);

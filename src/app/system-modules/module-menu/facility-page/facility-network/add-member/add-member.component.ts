@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -9,6 +8,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-add-member',
@@ -18,6 +18,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 export class AddMemberComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() memberAdded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   mainErr = true;
   errMsg = "";

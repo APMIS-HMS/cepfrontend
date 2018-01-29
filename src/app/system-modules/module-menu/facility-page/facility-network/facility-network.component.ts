@@ -1,4 +1,3 @@
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 
 import {
@@ -94,7 +93,6 @@ export class FacilityNetworkComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
   confirmRemove(id) {
     const question = 'Are you sure you want to remove this facility from the network?';
     this.systemModuleService.announceSweetProxy(question, 'question', this, null, null, id);
@@ -105,7 +103,6 @@ export class FacilityNetworkComponent implements OnInit {
       this.removeMember(from);
     }
   }
-=======
   memberAdded(val){
     console.log("am here");
     this.getNetworks(true);
@@ -115,6 +112,4 @@ export class FacilityNetworkComponent implements OnInit {
     console.log(event);
     this.getNetworks(false);
   }
-
->>>>>>> remotes/origin/facilityModule
 }
