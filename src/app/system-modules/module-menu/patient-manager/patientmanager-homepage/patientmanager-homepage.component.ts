@@ -349,6 +349,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.close_onClick();
       this._notification('Success', 'Patient details has been updated successfully.');
     }).catch(err => {
+      console.log(err);
       this.updatePatientBtnText = 'Update';
       this._notification('Error', 'There was an error updating user record, Please try again later.');
     });

@@ -125,4 +125,8 @@ export class PersonService {
     //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
     //   }); // query string
   }
+
+  searchPerson(body:any){
+    return this._socketService.getService('search-people').find(body);
+  }
 }
