@@ -2,56 +2,46 @@
 const console = require('console');
 const toLowerCase = require('../../helpers/toLower');
 var Client = require('node-rest-client').Client;
+var jsend = require('jsend');
 
 class Service {
   constructor(options) {
     this.options = options || {};
   }
 
-  find(params) {
+  async find(params) {
     console.log('======Got it=============');
+    console.log(params);
+    let url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
+      '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
+    console.log('================URL==============');
+    console.log(url);
 
-    return new Promise(function (resolve, reject) {
-      console.log('==========Here===========');
+    var client = new Client();
+    var args = {
+      headers: {
+        Authorization: process.env.EMDEX_AUTHORISATION_KEY
+      }
+    };
+    client.get(url, args, function (drugs, response) {
+      if (drugs.results !== undefined) {
+        let dataLength = drugs.results.length;
+        let counter = 0;
+        let resultItems = [];
 
-      let url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
-        '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
-      console.log('============Here 1============');
-      console.log('******************params*************************');
-      console.log(params.query.searchtext);
-      console.log(params.query.brandonly);
-      var client = new Client();
-      var args = {
-        headers: {
-          //'authorisation': process.env.EMDEX_AUTHORISATION_KEY
-        }
-      };
-      console.log('******************args*************************');
-      console.log(args);
-      
-
-
-
-      client.get(url, args, function (drugs, response) {
-        if (drugs.results !== undefined) {
-          let dataLength = drugs.results.length;
-          let counter = 0;
-          let resultItems = [];
-
-          drugs.results.forEach(function (element) {
-            counter++;
-            if (element.details.toLowerCase().includes(params.query.searchtext.toLowerCase())) {
-              resultItems.push(element);
-            }
-          });
-
-          if (dataLength === counter) {
-            resolve(resultItems);
+        drugs.results.forEach(function (element) {
+          counter++;
+          if (element.details.toLowerCase().includes(params.query.searchtext.toLowerCase())) {
+            resultItems.push(element);
           }
-        } else {
-          resolve([]);
+        });
+
+        if (dataLength === counter) {
+          return jsend.success(resultItems);
         }
-      });
+      } else {
+        return jsend.success([]);
+      }
     });
     //return Promise.resolve([]);
   }
@@ -64,13 +54,11 @@ class Service {
 
   create(data, params) {
 
+    if (Array.isArray(data)) {
+      return Promise.all(data.map(current => this.create(current)));
+    }
 
-
-    // if (Array.isArray(data)) {
-    //   return Promise.all(data.map(current => this.create(current)));
-    // }
-
-    //return Promise.resolve(data);
+    return Promise.resolve(data);
   }
 
   update(id, data, params) {
