@@ -97,6 +97,7 @@ const hmos = require('./hmos/hmos.service.js');
 const tagDictioneries = require('./tag-dictioneries/tag-dictioneries.service.js');
 const searchTags = require('./search-tags/search-tags.service.js');
 const fundWallet = require('./fund-wallet/fund-wallet.service.js');
+const drugGenericList = require('./drug-generic-list/drug-generic-list.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -196,4 +197,5 @@ module.exports = function (app) {
   app.configure(tagDictioneries);
   app.configure(searchTags);
   app.configure(fundWallet);
+  app.configure(drugGenericList);
 };
