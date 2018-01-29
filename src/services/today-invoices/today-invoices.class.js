@@ -45,7 +45,6 @@ class Service {
       }
     } else {
       invoiceItems = awaitInvoices.data;
-      console.log(awaitInvoices.data.length);
     }
     var dt = new Date();
     var counter = 0;
@@ -56,17 +55,13 @@ class Service {
       var awaitPatient = await patientService.get(val.patientId, {});
       var awaitPerson = await peopleService.get(awaitPatient.personId, {});
       var filters = patientRecentInvoices.filter(x => x.patientId.toString() === val.patientId.toString());
-      console.log(filters.length);
       if (filters.length > 0) {
         filters[0].subTotal += parseInt(val.subTotal.toString());
-        console.log(filters[0].subTotal);
         if (val.balance != undefined) {
           filters[0].balance += parseInt(val.balance.toString());
-          console.log(filters[0].balance);
         }
         filters[0].payments.concat(val.payments);
         filters[0].billingIds.concat(val.billingIds);
-        console.log("After concat");
         if (isSameDay(val.updatedAt, dt)) {
           var amountPaid = val.totalPrice - val.balance;
           amountReceived += amountPaid;
