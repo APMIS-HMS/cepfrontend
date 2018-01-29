@@ -32,11 +32,20 @@ class Service {
       }).then(payload => {
         if (payload.data.length > 0) {
           let user = payload.data[0];
-          facilityService.create(data.facility).then(facPayload => {
+          let facility = data.facility;
+          facility.wallet = {
+            'transactions': [],
+            'ledgerBalance': 0,
+            'balance': 0
+          };
+          facilityService.create(facility).then(facPayload => {
             let facilityRole = {
               facilityId: facPayload._id,
             };
-            let facilitiesRole = [];
+            let facilitiesRole = user.facilitiesRole;
+            if (user.facilitiesRole === undefined) {
+              facilitiesRole = [];
+            }
             facilitiesRole.push(facilityRole);
 
             userService.patch(user._id, {

@@ -17,46 +17,33 @@ class Service {
     });
   }
 
-  create(data, params) {
+  async create(data, params) {
     const userService = this.app.service('users');
     const personService = this.app.service('people');
     const getTokenService = this.app.service('get-tokens');
 
-    return new Promise(function (resolve, reject) {
-      personService.create(data.person).then(payload => {
-        if (payload) {
-          const user = {
-            email: payload.apmisId
-          };
-          user.personId = payload._id;
-          getTokenService.get(tokenLabel.tokenType.autoPassword, {}).then(smsPayload => {
-            user.password = smsPayload.result;
+    let person = data.person;
+    person.wallet = {
+      'transactions': [],
+      'ledgerBalance': 0,
+      'balance': 0
+    };
+    var createPerson = await personService.create(person);
+    const user = {
+      email: createPerson.apmisId,
+      personId: createPerson._id
+    };
 
-            if (data.facilityId !== undefined) {
-              user.facilitiesRole = [];
-              user.facilitiesRole.push({ facilityId: data.facilityId });
-            }
+    var createToken = await getTokenService.get(tokenLabel.tokenType.autoPassword, {});
+    user.password = createToken.result;
+    if (data.facilityId !== undefined) {
+      user.facilitiesRole = [];
+      user.facilitiesRole.push({ facilityId: data.facilityId });
+    }
 
-            userService.create(user).then(facPayload => {
-              sms.sendAutoGeneratorPassword(payload, smsPayload.result);
-              resolve(payload);
-            }, facError => {
-              reject(facError);
-            });
-          }, error => {
-            reject(error);
-          });
-        }
-      }, error => {
-        reject(error);
-      });
-    });
-
-    // if (Array.isArray(data)) {
-    //   return Promise.all(data.map(current => this.create(current)));
-    // }
-
-    // return Promise.resolve(data);
+    var createUser = await userService.create(user);
+    await sms.sendAutoGeneratorPassword(createPerson, createToken.result);
+    return createPerson;
   }
 
   update(id, data, params) {

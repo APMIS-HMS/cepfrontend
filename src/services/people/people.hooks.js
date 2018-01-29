@@ -5,7 +5,7 @@ const alerts = require('../../hooks/alerts');
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [authenticate('jwt')],
     get: [authenticate('jwt')],
     create: [peopleApmisId()],
     update: [authenticate('jwt')],
