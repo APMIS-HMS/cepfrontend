@@ -1,4 +1,4 @@
 {
-  "host": "apmisapiv-2-app.feathersjs.com",
+  "host": "https://apmisapilive.azurewebsites.net/",
   "port": "PORT"
 }
