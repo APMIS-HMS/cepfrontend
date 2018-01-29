@@ -2,7 +2,6 @@
   "name": "apmisapiv-2",
   "description": "This is the version 2 of the famours connected health care platform",
   "version": "2.0.0",
-  "homepage": "",
   "main": "src",
   "keywords": [
     "feathers"
