@@ -48,6 +48,7 @@ import { ApmisCheckboxChildComponent } from './employees/employeemanager-detailp
 import { FacilityNetworkComponent } from './facility-network/facility-network.component';
 import { AddMemberComponent } from './facility-network/add-member/add-member.component';
 import { AddOtherComponent } from './facility-network/add-other/add-other.component';
+import { EmployeeAccessRolesComponent } from './employees/employeemanager-detailpage/employee-access-roles/employee-access-roles.component';
 
 @NgModule({
     declarations: [
@@ -84,7 +85,8 @@ import { AddOtherComponent } from './facility-network/add-other/add-other.compon
         FacilityNetworkComponent,
         AddMemberComponent,
         AddOtherComponent,
-        NewFacEmployeeComponent
+        NewFacEmployeeComponent,
+      EmployeeAccessRolesComponent
     ],
     exports: [
     ],

@@ -68,7 +68,7 @@ export class AddMemberComponent implements OnInit {
     }
     return this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } })
   }
-  close_onClick() {
+  close_onClick($event) {
     this.closeModal.emit(true);
   }
 
@@ -111,7 +111,7 @@ export class AddMemberComponent implements OnInit {
         this.loading = false;
         this.systemModuleService.off();
         let facc = payl.data;
-        this.close_onClick();
+        this.close_onClick(true);
         this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success');
       })
     }, error => {
@@ -139,7 +139,7 @@ export class AddMemberComponent implements OnInit {
         this.facilityService.get(fac.hostId, {}).then(payl => {
           this.loading = false;
           let facc = payl.data;
-          this.close_onClick();
+          this.close_onClick(true);
           this.systemModuleService.off();
           this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success');
         })

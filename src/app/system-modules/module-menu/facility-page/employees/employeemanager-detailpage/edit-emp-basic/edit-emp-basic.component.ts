@@ -107,12 +107,12 @@ export class EditEmpBasicComponent implements OnInit {
 		this.getGenders();
 		this.maritalStatuses(); */
 
-		this.facilityForm2.controls["stateofOrigin"].valueChanges.subscribe(payload => {
+		this.facilityForm2.controls['stateofOrigin'].valueChanges.subscribe(payload => {
 			//this.cities = payload.cities;
 			this.lgasOfOrigin = payload.lgs;
 			console.log(payload);
 		});
-		this.facilityForm2.controls["stateofresidence"].valueChanges.subscribe(payload => {
+		this.facilityForm2.controls['stateofresidence'].valueChanges.subscribe(payload => {
 			//this.cities = payload.cities;
 			this.lgas = payload.lgs;
 			console.log(payload);
@@ -148,18 +148,18 @@ export class EditEmpBasicComponent implements OnInit {
 		})
 	}
 
-	close_onClick() {
+	close_onClick($event) {
 		this.closeModal.emit(true);
 		this.departmentBool = false;
 	}
 	saveDepartment() {
 		this.loading = true;
-		this.selectedEmployee.departmentId = this.facilityForm1.controls["dept"].value;
+		this.selectedEmployee.departmentId = this.facilityForm1.controls['dept'].value;
 
 		this.employeeService.update(this.selectedEmployee).then(payload => {
 			this.loading = false;
 			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
-			this.close_onClick();
+			this.close_onClick(true);
 		}).catch(err => {
 			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
 		});
@@ -168,17 +168,17 @@ export class EditEmpBasicComponent implements OnInit {
 	savePerson() {
 		if (!this.facilityForm2.valid) {
 			this.mainErr = true;
-			this.errMsg = "A required field has been left empty";
+			this.errMsg = 'A required field has been left empty';
 		} else {
 			this.loading = true;
 			let person = {
 				_id: this.selectedPerson._id,
-				title: this.facilityForm2.controls["title"].value.name,
+				title: this.facilityForm2.controls['title'].value.name,
 				apmisId: this.selectedPerson.apmisId,
-				firstName: this.facilityForm2.controls["firstname"].value,
-				lastName: this.facilityForm2.controls["lastname"].value,
-				otherNames: this.facilityForm2.controls["othernames"].value,
-				gender: this.facilityForm2.controls["gender"].value.name,
+				firstName: this.facilityForm2.controls['firstname'].value,
+				lastName: this.facilityForm2.controls['lastname'].value,
+				otherNames: this.facilityForm2.controls['othernames'].value,
+				gender: this.facilityForm2.controls['gender'].value.name,
 				maritalStatus: this.facilityForm2.controls['maritalStatus'].value.name,
 				dateOfBirth: this.facilityForm2.controls['date'].value,
 				nationality: this.facilityForm2.controls['nationality'].value.name,
@@ -202,7 +202,7 @@ export class EditEmpBasicComponent implements OnInit {
 				this.locker.setObject('selectedEmployee', this.selectedEmployee);
 				this.systemModulesService.announceSweetProxy('Person Information Successfully Saved.', 'success');
 				this.loading = false;
-				this.close_onClick();
+				this.close_onClick(true);
 			}).catch(err => {
 				this.systemModulesService.announceSweetProxy('Error occured while saving information, please check it and try again.', 'error');
 			});
