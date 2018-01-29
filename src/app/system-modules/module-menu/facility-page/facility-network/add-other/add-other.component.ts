@@ -84,6 +84,7 @@ export class AddOtherComponent implements OnInit {
       })
       
     }).catch(err => {
+      this.loading = false;
       console.log(err);
       this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
 				
@@ -113,6 +114,7 @@ export class AddOtherComponent implements OnInit {
         })
         
       }, error => {
+        this.loading = false;
         console.log(error);
         this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
       });
@@ -126,22 +128,37 @@ export class AddOtherComponent implements OnInit {
 
   pickFacilitiesMemberOf(event, id) {
     //console.log(this.checboxBool);
-    var checkedStatus = event.target.value;
+    this.uncheck = true;
+    var checkedStatus = event.srcElement.checked;
     console.log(checkedStatus);
     if (checkedStatus) {
-      let index = this.selectedFacilityIds.filter(x => x == id);
-      let ind = this.selectedFacilityIds.indexOf(id);
+      // let index = this.selectedFacilityIds.filter(x=>x.toString()==id.toString());
+      let ind = this.selectedFacilityIds.indexOf(id.toString());
+      let indr = this.removeFacilities.indexOf(id.toString());
+      this.removeFacilities.splice(indr, 1);
       console.log(ind);
       if (ind > -1) {
-        this.selectedFacilityIds.splice(ind, 1);
+        
       } else {
-        this.selectedFacilityIds.push(id);
+        this.selectedFacilityIds.push(id.toString());
+      }
+    }else{
+      let ind = this.selectedFacilityIds.indexOf(id.toString());
+      this.selectedFacilityIds.splice(ind, 1);
+      console.log(ind); 
+
+      let indr = this.removeFacilities.indexOf(id.toString());
+      if (indr > -1) {
+        
+      } else {
+        this.removeFacilities.push(id.toString());
       }
     }
 
     this.checboxLen = this.selectedFacilityIds.length;
 
     console.log(this.selectedFacilityIds);
+    console.log(this.removeFacilities);
 
   }
 
