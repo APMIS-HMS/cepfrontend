@@ -110,6 +110,8 @@ export class PersonAccountComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(value => {
         console.log(value);
+        this.errMsg ='';
+        this.mainErr = true;
         this.validating = true;
         this.personService.searchPerson({
           query: {
@@ -121,22 +123,20 @@ export class PersonAccountComponent implements OnInit {
           }
         }).then(payload => {
           this.validating = false;
-          console.log(payload);
           if (payload.status === 'success') {
-            console.log(payload);
             this.duplicate = true;
+            this.errMsg = 'Duplicate record detected, please check and try again!';
+            this.mainErr = false;
           } else {
             this.duplicate = false;
           }
         }, error => {
-          console.log(error);
         });
       });
   }
 
   validatingPerson() {
     return this.validating || this.duplicate;
-    // return true;
   }
 
 
