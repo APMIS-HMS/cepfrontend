@@ -22,7 +22,13 @@ class Service {
     const personService = this.app.service('people');
     const getTokenService = this.app.service('get-tokens');
 
-    var createPerson = await personService.create(data.person);
+    let person = data.person;
+    person.wallet = {
+      'transactions': [],
+      'ledgerBalance': 0,
+      'balance': 0
+    };
+    var createPerson = await personService.create(person);
     const user = {
       email: createPerson.apmisId,
       personId: createPerson._id

@@ -7,10 +7,8 @@ class Service {
   }
 
   async find(params) {
-    logger.info(0);
     const peopleService = this.app.service('people');
     if (params.query.isValidating === undefined || params.query.isValidating === false) {
-      logger.info(1);
       let returnData = await peopleService.find({
         query: {
           apmisId: params.query.apmisId,
@@ -24,8 +22,6 @@ class Service {
         return undefined;
       }
     }else{
-      logger.info(2);
-      logger.info(params);
       let returnData = await peopleService.find({
         query: {
           firstName: params.query.firstName,
@@ -35,10 +31,8 @@ class Service {
         }
       });
       if (returnData.data.length > 0) {
-        logger.info(3);
         return jsend.success(true);
       } else {
-        logger.info(4);
         return jsend.fail(false);
       }  
     }
