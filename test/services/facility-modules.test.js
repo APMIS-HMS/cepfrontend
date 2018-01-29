@@ -1,4 +1,5 @@
-const assert = require('assert');
+// const assert = require('assert');
+var assert = require('chai').assert;
 const app = require('../../src/app');
 
 describe('\'facility-modules\' service', () => {

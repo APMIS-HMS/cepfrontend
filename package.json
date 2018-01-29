@@ -2,7 +2,6 @@
   "name": "apmisapiv-2",
   "description": "This is the version 2 of the famours connected health care platform",
   "version": "2.0.0",
-  "homepage": "",
   "main": "src",
   "keywords": [
     "feathers"
@@ -25,6 +24,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
+    "debug": "node --inspect src/",
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {
@@ -36,20 +36,32 @@
     "@feathersjs/express": "^1.1.2",
     "@feathersjs/feathers": "^3.0.2",
     "@feathersjs/socketio": "^3.0.1",
+    "azure-storage": "^2.7.0",
     "compression": "^1.7.1",
+    "convert-excel-to-json": "^1.2.1",
     "cors": "^2.8.4",
+    "date-fns": "^1.29.0",
+    "dotenv": "^4.0.0",
     "feathers-authentication": "^1.3.1",
+    "feathers-hooks-common": "^3.10.0",
     "feathers-mongodb": "^3.0.0",
     "feathers-mongoose": "^6.0.0",
     "helmet": "^3.9.0",
+    "jsend": "^1.0.2",
     "mongodb": "^3.0.1",
     "mongoose": "^4.13.6",
+    "node-rest-client": "^3.1.0",
+    "request": "^2.83.0",
+    "rxjs": "^5.5.6",
+    "sendgrid": "^5.2.3",
     "serve-favicon": "^2.4.5",
     "winston": "^2.4.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^4.12.1",
     "mocha": "^4.0.1",
+    "nodemon": "^1.14.11",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   }

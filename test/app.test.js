@@ -30,7 +30,7 @@ describe('Feathers application tests', () => {
   describe('404', function() {
     it('shows a 404 HTML page', () => {
       return rp({
-        url: getUrl('index.html'),
+        url: getUrl('404.html'),
         headers: {
           'Accept': 'text/html'
         }

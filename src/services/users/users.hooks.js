@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+// const autoGeneratePassword = require('../../hooks/user-autogenerate-password');
 
 const {
   hashPassword, protect
