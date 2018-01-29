@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 import {
   FeatureModuleService
@@ -23,12 +24,16 @@ export class EmployeeAccessRolesComponent implements OnInit {
   checboxLen:any;
   rolesRemoved:any = [];
 
+  selectedFacility:any;
+
   constructor(private formBuilder: FormBuilder, private featureService: FeatureModuleService) { }
 
   ngOnInit() {
     /* this.userPrivileges = this.FormBuilder.group({
 
     }); */
+
+    this.selectedFacility = <any>this.locker.get
 
     this.getRoles();
 
@@ -80,6 +85,10 @@ export class EmployeeAccessRolesComponent implements OnInit {
     console.log(this.rolesPicked);
     console.log(this.rolesRemoved);
 
+  }
+
+  saveRoles(){
+    this.
   }
 
 
