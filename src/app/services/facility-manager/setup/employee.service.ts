@@ -65,7 +65,7 @@ export class EmployeeService {
     });
   }
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {

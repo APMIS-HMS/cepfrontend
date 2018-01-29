@@ -15,17 +15,16 @@
                             </div>
                             <div>{{networkMembers.name}}</div>
                         </div>
-                        <div>{{networkMembers.name}}</div>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-ctaWrap">
-                        <i (click)="confirmRemove(networkMembers._id)" class="fa fa-trash" aria-hidden="true"> Remove</i>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-      </table>
+                    </td>
+                    <td>
+                        <div class="td-ctaWrap">
+                            <i (click)="removeMember(networkMembers._id)" class="fa fa-trash" aria-hidden="true"> Remove</i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
     </div>
     <div class="net-itemB">
       <div (click)="addOther_click()" class="plus">+</div>
