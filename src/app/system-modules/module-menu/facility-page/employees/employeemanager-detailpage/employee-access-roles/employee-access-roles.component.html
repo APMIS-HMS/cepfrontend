@@ -7,12 +7,13 @@
 
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <form [formGroup]="userPrivileges" novalidate>
-            <mat-checkbox value="CMD" name="role" aria-checked>CMD</mat-checkbox>
-            <br/>
+        <form novalidate>
+            <div *ngFor="let role of roles">
+                <mat-checkbox value="{{role.id}}">{{role.name}}</mat-checkbox>
+            </div>
         </form>
         <div class="example-full-width" id="example-full-width">
-            <button (click)="employeeAccessRoleShow()" class="btn-saveroles" mat-raised-button>
+            <button class="btn-saveroles" mat-raised-button>
                 Save
             </button>
         </div>
