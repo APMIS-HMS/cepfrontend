@@ -31,24 +31,21 @@
     opacity: 0.5;
 }
 
-.box {
-    .box-header {
-        padding: 10px;
-        .small-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-    }
-    .box-body {
-        padding: 20px;
-    }
+.box-outline {
+    border: solid 1px #ddd;
+    padding: 0px 20px 0px 20px;
 }
 
-.box-gray {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.box{
+    margin-bottom: 20px
 }
+
+.padding{
+    padding: 10px;
+}
+
+
+
 
 .mat-form-field {
     width: 100%;
