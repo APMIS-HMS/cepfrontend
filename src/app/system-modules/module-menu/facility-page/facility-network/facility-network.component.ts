@@ -7,6 +7,7 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-facility-network',
@@ -93,6 +94,7 @@ export class FacilityNetworkComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
   confirmRemove(id) {
     const question = 'Are you sure you want to remove this facility from the network?';
     this.systemModuleService.announceSweetProxy(question, 'question', this, null, null, id);
@@ -103,4 +105,16 @@ export class FacilityNetworkComponent implements OnInit {
       this.removeMember(from);
     }
   }
+=======
+  memberAdded(val){
+    console.log("am here");
+    this.getNetworks(true);
+  }
+
+  networkJoined(event){
+    console.log(event);
+    this.getNetworks(false);
+  }
+
+>>>>>>> remotes/origin/facilityModule
 }

@@ -313,6 +313,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.employee.departmentId = this.selectedValue;
     this.employeeService.update(this.employee).then(value => {
       this.employee = value;
+      this.systemService.announceSweetProxy('Employee information successfully updated.', 'success');
       this.editDepartment = !this.editDepartment;
     });
   }
