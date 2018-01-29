@@ -1694,7 +1694,6 @@ ul.topmenuwrap li:hover {
 }
 .pg-menuWrap, .pg-menuWrap-mobile {
     width: 100%;
-    position: fixed;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -2054,6 +2053,9 @@ ul.topmenuwrap li:hover {
     }
     .pgMenu-ico{
         display: block;
+    }
+    .pg-menuWrap, .pg-menuWrap-mobile {
+        position: fixed;
     }
 }
 
