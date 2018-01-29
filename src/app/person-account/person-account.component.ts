@@ -61,6 +61,8 @@ export class PersonAccountComponent implements OnInit {
   countDown = 10;
   public frmPerson: FormGroup;
   state = 'normal';
+  validating = false;
+  duplicate = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,7 +74,7 @@ export class PersonAccountComponent implements OnInit {
     private systemModuleService: SystemModuleService,
     private securityQuestionService: SecurityQuestionsService,
     private vcr: ViewContainerRef, private toastr: ToastsManager,
-    private titleCasePipe:TitleCasePipe
+    private titleCasePipe: TitleCasePipe
   ) {
     this.toastr.setRootViewContainerRef(vcr);
   }
@@ -94,14 +96,47 @@ export class PersonAccountComponent implements OnInit {
       phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
     });
 
-    this.frmPerson.valueChanges.subscribe(value => {
-      if (!this.mainErr) {
-        this.isSuccessful = false;
-      }
+    // this.frmPerson.valueChanges.subscribe(value => {
+    //   if (!this.mainErr) {
+    //     this.isSuccessful = false;
+    //   }
 
-      this.mainErr = true;
-      this.errMsg = '';
-    })
+    //   this.mainErr = true;
+    //   this.errMsg = '';
+    // });
+
+    this.frmPerson.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        console.log(value);
+        this.validating = true;
+        this.personService.searchPerson({
+          query: {
+            firstName: value.firstname,
+            lastName: value.lastname,
+            primaryContactPhoneNo: value.phone,
+            motherMaidenName: value.motherMaidenName,
+            isValidating: true
+          }
+        }).then(payload => {
+          this.validating = false;
+          console.log(payload);
+          if (payload.status === 'success') {
+            console.log(payload);
+            this.duplicate = true;
+          } else {
+            this.duplicate = false;
+          }
+        }, error => {
+          console.log(error);
+        });
+      });
+  }
+
+  validatingPerson() {
+    return this.validating || this.duplicate;
+    // return true;
   }
 
 
