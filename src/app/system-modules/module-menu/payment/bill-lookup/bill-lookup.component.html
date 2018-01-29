@@ -72,7 +72,7 @@
                                 <div class="list-labels">
                                     <div class="pending-name">{{ invoice?.personDetails?.firstName }} {{ invoice?.personDetails?.lastName}}</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
+                                        <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
                                         <div class="pending-amount">
                                             <span>&#x20a6;</span>{{ invoice?.totalPrice|numberThr }}</div>
                                     </div>

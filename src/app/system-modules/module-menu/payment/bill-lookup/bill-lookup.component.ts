@@ -141,6 +141,7 @@ export class BillLookupComponent implements OnInit {
     });
 
     this._getAllPendingBills();
+    this._getAllInvoices();
     
 
     this.searchPendingInvoices.valueChanges
@@ -398,11 +399,12 @@ export class BillLookupComponent implements OnInit {
 
   getPatientBills() {
     console.log(this.selectedPatient);
+    console.log(this.selectedFacility);
     this.billGroups = [];
     this.masterBillGroups = [];
     this.txtSelectAll.setValue(false);
     console.log(this.selectedPatient);
-    this.billingService.findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient.patientId, isinvoice: false } })
+    this.billingService.findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then(payload => {
         console.log(payload);
         this.billGroups = payload.billGroups
@@ -411,7 +413,9 @@ export class BillLookupComponent implements OnInit {
   }
 
   onClickPatientPendingBill(pendingBill: any) {
-    this.selectedPatient = pendingBill;
+    this.selectedPatient = {};
+    this.selectedPatient._id = pendingBill.patientId;
+    this.selectedPatient.personDetails = pendingBill.personDetails;
     console.log(this.selectedPatient);
     this.getPatientBills();
   }
@@ -427,7 +431,6 @@ export class BillLookupComponent implements OnInit {
       console.log(res);
       this.pendingBills = res.bills;
       this.loadingPendingBills = false;
-      this._getAllInvoices();
     },err => {
       console.log(err);
       this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
