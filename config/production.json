@@ -1,5 +1,5 @@
 {
-  "host": "apmisapilive.azurewebsites.net",
+  "host": "https://apmisapilive.azurewebsites.net/",
   "port": 3031,
   "public": "../public/",
   "paginate": {
