@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router';
 import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -45,7 +46,8 @@ export class PaymentComponent implements OnInit {
         private locker: CoolLocalStorage,
         private router: Router,
         private _todayInvoiceService: TodayInvoiceService,
-        private _locSummaryCashService: LocSummaryCashService
+        private _locSummaryCashService: LocSummaryCashService,
+        private systemModuleService: SystemModuleService
     ) {
 
     }
@@ -53,9 +55,8 @@ export class PaymentComponent implements OnInit {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
-
         this._getBills();
-
+        this._getInvoices();
         this.searchPendingInvoices.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
@@ -93,13 +94,14 @@ export class PaymentComponent implements OnInit {
     }
 
     private _getInvoices() {
-        this.isLoadingInvoice = true;
+        this.systemModuleService.on;
         this._todayInvoiceService.get(this.selectedFacility._id, {
             query: {
                 "isQuery": false
             }
         }).then(payload => {
             console.log(payload);
+            this.systemModuleService.off;
             this.invoiceGroups = payload.invoices;
             console.log(this.invoiceGroups);
             this.totalAmountReceived = payload.amountReceived;
@@ -108,26 +110,28 @@ export class PaymentComponent implements OnInit {
             this._getLocAmountAccrued();
         }).catch(err => {
             console.log(err);
-
+            this.systemModuleService.off;
             this.isLoadingInvoice = false;
             this._notification('Error', 'There was a problem getting invoices, Please try again later!');
         });
     }
 
     private _getBills() {
-        this.loadingPendingBills = true;
+        // this.loadingPendingBills = true;
+        this.systemModuleService.on;
         this._pendingBillService.get(this.selectedFacility._id, {
             query: {
                 "isQuery": false
             }
         }).then((res: any) => {
             console.log(res);
+            this.systemModuleService.off;
             this.pendingBills = res.bills;
             this.totalAmountBilled = res.amountBilled;
             this.loadingPendingBills = false;
-            this._getInvoices();
         }).catch(err => {
             console.log(err);
+            this.systemModuleService.off;
             this.loadingPendingBills = false;
             this._notification('Error', err);
         });
@@ -152,7 +156,6 @@ export class PaymentComponent implements OnInit {
                     }
                     this.barChartData[i].label = payload2.barChartData[i].label;
                 }
-
             }).catch(err => {
                 console.log(err);
                 this.loadingLocAmountAccrued = false;
