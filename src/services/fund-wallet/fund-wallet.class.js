@@ -37,8 +37,8 @@ class FundWalletService {
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
 
+        // return new Promise(function(resolve, reject) {
         const accessToken = params.accessToken; /* Not required */
-        // Verify accessToken.
         if (accessToken !== undefined) {
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
@@ -66,12 +66,106 @@ class FundWalletService {
                     const paymentRes = await paymentService.create(paymentPayload);
                     const url = process.env.FLUTTERWAVE_VERIFICATION_URL;
                     const verifyResponse = await this.verifyPayment(url, process.env.FLUTTERWAVE_SECRET_KEY, paymentRes.reference.flwRef);
-                    console.log(new Date());
                     const parsedResponse = JSON.parse(verifyResponse);
                     console.log('----------parsedResponse---------');
                     console.log(parsedResponse);
                     console.log('----------End parsedResponse---------');
-                    return parsedResponse;
+                    if (parsedResponse.status === 'success') {
+                        paymentRes.isActive = true;
+                        paymentRes.paymentResponse = parsedResponse.data;
+                        // Update payment record.
+                        const updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
+                        console.log('----------updatedPayment---------');
+                        console.log(updatedPayment);
+                        console.log('----------End updatedPayment---------');
+
+                        if (entity !== undefined && entity.toLowerCase() === 'person') {
+                            const person = await peopleService.get(destinationId);
+                            const userWallet = person.wallet;
+                            const cParam = {
+                                amount: amount,
+                                paidBy: loggedPersonId,
+                                sourceId: loggedPersonId,
+                                sourceType: entity,
+                                transactionType: 'Cr',
+                                transactionMedium: paymentType,
+                                destinationId: destinationId,
+                                destinationType: entity,
+                                description: 'Funded wallet via e-payment',
+                                transactionStatus: 'Completed',
+                            };
+                            person.wallet = transaction(userWallet, cParam);
+
+                            const personUpdate = await peopleService.update(person._id, person, {});
+
+                            return personUpdate;
+                        } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
+                            const facility = await facilityService.get(facilityId);
+                            console.log('----------facility---------');
+                            console.log(facility);
+                            console.log('----------End facility---------');
+                            const userWallet = facility.wallet;
+                            const cParam = {
+                                amount: amount,
+                                paidBy: loggedPersonId,
+                                sourceId: facilityId,
+                                sourceType: entity,
+                                transactionType: 'Cr',
+                                transactionMedium: paymentType,
+                                destinationId: facilityId,
+                                destinationType: entity,
+                                description: 'Funded wallet via e-payment',
+                                transactionStatus: 'Completed',
+                            };
+                            facility.wallet = transaction(userWallet, cParam);
+
+                            const facilityUpdate = await facilityService.update(facility._id, facility);
+                            console.log('----------facilityUpdate---------');
+                            console.log(facilityUpdate);
+                            console.log('----------End facilityUpdate---------');
+                            return facilityUpdate;
+                        }
+                    }
+                } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
+                    paymentService.create(paymentPayload).then(payment => {
+                        let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
+                        var client = new Client();
+                        var args = {
+                            headers: {
+                                Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
+                            }
+                        };
+                        client.post(url, args, function(data, response) {
+                            if (data.status === 'success') {
+                                payment.isActive = true;
+                                payment.paymentResponse = data;
+                                // Update payment record.
+                                paymentService.update(payment._id, payment).then(updatedPayment => {
+
+                                    peopleService.get(data.destinationId, {}).then(person => {
+                                        // Update person wallet.
+                                        let param = {
+                                            transactionType: 'Cr',
+                                            wallet: person.wallet
+                                        };
+                                        person.balance = parseFloat(person.wallet.balance) + parseFloat(data.amount);
+                                        person.ledgerBalance = parseFloat(person.ledgerBalance) + parseFloat(data.amount);
+                                        peopleService.update(person._id, person).then(personUpdate => {
+                                            return personUpdate;
+                                            // resolve(personUpdate);
+                                        }).catch(err => {
+                                            // reject(err);
+                                        });
+                                    });
+                                });
+                            }
+
+                        });
+                    }).catch(err => {
+                        // reject(err);
+                    });
+                } else {
+                    return false;
                 }
             } else {
                 const data = {
@@ -87,9 +181,10 @@ class FundWalletService {
             };
             return data;
         }
+        // });
     }
 
-    async verifyPayment(url, secKey, ref) {
+    verifyPayment(url, secKey, ref) {
         const options = {
             method: 'POST',
             uri: url,
@@ -100,10 +195,7 @@ class FundWalletService {
             }),
             headers: { 'content-type': 'application/json' },
         };
-        const response = await requestPromise(options);
-        console.log(new Date());
-        console.log(response);
-        return response;
+        return requestPromise(options);
     }
 
     setup(app) {
