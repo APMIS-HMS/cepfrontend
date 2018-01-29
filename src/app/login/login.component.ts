@@ -64,12 +64,14 @@ export class LoginComponent implements OnInit {
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
+        console.log(result);
         this.userServiceFacade.authenticateResource().then(payload => {
           console.log(payload)
           let auth = {
             data: result.user
           };
           this.locker.setObject('auth', auth);
+          this.locker.setObject('token', result.accessToken);
 
           this.router.navigate(['/accounts']).then(pay => {
             this.userService.isLoggedIn = true;

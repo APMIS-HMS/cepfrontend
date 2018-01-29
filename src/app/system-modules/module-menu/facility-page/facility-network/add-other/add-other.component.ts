@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { SystemModuleService } from './../../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -37,6 +39,7 @@ export class AddOtherComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     public facilityService: FacilitiesService,
+    public systemModuleService: SystemModuleService,
     private userService: UserService,
     private personService: PersonService,
     private locker: CoolLocalStorage) { }
@@ -51,7 +54,7 @@ export class AddOtherComponent implements OnInit {
     this.facilityForm1.controls['facilitySearch'].valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
-      .switchMap(value => this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } }))
+      .switchMap(value => this.searchEntries(value))
       .subscribe((por: any) => {
         console.log(por);
         this.searchedFacilities = por.data;
@@ -60,6 +63,12 @@ export class AddOtherComponent implements OnInit {
 
 
   }
+  searchEntries(value) {
+    if (value.length < 3) {
+      return Observable.of({ data: [] })
+    }
+    return this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } })
+  }
   close_onClick() {
     this.closeModal.emit(true);
   }
@@ -67,6 +76,7 @@ export class AddOtherComponent implements OnInit {
 
   add() {
     this.loading = true;
+    this.systemModuleService.on();
     let fac = {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.selectedFacilityIds
@@ -78,15 +88,20 @@ export class AddOtherComponent implements OnInit {
         let facc = payl.data;
         console.log(payl);
         this.close_onClick();
+        this.systemModuleService.off();
+      }, error => {
+        this.systemModuleService.off();
       })
-      
+
     }, error => {
+      this.systemModuleService.off();
       console.log(error);
     });
   }
 
-  update(){
+  update() {
     this.loading = true;
+    this.systemModuleService.on();
     let facRemove = {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.removeFacilities
@@ -104,14 +119,19 @@ export class AddOtherComponent implements OnInit {
           let facc = payl.data;
           console.log(payl);
           this.close_onClick();
-        })
-        
+          this.systemModuleService.off();
+        }, error => {
+          this.systemModuleService.off();
+        });
+
       }, error => {
         console.log(error);
+        this.systemModuleService.off();
       });
-      
+
     }, error => {
       console.log(error);
+      this.systemModuleService.off();
     });
   }
 
@@ -136,5 +156,19 @@ export class AddOtherComponent implements OnInit {
     console.log(this.selectedFacilityIds);
 
   }
+  confirmUpdate(from) {
+    const question = 'Are you sure you want to join this netweork?';
+    this.systemModuleService.announceSweetProxy(question, 'question', this, null, null, 'update');
+  }
 
+  sweetAlertCallback(result, from) {
+    console.log(result);
+    if (result.value) {
+      if (from === 'update') {
+        this.update();
+      } else {
+        this.add();
+      }
+    }
+  }
 }

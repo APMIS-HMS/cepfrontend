@@ -77,11 +77,11 @@ export class RestService {
   constructor(private locker: CoolLocalStorage, private _router:Router) {
     this.HOST = HOST;
     if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
-      const auth: any = this.locker.getObject('auth')
+      const auth: any = this.locker.getObject('token')
       this._app = feathers()
         .configure(rest(this.HOST).superagent(superagent,
           {
-            headers: { 'authorization': 'Bearer ' + auth.token }
+            headers: { 'authorization': 'Bearer ' + auth }
           }
         )) // Fire up rest
         // .configure(rx({ idField: '_id', listStrategy: 'always' }))
@@ -108,9 +108,7 @@ export class RestService {
     return this._app.service(value);
   }
   authenticateService() {
-    this._app.authenticate().then(payload =>{},error =>{
-      this._router.navigate(['/']);
-    });
+    return this._app.authenticate();
   }
   getHost() {
     return this.HOST;
