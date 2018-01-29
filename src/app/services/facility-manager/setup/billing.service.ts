@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class BillingService {
   public _socket;
+  public _socketBillFacilityServices;
   private _rest;
   public updatelistner;
 
@@ -18,6 +19,7 @@ export class BillingService {
   ) {
     this._rest = _restService.getService('billings');
     this._socket = _socketService.getService('billings');
+    this._socketBillFacilityServices = _socketService.getService('bill-facility-services');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
@@ -55,5 +57,14 @@ export class BillingService {
 
   patch(_id: any, data: any, param: any) {
     return this._socket.patch(_id, data, param);
+  }
+
+
+  findBillService(query: any) {
+    return this._socketBillFacilityServices.find(query);
+  }
+
+  generateInvoice(data: any) {
+    return this._socketBillFacilityServices.create(data);
   }
 }

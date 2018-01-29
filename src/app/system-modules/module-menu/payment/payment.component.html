@@ -22,7 +22,7 @@
                                 <div class="list-labels">
                                     <div class="pending-name">{{pendingBill?.personDetails?.firstName}} {{ pendingBill?.personDetails?.lastName}}</div>
                                     <div class="oda">
-                                        <div class="pending-date">{{ pendingBill?.createdAt |date:'medium'}}</div>
+                                        <div class="pending-date">{{ pendingBill?.updatedAt |date:'medium'}}</div>
                                         <div class="pending-amount" *ngIf="pendingBill.grandTotalExcludeInvoice!=0">
                                             <span>&#x20a6;</span>{{ pendingBill?.grandTotalExcludeInvoice|numberThr }}</div>
                                     </div>
@@ -71,7 +71,7 @@
                                     <div class="list-labels">
                                         <div class="pending-name">{{invoice?.personDetails.firstName}} {{invoice?.personDetails?.lastName}}</div>
                                         <div class="oda">
-                                            <div class="pending-date">{{invoice.createdAt|date:'medium'}}</div>
+                                            <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
                                             <div class="pending-amount">
                                                 <span>&#x20a6;</span>{{invoice.balance|numberThr}}</div>
                                         </div>
