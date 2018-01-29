@@ -5,14 +5,16 @@
     padding: 20px;
     border-radius: 5px;
 }
-.card-list-item{
+
+.card-list-item {
     border-bottom: solid rgb(204, 204, 204) 1px;
     padding-top: 20px;
     padding-bottom: 20px;
     font-size: 1.2rem;
 }
-.card-list-item:last-of-type{
-    border: none    
+
+.card-list-item:last-of-type {
+    border: none
 }
 
 .blue-gradient {
@@ -27,6 +29,29 @@
 
 .transparent-icon {
     opacity: 0.5;
+}
+
+.box {
+    .box-header {
+        padding: 10px;
+        .small-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    }
+    .box-body {
+        padding: 20px;
+    }
+}
+
+.box-gray {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.mat-form-field {
+    width: 100%;
 }
 
 hr.white {

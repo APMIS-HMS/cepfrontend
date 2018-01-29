@@ -18,7 +18,7 @@
         <form [formGroup]="paymentFormGroup">
             <div class="frm-item-wrap">
                 <mat-input-container>
-                    <input type="number" matInput placeholder="Amount(&#x20a6;)" formControlName="fundAmount">
+                    <input type="number" matInput placeholder="Enter amount e.g. &#x20a6;500" formControlName="fundAmount">
                 </mat-input-container>
             </div>
             <div class="frm-item-wrap">
@@ -106,5 +106,5 @@
                 <td><span>&#x20a6;</span>{{tx.balance}}</td>
             </tr>
         </tbody>
-    </table> 
+    </table>
 </div>
