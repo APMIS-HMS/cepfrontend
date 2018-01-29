@@ -18,11 +18,11 @@ export class ContactInfoComponent implements OnInit {
 	@Input() inputFacility: Facility = <Facility>{};
 
 
-	selectedCountry_key = []; //states of the selected country load key
-	stateAvailable = false; //boolean variable to check if the list of user selected state exists in code
-	
+	selectedCountry_key = []; // states of the selected country load key
+	stateAvailable = false; // boolean variable to check if the list of user selected state exists in code
+
 	show = false;
-  	@ViewChild('showhideinput') input;
+	@ViewChild('showhideinput') input;
 
 	countries: any[] = [];
 	titles: Title[] = [];
@@ -186,46 +186,6 @@ export class ContactInfoComponent implements OnInit {
 					this.back_key_show = false;
 					this.mainErr = true;
 				}
-				this.facilityService.create(model).then((payload) => {
-					this.selectedFacility = payload;
-
-					// create person and user
-					let personModel = <Person>{
-						titleId: this.titles[0]._id,
-						firstName: this.facilityForm1_1.controls['contactFName'].value,
-						lastName: this.facilityForm1_1.controls['contactLName'].value,
-						genderId: this.genders[0]._id,
-						homeAddress: model.address,
-						phoneNumber: model.contactPhoneNo,
-						lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
-						nationalityId: this.inputFacility.address.country,
-						stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
-						email: model.email,
-						maritalStatusId: this.maritalStatuses[0]._id
-					};
-					let userModel = <User>{
-						email: model.email,
-						password: this.facilityForm1_1.controls['password'].value
-					};
-
-					this.personService.create(personModel).then((ppayload) => {
-						userModel.personId = ppayload._id;
-						console.log("Person");
-						if (userModel.facilitiesRole === undefined) {
-							userModel.facilitiesRole = [];
-							console.log("facilitiesRole is undefine");
-						}
-						userModel.facilitiesRole.push(<Role>{ facilityId: payload._id })
-						this.userService.create(userModel).then((upayload) => {
-							console.log("user created");
-						});
-
-
-					});
-				},
-					error => {
-						console.log(error);
-					});
 
 			}
 		} else {
@@ -328,12 +288,12 @@ export class ContactInfoComponent implements OnInit {
 	close_onClick() {
 		this.closeModal.emit(true);
 	}
-	toggleShow(e) { 
+	toggleShow(e) {
 		this.show = !this.show;
 		if (this.show) {
-		this.input.nativeElement.type = 'text';
+			this.input.nativeElement.type = 'text';
 		} else {
-		this.input.nativeElement.type = 'password';
+			this.input.nativeElement.type = 'password';
 		}
 	}
 
