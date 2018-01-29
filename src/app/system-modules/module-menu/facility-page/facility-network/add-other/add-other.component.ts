@@ -17,6 +17,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 export class AddOtherComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() networkJoined: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   mainErr = true;
   errMsg = "";
@@ -79,7 +80,7 @@ export class AddOtherComponent implements OnInit {
         this.loading = false;
         let facc = payl.data;
         console.log(payl);
-        this.systemService.announceSweetProxy('You have Successfully Joined A Network!.', 'success');
+        this.systemService.announceSweetProxy('You have Successfully Joined A Network!.', 'success', this);
         this.close_onClick();
       })
       
@@ -109,7 +110,7 @@ export class AddOtherComponent implements OnInit {
           this.loading = false;
           let facc = payl.data;
           console.log(payl);
-          this.systemService.announceSweetProxy('Network has successfully been Updated!', 'error');
+          this.systemService.announceSweetProxy('Network has successfully been Updated!', 'success', this);
           this.close_onClick();
         })
         
@@ -124,7 +125,6 @@ export class AddOtherComponent implements OnInit {
       this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
     });
   }
-
 
   pickFacilitiesMemberOf(event, id) {
     //console.log(this.checboxBool);
@@ -160,6 +160,10 @@ export class AddOtherComponent implements OnInit {
     console.log(this.selectedFacilityIds);
     console.log(this.removeFacilities);
 
+  }
+
+  sweetAlertCallback(result){
+    this.networkJoined.emit(true);
   }
 
 }

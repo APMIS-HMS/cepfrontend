@@ -79,4 +79,14 @@ export class FacilityNetworkComponent implements OnInit {
     });
   }
 
+  memberAdded(val){
+    console.log("am here");
+    this.getNetworks(true);
+  }
+
+  networkJoined(event){
+    console.log(event);
+    this.getNetworks(false);
+  }
+
 }

@@ -114,8 +114,8 @@
       (closeModal)="close_onClick($event)"></app-global-dialog>
 </div> -->
 <div *ngIf="addMember" class="modal-overlay">
-    <app-add-member (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-member>
+    <app-add-member (closeModal)="close_onClick($event)" (memberAdded)="memberAdded($event)" id="form-modal" class="form-modal center-center"></app-add-member>
 </div>
 <div *ngIf="addOther" class="modal-overlay">
-    <app-add-other (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-other>
+    <app-add-other (closeModal)="close_onClick($event)" (networkJoined)="networkJoined($event)" id="form-modal" class="form-modal center-center"></app-add-other>
 </div>

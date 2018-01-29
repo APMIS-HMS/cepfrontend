@@ -17,6 +17,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 export class AddMemberComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() memberAdded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   mainErr = true;
   errMsg = "";
@@ -113,8 +114,8 @@ export class AddMemberComponent implements OnInit {
       this.facilityService.get(fac.hostId, {}).then(payl => {
         this.loading = false;
         let facc = payl.data;
-        this.systemService.announceSweetProxy('Facilities has successfully been added to your Network!.', 'success');
         console.log(payl);
+        this.systemService.announceSweetProxy('Facilities has successfully been added to your Network!.', 'success', this);
         this.close_onClick();
       })
       
@@ -141,7 +142,9 @@ export class AddMemberComponent implements OnInit {
         this.facilityService.get(fac.hostId, {}).then(payl => {
           this.loading = false;
           let facc = payl.data;
-          this.systemService.announceSweetProxy('Network has successfully been Updated!.', 'success');
+          
+          console.log(facc);
+          this.systemService.announceSweetProxy('Network has successfully been Updated!.', 'success', this);
           console.log(payl);
           this.close_onClick();
         })
@@ -155,6 +158,10 @@ export class AddMemberComponent implements OnInit {
       console.log(error);
       this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
     });
+  }
+
+  sweetAlertCallback(result){
+    this.memberAdded.emit(true);
   }
 
 }
