@@ -16,6 +16,7 @@ class Service {
   }
 
   create(data, params) {
+    logger.info(params);
     // logger.info(data);
     // this.app.channel('anonymous').leave(connection);
 
