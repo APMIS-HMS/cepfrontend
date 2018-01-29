@@ -9,48 +9,37 @@ class Service {
     this.app = app;
   }
 
-  find(params) {
+  async find(params) {
+    console.log(params.query);
     var recentBillModelId = {};
     var masterBillGroups = {};
     var billGroups = {};
     const billingsService = this.app.service('billings');
     const facilityItemService = this.app.service('facility-service-items');
     var results = [];
-    return new Promise(function (resolve, reject) {
-      billingsService.find({
-        query: {
-          facilityId: params.query.facilityId,
-          patientId: params.query.patientId,
-          isinvoice: params.query.isinvoice
-        }
-      }).then(payload => {
-        payload.data.forEach((element, i) => {
-          facilityItemService.create(element, {}).then(payload2 => {
-            console.log("AA" + payload2.billItems.length);
-            results.push(payload2);
-            if (i == payload.data.length - 1) {
-              if (results.length > 0) {
-                recentBillModelId = results[results.length - 1]._id;
-              }
-              masterBillGroups = [];
-              billGroups = [];
-              results.forEach((itemi, i) => {
-                masterBillGroups.push(itemi);
-                itemi.billItems.forEach((itemj, j) => {
-                  if (itemj.isInvoiceGenerated === false || itemj.isInvoiceGenerated === undefined) {
-                    fixedGroupExisting(itemj, itemi._id, billGroups, resolve, results);
-                  }
-                });
-              });
-            }
-          }, error => {
-            reject(error);
-          });
-        });
-      }, error => {
-        reject(error);
-      });
+    var awaitBills = await billingsService.find({
+      query: {
+        facilityId: params.query.facilityId,
+        patientId: params.query.patientId,
+        isinvoice: params.query.isinvoice
+      }
     });
+    results = await facilityItemService.create(awaitBills.data, {});
+    if (results.length > 0) {
+      recentBillModelId = results[results.length - 1]._id;
+    }
+    masterBillGroups = [];
+    billGroups = [];
+    let len5 = results.length-1;
+    for (let i = len5; i >= 0; i--) {
+      masterBillGroups.push(results[i]);
+      let len6 = results[i].billItems.length - 1;
+      for (let k = len6; k >= 0; k--) {
+        if (results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) {
+          return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
+        }
+      }
+    }
   }
 
   get(id, params) {
@@ -60,82 +49,67 @@ class Service {
     });
   }
 
-  create(data) {
-    console.log("Am here");
+  async create(data) {
     const billingsService = this.app.service('billings');
     const getTokenService = this.app.service('get-tokens');
     const invoicesService = this.app.service('invoices');
     var newBillItems = [];
-    return new Promise(function (resolve, reject) {
-      console.log("length " + data.checkBillitems.length);
-      if (data.checkBillitems.length > 0) {
-        const billGroup = {
-          billingIds: []
-        };
-        billGroup.facilityId = data.facilityId;
-        billGroup.patientId = data.patientId;
-        data.billGroups.forEach((itemg, g) => {
-          itemg.bills.forEach((itemb, b) => {
-            if (itemb.isChecked) {
-              itemb.billObject.isInvoiceGenerated = true;
-              billGroup.billingIds
-                .push({
-                  billingId: itemb._id,
-                  billObject: itemb.billObject,
-                  billModelId: itemb.billModelId
-                });
-            }
-          });
+    if (data.checkBillitems.length > 0) {
+      const billGroup = {
+        billingIds: []
+      };
+      billGroup.facilityId = data.facilityId;
+      billGroup.patientId = data.patientId;
+      data.billGroups.forEach((itemg, g) => {
+        itemg.bills.forEach((itemb, b) => {
+          if (itemb.isChecked) {
+            itemb.billObject.isInvoiceGenerated = true;
+            billGroup.billingIds
+              .push({
+                billingId: itemb._id,
+                billObject: itemb.billObject,
+                billModelId: itemb.billModelId
+              });
+          }
         });
-        console.log(" billGroup.billingIds length " + billGroup.billingIds.length);
-        getTokenService.get(tokenLabel.tokenType.invoiceNo, {}).then(tokenPayload => {
-          console.log(tokenPayload);
-          if (billGroup.billingIds.length > 0) {
-            billGroup.totalDiscount = data.totalDiscount;
-            billGroup.subTotal = data.subTotal;
-            billGroup.totalPrice = data.totalPrice;
-            billGroup.balance = data.totalPrice;
-            billGroup.invoiceNo = tokenPayload.result;
-            console.log(" billGroup.billingIds length " + billGroup.billingIds.length);
-            invoicesService.create(billGroup).then(payload => {
-              const len = data.checkBillitems.length - 1;
-              const len2 = data.listedBillItems.length - 1;
-              const filterCheckedBills = [];
-              for (let x = len; x >= 0; x--) {
-                for (let x2 = len2; x2 >= 0; x2--) {
-                  const len3 = data.listedBillItems[x2].billItems.length - 1;
-                  for (let x3 = len3; x3 >= 0; x3--) {
-                    if (data.listedBillItems[x2].billItems[x3]._id == data.checkBillitems[x]) {
-                      data.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
-                      data.listedBillItems[x2].billItems[x3].updatedAt = new Date;
-                      filterCheckedBills.push(data.listedBillItems[x2]);
-                      if (x == 0) {
-                        const len4 = filterCheckedBills.length - 1;
-                        for (let x4 = len4; x4 >= 0; x4--) {
-                          billingsService.patch(filterCheckedBills[x4]._id, {
-                            billItems: filterCheckedBills[x4].billItems
-                          }).then(pd => {
-                            if (x4 == 0) {
-                              resolve(payload);
-                            }
-                          });
-                        }
-                      }
-                    }
+      });
+      var awaitToken = await getTokenService.get(tokenLabel.tokenType.invoiceNo, {});
+      if (billGroup.billingIds.length > 0) {
+        billGroup.totalDiscount = data.totalDiscount;
+        billGroup.subTotal = data.subTotal;
+        billGroup.totalPrice = data.totalPrice;
+        billGroup.balance = data.totalPrice;
+        billGroup.invoiceNo = tokenPayload.result;
+        var awaitInvoices = await invoicesService.create(billGroup);
+        const len = data.checkBillitems.length - 1;
+        const len2 = data.listedBillItems.length - 1;
+        const filterCheckedBills = [];
+        for (let x = len; x >= 0; x--) {
+          for (let x2 = len2; x2 >= 0; x2--) {
+            const len3 = data.listedBillItems[x2].billItems.length - 1;
+            for (let x3 = len3; x3 >= 0; x3--) {
+              if (data.listedBillItems[x2].billItems[x3]._id == data.checkBillitems[x]) {
+                data.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
+                data.listedBillItems[x2].billItems[x3].updatedAt = new Date;
+                filterCheckedBills.push(data.listedBillItems[x2]);
+                if (x == 0) {
+                  const len4 = filterCheckedBills.length - 1;
+                  for (let x4 = len4; x4 >= 0; x4--) {
+                    var awaitBills = await billingsService.patch(filterCheckedBills[x4]._id, {
+                      billItems: filterCheckedBills[x4].billItems
+                    });
+                    return awaitInvoices;
                   }
                 }
               }
-            }, error => {
-
-              reject(error);
-            });
+            }
           }
-        });
+        }
       } else {
         var error = 'No bill selected';
-        reject(error);
+        return error;
       }
-    });
+    }
   }
 
   update(id, data, params) {
@@ -153,11 +127,7 @@ class Service {
   }
 }
 
-module.exports = function (options) {
-  return new Service(options);
-};
-
-function fixedGroupExisting(bill, _id, billGroups, resolve, results) {
+function fixedGroupExisting(bill, _id, billGroups, results) {
   var subTotal = 0;
   var total = 0;
   var discount = 0;
@@ -215,6 +185,10 @@ function fixedGroupExisting(bill, _id, billGroups, resolve, results) {
     'subTotal': subTotal,
     'discount': discount
   }
-  resolve(_billGroups);
+  return _billGroups;
 }
+
+module.exports = function (options) {
+  return new Service(options);
+};
 module.exports.Service = Service;
