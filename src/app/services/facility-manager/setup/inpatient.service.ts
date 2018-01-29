@@ -3,7 +3,6 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/Rx';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -66,6 +65,15 @@ export class InPatientService {
     return this.inPatientItem;
   }
 
+  public admit(transfer): Promise<any> {
+    const host = this._restService.getHost() + '/admit-patient';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this._http.post(host, transfer, { headers: headers }).toPromise()
+      .then((res) => this.extractData(res)).catch(error => this.handleErrorPromise(error));
+  }
+
   public discharge(discharge): Promise<any> {
     const host = this._restService.getHost() + '/discharge-patient';
     const headers = new Headers();
@@ -76,36 +84,29 @@ export class InPatientService {
   }
 
   private extractData(res: Response) {
-    console.log(res);
 	  let body = res.json();
     return body || {};
   }
 
   private handleErrorObservable (error: Response | any) {
-	  console.error(error.message || error);
 	  let errMsg: string;
     if (error instanceof Response) {
-      console.log(error);
       const body = error.json() || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} ${error.statusText || ''} - ${err}`;
     } else {
-      console.log(error);
       errMsg = error.message ? error.message : error.toString();
     }
     return Observable.throw(errMsg);
   }
 
   private handleErrorPromise (error: Response | any) {
-    console.error(error.message || error);
     let errMsg: string;
     if (error instanceof Response) {
-      console.log(error);
       const body = error.json() || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} ${error.statusText || ''} - ${err}`;
     } else {
-      console.log(error);
       errMsg = error.message ? error.message : error.toString();
     }
     return Promise.reject(errMsg);

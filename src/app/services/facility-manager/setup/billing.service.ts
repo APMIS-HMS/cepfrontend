@@ -2,12 +2,13 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-// import 'rxjs/Rx';
 
 @Injectable()
 export class BillingService {
   public _socket;
+  public _socketBillFacilityServices;
   private _rest;
+  public updatelistner;
 
   private billingAnnouncedSource = new Subject<Object>();
   billingAnnounced$ = this.billingAnnouncedSource.asObservable();
@@ -18,7 +19,9 @@ export class BillingService {
   ) {
     this._rest = _restService.getService('billings');
     this._socket = _socketService.getService('billings');
-     this._socket.timeout = 90000;
+    this._socketBillFacilityServices = _socketService.getService('bill-facility-services');
+    this.updatelistner = Observable.fromEvent(this._socket, 'updated');
+    this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
 
     });
@@ -50,5 +53,18 @@ export class BillingService {
 
   update(billing: any) {
     return this._socket.update(billing._id, billing);
+  }
+
+  patch(_id: any, data: any, param: any) {
+    return this._socket.patch(_id, data, param);
+  }
+
+
+  findBillService(query: any) {
+    return this._socketBillFacilityServices.find(query);
+  }
+
+  generateInvoice(data: any) {
+    return this._socketBillFacilityServices.create(data);
   }
 }

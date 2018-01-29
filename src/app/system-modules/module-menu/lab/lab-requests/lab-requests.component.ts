@@ -8,10 +8,9 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import {
   Facility, MinorLocation, Investigation, InvestigationModel, Employee,
-  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest
+  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest, User
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -75,10 +74,12 @@ export class LabRequestsComponent implements OnInit {
   bindInvestigations: InvestigationModel[] = [];
   movedInvestigations: any[] = [];
   selectedInvestigation: any = <any>{};
+  user: User = <User>{};
 
   totalPrice: Number = 0;
-  constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-    private toastyService: ToastyService, private toastyConfig: ToastyConfig, private route: ActivatedRoute,
+  constructor(
+    private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
+   private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
     private _router: Router,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
@@ -87,9 +88,9 @@ export class LabRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.requests = [];
-    console.log(this.patientId);
     this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
     this.selectedLab = <Facility>this.locker.getObject('workbenchCheckingObject');
+    this.user = <User>this.locker.getObject('auth');
     this.searchInvestigation = new FormControl('', []);
     this.searchInvestigation.valueChanges
       .debounceTime(400)
@@ -193,18 +194,13 @@ export class LabRequestsComponent implements OnInit {
     })
 
     this.frmNewRequest.valueChanges.subscribe(value => {
-      console.log("The way");
       this.validateForm();
     })
 
     this.route.params.subscribe((params: any) => {
-      console.log(params.id);
-      console.log("I am here");
       if (params.id !== undefined && this.isLaboratory) {
-        console.log("----------------call the way---------------");
         this.isExternal = true;
         this.requestService.find({ query: { 'patientId.personDetails._id': params.id } }).then(payload => {
-          console.log("A");
           if (payload.data.length > 0) {
             this.frmNewRequest.controls['labNo'].setValue(payload.data[0].labNumber);
             this.frmNewRequest.controls['patient'].setValue(payload.data[0].patientId.personDetails.personFullName);
@@ -214,24 +210,15 @@ export class LabRequestsComponent implements OnInit {
 
           }
           let labId = '';
-          console.log("B");
           if (this.selectedLab !== undefined && this.selectedLab.typeObject !== undefined) {
-            console.log("new lab");
             labId = this.selectedLab.typeObject.minorLocationId;
             this.paramLabNo = labId;
-            console.log(this.paramLabNo);
           }
-          console.log("C");
           // Filter investigations based on the laboratory Id
           payload.data.forEach(labRequest => {
-            console.log(labRequest);
             labRequest.investigations.forEach(investigation => {
-              console.log(investigation);
-              console.log(investigation.isSaved);
-              console.log(investigation.isUploaded);
               if (investigation.isExternal) {
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-                console.log(investigation);
                 if (!investigation.isSaved || !investigation.isUploaded) {
                   pendingLabReq.report = investigation.report;
                   pendingLabReq.isSaved = investigation.isSaved;
@@ -275,9 +262,7 @@ export class LabRequestsComponent implements OnInit {
           this.request_view = true;
         })
       } else {
-        console.log("This is a selected Patient");
         this.selectedPatient = this.patientId;
-        console.log(this.selectedPatient);
 
       }
 
@@ -291,23 +276,7 @@ export class LabRequestsComponent implements OnInit {
   extList_close() {
     this.extList = false;
   }
-  addToast(msg: string) {
-    const toastOptions: ToastOptions = {
-      title: 'Apmis',
-      msg: msg,
-      showClose: true,
-      timeout: 5000,
-      theme: 'default',
-      onAdd: (toast: ToastData) => {
-        console.log('Toast ' + toast.id + ' has been added!');
-      },
-      onRemove: function (toast: ToastData) {
-        console.log('Toast ' + toast.id + ' has been removed!');
-      }
-    };
 
-    this.toastyService.info(toastOptions);
-  }
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
       payload.data.forEach(item => {
@@ -414,12 +383,10 @@ export class LabRequestsComponent implements OnInit {
           if (isInBind > -1) {
             if ($event.checked) {
               childInvestigation.isChecked = true;
-              console.log('remove')
               this.bindInvestigations.splice(isInBind, 1);
               if (investigation.location !== undefined) {
                 childInvestigation.location = investigation.location.laboratoryId;
               }
-              console.log(childInvestigation);
               this.bindInvestigations.push(childInvestigation);
               // if (this.bindInvestigations[isInBind].investigation.panel
               //   .findIndex(x => x._id === copyInvestigation.investigation.panel[0]._id) >= 0) {
@@ -431,7 +398,6 @@ export class LabRequestsComponent implements OnInit {
               //   }
               // }
             } else {
-              // console.log('slice 3')
               // const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
               //   .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
               // this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
@@ -482,7 +448,6 @@ export class LabRequestsComponent implements OnInit {
                   }
                 }
               } else {
-                console.log('slice 3')
                 const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
                   .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
                 this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
@@ -544,7 +509,6 @@ export class LabRequestsComponent implements OnInit {
           investigation.isChecked = true;
           investigation.LaboratoryWorkbenches = investigation.LaboratoryWorkbenches;
         } else {
-          console.log('slice 1')
           const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
           this.bindInvestigations.splice(indexToRemove, 1)
         }
@@ -553,11 +517,9 @@ export class LabRequestsComponent implements OnInit {
         // })
       }
     } else {
-      console.log('slice 2')
       const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
       this.bindInvestigations.splice(indexToRemove, 1);
       // unchecked panel and uncheched all children
-      console.log('uncheck panel')
       if (investigation.investigation.isPanel) {
         investigation.investigation.panel.forEach((child, k) => {
           child.isChecked = false;
@@ -569,8 +531,6 @@ export class LabRequestsComponent implements OnInit {
         investigation.isChecked = false;
         investigation.isExternal = false;
         investigation.isUrgent = false;
-        // investigation.LaboratoryWorkbenches = [];
-        // investigation.LaboratoryWorkbenches = [];
       }
 
 
@@ -578,10 +538,6 @@ export class LabRequestsComponent implements OnInit {
   }
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
-    // console.log('am here')
-    // console.log(investigation);
-    // console.log(location);
-    // console.log(LaboratoryWorkbenches);
     const ids: any[] = [];
     if (investigation.investigation.isPanel) {
       const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -597,7 +553,6 @@ export class LabRequestsComponent implements OnInit {
       // i need prices for the two children investigation and their prices
       const labId = location.laboratoryId._id;
       this.investigationService.find({ query: { '_id': { $in: ids } } }).then(payload => {
-        // console.log(payload.data)
         const tempList: any[] = [];
         payload.data.forEach((item, j) => {
           const index = item.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === location.laboratoryId._id);
@@ -607,7 +562,6 @@ export class LabRequestsComponent implements OnInit {
             tempList.push(withId);
           }
         })
-        // console.log(tempList);
         investigation.temporaryInvestigationList = tempList;
       })
       investigation.location = location;
@@ -622,13 +576,10 @@ export class LabRequestsComponent implements OnInit {
       copyBindInvestigation.LaboratoryWorkbenches = [];
       copyBindInvestigation.LaboratoryWorkbenches.push(location);
       copyBindInvestigation.investigation.LaboratoryWorkbenches = copyBindInvestigation.LaboratoryWorkbenches;
-      console.log(copyBindInvestigation)
       this.bindInvestigations.push(copyBindInvestigation);
     }
   }
   getChildPrice(investigation, panel) {
-    // console.log(investigation);
-    // console.log(panel)
     let parentLocation;
     let retVal = '';
     parentLocation = investigation.location.laboratoryId;
@@ -638,7 +589,6 @@ export class LabRequestsComponent implements OnInit {
           if (item.workbenches.length > 0) {
             panel.location = investigation.location
             panel.location.workbenches = item.workbenches;
-            // console.log(panel.location)
             retVal = item.workbenches[0].price;
           }
         }
@@ -662,12 +612,10 @@ export class LabRequestsComponent implements OnInit {
     return retVal;
   }
   IsParentChecked(investigation, panel) {
-    // console.log(panel)
     return this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id) > -1 || investigation.isChecked;
 
   }
   getParentLocation(investigation, panel) {
-    // console.log(investigation)
     // const index = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
     // if (index > -1 && this.bindInvestigations[index].location !== undefined) {
     //   return this.bindInvestigations[index].location.laboratoryId.name;
@@ -685,7 +633,6 @@ export class LabRequestsComponent implements OnInit {
     this.investigations[invIndexToUncheck].isChecked = false;
   }
   markExternal(event, investigation: InvestigationModel) {
-    console.log(event);
     if (event.checked) {
       delete investigation.location;
       const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -697,7 +644,6 @@ export class LabRequestsComponent implements OnInit {
       const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
       delete copyBindInvestigation.LaboratoryWorkbenches;
       delete copyBindInvestigation.investigation.LaboratoryWorkbenches;
-      console.log(copyBindInvestigation)
       this.bindInvestigations.push(copyBindInvestigation);
     } else {
       const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -716,25 +662,21 @@ export class LabRequestsComponent implements OnInit {
   }
 
   validateForm() {
-    console.log(this.frmNewRequest.valid);
+    console.log(this.selectedPatient);
     if (this.frmNewRequest.valid) {
-      console.log("valid")
-      this.isValidateForm =true;
-    } else if (this.selectedPatient._id != undefined && this.selectedPatient._id.length > 0) {
+      this.isValidateForm = true;
+    } else if (this.selectedPatient !== undefined && this.selectedPatient._id !== undefined && this.selectedPatient._id.length > 0) {
       if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
-        console.log("alter")
         this.isValidateForm = true;
       }
     }
     else {
-      console.log("else")
       this.isValidateForm = false;
     }
   }
 
 
   save(valid, value) {
-    console.log(value);
     delete this.selectedPatient.appointments;
     delete this.selectedPatient.encounterRecords;
     delete this.selectedPatient.orders;
@@ -793,7 +735,6 @@ export class LabRequestsComponent implements OnInit {
       investigations: readyCollection,
       createdBy: logEmp
     }
-    console.log(request);
     const billGroup: BillIGroup = <BillIGroup>{};
     billGroup.discount = 0;
     billGroup.facilityId = selectedFacility._id;
@@ -805,7 +746,6 @@ export class LabRequestsComponent implements OnInit {
     billGroup.billItems = [];
     readyCollection.forEach(item => {
       if (!item.isExternal) {
-        console.log(item);
         const billItem: BillItem = <BillItem>{};
         billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
         billItem.facilityId = selectedFacility._id;
@@ -840,7 +780,6 @@ export class LabRequestsComponent implements OnInit {
           delete item.serviceModifierOject
         });
         results[0].billingId = billing;
-        console.log(results[0]);
         this.requestService.update(results[0]).then(payload => {
           this.frmNewRequest.reset();
          this._getAllPendingRequests();
@@ -848,29 +787,25 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-          this.addToast('Request sent successfully');
-        }).catch(ex =>{
-          console.log(ex)
+          this._notification('Success', 'Request has been sent successfully!');
+        }).catch(ex => {
         })
 
       })
     } else {
-      console.log(request);
       this.requestService.create(request).then(payload => {
         this.frmNewRequest.reset();
         this.bindInvestigations = [];
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-        this.addToast('Request sent successfully');
-      },err=>{
-        console.log(err);
+          this._notification('Success', 'Request has been sent successfully!');
+      }, err => {
       })
     }
   }
 
   externalChanged($event, investigation) {
-    console.log(investigation)
     investigation.isExternal = $event.checked;
   }
 
@@ -881,14 +816,12 @@ export class LabRequestsComponent implements OnInit {
   private _getAllPendingRequests() {
     this.pendingRequests = [];
     if (this.patientId !== undefined && this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
-      console.log('have patient')
       this.request_view = true;
       this.requestService.find({
         query: {
           'patientId._id': this.patientId._id,
         }
       }).then(res => {
-        console.log(res);
         this.loading = false;
         let labId = '';
         if ((this.selectedLab !== undefined && this.selectedLab !== null) && this.selectedLab.typeObject !== undefined) {
@@ -897,18 +830,13 @@ export class LabRequestsComponent implements OnInit {
 
         // Filter investigations based on the laboratory Id
         res.data.forEach(labRequest => {
-          console.log(labRequest);
           labRequest.investigations.forEach(investigation => {
-            console.log(investigation);
-            console.log(investigation.isSaved);
-            console.log(investigation.isUploaded);
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
               labId === investigation.location.laboratoryId._id
             ) {
               const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-              console.log(investigation);
               if (!investigation.isSaved || !investigation.isUploaded) {
                 pendingLabReq.report = investigation.report;
                 pendingLabReq.isSaved = investigation.isSaved;
@@ -949,7 +877,6 @@ export class LabRequestsComponent implements OnInit {
             }
           });
         });
-        console.log(this.pendingRequests);
       }).catch(err => console.error(err));
     } else {
       this.requestService.find({
@@ -957,7 +884,6 @@ export class LabRequestsComponent implements OnInit {
           'facilityId._id': this.selectedFacility._id
         }
       }).then(res => {
-        console.log(res);
         this.loading = false;
         let labId = '';
         if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
@@ -966,15 +892,14 @@ export class LabRequestsComponent implements OnInit {
 
         // Filter investigations based on the laboratory Id
         res.data.forEach(labRequest => {
-          console.log(labRequest);
           labRequest.investigations.forEach(investigation => {
+            console.log(investigation.location);
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
               labId === investigation.location.laboratoryId._id
             ) {
               const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-              console.log(investigation);
               if (!investigation.isSaved || !investigation.isUploaded) {
                 pendingLabReq.report = investigation.report;
                 pendingLabReq.isSaved = investigation.isSaved;
@@ -1021,13 +946,20 @@ export class LabRequestsComponent implements OnInit {
             }
           });
         });
-        console.log(this.pendingRequests);
       }).catch(err => console.error(err));
     }
   }
 
   goToWriteReport(request: any) {
-    console.log(request);
     this._router.navigate(['/dashboard/laboratory/report/' + request.labRequestId + '/' + request.investigationId]);
   }
+
+  // Notification
+	private _notification(type: string, text: string): void {
+		this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+	}
 }

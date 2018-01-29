@@ -1,8 +1,8 @@
 @import "../../../patient-manager/patientmanager-detailpage/documentation/documentation.component.scss";
 
-.modal-baseWrap {
-    width: 80%;
-}
+// .modal-baseWrap {
+//     width: 80%;
+// }
 .cont-wrap{
     width: 100%;
     height: auto;
@@ -57,13 +57,13 @@
     align-items: center;
 }
 .txt-label{
-    font-size: 14px;
+    font-size: 1.4rem;
     font-family: "Josefin Sans", sans-serif;
     color: #8e8e8e;
     width: 30%;
 }
 .txt-val, .checka{
-    font-size: 12px;
+    font-size: 1.2rem;
     line-height: 1.5;
     color: #333;
     width: 69%;
@@ -76,7 +76,7 @@
     color: #0288D1;
 }
 .lab-btn {
-    font-size: 12px;
+    font-size: 1.2rem;
     border: 1px solid #03A9F4;
     text-align: center;
     padding: 2px;
@@ -97,7 +97,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: #eee;
     padding: 10px;
     box-sizing: border-box;
@@ -119,14 +119,14 @@
     border-radius: 10px;
 }
 button, input{
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 button{
     color: #777;
 }
 .action-item{
     border: 1px solid #777;
-    font-size: 12px;
+    font-size: 1.2rem;
     width: 120px;
     text-align: center;
     // margin: 0 auto;
@@ -135,7 +135,7 @@ button{
     position: absolute;
     top: -10px;
     color: #0288D1;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 .payment {
     color: #0288D1;
@@ -144,7 +144,7 @@ button{
     box-sizing: border-box;
 }
 .sampleNotTaken {
-    font-size: 12px;
+    font-size: 1.2rem;
     font-style: italic;
     padding-right: 5px;
     color: #0288D1;
@@ -177,9 +177,9 @@ button{
     color: #333;
 }
 .uploaded i{
-    font-size: 28px;
+    font-size: 2.8rem;
 }
 .upload-label{
-    font-size: 12px;
+    font-size: 1.2rem;
     margin-top: 10px;
 }

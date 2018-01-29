@@ -55,11 +55,11 @@
                 </div>
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && !loading">
-                <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
+                <div style="width: 100%; padding: 10px; font-size: 1.3rem;">No data to display in table</div>
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
-                <div style="width: 100%; padding: 10px; font-size: 13px;">
-                    <md-spinner class="small-spinner"></md-spinner>
+                <div style="width: 100%; padding: 10px; font-size: 1.3rem;">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </div>
         </div>

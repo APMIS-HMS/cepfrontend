@@ -2,7 +2,7 @@
     text-align: center;
     position: relative;
     top: -20px;
-    font-size: 12px;
+    font-size: 1.2rem;
     width: 100%;
     color: #A6ACAF;
 }
@@ -15,13 +15,13 @@
 }
 
 .loc-timeSpent {
-    font-size: 10px;
+    font-size: 1rem;
     color: #ff2500;
 }
 
 span.timeLabel {
     color: #A6ACAF;
-    font-size: 10px;
+    font-size: 1rem;
     padding-right: 5px;
     font-style: italic;
 }
@@ -39,7 +39,7 @@ span.timeLabel {
 
 .caregiver-room {
     color: #A6ACAF;
-    font-size: 10px;
+    font-size: 1rem;
     font-style: italic;
 }
 
@@ -74,7 +74,7 @@ span.timeLabel {
     position: fixed;
     top: 0;
     right: 0;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: #fff;
     width: 350px;
     z-index: 10000;
@@ -155,7 +155,7 @@ span.timeLabel {
 }
 
 .hide-actionWrap {
-    font-size: 20px;
+    font-size: 2rem;
     margin-left: 10px;
     color: #ff2500;
     cursor: pointer;
@@ -195,7 +195,7 @@ span.timeLabel {
 .timelinehead-contentWrap {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .patientLabelGroup {
@@ -204,7 +204,7 @@ span.timeLabel {
 
 .patientLabelGroup .label {
     color: #B3B6B7;
-    font-size: 10px;
+    font-size: 1rem;
 }
 
 .modal-overlay {

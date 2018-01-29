@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-var _ = require('lodash');
+// var _ = require('lodash');
 
 import {
     FacilitiesService, SchedulerService, AppointmentService, PatientService, AppointmentTypeService, ProfessionService,
@@ -73,15 +73,12 @@ export class NewAppointmentComponent implements OnInit {
         private route: ActivatedRoute) {
 
         route.params.subscribe(params => { 
-            console.log(params);
             if (params.id !== undefined) {
                 this.appointmentService.get(params.id, {}).subscribe(payload => {
                     this.appointmentService.appointmentAnnounced(payload);
                 })
             } else if (params.patientId !== undefined && params.doctorId !== undefined) {
-                console.log(params);
                 this.patientService.get(params.patientId, {}).then(inPayload => {
-                    console.log(inPayload);
                     this.patientService.announcePatient(inPayload);
                     this.selectedPatient = inPayload;
                 })
@@ -90,7 +87,6 @@ export class NewAppointmentComponent implements OnInit {
         });
 
         this.appointmentService.schedulesAnnounced$.subscribe((payload: any) => {
-            //this.schedules = payload;
             var self = this;
             payload.sort(function sortByDay(a, b) {
                 var day1 = a.day.toLowerCase();

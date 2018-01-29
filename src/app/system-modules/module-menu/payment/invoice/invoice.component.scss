@@ -22,7 +22,7 @@ th {
 .existing-bill-group {
     top: 0;
     text-align: center;
-    font-size: 12px;
+    font-size: 1.2rem;
     padding: 6px;
     border-bottom: 1px solid #976;
     border-left: 1px solid #976;
@@ -33,7 +33,7 @@ th {
     cursor: pointer;
 }
 ul.invoices_ul {
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #979A9A;
     padding: 5px;
 }
@@ -43,7 +43,7 @@ ul.invoices_ul {
 }
 .invoice_header div{
     color: #000;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 .invoice_li{
     padding: 3px;
@@ -65,4 +65,36 @@ ul.invoices_ul li span{
 ul.topmenuwrap {
     top: 18px;
     right: 25px;
+}
+.pending-bills .list-labels{
+    position: relative;
+    width: 100%;
+}
+.pay-status{
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 1rem;
+}
+.rightCol{
+    margin-top: -9px;
+}
+.topsecInnerWrap{
+    display: block;
+    border: 0;
+}
+.rhsSectB{
+    text-align: left;
+}
+.summaryItems{
+    display: block !important;
+}
+.billSummarySect table td{
+    text-align: left;
+}
+.summaryItem, .grandTotalWrap{
+    display: block;
+}
+.oda{
+    display: block;
 }

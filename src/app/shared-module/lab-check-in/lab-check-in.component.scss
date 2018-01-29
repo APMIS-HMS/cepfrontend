@@ -1,8 +1,17 @@
 label {
     position: absolute;
-    font-size: 10px;
+    font-size: 1rem;
     margin-top: -5px;
     color: #797D7F;
+}
+
+.modal-baseWrap {
+    padding: 30px;
+    max-width: 750px;
+}
+
+.modal-baseWrap .mat-input-container {
+    width: 100%;
 }
 
 .strapImgWrap {
@@ -27,17 +36,18 @@ label {
     background: #ccc;
     border-radius: 30px;
     padding: 5px 0;
+    margin-bottom: 20px;
 }
 
 .strapUser {
     padding: 4px;
     padding-left: 70px;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #153d70;
 }
 
 .postStrap-title {
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: center;
     width: 100%;
     margin-top: 2px;
@@ -54,11 +64,13 @@ label {
     border-radius: 7px;
     padding: 15px;
     min-width: 80px;
+    width: 35%;
     cursor: pointer;
 }
 
 .cont-wrap .recent-rooms {
     background: #fff;
+    width: 65%;
 }
 
 .cont-wrap .set-default {
@@ -66,7 +78,7 @@ label {
     display: -ms-flexbox;
     display: flex;
     /* margin-top: -20px; */
-    font-size: 12px;
+    font-size: 1.2rem;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -102,7 +114,7 @@ td {
     color: #eee;
     border-radius: 7px;
     padding: 5px;
-    font-size: 10px;
+    font-size: 1rem;
     width: 100px;
     left: -95px;
     z-index: 20;

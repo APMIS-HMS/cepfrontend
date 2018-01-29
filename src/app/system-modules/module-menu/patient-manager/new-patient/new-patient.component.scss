@@ -29,7 +29,7 @@ th {
 .gen_idWrap {
     width: 100%;
     text-align: center;
-    font-size: 13px;
+    font-size: 1.3rem;
     font-style: italic;
     color: #424242;
 }
@@ -85,7 +85,7 @@ th {
     position: absolute;
     bottom: 2px;
     right: 8px;
-    font-size: 10px;
+    font-size: 1rem;
     color: #ff2500;
     cursor: pointer;
 }
@@ -120,7 +120,7 @@ th {
 }
 .tab-item {
     padding: 5px 15px;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: #f8f8f8;
     border-left: 1px solid #b3b3b3;
     border-top: 1px solid #b3b3b3;
@@ -137,6 +137,7 @@ th {
     width: 100%;
     background: #fff;
 }
+
 .doc-mainWrap{
     width: 100%;
     background: #f8f8f8;

@@ -2,7 +2,6 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/Rx';
 
 @Injectable()
 export class InvoiceService {
@@ -49,8 +48,11 @@ export class InvoiceService {
     return this._socket.get(id, query);
   }
 
-  create(gender: any) {
-    return this._socket.create(gender);
+  create(invoice: any) {
+    return this._socket.create(invoice);
+  }
+  update(invoice: any) {
+    return this._socket.update(invoice._id, invoice);
   }
 
   remove(id: string, query: any) {

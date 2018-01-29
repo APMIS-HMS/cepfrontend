@@ -1,105 +1,101 @@
-<div class="modal-baseWrap animated pulse">
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Individual Account</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
 
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Individual Account</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-
-    <div *ngIf="success" class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Your APMIS-ID has been generated successfully, an auto-generated password has sent to the number supplied!</div>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <form [formGroup]="frmPerson" novalidate>
-
-        <div class="lhs">
-
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput md-error placeholder="First Name" formControlName="firstname">
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput md-error placeholder="Last Name" formControlName="lastname">
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Other Names" formControlName="othernames">
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <md-select placeholder="Gender"  formControlName="gender">
-                    <md-option *ngFor="let item of genders" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
-            </div>
-
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput [mdDatepicker]="picker" placeholder="Date of Birth" formControlName="dob">
-                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                </md-input-container>
-                <md-datepicker #picker></md-datepicker>
-            </div>
-
-            <!-- <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
-                    <input type="password" mdInput md-error formControlName="password" #showhideinput placeholder="Password">
-                    <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
-                    <input type="password" mdInput md-error formControlName="repassword" #showhideinput placeholder="Confirm Password">
-                    <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
-                </md-input-container>
-            </div> -->
+        <div [@divState]="state" class="infoAlert">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            SUCCESS!!! An auto-generated password has been sent to your phone number
         </div>
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-        <div class="rhs">
+        <form [formGroup]="frmPerson" novalidate>
             
-            <div class="frm-item-wrap">
-                <md-select placeholder="Nationality"  formControlName="nationality" (change)="onNationalityChange($event.value)">
-                    <md-option *ngFor="let item of countries" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
-            </div>
-            
-            <div class="frm-item-wrap">
-                <md-select placeholder="State"  formControlName="state">
-                    <md-option *ngFor="let item of selectedCountry?.states" [value]="item._id">{{item.name}}</md-option>
-                </md-select>
-            </div>
+            <div class="frm-x2">
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="First Name" formControlName="firstname">
+                        <mat-error *ngIf="frmPerson.controls.firstname.hasError('pattern')">
+                            Only alphabets are allowed
+                        </mat-error>
+                    </mat-input-container>
+                </div>
 
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input mdInput md-error placeholder="Home Address" formControlName="address">
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input type="email" mdInput md-error placeholder="Email Address" formControlName="email">
-                </md-input-container>
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Last Name" formControlName="lastname">
+                    </mat-input-container>
+                </div>
             </div>
 
-            <div class="frm-item-wrap">
-                <md-input-container class="example-full-width">
-                    <input type="tel" mdInput md-error placeholder="Phone Number" formControlName="phone">
-                </md-input-container>
+            <div class="frm-x2">
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input matInput mat-error placeholder="Mother's Maiden Name" formControlName="motherMaidenName">
+                    </mat-input-container>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
             </div>
 
-        </div>
+            <div class="frm-x2">
+                <div class="frm-item-wrap">
+                    <mat-form-field class="example-full-width">
+                        <mat-select placeholder="Gender" formControlName="gender">
+                            <mat-option *ngFor="let item of genders" [value]="item.name">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="frm-item-wrap">
+                    <mat-form-field class="example-full-width">
+                        <mat-select placeholder="Title" formControlName="persontitle">
+                            <mat-option [value]="title.name" *ngFor="let title of titles">{{title.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div> 
+            </div>
 
-        <div class="clear"></div>
-        <!--<button md-raised-button (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">Sign Up</button>-->
-        <div (click)="submit(frmPerson.valid, frmPerson.value)" class="cta-1">
-            Register
-        </div>
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="phone">
+                    <mat-error *ngIf="frmPerson.controls.phone.hasError('pattern')">
+                        Only numbers are allowed
+                    </mat-error>
+                    <mat-error *ngIf="frmPerson.controls.phone.hasError('required')">
+                       Telephone number is required
+                    </mat-error>
+                    <mat-error *ngIf="frmPerson.controls.phone.hasError('minlength')">
+                        This field required minimum of 10 characters.
+                     </mat-error>
+                </mat-input-container>
+            </div>
 
-    </form>
+            <div class="frm-item-wrap">
+                <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Security Questions" formControlName="securityQuestion">
+                        <mat-option *ngFor="let item of securityQuestions" [value]="item.name">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="frm-item-wrap">
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="Security Question's Answer" formControlName="securityAnswer">
+                </mat-input-container>
+            </div>
+            <div class="clear"></div>
+
+            <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()}">
+                Register
+                <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
+            </button>
+        </form>
+    </div>
 </div>

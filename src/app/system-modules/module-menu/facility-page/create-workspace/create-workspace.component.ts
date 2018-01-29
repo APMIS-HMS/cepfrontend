@@ -1,10 +1,10 @@
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService, EmployeeService, WorkSpaceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Employee, MinorLocation, Location, WorkSpace, Department } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { LocationService } from '../../../../services/module-manager/setup/location.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-create-workspace',
@@ -37,13 +37,14 @@ export class CreateWorkspaceComponent implements OnInit {
   minorLocations: MinorLocation[] = [];
   workSpaces: WorkSpace[] = [];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedEmployee: any = <any>{};
+  @Input() selectedEmployee: any;
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
     private locationService: LocationService,
     private employeeService: EmployeeService,
     private workspaceService: WorkSpaceService,
+    private systemModuleService: SystemModuleService,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {
@@ -53,27 +54,30 @@ export class CreateWorkspaceComponent implements OnInit {
       majorLoc: ['', [Validators.required]],
       minorLoc: ['', [Validators.required]]
     });
-    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: Department) => {
-      this.selectedDepartment = value;
-      this.units = value.units;
+    this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: any) => {
+      this.departments = this.selectedFacility.departments;
+      const index = this.departments.findIndex(x => x.name === value);
+      this.selectedDepartment = this.departments[index];
+      this.units = this.selectedDepartment.units;
       this.employees = [];
       this.filteredEmployees = [];
     });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
       this.selectedUnit = value;
-      this.employees = [];
-      this.filteredEmployees = [];
-      this.getEmployees(this.selectedDepartment, this.selectedUnit);
+
+      if (this.selectedEmployee === undefined) {
+        this.employees = [];
+        this.filteredEmployees = [];
+        this.getEmployees(this.selectedDepartment, this.selectedUnit);
+      }
     });
     this.frmNewEmp1.controls['majorLoc'].valueChanges.subscribe((value: Location) => {
       this.selectedMajorLocation = value;
       this.selectedMinorLocation = undefined;
       this.getMinorLocation(this.selectedMajorLocation);
       this.filteredEmployees = this.employees;
-      // this.getWorkSpace();
     });
     this.frmNewEmp1.controls['minorLoc'].valueChanges.subscribe((value) => {
-      console.log(value);
       this.selectedMinorLocation = value;
       this.getWorkSpace();
     });
@@ -84,27 +88,23 @@ export class CreateWorkspaceComponent implements OnInit {
     this.departments = this.selectedFacility.departments;
     this.getMajorLocations();
 
-
-
     if (this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined) {
-      console.log(this.selectedEmployee);
       this.disableDepartment = true;
-      const deptList = this.departments.filter(x => x._id === this.selectedEmployee.department._id);
+      this.frmNewEmp1.controls['dept'].setValue(this.selectedEmployee.departmentId);
+      const deptList = this.departments.filter(x => x.name === this.selectedEmployee.departmentId);
       if (deptList.length > 0) {
-        this.frmNewEmp1.controls['dept'].setValue(deptList[0]);
-      }
-      console.log(this.selectedEmployee);
-      this.frmNewEmp1.controls['dept'].value.units.forEach((item, i) => {
-        console.log(2);
-        console.log(item);
-        console.log(this.selectedEmployee.units);
-        const unitsList = this.selectedEmployee.units.filter(x => x._id === item._id);
-        if (unitsList.length > 0) {
-          console.log(i);
-          this.units.push(unitsList[0]);
+        if (this.selectedEmployee.units !== undefined) {
+          this.selectedEmployee.units.forEach((item, i) => {
+            const unitsList = deptList[0].units.filter(x => x._id === item);
+            if (unitsList.length > 0) {
+              if (this.units == undefined) {
+                this.units = [];
+                this.units.push(unitsList[0]);
+              }
+            }
+          });
         }
-      });
-      // this.units = this.frmNewEmp1.controls['dept'].value.units;
+      }
       this.selectedEmployee.isChecked = false;
       this.employees.push(this.selectedEmployee);
       this.filteredEmployees = this.employees;
@@ -122,9 +122,8 @@ export class CreateWorkspaceComponent implements OnInit {
     this.employeeService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        departmentId: dept._id,
-        units: unit._id,
-        showbasicinfo: true
+        departmentId: dept.name,
+        units: unit
       }
     }).then(payload => {
       this.employees = payload.data;
@@ -167,12 +166,11 @@ export class CreateWorkspaceComponent implements OnInit {
         this.loadIndicatorVisible = true;
         this.workspaceService.find({
           query:
-          {
-            facilityId: this.selectedFacility._id,
-            'locations.minorLocationId._id': minorLocationId, $limit: 100
-          }
+            {
+              facilityId: this.selectedFacility._id,
+              'locations.minorLocationId._id': minorLocationId, $limit: 100
+            }
         }).then(payload => {
-          console.log(payload);
           const filteredEmployee: Employee[] = [];
           this.filteredEmployees.forEach((emp, i) => {
             let workInSpace = false;
@@ -209,67 +207,26 @@ export class CreateWorkspaceComponent implements OnInit {
   }
   setWorkspace(valid: boolean, value: any) {
     if (valid) {
-      this.loadIndicatorVisible = true;
+      this.systemModuleService.on();
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
-      console.log(employeesId);
-      const createArrays: Employee[] = [];
-      const updateArrays: Employee[] = [];
-      this.workspaceService.find({
-        query:
-        { facilityId: this.selectedFacility._id, 'employeeId._id': { $in: employeesId }, $limit: 100 }
-      }).then(payload => {
-        console.log(payload);
-        filtered.forEach((iteme, e) => {
-          let hasRecord = false;
-          if (payload.data.filter(x => x.employeeId._id === iteme._id).length > 0) {
-            hasRecord = true;
-          }
-          console.log(hasRecord);
-          if (hasRecord) {
-            updateArrays.push(iteme);
-          } else {
-            createArrays.push(iteme);
-          }
-        });
+      const facilityId = this.selectedFacility._id;
+      const majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
+      const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
 
-        const workSpaces$ = [];
-        {
-          const workSpaces: WorkSpace[] = [];
-          console.log(createArrays);
-          console.log(updateArrays);
-          createArrays.forEach((emp, i) => {
-            const space: WorkSpace = <WorkSpace>{};
-            space.employeeId = emp;
-            space.facilityId = this.selectedFacility._id;
-            space.locations = [];
-            const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
-            space.locations.push(locationModel);
-            workSpaces.push(space);
-            console.log(workSpaces);
-            workSpaces$.push(Observable.fromPromise(this.workspaceService.create(space)));
-          });
-        }
+      let body = {
+        filtered: filtered,
+        employeesId: employeesId,
+        facilityId: facilityId,
+        majorLocationId: majorLocationId,
+        minorLocationId: minorLocationId
+      }
 
-        {
-          payload.data.forEach((work: WorkSpace, i) => {
-            const locationModel = <any>{};
-            locationModel.majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
-            locationModel.minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
-            work.locations.push(locationModel);
-            workSpaces$.push(Observable.fromPromise(this.workspaceService.update(work)));
-          });
-        }
-        Observable.forkJoin(workSpaces$).subscribe(results => {
-          this.getWorkSpace();
-          this.loadIndicatorVisible = false;
-        }, error => {
-          this.loadIndicatorVisible = false;
-        });
-      }, error => {
-        console.log(error);
+      this.workspaceService.assignworkspace(body).then(payload =>{
+        this.getWorkSpace();
+        this.systemModuleService.off();
+      }, error =>{
+        this.systemModuleService.off();
       });
     } else {
       this.mainErr = false;

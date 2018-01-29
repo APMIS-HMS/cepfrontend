@@ -1,6 +1,6 @@
 label {
     position: absolute;
-    font-size: 10px;
+    font-size: 1rem;
     margin-top: -5px;
     color: #797D7F;
 }
@@ -58,6 +58,9 @@ label {
     justify-content: center;
     align-items: center;
 }
+.modal-baseWrap .mat-input-container {
+    width: 282px;
+}
 
 thead {
     tr {
@@ -65,5 +68,30 @@ thead {
             height: 35px;
             border: none;
         }
+    }
+}
+
+.apmis-bllue {
+    color: #fff;
+    background: #0288D1;
+}
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 850px;
+}
+
+@media only screen and (max-width: 500px) {
+    .modal-baseWrap .mat-input-container {
+        width: 100%;
+    }
+    .emp-wrap{
+        width: 100%;
+    }
+    .sec-1, .sec-2{
+        width: 100%;
+        float: unset;
     }
 }

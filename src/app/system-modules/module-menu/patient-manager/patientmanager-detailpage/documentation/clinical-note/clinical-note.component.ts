@@ -21,7 +21,6 @@ export class ClinicalNoteComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() showOrderset: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('surveyjs') surveyjs: any;
-
   json: any
   selectFormCtrl: FormControl;
   templateFormCtrl: FormControl;
@@ -31,18 +30,21 @@ export class ClinicalNoteComponent implements OnInit {
   personDocumentation: Documentation = <Documentation>{};
   docSymptom_view = false;
   docDiagnosis_view = false;
-
   mainErr = true;
-  errMsg = 'you have unresolved errors';
-
+  errMsg = 'You have unresolved errors';
   states: any[] = [];
   forms: any[] = [];
   documents: Document[] = [];
   templates: any[] = [];
-
+  symptoms: any[] = [];
+  diagnoses: any[] = [];
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedForm: any = <any>{};
+  orderSet: any = <any>{};
+  showOrderSet = false;
+  viewOrderManagement: boolean = false;
+  viewDiagnosis: boolean = false;
 
   constructor(private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
@@ -54,11 +56,17 @@ export class ClinicalNoteComponent implements OnInit {
     this.selectFormCtrl = new FormControl();
     this.selectFormCtrl.valueChanges.subscribe(form => {
       this.setSelectedForm(form)
-    })
+    });
+
+    this.sharedService.submitForm$.subscribe(value => {
+      this.symptoms = [];
+      this.diagnoses = [];
+      this.showDocument = false;
+      this.orderSet = {};
+    });
 
     this.templateFormCtrl = new FormControl();
     this.templateFormCtrl.valueChanges.subscribe(temp => {
-      // console.log(temp)
       // this.surveyjs.surveyModel.data  = temp.data;
       this.sharedService.announceTemplate(temp);
     })
@@ -74,7 +82,15 @@ export class ClinicalNoteComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getForms();
     this.getTemplates();
+
+    this.sharedService.announceOrderSetSource$.subscribe(value => {
+      this.orderSet = value;
+      const payload = { type: 'OrderSet', action: 'add', data: value };
+      // Send order set data one after another to the shared service
+      this.sharedService.announceDiagnosisSystemOrder(payload);
+    });
   }
+
   getTemplates() {
     this.documentationTemplateService.find({}).then(payload => {
       this.templates = payload.data;
@@ -82,23 +98,23 @@ export class ClinicalNoteComponent implements OnInit {
 
     })
   }
+
   getForms() {
+    console.log(22)
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
     formType$.mergeMap(((formTypes: any) =>
       Observable.fromPromise(this.formService.find({
         query: {
-          $limit: 200, facilityId: this.selectedFacility._id,
-          typeOfDocumentId: formTypes.data[0]._id,
-          isSide: false
+          facilityId: this.selectedFacility._id,
+          typeOfDocumentId: formTypes.data[0]._id
         }
       }))
-    ))
-      .subscribe((results: any) => {
-        this.forms = results.data;
-        console.log(this.forms)
-      }, error =>{
-        this.getForms();
-      })
+    )).subscribe((results: any) => {
+      console.log(results);
+      this.forms = results.data;
+    }, error => {
+      this.getForms();
+    })
   }
   setSelectedForm(form) {
     this.selectedForm = form;
@@ -115,18 +131,19 @@ export class ClinicalNoteComponent implements OnInit {
       }
     })
   }
+
   close_onClick() {
     this.closeModal.emit(true);
     this.docSymptom_view = false;
     this.docDiagnosis_view = false;
+    this.showOrderSet = false;
   }
   showOrderset_onClick() {
-    this.showOrderset.emit(true);
+    this.showOrderSet = true;
   }
 
   filterForms(val: any) {
-    return val ? this.forms.filter(s => s.title.toLowerCase().indexOf(val.toLowerCase()) === 0)
-      : this.forms;
+    return val ? this.forms.filter(s => s.title.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.forms;
   }
 
   formDisplayFn(form: any): string {
@@ -135,8 +152,47 @@ export class ClinicalNoteComponent implements OnInit {
   docSymptom_show() {
     this.docSymptom_view = true;
   }
+
+  viewOrderset_onClick() {
+    this.viewOrderManagement = !this.viewOrderManagement;
+  }
+
+  docDiagnosisView() {
+    this.viewDiagnosis = !this.viewDiagnosis;
+  }
+
   docDiagnosis_show() {
     this.docDiagnosis_view = true;
+  }
+
+  addSymptom(item) {
+    if (item.name && item.code) {
+      this.symptoms.push(item);
+    }
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'add', data: item });
+    console.log(this.symptoms);
+  }
+
+  deleteSymptom(item) {
+    this.symptoms = this.symptoms.filter(e => e !== item);
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'remove', data: item });
+  }
+  deleteDiagnosis(item) {
+    this.diagnoses = this.diagnoses.filter(e => e !== item);
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'remove', data: item });
+  }
+
+  addDiagnosis(item) {
+    if (item.name && item.code) {
+      this.diagnoses.push(item);
+    }
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'add', data: item });
+    console.log(this.diagnoses);
+  }
+
+  removeDiagnosis(item) {
+    this.diagnoses = this.diagnoses.filter(e => e !== item);
+    this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'remove', data: item });
   }
 
 }

@@ -4,7 +4,7 @@
 }
 
 .summaries {
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: left;
     color: #515151;
 }
@@ -15,7 +15,7 @@
 
 .summary-total {
     display: flex;
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: left;
     color: #ff2500;
 }
@@ -63,7 +63,7 @@
 }
 
 label {
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: left;
     color: #515151;
 }
@@ -145,7 +145,7 @@ label {
 }
 
 .selected-product {
-    font-size: 14px;
+    font-size: 1.4rem;
     margin-left: 10px;
     color: #0288d1;
     width: 50%;
@@ -173,7 +173,7 @@ label {
     top: 0px;
     z-index: 1;
     padding: 1px 7px;
-    font-size: 9px;
+    font-size: 0.9rem;
 }
 
 //brought in by sunday from create access scss file
@@ -199,7 +199,7 @@ label {
 }
 
 .control {
-    font-size: 14px;
+    font-size: 1.4rem;
     position: relative;
     display: flex;
     margin-bottom: 15px;
@@ -331,7 +331,7 @@ label {
     position: absolute;
     left: -2px;
     top: 5px;
-    font-size: 23px;
+    font-size: 2.3rem;
     cursor: pointer;
     color: #ff2500;
     display: flex;
@@ -341,7 +341,7 @@ label {
 
 .txt-link {
     color: #0288D1;
-    font-size: 12px;
+    font-size: 1.2rem;
     border: 1px solid #0288D1;
     cursor: pointer;
     padding: 3px;

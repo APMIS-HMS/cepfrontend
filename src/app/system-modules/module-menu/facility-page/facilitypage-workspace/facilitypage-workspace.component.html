@@ -1,78 +1,66 @@
-<div class="page-title">Employee Workspace</div>
+<div class="pp-card shadow-grey">
+    <div class="card-title">Workspaces</div>
+    <div class="searchInputWrap">
+        <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div class="tbl-resp-wrap">
+        <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                    <th>
+                        <span style="padding-left: 3px;">Employee</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">Department</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">Workspace</span>
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-<ul class="topmenuwrap">
-    <li (click)="createWorkspace_pop()">
-        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        <span>Assign Workspace</span>
-    </li>
-</ul>
-
-<table cellpadding="0" cellspacing="0" border="0.5"> 
-    <thead>
-        <tr>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Employee</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Department</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <span style="padding-left: 3px;">Workspace</span>
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr>
-            <td colspan="6">
-                <div class="tbl-actionRow">
-                    <!-- <div class="tbl-title">Employee Workspace</div> -->
-                    <div class="tbl-search">
-                        <div class="searchInputWrap">
-                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
-                            <i class="fa fa-search" aria-hidden="true"></i>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>Olori James</div>
                         </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
+                    </td>
+                    <td>Surgery</td>
+                    <td class="td-worspace">
+                        <div class="workspace-count">3 workspaces</div>
+                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                            <li class="workspace-listItem">
+                                <ng-container>
+                                    <span>SOP</span>
+                                    <i (click)="removeLocation()" class="fa fa-trash" aria-hidden="true"></i>
+                                </ng-container>
+                            </li>
+                            <div class="pointer-wrap">
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </div>
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="td-ctaWrap">
+                            <i (click)="newWorkspace_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i (click)="deletion_popup()" class="fa fa-trash" aria-hidden="true"></i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <tr *ngFor="let workSpace of workSpaces">
-            <td>
-                <div class="empWrap">
-                    <div class="list-img">
-                        <img *ngIf="workSpace.employeeId.employeeDetails.profileImageObject == undefined" src="assets/images/users/default.png">
-                        <img *ngIf="workSpace.employeeId.employeeDetails.profileImageObject != undefined" [src]="facilityService.transform(workSpace.employeeId.employeeDetails.profileImageObject.thumbnail)">
-                    </div>
-                    <div>{{workSpace.employeeId.employeeDetails.lastName}} {{workSpace.employeeId.employeeDetails.firstName}}</div>
-                </div>
-            </td>
-            <td>{{workSpace.employeeId.department?.name}}</td>
-            <td class="td-worspace">
-                <div class="workspace-count">{{getActiveWorkSpaceCount(workSpace)}} workspaces</div>
-                <ul *ngIf="workSpace.locations !== undefined && workSpace.locations.length > 0" class="shadow-RB workspace-listWrap animated zoomIn">
-                    <li [hidden]="location.isActive===false" *ngFor="let location of workSpace.locations; let i = index" class="workspace-listItem">
-                        <ng-container *ngIf="location!== undefined">
-                            <span>{{location.minorLocationId?.name}}</span>
-                            <i (click)="removeLocation(location, workSpace, i)" class="fa fa-trash" aria-hidden="true"></i>
-                        </ng-container>
-                    </li>
-                    <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                </ul>
-            </td>
-            <td>
-                <div class="td-ctaWrap">
-                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    <i (click)="deletion_popup(workSpace)" class="fa fa-trash" aria-hidden="true"></i>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <span (click)="newWorkspace_onClick()" id="floating-button">
+        <p class="plus">+</p>
+    </span>
+</div>
 
 <div *ngIf="createWorkspace" class="modal-overlay">
     <app-create-workspace (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>

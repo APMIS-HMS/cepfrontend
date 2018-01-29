@@ -1,3 +1,4 @@
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,17 +25,18 @@ import { MaterialModule } from './material-module';
         ContactInfoComponent,
         FacilityInfoComponent,
         AddFacilityModuleComponent,
-        CommonModule,
+        // CommonModule,
         SharedModuleSignUpAccountModule,
         LoginComponent,
-        MaterialModule
+        // MaterialModule
     ],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SharedModuleSignUpAccountModule,
-        MaterialModule
+        // CommonModule,
+        // ReactiveFormsModule,
+        // FormsModule,
+        // SharedModuleSignUpAccountModule,
+        MaterialModule,
+        Ng4GeoautocompleteModule.forRoot()
     ],
     providers: []
 })

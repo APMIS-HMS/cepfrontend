@@ -1,9 +1,11 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { systemModulesRoutes } from './../../../../system-module.routes';
 import { FacilityFamilyCoverService } from './../../../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { User } from './../../../../../models/facility-manager/setup/user';
-import { MdPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -30,7 +32,7 @@ export class FcListComponent implements OnInit {
 
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   user: User = <User>{};
   genders: any[] = [
     {
@@ -52,13 +54,14 @@ export class FcListComponent implements OnInit {
       _id: 'Inactive'
     }
   ];
-  pageEvent:any;
+  pageEvent: any;
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
-    private familyCoverService: FacilityFamilyCoverService, private facilityService: FacilitiesService) { }
+    private familyCoverService: FacilityFamilyCoverService, private facilityService: FacilitiesService,
+    private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
-    this.selectedFacility = <any>this.locker.getObject('miniFacility');
+    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.frmNewBeneficiary = this.formBuilder.group({
       surname: ['', [Validators.required]],
@@ -76,23 +79,30 @@ export class FcListComponent implements OnInit {
     this.getBeneficiaryList(this.selectedFacility._id);
   }
 
-  addDependant() {
-    this.frmDependant = this.formBuilder.group({
-      'dependantArray': this.formBuilder.array([
-        this.formBuilder.group({
-          surname: ['', [Validators.required]],
-          othernames: ['', [Validators.required]],
-          gender: ['', [Validators.required]],
-          email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-          phone: ['', []],
-          status: ['', [<any>Validators.required]],
-          filNo: [''],
-          readOnly: [false],
-          operation: ['save'],
-          serial: [0]
-        })
-      ])
-    });
+  addDependant(beneficiary?) {
+    if (beneficiary) {
+      console.log(beneficiary);
+      this.showEdit(beneficiary, true);
+      this.pushNewDependant(undefined, undefined);
+    } else {
+      this.frmDependant = this.formBuilder.group({
+        'dependantArray': this.formBuilder.array([
+          this.formBuilder.group({
+            surname: ['', [Validators.required]],
+            othernames: ['', [Validators.required]],
+            gender: ['', [Validators.required]],
+            email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+            phone: ['', []],
+            status: ['', [<any>Validators.required]],
+            filNo: [''],
+            readOnly: [false],
+            operation: ['save'],
+            serial: [0]
+          })
+        ])
+      });
+    }
+
   }
   pushNewDependant(dependant?, index?) {
     if (dependant !== undefined && dependant.valid) {
@@ -121,7 +131,7 @@ export class FcListComponent implements OnInit {
     }
   }
 
-  showEdit(beneficiary) {
+  showEdit(beneficiary, isAdd?) {
     if (this.getRole(beneficiary) === 'P') {
       this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
       this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.othernames);
@@ -136,11 +146,11 @@ export class FcListComponent implements OnInit {
         this.frmNewBeneficiary.controls['status'].setValue(this.statuses[0]._id);
       }
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(beneficiary.filNo));
-      console.log(filtered);
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
         if (this.getRole(filter) === 'D') {
+          console.log(i);
           hasRecord = true;
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
@@ -161,7 +171,7 @@ export class FcListComponent implements OnInit {
         }
       })
       this.newFamily = true;
-      if(!hasRecord){
+      if (!hasRecord && !isAdd) {
         this.addDependant();
       }
     } else {
@@ -170,13 +180,11 @@ export class FcListComponent implements OnInit {
       const lastCharacter = beneficiary.filNo[filNoLength - 1];
       let sub = beneficiary.filNo.substring(0, (filNoLength - 1));
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
-      console.log(filtered)
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
         if (this.getRole(filter) === 'D') {
           hasRecord = true;
-          console.log('isD');
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
             this.formBuilder.group({
@@ -192,9 +200,9 @@ export class FcListComponent implements OnInit {
               category: 'Dependant',
               readOnly: [true],
             }));
-            if(!hasRecord){
-              this.addDependant();
-            }
+          if (!hasRecord) {
+            this.addDependant();
+          }
         } else if (this.getRole(filter) === 'P') {
           this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);
           this.frmNewBeneficiary.controls['othernames'].setValue(filter.othernames);
@@ -215,16 +223,12 @@ export class FcListComponent implements OnInit {
     }
 
   }
-  change(value){
-    console.log(value)
+  change(value) {
   }
   save(valid, value, dependantValid, dependantValue) {
-    console.log(dependantValue.controls.dependantArray.controls)
-    console.log(dependantValid)
-    console.log(value)
     let unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
-    if(unsavedFiltered.length > 0){
-      this._notification('Warning', 'There seems to unsaved but valid dependant yet to be saved, please save and try again!');
+    if (unsavedFiltered.length > 0) {
+      this.systemModuleService.announceSweetProxy('There seems to unsaved but valid dependant yet to be saved, please save and try again!', 'warning', );
       return;
     }
     if (valid) {
@@ -233,23 +237,23 @@ export class FcListComponent implements OnInit {
         operation: value.operation,
         dependants: [],
         facilityId: this.selectedFacility._id,
-        facilityObject:this.selectedFacility
+        // facilityObject:this.selectedFacility
       };
-      // console.log(dependantValue.dependantArray);
       let filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
-      filtered.forEach(item =>{
+      filtered.forEach((item, i) => {
+        console.log(i);
+        console.log(item.value);
         param.dependants.push(item.value);
-      })
-  
+      });
       console.log(param);
 
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
-        console.log(payload);
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
+        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully','success');
       })
     } else {
-      this._notification('Warning', 'A value is missing, please fill all required field and try again!');
+      this.systemModuleService.announceSweetProxy('A value is missing, please fill all required field and try again!', 'warning');
     }
 
   }
@@ -261,12 +265,11 @@ export class FcListComponent implements OnInit {
   }
 
   getBeneficiaryList(id) {
-    this.familyCoverService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+    this.familyCoverService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
         let facFamilyCover = payload.data[0];
         this.selectedFamilyCover = facFamilyCover;
         this.beneficiaries = facFamilyCover.familyCovers;
-        console.log(this.beneficiaries);
         const startIndex = 0 * 10;
         this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
         this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
@@ -285,13 +288,6 @@ export class FcListComponent implements OnInit {
     const startIndex = event.pageIndex * event.pageSize;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
-  }
-  private _notification(type: string, text: string): void {
-    this.facilityService.announceNotification({
-      users: [this.user._id],
-      type: type,
-      text: text
-    });
   }
 
   newFamily_show() {

@@ -6,7 +6,8 @@ import {
 } from '../services/facility-manager/setup/index';
 import { Address, CorporateFacility, Gender, ModuleViewModel, User, Title, MaritalStatus, Person } from '../models/index';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs/Rx'
+import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
   selector: 'app-corporate-signup',
@@ -127,7 +128,7 @@ export class CorporateSignupComponent implements OnInit {
           this.mainErr = false;
         } else {
           this.isDuplicateEmail = false;
-           this.errMsg = '';
+          this.errMsg = '';
           this.mainErr = true;
         }
       });
@@ -343,17 +344,17 @@ export class CorporateSignupComponent implements OnInit {
             this.selectedFacility = payload;
             // create person and user
             let personModel = <Person>{
-              titleId: this.titles[0]._id,
+              title: this.titles[0]._id,
               firstName: this.facilityForm1_1.controls['contactFName'].value,
               lastName: this.facilityForm1_1.controls['contactLName'].value,
-              genderId: this.genders[0]._id,
+              gender: this.genders[0]._id,
               homeAddress: model.address,
-              phoneNumber: model.contactPhoneNo,
+              primaryContactPhoneNo: model.contactPhoneNo,
               lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
               nationalityId: this.facilityForm1.controls['facilitycountry'].value,
               stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
               email: model.email,
-              maritalStatusId: this.maritalStatuses[0]._id
+              maritalStatus: this.maritalStatuses[0].name
             };
             let userModel = <User>{
               email: model.email,

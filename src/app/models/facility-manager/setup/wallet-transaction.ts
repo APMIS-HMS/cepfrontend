@@ -1,26 +1,42 @@
 export interface WalletTransaction {
   ref?: any;
-  paymentMethod?: string;
-  ePaymentMethod?: string;
+  payment?: any;
+  entity: string;
+  personId?: string;
+  facilityId?: string;
+  paidBy?: string;
   sourceId?: string;
-  source: EntityType;
-  transactionType: TransactionType;
-  transactionMedium: TransactionMedium;
-  amount: number;
-  description: string;
+  sourceType?: EntityType;
+  transactionType?: TransactionType;
+  transactionMedium?: TransactionMedium;
+  description?: string;
   destinationId?: string;
-  destination: EntityType;
-  transactionStatus?:string;
-  transactionDirection: TransactionDirection;
+  destinationType?: EntityType;
+  transactionStatus?: string;
+  transactionDirection?: TransactionDirection;
 }
 export enum TransactionType {
     Dr,
     Cr
 }
+
+export enum TransactionType2 {
+    Dr,
+    Cr
+}
 export const TransactionStatus = {
     'Incomplete': 'Incomplete',
-    'Complete': 'Incomplete'
+    'Complete': 'Complete'
 };
+
+export const PaymentPlan = {
+    'outOfPocket': 'wallet',
+    'insurance': 'insurance',
+    'company': 'company',
+    'family': 'family',
+    'waved':'waved'
+};
+
 export enum EntityType {
     Facility,
     Person,
@@ -29,8 +45,11 @@ export enum EntityType {
 export enum TransactionMedium {
     POS,
     Wallet,
+    Cheque,
     Cash,
-    PayStack
+    PayStack,
+    Flutterwave,
+    Transfer
 }
 export enum TransactionDirection {
     PersonToPerson,

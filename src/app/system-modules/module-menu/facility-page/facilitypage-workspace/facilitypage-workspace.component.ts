@@ -40,7 +40,7 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     private route: ActivatedRoute,
     private workspaceService: WorkSpaceService,
     public facilityService: FacilitiesService) {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.workspaceService.listenerCreate.subscribe(payload => {
       this.getWorkSpace();
     });
@@ -51,12 +51,12 @@ export class FacilitypageWorkspaceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      data['workSpaces'].subscribe((payload) => {
-        this.workSpaces = payload;
-      });
-    });
-
+    // this.route.data.subscribe(data => {
+    //   data['workSpaces'].subscribe((payload) => {
+    //     this.workSpaces = payload;
+    //   });
+    // });
+    this.getWorkSpace();
   }
   getWorkSpace() {
     this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 40 } })
@@ -68,17 +68,17 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         this.workSpaces = result;
       });
   }
-  removeLocation(location, workSpace: WorkSpace, i) {
-    workSpace.locations[i].isActive = false;
+  removeLocation() {
+    // workSpace.locations[i].isActive = false;
 
-    this.workspaceService.update(workSpace).then(payload => {
-      this.getWorkSpace();
-    });
+    // this.workspaceService.update(workSpace).then(payload => {
+    //   this.getWorkSpace();
+    // });
   }
-  deletion_popup(workSpace) {
-    this.selectedWorkSpace = workSpace;
-    this.gdItem = workSpace.employeeObject.employeeDetails.lastName + ' ' + workSpace.employeeObject.employeeDetails.firstName;
-    this.globalDialog = true;
+  deletion_popup() {
+    // this.selectedWorkSpace = workSpace;
+    // this.gdItem = workSpace.employeeObject.employeeDetails.lastName + ' ' + workSpace.employeeObject.employeeDetails.firstName;
+    // this.globalDialog = true;
   }
   createWorkspace_pop() {
     this.createWorkspace = true;
@@ -91,7 +91,6 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     return workSpace.locations.filter(x => x.isActive === true).length;
   }
   delete_onClick($event) {
-    console.log($event);
     if ($event) {
       this.selectedWorkSpace.isActive = false;
       const update$ = Observable.fromPromise(this.workspaceService.update(this.selectedWorkSpace));
@@ -108,5 +107,8 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         this.globalDialog = false;
       });
     }
+  }
+  newWorkspace_onClick() {
+    this.createWorkspace = true;
   }
 }

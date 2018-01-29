@@ -3,7 +3,7 @@ import { User } from './../../../../../models/facility-manager/setup/user';
 import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
 import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { MdPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material';
 import { FacilityCompanyCoverService } from './../../../../../services/facility-manager/setup/facility-company-cover.service';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
@@ -30,7 +30,7 @@ export class CompanyBeneficiaryListComponent implements OnInit {
 
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
-  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   user: User = <User>{};
   genders: any[] = [
     {
@@ -97,7 +97,6 @@ export class CompanyBeneficiaryListComponent implements OnInit {
     });
   }
   pushNewDependant(dependant?, index?) {
-    console.log(dependant)
     if (dependant !== undefined && dependant.valid) {
       dependant.value.readOnly = true;
     }
@@ -126,7 +125,6 @@ export class CompanyBeneficiaryListComponent implements OnInit {
     this.newBeneficiary = !this.newBeneficiary;
   }
   showEdit(beneficiary) {
-    console.log(beneficiary);
     if (this.getRole(beneficiary) === 'P') {
       this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
       this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.firstName);
@@ -142,7 +140,6 @@ export class CompanyBeneficiaryListComponent implements OnInit {
         this.frmNewBeneficiary.controls['principalstatus'].setValue(this.statuses[0]._id);
       }
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(beneficiary.filNo));
-      console.log(filtered);
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
@@ -171,9 +168,7 @@ export class CompanyBeneficiaryListComponent implements OnInit {
       this.frmNewBeneficiary.reset();
       const filNoLength = beneficiary.filNo.length;
       const lastCharacter = beneficiary.filNo[filNoLength - 1];
-      console.log(beneficiary)
       let sub = beneficiary.filNo.substring(0, (filNoLength - 1));
-      console.log(sub);
       let filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
 
       let hasRecord = false;
@@ -217,7 +212,6 @@ export class CompanyBeneficiaryListComponent implements OnInit {
 
   }
   save(valid, value, dependantValid, dependantValue) {
-    console.log(dependantValue)
     let unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
     if(unsavedFiltered.length > 0){
       this._notification('Warning', 'There seems to unsaved but valid dependant yet to be saved, please save and try again!');
@@ -231,7 +225,6 @@ export class CompanyBeneficiaryListComponent implements OnInit {
         facilityId: this.selectedFacility._id,
         company: this.selectedCompanyCover
       };
-      // console.log(dependantValue.dependantArray);
       // let filtered = dependantValue.dependantArray.filter(x => x.readOnly === true);
       // param.dependants = filtered;
 
@@ -243,7 +236,6 @@ export class CompanyBeneficiaryListComponent implements OnInit {
 
 
       this.companyCoverService.updateBeneficiaryList(param).then(payload => {
-        console.log(payload);
         this.getBeneficiaryList(this.routeId)
       })
     } else {

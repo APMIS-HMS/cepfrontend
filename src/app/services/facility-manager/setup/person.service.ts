@@ -5,13 +5,17 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/Rx';
 import { Person } from '../../../models/index';
 const request = require('superagent');
 
 @Injectable()
 export class PersonService {
   public _socket;
+  public _personSocket;
+  public _customSocket;
+  public _sendFacilityTokenSocket;
+  public _fundWalletSocket;
+  public _fundWalletRest;
   public createListener;
   public updateListener;
   private _rest;
@@ -25,6 +29,9 @@ export class PersonService {
   ) {
     this._rest = _restService.getService('people');
     this._socket = _socketService.getService('people');
+    this._personSocket = _socketService.getService('save-person');
+    this._fundWalletSocket = _socketService.getService('fund-wallet');
+    this._fundWalletRest = _restService.getService('fund-wallet');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.updateListener = Observable.fromEvent(this._socket, 'updated');
@@ -45,11 +52,14 @@ export class PersonService {
     return this._socket.find();
   }
   get(id: string, query: any) {
-    return this._rest.get(id, query);
+    return this._socket.get(id, query);
   }
 
   create(person: any) {
     return this._socket.create(person);
+  }
+  createPerson(body: any) {
+    return this._personSocket.create(body);
   }
   update(person: any) {
     return this._socket.update(person._id, person);
@@ -59,7 +69,17 @@ export class PersonService {
     return this._socket.remove(id, query);
   }
 
-  walletTransaction(walletTransaction: WalletTransaction) {
+  abridgePerson(person) {
+    return {
+      _id: person._id,
+      apmisId: person.apmisId,
+      email: person.email,
+      firstName: person.firstName,
+      lastName: person.lastName
+    }
+  }
+
+  walletTransaction(walletTransaction) {
     const host = this._restService.getHost();
     const path = host + '/wallet-transaction';
     return request.get(path).query({
@@ -69,47 +89,54 @@ export class PersonService {
       transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
       amount: walletTransaction.amount,
       description: walletTransaction.description,
-      source: EntityType[walletTransaction.source],
-      destination: EntityType[walletTransaction.destination],
+      sourceType: EntityType[walletTransaction.sourceType],
+      destinationType: EntityType[walletTransaction.destinationType],
       transactionDirection:
         TransactionDirection[walletTransaction.transactionDirection]
     }); // query string
   }
 
-  fundWallet(walletTransaction: WalletTransaction) {
-    const host = this._restService.getHost();
-    const path = host + '/fund-wallet';
-    return new Promise((resolve, reject) => {
-      resolve(
-        request.get(path).query({
-          ref: walletTransaction.ref,
-          ePaymentMethod: walletTransaction.ePaymentMethod,
-          paymentMethod: walletTransaction.paymentMethod,
-          destinationId: walletTransaction.destinationId,
-          sourceId: walletTransaction.sourceId,
-          transactionType: TransactionType[walletTransaction.transactionType],
-          transactionMedium:
-            TransactionMedium[walletTransaction.transactionMedium],
-          amount: walletTransaction.amount,
-          description: walletTransaction.description,
-          source: EntityType[walletTransaction.source],
-          destination: EntityType[walletTransaction.destination],
-          transactionDirection:
-            TransactionDirection[walletTransaction.transactionDirection]
-        })
-      );
-    });
-    // return request
-    //   .get(path)
-    //   .query({
-    //     paymentMethod: 'Cash',
-    //     destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
-    //     transactionType: TransactionType[walletTransaction.transactionType],
-    //     transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
-    //     amount: walletTransaction.amount, description: walletTransaction.description,
-    //     source: EntityType[walletTransaction.source],
-    //     destination: EntityType[walletTransaction.destination],
-    //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
-    //   }); // query string
+  fundWallet(payload: any) {
+    // return this._fundWalletSocket.create(payload);
+    return this._fundWalletRest.create(payload);
+  }
+
+  // fundWallet(walletTransaction: WalletTransaction) {
+  //   const host = this._restService.getHost();
+  //   const path = host + '/fund-wallet';
+  //   return new Promise((resolve, reject) => {
+  //     // resolve(
+  //     //   request.get(path).query({
+  //     //     ref: walletTransaction.ref,
+  //     //     ePaymentMethod: walletTransaction.ePaymentMethod,
+  //     //     paymentMethod: walletTransaction.paymentMethod,
+  //     //     destinationId: walletTransaction.destinationId,
+  //     //     sourceId: walletTransaction.sourceId,
+  //     //     transactionType: TransactionType[walletTransaction.transactionType],
+  //     //     transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+  //     //     amount: walletTransaction.amount,
+  //     //     description: walletTransaction.description,
+  //     //     sourceType: EntityType[walletTransaction.sourceType],
+  //     //     destinationType: EntityType[walletTransaction.destinationType],
+  //     //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection],
+  //     //     paidBy: walletTransaction.paidBy
+  //     //   })
+  //     // );
+  //   });
+  //   // return request
+  //   //   .get(path)
+  //   //   .query({
+  //   //     paymentMethod: 'Cash',
+  //   //     destinationId: walletTransaction.destinationId, sourceId: walletTransaction.sourceId,
+  //   //     transactionType: TransactionType[walletTransaction.transactionType],
+  //   //     transactionMedium: TransactionMedium[walletTransaction.transactionMedium],
+  //   //     amount: walletTransaction.amount, description: walletTransaction.description,
+  //   //     source: EntityType[walletTransaction.source],
+  //   //     destination: EntityType[walletTransaction.destination],
+  //   //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
+  //   //   }); // query string
+  // }
+  searchPerson(body:any){
+    return this._socketService.getService('search-people').find(body);
   }
 }

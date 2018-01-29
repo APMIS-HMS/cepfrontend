@@ -16,9 +16,9 @@
                                 <form [formGroup]="presentationGroup">
                                     <div class="form-group">
                                         <label for="name">New Presentation</label>
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput md-error placeholder="Name" formControlName="name">
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput mat-error placeholder="Name" formControlName="name">
+                                        </mat-input-container>
                                         <button (click)="onClickAdd(presentationGroup.value, presentationGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
                                         <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
                                     </div>

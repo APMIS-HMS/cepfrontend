@@ -9,7 +9,9 @@
             <div class="col-xs-8" style="width:93%; float: left;">
                 <small>Patient Name: <b>{{ prescriptionItems?.patientName }}</b></small><br>
                 <small>Age: <b>42years</b></small><br>
-                <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                <div *ngIf="!!prescriptionItems?.clinicDetails">
+                    <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                </div>
                 <small>Prescription Priotity: <b>{{ prescriptionItems?.priorityObject?.name}}</b></small>
             </div>
         </div>
@@ -25,7 +27,7 @@
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button md-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
+            <button mat-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
         </div>
     </div>
     <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
@@ -129,12 +131,12 @@
                                     <td class="table-content">{{transaction?.expiryDate | date:'shortDate'}}</td>
                                     <td class="table-content">{{transaction?.quantity}}</td>
                                     <td class="table-content">
-                                        <md-input-container class="example-full-width">
-                                            <input mdInput type="number" placeholder="Quantity" name="{{j}}" ngModel>
-                                        </md-input-container>
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput type="number" placeholder="Quantity" name="{{j}}" ngModel>
+                                        </mat-input-container>
                                     </td>
                                     <td class="table-content">
-                                        <button md-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
+                                        <button mat-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
                                     </td>
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && !batchLoading">
@@ -142,7 +144,7 @@
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && batchLoading">
                                     <td class="table-content" colspan="5" style="text-align: center">
-                                        <md-spinner class='small-spinner'></md-spinner>
+                                        <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                     </td>
                                 </tr>
                             </tbody>
@@ -151,11 +153,11 @@
                 </div>
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && !loading">
-                <div style="width: 100%; padding: 10px; font-size: 13px;">No data to display in table</div>
+                <div style="width: 100%; padding: 10px; font-size: 1.3rem;">No data to display in table</div>
             </div>
             <div class="prodWrap text-center" *ngIf="prescriptions.length === 0 && loading">
-                <div style="width: 100%; padding: 10px; font-size: 13px;">
-                    <md-spinner class="small-spinner"></md-spinner>
+                <div style="width: 100%; padding: 10px; font-size: 1.3rem;">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
@@ -168,7 +170,7 @@
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button md-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
+            <button mat-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
         </div>
     </div>
 </div>

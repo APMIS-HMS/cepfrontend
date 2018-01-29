@@ -15,6 +15,7 @@ export class StoreCheckInComponent implements OnInit {
 	errMsg = 'You have unresolved errors';
 	@Input() loginEmployee: Employee;
 	@Input() workSpace: any;
+	workSpaces: any;
 
 	public storeCheckin: FormGroup;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -32,12 +33,13 @@ export class StoreCheckInComponent implements OnInit {
 		public storeService: StoreService,
 		public locker: CoolLocalStorage
 	) {
+    this.workSpaces = this.locker.getObject('workspaces');
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 	}
 
 	ngOnInit() {
-		if (this.loginEmployee.workSpaces !== undefined) {
-			this.loginEmployee.workSpaces.forEach(workspace => {
+		if (this.workSpaces !== undefined) {
+			this.workSpaces.forEach(workspace => {
 				if(workspace.isActive && workspace.locations.length > 0) {
 					workspace.locations.forEach(x => {
 					  if(x.isActive) {
@@ -45,8 +47,7 @@ export class StoreCheckInComponent implements OnInit {
 					  }
 					});
 				  }
-			})
-
+			});
 		}
 
 		this.storeCheckin = this.formBuilder.group({
@@ -71,6 +72,7 @@ export class StoreCheckInComponent implements OnInit {
 		this.closeModal.emit(true);
 	}
 	checkIn(valid, value) {
+		console.log(value);
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
@@ -79,17 +81,23 @@ export class StoreCheckInComponent implements OnInit {
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
 		if (this.loginEmployee.storeCheckIn === undefined) {
+			console.log(1);
 			this.loginEmployee.storeCheckIn = [];
 		}
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+			console.log(i);
 			itemi.isOn = false;
 			if (value.isDefault === true) {
 				itemi.isDefault = false;
 			}
 		});
+		
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		//this.loadIndicatorVisible = true;
+		console.log(2);
+		// this.loadIndicatorVisible = true;
+		console.log(this.loginEmployee);
 		this.employeeService.update(this.loginEmployee).then(payload => {
+			console.log(3);
 			this.loginEmployee = payload;
 			const workspaces = <any>this.locker.getObject('workspaces');
 			this.loginEmployee.workSpaces = workspaces;
@@ -98,6 +106,8 @@ export class StoreCheckInComponent implements OnInit {
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
 				if (itemi.storeId === checkIn.storeId) {
+					console.log(4);
+					console.log(checkIn.storeId);
 					itemi.isOn = true;
 					keepCheckIn = itemi;
 				}

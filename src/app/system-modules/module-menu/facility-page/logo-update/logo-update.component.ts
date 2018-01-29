@@ -55,7 +55,6 @@ export class LogoUpdateComponent implements OnInit {
       } else {
         this.options.data.filename = 0;
       }
-      console.log(facility.logoObject.filename);
     }
 
     this.uploadEvents.emit('startUpload');

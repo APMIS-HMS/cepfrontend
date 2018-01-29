@@ -25,7 +25,6 @@ export class AppointmentTypeResolverService implements Resolve<AppointmentType> 
       }
       return Observable.of(null);
     }, error => {
-      console.log(error);
     });
   }
 }

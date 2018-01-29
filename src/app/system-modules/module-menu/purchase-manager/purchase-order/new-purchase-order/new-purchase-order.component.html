@@ -1,113 +1,117 @@
 <div class="np-mainwrap">
-  <form [formGroup]="frm_purchaseOrder" novalidate>
-    <div class="sec-a">
-      <div class="wrap1">
-        <div class="row">
-          <div class="frm-item-wrap">
-            <md-select class="example-full-width" placeholder="Store" formControlName="store">
-              <md-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</md-option>
-            </md-select>
-          </div>
+    <form [formGroup]="frm_purchaseOrder" novalidate>
+        <div class="sec-a">
+            <div class="wrap1">
+                <div class="row">
+                    <div class="frm-item-wrap">
+                        <mat-form-field>
+                            <mat-select class="example-full-width" placeholder="Store" formControlName="store">
+                                <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
-          <div class="frm-item-wrap">
-            <md-select class="example-full-width" placeholder="Supplier" formControlName="supplier">
-              <md-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</md-option>
-            </md-select>
-          </div>
-        </div>
-      </div>
-      <div class="wrap2">
-        <div class="row">
-          <div class="frm-item-wrap">
-            <md-input-container>
-              <input mdInput formControlName="deliveryDate" [mdDatepicker]="picker" placeholder="Expected Delivery Date (Choose a date)">
-            </md-input-container>
-            <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-            <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-            <md-datepicker #picker></md-datepicker>
-          </div>
-        </div>
-        <div class="row">
-          <div class="frm-item-wrap">
-            <md-input-container class="example-full-width">
-              <textarea mdInput md-error placeholder="Remark" formControlName="desc"></textarea>
-            </md-input-container>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
-    <div *ngIf="flyout===true" class="flyout animated slideOut">
-      <div class="sec-b">
-        <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div>
-        <div class="col-a">
-          <div class="filter-sect">
-            <div class="frm-item-wrap">
-              <md-input-container>
-                <input mdInput [formControl]="searchControl" placeholder="search product here...">
-              </md-input-container>
+                    <div class="frm-item-wrap">
+                        <mat-form-field>
+                            <mat-select class="example-full-width" placeholder="Supplier" formControlName="supplier">
+                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
             </div>
+            <div class="wrap2">
+                <div class="row">
+                    <div class="frm-item-wrap">
+                        <mat-input-container>
+                            <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Expected Delivery Date (Choose a date)">
+                        </mat-input-container>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+                        </mat-input-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
+        <div *ngIf="flyout===true" class="flyout animated slideOut">
+            <div class="sec-b">
+                <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div>
+                <div class="col-a">
+                    <div class="filter-sect">
+                        <div class="frm-item-wrap">
+                            <mat-input-container>
+                                <input matInput [formControl]="searchControl" placeholder="search product here...">
+                            </mat-input-container>
+                        </div>
 
-            <div class="check-filterWrap">
-              <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="checkAll">All</md-checkbox>
-              </div>
-              <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="myInventory">My Inventory</md-checkbox>
-              </div>
-              <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="zeroQuantity">Out of stock</md-checkbox>
-              </div>
-              <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</md-checkbox>
-              </div>
-              <div class="frm-item-wrap chkbox-wrap">
-                <md-checkbox [formControl]="expired">Expired</md-checkbox>
-              </div>
-            </div>
-          </div>
-          <div class="product-sect">
-            <div class="control-group" *ngFor="let group of superGroups">
-              <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+                        <div class="check-filterWrap">
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <mat-checkbox [formControl]="checkAll">All</mat-checkbox>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <mat-checkbox [formControl]="myInventory">My Inventory</mat-checkbox>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <mat-checkbox [formControl]="zeroQuantity">Out of stock</mat-checkbox>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <mat-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</mat-checkbox>
+                            </div>
+                            <div class="frm-item-wrap chkbox-wrap">
+                                <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-sect">
+                        <div class="control-group" *ngFor="let group of superGroups">
+                            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> 
-                                     <md-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></md-checkbox>
+                                     <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
                                  </div>
                             </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-b">
-      <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
-        <div formArrayName="productTableArray" class="frmArrayWrap">
-          <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
-            <div formGroupName="{{i}}">
-              <div class="prod-wrap">
-
-                <div class="inputWrap-productDetail">
-                  <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
-
-                  <div style="width: 59%;" class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                      <input mdInput md-error placeholder="Product" formControlName="product">
-                    </md-input-container>
-                  </div>
-                  <div style="width: 20%;" class="frm-item-wrap">
-                    <md-input-container class="example-full-width">
-                      <input type="number" mdInput md-error placeholder="Qantity" formControlName="qty">
-                    </md-input-container>
-                  </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </form>
-    </div>
-    <div (click)="save()" class="cta-1">
-      {{saveBtnText}}
-    </div>
+        <div class="col-b">
+            <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
+                <div formArrayName="productTableArray" class="frmArrayWrap">
+                    <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
+                        <div formGroupName="{{i}}">
+                            <div class="prod-wrap">
 
-  </form>
+                                <div class="inputWrap-productDetail">
+                                    <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
+
+                                    <div style="width: 59%;" class="frm-item-wrap">
+                                        <mat-input-container class="example-full-width">
+                                            <input matInput mat-error placeholder="Product" formControlName="product">
+                                        </mat-input-container>
+                                    </div>
+                                    <div style="width: 20%;" class="frm-item-wrap">
+                                        <mat-input-container class="example-full-width">
+                                            <input type="number" matInput mat-error placeholder="Qantity" formControlName="qty">
+                                        </mat-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div (click)="save()" class="cta-1">
+            {{saveBtnText}}
+        </div>
+
+    </form>
 </div>

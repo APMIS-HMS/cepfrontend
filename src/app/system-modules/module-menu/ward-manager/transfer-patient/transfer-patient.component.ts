@@ -55,12 +55,12 @@ export class TransferPatientComponent implements OnInit {
 
 	onTransfer(value: any, valid: boolean) {
 		if (valid) {
-			console.log(value);
 			this.disableTransferBtn = true;
 			this.transferBtnText = 'Transfering... <i class="fa fa-spinner fa-spin"></i>';
-			this._inPatientService.find({ query: { _id: this.inPatientId }}).then(payload => {
-				payload.data[0].statusId = myGlobals.transfer;
-				this._inPatientService.update(payload.data[0]).then(payload2 => {
+			this._inPatientService.get(this.inPatientId, {}).then(payload => {
+        payload.statusId = myGlobals.transfer;
+        payload.proposedWard = value.ward;
+				this._inPatientService.update(payload).then(payload2 => {
 					this.disableTransferBtn = false;
 					this.transferBtnText = '<i class="fa fa-share" aria-hidden="true"></i> Transfer Patient';
 					const name = this.selectedPatient.patientId.personDetails.personFullName;
@@ -91,7 +91,6 @@ export class TransferPatientComponent implements OnInit {
 	}
 
 	onWardChange(param) {
-		console.log(param);
 	}
 
 	close_onClick() {

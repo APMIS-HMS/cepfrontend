@@ -4,9 +4,11 @@
         <div class="dx-fieldset">
             <form action="/Login" method="post">
                 <div class="frmitemwrap">
-                    <md-select placeholder="Location" [formControl]="locationTypeControl">
-                        <md-option *ngFor="let cliniclocation of clinicLocations" [value]="cliniclocation">{{ cliniclocation.name }}</md-option>
-                    </md-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Location" [formControl]="locationTypeControl">
+                            <mat-option *ngFor="let cliniclocation of clinicLocations" [value]="cliniclocation">{{ cliniclocation.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <form *ngIf="locationTypeControl.value != null" [formGroup]="consultingRoomForm" class="form-horizontal" (ngSubmit)="onSubmit()">
                     <div formArrayName="consultingRoomArray" class="frmArrayWrap">
@@ -16,17 +18,17 @@
                                 <div>
                                     <div class="frmitemwrap">
                                         <div class="dx-field">
-                                            <md-input-container class="example-full-width">
-                                                <input mdInput placeholder="Room Name" formControlName="name">
-                                            </md-input-container>
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput placeholder="Room Name" formControlName="name">
+                                            </mat-input-container>
                                         </div>
                                     </div>
 
                                     <div class="frmitemwrap">
                                         <div class="dx-field">
-                                            <md-input-container class="example-full-width">
-                                                <input mdInput placeholder="Room capacity" formControlName="capacity">
-                                            </md-input-container>
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput placeholder="Room capacity" formControlName="capacity">
+                                            </mat-input-container>
                                         </div>
                                     </div>
                                 </div>
@@ -40,7 +42,7 @@
 
                 <div *ngIf="consultingRoomForm.controls['consultingRoomArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewConsultingRoom(room)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Another Room</span>
                 </div>
-                <button (click)="onCreateSchedule()" *ngIf="locationTypeControl.value != null" [disabled]="consultingRoomForm.controls['consultingRoomArray'].valid == false || consultingRoomForm.controls['consultingRoomArray'].value.length === 0" md-raised-button class="apmis-blue">Create</button>
+                <button (click)="onCreateSchedule()" *ngIf="locationTypeControl.value != null" [disabled]="consultingRoomForm.controls['consultingRoomArray'].valid == false || consultingRoomForm.controls['consultingRoomArray'].value.length === 0" mat-raised-button class="apmis-blue">Create</button>
             </form>
 
         </div>
@@ -59,7 +61,7 @@
             </li>
             <li *ngIf="roomManager.length === 0 && loading" class="li-itemWrap">
                 <div class="table-content">
-                    <md-spinner class='small-spinner'></md-spinner>
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </li>
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of roomManager" class="li-itemWrap">

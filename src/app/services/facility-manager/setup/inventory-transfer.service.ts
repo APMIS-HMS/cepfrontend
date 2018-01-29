@@ -1,8 +1,6 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
-
 @Injectable()
 export class InventoryTransferService {
   public _socket;
@@ -16,7 +14,7 @@ export class InventoryTransferService {
   ) {
     this._rest = _restService.getService('inventorytransfers');
     this._socket = _socketService.getService('inventorytransfers');
-    this._socket.timeout = 30000;
+    this._socket.timeout = 50000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');

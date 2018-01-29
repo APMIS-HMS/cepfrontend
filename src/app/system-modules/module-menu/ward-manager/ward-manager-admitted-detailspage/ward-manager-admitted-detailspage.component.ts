@@ -32,7 +32,6 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 		this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
 
 		this._route.params.subscribe(params => {
-      console.log(params);
 			this.admittedPatientId = params.id;
       this.getAdmittedPatientItems();
 		});

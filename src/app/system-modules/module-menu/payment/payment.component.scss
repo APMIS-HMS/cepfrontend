@@ -53,7 +53,7 @@
 .pending-title {
     width: 100%;
     text-align: center;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #474747;
 }
 
@@ -74,11 +74,11 @@
 }
 
 .pending-bills li:hover {
-    background-color: #eee
+    background-color: #eee;
 }
 
 .pending-bills li:nth-child(even) {
-    background-color: #f8f8f8
+    background-color: #f8f8f8;
 }
 
 .empWrap {
@@ -91,6 +91,9 @@
     margin-bottom: 5px;
     cursor: pointer;
 }
+.empWrap:nth-child(even) {
+    background-color: #f8f8f8;
+}
 
 .list-img {
     margin-right: 10px;
@@ -98,7 +101,7 @@
 
 .pending-name {
     font-family: "Josefin Sans", sans-serif;
-    font-size: 18px;
+    font-size: 1.8rem;
 }
 
 .pending-bills .list-labels {
@@ -106,7 +109,7 @@
 }
 
 .oda {
-    font-size: 10px;
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
     color: #777;
@@ -114,6 +117,7 @@
 
 .pending-amount {
     color: #ff2500;
+    font-size: 1.4rem;
 }
 
 .megaPgWrap {
@@ -152,7 +156,7 @@
 .cta-1 {
     width: 130px;
     height: 30px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .feedsWrap .frm-item-wrap {
@@ -192,7 +196,7 @@
 }
 
 .suggetedName {
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .billHeader {
@@ -218,14 +222,14 @@
 
 .BillfacilityName {
     color: #fff;
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .billContact {
     display: flex;
     align-items: center;
     color: #03A9F4;
-    font-size: 12px;
+    font-size: 1.2rem;
     margin: 5px;
 }
 
@@ -234,7 +238,7 @@
 }
 
 .invoiceLabel {
-    font-size: 25px;
+    font-size: 2.5rem;
     color: #BCAAA4;
 }
 
@@ -243,7 +247,7 @@
 }
 
 .topsecInnerWrap {
-    font-size: 11px;
+    font-size: 1.1rem;
     color: #37474F;
     line-height: 1.5;
     margin-left: 10px;
@@ -255,7 +259,7 @@
     text-transform: uppercase;
     border-bottom: 1px solid #EEEEEE;
     padding: 0 0 5px 5px;
-    font-size: 20px;
+    font-size: 2rem;
     color: #01579B;
     margin-bottom: 5px;
 }
@@ -284,7 +288,7 @@
 
 .rhsSectB {
     text-align: right;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #000;
     margin: 5px 10px 0 0;
 }
@@ -307,6 +311,7 @@
 }
 
 .billContentSect .tblBg {
+    position: relative;
     margin: 20px auto;
     color: #333;
     border-collapse: collapse;
@@ -357,12 +362,12 @@
 }
 
 .itemName {
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: bold;
 }
 
 .itemDesc {
-    font-size: 10px;
+    font-size: 1rem;
     font-weight: normal;
     color: #BDBDBD;
     max-width: 170px;
@@ -398,14 +403,14 @@
 .summaryItem .label,
 .grandTotalWrap .label {
     padding-right: 20px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .summaryItem .data,
 .grandTotalWrap .data {
     width: 150px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .grandTotalWrap .label,
@@ -432,7 +437,7 @@
 }
 
 .BillfooterTxt {
-    font-size: 10px;
+    font-size: 1rem;
     color: #757575;
 }
 
@@ -449,13 +454,13 @@
     width: auto;
     height: auto;
     padding: 3px 5px;
-    font-size: 10px;
+    font-size: 1rem;
 }
 
 .printIco {
     position: absolute;
     right: 5px;
-    font-size: 26px;
+    font-size: 2.6rem;
     top: 0px;
     color: #424242;
     cursor: pointer;
@@ -478,7 +483,7 @@
     margin: 0 0 12px;
     font-weight: 500;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .sales-report {
@@ -529,7 +534,7 @@ select.form-control:not([size]):not([multiple]) {
 .survery .table>thead>tr>th {
     padding: 14px;
     color: #000;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 td:hover {
@@ -601,14 +606,101 @@ td:hover {
 
 .stat-label {
     color: lighten($primaryColor, 5%);
-    font-size: 16px;
+    font-size: 1.6rem;
     width: 100%;
     text-align: center;
 }
 
 .stat-val {
     color: #ff2500;
-    font-size: 22px;
+    font-size: 2.2rem;
     width: 100%;
     text-align: center;
+}
+
+div.invoice
+{
+  width:100%;
+  display:inline-block;
+  vertical-align:top;
+  box-sizing:border-box;
+  padding:10px;
+  color:#999;
+  position:relative;
+}
+.pay-tag{
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:1;
+    font-family:Arial,sans-serif;
+    -webkit-transform: rotate(-45deg); /* Safari */
+    -moz-transform: rotate(-45deg); /* Firefox */
+    -ms-transform: rotate(-45deg); /* IE */
+    -o-transform: rotate(-45deg); /* Opera */
+    transform: rotate(-45deg);
+    font-size:40px;
+    color:#c00;
+    background:#fff;
+    border:solid 4px #c00;
+    padding:5px;
+    border-radius:5px;
+    zoom:1;
+    filter:alpha(opacity=20);
+    opacity:0.2;
+    -webkit-text-shadow: 0 0 2px #c00;
+    text-shadow: 0 0 2px #c00;
+    box-shadow: 0 0 2px #c00;
+}
+div.invoice.paid:after
+{
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:1;
+    font-family:Arial,sans-serif;
+    -webkit-transform: rotate(-45deg); /* Safari */
+    -moz-transform: rotate(-45deg); /* Firefox */
+    -ms-transform: rotate(-45deg); /* IE */
+    -o-transform: rotate(-45deg); /* Opera */
+    transform: rotate(-45deg);
+    font-size:40px;
+    color:#c00;
+    background:#fff;
+    border:solid 4px #c00;
+    padding:5px;
+    border-radius:5px;
+    zoom:1;
+    filter:alpha(opacity=20);
+    opacity:0.2;
+    -webkit-text-shadow: 0 0 2px #c00;
+    text-shadow: 0 0 2px #c00;
+    box-shadow: 0 0 2px #c00;
+}
+
+div.invoice.unpaid:after
+{
+    content:"UNPAID";
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:1;
+    font-family:Arial,sans-serif;
+    -webkit-transform: rotate(-45deg); /* Safari */
+    -moz-transform: rotate(-45deg); /* Firefox */
+    -ms-transform: rotate(-45deg); /* IE */
+    -o-transform: rotate(-45deg); /* Opera */
+    transform: rotate(-45deg);
+    font-size:40px;
+    color:#c00;
+    background:#fff;
+    border:solid 4px #c00;
+    padding:5px;
+    border-radius:5px;
+    zoom:1;
+    filter:alpha(opacity=20);
+    opacity:0.2;
+    -webkit-text-shadow: 0 0 2px #c00;
+    text-shadow: 0 0 2px #c00;
+    box-shadow: 0 0 2px #c00;
 }

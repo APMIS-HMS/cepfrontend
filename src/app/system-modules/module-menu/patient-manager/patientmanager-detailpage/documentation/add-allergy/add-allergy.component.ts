@@ -13,6 +13,7 @@ import { SharedService } from '../../../../../../shared-module/shared.service';
   styleUrls: ['./add-allergy.component.scss']
 })
 export class AddAllergyComponent implements OnInit {
+  isSaving: boolean;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient;
@@ -41,7 +42,8 @@ export class AddAllergyComponent implements OnInit {
     this.severityFormCtrl = new FormControl();
     this.reactionFormCtrl = new FormControl();
     this.noteFormCtrl = new FormControl();
-
+    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
   ngOnInit() {
@@ -69,7 +71,6 @@ export class AddAllergyComponent implements OnInit {
         this.patientDocumentation.documentations = [];
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {
@@ -77,15 +78,14 @@ export class AddAllergyComponent implements OnInit {
         } else {
           this.documentationService.find({
             query:
-            {
-              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-              // $select: ['documentations.documents', 'documentations.facilityId']
-            }
+              {
+                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                // $select: ['documentations.documents', 'documentations.facilityId']
+              }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               // this.populateDocuments();
-              console.log(this.patientDocumentation);
               // mload.data[0].documentations[0].documents.push(doct);
             }
           })
@@ -101,6 +101,7 @@ export class AddAllergyComponent implements OnInit {
     return severity ? severity.name : severity;
   }
   save() {
+    this.isSaving = true;
     let isExisting = false;
     this.patientDocumentation.documentations.forEach(documentation => {
       if (documentation.document.documentType._id === this.selectedForm._id) {
@@ -114,6 +115,9 @@ export class AddAllergyComponent implements OnInit {
       }
     });
     if (!isExisting) {
+      console.log('shce');
+      console.log(this.loginEmployee);
+      console.log(this.selectedFacility);
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.facilityId = this.selectedFacility;
       doc.createdBy = this.loginEmployee;
@@ -138,7 +142,10 @@ export class AddAllergyComponent implements OnInit {
       this.reactionFormCtrl.reset();
       this.severityFormCtrl.reset();
       this.noteFormCtrl.reset();
-      this.documentationService.announceDocumentation({});
+      this.documentationService.announceDocumentation({ type: 'Allergies' });
+      this.isSaving = false;
+    }, error => {
+      this.isSaving = false;
     })
   }
 }

@@ -1,3 +1,4 @@
+import { CountryServiceFacadeService } from './../system-modules/service-facade/country-service-facade.service';
 import { Component, OnInit, EventEmitter, NgZone, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
@@ -16,6 +17,8 @@ export class FacilitySetupComponent implements OnInit {
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  facilityInfo = false;
+  apmisID = true;
 
   // uploader variables
   private zone: NgZone;
@@ -64,7 +67,8 @@ export class FacilitySetupComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private facilityOwnershipService: FacilityOwnershipService,
-    private countriesService: CountriesService,
+    // private countriesService: CountriesService,
+    private countryFacadeService:CountryServiceFacadeService,
     private genderService: GenderService,
     private titleService: TitleService,
     private maritalStatusService: MaritalStatusService,
@@ -164,7 +168,7 @@ export class FacilitySetupComponent implements OnInit {
       if (payload.data.length > 0) {
         this.isEmailExist = false;
       }
-      else{
+      else {
         this.isEmailExist = true;
       }
     })
@@ -196,10 +200,8 @@ export class FacilitySetupComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = function (e: any) {
-        // console.log(e.target.result);
       };
       reader.onprogress = function (e: any) {
-        // console.log(e);
       };
 
       reader.readAsDataURL(fileInput.target.files[0]);
@@ -242,32 +244,43 @@ export class FacilitySetupComponent implements OnInit {
   getOwnerships() {
     this.facilityOwnershipService.findAll().then((payload) => {
       this.ownerships = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getCountries() {
-    this.countriesService.findAll().then((payload) => {
-      this.countries = payload.data;
-    })
+    this.countryFacadeService.getOnlyCountries().then(payload =>{
+    }).catch(error =>{
+      console.log(error);
+    });
   }
   getGenders() {
     this.genderService.findAll().then((payload) => {
       this.genders = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getTitles() {
     this.titleService.findAll().then((payload: any) => {
       this.titles = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getMaritalStatus() {
     this.maritalStatusService.findAll().then((payload: any) => {
       this.maritalStatuses = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getFacilityTypes() {
     this.facilityTypeService.findAll().then((payload) => {
       this.facilityTypes = payload.data;
-    })
+    }, error => {
+
+    });
   }
   getModules() {
     this.facilityModuleService.findAll().then((payload) => {
@@ -293,7 +306,9 @@ export class FacilitySetupComponent implements OnInit {
           checked: false
         })
       })
-    })
+    }, error => {
+
+    });
   }
 
   /* Component Events */
@@ -378,17 +393,17 @@ export class FacilitySetupComponent implements OnInit {
           this.selectedFacility = payload;
           // create person and user
           const personModel = <Person>{
-            titleId: this.titles[0]._id,
+            title: this.titles[0]._id,
             firstName: this.facilityForm1_1.controls['contactFName'].value,
             lastName: this.facilityForm1_1.controls['contactLName'].value,
-            genderId: this.genders[0]._id,
+            gender: this.genders[0]._id,
             homeAddress: model.address,
-            phoneNumber: model.contactPhoneNo,
+            primaryContactPhoneNo: model.contactPhoneNo,
             lgaOfOriginId: this.facilityForm1_1.controls['facilitylga'].value,
             nationalityId: this.facilityForm1.controls['facilitycountry'].value,
             stateOfOriginId: this.facilityForm1_1.controls['facilitystate'].value._id,
             email: model.email,
-            maritalStatusId: this.maritalStatuses[0]._id
+            maritalStatus: this.maritalStatuses[0].name
           };
           const userModel = <User>{
             email: model.email,
@@ -535,7 +550,10 @@ export class FacilitySetupComponent implements OnInit {
     this.selectModules_show = false;
     this.sg4_show = false;
   }
-
+  facilityInfo_show() {
+    this.apmisID = false;
+    this.facilityInfo = true;
+  }
   close_onClick(e) {
     this.closeModal.emit(true);
   }

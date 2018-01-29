@@ -18,17 +18,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
+    font-size: 1.2rem;
     margin: 10px 0;
 }
 .subsect-val{
     width: 58%;
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */    
+    white-space: -pre-wrap;     /* Opera <7 */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
 }
 .subsect-label{
     margin-right: 10px;
     width: 38%;
     color: #a6a6a6;
-    font-size: 10px;
+    font-size: 1rem;
     text-decoration: underline;
 }
 .list-label[_ngcontent-c9] {
@@ -46,7 +51,7 @@
     padding: 10px;
 }
 .isNOK {
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #fff;
     background: #ff2500;
     padding: 2px;

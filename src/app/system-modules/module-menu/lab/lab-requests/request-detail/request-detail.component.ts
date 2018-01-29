@@ -41,8 +41,6 @@ export class RequestDetailComponent implements OnInit {
   ngOnInit() {
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
-    console.log(this.selectedLab);
-    console.log(this.investigation)
     this.getIncomingRequest(this.investigation.labRequestId);
     this.getIncomingPatient();
   }
@@ -59,13 +57,11 @@ export class RequestDetailComponent implements OnInit {
             this.hasLabNo = true;
           }
         }
-        console.log(this.selectedPatient);
       }
     })
   }
   getIncomingRequest(id) {
     this._laboratoryRequestService.get(id, {}).then(payload => {
-      console.log(payload);
       let index = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
       let _investigation = payload.investigations[index];
       this.localInvestigation = _investigation;
@@ -80,7 +76,6 @@ export class RequestDetailComponent implements OnInit {
       }else{
         this.hasSample = false;
       }
-        console.log(_investigation);
 
     })
   }
@@ -90,7 +85,7 @@ export class RequestDetailComponent implements OnInit {
   onChange() {
     //upload file
   }
-  close_onClick() {
+  close_onClick(event) {
     this.closeModal.emit(true);
   }
   takeSample() {
@@ -128,7 +123,6 @@ export class RequestDetailComponent implements OnInit {
     this.localInvestigation.specimenReceived = true;
     this.localInvestigation.specimenNumber = this.specimenNumber.value;
 
-    console.log(this.localInvestigation);
     this.localRequest.investigations[this.localInvestigationIndex] = this.localInvestigation;
     this._laboratoryRequestService.update(this.localRequest).then(pay => {
       let index = pay.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
@@ -146,7 +140,6 @@ export class RequestDetailComponent implements OnInit {
     }
     this.selectedPatient.clientsNo.push(clientNo);
     this.patientService.update(this.selectedPatient).then(payload => {
-      console.log(payload);
       this.selectedPatient = payload;
       let index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id);
       if (index > -1) {

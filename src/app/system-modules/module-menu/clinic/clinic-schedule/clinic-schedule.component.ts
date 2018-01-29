@@ -87,7 +87,6 @@ export class ClinicScheduleComponent implements OnInit {
         payload.data[i].schedules.sort(function sortByDay(a, b) {
             var day1 = a.day.toLowerCase();
             var day2 = b.day.toLowerCase();
-            console.log(day1, day2);
             return self.sorter[day1] > self.sorter[day2];
         });
 
@@ -98,13 +97,17 @@ export class ClinicScheduleComponent implements OnInit {
 
   subscribToFormControls() {
     this.locationTypeControl.valueChanges.subscribe(value => {
-      this.clearAllSchedules();
-      this.schedulerService.find({ query: { 'clinicObject._id': value._id.toString() } }).then(payload => {
-        if (payload.data.length > 0) {
-          this.selectedManager = payload.data[0];
-          this.loadManagerSchedules(false);
-        }
-      });
+      console.log(value);
+      console.log(this.clinics);
+      if(value !== undefined){
+        this.clearAllSchedules();
+        this.schedulerService.find({ query: { 'clinicObject._id': value._id.toString() } }).then(payload => {
+          if (payload.data.length > 0) {
+            this.selectedManager = payload.data[0];
+            this.loadManagerSchedules(false);
+          }
+        });
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <ul class="moduleNav">
         <li (click)="allModuleTab()" [class.moduleNav-active]="allModulesShow">All Modules</li>
         <li (click)="integratedModuleTab()" [class.moduleNav-active]="integratedModulesShow">Integrated Modules</li>
@@ -47,5 +47,123 @@
                 </div>
             </li>
         </ul>
+    </div>
+</div> -->
+
+<div  style="border-top:2px solid #fff;">
+    <div class="card-title">Application Modules</div>
+
+    <div class="card2-exo">
+        <div class="card-tbl shadow-grey tbl-active">
+            <div class="card-title">Active Modules</div>
+            <!-- <mat-form-field>
+            <mat-select placeholder="Time Interval" [formControl]="inInterval">
+                <mat-option [value]="1">Last 48Hours</mat-option>
+                <mat-option [value]="1">Last 24Hours</mat-option>
+                <mat-option [value]="1">Last 18Hours</mat-option>
+                <mat-option [value]="1">Last 12Hours</mat-option>
+                <mat-option [value]="1">Last 6Hours</mat-option>
+                <mat-option [value]="1">Last 4Hours</mat-option>
+                <mat-option [value]="1">Last 2Hours</mat-option>
+                <mat-option [value]="1">Last Hours</mat-option>
+            </mat-select>
+            </mat-form-field> -->
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th style="text-align:center;">Action</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    <tr>
+                        <td>Pharmacy</td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Laboratory</td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Store</td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Radiology
+                        </td>
+                        <td>
+                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-tbl shadow-grey tbl-inactive">
+            <div class="card-title">Inactive Modules</div>
+            <!-- <mat-form-field>
+            <mat-select placeholder="Time Interval" [formControl]="outInterval">
+                <mat-option [value]="1">Last 48Hours</mat-option>
+                <mat-option [value]="1">Last 24Hours</mat-option>
+                <mat-option [value]="1">Last 18Hours</mat-option>
+                <mat-option [value]="1">Last 12Hours</mat-option>
+                <mat-option [value]="1">Last 6Hours</mat-option>
+                <mat-option [value]="1">Last 4Hours</mat-option>
+                <mat-option [value]="1">Last 2Hours</mat-option>
+                <mat-option [value]="1">Last Hours</mat-option>
+            </mat-select>
+            </mat-form-field> -->
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th style="text-align:center;">Action</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    <tr *ngFor="let module of systemModules">
+                        <td>
+                            {{modules.name}}
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true" (click)="activate(modules._id)"></i> Activate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Telemedicine
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Payment
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Payment
+                        </td>
+                        <td>
+                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

@@ -47,7 +47,7 @@
 }
 
 .list-title {
-    font-size: 12px;
+    font-size: 1.2rem;
     margin: 14px 0;
 }
 
@@ -118,7 +118,7 @@
 }
 
 .child-item {
-    font-size: 12px;
+    font-size: 1.2rem;
     margin: 5px;
     margin-left: 15px;
     color: #777;
@@ -194,7 +194,7 @@
 //     width: 80%;
 //     margin: 0 auto;
 //     text-align: center;
-//     font-size: 22px;
+//     font-size: 2.2rem;
 //     color: #5f5f5f;
 // }
 // .sel-patient-details {
@@ -203,7 +203,7 @@
 //     margin: 10px auto;
 //     width: 75%;
 //     flex-wrap: wrap;
-//     font-size: 12px;
+//     font-size: 1.2rem;
 //     color: #000;
 //     background: #FFE0B2;
 //     padding: 10px;
@@ -219,7 +219,7 @@
     width: 64%;
     float: left;
     padding: 5px;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #000;
     .patient-details-left {
         float: left;
@@ -249,12 +249,16 @@
     margin-top: 10px;
     color: #ff2500;
     border-bottom: 1px solid #ff2500;
-    font-size: 16px;
+    font-size: 1.6rem;
     text-align: center;
 }
 
 td .mat-select {
     height: 23px;
+}
+
+.mat-select {
+    height: 0px;
 }
 
 .initial-contenet {
@@ -271,7 +275,7 @@ td .mat-select {
     display: flex;
     justify-content: space-between;
     font-family: "Josefin Sans", sans-serif;
-    font-size: 18px;
+    font-size: 1.8rem;
     color: #0288D1;
     border-bottom: 1px solid #bebebe;
     margin-bottom: 5px;
@@ -281,7 +285,7 @@ td .mat-select {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 8px;
+    font-size: 0.8rem;
     color: #bebebe;
     cursor: pointer;
     padding: 2px 8px;
@@ -297,7 +301,7 @@ td .mat-select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #000;
 }
 
@@ -307,7 +311,7 @@ td .mat-select {
 
 .initial-val {
     color: #000;
-    font-size: 12px;
+    font-size: 1.2rem;
     line-height: 1.5;
     padding-left: 20px;
     margin-bottom: 20px;
@@ -331,7 +335,7 @@ td .mat-select {
 
 .act-right-actions {
     display: flex;
-    font-size: 12px;
+    font-size: 1.2rem;
     justify-content: flex-end;
     align-items: center;
 }
@@ -347,12 +351,12 @@ td .mat-select {
 .resultSect-title {
     margin-top: 20px;
     color: #777;
-    font-size: 14px;
+    font-size: 1.4rem;
     margin-bottom: 2px;
 }
 
 .template-box {
-    font-size: 12px;
+    font-size: 1.2rem;
     float: right;
     margin-top: -15px;
     cursor: pointer;
@@ -393,7 +397,7 @@ td .mat-select {
 
 .status-wrap {
     text-align: left;
-    font-size: 10px;
+    font-size: 1rem;
     padding: 0 5px;
 }
 

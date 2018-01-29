@@ -113,7 +113,7 @@ export class FacilitypageHomepageComponent implements OnInit {
       }
     });
 
-     this.facilityLandmarkEdit.valueChanges.subscribe(value => {
+    this.facilityLandmarkEdit.valueChanges.subscribe(value => {
       if (this.facilityLandmarkEdit.valid) {
         this.facilityObj.address.landmark = this.facilityLandmarkEdit.value;
         this.facilityService.update(this.facilityObj);
@@ -150,10 +150,13 @@ export class FacilitypageHomepageComponent implements OnInit {
         // this.getFacility();
         const stateObj = this.states.find(x => x._id === this.facilityObj.address.state.toString());
         this.selectedState = stateObj;
-        this.cities = this.selectedState.cities;
-        const cityObj = this.cities.find(x => x._id === this.facilityObj.address.city.toString());
-        this.selectedCity = cityObj;
-        this.facilityCityEdit.setValue(this.facilityObj.address.city)
+        if (this.selectedState !== undefined) {
+          this.cities = this.selectedState.cities;
+          const cityObj = this.cities.find(x => x._id === this.facilityObj.address.city.toString());
+          this.selectedCity = cityObj;
+          this.facilityCityEdit.setValue(this.facilityObj.address.city)
+        }
+
       }
     });
 
@@ -168,7 +171,7 @@ export class FacilitypageHomepageComponent implements OnInit {
 
   ngOnInit() {
     this.getFacility();
-    this.facilityObj =  <Facility> this.facilityService.getSelectedFacilityId();
+    this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj.isTokenVerified === false) {
       this.popup_verifyToken = true;
     }
@@ -177,8 +180,8 @@ export class FacilitypageHomepageComponent implements OnInit {
   getCountries() {
     this.countryService.findAll().then((payload) => {
       this.countries = payload.data;
-
-      this.facilityCountryEdit.setValue(this.facilityObj.countryItem._id);
+      console.log(this.facilityObj);
+      this.facilityCountryEdit.setValue(this.facilityObj.country);
       this.states = this.facilityObj.countryItem.states;
       const stateObj = this.states.find(x => x._id === this.facilityObj.address.state.toString());
       this.selectedState = stateObj;
@@ -197,8 +200,8 @@ export class FacilitypageHomepageComponent implements OnInit {
     });
   }
   getFacility() {
-    const facility =  <Facility> this.locker.getObject('selectedFacility');
-    this.isCorporate = <boolean> this.locker.getObject('isCorporate');
+    const facility = <Facility>this.locker.getObject('selectedFacility');
+    this.isCorporate = <boolean>this.locker.getObject('isCorporate');
     if (this.isCorporate) {
       // this.corporateFacilityService.get(facility.id, {}).then(cpayload => {
       //   this.facilityObj = cpayload;
@@ -210,7 +213,6 @@ export class FacilitypageHomepageComponent implements OnInit {
         this.getCountries();
       },
         error => {
-          console.log(error);
         });
     }
 

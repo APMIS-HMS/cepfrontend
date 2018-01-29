@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { OrderSetSharedService } from '../../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
   selector: 'app-edit-physician-order',
@@ -7,43 +8,42 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./edit-physician-order.component.scss']
 })
 export class EditPhysicianOrderComponent implements OnInit {
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  
-  addProcedureForm: FormGroup;
+  addPhysicianOrderForm: FormGroup;
   apmisLookupQuery = {};
   apmisLookupUrl = '';
   apmisLookupDisplayKey = '';
   apmisLookupText = '';
   newTemplate = true;
+  physicianOrders: any = <any>[];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private _orderSetSharedService: OrderSetSharedService
+  ) { }
 
   ngOnInit() {
-    this.addProcedureForm = this.fb.group({
-      procedure: ['', [<any>Validators.required]]
+    this.addPhysicianOrderForm = this.fb.group({
+      physicianOrder: ['', [<any>Validators.required]]
     });
+  }
+
+  onClickAddPhysicianOrder(valid: boolean, value: any) {
+    if (valid) {
+      const physicianOrder = {
+        name: value.physicianOrder,
+        comment: '',
+        status: 'Not Done',
+        completed: false
+      };
+
+      this.physicianOrders.push(physicianOrder);
+      this._orderSetSharedService.saveItem({ physicianOrders: this.physicianOrders});
+      this.addPhysicianOrderForm.reset();
+    }
   }
 
   close_onClick() {
     this.closeModal.emit(true);
   }
-
-  apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.name;
-    let isExisting = false;
-    // this.loginHMOListObject.companyCovers.forEach(item => {
-    //   if (item._id === value._id) {
-    //     isExisting = true;
-    //   }
-    // });
-    // if (!isExisting) {
-    //   this.selectedCompanyCover = value;
-    // } else {
-    //   this.selectedCompanyCover = <any>{};
-    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
-    // }
-  }
-
 }
-  

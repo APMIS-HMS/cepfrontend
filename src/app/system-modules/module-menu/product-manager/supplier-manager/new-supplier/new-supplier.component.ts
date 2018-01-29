@@ -25,7 +25,6 @@ export class NewSupplierComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility);
     this.frm_newSupplier = this.formBuilder.group({
       name: ['', [<any>Validators.required]],
       contact: ['', [<any>Validators.required]],
@@ -52,24 +51,18 @@ export class NewSupplierComponent implements OnInit {
     this.closeModal.emit(true);
   }
   create(form) {
-    console.log(form);
     if (form.valid) {
       this.mainErr = true;
-      console.log('creating');
       // this.supplierService.create(form.value).then(payload => {
-      //   console.log('created');
-      //   console.log(payload);
       //   this.frm_newSupplier.reset();
       // });
 
       if (this.selectedSupplier._id === undefined) {
-        console.log(1)
         form.value.facilityId = this.selectedFacility._id;
         this.supplierService.create(form.value).then(payload => {
           this.frm_newSupplier.reset();
         });
       } else {
-        console.log(2)
         form.value._id = this.selectedSupplier._id;
         this.supplierService.update(form.value).then(payload => {
           this.frm_newSupplier.reset();

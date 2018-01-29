@@ -57,17 +57,14 @@ export class ClinicHelperService {
     // if (onRooms.length > 0) {
     //   onRoom = onRooms[0];
     // }
-    // console.log(onRoom);
     this.consultingRoomService.find({ query: { facilityId: this.selectedFacility._id } })
       .then(payload => {
-        // console.log(payload);
         this.consultingRooms = payload.data;
         // payload.data.forEach((itemd, d) => {
         //   itemd.rooms.forEach((itemr, r) => {
         //     if (onRoom !== undefined) {
         //       if (itemr._id === onRoom.roomId) {
         //         this.checkedInRoom = itemr;
-        //          console.log(this.checkedInRoom);
         //       }
         //     }
         //   });
@@ -159,7 +156,6 @@ export class ClinicHelperService {
     // }).then(payload => {
     //   if (payload.data.length > 0) {
     //     this.loginEmployee = payload.data[0];
-    //     console.log(this.loginEmployee);
     //     if (this.loginEmployee.professionObject.name === 'Doctor') {
     //       this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
     //       this.isDoctor = true;

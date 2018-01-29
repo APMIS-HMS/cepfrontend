@@ -4,9 +4,11 @@
         <div class="dx-fieldset">
             <form>
                 <div class="frmitemwrap">
-                    <md-select placeholder="Clinic" [formControl]="locationTypeControl">
-                        <md-option *ngFor="let clinic of clinics" [value]="clinic">{{ clinic.clinicName }}</md-option>
-                    </md-select>
+                    <mat-form-field>
+                        <mat-select placeholder="Clinic" [formControl]="locationTypeControl">
+                            <mat-option *ngFor="let clinic of clinics" [value]="clinic">{{ clinic.clinicName }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <form *ngIf="locationTypeControl.value != null" [formGroup]="clinicScheduleForm" class="form-horizontal" (ngSubmit)="onSubmit()">
                     <div formArrayName="clinicScheduleArray" class="frmArrayWrap">
@@ -15,9 +17,11 @@
                             <div formGroupName="{{i}}">
                                 <div>
                                     <div class="frmitemwrap">
-                                        <md-select placeholder="Days" formControlName="day">
-                                            <md-option *ngFor="let day of days" [value]="day">{{day}}</md-option>
-                                        </md-select>
+                                        <mat-form-field>
+                                            <mat-select placeholder="Days" formControlName="day">
+                                                <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                     <div class="frmitemwrap">
                                         <!--<div class="dx-field">
@@ -28,9 +32,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--<md-input-container class="example-full-width">
-                                            <input type="time" mdInput placeholder="Start Time">
-                                        </md-input-container>-->
+                                        <!--<mat-input-container class="example-full-width">
+                                            <input type="time" matInput placeholder="Start Time">
+                                        </mat-input-container>-->
                                     </div>
 
                                     <div class="frmitemwrap">
@@ -45,9 +49,11 @@
                                     </div>
 
                                     <div class="frmitemwrap">
-                                        <md-select placeholder="Location" formControlName="location">
-                                            <md-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</md-option>
-                                        </md-select>
+                                        <mat-form-field>
+                                            <mat-select placeholder="Location" formControlName="location">
+                                                <mat-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +66,7 @@
 
                 <div *ngIf="clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewClinicSchedule(schedule)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Add Schedule</span></div>
                 <button *ngIf="locationTypeControl.value != null" [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false || 
-                clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0" class="apmis-blue" (click)="onCreateSchedule()" md-raised-button>Create</button>
+                clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0" class="apmis-blue" (click)="onCreateSchedule()" mat-raised-button>Create</button>
             </form>
 
         </div>
@@ -80,7 +86,7 @@
             </li>
             <li *ngIf="scheduleManagers.length === 0 && loading" class="li-itemWrap">
                 <div class="table-content">
-                    <md-spinner class='small-spinner'></md-spinner>
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </li>
 

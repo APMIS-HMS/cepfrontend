@@ -10,22 +10,16 @@ input, select{
     margin: 0px auto;
 }
 .cta-1 {
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 .mainErr {
     margin: 20px 0;
 }
 .facility-title {
-    font-size: 25px;
+    font-size: 2.5rem;
 }
 .modal_title {
-    font-size: 15px;
-}
-
-@media screen and (max-width: $break-small) {
-    .modal-baseWrap {
-   
-}
+    font-size: 1.5rem;
 }
 
 .mat-raised-button {
@@ -33,4 +27,10 @@ input, select{
     text-align: center;
     background: #03A9F4;
     color: #fff;
+}
+
+@media only screen and (max-width: 500px) {
+    .modal-baseWrap .mat-input-container {
+        width: 100%;
+    }
 }

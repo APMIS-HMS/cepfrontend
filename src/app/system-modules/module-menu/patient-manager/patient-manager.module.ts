@@ -1,3 +1,5 @@
+
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { HmoService } from './../../../services/facility-manager/setup/hmo.service';
@@ -34,7 +36,10 @@ import { SharedService } from '../../../shared-module/shared.service';
 import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline.component';
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component'
 import { ChartsModule } from 'ng2-charts';
-import { WorkbenchService, LaboratoryRequestService } from '../../../services/facility-manager/setup/index';
+import { WorkbenchService,
+  LaboratoryRequestService,
+  OrderSetTemplateService, TreatmentSheetService
+} from '../../../services/facility-manager/setup/index';
 import { PaymentComponent } from './patientmanager-detailpage/payment/payment.component';
 import { WalletComponent } from './patientmanager-detailpage/payment/wallet/wallet.component';
 import { InsuranceComponent } from './patientmanager-detailpage/payment/insurance/insurance.component';
@@ -44,6 +49,9 @@ import { PatientPaymentPlanComponent } from './patient-payment-plan/patient-paym
 import { OrderSetComponent } from './patientmanager-detailpage/order-set/order-set.component';
 import { EditMedicationComponent } from './patientmanager-detailpage/order-set/edit-medication/edit-medication.component';
 import { EditInvestigationComponent } from './patientmanager-detailpage/order-set/edit-investigation/edit-investigation.component';
+import {
+  BillInvestigationComponent
+} from './patientmanager-detailpage/order-set/edit-investigation/bill-investigation/bill-investigation.component';
 import { EditProcedureComponent } from './patientmanager-detailpage/order-set/edit-procedure/edit-procedure.component';
 import { EditNursingCareComponent } from './patientmanager-detailpage/order-set/edit-nursing-care/edit-nursing-care.component';
 import { EditPhysicianOrderComponent } from './patientmanager-detailpage/order-set/edit-physician-order/edit-physician-order.component';
@@ -53,6 +61,15 @@ import { OrderBillItemComponent } from './patientmanager-detailpage/order-set/or
 import { TreatementPlanComponent } from './patientmanager-detailpage/treatement-plan/treatement-plan.component';
 import { FluidComponent } from './patientmanager-detailpage/fluid/fluid.component';
 import { DocumentationTemplateService } from 'app/services/facility-manager/setup/documentation-template.service';
+import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc-uploads.component';
+import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
+import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
+import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
+import { DateRangePickerModule } from 'ng-pick-daterange';
+import { DateTimePickerModule } from 'ng-pick-datetime';
+import { FluidTypeComponent } from './patientmanager-detailpage/fluid/fluid-type/fluid-type.component';
+
+
 @NgModule({
     declarations: [
         PatientManagerComponent,
@@ -82,6 +99,7 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
         OrderSetComponent,
         EditMedicationComponent,
         EditInvestigationComponent,
+        BillInvestigationComponent,
         EditProcedureComponent,
         EditNursingCareComponent,
         EditPhysicianOrderComponent,
@@ -89,7 +107,12 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
         DocDiagnosisComponent,
         OrderBillItemComponent,
         TreatementPlanComponent,
-        FluidComponent
+        FluidComponent,
+        DocUploadsComponent,
+        DocUploadComponent,
+        DocUploadDetailComponent,
+        PatientVitalsComponent,
+        FluidTypeComponent
     ],
     exports: [
     ],
@@ -97,9 +120,13 @@ import { DocumentationTemplateService } from 'app/services/facility-manager/setu
         SharedModule,
         patientManagerRoutes,
         MaterialModule,
-        ChartsModule
+        ChartsModule,
+        PdfViewerModule,
+        DateRangePickerModule,
+        DateTimePickerModule
     ],
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
+      OrderSetTemplateService, TreatmentSheetService,
         FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService, FacilityCompanyCoverService,
     DocumentationTemplateService]
 })

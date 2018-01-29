@@ -1,8 +1,8 @@
 <div class="c-page-header">
 </div>
 <div class="c-page-body">
-    <md-tab-group>
-        <md-tab label="New Admission">
+    <mat-tab-group>
+        <mat-tab label="New Admission">
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -36,7 +36,7 @@
                 <tbody>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
                         <td class="table-content " colspan="7" style="text-align: center">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
@@ -79,14 +79,14 @@
                             <small>{{inPatientWaitingItem.createdAt | amTimeAgo }}</small>
                         </td>
                         <td class="table-content">
-                            <button md-raised-button [disabled]="disableAdmitBtn" (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" style="color: #fff;height: 30px;line-height: 1.5;" [innerHtml]="admitBtnText"> </button>
+                            <button mat-raised-button [disabled]="disableAdmitBtn" (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" style="color: #fff;height: 30px;line-height: 1.5;" [innerHtml]="admitBtnText"> </button>
                             <!-- <div (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Admit</div> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </md-tab>
-        <md-tab label="Transfer In">
+        </mat-tab>
+        <mat-tab label="Transfer In">
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -113,7 +113,7 @@
                 <tbody>
                     <tr *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
                         <td class="table-content " colspan="7" style="text-align: center">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
@@ -150,8 +150,8 @@
                     </tr>
                 </tbody>
             </table>
-        </md-tab>
-        <md-tab label="Transfer Out">
+        </mat-tab>
+        <mat-tab label="Transfer Out">
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -178,7 +178,7 @@
                 <tbody>
                     <tr *ngIf="listPatientTransferOutWaiting.length === 0 && transferOutLoading">
                         <td class="table-content " colspan="7" style="text-align: center">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientTransferOutWaiting.length === 0 && !transferOutLoading">
@@ -215,8 +215,8 @@
                     </tr>
                 </tbody>
             </table>
-        </md-tab>
-        <md-tab label="Discharge">
+        </mat-tab>
+        <mat-tab label="Discharge">
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -246,7 +246,7 @@
                 <tbody>
                     <tr *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
                         <td class="table-content " colspan="6" style="text-align: center">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
@@ -276,8 +276,8 @@
                     </tr>
                 </tbody>
             </table>
-        </md-tab>
-    </md-tab-group>
+        </mat-tab>
+    </mat-tab-group>
     <!-- <div class="inPatients">
         <ul class="moduleNav">
             <li (click)="newAdmissionTab()" [class.moduleNav-active]="newAdmissionShow">New Admission</li>
@@ -342,7 +342,7 @@
                     </tr>
 
                     <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
+                        <mat-spinner></mat-spinner>
                     </div>
                 </tbody>
             </table>
@@ -405,7 +405,7 @@
                     </tr>
 
                     <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
+                        <mat-spinner></mat-spinner>
                     </div>
                 </tbody>
             </table>
@@ -473,7 +473,7 @@
                     </tr>
 
                     <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
+                        <mat-spinner></mat-spinner>
                     </div>
                 </tbody>
             </table>
@@ -537,7 +537,7 @@
                     </tr>
 
                     <div *ngIf="loadIndicatorVisible" class="div_loading">
-                        <md-spinner></md-spinner>
+                        <mat-spinner></mat-spinner>
                     </div>
                 </tbody>
             </table>

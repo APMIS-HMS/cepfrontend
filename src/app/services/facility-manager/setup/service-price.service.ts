@@ -1,7 +1,6 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 
 @Injectable()
 export class ServicePriceService {
@@ -14,8 +13,8 @@ export class ServicePriceService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('facilityprices');
-    this._socket = _socketService.getService('facilityprices');
+    this._rest = _restService.getService('facility-prices');
+    this._socket = _socketService.getService('facility-prices');
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');

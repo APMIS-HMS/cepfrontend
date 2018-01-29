@@ -1,3 +1,5 @@
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
+import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -5,6 +7,7 @@ import { Router } from '@angular/router';
 import { FacilitiesService } from '../services/facility-manager/setup/index';
 import { Facility } from '../models/index';
 import { UserService } from '../services/facility-manager/setup/index';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 
 
 @Component({
@@ -32,7 +35,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private userService: UserService,
+    private userServiceFacade:UserFacadeService,
     public facilityService: FacilitiesService,
+    private systemModule: SystemModuleService,
     private locker: CoolLocalStorage, private router: Router) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
@@ -53,39 +58,42 @@ export class LoginComponent implements OnInit {
   }
   login(valid) {
     if (valid) {
-      this.loadIndicatorVisible = true;
+      this.systemModule.on();
       const query = {
         email: this.frm_login.controls['username'].value,
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
-        console.log(result)
-        this.locker.setObject('auth', result);
+        console.log(result);
+        this.userServiceFacade.authenticateResource().then(payload => {
+          console.log(payload)
+          let auth = {
+            data: result.user
+          };
+          this.locker.setObject('auth', auth);
+          this.locker.setObject('token', result.accessToken);
 
-        this.router.navigate(['/accounts']).then(pay => {
-          this.userService.isLoggedIn = true;
-          this.userService.announceMission('in');
-          this.loadIndicatorVisible = false;
+          this.router.navigate(['/accounts']).then(pay => {
+            this.userService.isLoggedIn = true;
+            this.userService.announceMission('in');
+            this.systemModule.off();
+            this.frm_login.controls['password'].reset();
+          });
+        }, error => {
+          this.systemModule.off();
+          console.log(error);
+        }).catch(merr => {
+          this.systemModule.off();
+          this.frm_login.controls['password'].reset();
         });
-
       },
         error => {
           this.loadIndicatorVisible = false;
           this.mainErr = false;
           this.errMsg = 'wrong login credentials';
+          this.frm_login.controls['password'].reset();
+          this.systemModule.off();
         });
-      // this.userService.login(query).then(result => {
-      //   this.locker.setObject('auth', result);
-      //   this.userService.isLoggedIn = true;
-      //   this.userService.reload();
-      //   this.getFacility();
-      //   this.router.navigate(['/modules']);
-
-      // },
-      //   error => {
-      //     this.mainErr = false;
-      //     this.errMsg = 'wrong login credentials';
-      //   });
     } else {
       this.mainErr = false;
     }

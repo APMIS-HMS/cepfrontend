@@ -2,7 +2,6 @@ import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/Rx';
 import { Patient } from '../../../models/index';
 const request = require('superagent');
 
@@ -58,7 +57,7 @@ export class PatientService {
   }
   find(query: any) {
     this.reload();
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {
@@ -68,6 +67,21 @@ export class PatientService {
   get(id: string, query: any) {
     this.reload();
     return this._socket.get(id, query);
+  }
+
+  abridgePatient(patient) {
+    console.log(patient);
+    return {
+      _id: patient._id,
+      personId: patient.personId,
+      personDetails: {
+        _id: patient.personDetails._id,
+        apmisId: patient.personDetails.apmisId,
+        email: patient.personDetails.email,
+        firstName: patient.personDetails.firstName,
+        lastName: patient.personDetails.lastName
+      }
+    }
   }
 
   create(patient: any) {
@@ -85,6 +99,6 @@ export class PatientService {
     const path = host + '/patient';
     return request
       .get(path)
-      .query({ facilityid: facilityId, searchtext: searchText }); // query string 
+      .query({ facilityid: facilityId, searchtext: searchText }); // query string
   }
 }

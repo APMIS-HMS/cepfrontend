@@ -21,7 +21,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   newSubLocModal_on = false;
 
   innerMenuShow = false;
-
+  showLoc = false;
   locationsObj: Location[] = [];
 
   locationObj: Location = <Location>{};
@@ -54,10 +54,8 @@ export class FacilitypageLocationspageComponent implements OnInit {
   constructor(private locationService: LocationService, private locker: CoolLocalStorage,
   public facilityService: FacilitiesService, private route: ActivatedRoute) {
     this.facilityService.listner.subscribe(payload => {
-      console.log('am received');
       this.facility = payload;
       this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
-      console.log(this.filteredMinorLocations);
     });
     this.locationService.listner.subscribe(payload => {
       this.getLocations();
@@ -68,10 +66,8 @@ export class FacilitypageLocationspageComponent implements OnInit {
   ngOnInit() {
     this.facility =   <Facility> this.facilityService.getSelectedFacilityId();
     this.facilityService.listner.subscribe(payload => {
-      console.log('am received');
       this.facility = payload;
       this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
-      console.log(this.filteredMinorLocations);
     });
     this.pageInView.emit('Locations');
 
@@ -101,7 +97,15 @@ export class FacilitypageLocationspageComponent implements OnInit {
       });
     });
   }
-
+  showLoc_click() {
+    this.showLoc = true;
+  }
+  showLoc_hide() {
+    this.showLoc = false;
+  }
+  newLoc_onClick() {
+    this.newSubLocModal_on = true;
+  }
   getLocations() {
     this.locationService.findAll().then(payload => {
       this.locationsObj = payload.data;
@@ -173,7 +177,6 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.subLocation = <any>{};
   }
   editMinorLoc(value) {
-    console.log(value);
     this.subLocation = value;
     this.modal_on = false;
     this.newSubLocModal_on = true;

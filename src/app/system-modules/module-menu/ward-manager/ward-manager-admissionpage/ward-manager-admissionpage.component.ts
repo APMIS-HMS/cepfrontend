@@ -46,18 +46,14 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     private facilityService: FacilitiesService // private gvariable: globalConfig
   ) {
     this._inPatientListService.listenerCreate.subscribe(payload => {
-      console.log(payload);
       // this.getWaitingList(this.selectedWard);
     });
-    console.log(this.selectedWard);
     this._inPatientListService.listenerUpdate.subscribe(payload => {
-      console.log(payload);
       // this.getWaitingList(this.selectedWard);
     });
   }
 
   ngOnInit() {
-    console.log('also called');
     this._wardEventEmitter.setRouteUrl('Admission waiting list');
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.employeeDetails = this._locker.getObject('loginEmployee');
@@ -65,7 +61,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
     // Subscribe to the event when ward changes.
     this._wardEventEmitter.announceWard.subscribe(val => {
-      console.log(val);
       this.selectedWard = val;
       this.getWaitingList(val);
       this.getTransferInList(val);
@@ -123,9 +118,13 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   // }
 
   admitPatient_onClick(value: any, typeChecker = myGlobals) {
-    this.selectInpatient = value;
-    this.selectInpatient.typeChecker = typeChecker.onAdmission;
-    this.admitPatient = true;
+    if (!!this.selectedWard && !!this.selectedWard.typeObject) {
+      this.selectInpatient = value;
+      this.selectInpatient.typeChecker = typeChecker.onAdmission;
+      // Pass the loggedInWard to the selectedInpatient.
+      this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
+      this.admitPatient = true;
+    }
   }
 
   transferAdmitPatient_onClick(model: any, typeChecker = myGlobals) {
@@ -135,14 +134,12 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   }
 
   close_onClick() {
-    console.log('Called');
     this.admitPatient = false;
     this.ngOnInit();
   }
 
   onClickDeclineTransfer(inpatientItem) {
     this._inPatientService.get(inpatientItem._id, {}).then(payload => {
-      console.log(payload);
       payload.statusId = myGlobals.onAdmission;
       payload.transfers[payload.lastIndex].proposedWard = {};
       // Update the checkOutDate of the last tranfer
@@ -152,7 +149,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
           this.getTransferInList(this.selectedWard);
         })
         .catch(err => {
-          console.log(err);
         });
     });
   }
@@ -167,45 +163,38 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         }
       })
       .then(res => {
-        console.log(res);
         this.newAdmissionLoading = false;
         this.listPatientAdmissionWaiting = res.data;
       });
   }
 
   getTransferInList(checkedInWard: any) {
-    console.log(checkedInWard.typeObject.minorLocationId);
     this._inPatientService
       .find({
         query: {
           'facilityId._id': this.facility._id,
-          'transfers.minorLocationId':
-            checkedInWard.typeObject.minorLocationId._id,
+          'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
           statusId: myGlobals.transfer,
           discharge: undefined
         }
       })
       .then(payload => {
-        console.log(payload.data);
         this.transferInLoading = false;
         this.listPatientTransferWaiting = payload.data;
       });
   }
 
   getTransferOutList(checkedInWard: any) {
-    console.log(checkedInWard.typeObject.minorLocationId);
     this._inPatientService
       .find({
         query: {
           'facilityId._id': this.facility._id,
-          'prevWard._id':
-            checkedInWard.typeObject.minorLocationId._id,
+          'prevWard._id': checkedInWard.typeObject.minorLocationId._id,
           statusId: myGlobals.transfer,
           discharge: undefined
         }
       })
       .then(payload => {
-        console.log(payload.data);
         this.transferOutLoading = false;
         this.listPatientTransferOutWaiting = payload.data;
       });
@@ -218,14 +207,12 @@ export class WardManagerAdmissionpageComponent implements OnInit {
           statusId: myGlobals.discharge
         }
       }).then(res => {
-        console.log(res);
         this.dischargeLoading = false;
         this.listPatientDischarge = res.data;
       });
   }
 
   // navEpDetail(patient) {
-  //   console.log(patient);
   // }
 
   // Notification

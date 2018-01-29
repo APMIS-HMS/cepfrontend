@@ -139,7 +139,7 @@ export class AddBedComponent implements OnInit {
 		});
 	  }
 
-	close_onClick() {
+	close_onClick(event) {
 		this.closeModal.emit(true);
 	}
 }

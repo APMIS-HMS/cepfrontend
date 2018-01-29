@@ -30,6 +30,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
+  checkedInStore: any;
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService,
@@ -37,6 +38,14 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+    console.log(checkIn.storeObject.name);
+    this.checkedInStore = checkIn.storeObject.name;
+    if(Object.keys(checkIn).length > 0){
+      console.log(checkIn);
+    }
+    
+    
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
       this.modal_on = true;
@@ -49,9 +58,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           isOn = true;
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
-          console.log(checkingObject)
           this.locker.setObject('checkingObject', checkingObject);
-          console.log('sent');
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
             checkingObject = { typeObject: itemr, type: 'store' };
@@ -77,6 +84,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       }
 
     }
+
+
   }
 
   ngOnInit() {
@@ -110,7 +119,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //             this.loginEmployee = payload;
     //             checkingObject = { typeObject: itemr, type: 'store' };
     //             this.employeeService.announceCheckIn(checkingObject);
-    //             console.log(1)
     //             this.locker.setObject('checkingObject', checkingObject);
     //           });
     //         }
@@ -124,8 +132,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //               this.loginEmployee = payload;
     //               const checkingObject = { typeObject: itemr, type: 'store' };
     //               this.employeeService.announceCheckIn(checkingObject);
-    //               console.log(2)
-    //               console.log(checkingObject);
     //               this.locker.setObject('checkingObject', checkingObject);
     //             });
     //           }
@@ -137,7 +143,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     //   });
 
     const page: string = this._router.url;
-    console.log(page);
     this.checkPageUrl(page);
     this._inventoryEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
@@ -158,9 +163,11 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   closeActivate(e) {
     if (e.srcElement.id !== 'contentSecMenuToggle') {
       this.contentSecMenuShow = false;
+      this.modal_on = false;
     }
   }
 
+  
   // onClickInventoryNavMenu() {
   //   this.inventoryNavMenu = true;
   //   this.stockTakingNavMenu = false;
@@ -250,7 +257,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   // }
 
   changeRoute(val) {
-    console.log(val);
     if (val == '/dashboard/inventory-manager/inventory') {
       this.inventoryNavMenu = true;
       this.stockTakingNavMenu = false;

@@ -1,7 +1,9 @@
 <div [dragula]='"first-bag"'>
     <div class="rArea-card">
         <div class="rAreaCard-header">
-            <span class="header-label">Problems</span>
+            <span class="header-label">Problems
+                <span *ngIf="problemLoading" class="fa fa-spinner fa-spin"></span>
+            </span>
             <i (click)="addProblem_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
         </div>
 
@@ -45,7 +47,9 @@
 
     <div class="rArea-card">
         <div class="rAreaCard-header">
-            <span class="header-label">Allergies</span>
+            <span class="header-label">Allergies
+                <span *ngIf="allergiesLoading" class="fa fa-spinner fa-spin"></span>
+            </span>
             <i (click)="addAllergy_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
         </div>
 
@@ -84,7 +88,7 @@
                     </tr>
                     <tr *ngIf="patients.length === 0 && loading">
                         <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr> -->
                         </tbody>
@@ -207,7 +211,7 @@
                     </tr>
                     <tr *ngIf="patients.length === 0 && loading">
                         <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr> -->
                         </tbody>
@@ -244,7 +248,7 @@
                     </tr>
                     <tr *ngIf="patients.length === 0 && loading">
                         <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr> -->
                         </tbody>
@@ -253,7 +257,7 @@
             </li>
         </ul>
     </div>
-
+    <!-- 
     <div class="rArea-card">
         <div class="rAreaCard-header">
             <span class="header-label">Family History</span>
@@ -304,18 +308,21 @@
                 </div>
             </li>
         </ul>
-    </div>
+    </div> -->
 
     <div class="rArea-card">
         <div class="rAreaCard-header">
-            <span class="header-label">Investigation</span>
+            <span class="header-label">Investigation
+                <span *ngIf="laboratoryLoading" class="fa fa-spinner fa-spin"></span>
+            </span>
             <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
         </div>
 
         <ul class="rAreaCard-body">
-            <li class="rAreaCard-item">
-                <div class="rAreaCard-status rAreaCard-active">Available</div>
-                <div class="rAreaCard-content">Blood Count</div>
+            <li class="rAreaCard-item" *ngFor="let request of labRequests">
+                <div *ngIf="request.report !== undefined" class="rAreaCard-status rAreaCard-active">Available</div>
+                <div *ngIf="request.report === undefined" class="rAreaCard-status rAreaCard-inactive">Not Available</div>
+                <div class="rAreaCard-content">{{request.createdAt|date:'short'}}</div>
 
                 <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
                     <table cellpadding="0" cellspacing="0" border="0.5">
@@ -334,16 +341,16 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>Blood Count</td>
-                                <td>Available</td>
+                            <tr *ngFor="let request of request.investigations">
+                                <td>{{request.investigation?.name}}</td>
+                                <td>{{request.investigation?.specimen?.name}}</td>
                                 <td>11th October, 2016.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </li>
-            <li class="rAreaCard-item">
+            <!-- <li class="rAreaCard-item">
                 <div class="rAreaCard-status rAreaCard-inactive">Not Available</div>
                 <div class="rAreaCard-content">HIV Test</div>
 
@@ -364,15 +371,15 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>HIV Test</td>
-                                <td>Not Available</td>
+                            <tr *ngFor="let inv of investigations">
+                                <td>{{inv.investigation?.name}}</td>
+                                <td>{{inv.investigation?.specimen?.name}}</td>
                                 <td>11th October, 2016.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
 
@@ -449,7 +456,9 @@
                                     <div class="empWrap">
                                         <div class="list-img" *ngIf="appointment?.doctorId !== null">
                                             <img *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                                            <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                                            <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined">
+                                                <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                                            </div>
                                         </div>
                                         <div>
                                             <div class="list-label">{{appointment.doctorId?.employeeDetails.personFullName}}</div>
@@ -499,7 +508,9 @@
                                     <div class="empWrap">
                                         <div class="list-img" *ngIf="appointment?.doctorId !== null">
                                             <img *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                                            <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)"></div>
+                                            <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined">
+                                                <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                                            </div>
                                         </div>
                                         <div>
                                             <div class="list-label">{{appointment.doctorId?.employeeDetails.personFullName}}</div>

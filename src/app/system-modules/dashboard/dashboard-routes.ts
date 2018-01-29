@@ -14,17 +14,13 @@ const appRoutes: Routes = [
                 loadChildren: '../module-menu/facility-page/facility-page.module.ts#FacilityPageModule',
             },
             {
-                path: 'employee-manager',
-                loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-            },
-            {
-                path: 'employee-manager/:id',
-                loadChildren: '../module-menu/employee-manager/employee-manager.module#EmployeeManagerModule',
-            },
-            {
                 path: 'access-manager',
                 loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
             },
+            // {
+            //     path: 'patient-portal',
+            //     loadChildren: '../module-menu/patient-portal/patient-portal.module#PatientPortalModule',
+            // },
             {
                 path: 'patient-manager',
                 loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
@@ -55,10 +51,10 @@ const appRoutes: Routes = [
                 path: 'payment',
                 loadChildren: '../module-menu/payment/payment.module#PaymentModule'
             },
-            // {
-            //     path: 'wallet',
-            //     loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
-            // },
+            {
+                path: 'wallet',
+                loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
+            },
             {
                 path: 'clinic',
                 loadChildren: '../module-menu/clinic/clinic.module#ClinicModule'
@@ -94,6 +90,10 @@ const appRoutes: Routes = [
             {
                 path: 'laboratory',
                 loadChildren: '../module-menu/lab/lab.module#LabModule'
+            },
+            {
+             path: 'radiology',
+             loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule'
             },
             {
                 path: 'corporate',

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { FacilitiesService, BillingService } from '../../../services/facility-manager/setup/index';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -17,86 +19,167 @@ export class PaymentComponent implements OnInit {
     searchPendingBill = new FormControl('', []);
     selectedFacility: Facility = <Facility>{};
     loadingPendingBills: Boolean = true;
+    loadingLocAmountAccrued: Boolean = true;
+    isLoadingInvoice = false;
+    totalAmountReceived = 0;
+    totalAmountBilled = 0;
     pendingBills: any[] = [];
+    locAmountAccrued: any[] = [];
+    invoiceGroups: any[] = [];
     user: User = <User>{};
 
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true
     };
-    public barChartLabels: String[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    public barChartLabels: String[] = [];
     public barChartType: String = 'bar';
     public barChartLegend: Boolean = true;
-
-    public barChartData: any[] = [
-        {data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40], label: 'Registration'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Appointment'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Ward'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Clinic'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Pharmacy'},
-        {data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86, 27, 90], label: 'Lab'}
-    ];
+    public barChartData: any[] = [{ "data": [0], "label": "" }];
 
     constructor(
         private formBuilder: FormBuilder,
         private billingService: BillingService,
         private facilityService: FacilitiesService,
-        private locker: CoolLocalStorage
+        private invoiceService: InvoiceService,
+        private _pendingBillService: PendingBillService,
+        private locker: CoolLocalStorage,
+        private router: Router,
+        private _todayInvoiceService: TodayInvoiceService,
+        private _locSummaryCashService: LocSummaryCashService,
+        private systemModuleService: SystemModuleService
     ) {
+
     }
     ngOnInit() {
-        this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
+        this._getBills();
+        this._getInvoices();
+        this.searchPendingInvoices.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.isLoadingInvoice = true;
+                this._todayInvoiceService.get(this.selectedFacility._id, {
+                    query: {
+                        "isQuery": true,
+                        "name": value
+                    }
+                }).then(payload => {
+                    this.invoiceGroups = payload.invoices;
+                    this.isLoadingInvoice = false;
+                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
 
-        this._getAllPendingBills();
+        this.searchPendingBill.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.loadingPendingBills = true;
+                this._pendingBillService.get(this.selectedFacility._id, {
+                    query: {
+                        "isQuery": true,
+                        "name": value
+                    }
+                }).then((res: any) => {
+                    this.pendingBills = res.bills;
+                    this.loadingPendingBills = false;
+                }).catch(err => {
+                    console.log(err);
+                    this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
+                });
+            });
     }
 
-    private _getAllPendingBills() {
-        this.billingService.find({ query: { facilityId: this.selectedFacility._id }})
-            .then(res => {
-                console.log(res);
-                this.loadingPendingBills = false;
-                const billings = res.data;
-                const result = [];
+    private _getInvoices() {
+        this.systemModuleService.on;
+        this._todayInvoiceService.get(this.selectedFacility._id, {
+            query: {
+                "isQuery": false
+            }
+        }).then(payload => {
+            console.log(payload);
+            this.systemModuleService.off;
+            this.invoiceGroups = payload.invoices;
+            console.log(this.invoiceGroups);
+            this.totalAmountReceived = payload.amountReceived;
+            console.log(this.totalAmountReceived);
+            this.isLoadingInvoice = false;
+            this._getLocAmountAccrued();
+        }).catch(err => {
+            console.log(err);
+            this.systemModuleService.off;
+            this.isLoadingInvoice = false;
+            this._notification('Error', 'There was a problem getting invoices, Please try again later!');
+        });
+    }
 
-                for (let i = 0; i < billings.length; i++) {
-                    const val = billings[i];
-                    const index = result.filter(x => x.patientId === val.patientId);
+    private _getBills() {
+        // this.loadingPendingBills = true;
+        this.systemModuleService.on;
+        this._pendingBillService.get(this.selectedFacility._id, {
+            query: {
+                "isQuery": false
+            }
+        }).then((res: any) => {
+            console.log(res);
+            this.systemModuleService.off;
+            this.pendingBills = res.bills;
+            this.totalAmountBilled = res.amountBilled;
+            this.loadingPendingBills = false;
+        }).catch(err => {
+            console.log(err);
+            this.systemModuleService.off;
+            this.loadingPendingBills = false;
+            this._notification('Error', err);
+        });
+    }
 
-                    if (index.length > 0) {
-                        index[0].billItems = index[0].billItems.concat(val.billItems);
-                        index[0].subTotal += val.subTotal;
-                        index[0].grandTotal += val.grandTotal;
-                    } else {
-                        result.push(val);
+    private _getLocAmountAccrued() {
+        this.loadingLocAmountAccrued = true;
+        this._locSummaryCashService.get(this.selectedFacility._id, {})
+            .then(payload2 => {
+                console.log(payload2);
+                this.loadingLocAmountAccrued = false;
+                this.barChartLabels = payload2.barChartLabels;
+                if (payload2.barChartData.length > 0) {
+                    this.barChartData.splice(0, 1);
+                }
+                for (let k = 0; k < payload2.barChartData.length; k++) {
+                    this.barChartData.push({ "data": [0], "label": "" });
+                }
+                for (let i = 0; i < payload2.barChartData.length; i++) {
+                    for (let j = 0; j < payload2.barChartData[i].data.length; j++) {
+                        this.barChartData[i].data.push(payload2.barChartData[i].data[j]);
                     }
+                    this.barChartData[i].label = payload2.barChartData[i].label;
                 }
+            }).catch(err => {
+                console.log(err);
+                this.loadingLocAmountAccrued = false;
+                this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
+            });
+    }
 
-                if (result.length > 0) {
-                    this.pendingBills = result;
-                    console.log(this.pendingBills);
-                } else {
-                    this.pendingBills = [];
-                }
-            }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+    onSelectedInvoice(invoice) {
+        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]);
     }
 
     // Notification
     private _notification(type: string, text: string): void {
         this.facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+            users: [this.user._id],
+            type: type,
+            text: text
         });
     }
 
     // events
     public chartClicked(e: any): void {
-        console.log(e);
     }
 
     public chartHovered(e: any): void {
-        console.log(e);
     }
 }

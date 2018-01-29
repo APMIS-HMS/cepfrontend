@@ -1,8 +1,10 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService } from '../../services/facility-manager/setup/index';
 import { Facility } from '../../models/index';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-token',
@@ -13,7 +15,7 @@ export class VerifyTokenComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() inputFacility: Facility = <Facility>{};
   @Input() backBtnVisible: boolean;
-@Input() tokenValue = "";
+  @Input() tokenValue = "";
   frm_numberVerifier: FormGroup;
   facility: Facility = <Facility>{};
   InputedToken: string;
@@ -26,7 +28,10 @@ export class VerifyTokenComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _facilityService: FacilitiesService,
+    private locker: CoolLocalStorage,
+    private systemModuleService: SystemModuleService
   ) { }
 
   ngOnInit() {
@@ -46,19 +51,35 @@ export class VerifyTokenComponent implements OnInit {
           if (payload.data.length > 0) {
             this.mainErr = true;
             this.errMsg = '';
-            this.sg3_show = true;
+            // this.sg3_show = true;
             this.verify_show = false;
             this.inputFacility.isTokenVerified = true;
-            this._facilityService.update(this.inputFacility).then(payload2 => { });
+            this._facilityService.update(this.inputFacility).then(payload2 => {
+              this.locker.setObject('selectedFacility', payload2);
+              this.systemModuleService.announceSweetProxy('Facility has been verified successfully', 'success');
+              this._router.navigate(['/accounts']);
+              this.close_onClick();
+            });
           } else {
-            this.mainErr = false;
-            this.errMsg = 'Wrong Token, try again.';
+            // this.mainErr = false;
+            // this.errMsg = 'Wrong Token, try again.';
+            const errMsg = 'There was an error while verifying this facility, please try again!';
+            this.systemModuleService.announceSweetProxy(errMsg, 'error');
           }
         });
       }
     } else {
       this.mainErr = false;
     }
+  }
+  resendToken() {
+    console.log(this.facility);
+    let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this._facilityService.resendToken(selectedFacility).then(payload => {
+      console.log(payload);
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   back_verifier() {
@@ -69,6 +90,9 @@ export class VerifyTokenComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+    this.verify_show = false;
+    this.back_verify_show = false;
+    this.sg3_show = false;
   }
 
 }

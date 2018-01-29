@@ -6,12 +6,14 @@
     <div class="padding"></div>
     <form [formGroup]="transferFormGroup" novalidate>
         <div class="frm-item-wrap">
-            <md-select placeholder="Select Ward" formControlName="ward">
-                <md-option *ngFor="let ward of wards" [value]="ward">{{ward.name}}</md-option>
-            </md-select>
+            <mat-form-field>
+                <mat-select placeholder="Select Ward" formControlName="ward">
+                    <mat-option *ngFor="let ward of wards" [value]="ward">{{ward.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         <div class="btn-box">
-            <button md-raised-button [disabled]="!transferFormGroup.valid && disableTransferBtn" class="btn" (click)="onTransfer(transferFormGroup.value, transferFormGroup.valid)" [innerHtml]="transferBtnText"></button>
+            <button mat-raised-button [disabled]="!transferFormGroup.valid && disableTransferBtn" class="btn" (click)="onTransfer(transferFormGroup.value, transferFormGroup.valid)" [innerHtml]="transferBtnText"></button>
         </div>
     </form>
 </div>

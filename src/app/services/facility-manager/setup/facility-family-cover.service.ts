@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 const request = require('superagent');
-// import 'rxjs/Rx';
 
 @Injectable()
 export class FacilityFamilyCoverService {
@@ -61,11 +60,7 @@ export class FacilityFamilyCoverService {
       .query({ facilityId: facilityId, search: search });
   }
   updateBeneficiaryList(formData) {
-    const host = this._restService.getHost();
-    const path = host + '/family-beneficiaries';
-    return request
-      .post(path)
-      .send(formData);
+    return this._socketService.getService('family-beneficiaries').create(formData);
   }
 
 }

@@ -35,14 +35,11 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    console.log(this.loginEmployee);
 
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
-      console.log('is true')
       this.modal_on = true;
     } else {
-      console.log('is false')
       let isOn = false;
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true) {
@@ -51,9 +48,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
           isOn = true;
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
-          console.log(checkingObject)
 
-          console.log('sent');
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
             checkingObject = { typeObject: itemr, type: 'store' };
@@ -102,7 +97,6 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     //     }
 
     //     this.loginEmployee = results[0];
-    //     console.log(this.loginEmployee);
     //     if ((this.loginEmployee.storeCheckIn === undefined
     //       || this.loginEmployee.storeCheckIn.length === 0)) {
     //       this.modal_on = true;
@@ -115,7 +109,6 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     //           isOn = true;
     //           let checkingObject = { typeObject: itemr, type: 'store' };
     //           this.employeeService.announceCheckIn(checkingObject);
-    //           console.log('sent');
     //           this.employeeService.update(this.loginEmployee).then(payload => {
     //             this.loginEmployee = payload;
     //             checkingObject = { typeObject: itemr, type: 'store' };
@@ -143,7 +136,6 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     //     }
 
     //   }, error => {
-    //     console.log(error);
     //   });
     const page: string = this._router.url;
     this.checkPageUrl(page);
@@ -224,7 +216,6 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(val) {
-    console.log(val);
     if (val == '') {
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = true;

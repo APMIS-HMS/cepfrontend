@@ -1,33 +1,30 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable()
 export class TagService {
   public listner;
   public createListener;
   public _socket;
+  public _socketSearch;
   private _rest;
   private _restLogin;
   constructor(
     private _socketService: SocketService,
+    private _socketSearchService: SocketService,
     private _restService: RestService,
-    private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('servicetags');
-    this._socket = _socketService.getService('servicetags');
+    this._rest = _restService.getService('service-tags');
+    this._socket = _socketService.getService('service-tags');
+    this._socketSearch = _socketSearchService.getService('search-tags');
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.createListener = Observable.fromEvent(this._socket, 'created');
   }
-  transform(url) {
-    url = this._restService.getHost() + '/' + url + '?' + new Date().getTime();
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
+
   find(query: any) {
     return this._socket.find(query);
   }
@@ -43,6 +40,9 @@ export class TagService {
   }
   create(tag: any) {
     return this._socket.create(tag);
+  }
+  serach(query) {
+    return this._socketSearch.find(query);
   }
   update(tag: any) {
     return this._socket.update(tag._id, tag);

@@ -1,72 +1,76 @@
-<div class="modal-baseWrap animated pulse">
-
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <div class="facility-title">{{facility.name}}</div>
-
-    <legend class="modal_title">Create Child Location</legend>
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <div class="f_sg1">
-
-        <form [formGroup]="frmNewSubLoc" novalidate>
-
-            <div class="frm-item-wrap">
-                <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocName.valid || frmNewSubLoc.controls.sublocName.pristine">
-            this is a required field (minimum 3 and max of 50 characters).
-          </small>
-        <i class="fa fa-building-o" aria-hidden="true"></i>
-        <input type="text" formControlName="sublocName" placeholder="Location Name" autocomplete="off">-->
-                <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="sublocName" placeholder="Location Name" autocomplete="off">
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocAlias.valid || frmNewSubLoc.controls.sublocAlias.pristine">
-            A minimum of 3 characters required.
-          </small>-->
-                <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
-                <!--<input type="text" formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">-->
-                <md-input-container class="example-full-width">
-                    <input mdInput formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">
-                </md-input-container>
-            </div>
-
-            <div class="frm-item-wrap">
-                <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocParent.valid || frmNewSubLoc.controls.sublocParent.pristine">
-            this field is required.
-          </small>-->
-                <!-- <i class="fa fa-object-group" aria-hidden="true"></i> -->
-                <!--<select formControlName="sublocParent">
-            <option  value="" disabled selected>Parent Location</option>
-            <option *ngFor="let item of locations"  value = "{{item?._id}}">{{item?.name}}</option>
-          </select>-->
-                <md-select formControlName="sublocParent">
-                    <md-option value="" disabled selected>Parent Location</md-option>
-                    <md-option *ngFor="let item of locations" [value]="item?._id">
-                        {{item?.name}}
-                    </md-option>
-                </md-select>
-            </div>
-
-            <div class="frm-item-wrap">
-                <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocDesc.valid || frmNewSubLoc.controls.sublocDesc.pristine">
-            This is a required field (minimum 10 characters).
-          </small>
-        <textarea class="txt-input modal-textarea" formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>-->
-                <md-input-container class="example-full-width">
-                    <textarea mdInput formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>
-                </md-input-container>
-            </div>
-
-            <!--<div (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" class="cta-1">
-        CREATE CHILD LOCATION
-      </div>-->
-            <div class="example-full-width" id="example-full-width">
-                <button [disabled]="!frmNewSubLoc.valid && disableNewMinorLoc" (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" md-raised-button [innerHtml]="ActionButton"></button>
-            </div>
-        </form>
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">{{facility.name}}</legend>
+        <div class="modal_mini_title">Create Child Location</div>
     </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
+        <div class="f_sg1">
+
+            <form [formGroup]="frmNewSubLoc" novalidate>
+
+                <div class="frm-item-wrap">
+                    <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocName.valid || frmNewSubLoc.controls.sublocName.pristine">
+                this is a required field (minimum 3 and max of 50 characters).
+            </small>
+            <i class="fa fa-building-o" aria-hidden="true"></i>
+            <input type="text" formControlName="sublocName" placeholder="Location Name" autocomplete="off">-->
+                    <!-- <i class="fa fa-building-o" aria-hidden="true"></i> -->
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="sublocName" placeholder="Location Name" autocomplete="off">
+                    </mat-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocAlias.valid || frmNewSubLoc.controls.sublocAlias.pristine">
+                A minimum of 3 characters required.
+            </small>-->
+                    <!-- <i class="fa fa-circle-o" aria-hidden="true"></i> -->
+                    <!--<input type="text" formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">-->
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="sublocAlias" placeholder="Short Name" autocomplete="off">
+                    </mat-input-container>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocParent.valid || frmNewSubLoc.controls.sublocParent.pristine">
+                this field is required.
+            </small>-->
+                    <!-- <i class="fa fa-object-group" aria-hidden="true"></i> -->
+                    <!--<select formControlName="sublocParent">
+                <option  value="" disabled selected>Parent Location</option>
+                <option *ngFor="let item of locations"  value = "{{item?._id}}">{{item?.name}}</option>
+            </select>-->
+                    <mat-form-field>    
+                        <mat-select formControlName="sublocParent">
+                            <mat-option value="" disabled selected>Parent Location</mat-option>
+                            <mat-option *ngFor="let item of locations" [value]="item?._id">
+                                {{item?.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="frm-item-wrap">
+                    <!--<small class="alert-label" [hidden]="frmNewSubLoc.controls.sublocDesc.valid || frmNewSubLoc.controls.sublocDesc.pristine">
+                This is a required field (minimum 10 characters).
+            </small>
+            <textarea class="txt-input modal-textarea" formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>-->
+                    <mat-input-container class="example-full-width">
+                        <textarea matInput formControlName="sublocDesc" placeholder="Description" autocomplete="off"></textarea>
+                    </mat-input-container>
+                </div>
+
+                <!--<div (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" class="cta-1">
+            CREATE CHILD LOCATION
+        </div>-->
+                <div class="example-full-width" id="example-full-width">
+                    <button [disabled]="!frmNewSubLoc.valid && disableNewMinorLoc" (click)="newSubLocation(frmNewSubLoc.valid, frmNewSubLoc.value)" mat-raised-button [innerHtml]="ActionButton"></button>
+                </div>
+            </form>
+        </div>
+
+    </div>
 </div>

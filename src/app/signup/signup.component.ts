@@ -16,14 +16,6 @@ export class SignupComponent implements OnInit {
   login_on = false;
 
   constructor(private corporateFacilityService: CorporateFacilityService, private facilityService: FacilitiesService) {
-    // this.corporateFacilityService.listenerUpdate.subscribe(value => {
-    //   console.log(value);
-    //   this.facilityService.announceNotification({
-    //     type: 'Success',
-    //     text: 'Welcome ' + value.name,
-    //     users: [this.facilityService.getLoginUserId()]
-    //   })
-    // })
   }
 
   ngOnInit() {
@@ -52,6 +44,7 @@ export class SignupComponent implements OnInit {
     this.pwdReset_on = true;
     this.modal_on = false;
     this.corporateSignup_on = false;
+    this.login_on = false;
   }
   overlay_onClick(e) {
     if (e.srcElement.id === 'form-modal') {
@@ -63,9 +56,11 @@ export class SignupComponent implements OnInit {
     this.personAccount_on = false;
     this.login_on = false;
     this.corporateSignup_on = false;
+    this.pwdReset_on = false;
   }
   login_show() {
     this.login_on = true;
+    this.pwdReset_on = false;
   }
 
 }

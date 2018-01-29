@@ -1,7 +1,6 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
@@ -10,9 +9,14 @@ const request = require('superagent');
 @Injectable()
 export class FacilitiesService {
   public listner;
+  public patchListner;
   public _socket;
+  public _saveFacilitySocket;
+  public _sendFacilityTokenSocket;
   private _rest;
   private _restLogin;
+  private _socketAddNetwork;
+  private _socketJoinNetwork;
 
   private sliderAnnouncedSource = new Subject<Object>();
   sliderAnnounced$ = this.sliderAnnouncedSource.asObservable();
@@ -27,10 +31,17 @@ export class FacilitiesService {
     private locker: CoolLocalStorage
   ) {
     this._rest = _restService.getService('facilities');
-    this._socket = _socketService.getService('facilities');
+    this._socket = _socketService.getService('facilities')
+    this._saveFacilitySocket = _socketService.getService('save-facility');
+    this._sendFacilityTokenSocket = _socketService.getService('resend-token');
     this._socket.timeout = 30000;
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
+    this.patchListner = Observable.fromEvent(this._socket, 'patched');
+    this._socketAddNetwork = _socketService.getService('add-networks');
+    this._socketJoinNetwork = _socketService.getService('join-network');
+    // client.service('messages').on('created', addMessage);
+
   }
   announceSlider(slider: Object) {
     this.sliderAnnouncedSource.next(slider);
@@ -46,7 +57,7 @@ export class FacilitiesService {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {
@@ -70,8 +81,24 @@ export class FacilitiesService {
   create(facility: any) {
     return this._socket.create(facility);
   }
+  createFacility(facility: any) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._saveFacilitySocket.create(facility))
+    });
+  }
+
+  resendToken(facilityId: any) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._sendFacilityTokenSocket.create(facilityId));
+    });
+  }
   update(facility: any) {
     return this._socket.update(facility._id, facility);
+  }
+  patch(_id: any, data: any, param: any) {
+    return this._socket.patch(_id, data, param);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
@@ -135,10 +162,47 @@ export class FacilitiesService {
     return logEmp;
   }
   upload(formData, id) {
-    const host = this._restService.getHost();
-    const path = host + '/uploadexcel';
+    // const host = this._restService.getHost();
+    // const path = host + '/uploadexcel';
+    // return request
+    //   .post(path)
+    //   .send(formData);
+
+    return this._socketService.getService('upload-excel').create(formData, id);
+  }
+  post(body: any, params: any) {
+    const host = this._socketService.HOST;
+    const path = host + '/add-networks';
     return request
       .post(path)
-      .send(formData);
+      .send(body);
+  }
+
+  addNetwork(facility: any, isDelete) {
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketAddNetwork.create(facility, {
+        query: {
+          'isdelete': isDelete
+        }
+      }))
+    });
+  } 
+
+  joinNetwork(facility: any, isDelete) {
+    console.log(facility);
+    return this._socketJoinNetwork.create(facility, {
+      query: {
+        'isdelete': isDelete
+      }
+    })
+  }
+
+  getNetwork(fac, isMemberOf) {
+    return this._socketAddNetwork.get(fac, {
+      query: {
+        'ismember': isMemberOf
+      }
+    })
   }
 }

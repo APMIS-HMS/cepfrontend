@@ -5,7 +5,8 @@ import { FacilitiesService, UserService, EmployeeService, WorkSpaceService } fro
 import { Facility, Employee } from '../../models/index';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -73,7 +74,10 @@ export class DashboardHomeComponent implements OnInit {
     });
     this.facilityService.listner.subscribe(pay => {
       this.facilityName = pay.name;
-    })
+    });
+    this.facilityService.patchListner.subscribe(pay => {
+      this.facilityName = pay.name;
+    });
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     const auth = <any>this.locker.getObject('auth');
     if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
@@ -106,10 +110,8 @@ export class DashboardHomeComponent implements OnInit {
       }
     }
     ).subscribe((results: any) => {
-      console.log(results[0]);
       if (results[0] !== undefined) {
         this.loginEmployee = results[0];
-        console.log(this.loginEmployee)
         this.loginEmployee.workSpaces = results[1].data;
         this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
 

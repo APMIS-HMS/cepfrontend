@@ -19,7 +19,7 @@
 
             <div class="frm-item-wrap">
               <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                placeholder="Select Company" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                placeholder="Select Company" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
                 [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
             </div>
 

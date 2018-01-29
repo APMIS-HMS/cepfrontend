@@ -25,7 +25,6 @@ export class ProfessionsResolverService implements Resolve<Profession> {
       }
       return Observable.of(null);
     }, error => {
-      console.log(error);
     });
   }
 }

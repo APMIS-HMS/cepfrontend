@@ -173,7 +173,7 @@
                         <div class="val-tag">Account Balance</div>
                         <div class="list-label">
                             <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
-                          &#8358; {{patient?.personDetails?.wallet?.balance}}
+                          &#8358; {{patient?.personDetails?.wallet?.balance|numberThr}}
                         </span>
                         </div>
                     </div>
@@ -294,6 +294,6 @@
     </div>
 
     <div *ngIf="addVitals_view" class="modal-overlay">
-        <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" class="form-modal center-center"></app-add-vitals>
+        <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" (refreshVitalsChanged)="refreshVitalsChanged($event)" class="form-modal center-center"></app-add-vitals>
     </div>
 </div>

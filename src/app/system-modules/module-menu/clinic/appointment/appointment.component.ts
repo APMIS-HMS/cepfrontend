@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit,Output,EventEmitter,Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -21,6 +21,7 @@ import { IDateRange } from 'ng-pick-daterange';
 export class AppointmentComponent implements OnInit {
 
     @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Input() closeModal: Boolean;
     selectedFacility: Facility = <Facility>{};
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};
@@ -97,7 +98,7 @@ export class AppointmentComponent implements OnInit {
 
     getClinics() {
         this.clinics = [];
-        const clinicIds = []; 
+        const clinicIds = [];
 
         this.selectedFacility.departments.forEach((itemi, i) => {
             itemi.units.forEach((itemj, j) => {
@@ -165,8 +166,7 @@ export class AppointmentComponent implements OnInit {
                         ' patientId.personDetails.gender': 0, 'patientId.personDetails.title': 0,
                         'patientId.personDetails.age': 0, 'patientId.personDetails.apmisId': 0,
                         'patientId.personDetails.dateOfBirth': 0, 'patientId.personDetails.genderId': 0,
-                        'patientId.personDetails.email': 0, 'patientId.personDetails.firstName': 0,
-                        'patientId.personDetails.lastName': 0, 'patientId.timeLines': 0, 'attendance.dateCheckIn': 0,
+                        'patientId.personDetails.email': 0, 'patientId.timeLines': 0, 'attendance.dateCheckIn': 0,
                         'attendance.createdAt': 0, 'attendance.updateddAt': 0
                     },
                     $sort: { 'createdAt': -1 }
@@ -174,7 +174,7 @@ export class AppointmentComponent implements OnInit {
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
-            console.log(payload.data);
+            console.log(this.filteredAppointments);
         }, error => {
             this._getAppointments(clinicIds);
         });
@@ -223,7 +223,6 @@ export class AppointmentComponent implements OnInit {
                     });
             }
         } catch (error) {
-            console.log(error);
         }
 
     }

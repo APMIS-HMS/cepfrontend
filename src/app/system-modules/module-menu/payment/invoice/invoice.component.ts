@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { FacilitiesService, BillingService, PatientService, InvoiceService } from '../../../../services/facility-manager/setup/index';
-import { Patient, Facility, BillItem, BillIGroup, Invoice } from '../../../../models/index';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FacilitiesService, BillingService, PatientService, InvoiceService, SearchInvoicesService, PendingBillService, TodayInvoiceService } from '../../../../services/facility-manager/setup/index';
+import { Patient, Facility, BillItem, BillIGroup, Invoice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -21,31 +21,46 @@ export class InvoiceComponent implements OnInit {
     addLineModefierPopup = false;
     priceItemDetailPopup = false;
     makePaymentPopup = false;
+    isPaidClass = false;
+    isWaved = false;
     addItem = false;
+    //paidStatus = "UNPAID";
     itemEditShow = false;
     itemEditShow2 = false;
     itemEditShow3 = false;
     itemAmount = '20,000.00';
     itemQty = 2;
+    user: any = <any>{};
 
     searchPendingInvoice = new FormControl('', []);
-    searchPendingBill = new FormControl('', []);
+    searchOtherPendingInvoice = new FormControl('', []);
 
     selectedPatient: Patient = <Patient>{};
     selectedFacility: Facility = <Facility>{};
     selectedBillItem: BillItem = <BillItem>{};
     invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
     selectedInvoiceGroup: Invoice = <Invoice>{};
+    isLoadingInvoice = false;
+    isLoadingOtherInvoice = false;
+    isPaymentMade = false;
     invoiceGroups: Invoice[] = [];
+    otherInvoiceGroups: any[] = [];
+    otherInvoiceGroups2: any[] = [];
     subscription: Subscription;
     constructor(private formBuilder: FormBuilder,
         private locker: CoolLocalStorage,
         public facilityService: FacilitiesService,
         private invoiceService: InvoiceService,
         private billingService: BillingService,
+        private router: Router,
         private route: ActivatedRoute,
-        private patientService: PatientService) {
-        this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+        private patientService: PatientService,
+        private _searchInvoicesService: SearchInvoicesService,
+        private _pendingBillService: PendingBillService,
+        private _todayInvoiceService: TodayInvoiceService) {
+        this.user = <User>this.locker.getObject('auth');
+        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+        console.log(this.selectedFacility);
         this.patientService.receivePatient().subscribe((payload: Patient) => {
             this.selectedPatient = payload;
             this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
@@ -59,11 +74,25 @@ export class InvoiceComponent implements OnInit {
         });
     }
     getPatientInvoices() {
-        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id } })
+        this.isLoadingInvoice = true;
+        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
                 console.log(this.invoiceGroups);
-            });
+                this.isLoadingInvoice = false;
+            }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
+
+        this.isLoadingOtherInvoice = true;
+        this._todayInvoiceService.get(this.selectedFacility._id,{
+            query:{
+                "isQuery": false  
+            }
+        }).then(payload => {
+            console.log(payload)
+            this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
+            this.isLoadingOtherInvoice = false;
+        }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
+
     }
     ngOnInit() {
         this.frmAddItem = this.formBuilder.group({
@@ -71,19 +100,69 @@ export class InvoiceComponent implements OnInit {
             qty: ['', [<any>Validators.required]]
         });
         this.subscription = this.route.params.subscribe(params => {
-            const id = params['id']; // (+) converts string 'id' to a number
+            const id = params['id'];
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
+                    console.log(this.selectedPatient);
                     this.getPatientInvoices();
                 });
             }
         });
+
+        this.searchOtherPendingInvoice.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.isLoadingOtherInvoice = true;
+                this._todayInvoiceService.get(this.selectedFacility._id, {
+                    query: {
+                        "isQuery": true,
+                        "name": value
+                    }
+                }).then(payload => {
+                    this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
+                    this.isLoadingOtherInvoice = false;
+                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
+
+        this.searchPendingInvoice.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.isLoadingInvoice = true;
+                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: { $regex: '.*' + value + '.*' } } })
+                    .then(payload => {
+                        this.invoiceGroups = payload.data;
+                        this.isLoadingInvoice = false;
+                        if (this.isPaymentMade == false) {
+                            this.selectedInvoiceGroup = <Invoice>{};
+                        }
+                    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+            });
     }
 
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
-        console.log(this.selectedInvoiceGroup)
+        console.log(this.selectedInvoiceGroup);
+    }
+
+    onPersonValueUpdated(item) {
+        console.log(item);
+        if(item.person != undefined){
+            this.selectedPatient.personDetails = item.person;
+        }
+        this.isLoadingInvoice = false;
+        this.isLoadingOtherInvoice = false;
+        this.selectedInvoiceGroup = item.invoice;
+        this.getPatientInvoices();
+    }
+
+    onSelectedOtherPatientInvoice(invoice) {
+        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]).then(routePayload => {
+            this.isLoadingInvoice = true;
+            this.isLoadingOtherInvoice = true;
+        });
     }
 
     addModefier() {
@@ -96,14 +175,36 @@ export class InvoiceComponent implements OnInit {
         this.addItem = true;
     }
     makePayment_show() {
-        this.makePaymentPopup = true;
+        if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
+            if (this.selectedInvoiceGroup.paymentCompleted == false) {
+                // if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+                //     this._notification('Info', "You donot have sufficient balance to make this payment");
+                // } else {
+
+                // }
+                this.makePaymentPopup = true;
+            } else {
+                this._notification('Info', "Selected invoice is paid");
+            }
+        } else {
+            this._notification('Info', "You cannot make payment for a Zero cost service, please select an invoice");
+        }
+
     }
+
     close_onClick(e) {
         this.addModefierPopup = false;
         this.addLineModefierPopup = false;
         this.addItem = false;
         this.priceItemDetailPopup = false;
         this.makePaymentPopup = false;
+    }
+    private _notification(type: String, text: String): void {
+        this.facilityService.announceNotification({
+            users: [this.user._id],
+            type: type,
+            text: text
+        });
     }
     itemEditToggle() {
         this.itemEditShow = !this.itemEditShow;
@@ -152,7 +253,7 @@ export class InvoiceComponent implements OnInit {
                 .cta-1{
                     width: 130px;
                     height: 30px;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                 }
                 .feedsWrap .frm-item-wrap{
                     padding-bottom: 10px;
@@ -185,7 +286,7 @@ export class InvoiceComponent implements OnInit {
                     background: #9E9E9E;
                 }
                 .suggetedName {
-                    font-size: 12px;
+                    font-size: 1.2rem;
                 }
                 .billHeader{
                     font-family: $font-titles;
@@ -207,27 +308,27 @@ export class InvoiceComponent implements OnInit {
                 }
                 .BillfacilityName{
                     color: #fff;
-                    font-size: 16px;
+                    font-size: 1.6rem;
                 }
                 .billContact{
                     display: flex;
                     align-items: center;
                     color: #03A9F4;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                     margin: 5px;
                 }
                 .billContact i{
                     margin-right: 10px;
                 }
                 .invoiceLabel{
-                    font-size: 25px;
+                    font-size: 2.5rem;
                     color: #BCAAA4;
                 }
                 .billBody{
                     margin: 20px 0;
                 }
                 .topsecInnerWrap{
-                    font-size: 11px;
+                    font-size: 1.1rem;
                     color: #37474F;
                     line-height: 1.5;
                     margin-left: 10px;
@@ -238,7 +339,7 @@ export class InvoiceComponent implements OnInit {
                     text-transform: uppercase;
                     border-bottom: 1px solid #EEEEEE;
                     padding: 0 0 5px 5px;
-                    font-size: 20px;
+                    font-size: 2rem;
                     color: #01579B;
                     margin-bottom: 5px;
                 }
@@ -262,7 +363,7 @@ export class InvoiceComponent implements OnInit {
                 }
                 .rhsSectB {
                     text-align: right;
-                    font-size: 14px;
+                    font-size: 1.4rem;
                     color: #000;
                     margin: 5px 10px 0 0;
                 }
@@ -289,7 +390,7 @@ export class InvoiceComponent implements OnInit {
                     border-bottom: 0.1px solid #F5F5F5;
                 }
                 thead{
-                    font-size: 16px;
+                    font-size: 1.6rem;
                     border-bottom: 2px solid #BDBDBD;
                 }
                 thead .col1{
@@ -341,11 +442,11 @@ export class InvoiceComponent implements OnInit {
                     padding: 0 5px;
                 }
                 .itemName{
-                    font-size: 14px;
+                    font-size: 1.4rem;
                     font-weight: bold;
                 }
                 .itemDesc{
-                    font-size: 10px;
+                    font-size: 1rem;
                     font-weight: normal;
                     color: #BDBDBD;
                     max-width: 170px;
@@ -374,12 +475,12 @@ export class InvoiceComponent implements OnInit {
                 }
                 .summaryItem .label, .grandTotalWrap .label{
                     padding-right: 20px;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                 }
                 .summaryItem .data, .grandTotalWrap .data{
                     width: 150px;
                     font-weight: bold;
-                    font-size: 16px;
+                    font-size: 1.6rem;
                 }
                 .grandTotalWrap .label, .grandTotalWrap .data{
                     color: #fff;
@@ -402,7 +503,7 @@ export class InvoiceComponent implements OnInit {
                     margin-right: 10px;
                 }
                 .BillfooterTxt{
-                    font-size: 10px;
+                    font-size: 1rem;
                     color: #757575;
                 }
                 .modal-overlay{
@@ -417,12 +518,12 @@ export class InvoiceComponent implements OnInit {
                     width: auto;
                     height: auto;
                     padding: 3px 5px;
-                    font-size: 10px;
+                    font-size: 1rem;
                 }
                 .printIco {
                     position: absolute;
                     right: 5px;
-                    font-size: 26px;
+                    font-size: 2.6rem;
                     top: 0px;
                     color: #424242;
                     cursor: pointer;

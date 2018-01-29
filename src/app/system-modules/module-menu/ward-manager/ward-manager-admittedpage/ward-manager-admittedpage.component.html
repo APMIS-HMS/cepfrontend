@@ -33,7 +33,7 @@
                 <tbody>
                     <tr *ngIf="admittedPatient.length === 0 && loading">
                         <td class="table-content " colspan="5" style="text-align: center">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="admittedPatient.length === 0 && !loading">

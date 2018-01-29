@@ -36,6 +36,12 @@ export class SystemModuleComponent implements OnInit {
         this.locker.setObject('selectedFacility', payload);
       }
     });
+    this.facilityService.patchListner.subscribe(payload => {
+      const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
+      if (facility._id === payload._id) {
+        this.locker.setObject('selectedFacility', payload);
+      }
+    });
     this.userService.missionAnnounced$.subscribe(payload => {
       if (payload === 'out') {
         this.isLoggedOut = true;
@@ -43,6 +49,11 @@ export class SystemModuleComponent implements OnInit {
       } else if (payload === 'in') {
 
       }
+    });
+
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      this.checkedInObject = payload;
     });
     let auth: any = this.locker.getObject('auth');
     let authData = auth.data;
@@ -91,5 +102,8 @@ export class SystemModuleComponent implements OnInit {
   moduleManager_onClick() {
     this.moduleManagerActive = true;
     this.facilityManagerActive = false;
+  }
+  close_onClick(){
+    this.logoutConfirm_on = false;
   }
 }

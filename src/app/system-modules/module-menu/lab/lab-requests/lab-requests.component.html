@@ -1,4 +1,3 @@
-<!-- <ng2-toasty [position]="'top-right'"></ng2-toasty> -->
 <div class="pg-subtitle">
     LABORATORY REQUESTS
 </div>
@@ -40,23 +39,23 @@
                                 </div>
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <textarea style="height: 120px;" mdInput formControlName="clinicalInfo" placeholder="Clinical Information"></textarea>
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <textarea style="height: 120px;" matInput formControlName="clinicalInfo" placeholder="Clinical Information"></textarea>
+                                    </mat-input-container>
                                 </div>
 
                             </div>
                             <div class="frm-r">
                                 <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput placeholder="Lab Number" formControlName="labNo">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input matInput placeholder="Lab Number" formControlName="labNo">
+                                    </mat-input-container>
                                 </div>
 
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <textarea style="height: 120px;" mdInput formControlName="diagnosis" placeholder="Diagnosis"></textarea>
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <textarea style="height: 120px;" matInput formControlName="diagnosis" placeholder="Diagnosis"></textarea>
+                                    </mat-input-container>
                                 </div>
 
                             </div>
@@ -66,9 +65,9 @@
 
                             <div class="investigation-list">
                                 <div class="frm-item-wrap">
-                                    <md-input-container>
-                                        <input mdInput [formControl]="searchInvestigation" placeholder="search for Investigation" autocomplete="off">
-                                    </md-input-container>
+                                    <mat-input-container>
+                                        <input matInput [formControl]="searchInvestigation" placeholder="search for Investigation" autocomplete="off">
+                                    </mat-input-container>
                                 </div>
 
                                 <div *ngFor="let investigation of investigations">
@@ -76,7 +75,7 @@
                                         <div class="panel-wrap">
                                             <div class="list-item panel">
                                                 <div class="txt-innerWrap">
-                                                    <md-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></md-checkbox>
+                                                    <mat-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></mat-checkbox>
                                                     <div class="txt-label list-label">{{investigation.investigation.name}}</div>
                                                 </div>
                                                 <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
@@ -85,22 +84,22 @@
                                             <div class="panel-loc" *ngIf="investigation.isChecked">
                                                 <div class="inner-radio">
 
-                                                    <md-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</md-checkbox>
-                                                    <md-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                        <md-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                                    <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
+                                                    <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
+                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
                                                             <div class="opt-inner">
                                                                 <div>{{location.laboratoryId.name}}</div>
                                                                 <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
                                                             </div>
-                                                        </md-radio-button>
-                                                    </md-radio-group>
+                                                        </mat-radio-button>
+                                                    </mat-radio-group>
                                                 </div>
                                             </div>
 
                                             <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
                                                 <div class="txt-innerWrap" *ngIf="IsParentChecked(investigation, panel)">
                                                     <div class="chkbox-wrap">
-                                                        <md-checkbox [checked]="panel.investigation.isChecked" (change)="childChanged($event, investigation, panel,true)"></md-checkbox>
+                                                        <mat-checkbox [checked]="panel.investigation.isChecked" (change)="childChanged($event, investigation, panel,true)"></mat-checkbox>
                                                         <div class="child-item">{{panel.investigation.name}}</div>
                                                     </div>
 
@@ -117,20 +116,20 @@
                                     <div *ngIf="!investigation.investigation.isPanel" class="list-item investigation">
                                         <div class="txt-innerWrap">
                                             <div class="chkbox-wrap">
-                                                <md-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></md-checkbox>
+                                                <mat-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></mat-checkbox>
                                                 <div class="list-label">{{investigation.investigation.name}}</div>
                                             </div>
 
                                             <div class="inner-radio" *ngIf="investigation.isChecked">
-                                                <md-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</md-checkbox>
-                                                <md-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                    <md-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                                <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
+                                                <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
+                                                    <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
                                                         <div class="opt-inner">
                                                             <div>{{location.laboratoryId.name}}</div>
                                                             <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
                                                         </div>
-                                                    </md-radio-button>
-                                                </md-radio-group>
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
                                             </div>
                                         </div>
                                     </div>
@@ -152,14 +151,14 @@
                                                     <div class="txt-innerWrap" *ngIf="investigation.isExternal">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></md-checkbox>
+                                                            <mat-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></mat-checkbox>
                                                         </div>
                                                     </div>
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></md-checkbox>
+                                                            <mat-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></mat-checkbox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -177,14 +176,14 @@
                                                     <!-- <div class="txt-innerWrap">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox (change)="externalChanged($event, panel)" [checked]="investigation.isExternal"></md-checkbox>
+                                                            <mat-checkbox (change)="externalChanged($event, panel)" [checked]="investigation.isExternal"></mat-checkbox>
                                                         </div>
                                                     </div> -->
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
                                                         <div class="txt-val">
-                                                            <md-checkbox (change)="urgentChanged($event, panel)" [checked]="investigation.isUrgent"></md-checkbox>
+                                                            <mat-checkbox (change)="urgentChanged($event, panel)" [checked]="investigation.isUrgent"></mat-checkbox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -203,14 +202,14 @@
                                             <div class="txt-innerWrap" *ngIf="investigation.isExternal">
                                                 <div class="txt-label">External</div>
                                                 <div class="txt-val">
-                                                    <md-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></md-checkbox>
+                                                    <mat-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></mat-checkbox>
                                                 </div>
                                             </div>
 
                                             <div class="txt-innerWrap">
                                                 <div class="txt-label">Urgent</div>
                                                 <div class="txt-val">
-                                                    <md-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></md-checkbox>
+                                                    <mat-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></mat-checkbox>
                                                 </div>
                                             </div>
                                         </div>
@@ -220,7 +219,7 @@
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button md-raised-button [disabled]="!isValidateForm" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                            <button mat-raised-button [disabled]="!isValidateForm" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
                         </div>
                     </form>
                 </div>
@@ -229,6 +228,9 @@
                     <table cellpadding="0" cellspacing="0" border="0.5">
                         <thead>
                             <tr>
+                                <th>
+                                    <span style="padding-left: 3px;">No</span>
+                                </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
@@ -260,37 +262,38 @@
                                 <td colspan="10">
                                     <div class="tbl-actionRow">
                                         <!-- <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
-                          isSocket="false" displayKey="apmisLookupDisplayKey" 
+                          isSocket="false" displayKey="apmisLookupDisplayKey"
                           (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
 
                         <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              isSocket="false" displayKey="apmisLookupDisplayKey"
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div>
 
                         <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
+                          <apmis-lookup [(ngModel)]="apmisLookupText"
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
+                              isSocket="false" displayKey="apmisLookupDisplayKey"
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                         </div> -->
                                     </div>
                                 </td>
                             </tr>
                             <tr *ngIf="pendingRequests.length === 0 && !loading">
-                                <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
+                                <td class="table-content" colspan="7" style="text-align: center "> No data available in table</td>
                             </tr>
                             <tr *ngIf="pendingRequests.length === 0 && loading">
-                                <td class="table-content " colspan="6" style="text-align: center ">
-                                    <md-spinner class="small-spinner"></md-spinner>
+                                <td class="table-content " colspan="7" style="text-align: center ">
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </td>
                             </tr>
-                            <tr *ngFor="let request of pendingRequests">
+                            <tr *ngFor="let request of pendingRequests; let i = index;">
+                                <td>{{ i+1 }}</td>
                                 <td>{{request.createdAt | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
@@ -298,11 +301,11 @@
                                             <div *ngIf="request?.patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
                                             <img *ngIf="request?.patient?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(request?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{request.patient.personDetails.personFullName}}</div>
+                                        <div>{{request.patient.personDetails.firstName }} {{request.patient.personDetails.lastName }}</div>
                                     </div>
                                 </td>
                                 <td>{{request.name}}</td>
-                                <td>Jilad Lab</td>
+                                <td> </td>
                                 <td>
                                     <div class="status-wrap">
                                         <div class="status-item">
@@ -347,7 +350,7 @@
                                         <div (click)="showImageBrowseDlg()" class="action-item">
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                             <span>Upload File</span>
-                                        </div>
+                                        </div> 
                                         <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
                                     </div>
                                 </td>

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FeatureModuleService } from '../../../../services/module-manager/setup/index';
-import { AccessControlService } from '../../../../services/facility-manager/setup/index';
+import { AccessControlService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 // tslint:disable-next-line:max-line-length
-import { FeatureModule, AccessControl, FeatureModuleViewModel, FacilityModule, Facility, Address, Profession, Relationship, Employee, Person, MaritalStatus, Department, MinorLocation, Gender, Title, Country } from '../../../../models/index';
+import {
+  FeatureModule, AccessControl, FeatureModuleViewModel, User, Facility
+} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -13,139 +15,198 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./create-access.component.scss']
 })
 export class CreateAccessComponent implements OnInit {
-
   txtAccessName = new FormControl();
   searchFeature = new FormControl();
-
-  searchfeatureActive = false;
+  // searchfeatureActive = false;
   selectedFacility: Facility = <Facility>{};
-  selectedAccessControl: AccessControl = <AccessControl>{};
+  // selectedAccessControl: AccessControl = <AccessControl>{};
+  user: User = <User>{};
+  modules: FeatureModule[] = [];
+  actions: any = <any>[];
+  selectedItems: any = <any>[];
+  selectedModule: any = <any>{};
+  loading: boolean = true;
+  accessLoading: boolean = false;
+  createRole: boolean = true;
+  creatingRole: boolean = false;
+  updateRole: boolean = false;
+  updatingRole: boolean = false;
+  disableBtn: boolean = true;
+  routeId: string;
+  // superGroups: any[] = [];
+  // btnTitle = 'Create Access';
+  // innerMenuShow = false;
 
-  dashboard: FeatureModule[] = [];
-  groups: FeatureModuleViewModel[] = [];
-  superGroups: any[] = [];
-  btnTitle = 'Create Access';
-
-  innerMenuShow = false;
-
-  constructor(private featureModuleService: FeatureModuleService,
+  constructor(
+    private featureModuleService: FeatureModuleService,
     private locker: CoolLocalStorage,
     private router: Router,
     private route: ActivatedRoute,
-    private accessControlService: AccessControlService) { }
+    private _facilityService: FacilitiesService,
+    private accessControlService: AccessControlService
+  ) { }
 
   ngOnInit() {
     this.txtAccessName.valueChanges.subscribe(value => {
-      // do something with value here
+      if (value !== null) {
+        if (value.length < 2) {
+          this.disableBtn = true;
+        } else {
+          this.disableBtn = false;
+        }
+      }
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.getModules();
+    this.user = <User>this.locker.getObject('auth');
+
     this.route.params.subscribe(params => {
-      const id = params['id'];
-      if (id !== undefined) {
-        this.accessControlService.get(id, {}).then(payload => {
-          this.selectedAccessControl = payload;
-          this.txtAccessName.setValue(this.selectedAccessControl.name);
-          this.populateAccessControl();
-          this.btnTitle = 'Update Access';
+      if (!!params.id) {
+        this.routeId = params.id;
+        this.getModules(params.id);
+      } else {
+        this.getModules(params.id);
+      }
+    });
+  }
+
+  private _getRole(roleId: string) {
+    this.accessControlService.get(roleId, {}).then(res => {
+      const roleName = res.name;
+      this.txtAccessName.setValue(roleName);
+      this.populateAccessControl(res.features);
+      this.updateRole = true;
+      this.createRole = false;
+      this.disableBtn = false;
+    });
+  }
+
+  populateAccessControl(accessibilities: any) {
+    if (accessibilities.length > 0) {
+      this.modules.forEach(module => {
+        accessibilities.forEach(item => {
+          if (module.moduleId === item.moduleId) {
+            module.actions.forEach(act => {
+              if (act._id === item._id) {
+                  act.isChecked = true;
+                  const data = {
+                    moduleName: module.name,
+                    moduleId: module.moduleId,
+                    accessName: act.name,
+                    accessCode: act.code
+                  }
+                  this.selectedItems.push(data);
+              }
+            });
+          }
+        });
+      });
+    }
+  }
+
+  onClickCheckInput(action: any, checked: boolean) {
+    // Check or uncheck items in the parent array.
+    this.modules.forEach(module => {
+      if (module._id === this.selectedModule._id) {
+        module.actions.forEach(act => {
+          if (act.code === action.code) {
+            if (checked) {
+              act.isChecked = true;
+              const data = {
+                moduleName: module.name,
+                moduleId: module.moduleId,
+                accessName: act.name,
+                accessCode: act.code
+              }
+              this.selectedItems.push(data);
+            } else {
+              this.selectedItems = this.selectedItems.filter(x => x.accessCode !== act.code);
+              act.isChecked = false;
+            }
+          }
         });
       }
     });
   }
-  populateAccessControl() {
-    if (this.selectedAccessControl !== undefined) {
-      this.superGroups.forEach((item, i) => {
-        const group = <[FeatureModuleViewModel]>item;
-        group.forEach((grp, j) => {
-          this.selectedAccessControl.featureList.forEach((iItem, jj) => {
-            if (iItem._id === grp._id) {
-              grp.checked = true;
-            }
-          });
-        });
-      });
-    }
-  }
-  getModules() {
-    this.featureModuleService.findAll().then(payload => {
-      this.dashboard = payload.data;
 
-      let group: FeatureModuleViewModel[] = [];
-      const count = this.dashboard.length;
-      this.dashboard.forEach((item, i) => {
-        if (i === 0 || group.length === 5) {
-          if (group.length === 5) {
-            this.superGroups.push(group);
-            group = [];
-            group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
-          } else {
-            group = [];
-            group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
-          }
-
-        } else {
-          group.push(<FeatureModuleViewModel>{ checked: false, name: item.name, _id: item._id });
-          if ((count - 1) === i) {
-            this.superGroups.push(group);
-          }
+  getModules(roleId?: string) {
+    this.featureModuleService.findAll().then(res => {
+      this.loading = false;
+      if (res.data.length > 0) {
+        this.modules = res.data;
+        if (!!roleId) {
+          this._getRole(roleId);
         }
-      });
+      }
     });
   }
+
   create() {
-    let accessControl: AccessControl = <AccessControl>{ features: [] };
-    accessControl.name = this.txtAccessName.value;
-    if (this.btnTitle === 'Update Access') {
-      this.selectedAccessControl.features = [];
-      accessControl = this.selectedAccessControl;
-    }
+    const roleName = this.txtAccessName.value;
+    if (roleName !== '' && this.selectedItems.length > 0) {
+      this.disableBtn = true;
+      const accessControl: AccessControl = <AccessControl>{ features: [] };
+      accessControl.name = roleName;
+      accessControl.facilityId = this.selectedFacility._id;
 
-    this.superGroups.forEach((item, i) => {
-      const group = <[FeatureModuleViewModel]>item;
-      group.forEach((grp, j) => {
-        if (grp.checked) {
-          accessControl.features.push(grp._id);
-        }
+      this.selectedItems.forEach(item => {
+        const contains = this.modules.filter(x => x.moduleId === item.moduleId)[0].actions.filter(x => x.code === item.accessCode)[0];
+        contains.moduleId = item.moduleId;
+        contains.moduleName = item.moduleName;
+        accessControl.features.push(contains);
       });
-    });
-    accessControl.facilityId = this.selectedFacility._id;
-    if (this.btnTitle === 'Create Access') {
-      this.accessControlService.create(accessControl).then(
-        payload => {
-          this.txtAccessName.reset();
-          this.superGroups.forEach((item, i) => {
-            const group = <[FeatureModuleViewModel]>item;
-            group.forEach((grp, j) => {
-              if (grp.checked) {
-                grp.checked = false;
-              }
-            });
-          });
-          this.router.navigate(['/dashboard/access-manager/access']);
-        },
-        error => {
+
+      if (this.routeId === undefined) {
+        this.createRole = false;
+        this.creatingRole = true;
+
+        this.accessControlService.create(accessControl).then(res => {
+            this.txtAccessName.reset();
+            this.createRole = true;
+            this.creatingRole = false;
+            this.disableBtn = true;
+            const text = `${roleName} role has been created successfully!`;
+            this._notification('Success', text);
+            this._notification('Info', 'Redirecting...');
+            setTimeout(() => {
+              this.router.navigate(['/dashboard/access-manager/access']);
+            }, 2000);
+        }, error => {
           console.log(error);
-        });
+        }).catch(err => console.log(err));
+      } else {
+        this.updateRole = false;
+        this.updatingRole = true;
+        accessControl._id = this.routeId;
+        this.accessControlService.update(accessControl).then(res => {
+          this.updateRole = true;
+          this.updatingRole = false;
+          this.disableBtn = true;
+          const text = `${roleName} role has been updated successfully!`;
+          this._notification('Success', text);
+          this._notification('Info', 'Redirecting...');
+          setTimeout(() => {
+            this.router.navigate(['/dashboard/access-manager/access']);
+          }, 2000);
+        }).catch(err => console.log(err));
+      }
     } else {
-      this.accessControlService.update(accessControl).then(payload => {
-        this.router.navigate(['/dashboard/access-manager/access']);
-      });
+      this._notification('Error', 'Please fill all required fields!');
     }
+  }
 
 
+  onClickModule(module: FeatureModule, i) {
+    this.selectedModule = module;
+    this.actions = module.actions;
   }
-  searchFeatureToggle() {
-    this.searchfeatureActive = !this.searchfeatureActive;
-  }
-  // -------------Beggining of first section-------------------
 
-  innerMenuToggle() {
-    this.innerMenuShow = !this.innerMenuShow;
-  }
-  innerMenuHide(e) {
-    if (e.srcElement.id !== 'submenu_ico') {
-      this.innerMenuShow = false;
-    }
+  // Notification
+  private _notification(type: string, text: string): void {
+    this._facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 
 }

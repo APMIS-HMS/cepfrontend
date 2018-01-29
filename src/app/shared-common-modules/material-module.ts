@@ -1,7 +1,9 @@
+import { ImageUpdateComponent } from './../system-modules/module-menu/facility-page/employees/image-update/image-update.component';
+import { PasswordResetComponent } from './../password-reset/password-reset.component';
 import { NgModule } from '@angular/core';
 import {
-    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule, MdError, MdDatepickerToggle,
-    MdInputModule, MdAutocompleteModule, MdOptionModule, MdTabsModule, MdListModule, MdSelectBase, MdSelectModule, MdRadioModule, MdPaginatorModule
+    MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatError, MatDatepickerToggle,
+    MatInputModule, MatAutocompleteModule, MatOptionModule, MatTabsModule, MatListModule, MatSelectBase, MatSelectModule, MatRadioModule, MatPaginatorModule
 }
     from '@angular/material';
 // import { BrowserModule } from '@angular/platform-browser';
@@ -12,7 +14,6 @@ import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility
 import { GlobalDialogComponent } from '../shared-module/global-dialog/global-dialog.component';
 import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
 import { ImageCropperModule } from 'ng2-img-cropper';
-import { ImageUpdateComponent } from '../system-modules/module-menu/employee-manager/image-update/image-update.component';
 import { NgUploaderModule } from 'ngx-uploader';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { AddVitalsComponent } from '../system-modules/module-menu/patient-manager/add-vitals/add-vitals.component';
@@ -29,9 +30,9 @@ import { LabCheckInComponent } from '../shared-module/lab-check-in/lab-check-in.
 import { MomentModule } from 'angular2-moment';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { CoolStorageModule } from 'angular2-cool-storage';
-import { ToastyModule } from 'ng2-toasty';
 import { OrderStatusService, SeverityService } from '../services/module-manager/setup/index';
 import { KeysPipe } from './keypipe';
+import { ThousandDecimalPipe } from './thousand-pipe';
 import { PersonAccountComponent } from '../person-account/person-account.component';
 
 import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
@@ -52,28 +53,30 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         ImageUpdateComponent,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
+        ThousandDecimalPipe,
         // MdDatepickerToggle,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
-        CheckoutPatientComponent
+        CheckoutPatientComponent,
+        PasswordResetComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
-        MdNativeDateModule,
-        MdDatepickerModule,
-        MdButtonModule,
-        MdCheckboxModule,
-        MdProgressSpinnerModule,
-        MdInputModule,
-        MdAutocompleteModule,
-        MdOptionModule,
-        MdDatepickerToggle,
-        MdPaginatorModule,
+        MatNativeDateModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        MatOptionModule,
+        MatDatepickerToggle,
+        MatPaginatorModule,
         // MdSelectBase,
-        MdSelectModule,
-        MdRadioModule,
-        MdListModule,
-        MdTabsModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatListModule,
+        MatTabsModule,
         NgbModule,
 
 
@@ -98,39 +101,40 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         MomentModule,
         ToastModule,
         CoolStorageModule,
-        MdError,
-        ToastyModule,
+        MatError,
         ApmisLookupComponent, ApmisLookupMultiselectComponent,
         KeysPipe,
+        ThousandDecimalPipe,
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
         DragulaModule,
         NgPipesModule,
-        CheckoutPatientComponent
+        CheckoutPatientComponent,
+        PasswordResetComponent
 
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
         // BrowserModule,
-        MdNativeDateModule,
-        MdDatepickerModule,
-        MdButtonModule,
-        MdRadioModule,
-        MdCheckboxModule,
-        MdProgressSpinnerModule,
-        MdInputModule,
-        MdAutocompleteModule,
-        MdOptionModule,
-        MdPaginatorModule,
+        MatNativeDateModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        MatOptionModule,
+        MatPaginatorModule,
         // MdSelectBase,
-        MdSelectModule,
-        MdListModule,
-        MdRadioModule,
-        MdTabsModule,
+        MatSelectModule,
+        MatListModule,
+        MatRadioModule,
+        MatTabsModule,
         NgbModule.forRoot(),
         ToastModule.forRoot(),
         CoolStorageModule,
-        MomentModule,
+        // MomentModule,
 
 
         CommonModule,
@@ -139,7 +143,6 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         ImageCropperModule,
         NgUploaderModule,
         CurrencyMaskModule,
-        ToastyModule.forRoot(),
         DragulaModule,
         NgPipesModule
     ],

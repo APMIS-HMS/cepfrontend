@@ -1,10 +1,20 @@
 @import "../../../globals/variables.scss";
 
+// .userAcc-mainWrap{
+//     position: fixed;
+//     min-height:100vh;
+//     background: darken($primaryColor, 5%);
+//     width:100%;
+// }
 .userAcc-mainWrap{
     position: fixed;
     min-height:100vh;
-    background: darken($primaryColor, 5%);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url(../../../assets/images/bg/hospital.jpg) no-repeat center center;
+    background-size:cover;
     width:100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
 }
 .userAccs-pgHeader{
     text-align: center;
@@ -17,7 +27,7 @@
     margin-top: 50px;
 }
 .userAccs-pgTitle {
-    font-size: 21px;
+    font-size: 2.1rem;
     color: #e8e8e8;
 }
 .userAccs-listingWrap{
@@ -28,7 +38,7 @@
     width: 100%;
 }
 .listing-title{
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #fff;
     margin-bottom: 30px;
 }
@@ -67,7 +77,7 @@
     width: 100%;
 }
 .listing-name{
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #fff;
     margin-top: 5px;
 }
@@ -78,7 +88,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #fff;
     padding: 10px;
 }
@@ -115,17 +125,17 @@
     .loggedinUserWrap{
         top: -2px;
         right: 0px;
-        font-size: 11px;
+        font-size: 1.1rem;
     }
     .userAccs-pgTitle{
-        font-size: 16px;
+        font-size: 1.6rem;
     }
     .listing-imgWrap{
         width: 30px;
         height: 30px;
     }
     .listing-name{
-        font-size: 12px;
+        font-size: 1.2rem;
         max-width: 70px;
         text-align: center;
         margin: 0 auto;

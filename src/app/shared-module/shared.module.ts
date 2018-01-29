@@ -3,12 +3,11 @@ import { LogoutConfirmComponent } from '../system-modules/module-menu/logout-con
 import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { CommonModule, } from '@angular/common';
-import { ImageUpdateComponent } from '../system-modules/module-menu/employee-manager/image-update/image-update.component';
 import { NgUploaderModule } from 'ngx-uploader';
 import { GlobalPatientLookupComponent } from './global-patient-lookup/global-patient-lookup.component';
 import { VerifyTokenComponent } from '../facility-setup/verify-token/verify-token.component';
 import { AddLogoComponent } from '../facility-setup/add-logo/add-logo.component';
-import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
+// import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { ContactInfoComponent } from '../facility-setup/contact-info/contact-info.component';
 import { FacilitySetupComponent } from '../facility-setup/facility-setup.component';
@@ -19,9 +18,8 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { NewTagComponent } from '../system-modules/module-menu/billing/services/new-tag/new-tag.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTagComponent } from '../system-modules/module-menu/add-tag/add-tag.component';
-import { MomentModule } from 'angular2-moment';
+// import { MomentModule } from 'angular2-moment';
 import { Ng2PaginationModule } from 'ng2-pagination';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { AddVitalsComponent } from '../system-modules/module-menu/patient-manager/add-vitals/add-vitals.component';
 import { GlobalDialogComponent } from './global-dialog/global-dialog.component';
 import { SurveyComponent } from './form-generator/survey.component';
@@ -40,58 +38,92 @@ import { MaterialModule } from '../shared-common-modules/material-module';
 import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
 import {
-    MdDatepickerModule, MdNativeDateModule, MdButtonModule, MdCheckboxModule, MdProgressSpinnerModule,
-    MdInputModule, MdOptionModule, MdSelectionList, MdSelectModule, MdRadioButton
+    MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule,
+    MatInputModule, MatOptionModule, MatSelectionList, MatSelectModule, MatRadioButton
 } from '@angular/material';
+import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import {
+  TemplateMedicationComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-medication/template-medication.component';
+import {
+  TemplateLabComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-lab/template-lab.component';
+import {
+  TemplateProcedureComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-procedure/template-procedure.component';
+import {
+  TemplateNursingCareComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-nursing-care/template-nursing-care.component';
+import {
+  TemplatePhysicianOrderComponent
+} from '../system-modules/module-menu/forms-manager/treatement-template/template-physician-order/template-physician-order.component';
+import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
 // import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
-    declarations: [
-        // NewTagComponent,
-        // AddTagComponent,
-        SurveyComponent,
-        SurveyEditorComponent,
-        ProductSearchComponent,
-        Angular4FlutterwaveComponent
-        // LabCheckInComponent,
-        // LabRequestsComponent, RequestDetailComponent
-    ],
-    exports: [
-        LogoUpdateComponent,
-        NgUploaderModule,
-        NgPipesModule,
-        // NewTagComponent,
-        // AddTagComponent,
-        MomentModule,
-        Ng2PaginationModule,
-        InfiniteScrollModule,
-        SurveyComponent,
-        SurveyEditorComponent,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SingUpAccountsSharedModule,
-        Angular4FlutterwaveComponent
-        // DragulaModule,
-        // LabRequestsComponent, RequestDetailComponent
-    ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        NgUploaderModule,
-        NgPipesModule,
-        MomentModule,
-        Ng2PaginationModule,
-        InfiniteScrollModule,
-        ImageCropperModule,
-        MaterialModule,
-        // DragulaModule
-    ],
-    providers: [StoreService, WindowRef, SystemModuleService]
+  declarations: [
+    // NewTagComponent,
+    // AddTagComponent,
+    SurveyComponent,
+    SurveyEditorComponent,
+    ProductSearchComponent,
+    Angular4FlutterwaveComponent,
+    TemplateMedicationComponent,
+    TemplateLabComponent,
+    TemplateProcedureComponent,
+    TemplateNursingCareComponent,
+    TemplatePhysicianOrderComponent
+    // VerifyTokenComponent,
+    // FacilityInfoComponent,
+    // ContactInfoComponent,
+    // AddLogoComponent
+    // LabCheckInComponent,
+    // LabRequestsComponent, RequestDetailComponent
+  ],
+  exports: [
+    LogoUpdateComponent,
+    NgUploaderModule,
+    NgPipesModule,
+    // NewTagComponent,
+    // AddTagComponent,
+    // MomentModule,
+    Ng2PaginationModule,
+    SurveyComponent,
+    SurveyEditorComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    SingUpAccountsSharedModule,
+    Angular4FlutterwaveComponent,
+    Angular4PaystackModule,
+    TemplateMedicationComponent,
+    TemplateLabComponent,
+    TemplateProcedureComponent,
+    TemplateNursingCareComponent,
+    TemplatePhysicianOrderComponent
+    // VerifyTokenComponent,
+    // FacilityInfoComponent,
+    // ContactInfoComponent,
+    // AddLogoComponent
+    // DragulaModule,
+    // LabRequestsComponent, RequestDetailComponent
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgUploaderModule,
+    NgPipesModule,
+    // MomentModule,
+    Ng2PaginationModule,
+    ImageCropperModule,
+    MaterialModule
+    // DragulaModule
+  ],
+  providers: [StoreService, WindowRef, OrderSetSharedService, SystemModuleService]
 })
 export class SharedModule {}
 

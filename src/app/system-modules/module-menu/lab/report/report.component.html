@@ -37,7 +37,7 @@
                                         <img class="shadow" *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div class="sel-patient-details">
-                                        <div style="font-size: 14px;"><b>{{ selectedPatient?.personDetails?.personFullName }}</b></div>
+                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</b></div>
                                         <div class="patient-details-left">{{ selectedPatient?.personDetails?.apmisId }}</div>
                                         <div class="patient-details-right">{{ selectedPatient?.personDetails?.age }} year(s)</div>
                                         <div class="patient-details-left">{{ selectedPatient?.personDetails?.phoneNumber }}</div>
@@ -80,7 +80,7 @@
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
                                                 <td class="table-content" colspan="5" style="text-align: center">
-                                                    <md-spinner class='small-spinner'></md-spinner>
+                                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                                 </td>
                                             </tr>
                                             <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
@@ -91,7 +91,7 @@
                                                             <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
                                                             <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                                         </div>
-                                                        <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
+                                                        <div>{{ pendingRequest?.patient?.personDetails?.firstName }} {{ pendingRequest?.patient?.personDetails?.lastName }}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
@@ -142,7 +142,7 @@
                                             </tr>
                                             <tr *ngIf="pendingRequests.length === 0 && pendingReLoading">
                                                 <td class="table-content" colspan="6" style="text-align: center">
-                                                    <md-spinner class='small-spinner'></md-spinner>
+                                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                                 </td>
                                             </tr>
                                             <tr class="hover" [class.activeInvestigation]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
@@ -153,7 +153,7 @@
                                                             <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
                                                             <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                                         </div>
-                                                        <div>{{ pendingRequest?.patient?.personDetails?.personFullName}}</div>
+                                                        <div>{{ pendingRequest?.patient?.personDetails?.firstName }} {{ pendingRequest?.patient?.personDetails?.lastName }}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
@@ -196,11 +196,11 @@
                             <div class="frm-r" [class.frm-container-r]="!patientSelected">
                                 <div *ngIf="!hasRequest" class="text-center" style="min-height: 300px;margin-top: 200px;">
                                     <div *ngIf="requests.length === 0 && !loading">
-                                        <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.personDetails?.personFullName }}</span>
+                                        <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</span>
                                     </div>
                                     <div *ngIf="requests.length === 0 && loading">
                                         <span class="table-content" colspan="5" style="text-align: center">
-                                                <md-spinner class='small-spinner'></md-spinner>
+                                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                             </span>
                                     </div>
                                 </div>
@@ -241,9 +241,9 @@
                                                         <div class="val-val">1220</div>
                                                     </div>
                                                     <div class="frm-item-wrap">
-                                                        <md-input-container>
-                                                            <input type="number" mdInput placeholder="Enter Result" formControlName="result">
-                                                        </md-input-container>
+                                                        <mat-input-container>
+                                                            <input type="number" matInput placeholder="Enter Result" formControlName="result">
+                                                        </mat-input-container>
                                                         <div style="width: 100%; text-align: right;padding:5px 0;">
                                                             <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
                                                         </div>
@@ -263,29 +263,31 @@
                                                         <div class="val-val">1220</div>
                                                     </div>
                                                     <div class="frm-item-wrap">
-                                                        <md-input-container>
-                                                            <textarea formControlName="result" mdInput placeholder="Enter Result"></textarea>
-                                                        </md-input-container>
+                                                        <mat-input-container>
+                                                            <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
+                                                        </mat-input-container>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <md-select formControlName="outcome" placeholder="Investigation Outcome">
-                                                <md-option [value]="'Normal'">Normal</md-option>
-                                                <md-option [value]="'Low'">Low</md-option>
-                                                <md-option [value]="'High'">High</md-option>
-                                            </md-select>
+                                            <mat-form-field>
+                                                <mat-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                    <mat-option [value]="'Normal'">Normal</mat-option>
+                                                    <mat-option [value]="'Low'">Low</mat-option>
+                                                    <mat-option [value]="'High'">High</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <textarea formControlName="conclusion" mdInput placeholder="Conclusion"></textarea>
-                                            </md-input-container>
+                                            <mat-input-container>
+                                                <textarea formControlName="conclusion" matInput placeholder="Conclusion"></textarea>
+                                            </mat-input-container>
                                         </div>
                                         <div class="frm-item-wrap">
-                                            <md-input-container>
-                                                <textarea formControlName="recommendation" mdInput placeholder="Recommendation"></textarea>
-                                            </md-input-container>
+                                            <mat-input-container>
+                                                <textarea formControlName="recommendation" matInput placeholder="Recommendation"></textarea>
+                                            </mat-input-container>
                                         </div>
                                         <div class="frm-item-wrap">
                                             <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
@@ -378,7 +380,7 @@
                             </tr>
                             <tr *ngIf="reports.length === 0 && reportLoading">
                                 <td class="table-content" colspan="8" style="text-align: center">
-                                    <md-spinner class='small-spinner'></md-spinner>
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </td>
                             </tr>
 
@@ -391,7 +393,7 @@
                                             <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
                                             <img class="shadow" *ngIf="report?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{ report?.patient?.personDetails.personFullName }}</div>
+                                        <div>{{ report?.patient?.personDetails?.firstName }} {{ report?.patient?.personDetails?.lastName }}</div>
                                     </div>
                                 </td>
                                 <td>{{ report.name }}</td>
@@ -402,7 +404,7 @@
                                             <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
                                             <img class="shadow" *ngIf="report?.createdBy?.employeeDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{ report?.createdBy?.employeeDetails?.personFullName}}</div>
+                                        <div>{{ report?.createdBy?.employeeDetails?.firstName }} {{ report?.createdBy?.employeeDetails?.lastName}}</div>
                                     </div>
                                 </td>
                                 <td>

@@ -3,9 +3,11 @@
         <div class="col-sm-5">
             <div class="input-group-btn">
                 <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
-                <md-select placeholder="Client" formControlName="client" [(ngModel)]="selectedClient" (change)="onChange($event.value)" class="example-full-width">
-                    <md-option *ngFor="let client of clients" [value]="client.name">{{ client.name }}</md-option>
-                </md-select>
+                <mat-form-field>
+                    <mat-select placeholder="Client" formControlName="client" [(ngModel)]="selectedClient" (change)="onChange($event.value)" class="example-full-width">
+                        <mat-option *ngFor="let client of clients" [value]="client.name">{{ client.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
     </div>
@@ -13,34 +15,34 @@
         <div class="row">
             <!-- begin individual -->
             <div *ngIf="individualShow">
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="phone" placeholder="Phone Number">
-                    </md-input-container>
+                <div class="col-sm-4 col-mat-4 col-xs-12">
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="phone" placeholder="Phone Number">
+                    </mat-input-container>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="lastName" placeholder="Last Name">
-                    </md-input-container>
+                <div class="col-sm-4 col-mat-4 col-xs-12">
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="lastName" placeholder="Last Name">
+                    </mat-input-container>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="firstName" placeholder="First Name">
-                    </md-input-container>
+                <div class="col-sm-4 col-mat-4 col-xs-12">
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="firstName" placeholder="First Name">
+                    </mat-input-container>
                 </div>
             </div>
             <!--end individual-->
             <!-- begin corporate -->
             <div *ngIf="corporateShow">
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="companyPhone" placeholder="Company Phone">
-                    </md-input-container>
+                <div class="col-sm-4 col-mat-4 col-xs-12">
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="companyPhone" placeholder="Company Phone">
+                    </mat-input-container>
                 </div>
-                <div class="col-sm-8 col-md-8 col-xs-12">
-                    <md-input-container class="example-full-width">
-                        <input mdInput formControlName="companyName" placeholder="Company Name">
-                    </md-input-container>
+                <div class="col-sm-8 col-mat-8 col-xs-12">
+                    <mat-input-container class="example-full-width">
+                        <input matInput formControlName="companyName" placeholder="Company Name">
+                    </mat-input-container>
                 </div>
             </div>
             <!--end corporate-->
@@ -48,33 +50,39 @@
             <div *ngIf="internalShow" class="col-xs-12 no-padding" style="height: 100px;margin-bottom: 15px;">
                 <div class="col-xs-12" style="padding: 10px 0;">
                     <label class="example-margin">Internal Type:</label>
-                    <md-radio-group [(ngModel)]="internalType" [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
-                        <md-radio-button class="example-margin" value="Department">Department/Unit</md-radio-button>
-                        <md-radio-button class="example-margin" value="Location">Location</md-radio-button>
-                    </md-radio-group>
+                    <mat-radio-group [(ngModel)]="internalType" [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
+                        <mat-radio-button class="example-margin" value="Department">Department/Unit</mat-radio-button>
+                        <mat-radio-button class="example-margin" value="Location">Location</mat-radio-button>
+                    </mat-radio-group>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12" *ngIf="deptLocationShow">
-                    <md-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
-                        <md-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</md-option>
-                    </md-select>
+                <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="deptLocationShow">
+                    <mat-form-field>
+                        <mat-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
+                            <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-select placeholder="Unit" formControlName="unit" class="example-full-width">
-                        <md-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</md-option>
-                    </md-select>
+                <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="deptLocationShow">
+                    <mat-form-field>
+                        <mat-select placeholder="Unit" formControlName="unit" class="example-full-width">
+                            <mat-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-                <div class="col-sm-4 col-md-4 col-xs-12">
-                    <md-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
-                        <md-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</md-option>
-                    </md-select>
+                <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="!deptLocationShow">
+                    <mat-form-field>
+                        <mat-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
+                            <mat-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <!--end Internal-->
-            <div class="col-sm-4 col-md-4 col-xs-12" style="margin-top: 20px;">
+            <div class="col-sm-4 col-mat-4 col-xs-12" style="margin-top: 20px;">
                 <div class="cu-search-box">
-                    <md-input-container>
-                        <input mdInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
-                    </md-input-container>
+                    <mat-input-container>
+                        <input matInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
+                    </mat-input-container>
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
                         <div class="cu-header">
@@ -93,20 +101,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top:2px;">
-                <md-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
-                    <md-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
-                    </md-option>
-                </md-select>
+            <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top:2px;">
+                <mat-form-field>
+                    <mat-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
+                        <mat-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="col-sm-2 col-md-2 col-xs-12">
-                <md-input-container class="example-full-width">
-                    <input mdInput type="number" formControlName="qty" placeholder="Quantity">
-                </md-input-container>
+            <div class="col-sm-2 col-mat-2 col-xs-12">
+                <mat-input-container class="example-full-width">
+                    <input matInput type="number" formControlName="qty" placeholder="Quantity">
+                </mat-input-container>
             </div>
-            <div class="col-sm-3 col-md-3 col-xs-12" style="margin-top: 20px;">
+            <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
-                <span style="margin-top: 40px;"> 
+                <span style="margin-top: 40px;">
                     <small><b>Unit price: &#x20A6;{{ price }}</b></small><br>
                 </span>
             </div>
@@ -114,8 +124,8 @@
     </div>
 </form>
 <div class="row margin-top-bottom">
-    <div class="col-sm-12 col-md-12 text-center">
-        <button md-raised-button class="mat-lg-btn" (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);"> Save </button>
+    <div class="col-sm-12 col-mat-12 text-center">
+        <button mat-raised-button class="mat-lg-btn" (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);"> Save </button>
     </div>
 </div>
 <div class="sec-border">
@@ -157,7 +167,7 @@
                 <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
                 <td class="table-content">&#x20A6;{{ prescription.qty * prescription.unitPrice }}</td>
                 <td class="table-content">
-                    <a style="margin-right: 5px;font-size: 20px;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
+                    <a style="margin-right: 5px;font-size: 2rem;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
                 </td>
             </tr>
             <tr *ngIf="prescriptions.length === 0">
@@ -171,7 +181,7 @@
     <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Cost: &#x20A6;{{ totalPrice }}</b></p>
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
-    <div class="col-sm-12 col-md-12 text-center">
-        <button class="mat-lg-btn" [disabled]="disableDispenseBtn" (click)="onClickDispense();" md-raised-button [innerHtml]="dispenseBtnText"></button>
+    <div class="col-sm-12 col-mat-12 text-center">
+        <button class="mat-lg-btn" [disabled]="disableDispenseBtn" (click)="onClickDispense();" mat-raised-button [innerHtml]="dispenseBtnText"></button>
     </div>
 </div>

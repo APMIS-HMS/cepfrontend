@@ -1,7 +1,8 @@
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 // tslint:disable-next-line:max-line-length
-import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
+import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
@@ -36,17 +37,24 @@ export class StockHistoryComponent implements OnInit {
     private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
-    private inventoryTransferStatusService: InventoryTransferStatusService,
-    private locker: CoolLocalStorage
-  ) { }
+    private inventoryTransferStatusService: InventoryTransferStatusService, private employeeService: EmployeeService,
+    private locker: CoolLocalStorage, private systemModuleService: SystemModuleService
+  ) {
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      this.checkingStore = payload;
+      this.getTransfers();
+    });
+  }
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Stock History');
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
     this.getTransfers();
   }
   getTransfers() {
+    this.systemModuleService.on();
     this.inventoryTransferService.find({
       query: {
         facilityId: this.selectedFacility._id,
@@ -54,8 +62,12 @@ export class StockHistoryComponent implements OnInit {
         $limit: 200
       }
     }).then(payload => {
+      this.systemModuleService.off();
       this.transferHistories = payload.data;
       console.log(this.transferHistories);
+    }, error => {
+      console.log(error);
+      this.systemModuleService.off();
     });
   }
   onClickViewHistoryDetails(value, event) {

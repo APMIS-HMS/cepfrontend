@@ -33,7 +33,6 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
       query: {
         facilityId: this.selectedFacility._id, 
         $limit: this.limit,
-        showbasicinfo: true
       }
     }).then(payload => {
       if (payload.data.length > 0) {
@@ -43,7 +42,6 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
       return Observable.of(null);
     }, error => {
       this.router.navigateByUrl(this.previousUrl);
-      console.log(error);
     });
   }
   ngOnDestroy() {

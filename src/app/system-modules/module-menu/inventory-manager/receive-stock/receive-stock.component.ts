@@ -1,7 +1,11 @@
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 // tslint:disable-next-line:max-line-length
-import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
+import {
+  InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService,
+  StoreService, FacilitiesService, EmployeeService
+} from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
@@ -17,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ReceiveStockComponent implements OnInit {
   slideDetails = false;
   clickslide = false;
-
+  user: any = <any>{};
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
   checkingStore: any = <any>{};
@@ -31,13 +35,22 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
-    private locker: CoolLocalStorage
-  ) { }
+    private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService,
+    private systemModuleService: SystemModuleService
+  ) {
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      this.checkingStore = payload;
+      this.getTransfers();
+    });
+  }
 
   ngOnInit() {
+    this.user = this.locker.getObject('auth');
     this._inventoryEventEmitter.setRouteUrl('Receive Stock');
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
+    console.log(this.checkingStore);
 
     this.route.data.subscribe(data => {
       data['loginEmployee'].subscribe((payload) => {
@@ -48,16 +61,24 @@ export class ReceiveStockComponent implements OnInit {
     this.getTransferStatus();
   }
   getTransfers() {
-    this.inventoryTransferService.find({
-      query: {
-        facilityId: this.selectedFacility._id,
-        destinationStoreId: this.checkingStore.typeObject.storeId,
-        $limit: 200
-      }
-    }).then(payload => {
-      console.log(payload);
-      this.receivedTransfers = payload.data;
-    });
+    if (this.checkingStore !== undefined) {
+      console.log(this.checkingStore.typeObject);
+      this.systemModuleService.on();
+      this.inventoryTransferService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          destinationStoreId: this.checkingStore.typeObject.storeId,
+          $limit: 200
+        }
+      }).then(payload => {
+        console.log(payload);
+        this.systemModuleService.off();
+        this.receivedTransfers = payload.data;
+      }, error => {
+        this.systemModuleService.off();
+      });
+    }
+
   }
   getTransferStatus() {
     this.inventoryTransferStatusService.findAll().subscribe(payload => {
@@ -120,11 +141,13 @@ export class ReceiveStockComponent implements OnInit {
       if (item.checked !== undefined && item.checked === true && !(item.transferStatusId === this.completedInventoryStatus._id) ||
         (item.transferStatusId === this.rejectedInventoryStatus._id)) {
         item.transferStatusId = this.completedInventoryStatus._id;
-        console.log(i);
       }
     });
-    this.inventoryTransferService.update(this.selectedInventoryTransfer).subscribe(payload => {
+    this.inventoryTransferService.update(this.selectedInventoryTransfer).then(payload => {
       this.slideDetailsShow(payload, false);
+      this._notification("Success", "Stock accepted");
+    }, error => {
+      this._notification("Error", "Failed to accept stock, please try again");
     });
 
   }
@@ -153,5 +176,13 @@ export class ReceiveStockComponent implements OnInit {
       return this.rejectedInventoryStatus.name;
     }
     return 'Pending';
+  }
+
+  private _notification(type: String, text: String): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 }

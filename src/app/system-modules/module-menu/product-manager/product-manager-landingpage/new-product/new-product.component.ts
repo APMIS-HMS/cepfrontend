@@ -2,9 +2,9 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import {
   ManufacturerService, PresentationService, GenericService, ProductTypeService,
   ProductService, DictionariesService, FacilitiesServiceCategoryService, StrengthService,
-  DrugListApiService, DrugDetailsService
+  DrugListApiService, DrugDetailsService, FacilitiesService
 } from '../../../../../services/facility-manager/setup/index';
-import { Facility, FacilityService } from '../../../../../models/index';
+import { Facility, FacilityService, User } from '../../../../../models/index';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -23,7 +23,7 @@ export class NewProductComponent implements OnInit {
   @Input() selectedProduct: any = <any>{};
 
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   productNameLabel = true;
 
   productName = '';
@@ -42,7 +42,7 @@ export class NewProductComponent implements OnInit {
   strengths: any[] = [];
   simpleProducts: any[] = [];
   productDetails: any = <any>{};
-
+  user: User = <User>{};
   public frm_newProduct: FormGroup;
   public ingredientForm: FormGroup;
   public variantsForm: FormGroup;
@@ -52,14 +52,19 @@ export class NewProductComponent implements OnInit {
 
   createText: string = 'Create Product';
 
-  constructor(private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
+  constructor(
+   private _locker: CoolLocalStorage,
+    private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
     private presentationService: PresentationService, private productTypeService: ProductTypeService,
+    private _facilityService: FacilitiesService,
     private productService: ProductService, private dictionariesService: DictionariesService, private locker: CoolLocalStorage,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private strengthService: StrengthService,
     private drugListApiService: DrugListApiService, private drugDetailsService: DrugDetailsService) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User> this._locker.getObject('auth');
+
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
       categoryId: ['', [<any>Validators.required]],
@@ -155,7 +160,6 @@ export class NewProductComponent implements OnInit {
         })
       ])
     });
-    console.log(this.variantsForm)
     this.variantsForm.controls['variants'] = this.formBuilder.array([]);
   }
 
@@ -169,19 +173,16 @@ export class NewProductComponent implements OnInit {
         })
       ])
     });
-    console.log(this.ingredientForm)
     this.ingredientForm.controls['ingredients'] = this.formBuilder.array([]);
   }
 
   getStrengths() {
     this.strengthService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.strengths = payload.data;
-      console.log(this.strengths);
     });
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
       if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
@@ -203,10 +204,11 @@ export class NewProductComponent implements OnInit {
           }
         }));
       dictionaryObs.subscribe((payload: any) => {
+
         this.productSugestion = true;
-        if (payload.length > 0 && payload[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
-          this.dictionaries = payload;
-          payload.forEach(element => {
+        if (payload.data.length > 0 && payload.data[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
+          this.dictionaries = payload.data;
+          payload.data.forEach(element => {
             const arrElements = element.details.split('(');
             element.activeIngredient = arrElements[1].replace(')', '');
             this.dictionaries.push(element);
@@ -254,7 +256,6 @@ export class NewProductComponent implements OnInit {
       this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
       this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
       this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
-      console.log(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
@@ -308,16 +309,14 @@ export class NewProductComponent implements OnInit {
         service.name = value.name;
         this.productDetails.ingredients = [];
         this.productDetails.ingredients = this.ingredientForm.controls['ingredients'].value;
-        value.variants = this.variantsForm.controls['variants'].value; 
+        value.variants = this.variantsForm.controls['variants'].value;
         if (value.genericName === null) {
           value.genericName = this.stringifyGeneric(this.productDetails.ingredients);
         }
         value.productDetail = this.productDetails;
-        
-        console.log(value);
 
         this.productService.create(value).then(payload => {
-          console.log(payload);
+          this._notification('Success', 'Product has been created successfully!');
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
               item.services.push(service);
@@ -331,7 +330,6 @@ export class NewProductComponent implements OnInit {
                     payload.serviceId = items._id;
                     payload.facilityServiceId = this.selectedFacilityService._id;
                     this.productService.update(payload).then(result => {
-                      console.log(result);
                     });
                   }
                 });
@@ -340,12 +338,11 @@ export class NewProductComponent implements OnInit {
           });
           this.close_onClick();
         }, error => {
-          console.log(error);
         });
       } else {
-        console.log(value);
         value._id = this.selectedProduct._id;
         this.productService.update(value).then(payload => {
+          this._notification('Success', 'Product has been updated successfully!');
           this.close_onClick();
         });
       }
@@ -356,14 +353,13 @@ export class NewProductComponent implements OnInit {
   }
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
-      console.log(payload);
-      this.frm_newProduct.controls['name'].setValue(payload.brand + '-' + suggestion.activeIngredient);
+      this.frm_newProduct.controls['name'].setValue(payload.data.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
-      this.frm_newProduct.controls['presentation'].setValue(payload.form);
-      this.frm_newProduct.controls['manufacturer'].setValue(payload.company);
+      this.frm_newProduct.controls['presentation'].setValue(payload.data.form);
+      this.frm_newProduct.controls['manufacturer'].setValue(payload.data.company);
       this.initIngredientsForm();
-      this.setIngredientItem(payload.ingredients);
-      this.productDetails = payload;
+      this.setIngredientItem(payload.data.ingredients);
+      this.productDetails = payload.data;
       // this.manufacturers = [];
       // var manufacturerItem : any = <any>{};
       // manufacturerItem = {};
@@ -461,5 +457,13 @@ export class NewProductComponent implements OnInit {
   removeVariant(i: number) {
     const control = <FormArray>this.frm_newProduct.controls['ingredients'];
     control.removeAt(i);
+  }
+
+  private _notification(type: string, text: string): void {
+      this._facilityService.announceNotification({
+          users: [this.user._id],
+          type: type,
+          text: text
+      });
   }
 }

@@ -1,3 +1,4 @@
+import { JoinChannelService } from './../../services/facility-manager/setup/join-channel.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService, CorporateFacilityService, EmployeeService } from '../../services/facility-manager/setup/index';
@@ -12,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./user-accounts.component.scss',]
 })
 export class UserAccountsComponent implements OnInit {
+  item: any;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   popup_listing = false;
@@ -22,7 +24,7 @@ export class UserAccountsComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   logoutConfirm_on = false;
   loginEmployee: Employee = <Employee>{};
-  authData: any;
+  authData: any; 
   constructor(private locker: CoolLocalStorage,
     private router: Router,
     private route: ActivatedRoute,
@@ -31,6 +33,7 @@ export class UserAccountsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private corporateFacilityService: CorporateFacilityService,
     private employeeService: EmployeeService,
+    private joinChannelService:JoinChannelService,
     public facilityService: FacilitiesService) {
     this.userService.missionAnnounced$.subscribe(payload => {
       if (payload === 'out') {
@@ -44,7 +47,6 @@ export class UserAccountsComponent implements OnInit {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
         this.selectedPerson = payload.selectedPerson;
-        console.log(payload.listOfFacilities)
         if (payload.listOfFacilities.length === 1) {
           this.popListing(payload.listOfFacilities[0]);
         } else {
@@ -68,14 +70,11 @@ export class UserAccountsComponent implements OnInit {
 
     //   this.facilityService.find({ query: { _id: { $in: facilityList } } })
     //     .then(payload => {
-    //       console.log(1)
     //       this.listOfFacilities = payload.data;
     //       if (this.listOfFacilities.length === 1) {
-    //         console.log(2)
     //         this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
     //         this.router.navigate(['/modules']);
     //       } else {
-    //           console.log(3)
     //       }
     //     });
     // } else {
@@ -87,16 +86,25 @@ export class UserAccountsComponent implements OnInit {
     // }
   }
 
+
   popListing(item: any) {
     const auth: any = this.locker.getObject('auth');
+    console.log(auth);
+    this.item = item;
     this.facilityService.get(item._id,{}).then(payload =>{
       this.selectedFacility = payload;
       if (this.selectedFacility.isTokenVerified === false) {
         this.popup_verifyToken = true;
         this.popup_listing = false;
       } else {
-        this.popup_listing = true;
-        this.popup_verifyToken = false;
+        this.joinChannelService.create({_id:this.selectedFacility._id, userId:auth.data._id}).then(pay =>{
+          console.log(pay);
+          this.popup_listing = true;
+          this.popup_verifyToken = false;
+        }, err =>{
+          console.log(err)
+        })
+        
       }
       this.locker.setObject('selectedFacility', this.selectedFacility);
       this.logoutConfirm_on = false;
@@ -106,6 +114,15 @@ export class UserAccountsComponent implements OnInit {
   close_onClick(e) {
     this.popup_listing = false;
     this.logoutConfirm_on = false;
+    this.popup_verifyToken = false;
+  }
+  close_onClick2(){
+    this.popup_verifyToken = false;
+    console.log('am called again')
+    if(this.item !== undefined && this.item._id !== undefined){
+      console.log('am called again2')
+      this.popListing(this.item); 
+    }
   }
   logoutConfirm_show() {
     this.popup_listing = false;

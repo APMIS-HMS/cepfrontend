@@ -7,8 +7,8 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { Observable } from 'rxjs/Observable';
+
 
 @Component({
   selector: 'app-investigation-price',
@@ -54,7 +54,6 @@ export class InvestigationPriceComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
-    private toastyService: ToastyService, private toastyConfig: ToastyConfig,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
     private _facilityService: FacilitiesService
   ) { }
@@ -90,7 +89,6 @@ export class InvestigationPriceComponent implements OnInit {
           name: { $regex: -1, '$options': 'i' },
         }
       } else {
-         console.log(value)
         this.apmisLookupQuery = {
           'facilityId._id': this.selelctedFacility._id,
           'laboratoryId._id': { $in: this.locationIds },
@@ -99,11 +97,10 @@ export class InvestigationPriceComponent implements OnInit {
       }
     })
 
-    console.log(this.loginEmployee);
+  
     if (this.loginEmployee.workSpaces !== undefined) {
       this.loginEmployee.workSpaces.forEach(work => {
         work.locations.forEach(loc => {
-          console.log(work);
           if (loc.majorLocationId.name === 'Laboratory') {
             this.locationIds.push(loc.minorLocationId._id);
           }
@@ -115,19 +112,9 @@ export class InvestigationPriceComponent implements OnInit {
     this.getTags();
     this.getInvestigations();
   }
-  addToast(msg: string) {
-    const toastOptions: ToastOptions = {
-      title: 'Apmis',
-      msg: msg,
-      showClose: true,
-      timeout: 5000,
-      theme: 'default',
-    };
 
-    this.toastyService.info(toastOptions);
-  }
   getInvestigations() {
-    console.log(this.checkingObject.typeObject.minorLocationObject._id);
+    console.log(this.checkingObject);
     this.investigationService.find({
       query: {
         'facilityId._id': this.selelctedFacility._id,
@@ -137,7 +124,6 @@ export class InvestigationPriceComponent implements OnInit {
     }).then(payload => {
       this.loading = false;
       this.investigations = payload.data;
-      console.log(this.investigations);
     })
   }
   getWorkBenches() {
@@ -152,7 +138,6 @@ export class InvestigationPriceComponent implements OnInit {
       this.tagService.find({ query: {
         tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
       }).then(payload => {
-        console.log(payload);
         if (payload.data.length > 0) {
           this.selectedTag = payload.data[0];
         }
@@ -187,7 +172,6 @@ export class InvestigationPriceComponent implements OnInit {
   }
   reqDetail(investigationPrice) {
     this.pricing_view = true;
-    console.log(investigationPrice);
     let retVal;
     const labIndex = investigationPrice.LaboratoryWorkbenches.forEach(item => {
       const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
@@ -195,7 +179,6 @@ export class InvestigationPriceComponent implements OnInit {
     });
     // this.selectedWorkBench = retVal;
     this.frmNewPrice.controls['workbench'].setValue(retVal.name)
-    console.log(retVal);
   }
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
@@ -207,7 +190,6 @@ export class InvestigationPriceComponent implements OnInit {
     this.foundPrice = false;
     this.apmisInvestigationLookupText = value.name;
     this.selectedInvestigation = value;
-    console.log(this.selectedInvestigation)
     if (this.selectedInvestigation.LaboratoryWorkbenches === undefined) {
       this.selectedInvestigation.LaboratoryWorkbenches = [];
       this.frmNewPrice.controls['price'].setValue(0);
@@ -215,15 +197,13 @@ export class InvestigationPriceComponent implements OnInit {
     this.facilityPriceService.find({ query: { serviceId: this.selectedInvestigation.serviceId._id } }).then(payload => {
       this.selectedFacilityServicePrice = payload.data.length > 0 ? payload.data[0] : undefined;
 
-      console.log(this.selectedFacilityServicePrice);
       this.selectedFacilityServicePrice.modifiers.forEach((item, i) => {
         if (item.tagDetails !== undefined) {
           delete item.tagDetails;
         }
-        // console.log(this.selectedFacilityServicePrice);
+
         if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Laboratory Location'
           && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
-          console.log('price found')
           this.foundPrice = true;
           this.selectedModifier = item;
           this.selectedModifierIndex = i;
@@ -279,7 +259,6 @@ export class InvestigationPriceComponent implements OnInit {
       // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
       this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
     }
-    console.log(this.selectedFacilityServicePrice);
 
     const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
     const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
@@ -302,7 +281,6 @@ export class InvestigationPriceComponent implements OnInit {
     //   this.frmNewPrice.reset();
     //   this.frmNewPrice.controls['investigation'].reset();
     //   this.frmNewPrice.controls['workbench'].reset();
-    //   console.log(payload);
     // });
   }
 

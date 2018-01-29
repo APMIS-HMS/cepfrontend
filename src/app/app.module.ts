@@ -1,8 +1,11 @@
+import { TitleCasePipe } from '@angular/common';
+import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
+import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
 import { PolicyService } from './services/facility-manager/setup/policy.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
@@ -12,12 +15,14 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import {            } from './facility-setup/facility-setup.module';
+import { } from './facility-setup/facility-setup.module';
+// import {            } from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
+import { PatientPortalComponent } from './system-modules/patient-portal/patient-portal.component';
 import { SharedModule } from './shared-module/shared.module';
 // tslint:disable-next-line:max-line-length
 import { UserAccountsInnerPopupComponent } from './system-modules/user-accounts/user-accounts-inner-popup/user-accounts-inner-popup.component';
@@ -26,6 +31,8 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { SignupComponent } from './signup/signup.component';
 import { ClinicHelperService } from '../app/system-modules/module-menu/clinic/services/clinic-helper.service';
 import { SwitchUserResolverService } from '../app/resolvers/module-menu/index';
+
+import { ApmisErrorHandler } from './services/facility-manager/error-handler.service';
 // import { PersonAccountComponent } from './person-account/person-account.component';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
@@ -38,23 +45,33 @@ import { FacilitySetupComponent } from './facility-setup/facility-setup.componen
 import { ContactInfoComponent } from './facility-setup/contact-info/contact-info.component';
 import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
-import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
+// import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
+import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
+import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
+import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
+
+//import { IkeComponent } from './ike/ike.component';
+import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
+// import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    PasswordResetComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent
   ],
   exports: [
     // MaterialModule,
+    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
@@ -68,9 +85,17 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     MaterialModule,
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
-    LoadingBarRouterModule
+    LoadingBarRouterModule,
+    SweetAlert2Module.forRoot({
+      buttonsStyling: false,
+      customClass: 'modal-content',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn'
+  })
+    // PdfViewerModule
   ],
   providers: [
+    { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.UserService, SetupService.GenderService,
@@ -93,9 +118,17 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
     SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
-    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService,SetupService.VitalService,
+    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SystemModuleService
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
+    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
+    SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
+    SetupService.FluidService, SecurityQuestionsService,TitleCasePipe
   ],
   bootstrap: [AppComponent]
 })

@@ -5,9 +5,9 @@
             <div class="tblTitle">Services</div>
             <div class="tblTop">
                 <div (click)="newServicePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Service</div>
-                <md-input-container class="example-full-width">
-                    <input type="search" autofocus mdInput md-error placeholder="search for a service" [formControl]="searchService">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="search" autofocus matInput mat-error placeholder="search for a service" [formControl]="searchService">
+                </mat-input-container>
             </div>
             <table class="tblBg">
                 <thead>
@@ -30,9 +30,9 @@
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
+            <div (click)="loadMoreGlobalCategories()" class="btn-1 btn-blue" *ngIf="showLoadMore"><i class="fa fa-plus-square" aria-hidden="true"></i> Load More</div>
         </div>
     </div>
     <div class="category">
@@ -40,9 +40,9 @@
             <div class="tblTitle">Service Categories</div>
             <div class="tblTop">
                 <div (click)="newCategoryPopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Category</div>
-                <md-input-container class="example-full-width">
-                    <input type="search" autofocus mdInput md-error placeholder="search for a category" [formControl]="searchCategory">
-                </md-input-container>
+                <mat-input-container class="example-full-width">
+                    <input type="search" autofocus matInput mat-error placeholder="search for a category" [formControl]="searchCategory">
+                </mat-input-container>
             </div>
             <table class="tblBg">
                 <thead>

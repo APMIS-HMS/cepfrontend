@@ -14,7 +14,6 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
   styleUrls: ['./facilitypage-departmentspage.component.scss']
 })
 export class FacilitypageDepartmentspageComponent implements OnInit {
-
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('unititem') unititem;
   modal_on = false;
@@ -52,13 +51,16 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   selectedLocation: Location = <Location>{};
   minorLocations: MinorLocation[] = [];
   selectedUnit: any = <any>{};
+  selectedDepartment: any;
+  showUnit = false;
+  newDept = false;
+  newUnit = false;
   constructor(public facilityService: FacilitiesService,
     private locationService: LocationService,
     private route: ActivatedRoute,
     private systemService: SystemModuleService,
     private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
-      console.log(payload)
       this.facilityObj = payload;
       this.getCurrentDepartment();
       this.deptsObj = payload.departments;
@@ -89,11 +91,9 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
         if (item.name === 'Clinic') {
           this.selectedLocation = item;
           const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
-          console.log(facility.minorLocations);
           facility.minorLocations.forEach((itemi: MinorLocation) => {
             if (itemi.locationId === this.selectedLocation._id) {
               this.minorLocations.push(itemi);
-              console.log(this.minorLocations);
             }
           });
 
@@ -159,7 +159,6 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       this.deptsObj = this.facilityObj.departments;
     },
       error => {
-        console.log(error);
       })
   }
 
@@ -169,7 +168,6 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.deptEditContentArea = false;
     this.innerMenuShow = false;
     this.deptObj = model;
-    console.log(this.deptObj);
   }
 
   deptHomeContentArea_show() {
@@ -182,10 +180,10 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   deptDetalContentArea_remove(model: Department) {
     this.systemService.on();
     let index = this.facilityObj.departments.findIndex(x => x._id === model._id);
-    this.facilityObj.departments.splice(index);
-    this.facilityService.update(this.facilityObj).then(payload =>{
+    this.facilityObj.departments.splice(index, 1);
+    this.facilityService.update(this.facilityObj).then(payload => {
       this.systemService.off();
-    }).catch(err =>{
+    }).catch(err => {
       this.systemService.off();
     });
   }
@@ -220,10 +218,8 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.innerMenuShow = false;
   }
   close_onClick(message: boolean): void {
-    this.modal_on = false;
-    this.newUnitModal_on = false;
-    this.newDeptModal_on = false;
-    this.selectedUnit = <any>{};
+    this.newDept = false;
+    this.newUnit = false;
   }
   editUnit(unit) {
     this.selectedUnit = unit;
@@ -241,5 +237,33 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   }
   getClinicCount(unit) {
     return unit.clinics.length;
+  }
+
+  showUnit_selectedDepartmentUnit(dept) {
+    if (this.selectedDepartment !== undefined) {
+      return dept._id === this.selectedDepartment._id;
+    }
+    return false;
+  }
+  showUnit_click(dept) {
+    this.showUnit = false;
+    this.selectedDepartment = dept;
+    this.showUnit = true;
+  }
+  showUnit_hide() {
+    this.showUnit = false;
+    this.selectedDepartment = undefined;
+  }
+  newDept_onClick() {
+    this.newDept = true;
+  }
+  newUnit_onClick(dept) {
+    this.selectedDepartment = dept;
+    this.newUnit = true;
+  }
+  editUnit_onClick(dept, unit) {
+    this.selectedDepartment = dept;
+    this.selectedUnit = unit;
+    this.newUnit = true;
   }
 }

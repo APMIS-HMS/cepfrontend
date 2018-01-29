@@ -33,6 +33,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   addVitalsPop = false;
   addTagsPop = false;
   checkoutPatient = false;
+  menuUploads = false;
 
   menuSummary = true;
   menuPharmacy = false;
@@ -46,6 +47,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuForms = false;
   menuDocs = false;
   menuOrder = false;
+
   // menuImages = false;
   // menuLists = false;
   menuTimeline = false;
@@ -53,6 +55,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuPrescriptions = false;
   menuPayment = false;
   menuFluid = false;
+  menuVitals = false;
 
   contentSecMenuShow = false;
   modal_on = false;
@@ -84,6 +87,8 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   routeId: any;
   checkedIn:any;
 
+  menuResp = false;
+
   constructor(private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
@@ -109,7 +114,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
-      console.log(appointment);
       this.selectedAppointment = appointment;
       this.patient = appointment.patientId;
       this.patientDetails = appointment.patientId;
@@ -126,9 +130,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     })
   }
   setAppointment() {
-    console.log(this.selectedAppointment);
-    if (this.patient !== undefined && this.loginEmployee !== undefined) {
+    if (this.patient !== undefined && this.loginEmployee !== undefined && this.loginEmployee !== null) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
+    }else{
+      
     }
 
   }
@@ -138,21 +143,23 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
-      console.log(this.patient);
     } else {
+      console.log(<any>this.locker.getObject('patient'));
       this.router.navigate(['/dashboard/patient-manager']);
     }
     this.getForms();
 
     this.route.params.subscribe(payloadk => {
+      console.log(payloadk);
       if (payloadk['checkInId'] !== undefined) {
         let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
+        console.log(isOnList);
         if (isOnList.length > 0) {
           const isOnObj = isOnList[0];
           isOnObj.isOn = true;
           let coo = <any>this.locker.getObject('appointment');
-          console.log(coo.isCheckedOut);
-          this.checkedIn = !coo.isCheckedOut;
+          console.log(coo);
+          this.checkedIn = !coo.isCheckedOut || false;
           this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
             this.loginEmployee = payloadu;
             if (this.selectedAppointment !== undefined) {
@@ -241,7 +248,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.patient = payload;
     },
       error => {
-        console.log(error);
       });
     this.contentSecMenuShow = false;
   }
@@ -254,187 +260,261 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.contentSecMenuShow = false;
     }
   }
+ 
   menuSummary_click() {
     this.menuSummary = true;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuPharmacy_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = true;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuBilling_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = true;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuTreatmentPlan_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = true;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuMedicationHistory_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = true;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuImaging_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = true;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuLab_click() {
     this.menuSummary = false;
     this.menuPharmacy = false;
+    this.menuUploads = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = true;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuForms_click() {
     this.menuSummary = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
+    this.menuUploads = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = true;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
+  }
+  menuUploads_click() {
+    this.menuSummary = false;
+    this.menuPharmacy = false;
+    this.menuBilling = false;
+    this.menuTreatmentPlan = false;
+    this.menuImaging = false;
+    this.menuLab = false;
+    this.menuForms = false;
+    this.menuUploads = true;
+    this.menuDocs = false;
+    this.menuOrder = false;
+    this.menuFluid = false;
+    this.menuVitals = false;
+    this.menuTimeline = false;
+    this.menuPrescription = false;
+    this.menuExternalPrescription = false;
+    this.menuFinance = false;
+    this.menuMedicationHistory = false;
+    this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuDocs_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = true;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuFluid_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = true;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuTimeline_click() {
+    this.menuUploads = false;
     this.menuSummary = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
@@ -442,87 +522,134 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = true;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuPrescriptions_click() {
     this.menuSummary = false;
+    this.menuUploads = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = true;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this. menuPayment = false;
+
+    this.menuResp = false;
   }
   menuExternalPrescriptions_click() {
     this.menuSummary = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
+    this.menuUploads = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = true;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
   }
   menuPayment_click() {
     this.menuSummary = false;
     this.menuPharmacy = false;
+    this.menuUploads = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = true;
+
+    this.menuResp = false;
   }
   menuOrder_click() {
     this.menuSummary = false;
     this.menuPharmacy = false;
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
+    this.menuUploads = false;
     this.menuImaging = false;
     this.menuLab = false;
     this.menuForms = false;
+    this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = true;
     this.menuFluid = false;
+    this.menuVitals = false;
     this.menuTimeline = false;
     this.menuPrescription = false;
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
+
+    this.menuResp = false;
+  }
+  menuVitals_click() {
+    this.menuSummary = false;
+    this.menuPharmacy = false;
+    this.menuBilling = false;
+    this.menuTreatmentPlan = false;
+    this.menuUploads = false;
+    this.menuImaging = false;
+    this.menuLab = false;
+    this.menuForms = false;
+    this.menuUploads = false;
+    this.menuDocs = false;
+    this.menuOrder = false;
+    this.menuFluid = false;
+    this.menuVitals = true;
+    this.menuTimeline = false;
+    this.menuPrescription = false;
+    this.menuExternalPrescription = false;
+    this.menuFinance = false;
+    this.menuMedicationHistory = false;
+    this.menuPayment = false;
+
+    this.menuResp = false;
   }
 
   subsect_biodata_click() {
@@ -581,6 +708,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
       });
     }
+  }
+
+  patientMenu(){
+    this.menuResp = !this.menuResp;
   }
 
 }

@@ -59,7 +59,6 @@ export class UnitComponentComponent implements OnInit {
         this.facilityService.update(this.facility).then(payload => {
         },
             error => {
-                console.log(error)
             })
     }
     updateDepartmentProperties(value: any) {

@@ -8,6 +8,9 @@
     padding: 10px;
     box-sizing: border-box;
 }
+.headerDetail-wrap .modal_title{
+    color: #000 !important;
+}
 
 .patientPage-sideTab {
     width: 30%;
@@ -81,7 +84,7 @@
     right: 0;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 .emp-nameRow img{
     width: 100%;
@@ -117,11 +120,11 @@
 
 .patient-name {
     color: #2874A6;
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .headDetail-group {
-    font-size: 11px;
+    font-size: 1.1rem;
     display: flex;
     justify-content: space-between;
     color: #154360;
@@ -130,14 +133,17 @@
 }
 
 .patient-email {
-    font-size: 11px;
+    font-size: 1.1rem;
     color: #154360;
 }
 
-.sideTab-nav {
+.sideTab-nav, .sideTab-nav-resp {
     background: #f4f4f4;
     padding: 10px;
     box-sizing: border-box;
+}
+.sideTab-nav-resp{
+    display: none;
 }
 
 .menu-sect {
@@ -147,7 +153,7 @@
 }
 
 .menu-item {
-    font-size: 13px;
+    font-size: 1.3rem;
     padding: 5px 5px 5px 20px;
     margin: 2px;
     border-left: 5px solid transparent;
@@ -164,7 +170,7 @@
 .pg-subtitle{
     text-align: left;
     color: #0288D1;
-    font-size: 14px;
+    font-size: 1.4rem;
     margin-top: -15px;
     margin-left: 5px;
 }
@@ -182,7 +188,7 @@
     top: 0;
 }
 .checkoutBtn {
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #0288D1;
     border: 1px solid #0288D1;
     padding: 3px 5px;
@@ -203,7 +209,7 @@
     margin: 10px 0;
     border: 1px solid #aaa;
     padding: 3px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .pbTableView-itemWrap {
@@ -230,7 +236,7 @@
 }
 
 .val1 {
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .val2 {
@@ -247,7 +253,7 @@
 }
 
 .accBal-label {
-    font-size: 10px;
+    font-size: 1rem;
     display: block;
     color: #444;
 }
@@ -257,7 +263,7 @@
 }
 
 .entry-unit {
-    font-size: 10px;
+    font-size: 1rem;
 }
 
 .tags-wrap {
@@ -268,7 +274,7 @@
 
 .tag-item {
     margin-right: 15px;
-    font-size: 12px;
+    font-size: 1.2rem;
     background: rgba(0, 0, 0, 0.5);
     color: #fff;
     padding: 4px;
@@ -286,7 +292,7 @@ th {
     margin: 10px 0;
     border: none;
     padding: 3px;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 .cu-search-box .cu-search {
     height: 36px;
@@ -295,7 +301,7 @@ th {
 .cta-wrap {
     display: flex;
     justify-content: flex-end;
-    font-size: 12px;
+    font-size: 1.2rem;
     color: #0288D1;
     margin-top: 15px;
 }
@@ -309,7 +315,7 @@ ul.topmenuwrap {
     position: relative;
     top: auto;
     right: auto;
-    font-size: 11px;
+    font-size: 1.1rem;
     color: #0288D1;
     margin-top: 10px;
     display: flex;
@@ -325,22 +331,62 @@ ul.topmenuwrap li{
 ul.topmenuwrap li i{
     padding-right: 5px;
 }
-// .profile-mobile{
-//     display: none;
-//     position: absolute;
-//     left: 15px;
-//     color: #194985;
-// }
+.patientMenuResponsive{
+    display: none;
+}
+.modal_title{
+    color:#000;
+}
 
-@media only screen and (max-width: 1100px) {
-    
-    // .patientPage-contentArea{
-    //     width: 100%;
-    // }
-    // .pg-subtitle{
-    //     text-align: center;
-    // }
-    // .profile-mobile{
-    //     display: block;
-    // }
+@media only screen and (max-width: 900px) {
+    .patientPage-mainWrap{
+        display: block;
+    }
+    .patientPage-sideTab{
+        width: 100%;
+        margin-top: 0;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 87px;
+    }
+    .patientPage-contentArea{
+        width: 100%;
+        padding-top: 229px;
+    }
+    .pg-subtitle{
+        text-align: center;
+    }
+    .header-secA {
+        max-width: 413px;
+        margin: 0 auto;
+        border-bottom: 4px solid #fff;
+        padding-bottom: 20px;
+    }
+    ul.topmenuwrap{
+        display: flex;
+        justify-content: center;
+    }
+    ul.topmenuwrap li{
+        margin: 0 5px;
+    }
+    .patientMenuResponsive{
+        display: flex;
+    }
+    .sideTab-nav{
+        display: none;
+    }
+    .sideTab-header{
+        border-bottom: 2px solid #777;
+        -webkit-box-shadow: 0 8px 6px -6px black;
+        -moz-box-shadow: 0 8px 6px -6px black;
+        box-shadow: 0 8px 6px -6px black;
+    }
+    .sideTab-nav-resp{
+        display: block;
+        margin-top: -28px;
+    }
+    .page-title{
+        display: none;
+    }
 }

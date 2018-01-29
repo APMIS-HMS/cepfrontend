@@ -1,3 +1,4 @@
+import { SystemModuleService } from './../../../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { OrderStatusService } from '../../../../../../services/module-manager/setup/index';
@@ -15,6 +16,7 @@ import { SharedService } from '../../../../../../shared-module/shared.service';
   styleUrls: ['./add-patient-problem.component.scss']
 })
 export class AddPatientProblemComponent implements OnInit {
+  isSaving: boolean;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient;
@@ -22,7 +24,7 @@ export class AddPatientProblemComponent implements OnInit {
   statusFormCtrl: FormControl;
   noteFormCtrl: FormControl;
   filteredStates: any;
-  orderStatuses: OrderStatus[] = [];
+  orderStatuses: any[] = [];
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -35,7 +37,7 @@ export class AddPatientProblemComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private orderStatusService: OrderStatusService,
     private formService: FormsService, private locker: CoolLocalStorage,
-    private documentationService: DocumentationService,
+    private documentationService: DocumentationService, private SystemModuleService: SystemModuleService,
     private formTypeService: FormTypeService, private sharedService: SharedService,
     private facilityService: FacilitiesService) {
 
@@ -53,40 +55,44 @@ export class AddPatientProblemComponent implements OnInit {
     this.getForm();
   }
   getForm() {
+    this.SystemModuleService.on();
     Observable.fromPromise(this.formService.find({ query: { title: 'Problems' } }))
       .subscribe((payload: any) => {
         if (payload.data.length > 0) {
           this.selectedForm = payload.data[0];
         }
+        this.SystemModuleService.off();
+      }, error => {
+        this.SystemModuleService.off();
       });
   }
   getPersonDocumentation() {
+    this.SystemModuleService.on();
     this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
-      console.log(payload);
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {
           this.patientDocumentation = payload.data[0];
+          this.SystemModuleService.off();
         } else {
           this.documentationService.find({
             query:
-            {
-              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-              // $select: ['documentations.documents', 'documentations.facilityId']
-            }
+              {
+                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                // $select: ['documentations.documents', 'documentations.facilityId']
+              }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
-              // this.populateDocuments();
-              console.log(this.patientDocumentation);
-              // mload.data[0].documentations[0].documents.push(doct);
+              this.SystemModuleService.off();
             }
+          }, error => {
+            this.SystemModuleService.off();
           })
         }
       }
@@ -94,9 +100,23 @@ export class AddPatientProblemComponent implements OnInit {
     })
   }
   getOrderStatuses() {
-    this.orderStatusService.findAll().subscribe(payload => {
-      this.orderStatuses = payload.data;
-    });
+    this.orderStatuses = [
+      {
+        _id: 1,
+        name: 'Active'
+      },
+      {
+        _id: 2,
+        name: 'InActive'
+      }
+    ];
+    // this.SystemModuleService.on();
+    // this.orderStatusService.findAll().subscribe(payload => {
+    //   this.orderStatuses = payload.data;
+    //   this.SystemModuleService.off();
+    // }, error => {
+    //   this.SystemModuleService.off();
+    // });
   }
   close_onClick() {
     this.closeModal.emit(true);
@@ -107,25 +127,32 @@ export class AddPatientProblemComponent implements OnInit {
     return status ? status.name : status;
   }
   save() {
+    console.log('saving')
+    this.isSaving = true;
+    this.SystemModuleService.on();
     let isExisting = false;
-    console.log(this.patientDocumentation)
+    console.log(this.selectedForm);
+    console.log(this.loginEmployee);
     this.patientDocumentation.documentations.forEach(documentation => {
-      if(documentation.document == undefined){
-          documentation.document={
-            documentType : {}
-          }
+      if (documentation.document === undefined) {
+        documentation.document = {
+          documentType: {}
         }
-        if (documentation.document.documentType._id != undefined &&
-           documentation.document.documentType._id === this.selectedForm._id) {
+      }
+      if (documentation.document.documentType._id !== undefined &&
+        documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
+        console.log('is true');
+        console.log(documentation);
         documentation.document.body.problems.push({
           problem: this.problemFormCtrl.value,
           status: this.statusFormCtrl.value,
-          note: this.noteFormCtrl.value
+          note: this.noteFormCtrl.value,
         })
       }
     });
     if (!isExisting) {
+      console.log(this.loginEmployee)
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.facilityId = this.selectedFacility;
       doc.createdBy = this.loginEmployee;
@@ -143,12 +170,19 @@ export class AddPatientProblemComponent implements OnInit {
       });
       this.patientDocumentation.documentations.push(doc);
     }
+    console.log(this.patientDocumentation)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+      this.isSaving = false;
       this.patientDocumentation = payload;
       this.problemFormCtrl.reset();
       this.statusFormCtrl.reset();
       this.noteFormCtrl.reset();
-      this.documentationService.announceDocumentation({});
+      this.documentationService.announceDocumentation({ type: 'Problem' });
+      this.SystemModuleService.off();
+    }, error => {
+      console.log(error);
+      this.isSaving = false;
+      this.SystemModuleService.off();
     })
   }
 }

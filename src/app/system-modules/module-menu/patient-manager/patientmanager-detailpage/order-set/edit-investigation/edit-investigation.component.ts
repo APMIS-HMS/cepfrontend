@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { OrderSetSharedService } from '../../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
   selector: 'app-edit-investigation',
@@ -12,13 +13,17 @@ export class EditInvestigationComponent implements OnInit {
 
   addInvestigationForm: FormGroup;
   apmisLookupQuery = {};
-  apmisLookupUrl = '';
-  apmisLookupDisplayKey = '';
+  apmisLookupUrl = 'investigations';
+  apmisLookupDisplayKey = 'name';
   apmisLookupText = '';
-
   newTemplate = true;
+  investigations: any = <any>[];
+  selectedInvestigation: any = <any>{};
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+     private _orderSetSharedService: OrderSetSharedService
+  ) { }
 
   ngOnInit() {
     this.addInvestigationForm = this.fb.group({
@@ -26,22 +31,37 @@ export class EditInvestigationComponent implements OnInit {
     });
   }
 
-  close_onClick() {
-    this.closeModal.emit(true);
-  }
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
-    let isExisting = false;
-    // this.loginHMOListObject.companyCovers.forEach(item => {
-    //   if (item._id === value._id) {
-    //     isExisting = true;
-    //   }
-    // });
-    // if (!isExisting) {
-    //   this.selectedCompanyCover = value;
-    // } else {
-    //   this.selectedCompanyCover = <any>{};
-    //   this._notification('Info', 'Selected HMO is already in your list of Company Covers');
-    // }
+    this.selectedInvestigation = value;
+    this.addInvestigationForm.controls['investigation'].setValue(value.name);
+    console.log(value);
+  }
+
+  onClickAddInvestigation(valid: boolean, value: any) {
+    if (valid) {
+      this.selectedInvestigation.comment = '';
+      this.selectedInvestigation.status = 'Not Done';
+      this.selectedInvestigation.completed = false;
+
+      // if (this.investigations.length > 0) {
+      //   // Check if generic has been added already.
+      //   const containsGeneric = this.investigations.filter(x => x._id === value.selectedInvestigation._id);
+      //   if (containsGeneric.length < 1) {
+      //     this.investigations.push(this.selectedInvestigation);
+      //     this._orderSetSharedService.saveItem({ investigations: this.investigations});
+      //   }
+      // } else {
+        this.investigations.push(this.selectedInvestigation);
+        this._orderSetSharedService.saveItem({ investigations: this.investigations});
+      // }
+      this.apmisLookupText = '';
+      this.addInvestigationForm.reset();
+      this.addInvestigationForm.controls['investigation'].setValue('');
+    }
+  }
+
+  close_onClick() {
+    this.closeModal.emit(true);
   }
 }

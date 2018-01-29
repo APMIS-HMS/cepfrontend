@@ -1,24 +1,29 @@
 @import "../new-department/new-department.component.scss";
-
 .frm-item-wrap {
     padding-bottom: 10px;
 }
-.frm-item-wrap small, .frm-singleItem-wrap small {
+
+.frm-item-wrap small,
+.frm-singleItem-wrap small {
     bottom: -3px;
 }
-.frm-item-inner-wrap{
+
+.frm-item-inner-wrap {
     margin-left: 40px;
 }
-.btn-2{
+
+.btn-2 {
     width: 100px;
     margin-top: 15px;
     margin-left: 0px;
 }
+
 .valSpan {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
+
 .frmArrayclinicWrap {
     width: 330px;
     border: 1px solid transparent;
@@ -26,34 +31,42 @@
     margin-bottom: 12px;
     overflow-x: hidden;
 }
-input, select {
+
+input,
+select {
     border: none;
 }
+
 .mainErr {
     width: 97%;
 }
-.trash{
+
+.trash {
     float: right;
 }
-.trash:hover{
- cursor:pointer;
+
+.trash:hover {
+    cursor: pointer;
 }
+
 .mat-raised-button {
     max-width: 200px;
     text-align: center;
     background: #0288D1;
     color: #fff;
 }
-#example-full-width{
+
+#example-full-width {
     text-align: center;
 }
-.clinic-section{
+
+.clinic-section {
     overflow: auto;
     max-height: 300px;
 }
 
-.modal-baseWrap{
+.modal-baseWrap {
     max-height: 500px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
    

@@ -2,6 +2,8 @@
     <li (click)="changeRoute('prescriptions')" [class.pg-menuActive]="prescriptionNavMenu" routerLink="/dashboard/pharmacy/prescriptions"><i class="fa fa-home" aria-hidden="true"></i> Prescriptions</li>
     <li (click)="changeRoute('external-prescriptions')" [class.pg-menuActive]="externalPrescriptionNavMenu" routerLink="/dashboard/pharmacy/external-prescriptions"><i class="fa fa-braille" aria-hidden="true"></i> External Prescriptions</li>
     <li (click)="changeRoute('dispense')" [class.pg-menuActive]="walkInNavMenu" routerLink="/dashboard/pharmacy/dispense"><i class="fa fa-building" aria-hidden="true"></i> Walk in</li>
+    <li routerLink="/dashboard/store/home"><i class="fa fa-building" aria-hidden="true"></i> Go to Store</li>
+    <li (click)="modal_on=true"><i class="fa fa-building" aria-hidden="true"></i> Check into Store</li>
 </ul>
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>

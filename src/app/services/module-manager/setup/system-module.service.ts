@@ -7,6 +7,9 @@ export class SystemModuleService {
   private loadingAnnouncedSource = new Subject<Object>();
   loadingAnnounced$ = this.loadingAnnouncedSource.asObservable();
 
+  private sweetAnnouncedSource = new Subject<Object>();
+  sweetAnnounced$ = this.sweetAnnouncedSource.asObservable();
+
   private broadCastOnlineSource = new Subject<Object>();
   broadCastOnlineSource$ = this.broadCastOnlineSource.asObservable();
 
@@ -15,10 +18,12 @@ export class SystemModuleService {
 
   constructor() {
   }
-  announceLoading(notification: Object) {
-    this.loadingAnnouncedSource.next(notification);
+  announceLoading(loading: Object) {
+    this.loadingAnnouncedSource.next(loading);
   }
-
+  private announceSweet(notification: Object) {
+    this.sweetAnnouncedSource.next(notification);
+  }
 
 
   announceLoggedInUser(userObject: Object) {
@@ -34,4 +39,15 @@ export class SystemModuleService {
   on() {
     this.announceLoading({ status: 'On' });
   }
+  announceSweetProxy(title, type, cp?, html?, text?, from?) {
+    this.announceSweet({
+      title: title,
+      type: type,
+      cp,
+      html: html,
+      text: text,
+      from: from
+    });
+  }
+
 }

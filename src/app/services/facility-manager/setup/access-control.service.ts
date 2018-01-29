@@ -1,7 +1,6 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 
 @Injectable()
 export class AccessControlService {
@@ -12,8 +11,8 @@ export class AccessControlService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('facilityaccesscontrols');
-    this._socket = _socketService.getService('facilityaccesscontrols');
+    this._rest = _restService.getService('facility-access-control');
+    this._socket = _socketService.getService('facility-access-control');
     this._socket.timeout = 30000;
     this.listner = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -33,7 +32,10 @@ export class AccessControlService {
   }
 
   create(accesscontrol: any) {
-    return this._socket.create(accesscontrol);
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socket.create(accesscontrol))
+    });
   }
   update(accesscontrol: any) {
     return this._socket.update(accesscontrol._id, accesscontrol);

@@ -1,7 +1,6 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
 const request = require('superagent');
@@ -9,6 +8,7 @@ const request = require('superagent');
 @Injectable()
 export class EmployeeService {
   public _socket;
+  public _assignSocket;
   private _rest;
   public listner;
   public createListener;
@@ -28,6 +28,7 @@ export class EmployeeService {
   ) {
     this._rest = _restService.getService('employees');
     this._socket = _socketService.getService('employees');
+    this._assignSocket = _socketService.getService('assign-employee-unit');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -64,31 +65,35 @@ export class EmployeeService {
     });
   }
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {
-    return this._rest.find();
+    return this._socket.find();
   }
   get(id: string, query: any) {
-    return this._rest.get(id, query);
+    return this._socket.get(id, query);
   }
 
   create(employee: any) {
-    return this._rest.create(employee);
+    return this._socket.create(employee);
   }
 
   remove(id: string, query: any) {
-    return this._rest.remove(id, query);
+    return this._socket.remove(id, query);
   }
   update(employee: any) {
-    return this._rest.update(employee._id, employee);
+    return this._socket.update(employee._id, employee);
+  }
+  assignUnit(body: any) {
+    console.log(body);
+    return this._assignSocket.update(body.unitId, body.employees);
   }
   updateMany(employees: any) {
-    return this._rest.update('employees._id', employees);
+    return this._socket.update('employees._id', employees);
   }
   patchMany(data: any, param: any) {
-    return this._rest.patch(null, data, param);
+    return this._socket.patch(null, data, param);
   }
   searchEmployee(facilityId: string, searchText: string, showbasicinfo: boolean) {
     const host = this._restService.getHost();

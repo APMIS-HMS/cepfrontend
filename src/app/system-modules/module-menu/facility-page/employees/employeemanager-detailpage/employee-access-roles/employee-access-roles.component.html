@@ -1,0 +1,21 @@
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <div class="facility-title">Employee Role</div>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+        <form novalidate>
+            <div *ngFor="let role of roles">
+                <mat-checkbox value="{{role.id}}">{{role.name}}</mat-checkbox>
+            </div>
+        </form>
+        <div class="example-full-width" id="example-full-width">
+            <button class="btn-saveroles" mat-raised-button>
+                Save
+            </button>
+        </div>
+    </div>
+</div>

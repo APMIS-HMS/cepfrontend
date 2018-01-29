@@ -117,7 +117,6 @@ export class ReportComponent implements OnInit {
     this._getDocumentationForm();
 
     this._router.params.subscribe(url => {
-      console.log(url);
       if (!!url.requestId) {
         this.report_show();
         this._getSelectedPendingRequests(url.requestId, url.investigationId);
@@ -152,7 +151,6 @@ export class ReportComponent implements OnInit {
           '_id': this.selectedInvestigation.labRequestId,
         }
       }).then(res => {
-        console.log(res);
         // Check the action that the user wants to carry out.
         if (action === 'save') {
           if (res.data.length > 0) {
@@ -167,7 +165,6 @@ export class ReportComponent implements OnInit {
             });
 
             this._laboratoryRequestService.update(labRequest).then(res => {
-              console.log(res);
               this._getAllReports();
               this.saveToDraftBtnText = 'SAVE AS DRAFT';
               this._notification('Success', 'Report has been saved successfully!');
@@ -180,9 +177,7 @@ export class ReportComponent implements OnInit {
             const labRequest = res.data[0];
             const saveDocument = {
               documentType: this.selectedForm,
-              body: {
-                laboratory: []
-              }
+              body: {}
             };
 
             labRequest.investigations.forEach(investigation => {
@@ -191,25 +186,33 @@ export class ReportComponent implements OnInit {
                 investigation.isUploaded = !isUploaded;
                 investigation.isSaved = !isSaved;
 
-                // Build document to save in documentation
-                saveDocument.body.laboratory.push({
-                  'conclusion': investigation.report.conclusion,
-                  'recommendation': investigation.report.outcome,
-                  'outcome': investigation.report.outcome,
-                  'result': investigation.report.result,
-                  'specimen': investigation.investigation.specimen.name,
-                  'diagnosis': labRequest.diagnosis,
-                  'clinicalInformation': labRequest.clinicalInformation,
-                  'labNumber': labRequest.labNumber,
-                  'investigation': investigation.investigation.name,
-                  
-                })
+                saveDocument.body['conclusion'] = investigation.report.conclusion;
+                saveDocument.body['recommendation'] = investigation.report.recommendation;
+                saveDocument.body['outcome'] = investigation.report.outcome;
+                saveDocument.body['result'] = investigation.report.result;
+                saveDocument.body['specimen'] = investigation.investigation.specimen.name;
+                saveDocument.body['investigation'] = investigation.investigation.name;
+                saveDocument.body['diagnosis'] = labRequest.diagnosis;
+                saveDocument.body['clinicalInformation'] = labRequest.clinicalInformation;
+                saveDocument.body['labNumber'] = labRequest.labNumber;
+
+                // // Build document to save in documentation
+                // saveDocument.body.laboratory.push({
+                //   'conclusion': investigation.report.conclusion,
+                //   'recommendation': investigation.report.outcome,
+                //   'outcome': investigation.report.outcome,
+                //   'result': investigation.report.result,
+                //   'specimen': investigation.investigation.specimen.name,
+                //   'diagnosis': labRequest.diagnosis,
+                //   'clinicalInformation': labRequest.clinicalInformation,
+                //   'labNumber': labRequest.labNumber,
+                //   'investigation': investigation.investigation.name,
+                // })
               }
             });
 
             this._laboratoryRequestService.update(labRequest).then(res => {
               if (res) {
-                console.log(res);
                 // Delete irrelevant data from employee
                 delete this.employeeDetails.employeeDetails.countryItem;
                 delete this.employeeDetails.employeeDetails.nationalityObject;
@@ -234,7 +237,6 @@ export class ReportComponent implements OnInit {
                     'personId._id': this.selectedPatient.personDetails._id
                   }
                 }).then(res => {
-                  console.log(res);
                   // Update the lists
                   this._getAllReports();
                   // Updated this.pendingRequests
@@ -304,9 +306,7 @@ export class ReportComponent implements OnInit {
   }
 
   selectImage(fileInput: any) {
-    console.log(event);
     const fileList = fileInput.target.files;
-    console.log(fileList);
     if (fileList.length > 0) {
         const file: File = fileList[0];
         const formData: FormData = new FormData();
@@ -321,8 +321,6 @@ export class ReportComponent implements OnInit {
         //     .map(res => res.json())
         //     .catch(error => Observable.throw(error))
         //     .subscribe(
-        //         data => console.log('success'),
-        //         error => console.log(error)
         //     )
     }
   }
@@ -384,7 +382,6 @@ export class ReportComponent implements OnInit {
         'facilityId._id': this.facility._id,
       }
     }).then(res => {
-      console.log(res);
       this.pendingReLoading = false;
       if (res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
@@ -446,7 +443,6 @@ export class ReportComponent implements OnInit {
   }
 
   onClickImportTemplate(selectedInvestigation: PendingLaboratoryRequest) {
-    console.log(selectedInvestigation);
     this.importTemplate = true;
   }
 
@@ -456,7 +452,6 @@ export class ReportComponent implements OnInit {
         'facilityId._id': this.facility._id,
       }
     }).then(res => {
-      console.log(res);
       if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
         this.reportLoading = false;
         if (res.data.length > 0) {
@@ -489,9 +484,7 @@ export class ReportComponent implements OnInit {
     const labId = this.selectedLab.typeObject.minorLocationId;
     // Filter investigations based on the laboratory Id
     data.forEach(labRequest => {
-      console.log(labRequest);
       labRequest.investigations.forEach(investigation => {
-        console.log(investigation);
         if (!investigation.isExternal) {
           if (labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id) {
             const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
@@ -554,7 +547,6 @@ export class ReportComponent implements OnInit {
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
-      console.log(request);
       if (!!request.billingId) {
         this._billingService.find({
           query: {
@@ -563,7 +555,6 @@ export class ReportComponent implements OnInit {
             patientId: request.patient._id
           }
         }).then(res => {
-          console.log(res);
           const billingItem = res.data[0];
           let counter = 0;
           billingItem.billItems.forEach(billItem => {

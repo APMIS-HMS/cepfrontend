@@ -13,6 +13,7 @@ import {
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-patient-summary',
@@ -25,7 +26,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   @Input() patient: Patient;
   // @Input() vitalDocuments: any;
   lineChartData = [];
-  public lineChartLabels: Array<any> = [''];
+  public lineChartLabels: Array<any> = [];
   public lineChartOptions: any = {
     responsive: true
   };
@@ -193,11 +194,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
     this._DocumentationService.listenerCreate.subscribe(payload => {
       //this.bindVitalsDataToChart();
-      window.location.reload();
+      // window.location.reload();
     });
     this._DocumentationService.listenerUpdate.subscribe(payload => {
       //this.bindVitalsDataToChart();
-      window.location.reload();
+      // window.location.reload();
     });
   }
 
@@ -220,6 +221,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   bindVitalsDataToChart() {
     var vitalsObjArray = [];
+    this.lineChartLabels = [];
     this.lineChartData = [
       { data: [], label: '' },
       { data: [], label: '' },
@@ -229,48 +231,43 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       { data: [], label: '' }
 
     ];
-    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
-        payload.data[0].documentations.forEach(documentItem => {
-          if (documentItem.document.documentType !== undefined && documentItem.document.documentType.title === 'Vitals') {
-            vitalsObjArray = documentItem.document.body.vitals;
-            if(vitalsObjArray !== undefined){
-              vitalsObjArray.forEach(item => {
-                this.lineChartData[0].data.push(item.bloodPressure.systolic);
+        let len2 = payload.data[0].documentations.length - 1;
+        for (let k = len2; k >= 0; k--) {
+          if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
+            vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
+            if (vitalsObjArray !== undefined) {
+              let len3 = vitalsObjArray.length - 1;
+              for (let l = 0; l <= len3; l++) {
+                this.lineChartData[0].data.push(vitalsObjArray[l].bloodPressure.systolic);
                 this.lineChartData[0].label = "Systolic";
-                this.lineChartData[1].data.push(item.bloodPressure.diastolic);
+                this.lineChartData[1].data.push(vitalsObjArray[l].bloodPressure.diastolic);
                 this.lineChartData[1].label = "Diastolic";
-                this.lineChartData[2].data.push(item.temperature);
+                this.lineChartData[2].data.push(vitalsObjArray[l].temperature);
                 this.lineChartData[2].label = "Temperature";
-                this.lineChartData[3].data.push(item.bodyMass.height);
+                this.lineChartData[3].data.push(vitalsObjArray[l].bodyMass.height);
                 this.lineChartData[3].label = "Height";
-                this.lineChartData[4].data.push(item.bodyMass.weight);
+                this.lineChartData[4].data.push(vitalsObjArray[l].bodyMass.weight);
                 this.lineChartData[4].label = "Weight";
-                this.lineChartData[5].data.push(item.bodyMass.bmi);
+                this.lineChartData[5].data.push(vitalsObjArray[l].bodyMass.bmi);
                 this.lineChartData[5].label = "BMI";
-                const d = new Date(item.updatedAt);
-                let dt = this.dateFormater(d);
-                this.lineChartLabels.push(dt);
-              });
-              this.lineChartData =  this.refreshVitalsGraph(this.lineChartData);
+                const d = new Date(vitalsObjArray[l].updatedAt);
+                let dt = format(d, 'DD/MM/YY HH:mm:ss a');
+                JSON.parse(JSON.stringify(this.lineChartLabels.push(dt)));
+              };
+              this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
             }
 
           }
-        });
+        }
       }
-    })
+    }, error => {
+
+    });
   }
 
-  dateFormater(d) {
-    var dt = [d.getDate(),
-    d.getMonth() + 1].join('/') + ' ' +
-      [d.getHours(),
-      d.getMinutes(),
-      d.getSeconds()].join(':');
-    return dt;
-  }
-
-  refreshVitalsGraph(lineChartData:any[]) {
+  refreshVitalsGraph(lineChartData: any[]) {
     let _lineChartData: Array<any> = new Array(lineChartData.length);
     for (let i = 0; i < lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
@@ -279,6 +276,10 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       }
     }
     return _lineChartData;
+  }
+
+  refreshVitalsChanged(value) {
+    this.bindVitalsDataToChart();
   }
 
   getForms() {
@@ -292,7 +293,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       const user$ = Observable.fromPromise(this.userService.find({ query: { personId: this.patient.personId } }));
       Observable.forkJoin([patient$, user$]).subscribe((results: any) => {
         this.patient = results[0];
-        console.log(this.patient.personDetails.nextOfKin);
         this.selectedUser = results[1];
 
       })
@@ -373,7 +373,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       this.patient = payload;
     },
       error => {
-        console.log(error);
       });
     this.contentSecMenuShow = false;
   }
@@ -637,11 +636,9 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
   }
 
 }

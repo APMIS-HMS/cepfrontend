@@ -1,10 +1,10 @@
 <div class="survery">
     <div class="">
         <!--<div class="row" style="position: absolute;margin-top: -57px; width:100%;">
-            <div class="col-sm-4 col-md-4 col-xs-12 pull-right" >
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Search inventory" [formControl]="searchControl" >
-                </md-input-container>
+            <div class="col-sm-4 col-mat-4 col-xs-12 pull-right" >
+                <mat-input-container class="example-full-width">
+                    <input matInput placeholder="Search inventory" [formControl]="searchControl" >
+                </mat-input-container>
             </div>
             <br><br>
         </div>-->
@@ -59,7 +59,7 @@
                 <div class="prodWrap" *ngIf="inventories.length === 0 && loading">
                     <div class="prod-row" style="height: 55px">
                         <div style="width: 100%; text-align:center;">
-                            <md-spinner class="small-spinner"></md-spinner>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
@@ -121,25 +121,25 @@
         </div>
     </div>
 
-    <div *ngIf="adjustStock" class="adjust-overlay">            
-            <div class="overlay-content">
-                <div class="row">
-                    <form>
-                        <div class="container-box">
-                            <a (click)="closeAdjustStock()" class="closebtn pull-right">&times;</a>
-                    <h4 class="text-center h2-margin-top"> Adjust Stock {{selectedInventory.productObject.name}} | {{selectedTransaction.batchNumber}} </h4>
+    <div *ngIf="adjustStock" class="adjust-overlay">
+        <div class="overlay-content">
+            <div class="row">
+                <form>
+                    <div class="container-box">
+                        <a (click)="closeAdjustStock()" class="closebtn pull-right">&times;</a>
+                        <h4 class="text-center h2-margin-top"> Adjust Stock {{selectedInventory.productObject.name}} | {{selectedTransaction.batchNumber}} </h4>
                         <div class="col-sm-12">
-                               <div class="col-sm-6 ">
-                            <!--<div class="form-group">
+                            <div class="col-sm-6 ">
+                                <!--<div class="form-group">
                                 <label for="exampleInputEmail1">System Quantity</label>
                                 <input [formControl]="systemQuantity" type="number" min="0" class="form-control" id="textInput" placeholder="123">
                             </div>-->
-                            <md-input-container class="example-full-width">
-                            <input mdInput [formControl]="systemQuantity"  type="number" min="0" placeholder="System Quantity">
-                            </md-input-container>
-                        </div>
-                        <div class="col-sm-6 ">
-                            <!--<div class="form-group">
+                                <mat-input-container class="example-full-width">
+                                    <input matInput [formControl]="systemQuantity" type="number" min="0" placeholder="System Quantity">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <!--<div class="form-group">
                                 <label for="exampleInputEmail1">Unit</label>
                                 <select class="form-control"> 
                                     <option>Packs</option>
@@ -147,26 +147,28 @@
                                     <option>Small Packs</option>
                                 </select>
                             </div>-->
-                            <md-select placeholder="Unit" name="food">
-                                <md-option *ngFor="let food of foods" [value]="food.value">
-                                {{food.viewValue}}
-                                </md-option>
-                            </md-select>
+                                <mat-form-field>
+                                    <mat-select placeholder="Unit" name="food">
+                                        <mat-option *ngFor="let food of foods" [value]="food.value">
+                                            {{food.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </div>
-                        </div>
-                        
+
                         <div class="col-sm-12">
-                               <div class="col-sm-6">
-                            <!--<div class="form-group">
+                            <div class="col-sm-6">
+                                <!--<div class="form-group">
                                 <label for="exampleInputEmail1">Physical Quantity</label>
                                 <input [formControl]="physicalQuantity" type="number" min="0" class="form-control" id="textInput" placeholder="123">
                             </div>-->
-                            <md-input-container class="example-full-width">
-                            <input mdInput [formControl]="physicalQuantity"  type="number" min="0" placeholder="Physical Quantity">
-                            </md-input-container>
-                        </div>
-                        <div class="col-sm-6">
-                            <!--<div class="form-group">
+                                <mat-input-container class="example-full-width">
+                                    <input matInput [formControl]="physicalQuantity" type="number" min="0" placeholder="Physical Quantity">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-sm-6">
+                                <!--<div class="form-group">
                                 <label for="exampleInputEmail1">Unit</label>
                                 <select class="form-control"> 
                                 <option>Packs</option>
@@ -174,27 +176,29 @@
                                 <option>Small Packs</option>
                             </select>
                             </div>-->
-                            <md-select placeholder="Units" name="food">
-                                <md-option *ngFor="let food of foods" [value]="food.value">
-                                {{food.viewValue}}
-                                </md-option>
-                            </md-select>
+                                <mat-form-field>
+                                    <mat-select placeholder="Units" name="food">
+                                        <mat-option *ngFor="let food of foods" [value]="food.value">
+                                            {{food.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </div>
-                        </div>
+                        <div class="col-sm-12">
                             <div class="col-sm-12">
-                            <div class="col-sm-12">
-                            <!--<label for="exampleInputEmail1">Comment</label>
+                                <!--<label for="exampleInputEmail1">Comment</label>
                             <textarea [formControl]="comment" type="text"> </textarea>-->
-                             <md-input-container class="example-full-width">
-                            <textarea mdInput placeholder="Comment"></textarea>
-                            </md-input-container>
+                                <mat-input-container class="example-full-width">
+                                    <textarea matInput placeholder="Comment"></textarea>
+                                </mat-input-container>
+                            </div>
                         </div>
-                        </div>
-                         <div class="col-md-12 col-sm-12 col-xs-12 text-center margin-top-28px">
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center margin-top-28px">
                             <button (click)="auditProduct()" class="btn btn-primary adjust-btn">Adjust Stock</button>
                         </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
+        </div>
     </div>
