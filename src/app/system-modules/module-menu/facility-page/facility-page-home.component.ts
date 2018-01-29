@@ -49,6 +49,7 @@ export class FacilityPageHomeComponent implements OnInit {
   newUnit = false;
   newSubLocModal_on = false;
   createWorkspace = false;
+  pgMenuToggle = false;
 
   searchControl: FormControl = new FormControl();
 
@@ -110,6 +111,7 @@ export class FacilityPageHomeComponent implements OnInit {
   }
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]);
+    this.pgMenuToggle = false;
     if(value == ''){
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
@@ -233,7 +235,7 @@ export class FacilityPageHomeComponent implements OnInit {
     })
   }
 
-  private checkPageUrl(param: string) {
+  private checkPageUrl(param: string) { 
     console.log(param);
     if (param.includes('facility/modules')) {
       this.modulesContentArea = true;
@@ -336,5 +338,8 @@ export class FacilityPageHomeComponent implements OnInit {
   autoCompleteCallback1(selectedData: any) {
     //do any necessery stuff.
     console.log(selectedData);
+  }
+  pgMenu_click(){
+    this.pgMenuToggle = !this.pgMenuToggle;
   }
 }
