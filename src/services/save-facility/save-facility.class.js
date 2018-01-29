@@ -36,7 +36,10 @@ class Service {
             let facilityRole = {
               facilityId: facPayload._id,
             };
-            let facilitiesRole = [];
+            let facilitiesRole = user.facilitiesRole;
+            if (user.facilitiesRole === undefined) {
+              facilitiesRole = [];
+            }
             facilitiesRole.push(facilityRole);
 
             userService.patch(user._id, {
