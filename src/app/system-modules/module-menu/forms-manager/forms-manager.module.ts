@@ -13,6 +13,7 @@ import { ScopeLevelService, FormTypeService } from '../../../services/module-man
 import { OrderSetTemplateService } from '../../../services/facility-manager/setup/index';
 import { FormsService } from '../../../services/facility-manager/setup/index';
 import { TreatementTemplateComponent } from './treatement-template/treatement-template.component';
+import { MaterialModule } from 'app/shared-common-modules/material-module';
 // import { TemplateMedicationComponent } from './treatement-template/template-medication/template-medication.component';
 // import { TemplateLabComponent } from './treatement-template/template-lab/template-lab.component';
 // import { TemplateProcedureComponent } from './treatement-template/template-procedure/template-procedure.component';
@@ -35,6 +36,7 @@ import { TreatementTemplateComponent } from './treatement-template/treatement-te
     ],
     imports: [
         SharedModule,
+        MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
