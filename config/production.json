@@ -1,6 +1,6 @@
 
 {
-  "host": "apmisapiv-2-app.feathersjs.com",
+  "host": "https://apmisapilive.azurewebsites.net",
   "port": 3030,
   "mongodb": "mongodb://starday:eBCxzAGxTlFyoxRL@cluster0-shard-00-00-61h9m.mongodb.net:27017,cluster0-shard-00-01-61h9m.mongodb.net:27017,cluster0-shard-00-02-61h9m.mongodb.net:27017/apmisapiv_2?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
    "public": "../public/",
