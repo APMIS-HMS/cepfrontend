@@ -210,6 +210,7 @@ export class WalletComponent implements OnInit {
   }
 
   paymentCancel() {
+    
   }
 
   // Notification
