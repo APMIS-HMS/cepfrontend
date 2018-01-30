@@ -14,69 +14,50 @@ class Service {
     return Promise.resolve([]);
   }
 
-  get(id, params) {
+  async get(id, params) {
     const billingsService = this.app.service('billings');
     const patientService = this.app.service('patients');
     const peopleService = this.app.service('people');
-    return new Promise(function (resolve, reject) {
-      billingsService.find({
-        query: {
-          facilityId: id,
-          $sort: {
-            updatedAt: -1
-          },
-          $limit: false
-        }
-      }).then(payload => {
-        var bill = {};
-        var billings = [];
-        if (params.query.isQuery == true) {
-          let len = payload.data.length - 1;
-          for (let i = len; i >= 0; i--) {
-            patientService.get(payload.data[i].patientId, {}).then(patient => {
-              peopleService.get(patient.personId, {}).then(person => {
-                if (person.firstName.toLowerCase().includes(params.query.name.toLowerCase()) ||
-                  person.lastName.toLowerCase().includes(params.query.name.toLowerCase())) {
-                  billings.push(payload.data[i]);
-                  var result = [];
-                  var totalAmountBilled = 0;
-                  for (let i = billings.length - 1; i >= 0; i--) {
-                    const val = billings[i];
-                    patientService.get(val.patientId, {}).then(patient => {
-                      peopleService.get(patient.personId, {}).then(person => {
-                        val.personDetails = person;
-                        result.push(val);
-                        if (i == 0) {
-                          GetBillData(resolve, result, totalAmountBilled, bill);
-                        }
-                      });
-                    });
-                  }
-                }
-              });
-            });
-          }
-        } else {
-          billings = payload.data;
-          var result = [];
-          var totalAmountBilled = 0;
-          for (let i = billings.length - 1; i >= 0; i--) {
-            const val = billings[i];
-            patientService.get(val.patientId, {}).then(patient => {
-              peopleService.get(patient.personId, {}).then(person => {
-                val.personDetails = person;
-                result.push(val);
-                if (i == 0) {
-                  GetBillData(resolve, result, totalAmountBilled, bill);
-                }
-              });
-            });
-          }
-        }
-      }, error => {
-        reject(error);
-      });
+    var awaitedBills = await billingsService.find({
+      query: {
+        facilityId: id,
+        $sort: {
+          updatedAt: -1
+        },
+        $limit: false
+      }
     });
+    var bill = {};
+    var billings = [];
+    if (params.query.isQuery == true) {
+      let len = awaitedBills.data.length - 1;
+      for (let i = len; i >= 0; i--) {
+        var awaitedPatient = await patientService.get(awaitedBills.data[i].patientId, {});
+        var awaitPerson = await peopleService.get(awaitedPatient.personId, {});
+        if (awaitPerson.firstName.toLowerCase().includes(params.query.name.toLowerCase()) ||
+          awaitPerson.lastName.toLowerCase().includes(params.query.name.toLowerCase())) {
+          billings.push(awaitedBills.data[i]);
+        }
+      }
+    } else {
+      billings = awaitedBills.data;
+    }
+    var result = [];
+    var totalAmountBilled = 0;
+    if (billings.length > 0) {
+      for (let i = billings.length - 1; i >= 0; i--) {
+        const val = billings[i];
+        var awaitedPatient = await patientService.get(val.patientId, {});
+        var awaitPerson = await peopleService.get(awaitedPatient.personId, {});
+        val.personDetails = awaitPerson;
+        result.push(val);
+        if (i == 0) {
+          return GetBillData(result, totalAmountBilled, bill);
+        }
+      }
+    } else {
+      return GetBillData(result, totalAmountBilled, bill);
+    }
   }
 
   create(data, params) {
@@ -102,7 +83,7 @@ class Service {
   }
 }
 
-function GetBillData(resolve, result, totalAmountBilled, bill) {
+function GetBillData(result, totalAmountBilled, bill) {
   if (result.length > 0) {
     var counter = 0;
     var today = new Date();
@@ -124,22 +105,20 @@ function GetBillData(resolve, result, totalAmountBilled, bill) {
             totalAmountBilled += parseInt(result[j].billItems[k].totalPrice.toString());
           }
         }
-        if (j == 0) {
-          var patientSumBills = result.filter(x => x.grandTotalExcludeInvoice > 0);
-          bill = {
-            "bills": patientSumBills,
-            "amountBilled": totalAmountBilled
-          };
-          resolve(bill);
-        }
       }
     }
+    var patientSumBills = result.filter(x => x.grandTotalExcludeInvoice > 0);
+    bill = {
+      "bills": patientSumBills,
+      "amountBilled": totalAmountBilled
+    };
+    return bill;
   } else {
     bill = {
       "bills": [],
       "amountBilled": totalAmountBilled
     };
-    resolve(bill);
+    return bill;
   }
 
 }
