@@ -67,6 +67,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   createWorkspace = false;
   assignUnitPop = false;
   editBasicPop = false;
+  userPrivileges = false;
   
 
   departmentbool = false;
@@ -259,6 +260,8 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.assignUnitPop = false;
     this.createWorkspace = false;
     this.editBasicPop = false;
+    this.userPrivileges = false;
+
   }
   show_changeUserImg() {
     this.changeUserImg = true;
@@ -313,6 +316,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.employee.departmentId = this.selectedValue;
     this.employeeService.update(this.employee).then(value => {
       this.employee = value;
+      this.systemService.announceSweetProxy('Employee information successfully updated.', 'success');
       this.editDepartment = !this.editDepartment;
     });
   }
@@ -360,4 +364,9 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   nextofkinShow() {
     this.nextofkin = !this.nextofkin;
   }
+  employeeAccessRoleShow() {
+    this.userPrivileges = !this.userPrivileges;
+    
+  }
+
 }

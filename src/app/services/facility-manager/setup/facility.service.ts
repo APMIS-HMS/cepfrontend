@@ -16,6 +16,7 @@ export class FacilitiesService {
   private _rest;
   private _restLogin;
   private _socketAddNetwork;
+  private _socketJoinNetwork;
 
   private sliderAnnouncedSource = new Subject<Object>();
   sliderAnnounced$ = this.sliderAnnouncedSource.asObservable();
@@ -38,6 +39,7 @@ export class FacilitiesService {
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
     this._socketAddNetwork = _socketService.getService('add-networks');
+    this._socketJoinNetwork = _socketService.getService('join-network');
     // client.service('messages').on('created', addMessage);
 
   }
@@ -188,11 +190,14 @@ export class FacilitiesService {
   }
 
   joinNetwork(facility: any, isDelete) {
-    return this._socketAddNetwork.createNetwork(facility, {
-      query: {
-        'isdelete': isDelete
-      }
-    })
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketJoinNetwork.create(facility, {
+        query: {
+          'isdelete': isDelete
+        }
+      }))
+    });
   }
 
   getNetwork(fac, isMemberOf) {
@@ -202,4 +207,5 @@ export class FacilitiesService {
       }
     })
   }
+
 }

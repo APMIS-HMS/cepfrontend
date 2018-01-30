@@ -1,18 +1,19 @@
 export interface WalletTransaction {
   ref?: any;
-  paymentMethod?: string;
-  ePaymentMethod?: string;
+  payment?: any;
+  entity: string;
+  personId?: string;
+  facilityId?: string;
+  paidBy?: string;
   sourceId?: string;
-  sourceType: EntityType;
-  transactionType: TransactionType;
-  transactionMedium: TransactionMedium;
-  amount: number;
-  description: string;
+  sourceType?: EntityType;
+  transactionType?: TransactionType;
+  transactionMedium?: TransactionMedium;
+  description?: string;
   destinationId?: string;
-  destinationType: EntityType;
+  destinationType?: EntityType;
   transactionStatus?: string;
-  transactionDirection: TransactionDirection;
-  paidBy: string;
+  transactionDirection?: TransactionDirection;
 }
 export enum TransactionType {
     Dr,

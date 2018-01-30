@@ -7,7 +7,7 @@ import { NgUploaderModule } from 'ngx-uploader';
 import { GlobalPatientLookupComponent } from './global-patient-lookup/global-patient-lookup.component';
 import { VerifyTokenComponent } from '../facility-setup/verify-token/verify-token.component';
 import { AddLogoComponent } from '../facility-setup/add-logo/add-logo.component';
-import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
+// import { AddFacilityModuleComponent } from '../facility-setup/add-facility-module/add-facility-module.component';
 import { FacilityInfoComponent } from '../facility-setup/facility-info/facility-info.component';
 import { ContactInfoComponent } from '../facility-setup/contact-info/contact-info.component';
 import { FacilitySetupComponent } from '../facility-setup/facility-setup.component';

@@ -29,4 +29,5 @@ export interface Facility {
     invitees: any;
     country?:any;
     wallet:any;
+    primaryContactPhoneNo?: any;
 }

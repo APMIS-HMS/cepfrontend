@@ -40,11 +40,11 @@
                     </tr>
                 </tbody>
             </table>
-            <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="!uncheck" (click)="add()">
+            <button [ngClass]="{'cta-1':selectedFacilityIds.length > 0 && !loading, 'cta-1-disable':selectedFacilityIds.length === 0 || loading}" [disabled]="selectedFacilityIds.length === 0 || loading" *ngIf="!uncheck" (click)="confirmUpdate('add')">
                 <span *ngIf="!loading">Add</span>
                 <span *ngIf="loading">Loading...</span>
             </button>
-            <button class="cta-1" [disabled]="checkboxLen !> 1" *ngIf="uncheck" (click)="update()">
+            <button [ngClass]="{'cta-1':selectedFacilityIds.length > 0 && !loading, 'cta-1-disable':selectedFacilityIds.length === 0 || loading}" [disabled]="checkboxLen !> 1" *ngIf="uncheck" (click)="confirmUpdate('update')">
                 <span *ngIf="!loading">Update</span>
                 <span *ngIf="loading">Loading...</span>
             </button>

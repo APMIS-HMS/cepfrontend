@@ -5,14 +5,16 @@
     padding: 20px;
     border-radius: 5px;
 }
-.card-list-item{
+
+.card-list-item {
     border-bottom: solid rgb(204, 204, 204) 1px;
     padding-top: 20px;
     padding-bottom: 20px;
     font-size: 1.2rem;
 }
-.card-list-item:last-of-type{
-    border: none    
+
+.card-list-item:last-of-type {
+    border: none
 }
 
 .blue-gradient {
@@ -27,6 +29,26 @@
 
 .transparent-icon {
     opacity: 0.5;
+}
+
+.box-outline {
+    border: solid 1px #ddd;
+    padding: 0px 20px 0px 20px;
+}
+
+.box{
+    margin-bottom: 20px
+}
+
+.padding{
+    padding: 10px;
+}
+
+
+
+
+.mat-form-field {
+    width: 100%;
 }
 
 hr.white {

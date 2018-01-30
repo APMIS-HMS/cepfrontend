@@ -13,6 +13,7 @@ import { ChartsModule } from 'ng2-charts'
     exports: [
     ],
     imports: [
+      SharedModule,
         MaterialModule,
         walletRoutes,
         ChartsModule

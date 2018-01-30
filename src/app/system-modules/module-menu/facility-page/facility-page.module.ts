@@ -1,3 +1,4 @@
+import { NewFacEmployeeComponent } from './employees/new-fac-employee/new-fac-employee.component';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { ApmisCheckboxFeatureComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox-feature.component';
 import { ApmisCheckboxComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox.component';
@@ -47,6 +48,7 @@ import { ApmisCheckboxChildComponent } from './employees/employeemanager-detailp
 import { FacilityNetworkComponent } from './facility-network/facility-network.component';
 import { AddMemberComponent } from './facility-network/add-member/add-member.component';
 import { AddOtherComponent } from './facility-network/add-other/add-other.component';
+import { EmployeeAccessRolesComponent } from './employees/employeemanager-detailpage/employee-access-roles/employee-access-roles.component';
 
 @NgModule({
     declarations: [
@@ -82,7 +84,9 @@ import { AddOtherComponent } from './facility-network/add-other/add-other.compon
         ApmisCheckboxChildComponent,
         FacilityNetworkComponent,
         AddMemberComponent,
-        AddOtherComponent
+        AddOtherComponent,
+        NewFacEmployeeComponent,
+        EmployeeAccessRolesComponent
     ],
     exports: [
     ],

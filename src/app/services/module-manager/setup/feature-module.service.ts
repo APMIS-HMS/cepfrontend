@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 export class FeatureModuleService {
   public _socket;
   private _rest;
+  private _roleSocket;
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -12,9 +13,12 @@ export class FeatureModuleService {
     // this._rest = _restService.getService('featuremodules');
     this._rest = _restService.getService('features');
     this._socket = _socketService.getService('features');
+    this._roleSocket = _socketService.getService('facility-roles');
     this._socket.timeout = 30000;
+    this._roleSocket.timeout = 30000;
     this._socket.on('created', function (features) {
     });
+    this._roleSocket.on('created', function (features) {});
   }
 
   find(query: any) {
@@ -34,6 +38,14 @@ export class FeatureModuleService {
 
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  getFacilityRoles(id: string, query: any){
+    return this._roleSocket.get(id, query);
+  }
+
+  assignUserRole(data){
+    return this._roleSocket.create(data);
   }
 
 }

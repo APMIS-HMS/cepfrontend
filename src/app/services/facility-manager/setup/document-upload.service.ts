@@ -48,11 +48,13 @@ export class DocumentUploadService {
   }
 
   post(body: any) {
-    const host = this._restService.getHost();
-    const path = host + '/upload-docs';
-    return request
-        .post(path)
-        .send(body);
+    // const host = this._restService.getHost();
+    // const path = host + '/upload-facade';
+    // return request
+    //     .post(path)
+    //     .send(body);
+
+    return this._socketService.getService('upload-facade').create(body);
   }
 
 }

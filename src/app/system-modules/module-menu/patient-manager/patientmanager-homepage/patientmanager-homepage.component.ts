@@ -349,6 +349,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.close_onClick();
       this._notification('Success', 'Patient details has been updated successfully.');
     }).catch(err => {
+      console.log(err);
       this.updatePatientBtnText = 'Update';
       this._notification('Error', 'There was an error updating user record, Please try again later.');
     });
@@ -439,7 +440,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
-  newUpload_show() {
+  newUpload_show(patient) {
+    this.selectedPatient = patient;
     this.newUpload = true;
   }
   compareState(l1: any, l2: any) {

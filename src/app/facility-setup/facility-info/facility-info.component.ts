@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilitiesService } from './../../services/facility-manager/setup/facility.service';
 
@@ -38,7 +39,8 @@ export class FacilityInfoComponent implements OnInit {
 		private _countryServiceFacade: CountryServiceFacadeService,
 		private _facilityService: FacilitiesService,
 		private _facilityServiceFacade: FacilityFacadeService,
-		private _systemModuleService: SystemModuleService
+		private _systemModuleService: SystemModuleService,
+		private titleCasePipe:TitleCasePipe
 	) { }
 
 	ngOnInit() {
@@ -111,15 +113,15 @@ export class FacilityInfoComponent implements OnInit {
 	save(form) {
 		this._systemModuleService.on();
 		let facility: any = {
-			name: form.facilityname,
-			email: form.facilityemail,
-			cacNo: form.cac,
-			primaryContactPhoneNo: form.facilityphonNo,
+			name: this.titleCasePipe.transform(form.facilityname),
+			email: this.titleCasePipe.transform(form.facilityemail),
+			cacNo: this.titleCasePipe.transform(form.cac),
+			primaryContactPhoneNo: this.titleCasePipe.transform(form.facilityphonNo),
 			address: this.selectedLocation,
 			country: form.facilitycountry,
 			state: form.facilitystate,
 			city: form.facilitycity,
-			street: form.facilitystreet
+			street: this.titleCasePipe.transform(form.facilitystreet)
 		}
 		let payload = {
 			facility: facility,

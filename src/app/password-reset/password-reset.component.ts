@@ -71,6 +71,9 @@ export class PasswordResetComponent implements OnInit {
             this.errMsg = 'Error while generating isTokenAvailable, please try again!';
             this.systemModuleService.off();
           }
+        },error =>{
+          this.systemModuleService.off();
+          this.systemModuleService.announceSweetProxy('Invalid APMIS ID or Telephone Number, please try again', 'error');
         });
     } else {
       this.mainErr = false;
