@@ -3,12 +3,13 @@ const createService = require('./upload-facade.class.js');
 const hooks = require('./upload-facade.hooks');
 
 module.exports = function (app) {
-  
+
   const paginate = app.get('paginate');
 
   const options = {
     name: 'upload-facade',
-    paginate
+    paginate,
+    app: app
   };
 
   // Initialize our service with any options it requires

@@ -9,29 +9,38 @@ class Service {
   }
 
   find(params) {
-    return Promise.resolve([]);
+    logger.info('find me');
+    return new Promise(function (resolve, reject) {
+      logger.info('find me');
+      const ACCESS_KEY = process.env.AZURE_STORAGE_ACCESS_KEY;
+      var blobSvc = azure.createBlobService('apmisstorageaccount', ACCESS_KEY);
+      let blobUrl = blobSvc.getUrl(params.query.container, params.query.fileName);
+      resolve(blobUrl);
+      
+    });
+
   }
 
   get(id, params) {
-    return Promise.resolve({
-      id, text: `A new message with ID: ${id}!`
-    });
+    logger.info('get me');
   }
 
   setup(app) {
     this.app = app;
   }
 
-  create(data, params) {
+  async create(data, params) {
     const ACCESS_KEY = process.env.AZURE_STORAGE_ACCESS_KEY;
-    const fileName = params.query.fileName;
-    var rawdata = data.rawImage;
+    var blobSvc = azure.createBlobService('apmisstorageaccount', ACCESS_KEY);
+    const fileName = params.fileName;
+
+    var rawdata = data.base64;
     var matches = rawdata.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/);
     var type = matches[1];
     var buffer = new Buffer(matches[2], 'base64');
 
     return new Promise(function (resolve, reject) {
-      var blobSvc = azure.createBlobService('apmisstorageaccount', ACCESS_KEY);
+
       blobSvc.createBlockBlobFromText('personcontainer', fileName, buffer, { contentType: type }, function (error, result, response) {
 
         if (error) {
