@@ -115,6 +115,30 @@ export class WalletComponent implements OnInit, AfterViewInit {
       }
     });
 
+    this.paymentFormGroup.controls['fundAmount'].valueChanges.subscribe(val => {
+      const paymentType = this.paymentFormGroup.controls['paymentType'].value;
+
+      if (val !== 0 && val >= 500) {
+        if (paymentType === 'Cash' || paymentType === 'Cheque' || paymentType === 'POS') {
+          this.cashPayment = true;
+          this.flutterwavePayment = false;
+          this.paystackPayment = false;
+        } else if (paymentType === 'Flutterwave') {
+          this.cashPayment = false;
+          this.flutterwavePayment = true;
+          this.paystackPayment = false;
+        } else if (paymentType === 'Paystack') {
+          this.cashPayment = false;
+          this.flutterwavePayment = false;
+          this.paystackPayment = true;
+        }
+      } else {
+        this.cashPayment = false;
+        this.flutterwavePayment = false;
+        this.paystackPayment = false;
+      }
+    });
+
     this.search = new FormControl('', []);
     this.search.valueChanges.debounceTime(300).distinctUntilChanged().subscribe(value => {
       this.loading = false;
@@ -136,6 +160,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     });
 
     this.personService.get(this.patient.personId, {}).then(payload => {
+      console.log(payload);
       this.loading = false;
       if (payload.wallet === undefined) {
         payload.wallet = {
@@ -152,8 +177,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.refKey =
-      (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
+    this.refKey = (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
 
     // let formData = { type: 'customers' };
     // this._payStackService.paystack(formData).then(payload => {
@@ -203,7 +227,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
         medium = TransactionMedium.POS;
       }
       // Wallet model.
-      let walletTransaction: WalletTransaction = {
+      const walletTransaction = {
         paymentMethod: value.paymentType,
         transactionType: TransactionType.Cr,
         transactionMedium: medium,
@@ -233,7 +257,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       }).catch(err => {
       });
     } else {
-      let text = 'Please enter amount above 500 naira and also select payment type';
+      const text = 'Please enter amount above 500 naira and also select payment type';
       this._notification('Info', text);
     }
   }
@@ -257,8 +281,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     const desc = 'Funded wallet via ' + this.paymentFormGroup.controls['paymentType'].value;
     if (ePaymentMethod === 'Flutterwave') {
       flutterwaveRes = {
-        data: paymentRes.data.data,
-        tx: {
+          amount: paymentRes.tx.charged_amount,
           charged_amount: paymentRes.tx.charged_amount,
           customer: paymentRes.tx.customer,
           flwRef: paymentRes.tx.flwRef,
@@ -267,27 +290,34 @@ export class WalletComponent implements OnInit, AfterViewInit {
           paymentType: paymentRes.tx.paymentType,
           raveRef: paymentRes.tx.raveRef,
           status: paymentRes.tx.status
-        }
       };
     }
 
-    let walletTransaction: WalletTransaction = {
+    const walletTransaction: WalletTransaction = {
       ref: (ePaymentMethod === 'Flutterwave') ? flutterwaveRes : paymentRes,
-      paymentMethod: 'e-Payment',
-      ePaymentMethod: ePaymentMethod,
-      transactionType: TransactionType.Cr,
-      transactionMedium: (ePaymentMethod === 'Flutterwave') ? TransactionMedium.Flutterwave : TransactionMedium.PayStack,
-      amount: parseFloat(this.paymentFormGroup.controls['fundAmount'].value),
-      description: desc,
-      sourceId: this.person._id,
-      destinationId: this.person._id,
-      sourceType: EntityType.Person,
-      destinationType: EntityType.Person,
-      transactionDirection: TransactionDirection.PersonToPerson,
-      paidBy: this.user.data.person._id
+      payment: {
+        type: 'e-payment',
+        route: (ePaymentMethod === 'Flutterwave') ? 'Flutterwave' : 'Paystack',
+      },
+      entity: 'Person',
+      destinationId: this.person._id
+      // ePaymentMethod: ePaymentMethod,
+      // transactionType: TransactionType.Cr,
+      // transactionMedium: (ePaymentMethod === 'Flutterwave') ? TransactionMedium.Flutterwave : TransactionMedium.PayStack,
+      // amount: parseFloat(this.paymentFormGroup.controls['fundAmount'].value),
+      // description: desc,
+      // sourceId: this.person._id,
+      // destinationId: this.person._id,
+      // sourceType: EntityType.Person,
+      // destinationType: EntityType.Person,
+      // transactionDirection: TransactionDirection.PersonToPerson,
+      // paidBy: this.user.data.person._id
     };
 
+    console.log(walletTransaction);
+
     this.personService.fundWallet(walletTransaction).then((res: any) => {
+      console.log(res);
       this.loading = false;
       if (res.body.status === 'success') {
         this.paymentFormGroup.reset();
@@ -303,6 +333,12 @@ export class WalletComponent implements OnInit, AfterViewInit {
         this._notification('Error', res.body.message);
       }
     }).catch(err => {
+      if (err instanceof Error) {
+        console.log('Error - ', err.message);
+        console.log('Error - ', err.stack);
+      } else {
+        console.log('Error status - ${err.error}, and Error Detail - ${err.error}');
+      }
     });
   }
 

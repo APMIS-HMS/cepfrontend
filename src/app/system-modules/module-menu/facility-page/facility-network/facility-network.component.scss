@@ -36,3 +36,22 @@
     cursor: pointer;
     color: #194985;
 }
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 500px;
+}
+
+@media only screen and (max-width: 900px) {
+    .net-inwrap{
+        display: block;
+    }
+    .net-itemA{
+        margin-bottom: 10px;
+    }
+    .net-itemA, .net-itemB{
+        width: 100%;
+    }
+}

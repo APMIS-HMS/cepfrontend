@@ -16,9 +16,9 @@ export class FacilitypageSidesectComponent implements OnInit {
 
   constructor(private facilityService:FacilitiesService, private locker:CoolLocalStorage) {
     this.facilityService.patchListner.subscribe(payload =>{
-      console.log(payload);
       this.selectedFacility = payload;
       this.locker.setObject('selectedFacility', payload);
+      this.ngOnInit();
     });
    }
 

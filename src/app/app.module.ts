@@ -1,3 +1,5 @@
+import { TitleCasePipe } from '@angular/common';
+import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
 import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
@@ -43,7 +45,7 @@ import { FacilitySetupComponent } from './facility-setup/facility-setup.componen
 import { ContactInfoComponent } from './facility-setup/contact-info/contact-info.component';
 import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
-import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
+// import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from './shared-common-modules/material-module';
@@ -126,7 +128,7 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService
+    SetupService.FluidService, SecurityQuestionsService,TitleCasePipe
   ],
   bootstrap: [AppComponent]
 })

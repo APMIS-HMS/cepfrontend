@@ -24,7 +24,7 @@ export class InvoiceComponent implements OnInit {
     isPaidClass = false;
     isWaved = false;
     addItem = false;
-    paidStatus = "UNPAID";
+    //paidStatus = "UNPAID";
     itemEditShow = false;
     itemEditShow2 = false;
     itemEditShow3 = false;
@@ -60,6 +60,7 @@ export class InvoiceComponent implements OnInit {
         private _todayInvoiceService: TodayInvoiceService) {
         this.user = <User>this.locker.getObject('auth');
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+        console.log(this.selectedFacility);
         this.patientService.receivePatient().subscribe((payload: Patient) => {
             this.selectedPatient = payload;
             this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
@@ -77,10 +78,8 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
+                console.log(this.invoiceGroups);
                 this.isLoadingInvoice = false;
-                if (this.isPaymentMade == false) {
-                    this.selectedInvoiceGroup = <Invoice>{};
-                }
             }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
 
         this.isLoadingOtherInvoice = true;
@@ -89,6 +88,7 @@ export class InvoiceComponent implements OnInit {
                 "isQuery": false  
             }
         }).then(payload => {
+            console.log(payload)
             this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
             this.isLoadingOtherInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
@@ -104,6 +104,7 @@ export class InvoiceComponent implements OnInit {
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
+                    console.log(this.selectedPatient);
                     this.getPatientInvoices();
                 });
             }
@@ -144,34 +145,16 @@ export class InvoiceComponent implements OnInit {
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
         console.log(this.selectedInvoiceGroup);
-        if (this.selectedInvoiceGroup.paymentStatus != undefined) {
-            this.paidStatus = this.selectedInvoiceGroup.paymentStatus;
-        }
-
-        if (this.selectedInvoiceGroup.paymentCompleted == true) {
-            this.isPaidClass = true;
-        }
-        if (this.selectedInvoiceGroup.paymentCompleted == false) {
-            this.isPaidClass = false;
-        }
-        if (this.selectedInvoiceGroup.payments[this.selectedInvoiceGroup.payments.length - 1] != undefined) {
-            if (this.selectedInvoiceGroup.paymentCompleted == true && this.selectedInvoiceGroup.payments[this.selectedInvoiceGroup.payments.length - 1].paymentMethod.planType == true) {
-                this.isPaidClass = false;
-            }
-        }
-
-        this.isPaymentMade = false;
     }
 
-    onPersonValueUpdated(person) {
-        console.log(person);
-        this.selectedPatient.personDetails = person;
+    onPersonValueUpdated(item) {
+        console.log(item);
+        if(item.person != undefined){
+            this.selectedPatient.personDetails = item.person;
+        }
         this.isLoadingInvoice = false;
         this.isLoadingOtherInvoice = false;
-        this.isPaidClass = person.isPaid;
-        this.isWaved = person.isWaved;
-        this.paidStatus = person.paidStatus;
-        this.isPaymentMade = true;
+        this.selectedInvoiceGroup = item.invoice;
         this.getPatientInvoices();
     }
 

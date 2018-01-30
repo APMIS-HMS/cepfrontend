@@ -440,6 +440,7 @@
     height: 100%;
     // overflow-y: auto;
     width: 265px;
+    z-index: 2;
 }
 #style-1::-webkit-scrollbar-track
 {
@@ -486,4 +487,18 @@
     text-align: center;
     font-size: 1.1rem;
     color: #fff;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .menu-content-wrap{
+        padding-top: 82px;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .menuBar-facilityName{
+        font-size: 1.7rem
+    }
+    .menuBar-facilityName span{
+        padding-right: 30px;
+    }
   }

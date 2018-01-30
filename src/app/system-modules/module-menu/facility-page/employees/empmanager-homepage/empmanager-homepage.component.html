@@ -1,31 +1,32 @@
-<table cellpadding="0" cellspacing="0" border="0.5">  
-    <thead>
-        <tr>
-            <th> 
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Employee</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Apmis ID</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Department</span>
-            </th>
-			<th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Status</span>
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+<div class="tbl-resp-wrap"> 
+    <table cellpadding="0" cellspacing="0" border="0.5">  
+        <thead>
+            <tr>
+                <th> 
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Employee</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Apmis ID</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Department</span>
+                </th>
+                <th>
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3px;">Status</span>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
-    <tbody>
+    <tbody *ngIf="employees.length > 0">
         <tr  *ngFor="let item of employees">
             <td class="pointer" (click)="navEpDetail(item)">                
                 <div class="empWrap">
@@ -45,6 +46,11 @@
             <td>
                 <div *ngIf="!item.isActive" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i>Activate</div>
             </td>
+        </tr>
+    </tbody>
+    <tbody *ngIf="employees.length == 0">
+        <tr>
+            <span>Content Empty.</span>
         </tr>
     </tbody>
 </table>

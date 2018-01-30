@@ -1,19 +1,19 @@
 <div class="inner-wrap-b body-wrap">
-  <div class="facility-title">Bills/Payment</div>
-  <div class="inner-page-wrap">
-    <ul class="topmenuwrap">
-      <li (click)="makePayment_show()" [hidden]="this.selectedInvoiceGroup.paymentCompleted || this.selectedInvoiceGroup.paymentCompleted == undefined">
-        <i class="fa fa-money" aria-hidden="true"></i>
-        <span>Make Payment</span>
-      </li>
-    </ul>
-    <div class="megaPgWrap">
-      <div class="feedsWrap leftCol">
-        <!--<div class="feedbox">
+    <div class="facility-title">Bills/Payment</div>
+    <div class="inner-page-wrap">
+        <ul class="topmenuwrap">
+            <li (click)="makePayment_show()" [hidden]="this.selectedInvoiceGroup.paymentCompleted || this.selectedInvoiceGroup.paymentCompleted == undefined">
+                <i class="fa fa-money" aria-hidden="true"></i>
+                <span>Make Payment</span>
+            </li>
+        </ul>
+        <div class="megaPgWrap">
+            <div class="feedsWrap leftCol">
+                <!--<div class="feedbox">
           <div (click)="onSelectedInvoice(group)" class="existing-bill-group" *ngFor="let group of invoiceGroups">{{group.createdAt | date}}</div>
         </div>-->
-        <div style="margin-top: -10px;" class="feedbox feedbox_x2 scrollable">
-          <!-- <div class="sideTab_title">Invoices</div>
+                <div style="margin-top: -10px;" class="feedbox feedbox_x2 scrollable">
+                    <!-- <div class="sideTab_title">Invoices</div>
           <ul class="invoices_ul">
             <li class="invoice_header">
               <div>
@@ -31,146 +31,136 @@
             </li>
           </ul> -->
 
-          <div class="pending-wrap">
-            <div class="pending-header">
-              <div class="pending-title">Invoices</div>
-              <div class="search-wrap">
-                <mat-input-container>
-                  <input matInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
-                </mat-input-container>
-              </div>
-            </div>
-            <div class="pending-bills">
-              <div *ngIf="isLoadingInvoice">
-                <i class='fa fa-spinner fa-spin'></i>
-              </div>
-              <div [hidden]="invoiceGroups.length==0">
-                <div class="empWrap" *ngFor="let invoice of invoiceGroups">
-                  <div class="list-labels" (click)="onSelectedInvoice(invoice)">
-                    <div class="pending-name">{{invoice.invoiceNo}}</div>
-                    <div class="oda">
-                      <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
-                      <div class="pending-amount">
-                        <span>Outstanding &#x20a6;</span>{{invoice.balance|numberThr}}
-                      </div>
+                    <div class="pending-wrap">
+                        <div class="pending-header">
+                            <div class="pending-title">Invoices</div>
+                            <div class="search-wrap">
+                                <mat-input-container>
+                                    <input matInput placeholder="search for invoice" [formControl]="searchPendingInvoice">
+                                </mat-input-container>
+                            </div>
+                        </div>
+                        <div class="pending-bills">
+                            <div *ngIf="isLoadingInvoice">
+                                <i class='fa fa-spinner fa-spin'></i>
+                            </div>
+                            <div [hidden]="invoiceGroups.length==0">
+                                <div class="empWrap" *ngFor="let invoice of invoiceGroups">
+                                    <div class="list-labels" (click)="onSelectedInvoice(invoice)">
+                                        <div class="pending-name">{{invoice.invoiceNo}}</div>
+                                        <div class="oda">
+                                            <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
+                                            <div class="pending-amount">
+                                                <span>Outstanding &#x20a6;</span>{{invoice.balance|numberThr}}
+                                            </div>
+                                        </div>
+                                        <div class="pay-status pending-amount">
+                                            <span class="badge-green" *ngIf="invoice.paymentCompleted">{{invoice.paymentStatus}}</span>
+                                            <span class="badge-red" *ngIf="!invoice.paymentCompleted">{{invoice.paymentStatus}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="pay-status pending-amount">
-                      <span class="badge-green" *ngIf="invoice.paymentCompleted">PAID</span>
-                      <span class="badge-red" *ngIf="!invoice.paymentCompleted">UNPAID</span>
+                </div>
+                <div class="feedbox feedbox_x1"></div>
+            </div>
+
+            <div id="print-section" class="contentCol">
+                <div class="billHeader">
+                    <div class="billHeaderLogoWrap">
+                        <img *ngIf="selectedFacility?.logoObject != undefined" [src]="facilityService.transform(selectedFacility?.logoObject.thumbnail)">
+                        <img *ngIf="selectedFacility?.logoObject == undefined" src="assets/images/logos/default.png">
+                        <div class="BillfacilityName">{{selectedFacility?.name}}</div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="feedbox feedbox_x1"></div>
-      </div>
 
-      <div id="print-section" class="contentCol">
-        <div class="billHeader">
-          <div class="billHeaderLogoWrap">
-            <img *ngIf="selectedFacility?.logoObject != undefined" [src]="facilityService.transform(selectedFacility?.logoObject.thumbnail)">
-            <img *ngIf="selectedFacility?.logoObject == undefined" src="assets/images/logos/default.png">
-            <div class="BillfacilityName">{{selectedFacility?.name}}</div>
-          </div>
-
-          <div class="invoiceLabel">INVOICE</div>
-          <div class="headerContactWrap">
-            <div class="billContact">
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-              <div>{{selectedFacility.address.street}}, {{selectedFacility.addressObj.city}}, {{selectedFacility.addressObj.state}}.</div>
-            </div>
-            <div class="billContact">
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              <div>{{selectedFacility?.contactPhoneNo}}</div>
-            </div>
-            <div class="billContact">
-              <i class="fa fa-envelope" aria-hidden="true"></i>
-              <div>{{selectedFacility?.email}}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="billBody">
-          <div class="billTopSect">
-            <div class="lhs topsecInnerWrap">
-              <span>INVOICE TO</span>
-              <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
-              <div class="clientAddress">
-                <div *ngIf="selectedPatient?.personDetails?.homeAddress?.street?.length > 0">{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails?.addressObj?.city}}
-                  {{selectedPatient?.personDetails?.addressObj?.state}}, {{selectedPatient?.personDetails?.addressObj?.country}}</div>
-                <div>{{selectedPatient?.personDetails?.email}}</div>
-                <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
-              </div>
-            </div>
-            <div class="rhs topsecInnerWrap">
-              <div class="rhsSectA">
-                <div class="semiWrapper">
-                  <div class="label">INVOICE NO</div>
-                  <div class="data">{{selectedInvoiceGroup.invoiceNo}}</div>
+                    <div class="invoiceLabel">INVOICE</div>
+                    <div class="headerContactWrap">
+                        <div class="billContact">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <div>{{selectedFacility?.address?.description}}.</div>
+                        </div>
+                        <div class="billContact">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <div>{{selectedFacility?.primaryContactPhoneNo}}</div>
+                        </div>
+                        <div class="billContact">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <div>{{selectedFacility?.email}}</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="semiWrapper">
-                  <div class="label">INVOICE DATE</div>
-                  <div class="data">{{selectedInvoiceGroup.createdAt | date:'medium'}}</div>
-                </div>
-              </div>
-              <div class="rhsSectB">
-                <div>TOTAL AMOUNT</div>
-                <div class="topTotal">
-                  <span>&#x20a6;</span>{{selectedInvoiceGroup.totalPrice | numberThr}}</div>
-              </div>
-            </div>
-            <div class="clear"></div>
-          </div>
-          <div *ngIf="this.selectedInvoiceGroup.paymentCompleted != undefined">
-            <div class="billContentSect">
-              
-              <!--<div *ngIf="selectedPatient._id != undefined" (click)="addItem_show()" class="cta-1 btn-addItem">
+
+                <div class="billBody">
+                    <div class="billTopSect">
+                        <div class="lhs topsecInnerWrap">
+                            <span>INVOICE TO</span>
+                            <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
+                            <div class="clientAddress">
+                                <div>{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails?.homeAddress?.city}} {{selectedPatient?.personDetails?.homeAddress?.state}}, {{selectedPatient?.personDetails?.homeAddress?.country}}</div>
+                                <div>{{selectedPatient?.personDetails?.email}}</div>
+                                <div>{{selectedPatient?.personDetails?.primaryContactPhoneNo}}</div>
+                            </div>
+                        </div>
+                        <div class="rhs topsecInnerWrap">
+                            <div class="rhsSectA">
+                                <div class="semiWrapper">
+                                    <div class="label">INVOICE NO</div>
+                                    <div class="data">{{selectedInvoiceGroup.invoiceNo}}</div>
+                                </div>
+                                <div class="semiWrapper">
+                                    <div class="label">INVOICE DATE</div>
+                                    <div class="data">{{selectedInvoiceGroup.createdAt | date:'medium'}}</div>
+                                </div>
+                            </div>
+                            <div class="rhsSectB">
+                                <div>TOTAL OUTSTANDING</div>
+                                <div class="topTotal">
+                                    <span>&#x20a6;</span>{{selectedInvoiceGroup.balance | numberThr}}</div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div *ngIf="this.selectedInvoiceGroup.paymentCompleted != undefined">
+                        <div class="billContentSect">
+
+                            <!--<div *ngIf="selectedPatient._id != undefined" (click)="addItem_show()" class="cta-1 btn-addItem">
                     Add Item
                   </div>-->
-              <i (click)="print()" class="fa fa-print printIco" aria-hidden="true"></i>
-              <table class="tblBg">
-                <div  class="pay-tag">{{paidStatus}}</div>
-                <thead>
-                  <tr>
-                    <th class="col1">Item Description</th>
-                    <th class="col2">Unit Price</th>
-                    <th class="col3">Quantity</th>
-                    <th class="col4">Total Price</th>
-                    <th class="col3">Status</th>
-                    <!--<th class="col5">Actions</th>-->
-                  </tr>
-                </thead>
+                            <i (click)="print()" class="fa fa-print printIco" aria-hidden="true"></i>
+                            <table class="tblBg">
+                                <div class="pay-tag">{{selectedInvoiceGroup.paymentStatus}}</div>
+                                <thead>
+                                    <tr>
+                                        <th class="col1">Item Description</th>
+                                        <th class="col2">Unit Price</th>
+                                        <th class="col3">Quantity</th>
+                                        <th class="col4">Total Price</th>
+                                        <!--<th class="col5">Actions</th>-->
+                                    </tr>
+                                </thead>
 
-                <tbody>
-                  <tr *ngFor="let billItem of selectedInvoiceGroup.billingIds">
-                    <td (click)="itemDetail(billItem)" class="col1">
-                      <div class="itemName">{{billItem.billObject.facilityServiceObject.service}}</div>
-                      <div class="itemDesc">{{billItem.billObject?.description}}</div>
-                    </td>
-                    <td class="col2">
-                      <div class="topTotal" [hidden]="itemEditShow">
-                        <span>&#8358;</span> {{billItem.billObject?.unitPrice|number}}</div>
-                      <input currencyMask [options]="{ prefix: '&#8358; '}" *ngIf="itemEditShow" class="edit-control" value="{{itemAmount}}" [formControl]="itemEdit">
-                    </td>
-                    <td class="col3">
-                      <span [hidden]="itemEditShow">{{billItem.billObject?.quantity|number}}</span>
-                      <input *ngIf="itemEditShow" class="edit-control" type="number" value="{{itemQty}}" [formControl]="itemQtyEdit">
-                    </td>
-                    <td class="col4">
-                      <div class="topTotal">
-                        <span>&#8358;</span>{{billItem.billObject?.totalPrice|numberThr}}</div>
-                    </td>
-                    <td class="col3">
-                      <div class="topTotal" *ngIf="billItem.billObject?.isServiceEnjoyed && !isPaidClass || isWaved">
-                        WAVED</div>
-                      <div class="topTotal" *ngIf="!billItem.billObject?.isServiceEnjoyed && !isPaidClass">
-                        UNPAID</div>
-                      <div class="topTotal" *ngIf="isPaidClass">
-                        PAID</div>
-                    </td>
-                    <!--<td class="col5">
+                                <tbody>
+                                    <tr *ngFor="let billItem of selectedInvoiceGroup.billingIds">
+                                        <td (click)="itemDetail(billItem)" class="col1">
+                                            <div class="itemName">{{billItem.billObject.facilityServiceObject.service}}</div>
+                                            <div class="itemDesc">{{billItem.billObject?.description}}</div>
+                                        </td>
+                                        <td class="col2">
+                                            <div class="topTotal" [hidden]="itemEditShow">
+                                                <span>&#8358;</span> {{billItem.billObject?.unitPrice|number}}</div>
+                                            <input currencyMask [options]="{ prefix: '&#8358; '}" *ngIf="itemEditShow" class="edit-control" value="{{itemAmount}}" [formControl]="itemEdit">
+                                        </td>
+                                        <td class="col3">
+                                            <span [hidden]="itemEditShow">{{billItem.billObject?.quantity|number}}</span>
+                                            <input *ngIf="itemEditShow" class="edit-control" type="number" value="{{itemQty}}" [formControl]="itemQtyEdit">
+                                        </td>
+                                        <td class="col4">
+                                            <div class="topTotal">
+                                                <span>&#8358;</span>{{billItem.billObject?.totalPrice|numberThr}}</div>
+                                        </td>
+                                        <!--<td class="col5">
                           <i [hidden]="itemEditShow" (click)="itemEditToggle()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <i *ngIf="itemEditShow" (click)="itemEditToggle()" class="fa fa-check" aria-hidden="true"></i>
                           <i class="fa fa-trash" aria-hidden="true"></i>
@@ -178,105 +168,105 @@
                             Add Modifier
                           </div>
                         </td>-->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="billSummarySect">
-            <div class="lhs">
-              <!--<div (click)="addModefier()" class="cta-1">
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="billSummarySect">
+                        <div class="lhs">
+                            <!--<div (click)="addModefier()" class="cta-1">
                 Add Discount
               </div>-->
-            </div>
-            <table class="rhs">
-              <div class="summaryItems">
-                <tr class="summaryItem">
-                  <td class="label">Sub Total</td>
-                  <td class="data">
-                    <span>&#x20a6;</span>{{selectedInvoiceGroup?.subTotal | numberThr}}</td>
-                  <td></td>
-                </tr>
-                <tr class="summaryItem">
-                  <td class="label">Discount</td>
-                  <td class="data">
-                    <span>&#x20a6;</span>{{selectedInvoiceGroup.totalDiscount | numberThr}}</td>
-                  <td></td>
-                </tr>
-              </div>
-              <tr class="grandTotalWrap">
-                <td class="label">GRAND TOTAL</td>
-                <td class="data">
-                  <span>&#x20a6;</span>{{selectedInvoiceGroup.totalPrice | numberThr}}</td>
-                <td></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="billFooter">
-          <img src="assets/images/app_logo/logo2.png">
-          <div class="BillfooterTxt">All Purpose Medical Information System</div>
-        </div>
-      </div>
-
-      <div class="feedsWrap rightCol">
-        <div class="feedbox">
-          <div class="pending-wrap">
-            <div class="pending-header">
-              <div class="pending-title">Pending Invoices</div>
-              <div class="search-wrap">
-                <mat-input-container>
-                  <input matInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
-                </mat-input-container>
-              </div>
-            </div>
-            <div class="pending-bills">
-              <div *ngIf="isLoadingOtherInvoice">
-                <i class='fa fa-spinner fa-spin'></i>
-              </div>
-              <div [hidden]="otherInvoiceGroups.length==0">
-                <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups" (click)="onSelectedOtherPatientInvoice(otherInvoice)">
-                  <div class="list-img">
-                    <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.personDetails.profileImageObject.thumbnail)">
-                    <img *ngIf="otherInvoice?.personDetails.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
-                  </div>
-                  <div class="list-labels">
-                    <div class="pending-name">{{otherInvoice.personDetails.personDetails.firstName}} {{otherInvoice.personDetails.personDetails.lastName}}</div>
-                    <div class="oda">
-                      <div class="pending-date">{{otherInvoice.createdAt | date :'medium'}}</div>
-                      <div class="pending-amount" *ngIf="otherInvoice.totalPrice!=0">
-                        <span>&#x20a6;</span>{{otherInvoice.totalPrice|numberThr}}</div>
+                        </div>
+                        <table class="rhs">
+                            <div class="summaryItems">
+                                <tr class="summaryItem">
+                                    <td class="label">Sub Total</td>
+                                    <td class="data">
+                                        <span>&#x20a6;</span>{{selectedInvoiceGroup?.subTotal | numberThr}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="summaryItem">
+                                    <td class="label">Discount</td>
+                                    <td class="data">
+                                        <span>&#x20a6;</span>{{selectedInvoiceGroup.totalDiscount | numberThr}}</td>
+                                    <td></td>
+                                </tr>
+                            </div>
+                            <tr class="grandTotalWrap">
+                                <td class="label">GRAND TOTAL</td>
+                                <td class="data">
+                                    <span>&#x20a6;</span>{{selectedInvoiceGroup.totalPrice | numberThr}}</td>
+                                <td></td>
+                            </tr>
+                        </table>
                     </div>
-                  </div>
                 </div>
-              </div>
+
+                <div class="billFooter">
+                    <img src="assets/images/app_logo/logo2.png">
+                    <div class="BillfooterTxt">All Purpose Medical Information System</div>
+                </div>
             </div>
-          </div>
+
+            <div class="feedsWrap rightCol">
+                <div class="feedbox">
+                    <div class="pending-wrap">
+                        <div class="pending-header">
+                            <div class="pending-title">Pending Invoices</div>
+                            <div class="search-wrap">
+                                <mat-input-container>
+                                    <input matInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
+                                </mat-input-container>
+                            </div>
+                        </div>
+                        <div class="pending-bills">
+                            <div *ngIf="isLoadingOtherInvoice">
+                                <i class='fa fa-spinner fa-spin'></i>
+                            </div>
+                            <div [hidden]="otherInvoiceGroups.length==0">
+                                <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups" (click)="onSelectedOtherPatientInvoice(otherInvoice)">
+                                    <div class="list-img">
+                                        <img *ngIf="otherInvoice?.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.profileImageObject.thumbnail)">
+                                        <img *ngIf="otherInvoice?.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
+                                    </div>
+                                    <div class="list-labels">
+                                        <div class="pending-name">{{otherInvoice.personDetails.firstName}} {{otherInvoice.personDetails.lastName}}</div>
+                                        <div class="oda">
+                                            <div class="pending-date">{{otherInvoice.updatedAt | date :'medium'}}</div>
+                                            <div class="pending-amount" *ngIf="otherInvoice.totalPrice!=0">
+                                                <span>&#x20a6;</span>{{otherInvoice.totalPrice|numberThr}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <app-global-patient-lookup></app-global-patient-lookup>
+    <app-global-patient-lookup></app-global-patient-lookup>
 
-  <div *ngIf="addItem" class="modal-overlay">
-    <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>
-  </div>
+    <div *ngIf="addItem" class="modal-overlay">
+        <app-add-item (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-item>
+    </div>
 
-  <div *ngIf="addModefierPopup" class="modal-overlay">
-    <app-add-modefier (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-modefier>
-  </div>
+    <div *ngIf="addModefierPopup" class="modal-overlay">
+        <app-add-modefier (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-modefier>
+    </div>
 
-  <div *ngIf="addLineModefierPopup" class="modal-overlay">
-    <app-add-line-modifier (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-line-modifier>
-  </div>
+    <div *ngIf="addLineModefierPopup" class="modal-overlay">
+        <app-add-line-modifier (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-line-modifier>
+    </div>
 
-  <div *ngIf="priceItemDetailPopup" class="modal-overlay">
-    <app-item-detail [selectedBillItem]="selectedBillItem" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
-  </div>
+    <div *ngIf="priceItemDetailPopup" class="modal-overlay">
+        <app-item-detail [selectedBillItem]="selectedBillItem" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-item-detail>
+    </div>
 
-  <div *ngIf="makePaymentPopup" class="modal-overlay">
-    <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.balance"
-      [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
-  </div>
+    <div *ngIf="makePaymentPopup" class="modal-overlay">
+        <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.balance" [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal"
+            class="form-modal center-center"></app-make-payment>
+    </div>

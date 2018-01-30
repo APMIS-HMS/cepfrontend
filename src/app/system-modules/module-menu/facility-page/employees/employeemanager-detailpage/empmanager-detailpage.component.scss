@@ -229,3 +229,15 @@
 .inner-wrap-b{
     padding: 0;
 }
+
+@media only screen and (max-width: 900px) {
+    .fac-card{
+        display: none;
+    }
+    .x2-card-wrap{
+        display: block;
+    }
+    .card-a3, .card-a7{
+        width: 100%;    
+    }
+}

@@ -46,3 +46,9 @@
 .modal-baseWrap .mat-input-container {
     width: 100%;
 }
+
+@media only screen and (max-width: 900px) {
+    .modal-baseWrap{
+        width: 100%;
+    }
+}
