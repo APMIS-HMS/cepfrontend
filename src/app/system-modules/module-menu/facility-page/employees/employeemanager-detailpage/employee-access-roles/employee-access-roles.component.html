@@ -1,20 +1,22 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
-        <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
         <div class="facility-title">Employee Role</div>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
 
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <form novalidate>
+        <form novalidate *ngIf="roles.length > 0">
             <div *ngFor="let role of roles">
-                <mat-checkbox value="{{role.id}}">{{role.name}}</mat-checkbox>
+                <mat-checkbox [(ngModel)]="role.isAssigned" name="isAssigned" (change)="pickRoles($event, role._id)">{{role.name}}</mat-checkbox>
             </div>
+            <span *ngIf="roles.length == 0">No roles available to be assigned</span>
         </form>
         <div class="example-full-width" id="example-full-width">
-            <button class="btn-saveroles" mat-raised-button>
-                Save
+            <button class="btn-saveroles" mat-raised-button (click)="saveRoles()" [disabled]="loading">
+                <span *ngIf="!loading">Save</span>
+                <span *ngIf="loading">Loading</span>
             </button>
         </div>
     </div>
