@@ -46,40 +46,45 @@ class Service {
     } else {
       invoiceItems = awaitInvoices.data;
     }
-    var dt = new Date();
-    var counter = 0;
-    var patientRecentInvoices = [];
-    let len2 = invoiceItems.length - 1;
-    for (let k = len2; k >= 0; k--) {
-      const val = invoiceItems[k];
-      var awaitPatient = await patientService.get(val.patientId, {});
-      var awaitPerson = await peopleService.get(awaitPatient.personId, {});
-      var filters = patientRecentInvoices.filter(x => x.patientId.toString() === val.patientId.toString());
-      if (filters.length > 0) {
-        filters[0].subTotal += parseInt(val.subTotal.toString());
-        if (val.balance != undefined) {
-          filters[0].balance += parseInt(val.balance.toString());
+    if (invoiceItems.length > 0) {
+      var dt = new Date();
+      var counter = 0;
+      var patientRecentInvoices = [];
+      let len2 = invoiceItems.length - 1;
+      for (let k = len2; k >= 0; k--) {
+        const val = invoiceItems[k];
+        var awaitPatient = await patientService.get(val.patientId, {});
+        var awaitPerson = await peopleService.get(awaitPatient.personId, {});
+        var filters = patientRecentInvoices.filter(x => x.patientId.toString() === val.patientId.toString());
+        if (filters.length > 0) {
+          filters[0].subTotal += parseInt(val.subTotal.toString());
+          if (val.balance != undefined) {
+            filters[0].balance += parseInt(val.balance.toString());
+          }
+          filters[0].payments.concat(val.payments);
+          filters[0].billingIds.concat(val.billingIds);
+          if (isSameDay(val.updatedAt, dt)) {
+            var amountPaid = val.totalPrice - val.balance;
+            amountReceived += amountPaid;
+          }
+        } else {
+          val.personDetails = awaitPerson;
+          patientRecentInvoices.push(val);
+          if (isSameDay(val.updatedAt, dt)) {
+            var amountPaid = val.totalPrice - val.balance;
+            amountReceived += amountPaid;
+          }
         }
-        filters[0].payments.concat(val.payments);
-        filters[0].billingIds.concat(val.billingIds);
-        if (isSameDay(val.updatedAt, dt)) {
-          var amountPaid = val.totalPrice - val.balance;
-          amountReceived += amountPaid;
-        }
-      } else {
-        val.personDetails = awaitPerson;
-        patientRecentInvoices.push(val);
-        if (isSameDay(val.updatedAt, dt)) {
-          var amountPaid = val.totalPrice - val.balance;
-          amountReceived += amountPaid;
+        if (k == 0) {
+          result.invoices = patientRecentInvoices.filter(x => x.balance > 0);
+          result.amountReceived = amountReceived;
+          return result;
         }
       }
-      if (k == 0) {
-        result.invoices = patientRecentInvoices.filter(x => x.balance > 0);
-        result.amountReceived = amountReceived;
-        return result;
-      }
+    } else {
+      return result;
     }
+
   }
 
   create(data, params) {
