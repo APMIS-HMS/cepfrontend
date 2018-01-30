@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 class Service {
-  constructor (options) {
+  constructor(options) {
     this.options = options || {};
   }
 
@@ -8,55 +8,79 @@ class Service {
     this.app = app;
   }
 
-  find (params) {
+  find(params) {
     return Promise.resolve([]);
   }
 
-  async get (id, params) {
-    const facilitiesService = this.app.service('facilities');
+  async get(id, params) {
+    const usersService = this.app.service('users');
     const featuresService = this.app.service('features');
     var results = [];
     var errors = [];
 
-    let selectedFacility = await facilitiesService.get(id, {});
+    let selectedUser = await usersService.find({
+      query: {
+        'personId': id
+      }
+    });
     let features = await featuresService.find({});
+    if (selectedUser.data.length == 0) {
+      results = [];
+    } else {
+      if (selectedUser.data[0].userRole) {
+        let index = selectedUser.data[0].userRole.filter(x => x.facilityId.toString() == params.query.facilityId.toString());
 
-    features.data.forEach((feature, i) => {
-      console.log(selectedFacility.facilitymoduleId.includes(features._id));
-      if(selectedFacility.facilitymoduleId.includes(features._id)){
-        feature.isAssigned = true;
-        results.push(feature);
-      }else{
-        feature.isAssigned = false;
-        results.push(feature);
+        if(index[0].roles.length > 0){
+          features.data.forEach((feature, i) => {
+            if (index[0].roles.includes(feature._id.toString())) {
+              feature.isAssigned = true;
+              results.push(feature);
+            } else {
+              feature.isAssigned = false;
+              results.push(feature);
+            }
+          });
+        }else{
+          results = [];
+        }
+      }
+    }
+
+    return results;
+  }
+
+  async create(data, params) {
+    const usersService = this.app.service('users');
+    let selectedUser = await usersService.find({
+      query: {
+        'personId': data.personId
       }
     });
 
-    console.log(results);
+    let index = selectedUser.data[0].userRoles.findIndex(x => x.facilityId.toString() == data.facilityId.toString());
+    selectedUser.data[0].userRoles[index].roles.forEach(ind => {
+      data.roles.forEach(indx => {
+        if(ind != indx){
+          selectedUser.data[0].userRoles[index].roles.push(indx);
+        }
+      })
+    });
 
-    return results;
-    /* return Promise.resolve({
-      id, text: `A new message with ID: ${id}!`
-    }); */
+    let updatedUser = await usersService.update(selectedUser.data[0]._id, selectedUser.data[0]);
+    
+    return updatedUser;
+  
   }
 
-  create (data, params) {
-    if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current)));
-    }
-
+  update(id, data, params) {
     return Promise.resolve(data);
   }
 
-  update (id, data, params) {
+  patch(id, data, params) {
     return Promise.resolve(data);
   }
 
-  patch (id, data, params) {
-    return Promise.resolve(data);
-  }
-
-  remove (id, params) {
+  remove(id, params) {
     return Promise.resolve({ id });
   }
 }
