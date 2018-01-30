@@ -15,6 +15,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { Observable } from 'rxjs/Observable';
+import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
+
 @Component({
     selector: 'app-new-patient',
     templateUrl: './new-patient.component.html',
@@ -62,6 +64,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     public frmNewEmp2: FormGroup;
     public frmNewEmp3: FormGroup;
     public frmNewEmp4: FormGroup;
+    public frmPerson: FormGroup;
 
     walletPlan = new FormControl('', Validators.required);
     walletPlanCheck = new FormControl('');
@@ -278,6 +281,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.newEmpIdControl.valueChanges.subscribe(value => {
             // do something with value here
         });
+        this.frmPerson = this.formBuilder.group({
+            persontitle: [new Date(), [<any>Validators.required]],
+            firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            gender: [[<any>Validators.minLength(2)]],
+            dob: [new Date(), [<any>Validators.required]],
+            motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            securityQuestion: ['', [<any>Validators.required]],
+            securityAnswer: ['', [<any>Validators.required]],
+            // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+            phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
+          });
 
         // facilityId: this.facility._id,
         // "employeeDetails.apmisId": this.ccPlanId.value
@@ -1398,7 +1413,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.mainErr = true;
         }
     }
-
+    submit(){
+        this.close_onClick();
+    }
+    clickMe(){
+        this.close_onClick();
+    }
     saveEmployee() {
         const model: Patient = <Patient>{};
         model.facilityId = this.facility._id;
