@@ -10,91 +10,72 @@ class Service {
 
   get(id, params) {
     return Promise.resolve({
-      id, text: `A new message with ID: ${id}!`
+      id,
+      text: `A new message with ID: ${id}!`
     });
   }
 
-  create(data, params) {
+  async create(data, params) {
     const facilitiesService = this.app.service('facilities');
     var _memberFacilities = [];
     if (params.query.isdelete.toString() == 'false') {
-      return new Promise(function (resolve, reject) {
-        data.memberFacilities.forEach((current, i) => {
-          facilitiesService.get(current, {}).then(networkMember => {
-            let checkId = networkMember.memberFacilities.filter(x => x.toString() == data.hostId.toString());
-            if (checkId.length == 0) {
-              networkMember.memberFacilities.push(data.hostId);
-            }
-            facilitiesService.patch(networkMember._id, {
-              memberFacilities: networkMember.memberFacilities
-            }).then(updateNetworkMember => {
-              _memberFacilities.push(updateNetworkMember);
-              facilitiesService.get(data.hostId, {}).then(networkHost => {
-                let checkId2 = networkHost.memberof.filter(x => x.toString() == current.toString());
-                if (checkId2.length == 0) {
-                  networkHost.memberof.push(current);
-                }
-                facilitiesService.patch(networkHost._id, {
-                  memberof: networkHost.memberof
-                }).then(payload => {
-                  var success = {
-                    'members': _memberFacilities,
-                    'hosts': payload
-                  };
-                  if (i == data.memberFacilities.length - 1) {
-                    resolve(success);
-                  }
-
-                }, error => {
-                  reject(error);
-                });
-              });
-            }, error => {
-              reject(error);
-            });
-          });
+      let len = data.memberFacilities.length - 1
+      for (let i = len; i >= 0; i--) {
+        var awaitfacilities = await facilitiesService.get(data.memberFacilities[i], {});
+        let checkId = awaitfacilities.memberFacilities.filter(x => x.toString() == data.hostId.toString());
+        if (checkId.length == 0) {
+          awaitfacilities.memberFacilities.push(data.hostId);
+        }
+        var awaitfacilities_ = await facilitiesService.patch(awaitfacilities._id, {
+          memberFacilities: awaitfacilities.memberFacilities
         });
-      });
+        _memberFacilities.push(awaitfacilities_);
+        var awaitFacilitiesGet = await facilitiesService.get(data.hostId, {});
+        let checkId2 = awaitFacilitiesGet.memberof.filter(x => x.toString() == data.memberFacilities[i].toString());
+        if (checkId2.length == 0) {
+          awaitFacilitiesGet.memberof.push(data.memberFacilities[i]);
+        }
+        var await_patch_facility = facilitiesService.patch(awaitFacilitiesGet._id, {
+          memberof: awaitFacilitiesGet.memberof
+        });
+        var success = {
+          'members': _memberFacilities,
+          'hosts': await_patch_facility
+        };
+        if (i == data.memberFacilities.length - 1) {
+          return success;
+        }
+      }
     } else {
-      return new Promise(function (resolve, reject) {
-        data.memberFacilities.forEach((current, i) => {
-          facilitiesService.get(current, {}).then(networkMember => {
-            let checkId = networkMember.memberFacilities.filter(x => x.toString() == data.hostId.toString());
-            if (checkId.length > 0) {
-              let index = networkMember.memberFacilities.indexOf(data.hostId);
-              networkMember.memberFacilities.splice(index, 1);
-            }
-            facilitiesService.patch(networkMember._id, {
-              memberFacilities: networkMember.memberFacilities
-            }).then(updateNetworkMember => {
-              _memberFacilities.push(updateNetworkMember);
-              facilitiesService.get(data.hostId, {}).then(networkHost => {
-                let checkId2 = networkMember.memberof.filter(x => x.toString() == current.toString());
-                if (checkId2.length > 0) {
-                  let index = networkMember.memberof.indexOf(data.hostId);
-                  networkMember.memberof.splice(index, 1);
-                }
-                facilitiesService.patch(networkHost._id, {
-                  memberof: networkHost.memberof
-                }).then(payload => {
-                  var success = {
-                    'members': _memberFacilities,
-                    'hosts': payload
-                  };
-                  if (i == data.memberFacilities.length - 1) {
-                    resolve(success);
-                  }
-
-                }, error => {
-                  reject(error);
-                });
-              });
-            }, error => {
-              reject(error);
-            });
-          });
+      let len = data.memberFacilities.length - 1
+      for (let i = len; i >= 0; i--) {
+        var awaitfacilitiesService = await facilitiesService.get(data.memberFacilities[i], {});
+        let checkId = awaitfacilitiesService.memberFacilities.filter(x => x.toString() == data.hostId.toString());
+        if (checkId.length > 0) {
+          let index = awaitfacilitiesService.memberFacilities.indexOf(data.hostId);
+          awaitfacilitiesService.memberFacilities.splice(index, 1);
+        }
+        var awaitfacilitiesService_ = await facilitiesService.patch(awaitfacilitiesService._id, {
+          memberFacilities: awaitfacilitiesService.memberFacilities
         });
-      });
+        _memberFacilities.push(awaitfacilitiesService_);
+        var awaitGetFacilitiesService = await facilitiesService.get(data.hostId, {});
+        let checkId2 = awaitfacilitiesService.memberof.filter(x => x.toString() == data.memberFacilities[i].toString());
+        if (checkId2.length > 0) {
+          let index = awaitfacilitiesService.memberof.indexOf(data.hostId);
+          awaitfacilitiesService.memberof.splice(index, 1);
+        }
+        var awaitPatchFacilitiesService = await facilitiesService.patch(awaitfacilitiesService._id, {
+          memberof: awaitfacilitiesService.memberof
+        });
+        var success = {
+          'members': _memberFacilities,
+          'hosts': awaitPatchFacilitiesService
+        };
+        if (i == 0) {
+          return success;
+        }
+      }
     }
   }
 
@@ -107,7 +88,9 @@ class Service {
   }
 
   remove(id, params) {
-    return Promise.resolve({ id });
+    return Promise.resolve({
+      id
+    });
   }
   setup(app) {
     this.app = app;
