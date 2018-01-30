@@ -65,6 +65,7 @@ export class DashboardHomeComponent implements OnInit {
   //   }
   // }
   ngOnInit() {
+    console.log('check login employee');
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;

@@ -34,7 +34,7 @@
               </div>
 
               <div class="btn-box">
-                    <button class="small-btn" [disabled]="loading" (click)="uploadDocument()" mat-raised-button>
+                    <button class="small-btn" [disabled]="loading" (click)="uploadDocument(patient)" mat-raised-button>
                         <span *ngIf="!loading">Upload Document</span>
                         <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span>Uploading Document</span>
                     </button>

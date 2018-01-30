@@ -90,7 +90,7 @@
                             <span>Payment Plans</span>
                         </div>
 
-                        <div (click)="newUpload_show()" class="action-item">
+                        <div (click)="newUpload_show(patient)" class="action-item">
                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                             <span>Upload File</span>
                         </div>
@@ -376,5 +376,5 @@
     <app-patient-payment-plan [selectedPatient]="selectedPatient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-patient-payment-plan>
 </div>
 <div *ngIf="newUpload" class="modal-overlay">
-    <app-doc-upload (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload>
+    <app-doc-upload [selectedPatient]="selectedPatient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload>
 </div>

@@ -440,7 +440,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
-  newUpload_show() {
+  newUpload_show(patient) {
+    this.selectedPatient = patient;
     this.newUpload = true;
   }
   compareState(l1: any, l2: any) {

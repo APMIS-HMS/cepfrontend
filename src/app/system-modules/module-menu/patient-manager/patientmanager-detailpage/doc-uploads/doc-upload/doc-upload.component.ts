@@ -1,4 +1,5 @@
-import { Component, OnInit, EventEmitter, Output, NgZone, ViewChild, AfterViewInit } from '@angular/core';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Component, OnInit, EventEmitter, Output, NgZone, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -15,6 +16,7 @@ import { FormTypeService, ScopeLevelService } from '../../../../../../services/m
   styleUrls: ['./doc-upload.component.scss']
 })
 export class DocUploadComponent implements OnInit {
+  @Input() selectedPatient: any;
   loading: boolean;
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -22,9 +24,9 @@ export class DocUploadComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   public frmNewUpload: FormGroup;
   documentTypes: any;
-  fileType:any;
-  fileName:any;
-  
+  fileType: any;
+  fileName: any;
+
 
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService,
@@ -35,6 +37,7 @@ export class DocUploadComponent implements OnInit {
     private billingService: BillingService,
     private formsService: FormsService,
     private formTypeService: FormTypeService,
+    private systemModuleService:SystemModuleService,
     private locker: CoolLocalStorage
   ) { }
 
@@ -47,7 +50,7 @@ export class DocUploadComponent implements OnInit {
     });
     this.documentTypeFn();
   }
-  close_onClick(e?){
+  close_onClick(e?) {
     this.closeModal.emit(true);
   }
 
@@ -55,14 +58,11 @@ export class DocUploadComponent implements OnInit {
     let reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       let file = event.target.files[0];
-      console.log(file);
       this.fileName = file.name;
-      if(file.type == "image/png" || file.type == "image/jpg" 
-      || file.type == "image/gif" || file.type == "image/jpeg"
-      || file.type == "application/pdf"){
-        console.log(file);
+      if (file.type == "image/png" || file.type == "image/jpg"
+        || file.type == "image/gif" || file.type == "image/jpeg"
+        || file.type == "application/pdf") {
         if (file.size < 1250000) {
-          console.log(file);
           this.fileType = file.type;
           reader.readAsDataURL(file);
           reader.onload = () => {
@@ -70,23 +70,25 @@ export class DocUploadComponent implements OnInit {
             this.fileBase64 = base64;
           };
         } else {
-          this.notification('Size Of Document Too BIG!', 'Error');
+          this.systemModuleService.announceSweetProxy('Size Of Document Too BIG!', 'info');
           this.frmNewUpload.controls['fileUpload'].setErrors({ sizeTooBig: true });
         }
 
       } else {
-        this.notification('Type of document not supported.', 'Error');
+        this.systemModuleService.announceSweetProxy('Type of document not supported.', 'info');
         this.frmNewUpload.controls['fileUpload'].setErrors({ typeDenied: true });
       }
     }
   }
 
   uploadDocument(patient?: any) {
+    this.systemModuleService.on();
+    patient = this.selectedPatient;
     this.loading = true;
     let uploadDoc;
     this.loading = true;
-    
-    if(this.locker.getObject('patient')){
+
+    if (this.locker.getObject('patient')) {
       let upPatient = <any>this.locker.getObject('patient');
       uploadDoc = {
         base64: this.fileBase64,
@@ -95,7 +97,8 @@ export class DocUploadComponent implements OnInit {
         description: this.frmNewUpload.controls['desc'].value,
         fileType: this.fileType,
         patientId: upPatient._id,
-        facilityId: this.facilityService.getSelectedFacilityId()._id
+        facilityId: this.facilityService.getSelectedFacilityId()._id,
+        uploadType: 'documentUpload'
       }
     } else {
       uploadDoc = {
@@ -103,19 +106,21 @@ export class DocUploadComponent implements OnInit {
         docType: this.frmNewUpload.controls['fileType'].value,
         docName: this.frmNewUpload.controls['fileName'].value,
         description: this.frmNewUpload.controls['desc'].value,
+        fileType: this.fileType,
         patientId: patient._id,
-        facilityId: this.facilityService.getSelectedFacilityId()._id
+        facilityId: this.facilityService.getSelectedFacilityId()._id,
+        uploadType: 'documentUpload'
       }
     }
-    console.log(uploadDoc);
 
     this.docUploadService.post(uploadDoc).then(payload => {
-      console.log(payload);
-      this.notification('Document Successfully Uploaded!', 'Success');
+      this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success');
       this.loading = false;
       this.close_onClick(true);
+      this.systemModuleService.off();
     }).catch(err => {
-      console.log(JSON.stringify(err));
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('There was an uploading the file, try again!', 'error');
       this.loading = false;
     })
 
@@ -127,14 +132,6 @@ export class DocUploadComponent implements OnInit {
       this.documentTypes = payload.data
     }).catch(err => {
       console.log(err);
-    });
-  }
-
-  notification(text, type) {
-    this.facilityService.announceNotification({
-      type: type,
-      text: text,
-      users: [this.facilityService.getLoginUserId()]
     });
   }
 }
