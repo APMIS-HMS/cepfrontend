@@ -1,10 +1,16 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 import {
   FeatureModuleService
 } from '../../../../../../services/module-manager/setup/index';
+
+import {
+  CountriesService, FacilitiesService, UserService,
+  PersonService, EmployeeService, GenderService, RelationshipService, MaritalStatusService,
+} from '../../../../../../services/facility-manager/setup/index';
 
 
 @Component({
@@ -18,22 +24,30 @@ export class EmployeeAccessRolesComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   mainErr = true;
   errMsg = "";
-  roles: any;
+  roles: any = [];
 
   rolesPicked:any = [];
   checboxLen:any;
   rolesRemoved:any = [];
 
   selectedFacility:any;
+  selectedEmployee: any;
+  loggedInUser:any;
+  loading:any;
 
-  constructor(private formBuilder: FormBuilder, private featureService: FeatureModuleService) { }
+  constructor(private formBuilder: FormBuilder, private featureService: FeatureModuleService, 
+    private locker: CoolLocalStorage, private facilityService: FacilitiesService,
+    private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
     /* this.userPrivileges = this.FormBuilder.group({
 
     }); */
 
-    this.selectedFacility = <any>this.locker.get
+    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
+    let auth = <any>this.locker.getObject('auth');
+    this.loggedInUser = auth.data;
+    this.selectedEmployee = <any>this.locker.getObject('selectedEmployee');
 
     this.getRoles();
 
@@ -44,9 +58,18 @@ export class EmployeeAccessRolesComponent implements OnInit {
   }
 
   getRoles(){
-    this.featureService.findAll().then(payload => {
+    /* this.featureService.findAll().then(payload => {
       console.log(payload);
       this.roles = payload.data;
+    }); */
+    console.log(this.selectedEmployee.personId);
+    this.featureService.getFacilityRoles(/* this.selectedEmployee.personId */'5a4c57b448eaa74a00040987', {
+      query: {
+        facilityId: this.selectedFacility._id
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.roles = payload;
     });
   }
 
@@ -88,7 +111,27 @@ export class EmployeeAccessRolesComponent implements OnInit {
   }
 
   saveRoles(){
-    this.
+    this.loading = true;
+    let text = "You are about to assign roles to this employee";
+    this.systemModuleService.announceSweetProxy(text, 'info', this);
+  }
+
+  createRoles(){
+    var data = {
+      personId: /* this.selectedEmployee.personId */ '5a4c57b448eaa74a00040987',
+      facilityId: this.selectedFacility._id,
+      roles: this.rolesPicked
+    }
+    this.featureService.assignUserRole(data).then(payload => {
+      this.loading = false;
+      console.log(payload);
+    });
+  }
+
+  sweetAlertCallback(result){
+    if(result.value){
+      this.createRoles();
+    }
   }
 
 
