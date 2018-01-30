@@ -1,8 +1,5 @@
 @import "../../../../../../globals/variables.scss";
-.modal-baseWrap{
-    width: 100%;
-    padding: 10px 50px;
-}
+
 .newEmp-idWrap input{
     border: 1px solid #727272;
     border-radius: 10px;
@@ -38,8 +35,45 @@
 .modal_mini_title{
     margin-bottom: 0;
 }
-.lhs {
-    float: left;
-    padding-right: 0px; 
-    margin-right: 30px;
+
+.modal-baseWrap{
+    width: 590px;
+    padding: 10px 50px;
+}
+.dx-texteditor{
+    border: 0;
+    border-bottom: 0.5px solid #37474F;
+    font-size: 1.4rem;
+    color: #37474F;
+    width: 245px;
+    border-radius: 0;
+}
+.modal-baseWrap .mat-input-container {
+    width: 100%;
+}
+.frm-x2 .frm-item-wrap{
+    width: 49% !important;
+}
+
+@media only screen and (max-width: 700px) {
+    .modal-baseWrap {
+        padding: 10px 20px;
+        min-width: 100%;
+        width: 100%;
+    }
+    .modal-header-wrap {
+        min-width: 100%;
+        width: 100%;
+    }
+    .pulse {
+        width: 90%;
+    }
+    .frm-x2 .frm-item-wrap {
+        width: 100% !important;
+    }
+    .frm-x2{
+        padding-bottom: 15px;
+        display: block;
+        width: 100%;
+    }
 }

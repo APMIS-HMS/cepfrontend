@@ -6,7 +6,7 @@ import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService,
     PersonService, UserService
 } from '../../../../../services/facility-manager/setup/index';
-
+import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
 import {
     Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country, User, Role
 } from '../../../../../models/index';
@@ -31,12 +31,14 @@ export class NewFacEmployeeComponent implements OnInit {
     frmNewPerson2_show = false;
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
+    frmPerson_show = false;
 
     newEmpIdControl = new FormControl();
     public frmNewEmp1: FormGroup;
     public frmNewEmp2: FormGroup;
     public frmNewEmp3: FormGroup;
     public frmNewEmp4: FormGroup;
+    public frmPerson: FormGroup;
 
     @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('cropper', undefined)
@@ -116,6 +118,19 @@ export class NewFacEmployeeComponent implements OnInit {
             this.mainErr = true;
             this.errMsg = '';
         });
+
+        this.frmPerson = this.formBuilder.group({
+            persontitle: [new Date(), [<any>Validators.required]],
+            firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            gender: [[<any>Validators.minLength(2)]],
+            dob: [new Date(), [<any>Validators.required]],
+            motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            securityQuestion: ['', [<any>Validators.required]],
+            securityAnswer: ['', [<any>Validators.required]],
+            // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+            phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
+          });
 
         this.frmNewEmp1 = this.formBuilder.group({
             empTitle: ['', [<any>Validators.required]],
@@ -323,7 +338,8 @@ export class NewFacEmployeeComponent implements OnInit {
     }
 
     newPerson1_show() {
-        this.frmNewPerson1_show = true;
+        this.frmPerson_show = true;
+        this.frmNewPerson1_show = false;
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
@@ -534,6 +550,21 @@ export class NewFacEmployeeComponent implements OnInit {
 
             this.closeModal.emit(true);
         });
+    }
+    submit(){
+        this.frmNewPerson1_show = false;
+        this.frmNewPerson2_show = false;
+        this.frmNewPerson3_show = false;
+        this.frmNewEmp4_show = true;
+        this.apmisId_show = false;
+    }
+    clickMe(){
+        this.frmNewPerson1_show = false;
+        this.frmPerson_show = false;
+        this.frmNewPerson2_show = false;
+        this.frmNewPerson3_show = false;
+        this.frmNewEmp4_show = true;
+        this.apmisId_show = false;
     }
     newEmp4(valid, val) {
         if (valid) {
