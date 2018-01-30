@@ -23,25 +23,22 @@ class Service {
   }
 
   create(data, params) {
-    if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current)));
-    }
-    // var filePath = path.join(__dirname, 'Sunday2.jpg');
-    // logger.info(data.rawImage);
+    const ACCESS_KEY = process.env.AZURE_STORAGE_ACCESS_KEY;
+    const fileName = params.query.fileName;
     var rawdata = data.rawImage;
     var matches = rawdata.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/);
     var type = matches[1];
     var buffer = new Buffer(matches[2], 'base64');
 
     return new Promise(function (resolve, reject) {
-      var blobSvc = azure.createBlobService('apmisstorageaccount', 'cfxdD7jxijVT8jXi5iDJEoMI4t5zesdlQH6vDJcU5ohfZSMrgM6QkK9wlaIwovKhCOyl3RLwgGpgLhlU19EBhw==');
-      blobSvc.createBlockBlobFromText('personcontainer', 'myblob2', buffer, { contentType: type }, function (error, result, response) {
+      var blobSvc = azure.createBlobService('apmisstorageaccount', ACCESS_KEY);
+      blobSvc.createBlockBlobFromText('personcontainer', fileName, buffer, { contentType: type }, function (error, result, response) {
 
         if (error) {
           reject(error);
         } else {
           resolve({
-            result: params,
+            fileName: fileName,
             response: response
           });
         }
