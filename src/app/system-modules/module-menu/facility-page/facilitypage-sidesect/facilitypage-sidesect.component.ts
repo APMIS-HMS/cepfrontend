@@ -11,35 +11,36 @@ import { Component, OnInit, Input } from '@angular/core';
 export class FacilitypageSidesectComponent implements OnInit {
   @Input() selectedFacility: any = <any>{};
   editBasicInfo = false;
-  membersOf: any;
-  memberFacilities:any = [];
+  membersOf = [];
+  memberFacilities: any = [];
 
-  constructor(private facilityService:FacilitiesService, private locker:CoolLocalStorage) {
-    this.facilityService.patchListner.subscribe(payload =>{
+  constructor(private facilityService: FacilitiesService, private locker: CoolLocalStorage) {
+    this.facilityService.patchListner.subscribe(payload => {
       console.log(payload);
       this.selectedFacility = payload;
       this.locker.setObject('selectedFacility', payload);
     });
-   }
+  }
 
   ngOnInit() {
     //this.getNetworkMembers(false);
     this.getNetworkMembers(true);
   }
 
-  close_onClick(e){
+  close_onClick(e) {
     this.editBasicInfo = false;
   }
-  editBasicInfo_onClick(){
+  editBasicInfo_onClick() {
     this.editBasicInfo = true;
   }
 
-  getNetworkMembers(isMemberOf){
-    this.facilityService.getNetwork(this.selectedFacility._id, isMemberOf).then(payload => {
-      if(isMemberOf){
+  getNetworkMembers(isMemberOf) {
+    this.facilityService.getNetwork(this.selectedFacility._id, isMemberOf).then((payload: any) => {
+      console.log(payload);
+      if (isMemberOf) {
         this.membersOf = payload;
         console.log(this.membersOf);
-      }else{
+      } else {
         this.memberFacilities = payload;
         console.log(this.memberFacilities);
       }
