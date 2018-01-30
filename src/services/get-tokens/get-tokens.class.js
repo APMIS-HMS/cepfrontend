@@ -48,6 +48,16 @@ class Service {
     data.result = apmisNo;
   }
 
+  generateInvoiceNo() {
+    var number = Math.floor(Math.random() * 9999) + 1;
+    if (number.length <= 4) {
+      number = String('0000' + number).slice(-4);
+    }
+    var dt = new Date;
+    var retVal = 'IV' + '/' +dt.getDate()+''+dt.getMonth()+1+'/'+ number;
+    return retVal;
+  }
+
   get(id, param) {
     let data = {};
     if (id.toString() === tokenLabel.tokenType.facilityVerification.toString()) {
@@ -58,6 +68,9 @@ class Service {
       this.generateAutoPassword(data);
     }else if (id.toString() === tokenLabel.tokenType.userVerification.toString()) {
       data.result = this.generateOtp();
+    }
+    else if (id.toString() === tokenLabel.tokenType.invoiceNo.toString()) {
+      data.result = this.generateInvoiceNo();
     }
     return Promise.resolve(data);
   }

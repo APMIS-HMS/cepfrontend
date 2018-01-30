@@ -7,5 +7,6 @@ module.exports = {
     autoPassword: 2,
     scheduleAppointment: 3,
     userVerification: 4,
+    invoiceNo: 5
   }
 };

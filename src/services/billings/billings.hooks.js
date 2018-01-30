@@ -1,9 +1,11 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const extractbill = require('../../hooks/extractbill');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [],
+    find: [extractbill()],
     get: [],
     create: [],
     update: [],
@@ -13,7 +15,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [extractbill()],
     get: [],
     create: [],
     update: [],

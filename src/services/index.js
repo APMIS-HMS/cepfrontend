@@ -107,6 +107,11 @@ const fundWallet = require('./fund-wallet/fund-wallet.service.js');
 const joinNetwork = require('./join-network/join-network.service.js');
 const securityQuestion = require('./security-question/security-question.service.js');
 const facilityRoles = require('./facility-roles/facility-roles.service.js');
+const searchPeople = require('./search-people/search-people.service.js');
+const facilityServiceItems = require('./facility-service-items/facility-service-items.service.js');
+const billFacilityServices = require('./bill-facility-services/bill-facility-services.service.js');
+const drugGenericList = require('./drug-generic-list/drug-generic-list.service.js');
+const payments = require('./payments/payments.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -217,4 +222,9 @@ module.exports = function (app) {
   app.configure(joinNetwork);
   app.configure(securityQuestion);
   app.configure(facilityRoles);
+  app.configure(searchPeople);
+  app.configure(facilityServiceItems);
+  app.configure(billFacilityServices);
+  app.configure(drugGenericList);
+  app.configure(payments);
 };

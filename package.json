@@ -2,7 +2,6 @@
   "name": "apmisapiv-2",
   "description": "This is the version 2 of the famours connected health care platform",
   "version": "2.0.0",
-  "homepage": "",
   "main": "src",
   "keywords": [
     "feathers"
@@ -42,11 +41,13 @@
     "convert-excel-to-json": "^1.2.1",
     "cors": "^2.8.4",
     "date-fns": "^1.29.0",
+    "dotenv": "^4.0.0",
     "feathers-authentication": "^1.3.1",
     "feathers-hooks-common": "^3.10.0",
     "feathers-mongodb": "^3.0.0",
     "feathers-mongoose": "^6.0.0",
     "helmet": "^3.9.0",
+    "jsend": "^1.0.2",
     "mongodb": "^3.0.1",
     "mongoose": "^4.13.6",
     "node-rest-client": "^3.1.0",
@@ -60,6 +61,7 @@
     "chai": "^4.1.2",
     "eslint": "^4.12.1",
     "mocha": "^4.0.1",
+    "nodemon": "^1.14.11",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   }
