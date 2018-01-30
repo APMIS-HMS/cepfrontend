@@ -112,6 +112,7 @@ const facilityServiceItems = require('./facility-service-items/facility-service-
 const billFacilityServices = require('./bill-facility-services/bill-facility-services.service.js');
 const drugGenericList = require('./drug-generic-list/drug-generic-list.service.js');
 const payments = require('./payments/payments.service.js');
+const uploadFacade = require('./upload-facade/upload-facade.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -227,4 +228,5 @@ module.exports = function (app) {
   app.configure(billFacilityServices);
   app.configure(drugGenericList);
   app.configure(payments);
+  app.configure(uploadFacade);
 };
