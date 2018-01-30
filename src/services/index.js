@@ -106,6 +106,7 @@ const makePayments = require('./make-payments/make-payments.service.js');
 const fundWallet = require('./fund-wallet/fund-wallet.service.js');
 const joinNetwork = require('./join-network/join-network.service.js');
 const securityQuestion = require('./security-question/security-question.service.js');
+const facilityRoles = require('./facility-roles/facility-roles.service.js');
 const searchPeople = require('./search-people/search-people.service.js');
 const facilityServiceItems = require('./facility-service-items/facility-service-items.service.js');
 const billFacilityServices = require('./bill-facility-services/bill-facility-services.service.js');
@@ -221,6 +222,7 @@ module.exports = function (app) {
   app.configure(fundWallet);
   app.configure(joinNetwork);
   app.configure(securityQuestion);
+  app.configure(facilityRoles);
   app.configure(searchPeople);
   app.configure(facilityServiceItems);
   app.configure(billFacilityServices);

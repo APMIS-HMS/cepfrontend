@@ -13,6 +13,7 @@ module.exports = function (app) {
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     personId: { type: Schema.Types.ObjectId, required: true },
+    userRoles: [{ type: Schema.Types.Mixed }],
     verificationToken: { type: String, required: false },
     isTokenVerified: { type: Boolean, 'default': false },
     facilitiesRole: [{ type: Schema.Types.Mixed }]
