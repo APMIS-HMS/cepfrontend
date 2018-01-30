@@ -22,20 +22,21 @@ export class EmployeeAccessRolesComponent implements OnInit {
 
   public userPrivileges: FormGroup; FormBuilder;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() selectedEmployee;
   mainErr = true;
   errMsg = "";
   roles: any = [];
 
-  rolesPicked:any = [];
-  checboxLen:any;
-  rolesRemoved:any = [];
+  rolesPicked: any = [];
+  checboxLen: any;
+  rolesRemoved: any = [];
 
-  selectedFacility:any;
-  selectedEmployee: any;
-  loggedInUser:any;
-  loading:any;
+  selectedFacility: any;
+  // selectedEmployee: any;
+  loggedInUser: any;
+  loading: any;
 
-  constructor(private formBuilder: FormBuilder, private featureService: FeatureModuleService, 
+  constructor(private formBuilder: FormBuilder, private featureService: FeatureModuleService,
     private locker: CoolLocalStorage, private facilityService: FacilitiesService,
     private systemModuleService: SystemModuleService) { }
 
@@ -43,11 +44,11 @@ export class EmployeeAccessRolesComponent implements OnInit {
     /* this.userPrivileges = this.FormBuilder.group({
 
     }); */
-
+    console.log(this.selectedEmployee);
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     let auth = <any>this.locker.getObject('auth');
     this.loggedInUser = auth.data;
-    this.selectedEmployee = <any>this.locker.getObject('selectedEmployee');
+    // this.selectedEmployee = <any>this.locker.getObject('selectedEmployee');
 
     this.getRoles();
 
@@ -57,19 +58,22 @@ export class EmployeeAccessRolesComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
-  getRoles(){
+  getRoles() {
     /* this.featureService.findAll().then(payload => {
       console.log(payload);
       this.roles = payload.data;
     }); */
     console.log(this.selectedEmployee.personId);
-    this.featureService.getFacilityRoles(/* this.selectedEmployee.personId */'5a4c57b448eaa74a00040987', {
+    this.featureService.getFacilityRoles(this.selectedEmployee.personId, {
       query: {
         facilityId: this.selectedFacility._id
       }
     }).then(payload => {
       console.log(payload);
-      this.roles = payload;
+      if(payload.status === 'success'){
+        this.roles = payload.data;
+        console.log(this.roles);
+      }
     });
   }
 
@@ -86,18 +90,18 @@ export class EmployeeAccessRolesComponent implements OnInit {
       this.rolesRemoved.splice(indr, 1); */
       console.log(ind);
       if (ind > -1) {
-        
+
       } else {
         this.rolesPicked.push(id.toString());
       }
-    }else{
+    } else {
       let ind = this.rolesPicked.indexOf(id.toString());
       this.rolesPicked.splice(ind, 1);
-      console.log(ind); 
+      console.log(ind);
 
       let indr = this.rolesRemoved.indexOf(id.toString());
       if (indr > -1) {
-        
+
       } else {
         this.rolesRemoved.push(id.toString());
       }
@@ -110,15 +114,15 @@ export class EmployeeAccessRolesComponent implements OnInit {
 
   }
 
-  saveRoles(){
+  saveRoles() {
     this.loading = true;
     let text = "You are about to assign roles to this employee";
     this.systemModuleService.announceSweetProxy(text, 'info', this);
   }
 
-  createRoles(){
+  createRoles() {
     var data = {
-      personId: /* this.selectedEmployee.personId */ '5a4c57b448eaa74a00040987',
+      personId: this.selectedEmployee.personId,
       facilityId: this.selectedFacility._id,
       roles: this.rolesPicked
     }
@@ -128,8 +132,8 @@ export class EmployeeAccessRolesComponent implements OnInit {
     });
   }
 
-  sweetAlertCallback(result){
-    if(result.value){
+  sweetAlertCallback(result) {
+    if (result.value) {
       this.createRoles();
     }
   }

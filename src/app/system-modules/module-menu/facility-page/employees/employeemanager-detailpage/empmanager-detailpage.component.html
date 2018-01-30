@@ -340,6 +340,6 @@
         <app-edit-emp-basic [departmentBool]="departmentbool" [selectedPerson]="employee.personDetails" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-emp-basic>
     </div>
     <div *ngIf="userPrivileges" class="modal-overlay">
-        <app-employee-access-roles (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-employee-access-roles>
+        <app-employee-access-roles [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-employee-access-roles>
     </div>
 </div>
