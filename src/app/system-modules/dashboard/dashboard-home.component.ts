@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../service-facade/auth-facade.service';
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -49,7 +50,7 @@ export class DashboardHomeComponent implements OnInit {
   checkedInObject: any = <any>{};
   constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
-    private workSpaceService: WorkSpaceService) {
+    private workSpaceService: WorkSpaceService, private authFacadeService: AuthFacadeService) {
     // router.events.subscribe((routerEvent: Event) => {
     //   this.checkRouterEvent(routerEvent);
     // });
@@ -87,7 +88,7 @@ export class DashboardHomeComponent implements OnInit {
 
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
-        facilityId: this.facilityObj._id, personId: auth.data.personId, $select:['personId']
+        facilityId: this.facilityObj._id, personId: auth.data.personId, $select: ['personId']
       }
     }));
     this.subscription = emp$.mergeMap((emp: any) => {
@@ -119,7 +120,8 @@ export class DashboardHomeComponent implements OnInit {
           this.locker.setObject('miniFacility', results[2].data[0])
         }
 
-        this.locker.setObject('loginEmployee', this.loginEmployee);
+        // this.locker.setObject('loginEmployee', this.loginEmployee);
+        this.authFacadeService.setLogingEmployee(this.loginEmployee)
       }
 
       this.loadIndicatorVisible = false;
@@ -315,7 +317,7 @@ export class DashboardHomeComponent implements OnInit {
     this.modal_on = false;
     this.logoutConfirm_on = false;
   }
-  
+
   notificationToggle() {
     this.notificationSlideIn = !this.notificationSlideIn;
   }

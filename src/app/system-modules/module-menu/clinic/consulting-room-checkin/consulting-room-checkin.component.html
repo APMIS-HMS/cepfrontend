@@ -3,10 +3,10 @@
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <div class="modal-userStrap">
         <div class="strapImgWrap">
-            <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-            <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
+            <img *ngIf="loginEmployee?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+            <img *ngIf="loginEmployee?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.personDetails?.profileImageObject?.thumbnail)">
         </div>
-        <div class="strapUser">{{loginEmployee.employeeDetails.lastName}} {{loginEmployee.employeeDetails.firstName}}</div>
+        <div class="strapUser">{{loginEmployee?.personDetails?.lastName}} {{loginEmployee?.personDetails?.firstName}}</div>
     </div>
 
     <div class="postStrap-title">Check Into Consulting Room</div>
