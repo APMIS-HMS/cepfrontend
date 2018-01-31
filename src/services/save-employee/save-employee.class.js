@@ -9,18 +9,26 @@ class Service {
     return Promise.resolve([]);
   }
 
-  get(id, params) {
-    return Promise.resolve({
-      id, text: `A new message with ID: ${id}!`
-    });
+  async get(id, params) {
+    const employeeService = this.app.service('employees');
+    const workspaceService = this.app.service('workspaces');
+    const personId = params.user.personId;
+    let selectedEmployee = await employeeService.find({ query: { facilityId: id, personId: personId } });
+    if (selectedEmployee.data.length > 0) {
+      let emp = selectedEmployee.data[0];
+      let workspaces = await workspaceService.find({ query: { facilityId: id, employeeId: emp._id } });
+      emp.workSpaces = workspaces.data;
+      selectedEmployee.data[0] = emp;
+      return selectedEmployee;
+    } else {
+      return {};
+    }
+
   }
 
   async create(data, params) {
     // const employeeService = this.app.service('employees');
     const userService = this.app.service('users');
-    logger.info('wow');
-
-    logger.info(1);
     let userList = await userService.find({
       query: {
         personId: data.personId
@@ -28,27 +36,20 @@ class Service {
     });
     logger.info(userList);
     if (userList.data.length > 0) {
-      logger.info(3);
       let selectedUser = userList.data[0];
       if (selectedUser.facilitiesRole === undefined) {
         selectedUser.facilitiesRole = [];
-        logger.info(4);
       }
       let facilityRole = {
         facilityId: data.facilityId,
       };
       let facilitiesRole = selectedUser.facilitiesRole;
       facilitiesRole.push(facilityRole);
-      logger.info(5);
-      logger.info(facilitiesRole);
       let patchedUser = await userService.patch(selectedUser._id, {
         facilitiesRole: facilitiesRole
       });
-      logger.info(6);
       return patchedUser;
-      // return await employeeService.create(data);
     } else {
-      logger.info(2);
       return [];
     }
 

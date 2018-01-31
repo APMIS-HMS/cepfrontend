@@ -114,6 +114,8 @@ const payments = require('./payments/payments.service.js');
 const uploadFacade = require('./upload-facade/upload-facade.service.js');
 const facilityRoles = require('./facility-roles/facility-roles.service.js');
 const saveEmployee = require('./save-employee/save-employee.service.js');
+const scheduleTypes = require('./schedule-types/schedule-types.service.js');
+const schedules = require('./schedules/schedules.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -231,4 +233,6 @@ module.exports = function (app) {
   app.configure(uploadFacade);
   app.configure(facilityRoles);
   app.configure(saveEmployee);
+  app.configure(scheduleTypes);
+  app.configure(schedules);
 };
