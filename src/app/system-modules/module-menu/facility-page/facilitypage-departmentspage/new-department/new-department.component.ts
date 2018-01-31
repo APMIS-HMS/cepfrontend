@@ -15,6 +15,7 @@ export class NewDepartmentComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
+  @Input() selectedDepartment;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   newDeptModal_on = false;
@@ -25,7 +26,7 @@ export class NewDepartmentComponent implements OnInit {
   public frmNewDept: FormGroup;
 
   constructor(private formBuilder: FormBuilder, public facilityService: FacilitiesService,
-    private locker: CoolLocalStorage, private systemService:SystemModuleService) {
+    private locker: CoolLocalStorage, private systemService: SystemModuleService) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     })
@@ -34,6 +35,9 @@ export class NewDepartmentComponent implements OnInit {
   ngOnInit() {
     this.addNew();
     this.facilityObj = this.facilityService.getSelectedFacilityId();
+    if (this.selectedDepartment !== undefined && this.selectedDepartment._id !== undefined) {
+      this.frmNewDept.controls.deptName.setValue(this.selectedDepartment.name);
+    }
   }
   addNew() {
     this.frmNewDept = this.formBuilder.group({
@@ -52,19 +56,43 @@ export class NewDepartmentComponent implements OnInit {
         this.errMsg = 'you left out a required field';
         this.isBusy = false;
       } else {
-        let department: any = { name: val.deptName };
-        this.facilityObj.departments.push(department);
-        this.facilityService.update(this.facilityObj).then((payload) => {
-          this.locker.setObject('selectedFacility', payload);
-          this.addNew();
-          this.isBusy = false;
-          this.systemService.off();
-          this.close_onClick();
-        }).catch(err =>{
-          this.isBusy = false;
-          this.systemService.off();
-        });
-        this.mainErr = true;
+        if (this.selectedDepartment === undefined || this.selectedDepartment._id === undefined) {
+          let department: any = { name: val.deptName };
+          this.facilityObj.departments.push(department);
+          this.facilityService.update(this.facilityObj).then((payload) => {
+            this.locker.setObject('selectedFacility', payload);
+            this.systemService.announceSweetProxy('Department saved successfully', 'success');
+            this.addNew();
+            this.isBusy = false;
+            this.systemService.off();
+            this.close_onClick();
+          }).catch(err => {
+            this.isBusy = false;
+            this.systemService.off();
+            this.systemService.announceSweetProxy('There was an error while updating this department, try again!','error');
+          });
+          this.mainErr = true;
+        } else {
+
+          let index = this.facilityObj.departments.findIndex(x => x._id === this.selectedDepartment._id);
+          let department = this.facilityObj.departments[index];
+          department.name = val.deptName;
+          this.facilityObj.departments[index] = department;
+          this.facilityService.update(this.facilityObj).then(payload => {
+            this.systemService.off();
+            this.isBusy = false;
+            this.close_onClick();
+            this.systemService.announceSweetProxy('Department updated successfully','success');
+          }).catch(err => {
+            this.systemService.off();
+            this.isBusy = false;
+            this.systemService.announceSweetProxy('There was an error while updating this department, try again!','error');
+          });
+
+
+
+        }
+
       }
     } else {
       this.mainErr = false;

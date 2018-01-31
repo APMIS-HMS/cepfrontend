@@ -7,29 +7,29 @@
 .frm-singleItem-wrap small {
     bottom: -3px;
 }
-
-.frm-item-inner-wrap {
-    margin-left: 40px;
-}
-
 .btn-2 {
     width: 100px;
-    margin-top: 15px;
-    margin-left: 0px;
+    margin: 10px auto;
 }
 
 .valSpan {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: block;
+    width: 100%;
 }
 
 .frmArrayclinicWrap {
-    width: 330px;
-    border: 1px solid transparent;
+    width: 100%;
     padding: 3px;
     margin-bottom: 12px;
-    overflow-x: hidden;
+}
+.arr-grp-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: #eee;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 input,
@@ -42,11 +42,12 @@ select {
 }
 
 .trash {
-    float: right;
+    font-size: 1.4rem;
+    cursor: pointer;
 }
 
 .trash:hover {
-    cursor: pointer;
+    color: #ff2500;
 }
 
 .mat-raised-button {
@@ -58,11 +59,6 @@ select {
 
 #example-full-width {
     text-align: center;
-}
-
-.clinic-section {
-    overflow: auto;
-    max-height: 300px;
 }
 
 .modal-baseWrap {

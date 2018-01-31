@@ -187,6 +187,23 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
       this.systemService.off();
     });
   }
+  remove(dept, unit) {
+    this.systemService.on();
+    let index = this.facilityObj.departments.findIndex(x => x._id === dept._id);
+    let department = this.facilityObj.departments[index];
+    let unitIndex = department.units.findIndex(x => x._id === unit._id);
+    let deleteUnit = department.units[unitIndex];
+
+    department.units.splice(unitIndex, 1);
+    this.facilityObj.departments[index] = department;
+    this.facilityService.update(this.facilityObj).then(payload => {
+      this.systemService.off();
+      this.systemService.announceSweetProxy('Unit removed successfully','info');
+    }).catch(err => {
+      this.systemService.off();
+      this.systemService.announceSweetProxy('There was an error while removing this unit','error');
+    });
+  }
   deptEditNameToggle() {
     this.deptEditNameIcoShow = !this.deptEditNameIcoShow;
   }
@@ -259,11 +276,16 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   }
   newUnit_onClick(dept) {
     this.selectedDepartment = dept;
+    this.selectedUnit = undefined;
     this.newUnit = true;
   }
   editUnit_onClick(dept, unit) {
     this.selectedDepartment = dept;
     this.selectedUnit = unit;
     this.newUnit = true;
+  }
+  editDept_onClick(dept) {
+    this.selectedDepartment = dept;
+    this.newDept = true;
   }
 }
