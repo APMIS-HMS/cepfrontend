@@ -6,7 +6,7 @@ input, select{
 }
 .modal-baseWrap {
     width: 560px;
-    padding: 20px 100px;
+    padding: 20px;
     margin: 0px auto;
 }
 .cta-1 {
@@ -28,9 +28,12 @@ input, select{
     background: #03A9F4;
     color: #fff;
 }
-
-@media only screen and (max-width: 500px) {
-    .modal-baseWrap .mat-input-container {
-        width: 100%;
-    }
+.modal-baseWrap .mat-input-container{
+    width: 100%;
 }
+
+// @media only screen and (max-width: 500px) {
+//     .modal-baseWrap .mat-input-container {
+//         width: 100%;
+//     }
+// }
