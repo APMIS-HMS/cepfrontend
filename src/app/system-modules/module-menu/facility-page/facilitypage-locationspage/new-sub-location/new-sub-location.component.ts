@@ -57,8 +57,6 @@ export class NewSubLocationComponent implements OnInit {
     if (this.subLocation._id !== undefined) {
       this.ActionButton = 'Update';
       this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
-      this.frmNewSubLoc.controls['sublocAlias'].setValue(this.subLocation.shortName);
-      this.frmNewSubLoc.controls['sublocDesc'].setValue(this.subLocation.description);
     }
     this.getTags();
   }
@@ -66,9 +64,7 @@ export class NewSubLocationComponent implements OnInit {
   addNew() {
     this.frmNewSubLoc = this.formBuilder.group({
       sublocName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-      sublocAlias: ['', [<any>Validators.minLength(2)]],
-      sublocParent: ['', [<any>Validators.required]],
-      sublocDesc: ['', [<any>Validators.required, <any>Validators.minLength(10)]]
+      sublocParent: ['', [<any>Validators.required]]
     });
   }
   getTags() {
@@ -96,8 +92,6 @@ export class NewSubLocationComponent implements OnInit {
         tag.createdBy = auth._id;
         const model: MinorLocation = <MinorLocation>{
           name: val.sublocName,
-          shortName: val.sublocAlias,
-          description: val.sublocDesc,
           locationId: val.sublocParent
         };
 
@@ -131,6 +125,7 @@ export class NewSubLocationComponent implements OnInit {
                       this.ActionButton = 'Create';
                       const text = val.sublocName + ' has been created successfully';
                       this._notification('Success', text);
+                      this.close_onClick();
                     });
                   } else {
                     const locationsArray = [];
@@ -146,6 +141,7 @@ export class NewSubLocationComponent implements OnInit {
                       this.ActionButton = 'Create';
                       const text = val.sublocName + ' has been created successfully';
                       this._notification('Success', text);
+                      this.close_onClick();
                     });
                   }
                 });
@@ -157,6 +153,7 @@ export class NewSubLocationComponent implements OnInit {
                   this.ActionButton = 'Create';
                   const text = val.sublocName + ' has been created successfully';
                   this._notification('Success', text);
+                  this.close_onClick();
                 }).catch(err => console.log(err));
               } else {
                 this.addNew();
@@ -164,6 +161,7 @@ export class NewSubLocationComponent implements OnInit {
                 this.ActionButton = 'Create';
                 const text = val.sublocName + ' has been created successfully';
                 this._notification('Success', text);
+                this.close_onClick();
               }
             });
           } else {
@@ -180,9 +178,7 @@ export class NewSubLocationComponent implements OnInit {
         const locations = this.locations.filter(t => t._id === val.sublocParent);
         // If location is ward.
         if (locations.length > 0 && locations[0].name.toLowerCase() === 'ward') {
-          this.subLocation.description = val.sublocDesc;
           this.subLocation.name = val.sublocName;
-          this.subLocation.shortName = val.sublocAlias;
           const index = this.facility.minorLocations.findIndex((obj => obj._id === this.subLocation._id));
           this.facility.minorLocations.splice(index, 1, this.subLocation);
 
@@ -191,14 +187,13 @@ export class NewSubLocationComponent implements OnInit {
               const wardDetails = wardFindRes.data[0];
               const wardIndex = wardDetails.locations.filter(x => x.minorLocationId._id === this.subLocation._id);
               wardIndex[0].minorLocationId.name = val.sublocName;
-              wardIndex[0].minorLocationId.shortName = val.sublocAlias;
-              wardIndex[0].minorLocationId.description = val.sublocDesc;
 
               this._wardDetailsService.update(wardDetails).then(wardUpdateRes => {
                 this.disableNewMinorLoc = false;
                 this.ActionButton = 'Create';
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
                 this._notification('Success', text);
+                this.close_onClick();
               });
             });
           });
@@ -215,10 +210,8 @@ export class NewSubLocationComponent implements OnInit {
             const authObj: any = this.locker.getObject('auth');
             const auth: any = authObj.data;
             tag.createdBy = auth._id;
-
-            this.subLocation.description = val.sublocDesc;
             this.subLocation.name = val.sublocName;
-            this.subLocation.shortName = val.sublocAlias;
+
             const index = this.facility.minorLocations.findIndex((obj => obj._id === this.subLocation._id));
             this.facility.minorLocations.splice(index, 1, this.subLocation);
 
@@ -229,13 +222,12 @@ export class NewSubLocationComponent implements OnInit {
                 this.ActionButton = 'Create';
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
                 this._notification('Success', text);
+                this.close_onClick();
               });
             });
           } else {
             const tagIndex = this.tags.findIndex(x => x.name === this.subLocation.name);
-            this.subLocation.description = val.sublocDesc;
             this.subLocation.name = val.sublocName;
-            this.subLocation.shortName = val.sublocAlias;
             const index = this.facility.minorLocations.findIndex((obj => obj._id === this.subLocation._id));
             this.facility.minorLocations.splice(index, 1, this.subLocation);
 
@@ -248,13 +240,12 @@ export class NewSubLocationComponent implements OnInit {
                 this.ActionButton = 'Create';
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
                 this._notification('Success', text);
+                this.close_onClick();
               });
             });
           }
         } else {
-          this.subLocation.description = val.sublocDesc;
           this.subLocation.name = val.sublocName;
-          this.subLocation.shortName = val.sublocAlias;
           const index = this.facility.minorLocations.findIndex((obj => obj._id === this.subLocation._id));
           this.facility.minorLocations.splice(index, 1, this.subLocation);
 
@@ -263,6 +254,7 @@ export class NewSubLocationComponent implements OnInit {
             this.ActionButton = 'Create';
             const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
             this._notification('Success', text);
+            this.close_onClick();
           });
         }
       }

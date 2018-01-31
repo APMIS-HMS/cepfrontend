@@ -84,6 +84,7 @@ export class PaymentComponent implements OnInit {
                         "name": value
                     }
                 }).then((res: any) => {
+                    console.log(res);
                     this.pendingBills = res.bills;
                     this.loadingPendingBills = false;
                 }).catch(err => {

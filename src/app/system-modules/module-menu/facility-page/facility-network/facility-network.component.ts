@@ -20,8 +20,8 @@ export class FacilityNetworkComponent implements OnInit {
 
   LoggedInFacility;
 
-  members: any;
-  others: any;
+  members = [];
+  others = [];
 
   constructor(public facilityService: FacilitiesService, private locker: CoolLocalStorage,
     private systemModuleService: SystemModuleService) {
@@ -79,10 +79,9 @@ export class FacilityNetworkComponent implements OnInit {
     })
   }
 
-  getNetworks(isMemberOf) {
-    this.systemModuleService.on();
-    this.facilityService.getNetwork(this.LoggedInFacility._id, isMemberOf).then(payload => {
-      if (isMemberOf) {
+  getNetworks(isMemberOf){
+    this.facilityService.getNetwork(this.LoggedInFacility._id, isMemberOf).then((payload:any) => {
+      if(isMemberOf){
         this.others = payload;
       } else {
         this.members = payload;

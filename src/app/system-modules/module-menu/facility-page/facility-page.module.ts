@@ -86,7 +86,7 @@ import { EmployeeAccessRolesComponent } from './employees/employeemanager-detail
         AddMemberComponent,
         AddOtherComponent,
         NewFacEmployeeComponent,
-      EmployeeAccessRolesComponent
+        EmployeeAccessRolesComponent
     ],
     exports: [
     ],

@@ -27,7 +27,7 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
   inde:any = [];
   limit = 2;
   total = 0;
-  showLoadMore: Boolean = true;
+  showLoadMore: Boolean = false;
   loadIndicatorVisible = false;
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -35,11 +35,14 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
     private toast: ToastsManager,
     private router: Router, private route: ActivatedRoute, private systemService:SystemModuleService) {
     this.employeeService.listner.subscribe(payload => {
+      console.log(1)
+      this.employees = [];
       this.getEmployees(this.limit, true);
     });
     this.employeeService.createListener.subscribe(payload => {
+      console.log(2)
+      this.employees = [];
       this.getEmployees(this.limit, true);
-      this.toast.success(payload.employeeDetails.personFullName + ' created successfully!', 'Success!');
     });
 
     const away = this.searchControl.valueChanges

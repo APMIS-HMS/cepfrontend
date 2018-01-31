@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./facilitypage-locationspage.component.scss']
 })
 export class FacilitypageLocationspageComponent implements OnInit {
+  selectedLocation: any;
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
@@ -52,7 +53,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
   facility: Facility = <Facility>{};
 
   constructor(private locationService: LocationService, private locker: CoolLocalStorage,
-  public facilityService: FacilitiesService, private route: ActivatedRoute) {
+    public facilityService: FacilitiesService, private route: ActivatedRoute) {
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
       this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
@@ -64,46 +65,36 @@ export class FacilitypageLocationspageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.facility =   <Facility> this.facilityService.getSelectedFacilityId();
+    this.facility = <Facility>this.facilityService.getSelectedFacilityId();
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
       this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
     });
     this.pageInView.emit('Locations');
-
-    this.locationNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.locationshortNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.locationDescEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-
-    this.sublocNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.sublocshortNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.sublocDescEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    // this.getLocations();
     this.route.data.subscribe(data => {
       data['locations'].subscribe((payload: any) => {
         this.locationsObj = payload;
+        console.log(this.locationsObj);
       });
     });
   }
-  showLoc_click() {
+  showLoc_click(location) {
+    this.selectedLocation = location;
     this.showLoc = true;
+  }
+  showMinorLocation_selectedLocation(location) {
+    if (this.selectedLocation !== undefined) {
+      return location._id === this.selectedLocation._id;
+    }
+    return false;
   }
   showLoc_hide() {
     this.showLoc = false;
+    this.selectedLocation = undefined;
   }
-  newLoc_onClick() {
+  newLoc_onClick(minor) {
+    this.locationObj = this.selectedLocation;
+    this.subLocation = minor;
     this.newSubLocModal_on = true;
   }
   getLocations() {
@@ -125,6 +116,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationObj = model;
 
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+    console.log(this.filteredMinorLocations);
   }
 
   locationDetailContentArea_remove(model: Location) {
@@ -164,7 +156,8 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.newSubLocModal_on = false;
     this.innerMenuShow = false;
   }
-  newSubLocationModal_show() {
+  newSubLocationModal_show(location) {
+    this.locationObj = location;
     this.modal_on = false;
     this.newSubLocModal_on = true;
     this.newLocationModal_on = false;

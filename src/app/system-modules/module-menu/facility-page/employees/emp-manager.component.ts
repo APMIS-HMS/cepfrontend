@@ -22,6 +22,7 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
   employee: any;
   selectedFacility: any = <any>{};
   resetData:Boolean = false;
+  selectedDepartment:any;
 
   searchControl = new FormControl();
   department = new FormControl();
@@ -47,6 +48,7 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
     this.department.valueChanges.subscribe(value => {
+      this.selectedDepartment = value;
       this.units = value.units;
       this.employeeManagerComponent.getByDepartment(value._id);
     });
@@ -75,6 +77,8 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
   close_onClick(e) {
     this.newEmp = false;
     this.assignUnitPop = false;
+    // this.emp
+    // this.employeeManagerComponent.getEmployees();
   }
   pageInViewLoader(title) {
     this.pageInView = title;

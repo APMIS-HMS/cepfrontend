@@ -31,13 +31,14 @@ export class UserAccountsInnerPopupComponent implements OnInit {
         this.isPatient = true;
       }
       this.hasReturned = true;
-    })
+    });
   }
 
   close_onClick(event) {
     this.closeModal.emit(true);
   }
   isEmployeeInFacility() {
+    console.log(this.loginEmployee);
     if (this.loginEmployee === undefined) {
       return false;
     } else {

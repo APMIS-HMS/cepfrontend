@@ -187,15 +187,17 @@ export class FacilitiesService {
         }
       }))
     });
-  } 
+  }
 
   joinNetwork(facility: any, isDelete) {
-    console.log(facility);
-    return this._socketJoinNetwork.create(facility, {
-      query: {
-        'isdelete': isDelete
-      }
-    })
+    let that = this;
+    return new Promise(function (resolve, reject) {
+      resolve(that._socketJoinNetwork.create(facility, {
+        query: {
+          'isdelete': isDelete
+        }
+      }))
+    });
   }
 
   getNetwork(fac, isMemberOf) {
@@ -205,4 +207,5 @@ export class FacilitiesService {
       }
     })
   }
+
 }
