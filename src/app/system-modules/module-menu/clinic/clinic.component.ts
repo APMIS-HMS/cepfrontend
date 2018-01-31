@@ -60,6 +60,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.checkPageUrl(page);
 	
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+		console.log(this.loginEmployee);
 		// this.clinicHelperService.getClinicMajorLocation();
 		if (this.loginEmployee.professionObject !== undefined) {
 			if (this.loginEmployee.professionObject.name === 'Doctor'
