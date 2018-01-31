@@ -7,7 +7,7 @@ import { patientPortalRoutes } from './patient-portal.routes';
 import { SharedModule } from '../../shared-module/shared.module';
 import { PatientPortalHomeComponent } from './patient-portal-home.component';
 import { SystemModuleComponent } from '../system-module.component';
-import { ChangePasswordComponent } from '../../system-modules/module-menu/change-password/change-password.component';
+// import { ChangePasswordComponent } from '../../system-modules/module-menu/change-password/change-password.component';
 import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
 import { PpHomeComponent } from './pp-home/pp-home.component';
 import { PatientPortalAppointmentComponent } from './patient-portal-appointment/patient-portal-appointment.component';

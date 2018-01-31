@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
+
 @Component({
   selector: 'app-system-module',
   templateUrl: './system-module.component.html',
@@ -23,6 +24,8 @@ export class SystemModuleComponent implements OnInit {
   authData: any = <any>{};
   checkedInObject: any = <any>{};
   logoutConfirm_on = false;
+  userOpt = false;
+  changePassword = false;
 
   constructor(private userService: UserService,
     public facilityService: FacilitiesService,
@@ -104,6 +107,14 @@ export class SystemModuleComponent implements OnInit {
     this.facilityManagerActive = false;
   }
   close_onClick(){
+    this.logoutConfirm_on = false;
+    this.logoutConfirm_on = false;
+  }
+  userOpt_toggle(){
+    this.userOpt = !this.userOpt;
+  }
+  changePass() {
+    this.changePassword = true;
     this.logoutConfirm_on = false;
   }
 }

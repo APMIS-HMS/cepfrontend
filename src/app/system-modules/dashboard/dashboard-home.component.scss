@@ -431,6 +431,9 @@
 
 .mainContentArea {
     width: 100%;
+    // width: -webkit-calc(100% - 265px);
+    // width:    -moz-calc(100% - 265px);
+    // width:         calc(100% - 265px);
 }
 
 .mainmenu-content {
