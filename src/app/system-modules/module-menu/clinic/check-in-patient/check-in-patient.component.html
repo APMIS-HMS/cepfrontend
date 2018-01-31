@@ -186,7 +186,3 @@
 <div *ngIf="addVital" class="modal-overlay">
     <app-add-vitals [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
 </div>
-
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <mat-spinner></mat-spinner>
-</div>
