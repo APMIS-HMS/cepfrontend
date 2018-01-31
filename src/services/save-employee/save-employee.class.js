@@ -16,7 +16,7 @@ class Service {
   }
 
   async create(data, params) {
-    const employeeService = this.app.service('employees');
+    // const employeeService = this.app.service('employees');
     const userService = this.app.service('users');
     logger.info('wow');
 
@@ -44,8 +44,9 @@ class Service {
       let patchedUser = await userService.patch(selectedUser._id, {
         facilitiesRole: facilitiesRole
       });
-      let saveEmployee = await employeeService.create(data);
-      return saveEmployee;
+      logger.info(6);
+      return patchedUser;
+      // return await employeeService.create(data);
     } else {
       logger.info(2);
       return [];

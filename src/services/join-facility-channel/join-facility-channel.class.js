@@ -45,6 +45,13 @@ class Service {
     // this.app.publish((data, context) => {
     //   return this.app.channel(loggedInConnection);
     // });
+    // this.app.service('patients').publish((data) => {
+    //   return this.app.channel(loggedInConnection);
+    // });
+
+    // this.app.service('facilities').publish((data) => {
+    //   return this.app.channel(loggedInConnection);
+    // });
 
     let result = this.app.channels;
     return Promise.resolve({
