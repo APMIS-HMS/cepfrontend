@@ -18,14 +18,22 @@ class Service {
     const billingsService = this.app.service('billings');
     const patientService = this.app.service('patients');
     const peopleService = this.app.service('people');
-    var awaitedBills = await billingsService.find({query: {facilityId: id,$sort: {updatedAt: -1},$limit: false}});
+    var awaitedBills = await billingsService.find({
+      query: {
+        facilityId: id,
+        $sort: {
+          updatedAt: -1
+        },
+        $limit: false
+      }
+    });
     var bill = {};
     var billings = [];
     if (params.query.isQuery == true) {
       let len = awaitedBills.data.length - 1;
       for (let i = len; i >= 0; i--) {
         var awaitedPatient = await patientService.get(awaitedBills.data[i].patientId, {});
-        var awaitPerson = await patientService.get(awaitedPatient.patientId, {});
+        var awaitPerson = await peopleService.get(awaitedPatient.personId, {});
         if (awaitPerson.firstName.toLowerCase().includes(params.query.name.toLowerCase()) ||
           awaitPerson.lastName.toLowerCase().includes(params.query.name.toLowerCase())) {
           billings.push(awaitedBills.data[i]);
@@ -36,15 +44,19 @@ class Service {
     }
     var result = [];
     var totalAmountBilled = 0;
-    for (let i = billings.length - 1; i >= 0; i--) {
-      const val = billings[i];
-      var awaitedPatient = await patientService.get(val.patientId, {});
-      var awaitPerson = await peopleService.get(awaitedPatient.personId, {});
-      val.personDetails = awaitPerson;
-      result.push(val);
-      if (i == 0) {
-        return GetBillData(result, totalAmountBilled, bill);
+    if (billings.length > 0) {
+      for (let i = billings.length - 1; i >= 0; i--) {
+        const val = billings[i];
+        awaitedPatient = await patientService.get(val.patientId, {});
+        awaitPerson = await peopleService.get(awaitedPatient.personId, {});
+        val.personDetails = awaitPerson;
+        result.push(val);
+        if (i == 0) {
+          return GetBillData(result, totalAmountBilled, bill);
+        }
       }
+    } else {
+      return GetBillData(result, totalAmountBilled, bill);
     }
   }
 
@@ -74,7 +86,7 @@ class Service {
 function GetBillData(result, totalAmountBilled, bill) {
   if (result.length > 0) {
     var counter = 0;
-     var today = new Date();
+    var today = new Date();
     let len = result.length - 1;
     var dt = new Date();
     for (let j = len; j >= 0; j--) {
@@ -108,7 +120,7 @@ function GetBillData(result, totalAmountBilled, bill) {
     };
     return bill;
   }
- 
+
 }
 
 module.exports = function (options) {

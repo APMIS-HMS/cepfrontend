@@ -7,12 +7,13 @@ module.exports = function (app) {
   const {
     Schema
   } = mongooseClient;
-  //const roleSchema = require('../custom-models/role-model');
+  const userRoleSchema = require('../custom-models/user-role-model');
 
   const users = new mongooseClient.Schema({
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     personId: { type: Schema.Types.ObjectId, required: true },
+    userRoles: [userRoleSchema],
     verificationToken: { type: String, required: false },
     isTokenVerified: { type: Boolean, 'default': false },
     facilitiesRole: [{ type: Schema.Types.Mixed }]
