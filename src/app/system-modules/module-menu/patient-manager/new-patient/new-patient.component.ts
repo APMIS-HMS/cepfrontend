@@ -511,15 +511,25 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     next(data) {
-        if (this.paymentPlan === true) {
-            this.planInput = data;
-            this.frmNewEmp4_show = false;
-            this.frmNewPerson1_show = true;
-            this.frmNewPerson2_show = false;
-            this.frmNewPerson3_show = false;
-            this.paymentPlan = false;
-            this.coverType = 'wallet';
+        if (this.selectedPerson !== undefined && this.selectedPerson._id !== undefined) {
+            if (this.paymentPlan === true) {
+                this.planInput = data;
+                this.paymentPlan = false;
+                this.coverType = 'wallet';
+                this.saveData();
+            }
+        } else {
+            if (this.paymentPlan === true) {
+                this.planInput = data;
+                this.frmNewEmp4_show = false;
+                this.frmNewPerson1_show = true;
+                this.frmNewPerson2_show = false;
+                this.frmNewPerson3_show = false;
+                this.paymentPlan = false;
+                this.coverType = 'wallet';
+            }
         }
+
     }
 
     nextCompanyCover(ccPlanId, ccPlan) {
@@ -686,7 +696,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
-                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id } }));
+                return Observable.fromPromise(this.patientService.find({ query: { personId: this.selectedPerson._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
@@ -703,13 +713,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.mainErr = false;
             } else {
                 this.frmNewEmp4_show = false;
-                this.apmisId_show = true;
+                this.apmisId_show = false;
                 this.mainErr = true;
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = false;
                 this.paymentPlan = false;
                 this.shouldMoveFirst = true;
+                this.paymentPlan = true;
             }
         });
 
@@ -832,117 +843,117 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     savePerson() {
         if (this.selectedPerson === undefined && this.selectedPerson._id === undefined) {
             const person: Person = <Person>{ nextOfKin: [] };
-        person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
-        person.email = this.frmNewEmp1.controls['empEmail'].value;
-        person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
-        person.gender = this.frmNewEmp1.controls['empGender'].value;
-        person.homeAddress = <Address>{
-            street: this.frmNewEmp2.controls['empHomeAddress'].value,
-            city: this.frmNewEmp2.controls['empCity'].value,
-            // lga: this.frmNewEmp1.controls["empLga"].value,
-            country: this.frmNewEmp2.controls['empCountry'].value.name,
-            state: this.frmNewEmp2.controls['empContactState'].value.name
+            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
+            person.email = this.frmNewEmp1.controls['empEmail'].value;
+            person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
+            person.gender = this.frmNewEmp1.controls['empGender'].value;
+            person.homeAddress = <Address>{
+                street: this.frmNewEmp2.controls['empHomeAddress'].value,
+                city: this.frmNewEmp2.controls['empCity'].value,
+                // lga: this.frmNewEmp1.controls["empLga"].value,
+                country: this.frmNewEmp2.controls['empCountry'].value.name,
+                state: this.frmNewEmp2.controls['empContactState'].value.name
 
-        }
-        person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-        person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
-        if (!this.skipNok) {
-            person.nextOfKin.push(
-                {
-                    fullName: this.frmNewEmp3.controls['nok_fullname'].value,
-                    address: this.frmNewEmp3.controls['nok_Address'].value,
-                    phoneNumber: this.frmNewEmp3.controls['nok_phoneNo'].value,
-                    email: this.frmNewEmp3.controls['nok_email'].value,
-                    relationship: this.frmNewEmp3.controls['nok_relationship'].value,
-
-                }
-            );
-            // primaryContactPhoneNo: Path `primaryContactPhoneNo` is required., gender: Path `gender` is required., title: Path `title` is required.
-            person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
-            person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
-            person.title = this.frmNewEmp1.controls['empTitle'].value;
-            person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
-            person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
-            person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
-        } else {
-            person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
-            person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
-            person.title = this.frmNewEmp1.controls['empTitle'].value;
-            person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
-            person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
-            person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
-        }
-
-
-        this.personService.create(person).then(personPayload => {
-            console.log(personPayload);
-            let patient: any = {
-                personId: personPayload._id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true
-                    }
-                ]
             }
-            console.log(patient);
-            this.patientService.create(patient).then(payl => {
-                // this.uploadButton();
-                console.log(patient);
-                this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
+            person.lastName = this.frmNewEmp1.controls['empLastName'].value;
+            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
+            if (!this.skipNok) {
+                person.nextOfKin.push(
+                    {
+                        fullName: this.frmNewEmp3.controls['nok_fullname'].value,
+                        address: this.frmNewEmp3.controls['nok_Address'].value,
+                        phoneNumber: this.frmNewEmp3.controls['nok_phoneNo'].value,
+                        email: this.frmNewEmp3.controls['nok_email'].value,
+                        relationship: this.frmNewEmp3.controls['nok_relationship'].value,
 
-                    //this.prices = payload.data;
-                    console.log(payloadPrice.data);
-                    let servicePrice = payloadPrice.data[0];
-                    let billing: any = {
-                        discount: 0,
-                        facilityId: this.facility._id,
-                        grandTotal: servicePrice.price,
-                        patientId: payl._id,
-                        subTotal: servicePrice.price,
-                        billItems: [
-                            {
-                                unitPrice: servicePrice.price,
-                                facilityId: this.facility._id,
-                                description: "",
-                                facilityServiceId: servicePrice.facilityServiceId,
-                                serviceId: this.planInput,
-                                patientId: payl._id,
-                                quantity: 1,
-                                totalPrice: servicePrice.price,
-                                unitDiscountedAmount: 0,
-                                totalDiscoutedAmount: 0,
-                                modifierId: [],
-                                covered: {
-                                    coverType: this.coverType
-                                },
-                                isServiceEnjoyed: false,
-                                paymentCompleted: false,
-                                paymentStatus: [],
-                                payments: []
-
-                            }
-                        ]
                     }
-                    this.billingService.create(billing).then(billingPayload => {
-                        console.log(billingPayload);
-                        this.close_onClick();
-                    }).catch(errr => {
-                        console.log(errr);
+                );
+                // primaryContactPhoneNo: Path `primaryContactPhoneNo` is required., gender: Path `gender` is required., title: Path `title` is required.
+                person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
+                person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
+                person.title = this.frmNewEmp1.controls['empTitle'].value;
+                person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
+                person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
+                person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
+            } else {
+                person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
+                person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
+                person.title = this.frmNewEmp1.controls['empTitle'].value;
+                person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
+                person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
+                person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
+            }
+
+
+            this.personService.create(person).then(personPayload => {
+                console.log(personPayload);
+                let patient: any = {
+                    personId: personPayload._id,
+                    facilityId: this.facility._id,
+                    paymentPlan: [
+                        {
+                            planType: 'wallet',
+                            isDefault: true
+                        }
+                    ]
+                }
+                console.log(patient);
+                this.patientService.create(patient).then(payl => {
+                    // this.uploadButton();
+                    console.log(patient);
+                    this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
+
+                        //this.prices = payload.data;
+                        console.log(payloadPrice.data);
+                        let servicePrice = payloadPrice.data[0];
+                        let billing: any = {
+                            discount: 0,
+                            facilityId: this.facility._id,
+                            grandTotal: servicePrice.price,
+                            patientId: payl._id,
+                            subTotal: servicePrice.price,
+                            billItems: [
+                                {
+                                    unitPrice: servicePrice.price,
+                                    facilityId: this.facility._id,
+                                    description: "",
+                                    facilityServiceId: servicePrice.facilityServiceId,
+                                    serviceId: this.planInput,
+                                    patientId: payl._id,
+                                    quantity: 1,
+                                    totalPrice: servicePrice.price,
+                                    unitDiscountedAmount: 0,
+                                    totalDiscoutedAmount: 0,
+                                    modifierId: [],
+                                    covered: {
+                                        coverType: this.coverType
+                                    },
+                                    isServiceEnjoyed: false,
+                                    paymentCompleted: false,
+                                    paymentStatus: [],
+                                    payments: []
+
+                                }
+                            ]
+                        }
+                        this.billingService.create(billing).then(billingPayload => {
+                            console.log(billingPayload);
+                            this.close_onClick();
+                        }).catch(errr => {
+                            console.log(errr);
+                        });
+
+                    }).catch(err => {
+                        console.log(err);
                     });
 
                 }).catch(err => {
+                    this.loading = false;
                     console.log(err);
                 });
 
-            }).catch(err => {
-                this.loading = false;
-                console.log(err);
             });
-
-        });
-        }else{
+        } else {
             let patient: any = {
                 personId: this.selectedPerson._id,
                 facilityId: this.facility._id,
@@ -1008,7 +1019,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 console.log(err);
             });
         }
-        
+
     }
 
 
@@ -1027,7 +1038,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 // lga: this.frmNewEmp1.controls["empLga"].value,
                 country: this.frmNewEmp2.controls['empCountry'].value.name,
                 state: this.frmNewEmp2.controls['empContactState'].value.name
-    
+
             }
             person._id = this.person_Id;
             person.lastName = this.frmNewEmp1.controls['empLastName'].value;
@@ -1040,10 +1051,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         phoneNumber: this.frmNewEmp3.controls['nok_phoneNo'].value,
                         email: this.frmNewEmp3.controls['nok_email'].value,
                         relationship: this.frmNewEmp3.controls['nok_relationship'].value,
-    
+
                     }
                 );
-    
+
                 person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
                 person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
                 person.title = this.frmNewEmp1.controls['empTitle'].value;
@@ -1055,10 +1066,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     ledger: 0,
                     description: 'Initializing wallet'
                 }
-    
+
                 /* console.log(planValue);
                 this.planInput = planValue; */
-    
+
             } else {
                 person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
                 person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
@@ -1067,15 +1078,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
                 person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
             }
-    
+
             /* console.log(planValue);
             this.planInput = planValue; */
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
             this.personService.update(person).then(personPayload => {
                 console.log(personPayload);
                 const patient: any = {
@@ -1103,7 +1114,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.patientService.create(patient).then(payl => {
                     // this.uploadButton();
                     this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
-    
+
                         // this.prices = payload.data;
                         console.log(payloadPrice.data);
                         const servicePrice = payloadPrice.data[0];
@@ -1135,7 +1146,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     paymentCompleted: false,
                                     paymentStatus: [],
                                     payments: []
-    
+
                                 }
                             ]
                         }
@@ -1153,15 +1164,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.loading = false;
                             console.log(errr);
                         });
-    
+
                     }).catch(err => {
                         this.loading = false;
                         console.log(err);
                     });
-    
+
                 });
             });
-        }else{
+        } else {
             const patient: any = {
                 personId: this.selectedPerson._id,
                 facilityId: this.facility._id,
@@ -1245,7 +1256,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             });
         }
-      
+
     }
 
     saveInsurancePerson() {

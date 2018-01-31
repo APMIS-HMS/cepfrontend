@@ -36,10 +36,12 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
     private router: Router, private route: ActivatedRoute, private systemService:SystemModuleService) {
     this.employeeService.listner.subscribe(payload => {
       console.log(1)
+      this.employees = [];
       this.getEmployees(this.limit, true);
     });
     this.employeeService.createListener.subscribe(payload => {
       console.log(2)
+      this.employees = [];
       this.getEmployees(this.limit, true);
     });
 

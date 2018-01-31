@@ -77,7 +77,8 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
   close_onClick(e) {
     this.newEmp = false;
     this.assignUnitPop = false;
-    this.employeeManagerComponent.getEmployees();
+    // this.emp
+    // this.employeeManagerComponent.getEmployees();
   }
   pageInViewLoader(title) {
     this.pageInView = title;

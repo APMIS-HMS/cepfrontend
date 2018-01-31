@@ -1,3 +1,4 @@
+import { error } from 'util';
 import { HTML_SAVE_PATIENT } from './../../../../../shared-module/helpers/global-config';
 import { TitleCasePipe } from '@angular/common';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -605,17 +606,22 @@ export class NewFacEmployeeComponent implements OnInit {
         model.professionId = this.frmNewEmp4.controls['empJobTitle'].value;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
-        this.employeeService.saveEmployee(model).then(payload => {
-            console.log(payload);
-            this.frmNewPerson1_show = false;
-            this.frmNewPerson2_show = false;
-            this.frmNewPerson3_show = false;
-            this.frmNewEmp4_show = false;
-            this.apmisId_show = false;
-            this.mainErr = true;
-            this.systemModuleService.off();
-            this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success');
-            this.closeModal.emit(true);
+        this.employeeService.create(model).then(payload => {
+
+            this.employeeService.saveEmployee(model).then(pay =>{
+                this.frmNewPerson1_show = false;
+                this.frmNewPerson2_show = false;
+                this.frmNewPerson3_show = false;
+                this.frmNewEmp4_show = false;
+                this.apmisId_show = false;
+                this.mainErr = true;
+                this.systemModuleService.off();
+                this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success');
+                this.closeModal.emit(true);
+            }, err =>{
+                this.systemModuleService.announceSweetProxy('There was an error saving employee, try again!', error);
+            })
+              
         }).catch(err => {
             console.log(err.message);
         });

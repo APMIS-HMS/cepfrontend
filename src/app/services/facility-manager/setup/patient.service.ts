@@ -21,7 +21,6 @@ export class PatientService {
   ) {
     this._rest = _restService.getService('patients');
     this._socket = _socketService.getService('patients');
-    this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
   }
