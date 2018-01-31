@@ -20,7 +20,7 @@ export class EditEmpBasicComponent implements OnInit {
 	@Input() selectedPerson: any;
 	@Input() departmentBool: Boolean;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	mainErr = false;
+	mainErr = true;
 	errMsg = "";
 	editEmployeeDetails = false;
 
@@ -167,7 +167,7 @@ export class EditEmpBasicComponent implements OnInit {
 
 	savePerson() {
 		if (!this.facilityForm2.valid) {
-			this.mainErr = true;
+			this.mainErr = false;
 			this.errMsg = 'A required field has been left empty';
 		} else {
 			this.loading = true;

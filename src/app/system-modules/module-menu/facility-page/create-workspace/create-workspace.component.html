@@ -23,7 +23,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select formControlName="unit" placeholder="Unit" >
-                                <mat-option *ngFor="let unit of units" [value]="unit._id">
+                                <mat-option *ngFor="let unit of units" [value]="unit.name">
                                     {{unit.name}}
                                 </mat-option>
                             </mat-select>
@@ -68,10 +68,10 @@
                                         <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                         <span style="padding-left: 3px;">Telephone</span>
                                     </th>
-                                    <th>
+                                    <!-- <th>
                                         <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                                         <span style="padding-left: 3px;">Email</span>
-                                    </th>
+                                    </th> -->
                                 </tr>
                             </thead>
 
@@ -109,7 +109,7 @@
                                         </div>
                                     </td>
                                     <td>{{employee.personDetails.primaryContactPhoneNo}}</td>
-                                    <td>{{employee?.personDetails.email}}</td>
+                                    <!-- <td>{{employee?.personDetails.email}}</td> -->
                                 </tr>
                             </tbody>
                         </table>
