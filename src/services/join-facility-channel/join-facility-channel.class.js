@@ -42,6 +42,10 @@ class Service {
     }
     // logger.info(this.app.channel('authenticated').connections);
     
+    // this.app.publish((data, context) => {
+    //   return this.app.channel(loggedInConnection);
+    // });
+
     let result = this.app.channels;
     return Promise.resolve({
       result

@@ -1,15 +1,15 @@
 // Initializes the `facility-roles` service on path `/facility-roles`
 const createService = require('./facility-roles.class.js');
 const hooks = require('./facility-roles.hooks');
-const filters = require('./facility-roles.filters');
 
-module.exports = function () {
-  const app = this;
+module.exports = function (app) {
+  
   const paginate = app.get('paginate');
 
   const options = {
     name: 'facility-roles',
-    paginate
+    paginate,
+    app:app
   };
 
   // Initialize our service with any options it requires
@@ -19,8 +19,4 @@ module.exports = function () {
   const service = app.service('facility-roles');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };

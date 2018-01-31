@@ -2,7 +2,6 @@
 // 
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-const employeeRole = require('../custom-models/employeerole-model');
 const roomCheckInSchema = require('../custom-models/room-check-in');
 const storeCheckInSchema = require('../custom-models/store-check-in');
 
@@ -11,7 +10,6 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const employees = new Schema({
-    role: [employeeRole],
     facilityId: { type: Schema.Types.ObjectId, required: true },
     personId: { type: Schema.Types.ObjectId, ref: 'person', required: true },
     employeeIdNo: { type: String, required: false },

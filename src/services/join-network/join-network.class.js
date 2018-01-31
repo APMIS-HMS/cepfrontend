@@ -19,7 +19,7 @@ class Service {
     const facilitiesService = this.app.service('facilities');
     var _memberFacilities = [];
     if (params.query.isdelete.toString() == 'false') {
-      let len = data.memberFacilities.length - 1
+      let len = data.memberFacilities.length - 1;
       for (let i = len; i >= 0; i--) {
         var awaitfacilities = await facilitiesService.get(data.memberFacilities[i], {});
         let checkId = awaitfacilities.memberFacilities.filter(x => x.toString() == data.hostId.toString());
