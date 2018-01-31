@@ -119,6 +119,7 @@ export class PaymentComponent implements OnInit {
 
     private _getBills() {
         // this.loadingPendingBills = true;
+        console.log(this.selectedFacility);
         this.systemModuleService.on;
         this._pendingBillService.get(this.selectedFacility._id, {
             query: {
@@ -142,21 +143,22 @@ export class PaymentComponent implements OnInit {
         this.loadingLocAmountAccrued = true;
         this._locSummaryCashService.get(this.selectedFacility._id, {})
             .then(payload2 => {
-                console.log(payload2);
-                this.loadingLocAmountAccrued = false;
-                this.barChartLabels = payload2.barChartLabels;
-                if (payload2.barChartData.length > 0) {
-                    this.barChartData.splice(0, 1);
-                }
-                for (let k = 0; k < payload2.barChartData.length; k++) {
-                    this.barChartData.push({ "data": [0], "label": "" });
-                }
-                for (let i = 0; i < payload2.barChartData.length; i++) {
-                    for (let j = 0; j < payload2.barChartData[i].data.length; j++) {
-                        this.barChartData[i].data.push(payload2.barChartData[i].data[j]);
+                if (payload2.barChartData != undefined) {
+                    this.barChartLabels = payload2.barChartLabels;
+                    if (payload2.barChartData.length > 0) {
+                        this.barChartData.splice(0, 1);
                     }
-                    this.barChartData[i].label = payload2.barChartData[i].label;
+                    for (let k = 0; k < payload2.barChartData.length; k++) {
+                        this.barChartData.push({ "data": [0], "label": "" });
+                    }
+                    for (let i = 0; i < payload2.barChartData.length; i++) {
+                        for (let j = 0; j < payload2.barChartData[i].data.length; j++) {
+                            this.barChartData[i].data.push(payload2.barChartData[i].data[j]);
+                        }
+                        this.barChartData[i].label = payload2.barChartData[i].label;
+                    }
                 }
+                this.loadingLocAmountAccrued = false;
             }).catch(err => {
                 console.log(err);
                 this.loadingLocAmountAccrued = false;

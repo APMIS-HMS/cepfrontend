@@ -119,15 +119,17 @@ export class EmployeeAccessRolesComponent implements OnInit {
     this.loading = true;
     let text = "You are about to assign roles to this employee";
     this.systemModuleService.announceSweetProxy(text, 'question', this);
+    this.closeModal.emit(true);
   }
 
   createRoles() {
+    console.log(this.selectedEmployee)
     var data = {
       personId: this.selectedEmployee.personId,
       facilityId: this.selectedFacility._id,
       roles: this.rolesPicked
     }
-    console.log('www')
+    console.log(data);
     this.featureService.assignUserRole(data).then(payload => {
       this.loading = false;
       console.log(payload);

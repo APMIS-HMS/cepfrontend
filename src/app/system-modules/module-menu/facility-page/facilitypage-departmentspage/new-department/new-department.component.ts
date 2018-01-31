@@ -56,7 +56,7 @@ export class NewDepartmentComponent implements OnInit {
         this.errMsg = 'you left out a required field';
         this.isBusy = false;
       } else {
-        if (this.selectedDepartment === undefined && this.selectedDepartment._id === undefined) {
+        if (this.selectedDepartment === undefined || this.selectedDepartment._id === undefined) {
           let department: any = { name: val.deptName };
           this.facilityObj.departments.push(department);
           this.facilityService.update(this.facilityObj).then((payload) => {
