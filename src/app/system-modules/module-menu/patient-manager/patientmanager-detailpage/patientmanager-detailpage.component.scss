@@ -332,7 +332,7 @@ ul.topmenuwrap li i{
     padding-right: 5px;
 }
 .patientMenuResponsive{
-    display: none;
+    display: none !important;
 }
 .modal_title{
     color:#000;
@@ -371,7 +371,7 @@ ul.topmenuwrap li i{
         margin: 0 5px;
     }
     .patientMenuResponsive{
-        display: flex;
+        display: flex !important;
     }
     .sideTab-nav{
         display: none;

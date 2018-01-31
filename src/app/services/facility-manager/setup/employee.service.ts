@@ -79,6 +79,10 @@ export class EmployeeService {
     return this._socket.create(employee);
   }
 
+  saveEmployee(employee: any) {
+    return this._socketService.getService('save-employee').create(employee);
+  }
+
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

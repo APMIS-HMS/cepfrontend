@@ -54,6 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   primeApp(){
+    console.log('check login employee 2')
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
     }
