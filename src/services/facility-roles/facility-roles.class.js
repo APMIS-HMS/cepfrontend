@@ -61,6 +61,7 @@ class Service {
       }
     });
 
+    logger.info(selectedUser);
     if (selectedUser.data[0].userRoles === undefined) {
       selectedUser.data[0].userRoles = [];
     }

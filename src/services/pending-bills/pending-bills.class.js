@@ -47,8 +47,8 @@ class Service {
     if (billings.length > 0) {
       for (let i = billings.length - 1; i >= 0; i--) {
         const val = billings[i];
-        var awaitedPatient = await patientService.get(val.patientId, {});
-        var awaitPerson = await peopleService.get(awaitedPatient.personId, {});
+        awaitedPatient = await patientService.get(val.patientId, {});
+        awaitPerson = await peopleService.get(awaitedPatient.personId, {});
         val.personDetails = awaitPerson;
         result.push(val);
         if (i == 0) {
