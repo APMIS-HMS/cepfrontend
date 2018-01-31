@@ -31,7 +31,7 @@ export class UserAccountsInnerPopupComponent implements OnInit {
         this.isPatient = true;
       }
       this.hasReturned = true;
-    })
+    });
   }
 
   close_onClick(event) {

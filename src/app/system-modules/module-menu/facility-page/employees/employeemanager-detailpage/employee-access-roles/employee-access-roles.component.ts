@@ -1,3 +1,4 @@
+import { error } from 'selenium-webdriver';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -117,7 +118,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
   saveRoles() {
     this.loading = true;
     let text = "You are about to assign roles to this employee";
-    this.systemModuleService.announceSweetProxy(text, 'info', this);
+    this.systemModuleService.announceSweetProxy(text, 'question', this);
   }
 
   createRoles() {
@@ -126,13 +127,17 @@ export class EmployeeAccessRolesComponent implements OnInit {
       facilityId: this.selectedFacility._id,
       roles: this.rolesPicked
     }
+    console.log('www')
     this.featureService.assignUserRole(data).then(payload => {
       this.loading = false;
       console.log(payload);
+    }, error =>{
+      console.log(error);
     });
   }
 
   sweetAlertCallback(result) {
+    console.log(result);
     if (result.value) {
       this.createRoles();
     }

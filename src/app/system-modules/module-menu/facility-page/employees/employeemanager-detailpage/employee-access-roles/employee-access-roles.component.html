@@ -9,7 +9,7 @@
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <form novalidate *ngIf="roles.length > 0">
             <div *ngFor="let role of roles">
-                <mat-checkbox [(ngModel)]="role.isAssigned" name="isAssigned" (change)="pickRoles($event, role._id)">{{role.name}}</mat-checkbox>
+                <mat-checkbox [checked]="role.isAssigned" name="role.name" (change)="pickRoles($event, role._id)">{{role.name}}</mat-checkbox>
             </div>
             <span *ngIf="roles.length == 0">No roles available to be assigned</span>
         </form>
