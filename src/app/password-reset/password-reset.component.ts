@@ -4,6 +4,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService, PersonService } from '../services/facility-manager/setup/index';
 import { Person, User } from '../models/index';
+import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
 
 @Component({
   selector: 'app-password-reset',
@@ -35,7 +36,8 @@ export class PasswordResetComponent implements OnInit {
   ngOnInit() {
     this.frm_pwdReset1 = this.formBuilder.group({
       apmisid: ['', [<any>Validators.required]],
-      phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
+      phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(14), <any>Validators.pattern(PHONE_REGEX)]]
+      // phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
     });
 
     this.frm_pwdReset2 = this.formBuilder.group({

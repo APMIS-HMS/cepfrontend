@@ -31,8 +31,8 @@
                     </tr>
                     <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{ward.minorLocationId._id}}" *ngFor="let ward of wards; let i = index">
                         <td class="table-content">{{i+1}}</td>
-                        <td class="table-content">{{ward.minorLocationId.name}}</td>
-                        <td class="table-content">{{ward.minorLocationId.description}}</td>
+                        <td class="table-content">{{ward?.name}}</td>
+                        <td class="table-content">{{ward?.description}}</td>
                         <td class="table-content">{{ward?.rooms?.length}}</td>
                     </tr>
                 </tbody>
