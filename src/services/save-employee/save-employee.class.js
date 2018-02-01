@@ -19,6 +19,7 @@ class Service {
       let workspaces = await workspaceService.find({ query: { facilityId: id, employeeId: emp._id } });
       emp.workSpaces = workspaces.data;
       selectedEmployee.data[0] = emp;
+      console.log(emp);
       return selectedEmployee;
     } else {
       return {};
