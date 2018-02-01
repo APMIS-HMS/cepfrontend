@@ -1,3 +1,6 @@
+import { RouterModule } from '@angular/router';
+import { LogoutConfirmComponent } from './module-menu/logout-confirm/logout-confirm.component';
+import { MaterialModule } from 'app/shared-common-modules/material-module';
 import { NgModule, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,7 +14,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
 @NgModule({
   declarations: [
     // SystemModuleComponent,
-    
+    LogoutConfirmComponent
   ],
   exports: [
   ],
@@ -23,7 +26,8 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
     LogOutConfirmModule,
     systemModulesRoutes,
     SharedModule,
-    LoadingBarHttpModule
+    LoadingBarHttpModule,
+    RouterModule
 
   ],
   providers: []

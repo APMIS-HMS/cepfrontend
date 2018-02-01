@@ -15,11 +15,6 @@ const SYSTEMMODULES_ROUTES: Routes = [
             //      data: { preload: true },
             // },
             {
-                path: 'home-page',
-                loadChildren: './home-page/home-page.module#HomePageModule',
-                 data: { preload: false },
-            },
-            {
                 path: 'module-manager',
                 loadChildren: './module-manager/module-manager.module#ModuleManager',
                  data: { preload: false },
