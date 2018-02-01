@@ -17,8 +17,6 @@ class Service {
   }
 
   create(data, params) {
-    logger.info(data);
-    // logger.info(params);
     return new Promise(function (resolve, reject) {
       try {
         const result = excelToJson({

@@ -10,7 +10,6 @@ class Service {
   }
 
   async find(params) {
-    console.log(params.query);
     var recentBillModelId = {};
     var masterBillGroups = {};
     var billGroups = {};

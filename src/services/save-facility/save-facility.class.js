@@ -18,7 +18,6 @@ class Service {
   }
 
   create(data, params) {
-    // logger.info(data.personId);
     const userService = this.app.service('users');
     const facilityService = this.app.service('facilities');
 

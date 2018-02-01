@@ -10,12 +10,9 @@ class Service {
   }
 
   async find(params) {
-    console.log('======Got it=============');
-    console.log(params);
+
     let url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
       '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
-    console.log('================URL==============');
-    console.log(url);
 
     var client = new Client();
     var args = {

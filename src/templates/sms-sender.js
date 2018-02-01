@@ -23,7 +23,6 @@ function sendToken(data) {
 }
 
 function sendPasswordResetToken(data) {
-  logger.info(data);
   const message = 'Complete your password reset by verifing your account with this OTP: ' + data.verificationToken + ' to complete your registration';
   sender(message, data, false);
 }

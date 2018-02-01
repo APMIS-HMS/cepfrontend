@@ -1,21 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { fastJoin } = require('feathers-hooks-common');
-
-
-const resolvers = {
-  joins: {
-    personDetails: () => async (employee, context) => {
-      const person = await context.app
-        .service('people')
-        .get(employee.personId, {});
-      employee.personDetails = person;
-    }
-  }
-};
 
 module.exports = {
   before: {
-    all: [authenticate('jwt')],
+    all: [ authenticate('jwt') ],
     find: [],
     get: [],
     create: [],
@@ -25,7 +12,7 @@ module.exports = {
   },
 
   after: {
-    all: [fastJoin(resolvers)],
+    all: [],
     find: [],
     get: [],
     create: [],

@@ -116,6 +116,8 @@ const facilityRoles = require('./facility-roles/facility-roles.service.js');
 const saveEmployee = require('./save-employee/save-employee.service.js');
 const scheduleTypes = require('./schedule-types/schedule-types.service.js');
 const schedules = require('./schedules/schedules.service.js');
+const timezones = require('./timezones/timezones.service.js');
+const orderStatus = require('./order-status/order-status.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -235,4 +237,6 @@ module.exports = function (app) {
   app.configure(saveEmployee);
   app.configure(scheduleTypes);
   app.configure(schedules);
+  app.configure(timezones);
+  app.configure(orderStatus);
 };

@@ -16,18 +16,6 @@ class Service {
   }
 
   create(data, params) {
-    // logger.info(data);
-    // this.app.channel('anonymous').leave(connection);
-
-    // Add it to the authenticated user channel
-    // app.channel('authenticated').join(connection);
-
-    // const userFive = this.app.channel('authenticated').connections
-    //   .filter(connection => connection.user.userId === data.userId);
-
-    // logger.info(userFive.length);
-    // logger.info(userFive);
-
     let cons = this.app.channel('authenticated').connections;
     let consFilter = cons.filter(connect => connect.user._id.toString() === data.userId.toString());
 
@@ -38,20 +26,7 @@ class Service {
       let authenticatedChannel = this.app.channel('authenticated');
       authenticatedChannel.leave(loggedInConnection);
       channel.join(loggedInConnection);
-      // logger.info(channel.connections);
     }
-    // logger.info(this.app.channel('authenticated').connections);
-    
-    // this.app.publish((data, context) => {
-    //   return this.app.channel(loggedInConnection);
-    // });
-    // this.app.service('patients').publish((data) => {
-    //   return this.app.channel(loggedInConnection);
-    // });
-
-    // this.app.service('facilities').publish((data) => {
-    //   return this.app.channel(loggedInConnection);
-    // });
 
     let result = this.app.channels;
     return Promise.resolve({
