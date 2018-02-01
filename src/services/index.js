@@ -118,6 +118,8 @@ const scheduleTypes = require('./schedule-types/schedule-types.service.js');
 const schedules = require('./schedules/schedules.service.js');
 const timezones = require('./timezones/timezones.service.js');
 const orderStatus = require('./order-status/order-status.service.js');
+const billManagers = require('./bill-managers/bill-managers.service.js');
+const customFacilityModules = require('./custom-facility-modules/custom-facility-modules.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -239,4 +241,6 @@ module.exports = function (app) {
   app.configure(schedules);
   app.configure(timezones);
   app.configure(orderStatus);
+  app.configure(billManagers);
+  app.configure(customFacilityModules);
 };

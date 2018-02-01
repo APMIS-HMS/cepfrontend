@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const minorlocationSchema = new Schema({
   name: { type: String, required: true },
   locationId: { type: Schema.Types.ObjectId, required: true },
-  setup: { type: Schema.Types.Mixed, required: false }
+  setup: { type: Schema.Types.Mixed, required: false },
+  description: { type: String, required: true },
 }, {
   timestamps: true
 });
