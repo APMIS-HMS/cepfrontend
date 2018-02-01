@@ -197,7 +197,7 @@ export class CreateWorkspaceComponent implements OnInit {
         this.workSpaces = [];
         this.loadIndicatorVisible = false;
       }
-    }else{
+    } else {
       console.log(222);
       const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
       if (minorLocationId !== undefined) {
@@ -206,24 +206,28 @@ export class CreateWorkspaceComponent implements OnInit {
           query:
             {
               facilityId: this.selectedFacility._id,
-              employeeId:this.selectedEmployee._id,
+              employeeId: this.selectedEmployee._id,
               'locations.minorLocationId': minorLocationId, $limit: 100
             }
         }).then(payload => {
-          const filteredEmployee: Employee[] = [];
-          this.filteredEmployees.forEach((emp, i) => {
-            let workInSpace = false;
-            payload.data.forEach((work, j) => {
-              if (work.employeeId === emp._id) {
-                workInSpace = true;
+          if (payload.data.length > 0) {
+            const filteredEmployee: Employee[] = [];
+            this.filteredEmployees.forEach((emp, i) => {
+              let workInSpace = false;
+              payload.data.forEach((work, j) => {
+                if (work.employeeId === emp._id) {
+                  workInSpace = true;
+                }
+              });
+              if (!workInSpace) {
+                filteredEmployee.push(emp);
               }
             });
-            if (!workInSpace) {
-              filteredEmployee.push(emp);
-            }
-          });
-          this.filteredEmployees = filteredEmployee;
-          this.loadIndicatorVisible = false;
+            this.filteredEmployees = filteredEmployee;
+            this.loadIndicatorVisible = false;
+          } else {
+            this.filteredEmployees = this.employees;
+          }
         }, error => {
           this.loadIndicatorVisible = false;
         });

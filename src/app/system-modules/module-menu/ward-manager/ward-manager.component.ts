@@ -50,10 +50,10 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		// Update the wardCheckedIn object when it changes.
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.checkedInObject = val;
-		});
+    });
+    console.log(this.loginEmployee);
 
-		if ((this.loginEmployee.wardCheckIn === undefined
-		  || this.loginEmployee.wardCheckIn.length === 0)) {
+		if ((this.loginEmployee.wardCheckIn === undefined || this.loginEmployee.wardCheckIn.length === 0)) {
 		  this.modal_on = true;
 		} else {
 		  let isOn = false;

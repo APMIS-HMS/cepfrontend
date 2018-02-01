@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -54,6 +55,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     private professionService: ProfessionService,
     private consultingRoomService: ConsultingRoomService,
     private locationService: LocationService,
+    private authFacadeService: AuthFacadeService,
     public clinicHelperService: ClinicHelperService, private patientService: PatientService,
     private locker: CoolLocalStorage, public facilityService: FacilitiesService) {
     this.clinicHelperService.getConsultingRoom();
@@ -73,13 +75,18 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    if (this.loginEmployee.professionObject.name === 'Doctor') {
-      this.isDoctor = true;
-      this.selectedProfession = this.loginEmployee.professionObject;
-    }
-    this.getEmployees();
-    this.getAppointments();
+
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      if (this.loginEmployee.professionId === 'Doctor') {
+        this.isDoctor = true;
+        this.selectedProfession = this.loginEmployee.professionObject;
+      }
+      this.getEmployees();
+      this.getAppointments();
+    });
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+
     // this.route.data.subscribe(data => {
     //   this.subscription = data['checkInPatients'].subscribe((payload: any[]) => {
     //     const emp$ = Observable.fromPromise(this.employeeService.find({
@@ -133,7 +140,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
           'patientId.timeLines': 0,
           'attendance.createdAt': 0, 'attendance.updateddAt': 0
         },
-        $sort:{createdAt:-1}
+        $sort: { createdAt: -1 }
       }
     })
       .then(payload => {
