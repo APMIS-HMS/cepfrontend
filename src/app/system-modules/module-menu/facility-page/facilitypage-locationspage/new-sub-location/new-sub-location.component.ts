@@ -64,7 +64,8 @@ export class NewSubLocationComponent implements OnInit {
   addNew() {
     this.frmNewSubLoc = this.formBuilder.group({
       sublocName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-      sublocParent: ['', [<any>Validators.required]]
+      sublocParent: ['', [<any>Validators.required]],
+      desc: ['']
     });
   }
   getTags() {
@@ -92,7 +93,8 @@ export class NewSubLocationComponent implements OnInit {
         tag.createdBy = auth._id;
         const model: MinorLocation = <MinorLocation>{
           name: val.sublocName,
-          locationId: val.sublocParent
+          locationId: val.sublocParent,
+          description: val.desc
         };
 
         // First check if that name already exist in the minorlocation
