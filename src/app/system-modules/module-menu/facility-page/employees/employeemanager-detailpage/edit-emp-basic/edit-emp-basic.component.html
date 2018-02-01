@@ -16,11 +16,11 @@
                 <img src="../../../../../../assets/images/users/default.png">
             </div>
             <div class="basic-info-wrap">
-                <div class="basic-info-name">Abbah Elizabeth</div>
+                <div class="basic-info-name">{{selectedPerson.lastName}} {{selectedPerson.firstName}}</div>
                 <div class="basic-info-others">
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>sunday.orimoyegun@apmis.ng</div>
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>{{selectedPerson.email}}</div>
                 <div class="basic-info-others">
-                    <i class="fa fa-phone" aria-hidden="true"></i>08028217639</div>
+                    <i class="fa fa-phone" aria-hidden="true"></i>{{selectedPerson.primaryContactPhoneNo}}</div>
             </div>
             <!-- <div class="upload-btn-wrapper">
                 <button class="upload-btn">Change Image</button>
@@ -31,7 +31,7 @@
 
             <mat-form-field>
                 <mat-select placeholder="Department" formControlName="dept">
-                    <mat-option *ngFor="let department of departments" [value]="department._id">Surgery</mat-option>
+                    <mat-option *ngFor="let department of departments" [value]="department._id">{{department.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -89,12 +89,12 @@
                 </mat-input-container>
             </div>
             <mat-form-field>
-                <mat-select placeholder="Gender" formControlName="gender" [value]="selectedPerson.gender">
+                <mat-select placeholder="Gender" formControlName="gender" [compareWith]="compare">
                     <mat-option *ngFor="let gender of genders" [value]="gender">{{gender.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-select placeholder="Marital-Status" formControlName="maritalStatus">
+                <mat-select placeholder="Marital-Status" formControlName="maritalStatus" [compareWith]="compare">
                     <mat-option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus">{{maritalStatus.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -104,17 +104,17 @@
                 </mat-input-container>
             </div>
             <mat-form-field>
-                <mat-select placeholder="Nationality" formControlName="nationality">
+                <mat-select placeholder="Nationality" formControlName="nationality" [compareWith]="compare">
                     <mat-option *ngFor="let cntry of countries" [value]="cntry">{{cntry.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-select placeholder="State of Origin" formControlName="stateofOrigin">
+                <mat-select placeholder="State of Origin" formControlName="stateofOrigin" [compareWith]="compare">
                     <mat-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-select placeholder="LGA" formControlName="localgovtarea">
+                <mat-select placeholder="LGA" formControlName="localgovtarea" [compareWith]="compare">
                     <mat-option *ngFor="let item of lgasOfOrigin" [value]="item">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -124,12 +124,12 @@
                 </mat-input-container>
             </div>
             <mat-form-field>
-                <mat-select placeholder="State-of-Residence" formControlName="stateofresidence">
+                <mat-select placeholder="State-of-Residence" formControlName="stateofresidence" [compareWith]="compare">
                     <mat-option *ngFor="let state of selectedCountry?.states" [value]="state">{{state.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-select placeholder="LGA-Of-Residence" formControlName="lgaofresidence">
+                <mat-select placeholder="LGA-Of-Residence" formControlName="lgaofresidence" [compareWith]="compare">
                     <mat-option *ngFor="let item of lgas" [value]="item">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>

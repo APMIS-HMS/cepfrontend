@@ -2,6 +2,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Facility } from './../../../../models/facility-manager/setup/facility';
 import { Component, OnInit, Input } from '@angular/core';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
 @Component({
   selector: 'app-facilitypage-sidesect',
@@ -14,7 +15,26 @@ export class FacilitypageSidesectComponent implements OnInit {
   membersOf = [];
   memberFacilities: any = [];
 
-  constructor(private facilityService: FacilitiesService, private locker: CoolLocalStorage) {
+  empContentArea: boolean;
+  loadIndicatorVisible = false;
+  contentSecMenuShow = false;
+  pageInView = 'Facility';
+  homeContentArea = false;
+  modulesContentArea = false;
+  contentSecMenuToggle = false;
+  optionsContentArea = false;
+  departmentsContentArea = false;
+  locationsContentArea = false;
+  workspaceContentArea = false;
+  professionContentArea = false;
+  dashboardContentArea = false;
+  networkContentArea = false;
+
+  pgMenuToggle = false;
+
+  constructor(private facilityService: FacilitiesService, 
+    private locker: CoolLocalStorage,
+    private router: Router) {
     this.facilityService.patchListner.subscribe(payload => {
       console.log(payload);
       this.selectedFacility = payload;
@@ -49,6 +69,107 @@ export class FacilitypageSidesectComponent implements OnInit {
     },error =>{
       console.log(error);
     });
+  }
+
+  changeRoute(value: string) {
+    this.router.navigate(['/dashboard/facility/' + value]);
+    this.pgMenuToggle = false;
+    if(value == ''){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = true;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'employees'){
+      this.empContentArea = true;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.networkContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'departments'){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = true;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'locations'){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = true;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'workspaces'){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = true;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'options'){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = true;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'profession'){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = true;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      // this.dashboardContentArea = false;
+    } else if(value == 'modules'){
+      this.modulesContentArea = true;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      // this.dashboardContentArea = false; 
+    } else if(value == 'network'){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = true;
+      // this.dashboardContentArea = false; 
+    }
   }
 
 }
