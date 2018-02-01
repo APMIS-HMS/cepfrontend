@@ -13,8 +13,8 @@ export class SchedulerTypeService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('scheduletypes');
-    this._socket = _socketService.getService('scheduletypes');
+    this._rest = _restService.getService('schedule-types');
+    this._socket = _socketService.getService('schedule-types');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

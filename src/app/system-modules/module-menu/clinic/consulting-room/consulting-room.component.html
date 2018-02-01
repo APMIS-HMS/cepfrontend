@@ -65,7 +65,7 @@
                 </div>
             </li>
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of roomManager" class="li-itemWrap">
-                <div class="li-Item">{{manager.minorLocationDetails.name}}</div>
+                <div class="li-Item">{{manager.minorLocationId}}</div>
                 <div class="li-Item-group">
                     <div class="group-wrap" *ngFor="let room of manager.rooms">
                         <div class="group-Item">{{room.name}}</div>

@@ -69,7 +69,10 @@ export class ConsultingRoomComponent implements OnInit {
       }
     }).then(payload => {
       this.loading = false;
+      console.log(payload.data);
       this.roomManager = payload.data;
+    },error =>{
+      console.log(error);
     });
   }
   subscribToFormControls() {
@@ -78,7 +81,7 @@ export class ConsultingRoomComponent implements OnInit {
       this.clearAllRooms();
       this.consultingRoomService.find({
         query: {
-          minorLocationId: value._id.toString(),
+          minorLocationId: value.name,
           facilityId: this.selectedFacility._id
         }
       }).then(payload => {
@@ -188,7 +191,7 @@ export class ConsultingRoomComponent implements OnInit {
     } else {
       const manager: ConsultingRoomModel = <ConsultingRoomModel>{ rooms: [] };
       manager.majorLocationId = this.clinic._id;
-      manager.minorLocationId = this.selectedMinorLocation._id;
+      manager.minorLocationId = this.selectedMinorLocation.name;
       manager.facilityId = this.selectedFacility._id;
 
       (<FormArray>this.consultingRoomForm.controls['consultingRoomArray'])

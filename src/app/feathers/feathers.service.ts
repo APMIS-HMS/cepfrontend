@@ -1,11 +1,11 @@
 import { Router } from '@angular/router';
-const feathers = require('feathers/client');
-const socketio = require('feathers-socketio/client');
+const feathers = require('@feathersjs/feathers');
+const socketio = require('@feathersjs/socketio-client');
 const io = require('socket.io-client');
 const localstorage = require('feathers-localstorage');
-const hooks = require('feathers-hooks');
-const rest = require('feathers-rest/client');
-const authentication = require('feathers-authentication/client');
+// const hooks = require('feathers-hooks');
+const rest = require('@feathersjs/rest-client');
+const authentication = require('@feathersjs/authentication-client');
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
@@ -15,7 +15,6 @@ const RxJS = require('rxjs/Rx');
 // const HOST = 'http://40.68.100.29:3030'; // Online
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
 const HOST = 'http://localhost:3031'; // Local Server
-
 
 
 @Injectable()
@@ -42,7 +41,7 @@ export class SocketService {
       .configure(socketio(this.socket))
       // .configure(rx({ idField: "_id", listStrategy: 'always' }))
       .configure(rx(RxJS, { listStrategy: 'always' }))
-      .configure(hooks())
+      // .configure(hooks())
       .configure(authentication({ storage: window.localStorage }));
      this._app.on('reauthentication-error', this.errorHandler)
   }
@@ -86,12 +85,12 @@ export class RestService {
         )) // Fire up rest
         // .configure(rx({ idField: '_id', listStrategy: 'always' }))
         .configure(rx(RxJS, { listStrategy: 'always' }))
-        .configure(hooks())
+        // .configure(hooks())
         .configure(authentication({ storage: window.localStorage }));
     } else {
       this._app = feathers() // Initialize feathers
         .configure(rest(this.HOST).superagent(superagent)) // Fire up rest
-        .configure(hooks())
+        // .configure(hooks())
         .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
     }
   }
