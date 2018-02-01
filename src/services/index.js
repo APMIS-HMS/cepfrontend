@@ -113,6 +113,8 @@ const billFacilityServices = require('./bill-facility-services/bill-facility-ser
 const drugGenericList = require('./drug-generic-list/drug-generic-list.service.js');
 const payments = require('./payments/payments.service.js');
 const uploadFacade = require('./upload-facade/upload-facade.service.js');
+const billManagers = require('./bill-managers/bill-managers.service.js');
+const customFacilityModules = require('./custom-facility-modules/custom-facility-modules.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -229,4 +231,6 @@ module.exports = function (app) {
   app.configure(drugGenericList);
   app.configure(payments);
   app.configure(uploadFacade);
+  app.configure(billManagers);
+  app.configure(customFacilityModules);
 };

@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+const moduleStatus = require('../../parameters/module-status');
+
 const logger = require('winston');
 class Service {
   constructor(options) {
@@ -21,6 +23,7 @@ class Service {
     // logger.info(data.personId);
     const userService = this.app.service('users');
     const facilityService = this.app.service('facilities');
+    const facilityModuleService = this.app.service('facility-modules');
 
     return new Promise(function (resolve, reject) {
 
@@ -38,24 +41,41 @@ class Service {
             'ledgerBalance': 0,
             'balance': 0
           };
-          facilityService.create(facility).then(facPayload => {
-            let facilityRole = {
-              facilityId: facPayload._id,
-            };
-            let facilitiesRole = user.facilitiesRole;
-            if (user.facilitiesRole === undefined) {
-              facilitiesRole = [];
+          facilityModuleService.find({
+            query: {
+              canDisable: false
             }
-            facilitiesRole.push(facilityRole);
-
-            userService.patch(user._id, {
-              facilitiesRole: facilitiesRole
-            }).then(userPayload => {
-              resolve(facPayload);
-            }, userError => {
-              reject(userError);
+          }).then(fmS => {
+            fmS.data.forEach(element => {
+              facility.facilitymoduleId.push({
+                '_id': element._id,
+                'isActive': true,
+                'canDisable':false,
+                'status': moduleStatus.status.active
+              })
             });
-          }, facError => {
+            facility.facilitymoduleId = fmS.data;
+            facilityService.create(facility).then(facPayload => {
+              let facilityRole = {
+                facilityId: facPayload._id,
+              };
+              let facilitiesRole = user.facilitiesRole;
+              if (user.facilitiesRole === undefined) {
+                facilitiesRole = [];
+              }
+              facilitiesRole.push(facilityRole);
+
+              userService.patch(user._id, {
+                facilitiesRole: facilitiesRole
+              }).then(userPayload => {
+                resolve(facPayload);
+              }, userError => {
+                reject(userError);
+              });
+            }, facError => {
+              reject(facError);
+            });
+          }, err => {
             reject(facError);
           });
         }
