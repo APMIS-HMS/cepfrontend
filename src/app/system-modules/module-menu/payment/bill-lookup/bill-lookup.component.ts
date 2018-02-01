@@ -398,18 +398,17 @@ export class BillLookupComponent implements OnInit {
   }
 
   getPatientBills() {
-    console.log(this.selectedPatient);
-    console.log(this.selectedFacility);
     this.billGroups = [];
     this.masterBillGroups = [];
     this.txtSelectAll.setValue(false);
     console.log(this.selectedPatient);
-    this.billingService.findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
+    if(this.selectedPatient != undefined){
+      this.billingService.findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then(payload => {
-        console.log(payload);
         this.billGroups = payload.billGroups
         this.listedBillItems = payload.originalCallback;
       });
+    }
   }
 
   onClickPatientPendingBill(pendingBill: any) {
