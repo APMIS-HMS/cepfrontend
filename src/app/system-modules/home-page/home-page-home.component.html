@@ -1,14 +1,3 @@
 <app-system-module></app-system-module>
 <router-outlet></router-outlet>
-<!-- <div *ngIf="logoutConfirm_on" class="modal-overlay">
-    <app-logout-confirm (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logout-confirm>
-</div> -->
-
-<div *ngIf="changeFacilityLogo" class="modal-overlay">
-    <app-logo-update [selectedFacility]="facilityObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logo-update>
-</div>
-
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <mat-spinner></mat-spinner>
-</div>
 <div class="footer">&copy; 2017 APMIS. All Right Reserved.</div>
