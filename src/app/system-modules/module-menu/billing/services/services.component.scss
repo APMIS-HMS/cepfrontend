@@ -1,14 +1,4 @@
-@import "../billing-home-page/billing-home-page.component.scss";
-i.fa.fa-search {
-    color: #fff;
-    background: #4bb8ef;
-    padding: 6px;
-    margin-left: -29px;
-    border: 1px solid #4bb8ef;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    position: relative;
-}
+// @import "../billing-home-page/billing-home-page.component.scss";
 
 .searchInputWrap {
     margin: 0 auto;
@@ -33,4 +23,72 @@ i.fa.fa-search {
 }
 .modal-overlay{
     left: 0;
+}
+
+.container {
+    width: 100vw;
+    box-sizing: border-box;
+    padding-top: 50px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.scrollable{
+    max-height: 300px;
+    overflow-x: hidden;    
+    overflow-y: auto;
+}
+
+.red-text{
+    color: #ff0000
+}
+.blue-text{
+    color: #337ab7;
+}
+
+.card{
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    width: 100%;
+    .card-header{
+        background: #337ab7;
+        color: #fff;
+        font-size: 1.6rem;
+        padding: 10px;
+        vertical-align: middle;
+        line-height: 30px;
+        border-bottom: solid 1px #fff;
+    }
+    .card-content{
+        font-size: 1.2px;
+    }
+    .card-list-item {
+        padding: 10px;  
+        border-bottom: solid rgb(204, 204, 204) 1px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 1.2rem;
+        transition: 0.2s;
+    }
+    .options{
+        opacity: 0;
+        cursor: pointer;
+    }
+    .options:hover{
+        transform: scale(1.2);
+    }
+
+    .active { 
+        border-left: solid 3px#337ab7 !important;   
+        background: #eee !important;                     
+    }
+    .card-list-item:hover{
+        background: #eee;
+    }
+    .card-list-item:hover .options{
+        opacity: 1;
+    }
+    
+    .card-list-item:last-of-type {
+        border: none
+    }
 }
