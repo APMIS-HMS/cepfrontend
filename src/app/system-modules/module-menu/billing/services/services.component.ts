@@ -11,7 +11,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./services.component.scss']
 })
 export class ServicesComponent implements OnInit {
-
+  searchShowc = false;
+  searchShow = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   facility: Facility = <Facility>{};
   categories: FacilityService[] = [];
@@ -251,4 +252,20 @@ export class ServicesComponent implements OnInit {
     console.log(this.index);
   }
 
+  showSearch(){
+    this.searchShow = true;
+  }
+
+  closeSearch(){
+    this.searchShow = false;    
+  }
+
+  
+  showSearchc(){
+    this.searchShowc = true;
+  }
+
+  closeSearchc(){
+    this.searchShowc = false;    
+  }
 }

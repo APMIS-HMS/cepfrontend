@@ -3,7 +3,7 @@
         <div class="col-md-4 col-xs-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="row">
+                    <div class="row" *ngIf="!searchShowc">
                         <div class="col-xs-10">
                                 Category
                         </div>
@@ -11,9 +11,17 @@
                             <i class="fa fa-plus fa-fw"></i>
                         </div>
                         <div class="col-xs-1">
-                            <i class="fa fa-search fa-fw"></i>                            
+                            <i (click)="showSearchc()" class="fa fa-search fa-fw"></i>                            
                         </div>
                     </div>
+                    <div class="row" *ngIf="searchShowc">
+                            <div class="col-xs-11">
+                                <input type="text" placeholder="Search..." class="card-header-box">
+                            </div>
+                            <div class="col-xs-1">
+                                <i (click)="closeSearchc()" class="fa fa-close fa-fw"></i>                                                            
+                            </div>
+                        </div>
                 </div>
                 <div class="card-content scrollable">
                     <div class="card-list-item ">
@@ -87,7 +95,39 @@
             </div>
         </div>
         <div class="col-md-8 col-xs-12">
-services
+            <div class="card">
+                <div class="card-header">
+                        <div class="row" *ngIf="!searchShow">
+                                <div class="col-xs-10">
+                                        Service
+                                </div>
+                                <div class="col-xs-1">
+                                    <i class="fa fa-plus fa-fw"></i>
+                                </div>
+                                <div class="col-xs-1">
+                                    <i (click)="showSearch()" class="fa fa-search fa-fw"></i>                            
+                                </div>
+                        </div>
+                        <div class="row" *ngIf="searchShow">
+                            <div class="col-xs-11">
+                                <input type="text" placeholder="Search..." class="card-header-box">
+                            </div>
+                            <div class="col-xs-1">
+                                <i (click)="closeSearch()" class="fa fa-close fa-fw"></i>                                                            
+                            </div>
+                        </div>
+                </div>
+                <div class="card-content">
+                    <div class="card-list-item">
+                            <div class="row">
+                                <div class="col-xs-6">Kidney Examination</div>
+                                <div class="col-xs-4">Service Code | 002W</div>
+                                <div class="col-xs-1 options"><i class="fa fa-edit blue-text"></i></div>
+                                <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>
+                            </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
