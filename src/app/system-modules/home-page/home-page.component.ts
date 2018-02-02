@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
+  pgMenuToggle = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+  pgMenu_click(){
+    this.pgMenuToggle = !this.pgMenuToggle;
   }
 
 }

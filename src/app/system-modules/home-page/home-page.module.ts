@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomePageComponent } from './home-page.component';
 import { HomePageHomeComponent } from './home-page-home.component';
+import { PersonLandingComponent } from './person-landing/person-landing.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { HomePageHomeComponent } from './home-page-home.component';
   declarations: [
     HomePageComponent,
     HomePageHomeComponent,
+    PersonLandingComponent,
   ]
 })
 export class HomePageModule { }
