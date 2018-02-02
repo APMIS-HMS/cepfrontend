@@ -39,7 +39,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
   clinics: any[] = [];
   clinicLocations: MinorLocation[] = [];
   loginEmployee: Employee = <Employee>{};
-  selectedProfession: Profession = <Profession>{};
+  selectedProfession: any;
   clinic: Location = <Location>{};
   patient: any = <any>{};
   isDoctor = false;
@@ -80,7 +80,7 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
       this.loginEmployee = payload;
       if (this.loginEmployee.professionId === 'Doctor') {
         this.isDoctor = true;
-        this.selectedProfession = this.loginEmployee.professionObject;
+        this.selectedProfession = this.loginEmployee.professionId;
       }
       this.getEmployees();
       this.getAppointments();

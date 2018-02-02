@@ -74,7 +74,7 @@ export class NewAppointmentComponent implements OnInit {
 
         route.params.subscribe(params => { 
             if (params.id !== undefined) {
-                this.appointmentService.get(params.id, {}).subscribe(payload => {
+                this.appointmentService.getAppointment(params.id, {}).subscribe(payload => {
                     this.appointmentService.appointmentAnnounced(payload);
                 })
             } else if (params.patientId !== undefined && params.doctorId !== undefined) {

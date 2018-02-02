@@ -12,31 +12,17 @@ export class AuthFacadeService {
     this.logingEmployee = employee
   }
 
-   getLogingEmployee() {
-     console.log('am here');
-    if (true) {
-      console.log('am here 2')
-      let facId = this.locker.getObject('fac');
-      let self = this;
-      return new Promise(function (resolve, reject) {
-        self._socketService.authenticateService();
-        self._socketService.getService('save-employee').get(facId).then(payload =>{
-          console.log(payload)
-          self.logingEmployee = payload.data[0];
-          resolve(self.logingEmployee)
-        }, error =>{
-            console.log(error);
-        });
+  getLogingEmployee() {
+    let facId = this.locker.getObject('fac');
+    let self = this;
+    return new Promise(function (resolve, reject) {
+      self._socketService.authenticateService();
+      self._socketService.getService('save-employee').get(facId).then(payload => {
+        self.logingEmployee = payload.data[0];
+        resolve(self.logingEmployee)
+      }, error => {
       });
-      
-    }
-    // else{
-    //   console.log('not going');
-    //   let self = this;
-    //   return new Promise(function (resolve, reject) {
-    //     resolve(self.logingEmployee);
-    //   });
-    // }
-    
+    });
+
   }
 }

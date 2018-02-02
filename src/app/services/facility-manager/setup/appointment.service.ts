@@ -67,6 +67,14 @@ export class AppointmentService {
     return this._socket.find(query);
   }
 
+  findAppointment(query: any) {
+    return this._socketService.getService('save-appointment').find(query);
+  }
+
+  getAppointment(id: string, query: any) {
+    return this._socketService.getService('save-appointment').get(id, query);
+  }
+
   findAll() {
     return this._socket.find();
   }

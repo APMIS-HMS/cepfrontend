@@ -35,7 +35,7 @@
 
             <div>
                 <mat-input-container>
-                    <input matInput placeholder="Type" [matAutocomplete]="autoType" [formControl]="type">
+                    <input matInput placeholder="AppointmentType" [matAutocomplete]="autoType" [formControl]="type">
                 </mat-input-container>
 
                 <mat-autocomplete #autoType="matAutocomplete" [displayWith]="appointmentTypeDisplayFn">
@@ -95,7 +95,7 @@
                 <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
                 <mat-autocomplete #providerAuto="matAutocomplete" [displayWith]="providerDisplayFn">
                     <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider">
-                        {{ provider.employeeDetails.lastName }} {{ provider.employeeDetails.firstName }}
+                        {{ provider.personDetails.lastName }} {{ provider.personDetails.firstName }}
                     </mat-option>
                 </mat-autocomplete>
             </div>

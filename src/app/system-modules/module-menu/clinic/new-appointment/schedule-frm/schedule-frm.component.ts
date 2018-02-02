@@ -1,3 +1,4 @@
+
 import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +26,7 @@ import * as  getYear from 'date-fns/get_year';
 import * as  setYear from 'date-fns/set_year';
 import * as getMonth from 'date-fns/get_month';
 import * as setMonth from 'date-fns/set_month';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
@@ -86,7 +88,7 @@ export class ScheduleFrmComponent implements OnInit {
     startDate = new Date();
     dateCtrl: FormControl = new FormControl(new Date(), [Validators.required]);
     reason: FormControl = new FormControl();
-    appointment: Appointment = <Appointment>{};
+    appointment: any = <any>{};
 
     days: any[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     selectedAppointment: Appointment = <Appointment>{};
@@ -105,7 +107,8 @@ export class ScheduleFrmComponent implements OnInit {
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
-      private orderStatusService: OrderStatusService,
+        private orderStatusService: OrderStatusService,
+        private authFacadeService: AuthFacadeService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService,
         private _smsAlertService: SmsAlertService,
         private route: ActivatedRoute) {
@@ -120,10 +123,17 @@ export class ScheduleFrmComponent implements OnInit {
                 this.clinic.setValue(filterClinic[0]);
             }
 
-            this.provider.setValue(payload.doctorId);
+            this.provider.setValue(payload.providerDetails);
+            this.selectedPatient = payload.patientDetails;
+
+            this.patient.setValue(payload.patientDetails);
             this.date = payload.startDate;
             this.reason.setValue(payload.appointmentReason);
+
+
             this.type.setValue(payload.appointmentTypeId);
+
+
             this.category.setValue(payload.category);
             this.status.setValue(payload.orderStatusId);
             if (payload.attendance !== undefined) {
@@ -158,7 +168,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.provider = new FormControl();
         this.filteredProviders = this.provider.valueChanges
             .startWith(null)
-            .map((provider: Employee) => provider && typeof provider === 'object' ? provider.employeeDetails.lastName : provider)
+            .map((provider: Employee) => provider && typeof provider === 'object' ? provider.personDetails.lastName : provider)
             .map(val => val ? this.filterProviders(val) : this.providers.slice());
 
         this.type = new FormControl('', [Validators.required]);
@@ -171,7 +181,12 @@ export class ScheduleFrmComponent implements OnInit {
         this.timezone = new FormControl('', []);
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
-        this.primeComponent();
+
+        this.authFacadeService.getLogingEmployee().then((payload: any) => {
+            this.loginEmployee = payload;
+            this.primeComponent();
+        })
+
 
         if (this.selectedClinic._id !== undefined) {
             this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
@@ -190,7 +205,7 @@ export class ScheduleFrmComponent implements OnInit {
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 
-        this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+
         this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
             this.loginEmployee = employee;
             this.primeComponent();
@@ -199,11 +214,12 @@ export class ScheduleFrmComponent implements OnInit {
             this.selectedPatient = value;
             this.patient.setValue(this.selectedPatient);
         })
+
         this.getPatients();
         this.getTimezones();
 
         this.route.queryParams.subscribe((params) => {
-            if(params.checkedOut){
+            if (params.checkedOut) {
                 this.patient.disable();
                 this.type.disable();
                 this.clinic.disable();
@@ -226,11 +242,11 @@ export class ScheduleFrmComponent implements OnInit {
         const majorLocation$ = Observable.fromPromise(this.locationService.find({ query: { name: 'Clinic' } }));
         const appointmentTypes$ = Observable.fromPromise(this.appointmentTypeService.findAll());
         // const patient$ = Observable.fromPromise(this.patientService.find({ query: { facilityId: this.selectedFacility._id } }));
-        const schedule$ = Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }));
+        const schedule$ = Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id, scheduleType: 'Clinic' } }));
         const professions$ = Observable.fromPromise(this.professionService.findAll());
         const facilityServiceCategory$ = Observable.fromPromise(this.facilityServiceCategoryService
             .find({ query: { facilityId: this.selectedFacility._id } }));
-        const workSpaces$ = Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } }));
+        const workSpaces$ = Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId': this.loginEmployee._id } }));
         const orderStatuses$ = Observable.fromPromise(this.orderStatusService.findAll());
         Observable
             .forkJoin([majorLocation$, appointmentTypes$, professions$, facilityServiceCategory$, workSpaces$, schedule$, orderStatuses$])
@@ -259,19 +275,39 @@ export class ScheduleFrmComponent implements OnInit {
                         this.status.setValue(item);
                     }
                 })
-                if (this.loginEmployee.professionObject.name === 'Doctor') {
+                if (this.loginEmployee.professionId === 'Doctor') {
                     this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
                     this.isDoctor = true;
                 } else {
                     this.isDoctor = false;
                 }
                 if (this.appointment._id !== undefined) {
-                    this.patient.setValue(this.appointment.patientId);
+                    this.patient.setValue(this.appointment.patientDetails);
                 }
                 this.scheduleManagers = schedules;
                 this.getEmployees();
-                this.getClinics()
+                this.getClinics();
+                this.validateCurrentAppointment();
             })
+    }
+    validateCurrentAppointment() {
+        if (this.appointment !== undefined) {
+            const appTypeIndex = this.appointmentTypes.findIndex(x => x.name === this.appointment.appointmentTypeId);
+            if (appTypeIndex > -1) {
+                this.type.setValue(this.appointmentTypes[appTypeIndex]);
+            }
+
+            const statusIndex = this.orderStatuses.findIndex(x => x.name === this.appointment.orderStausId);
+            if(statusIndex > -1){
+                this.status.setValue(this.orderStatuses[statusIndex]);
+                console.log('is')
+            }
+
+            const categoryIndex = this.categoryServices.findIndex(x =>x.name === this.appointment.category);
+            if(categoryIndex > -1){
+                this.category.setValue(this.categoryServices[categoryIndex]);
+            }
+        }
     }
     isAppointmentToday() {
         Observable.fromPromise(this.appointmentService
@@ -310,9 +346,9 @@ export class ScheduleFrmComponent implements OnInit {
         this.selectedFacility.departments.forEach((itemi, i) => {
             itemi.units.forEach((itemj, j) => {
                 itemj.clinics.forEach((itemk, k) => {
-                    if (this.loginEmployee !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
+                    if (this.loginEmployee !== undefined && this.loginEmployee.professionId === 'Doctor') {
                         this.loginEmployee.units.forEach((itemu, u) => {
-                            if (itemu === itemj._id) {
+                            if (itemu === itemj.name) {
                                 const clinicModel: ClinicModel = <ClinicModel>{};
                                 clinicModel.clinic = itemk;
                                 clinicModel.department = itemi;
@@ -350,7 +386,7 @@ export class ScheduleFrmComponent implements OnInit {
         });
 
         this.clinics.forEach((itemc, c) => {
-            const filteredManangers = this.scheduleManagers.filter(x => x.clinicObject.clinic._id === itemc._id);
+            const filteredManangers = this.scheduleManagers.filter(x => x.clinic === itemc.name);
             if (filteredManangers.length > 0) {
                 itemc.schedules = filteredManangers[0].schedules;
             }
@@ -382,11 +418,11 @@ export class ScheduleFrmComponent implements OnInit {
         if (this.loginEmployee.professionObject !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
             this.schedules.forEach((items, s) => {
                 this.loginEmployee.units.forEach((itemu, u) => {
-                    if (itemu === items.clinicObject.unit._id) {
-                        const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
-                        if (res.length > 0) {
-                            this.clinicLocations.push(res[0]);
-                        }
+                    if (itemu === items.unit) {
+                        // const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
+                        // if (res.length > 0) {
+                        //     this.clinicLocations.push(res[0]);
+                        // }
                     }
                 });
             });
@@ -447,7 +483,7 @@ export class ScheduleFrmComponent implements OnInit {
             this.employeeService.find({
                 query: {
                     facilityId: this.selectedFacility._id,
-                    professionId: this.selectedProfession._id, units: { $in: this.loginEmployee.units }
+                    professionId: this.selectedProfession, units: { $in: this.loginEmployee.units }
                 }
             })
                 .then(payload => {
@@ -455,7 +491,7 @@ export class ScheduleFrmComponent implements OnInit {
                         this.providers.push(itemi);
                     });
                     if (this.appointment._id !== undefined) {
-                        this.provider.setValue(this.appointment.doctorId);
+                        this.provider.setValue(this.appointment.providerDetails);
                     }
                     this.loadingProviders = false;
                 });
@@ -471,7 +507,7 @@ export class ScheduleFrmComponent implements OnInit {
                         this.providers.push(itemi);
                     });
                     if (this.appointment._id !== undefined) {
-                        this.provider.setValue(this.appointment.doctorId);
+                        this.provider.setValue(this.appointment.providerDetails);
                     }
                     this.loadingProviders = false;
 
@@ -493,15 +529,14 @@ export class ScheduleFrmComponent implements OnInit {
     }
 
     filterPatients(val: any) {
-        console.log(val);
         return val ? this.patients.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.patients;
     }
 
     filterProviders(val: any) {
-        return val ? this.providers.filter(s => s.employeeDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
-            || s.employeeDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
+        return val ? this.providers.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
+            || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.providers;
     }
     filterAppointmentTypes(val: any) {
@@ -516,7 +551,7 @@ export class ScheduleFrmComponent implements OnInit {
         return clinic ? clinic.clinicName : clinic;
     }
     providerDisplayFn(provider: any): string {
-        return provider ? provider.employeeDetails.lastName + ' ' + provider.employeeDetails.firstName : provider;
+        return provider ? provider.personDetails.lastName + ' ' + provider.personDetails.firstName : provider;
     }
 
     appointmentTypeDisplayFn(type: any): string {
@@ -551,77 +586,34 @@ export class ScheduleFrmComponent implements OnInit {
 
     scheduleAppointment() {
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
-            // this.loadIndicatorVisible = true;
-            console.log(this.filteredPatients);
             this.disableBtn = true;
             this.updateAppointment = false;
             this.saveAppointment = false;
             this.savingAppointment = true;
-            console.log(this.patient.value);
-            const patient = this.patient.value;
-            const clinic = this.clinic.value;
-            const provider = this.provider.value;
-            const type = this.type.value;
-            const category = this.category.value;
-            const orderStatus = this.status.value;
+            const patient = this.patient.value._id;
+            const clinic = this.clinic.value.clinicName;
+            const provider = this.provider.value._id;
+            const type = this.type.value.name;
+            const category = this.category.value.name;
+            const orderStatus = this.status.value.name;
             const checkIn = this.checkIn.value;
             const date = this.date;
             const reason = this.reason.value;
-            const facility = this.locker.getObject('miniFacility');
+            const facility = this.selectedFacility._id;
+            this.selectedPatient = this.patient.value;
 
-            delete patient.appointments;
-            delete patient.encounterRecords;
-            delete patient.orders;
-            delete patient.tags;
-            delete patient.personDetails.addressObj;
-            delete patient.personDetails.countryItem;
-            delete patient.personDetails.homeAddress;
-            delete patient.personDetails.maritalStatus;
-            delete patient.personDetails.nationality;
-            delete patient.personDetails.nationalityObject;
-            delete patient.personDetails.nextOfKin;
 
-            if (provider !== null) {
-                delete provider.department;
-                delete provider.employeeFacilityDetails;
-                delete provider.role;
-                delete provider.units;
-                delete provider.employeeDetails.countryItem;
-                delete provider.employeeDetails.homeAddress;
-                delete provider.employeeDetails.gender;
-                delete provider.employeeDetails.maritalStatus;
-                delete provider.employeeDetails.nationality;
-                delete provider.employeeDetails.nationalityObject;
-                delete provider.employeeDetails.nextOfKin;
-            }
 
             this.appointment.appointmentReason = reason;
             this.appointment.appointmentTypeId = type;
-            this.appointment.clinicId = clinic.clinic;
+            this.appointment.clinicId = clinic;
             this.appointment.doctorId = provider;
-            this.appointment.facilityId = <any>facility;
+            this.appointment.facilityId = facility;
             this.appointment.patientId = patient;
             this.appointment.startDate = this.date;
             if (checkIn === true) {
-                const logEmp: any = this.loginEmployee;
-                delete logEmp.department;
-                delete logEmp.employeeFacilityDetails;
-                delete logEmp.role;
-                delete logEmp.units;
-                delete logEmp.consultingRoomCheckIn;
-                delete logEmp.storeCheckIn;
-                delete logEmp.unitDetails;
-                delete logEmp.professionObject;
-                delete logEmp.workSpaces;
-                delete logEmp.employeeDetails.countryItem;
-                delete logEmp.employeeDetails.homeAddress;
-                delete logEmp.employeeDetails.gender;
-                delete logEmp.employeeDetails.maritalStatus;
-                delete logEmp.employeeDetails.nationality;
-                delete logEmp.employeeDetails.nationalityObject;
-                delete logEmp.employeeDetails.nextOfKin;
                 this.appointment.attendance = {
-                    employeeId: logEmp,
+                    employeeId: this.loginEmployee._id,
                     dateCheckIn: new Date()
                 };
             }
@@ -641,39 +633,35 @@ export class ScheduleFrmComponent implements OnInit {
                         this.appointmentService.
                             setMeeting(topic, this.appointment.startDate, this.appointment._id, this.timezone.value.value)
                             .then(meeting => {
-                                // this.appointmentService.patientAnnounced(this.patient);
-                                // this.loadIndicatorVisible = false;
-                                // this.newSchedule();
-                                // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-                                console.log(meeting);
+                                let fullName = this.selectedPatient.personDetails.lastName + ' ' + this.selectedPatient.personDetails.Name
                                 this.setValueSmsAlert(
-                                    patient.personDetails.personFullName,
+                                    fullName,
                                     this.appointment.startDate,
                                     this.selectedFacility.name,
                                     clinic.name,
-                                    patient.personDetails.email);
+                                    this.selectedPatient.personDetails.email);
 
-                                    this.disableBtn = true;
-                                    this.updateAppointment = false;
-                                    this.saveAppointment = true;
-                                    this.savingAppointment = false;
+                                this.disableBtn = true;
+                                this.updateAppointment = false;
+                                this.saveAppointment = true;
+                                this.savingAppointment = false;
                                 this.router.navigate(['/dashboard/clinic/appointment']);
                             })
                     } else {
                         this.appointmentService.patientAnnounced(this.patient);
-                        // this.loadIndicatorVisible = false;
                         this.disableBtn = true;
                         this.updateAppointment = false;
                         this.saveAppointment = true;
                         this.savingAppointment = false;
                         this.newSchedule();
                         this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
+                        let fullName = this.selectedPatient.personDetails.lastName + ' ' + this.selectedPatient.personDetails.Name
                         this.setValueSmsAlert(
-                            patient.personDetails.personFullName,
+                            fullName,
                             this.appointment.startDate,
                             this.selectedFacility.name,
                             clinic.name,
-                            patient.personDetails.email);
+                            this.selectedPatient.personDetails.email);
                         this.router.navigate(['/dashboard/clinic/appointment']);
                     }
 
@@ -689,22 +677,18 @@ export class ScheduleFrmComponent implements OnInit {
                         const topic = 'Appointment with ' + patient.personDetails.apmisId;
                         this.appointmentService.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
                             .then(meeting => {
-                              this.disableBtn = true;
-                              this.updateAppointment = false;
-                              this.saveAppointment = true;
-                              this.savingAppointment = false;
+                                this.disableBtn = true;
+                                this.updateAppointment = false;
+                                this.saveAppointment = true;
+                                this.savingAppointment = false;
+                                let fullName = this.selectedPatient.personDetails.lastName + ' ' + this.selectedPatient.personDetails.Name
                                 this.setValueSmsAlert(
-                                    patient.personDetails.personFullName,
+                                    fullName,
                                     this.appointment.startDate,
                                     this.selectedFacility.name,
                                     this.selectedClinic.name,
-                                    patient.personDetails.email);
+                                    this.selectedPatient.personDetails.email);
                                 this.router.navigate(['/dashboard/clinic/appointment']);
-                                // this.appointmentService.patientAnnounced(this.patient);
-                                // this.loadIndicatorVisible = false;
-                                // this.newSchedule();
-                                // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-
 
                             })
                     } else {
@@ -712,19 +696,14 @@ export class ScheduleFrmComponent implements OnInit {
                         this.updateAppointment = false;
                         this.saveAppointment = true;
                         this.savingAppointment = false;
+                        let fullName = this.selectedPatient.personDetails.lastName + ' ' + this.selectedPatient.personDetails.Name
                         this.setValueSmsAlert(
-                            patient.personDetails.personFullName,
+                            fullName,
                             this.appointment.startDate,
                             this.selectedFacility.name,
                             clinic.name,
-                            patient.personDetails.email);
+                            this.selectedPatient.personDetails.email);
                         this.router.navigate(['/dashboard/clinic/appointment']);
-                        // this.appointmentService.patientAnnounced(this.patient);
-                        // this.loadIndicatorVisible = false;
-                        // this.newSchedule();
-                        // this.appointmentService.clinicAnnounced({ clinicId: this.selectedClinic, startDate: this.date });
-
-
                     }
                 }, error => {
                     this.loadIndicatorVisible = false;
@@ -738,11 +717,11 @@ export class ScheduleFrmComponent implements OnInit {
         this.schedules = [];
         if (clinic !== null) {
             this.selectedClinic = clinic;
-            if (clinic.schedules !== undefined) {
-                clinic.schedules.forEach((itemi, i) => {
-                    this.schedules.push(itemi);
-                });
-            }
+            this.scheduleManagers.forEach(manager => {
+                if (manager.clinic === clinic.clinicName) {
+                    this.schedules = this.schedules.concat(manager.schedules);
+                }
+            });
             this.appointmentService.schedulesAnnounced(this.schedules);
 
 
@@ -761,9 +740,6 @@ export class ScheduleFrmComponent implements OnInit {
                 this.date = setMinutes(this.date, getMinutes(schedule.startTime));
                 this.startDate = setHours(this.startDate, getHours(schedule.startTime));
                 this.startDate = setMinutes(this.startDate, getMinutes(schedule.startTime));
-                // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
-                // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
-                // this.dateCtrl.setValue(this.date);
                 this.checkIn.enable();
                 this.dateCtrl.setErrors(null)// ({ noValue: false });
                 this.dateCtrl.markAsUntouched();

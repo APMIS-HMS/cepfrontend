@@ -34,10 +34,10 @@
                             <div class="col-sm-3" style="padding-left: 0;">
                                 <select class="form-control">
                                     <option value="Select by location" disabled selected>Select Doctor</option>
-                                    <option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</option>
+                                    <option *ngFor="let employee of employees" value="employee.id">{{ employee.personDetails.firstName }} {{ employee.personDetails.lastName }}</option>
                                 </select>
                                 <!-- <mat-select placeholder="Doctor">
-                                    <mat-option *ngFor="let employee of employees" value="employee.id">{{ employee.employeeDetails.personFullName }}</mat-option>
+                                    <mat-option *ngFor="let employee of employees" value="employee.id">{{ employee.personDetails.personFullName }}</mat-option>
                                 </mat-select> -->
                             </div>
                             <div class="col-sm-3" style="padding-left: 0;">
@@ -97,7 +97,7 @@
                 </td>
                 <td>{{appointment.clinicId?.clinicName}}</td>
                 <td>
-                    <div>{{appointment.doctorId?.employeeDetails?.lastName}} {{appointment.doctorId?.employeeDetails?.firstName}}</div>
+                    <div>{{appointment.doctorId?.personDetails?.lastName}} {{appointment.doctorId?.personDetails?.firstName}}</div>
                     <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
                 </td>
                 <td>{{appointment?.attendance?.dateCheckIn | date:'shortTime'}}</td>
@@ -164,13 +164,13 @@
                 </div>
                 <div class="activity">
                     <div class="activity-label">{{timeline.label}}</div>
-                    <div class="activity-actor" *ngIf="timeline.person.employeeDetails !== undifined">
-                        <span>{{timeline.person.employeeDetails.personFullName}}</span>
+                    <div class="activity-actor" *ngIf="timeline.person.personDetails !== undifined">
+                        <span>{{timeline.person.personDetails.personFullName}}</span>
                         <div class="actor-wrap">
-                            <img [src]="facilityService.transform(timeline.person.employeeDetails?.profileImageObject?.thumbnail)">
+                            <img [src]="facilityService.transform(timeline.person.personDetails?.profileImageObject?.thumbnail)">
                         </div>
                     </div>
-                    <div class="activity-actor" *ngIf="timeline.person.employeeDetails === undifined">
+                    <div class="activity-actor" *ngIf="timeline.person.personDetails === undifined">
                         <span>{{timeline.person.personFullName}}</span>
                         <div class="actor-wrap">
                             <img [src]="facilityService.transform(timeline.person?.profileImageObject?.thumbnail)">

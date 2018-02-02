@@ -74,8 +74,9 @@ export class AppComponent implements OnInit {
       this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
       });
     }).catch(err => {
-      this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
+      // this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
       this.router.navigate(['/']);
+      this.locker.clear();
     });
 
   }

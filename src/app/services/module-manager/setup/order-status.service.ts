@@ -9,8 +9,8 @@ export class OrderStatusService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('orderstatuses');
-    this._socket = _socketService.getService('orderstatuses');
+    this._rest = _restService.getService('order-status');
+    this._socket = _socketService.getService('order-status');
     this._socket.timeout = 30000;
   }
 
