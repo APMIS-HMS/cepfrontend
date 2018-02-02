@@ -70,7 +70,11 @@ export class EditEmpBasicComponent implements OnInit {
 		private locker: CoolLocalStorage,
 		private systemModulesService: SystemModuleService,
 		private departmentService: DepartmentService,
+<<<<<<< HEAD
 		private _countryServiceFacade: CountryServiceFacadeService, ) { }
+=======
+		private _countryServiceFacade: CountryServiceFacadeService,) { }
+>>>>>>> 1eb384bad442554e78d4a2db1d83b50696c63410
 
 	ngOnInit() {
 		console.log(this.selectedPerson);
@@ -326,13 +330,13 @@ export class EditEmpBasicComponent implements OnInit {
 		return l1.name == l2;
 	}
 
-	compareDepartments(d1: any, d2: any) {
+	compareDepartments(d1:any, d2:any){
 		console.log('d1: ', d1);
 		console.log('d2: ', d2);
 		return d1._id == d2;
 	}
 
-	getDepartmentById() {
+	getDepartmentById(){
 		const deptId = this.selectedEmployee.departmentId;
 		const depts = this.facility.departments;
 
@@ -343,7 +347,7 @@ export class EditEmpBasicComponent implements OnInit {
 
 		console.log(this.selectedDepartment);
 
-
+		
 	}
 
 
