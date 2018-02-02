@@ -37,12 +37,15 @@
                             <td class="table-content spanWrap">
                                 <span  *ngFor="let access of role?.features">
                                     <span >{{ access.name }}</span>,
-                                </span>
-                            </td>
-                            <td><i (click)="newAccessrole_onClick(role)" class="fa fa-edit fa-icon "></i></td>
-                        </tr>
-                    </tbody>
-                </table> 
+                        </span>
+                    </td>
+                    <td>
+                        <i (click)="newAccessrole_onClick(role)" class="fa fa-edit fa-icon "></i>
+                        <i (click)="onClickDelete(role)" class="fa fa-trash"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <span (click)="newAccessrole_onClick()" id="floating-button">
@@ -51,5 +54,5 @@
 </div>
 
 <div *ngIf="createAccessrole" class="modal-overlay">
-        <app-create-access [selectedRole]="selectedRole" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-access>
-    </div>
+    <app-create-access [selectedRole]="selectedRole" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-access>
+</div>
