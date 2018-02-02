@@ -1,14 +1,14 @@
-// Initializes the `order-status` service on path `/order-status`
+// Initializes the `orderstatus` service on path `/order-status`
 const createService = require('feathers-mongoose');
-const createModel = require('../../models/order-status.model');
-const hooks = require('./order-status.hooks');
+const createModel = require('../../models/orderstatus.model');
+const hooks = require('./orderstatus.hooks');
 
 module.exports = function (app) {
   const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'order-status',
+    name: 'orderstatus',
     Model,
     paginate
   };

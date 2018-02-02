@@ -64,7 +64,6 @@ const productTypes = require('./product-types/product-types.service.js');
 const productVariants = require('./product-variants/product-variants.service.js');
 const assignWorkspace = require('./assign-workspace/assign-workspace.service.js');
 const workspaces = require('./workspaces/workspaces.service.js');
-const appointmentTypes = require('./appointment-types/appointment-types.service.js');
 const auditTray = require('./audit-tray/audit-tray.service.js');
 const bedTypes = require('./bed-types/bed-types.service.js');
 const clientTypes = require('./client-types/client-types.service.js');
@@ -117,9 +116,10 @@ const saveEmployee = require('./save-employee/save-employee.service.js');
 const scheduleTypes = require('./schedule-types/schedule-types.service.js');
 const schedules = require('./schedules/schedules.service.js');
 const timezones = require('./timezones/timezones.service.js');
-const orderStatus = require('./order-status/order-status.service.js');
 const billManagers = require('./bill-managers/bill-managers.service.js');
 const customFacilityModules = require('./custom-facility-modules/custom-facility-modules.service.js');
+const appointmentTypes = require('./appointment-types/appointment-types.service.js');
+const orderstatus = require('./orderstatus/orderstatus.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -187,7 +187,6 @@ module.exports = function (app) {
   app.configure(productVariants);
   app.configure(assignWorkspace);
   app.configure(workspaces);
-  app.configure(appointmentTypes);
   app.configure(auditTray);
   app.configure(bedTypes);
   app.configure(clientTypes);
@@ -240,7 +239,8 @@ module.exports = function (app) {
   app.configure(scheduleTypes);
   app.configure(schedules);
   app.configure(timezones);
-  app.configure(orderStatus);
   app.configure(billManagers);
   app.configure(customFacilityModules);
+  app.configure(appointmentTypes);
+  app.configure(orderstatus);
 };

@@ -45,13 +45,16 @@ class Service {
               canDisable: false
             }
           }).then(fmS => {
+            if (facility.facilitymoduleId === undefined) {
+              facility.facilitymoduleId = [];
+            }
             fmS.data.forEach(element => {
               facility.facilitymoduleId.push({
                 '_id': element._id,
                 'isActive': true,
-                'canDisable':false,
+                'canDisable': false,
                 'status': moduleStatus.status.active
-              })
+              });
             });
             facility.facilitymoduleId = fmS.data;
             facilityService.create(facility).then(facPayload => {
