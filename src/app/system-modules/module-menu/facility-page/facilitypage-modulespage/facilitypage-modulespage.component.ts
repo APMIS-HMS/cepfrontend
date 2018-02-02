@@ -56,6 +56,7 @@ export class FacilitypageModulespageComponent implements OnInit {
         isAll: true
       }
     }).then((payload) => {
+      console.log(payload);
       this.systemModuleService.off;
       this.systemModules = payload;
     },err=>{
@@ -69,8 +70,11 @@ export class FacilitypageModulespageComponent implements OnInit {
         isAll: false
       }
     }).then((payload) => {
+      console.log(payload);
       this.systemModuleService.off;
-      this.facilityModules = payload.facilitymoduleId;
+      if(payload.facilitymoduleId.length > 0){
+        this.facilityModules = payload.facilitymoduleId;
+      }
     }, error => {
       this.systemModuleService.off;
     })
