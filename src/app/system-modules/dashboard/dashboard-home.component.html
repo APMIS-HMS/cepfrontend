@@ -93,16 +93,15 @@
                 <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
                 <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
 
-                <li><i class="fa fa-user" aria-hidden="true"></i> <span>User Profile</span></li>
                 <li (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
-                <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li>
-                <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li>
+                <!-- <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li> -->
+                <!-- <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li> -->
                 <li (click)="onTags()" [routerLink]="['billing/tags']"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
 
                 <li (click)="facilitySubmenuShow()" [routerLink]="['facility-page']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Facility Settings</span></li>
-                <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li>
+                <!-- <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li> -->
                 <li (click)="userSubmenuShow()" [routerLink]="['access-manager/access-role-details']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li>
-                <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li>
+                <!-- <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li> -->
                 <li (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
                 <li (click)="formsSubmenuShow()" [routerLink]="['forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Forms Manager</span></li>
             </ul>
@@ -180,13 +179,5 @@
 
 <div *ngIf="changeFacilityLogo" class="modal-overlay">
     <app-logo-update [selectedFacility]="facilityObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logo-update>
-</div>
-
-<div *ngIf="changePassword" class="modal-overlay">
-    <app-change-password (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-change-password>
-</div>
-
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <mat-spinner></mat-spinner>
 </div>
 <div class="footer">&copy; 2017 APMIS. All Right Reserved.</div>

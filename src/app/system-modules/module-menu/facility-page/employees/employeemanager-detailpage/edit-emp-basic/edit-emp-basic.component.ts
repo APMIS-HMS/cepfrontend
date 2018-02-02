@@ -66,7 +66,6 @@ export class EditEmpBasicComponent implements OnInit {
 
 	ngOnInit() {
 		console.log(this.selectedPerson);
-		this.prime();
 		this.facility = <any>this.locker.getObject("selectedFacility");
 		this.selectedEmployee = this.locker.getObject("selectedEmployee");
 
@@ -95,9 +94,12 @@ export class EditEmpBasicComponent implements OnInit {
 			phoneno: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 
-		this.facilityForm2.controls['gender'].setValue(this.selectedPerson.gender);
+		/* this.facilityForm2.controls['gender'].setValue(this.selectedPerson.gender);
 		this.facilityForm2.controls['maritalStatus'].setValue(this.selectedPerson.maritalStatus);
 		this.facilityForm2.controls['nationality'].setValue(this.selectedPerson.nationality);
+		
+		this.facilityForm2.controls['lgaofresidence'].setValue(this.selectedPerson.homeAddress.lga) */
+
 		this.facilityForm2.controls['stateofOrigin'].setValue(this.selectedPerson.stateOfOrigin);
 		this.facilityForm2.controls['localgovtarea'].setValue(this.selectedPerson.lgaOfOrigin);
 
@@ -106,17 +108,7 @@ export class EditEmpBasicComponent implements OnInit {
 		this.getTitles();
 		this.getGenders();
 		this.maritalStatuses(); */
-
-		this.facilityForm2.controls['stateofOrigin'].valueChanges.subscribe(payload => {
-			//this.cities = payload.cities;
-			this.lgasOfOrigin = payload.lgs;
-			console.log(payload);
-		});
-		this.facilityForm2.controls['stateofresidence'].valueChanges.subscribe(payload => {
-			//this.cities = payload.cities;
-			this.lgas = payload.lgs;
-			console.log(payload);
-		});
+		this.prime();
 	}
 
 	prime() {
@@ -145,7 +137,18 @@ export class EditEmpBasicComponent implements OnInit {
 			} */
 
 
-		})
+		});
+
+		this.facilityForm2.controls['stateofOrigin'].valueChanges.subscribe(payload => {
+			//this.cities = payload.cities;
+			this.lgasOfOrigin = payload.lgs;
+			console.log(payload);
+		});
+		this.facilityForm2.controls['stateofresidence'].valueChanges.subscribe(payload => {
+			//this.cities = payload.cities;
+			this.lgas = payload.lgs;
+			console.log(payload);
+		});
 	}
 
 	close_onClick($event) {
@@ -247,6 +250,12 @@ export class EditEmpBasicComponent implements OnInit {
 
 			}
 		})
+	}
+
+	compare(l1: any, l2: any) {
+		console.log('l1: ', l1);
+		console.log('l2: ', l2);
+		return l1.name == l2;
 	}
 
 

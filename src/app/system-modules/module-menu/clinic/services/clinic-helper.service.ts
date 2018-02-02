@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { SchedulerService, ConsultingRoomService, EmployeeService, ProfessionService } from '../../../../services/facility-manager/setup/index';
@@ -26,6 +27,7 @@ export class ClinicHelperService {
     private scheduleService: SchedulerService,
     private consultingRoomService: ConsultingRoomService,
     private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
     private locationService: LocationService, ) {
     this.getProfessions();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -69,7 +71,7 @@ export class ClinicHelperService {
         //     }
         //   });
         // });
-      }).catch(err =>{
+      }).catch(err => {
         this.getConsultingRoom();
       });
   }
@@ -83,61 +85,57 @@ export class ClinicHelperService {
       });
     });
   }
-  
+
   getProfessions() {
     this.professionService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
-				this.professions.push(itemi);
-			});
-		});
-	}
-	getClinicLocation() {
-		this.clinicLocations = [];
-		const inClinicLocations: MinorLocation[] = [];
-		const minors = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);
-		minors.forEach((itemi, i) => {
-			const minorLocation: MinorLocation = <MinorLocation>{};
-			minorLocation._id = itemi._id;
-			minorLocation.description = itemi.description;
-			minorLocation.locationId = itemi.locationId;
-			minorLocation.name = itemi.name;
-			minorLocation.shortName = itemi.shortName;
-			minorLocation.text = itemi.name;
-			inClinicLocations.push(minorLocation);
-		});
-		if (this.loginEmployee.professionObject !== undefined && this.loginEmployee.professionObject.name === 'Doctor') {
-			this.schedules.forEach((items, s) => {
-				this.loginEmployee.units.forEach((itemu, u) => {
-					if (itemu === items.clinicObject.unit._id) {
-						const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
-						if (res.length > 0) {
-							this.clinicLocations.push(res[0]);
-						}
-					}
-				});
-			});
-		} else {
-			// this.loginEmployee.workSpaces.forEach((itemw, w) => {
-			// 	itemw.locations.forEach((iteml, l) => {
-			// 		const res = inClinicLocations.filter(x => x._id === iteml.minorLocationId);
-			// 		if (res.length > 0) {
-			// 			this.clinicLocations.push(res[0]);
-			// 		}
-			// 	});
-			// });
-		}
+        this.professions.push(itemi);
+      });
+    });
+  }
+  getClinicLocation() {
+    this.clinicLocations = [];
+    const inClinicLocations: MinorLocation[] = [];
+    const minors = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);
+    minors.forEach((itemi, i) => {
+      const minorLocation: MinorLocation = <MinorLocation>{};
+      minorLocation._id = itemi._id;
+      minorLocation.description = itemi.description;
+      minorLocation.locationId = itemi.locationId;
+      minorLocation.name = itemi.name;
+      minorLocation.shortName = itemi.shortName;
+      minorLocation.text = itemi.name;
+      inClinicLocations.push(minorLocation);
+    });
+    if (this.loginEmployee.professionId !== undefined && this.loginEmployee.professionId === 'Doctor') {
+      this.schedules.forEach((items, s) => {
+        this.loginEmployee.units.forEach((itemu, u) => {
+          if (itemu === items.unit) {
+            const res = inClinicLocations.filter(x => x._id === items.clinic);
+            if (res.length > 0) {
+              this.clinicLocations.push(res[0]);
+            }
+          }
+        });
+      });
+    } else {
+      // this.loginEmployee.workSpaces.forEach((itemw, w) => {
+      // 	itemw.locations.forEach((iteml, l) => {
+      // 		const res = inClinicLocations.filter(x => x._id === iteml.minorLocationId);
+      // 		if (res.length > 0) {
+      // 			this.clinicLocations.push(res[0]);
+      // 		}
+      // 	});
+      // });
+    }
 
   }
   getLoginEmployee() {
     const auth: any = this.locker.getObject('auth');
-    Observable.fromPromise(this.employeeService.find({
-      query:
-      {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-      }
-    })).mergeMap((emp: any) => Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {}))).subscribe((results: Employee) => {
-      this.loginEmployee = results;
-      if (this.loginEmployee.professionObject.name === 'Doctor') {
+
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      if (this.loginEmployee.professionId === 'Doctor') {
         this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
         this.isDoctor = true;
         this.getSchedules();
@@ -145,25 +143,22 @@ export class ClinicHelperService {
         this.isDoctor = false;
         this.getClinicLocation();
       }
-    });
+    })
 
-
-    // this.employeeService.find({
+    // Observable.fromPromise(this.employeeService.find({
     //   query:
-    //   {
-    //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
-    //   }
-    // }).then(payload => {
-    //   if (payload.data.length > 0) {
-    //     this.loginEmployee = payload.data[0];
-    //     if (this.loginEmployee.professionObject.name === 'Doctor') {
-    //       this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
-    //       this.isDoctor = true;
-    //       this.getSchedules();
-    //     } else {
-    //       this.isDoctor = false;
-    //       this.getClinicLocation();
+    //     {
+    //       facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
     //     }
+    // })).mergeMap((emp: any) => Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {}))).subscribe((results: Employee) => {
+    //   this.loginEmployee = results;
+    //   if (this.loginEmployee.professionObject.name === 'Doctor') {
+    //     this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
+    //     this.isDoctor = true;
+    //     this.getSchedules();
+    //   } else {
+    //     this.isDoctor = false;
+    //     this.getClinicLocation();
     //   }
     // });
   }

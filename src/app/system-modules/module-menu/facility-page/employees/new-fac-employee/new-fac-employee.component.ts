@@ -606,6 +606,7 @@ export class NewFacEmployeeComponent implements OnInit {
         model.professionId = this.frmNewEmp4.controls['empJobTitle'].value;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
+        
         this.employeeService.create(model).then(payload => {
 
             this.employeeService.saveEmployee(model).then(pay =>{

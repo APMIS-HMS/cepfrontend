@@ -42,19 +42,22 @@
                             <div formGroupName="{{i}}">
                                 <div class="mainErr animated shake" [hidden]="mainErrClinic || (clinicForm.controls['clinicArray'].value.length !== (i+1))">{{errMsgClinic}}</div>
                                 <div class="valSpan">
-                                    <div>
-                                        <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
-                                            <mat-input-container class="example-full-width">
-                                                <input matInput [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
-                                            </mat-input-container>
+                                    <div *ngIf="isClinic===true" class="arr-grp-wrap">
+                                        <div>
+                                            <div class="frm-item-inner-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicName" placeholder="Clinic Name" autocomplete="off">
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-inner-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput type="number" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicCapacity" min="1" placeholder="Daily  Capacity" autocomplete="off">
+                                                </mat-input-container>
+                                            </div> 
                                         </div>
-                                        <div *ngIf="isClinic===true" class="frm-item-inner-wrap">
-                                            <mat-input-container class="example-full-width">
-                                                <input matInput type="number" [attr.disabled]="clinic.value.readonly?'':null" formControlName="clinicCapacity" min="1" placeholder="Daily  Capacity" autocomplete="off">
-                                            </mat-input-container>
-                                        </div> 
+                                        <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(clinic,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
                                     </div>
-                                    <span *ngIf="isClinic" class="trash"><i (click)="onRemoveBill(clinic,i)" class="fa fa-times trash" aria-hidden="true"></i></span>
+                                    
                                 </div>
                                 
                                 <div *ngIf="isClinic" class="frm-item-wrap frm-item-inner-wrap">
