@@ -70,11 +70,7 @@ export class EditEmpBasicComponent implements OnInit {
 		private locker: CoolLocalStorage,
 		private systemModulesService: SystemModuleService,
 		private departmentService: DepartmentService,
-<<<<<<< HEAD
-		private _countryServiceFacade: CountryServiceFacadeService, ) { }
-=======
-		private _countryServiceFacade: CountryServiceFacadeService,) { }
->>>>>>> 1eb384bad442554e78d4a2db1d83b50696c63410
+		private _countryServiceFacade: CountryServiceFacadeService) { }
 
 	ngOnInit() {
 		console.log(this.selectedPerson);
