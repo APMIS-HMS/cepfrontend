@@ -38,7 +38,7 @@ class Service {
       let selectedUser = userList.data[0];
       if (selectedUser.facilitiesRole === undefined) {
         selectedUser.facilitiesRole = [];
-      }
+    
       let facilityRole = {
         facilityId: data.facilityId,
       };

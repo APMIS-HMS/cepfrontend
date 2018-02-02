@@ -1,15 +1,88 @@
 /* eslint-disable no-unused-vars */
+var isToday = require('date-fns/is_today');
+var isFuture = require('date-fns/is_future');
+var isPast = require('date-fns/is_past');
+var isWithinRange = require('date-fns/is_within_range');
+var isSameDay = require('date-fns/is_same_day');
+var addHours = require('date-fns/add_hours');
 class Service {
   constructor(options) {
     this.options = options || {};
   }
 
-  find(params) {
-    return Promise.resolve([]);
+  async find(params) {
+    // console.log(params.query);
+    let hook = params.query;
+    const appointmentService = this.app.service('appointments');
+    const appointmentResult = await appointmentService.find({
+      query: {
+        facilityId: hook.facilityId,
+        clinicId: { $in: hook.clinicIds },
+        $sort: { 'createdAt': -1 }
+      }
+    });
+    // console.log(appointmentResult);
+
+    {
+      let appointments = [];
+      if (hook.isCheckedIn) {
+        appointmentResult.data.forEach(function (appointment) {
+          if (isToday(appointment.startDate) && appointment.attendance !== undefined) {
+            appointments.push(appointment);
+          }
+        });
+        appointmentResult.data = appointments;
+      }
+
+      if (hook.isFuture) {
+        appointmentResult.data.forEach(function (appointment) {
+          if (isFuture(appointment.startDate) || (isToday(appointment.startDate))) {
+            appointments.push(appointment);
+          }
+        });
+        appointmentResult.data = appointments;
+      }
+      if (hook.isPast) {
+        appointmentResult.data.forEach(function (appointment) {
+          if (isPast(appointment.startDate)) {
+            appointments.push(appointment);
+          }
+        });
+        appointmentResult.data = appointments;
+      }
+      if (hook.isWithinRange) {
+        appointmentResult.data.forEach(function (appointment) {
+          if (isWithinRange(appointment.startDate, hook.from, hook.to)) {
+            appointments.push(appointment);
+          }
+        });
+        appointmentResult.data = appointments;
+      }
+      if (hook.hasDate) {
+        appointmentResult.data.forEach(function (appointment) {
+          if (isSameDay(appointment.startDate, hook.startDate)) {
+            appointments.push(appointment);
+          }
+        });
+        appointmentResult.data = appointments;
+      }
+      if (hook.isAppointmentToday) {
+        appointmentResult.data.forEach(function (appointment) {
+          if (isToday(appointment.startDate)) {
+            appointments.push(appointment);
+          }
+        });
+        appointmentResult.data = appointments;
+      }
+
+    }
+    return appointmentResult;
   }
 
-  get(id, params) {
-    console.log(params);
+  async get(id, params) {
+    const appointmentService = this.app.service('appointments');
+    const appointment = await appointmentService.get(id, {});
+    return appointment;
   }
 
   create(data, params) {
