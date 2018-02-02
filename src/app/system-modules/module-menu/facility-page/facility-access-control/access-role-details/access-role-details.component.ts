@@ -6,6 +6,7 @@ import { AccessControlService } from '../../../../../services/facility-manager/s
 import { Facility, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class AccessRoleDetailsComponent implements OnInit {
     private _locker: CoolLocalStorage,
     private _router: Router,
     private _route: ActivatedRoute,
-    private _accessControlService: AccessControlService
+    private _accessControlService: AccessControlService,
+    private _systemModuleService: SystemModuleService
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,6 @@ export class AccessRoleDetailsComponent implements OnInit {
 
   private _getAllRoles() {
     this._accessControlService.find({ query: {facilityId: this.selectedFacility._id } }).then(res => {
-      console.log(res);
       this.loading = false;
       if (res.data.length > 0) {
         this.roles = res.data;
@@ -49,11 +50,29 @@ export class AccessRoleDetailsComponent implements OnInit {
   }
 
   close_onClick(e) {
+    this._getAllRoles();
     this.createAccessrole = false;
   }
-  
+
+  onClickDelete(role) {
+    this.selectedRole = role;
+    this._systemModuleService.announceSweetProxy('Are you sure you want to delete this item?', 'question', this);
+
+  }
+
+  sweetAlertCallback(result) {
+    if (result.value) {
+      const roleName = this.selectedRole.name;
+      this._accessControlService.remove(this.selectedRole._id, {}).then(res => {
+        this.roles = [];
+        const text = `${roleName} role has been deleted successfully!`;
+        this._systemModuleService.announceSweetProxy(text, 'success');
+        this._getAllRoles();
+      }).catch(err => console.log(err));
+    }
+  }
+
   newAccessrole_onClick(role) {
-    console.log(role);
     this.selectedRole = role;
     this.createAccessrole = true;
   }
