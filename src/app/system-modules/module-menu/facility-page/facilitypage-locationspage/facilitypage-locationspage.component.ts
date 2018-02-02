@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./facilitypage-locationspage.component.scss']
 })
 export class FacilitypageLocationspageComponent implements OnInit {
+  
   selectedLocation: any;
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();

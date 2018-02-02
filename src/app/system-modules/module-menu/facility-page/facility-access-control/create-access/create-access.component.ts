@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FeatureModuleService } from '../../../../services/module-manager/setup/index';
-import { AccessControlService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
+import { AccessControlService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 // tslint:disable-next-line:max-line-length
 import {
   FeatureModule, AccessControl, FeatureModuleViewModel, User, Facility
-} from '../../../../models/index';
+} from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -15,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./create-access.component.scss']
 })
 export class CreateAccessComponent implements OnInit {
+  @Input() selectedRole: any;
   txtAccessName = new FormControl();
   searchFeature = new FormControl();
   // searchfeatureActive = false;
@@ -33,6 +34,8 @@ export class CreateAccessComponent implements OnInit {
   updatingRole: boolean = false;
   disableBtn: boolean = true;
   routeId: string;
+
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   // superGroups: any[] = [];
   // btnTitle = 'Create Access';
   // innerMenuShow = false;
@@ -58,13 +61,14 @@ export class CreateAccessComponent implements OnInit {
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
+    console.log(this.selectedRole);
 
     this.route.params.subscribe(params => {
       if (!!params.id) {
         this.routeId = params.id;
-        this.getModules(params.id);
+        this.getModules();
       } else {
-        this.getModules(params.id);
+        this.getModules();
       }
     });
   }
@@ -76,11 +80,12 @@ export class CreateAccessComponent implements OnInit {
       this.populateAccessControl(res.features);
       this.updateRole = true;
       this.createRole = false;
-      this.disableBtn = false;
+      this.disableBtn = false
     });
   }
 
   populateAccessControl(accessibilities: any) {
+    console.log(accessibilities);
     if (accessibilities.length > 0) {
       this.modules.forEach(module => {
         accessibilities.forEach(item => {
@@ -101,6 +106,10 @@ export class CreateAccessComponent implements OnInit {
         });
       });
     }
+  }
+
+  close_onClick() {
+    this.closeModal.emit(true);
   }
 
   onClickCheckInput(action: any, checked: boolean) {
@@ -128,13 +137,13 @@ export class CreateAccessComponent implements OnInit {
     });
   }
 
-  getModules(roleId?: string) {
+  getModules() {
     this.featureModuleService.findAll().then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.modules = res.data;
-        if (!!roleId) {
-          this._getRole(roleId);
+        if (!!this.selectedRole) {
+          this.populateAccessControl(this.selectedRole);
         }
       }
     });

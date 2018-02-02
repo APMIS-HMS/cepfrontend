@@ -1,13 +1,16 @@
-<div class="inner-wrap-b body-wrap">
-    <div class="facility-title">User Role Manager</div>
+<div class="animated pulse">
+        <div class="modal-header-wrap">
+                <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+                <legend class="modal_title">Create Group Role</legend>
+                <div class="modal_mini_title">All Purpose Medical Information System</div>
+        </div>
 
-    <div class="inner-page-wrap">
-        <div>
-            <legend class="page-title">Create Group Role</legend>            
-            <div class="featuresMainWrap">
+     <div class="modal-baseWrap">
+        <form novalidate>        
+            <div>
                 <div class="filters-wraper">
-                    <mat-input-container class="">
-                        <input type="text" matInput mat-error placeholder="Enter role name" [formControl]="txtAccessName">
+                    <mat-input-container >
+                        <input class="textarea" type="text" matInput mat-error placeholder="Enter role name" [formControl]="txtAccessName">
                     </mat-input-container>
                     <!-- <div class="btn-box">
                             <button style="padding: 0px 20px;" mat-raised-button class="mat-sm-btn" [routerLink]="['/dashboard/access-manager/access-role-details']">
@@ -43,7 +46,7 @@
                                 </li>
                             </ul>
                     </div>
-                    <div class="pp-card shadow-grey"  style="float: right; margin-left:20px; width:100%;">
+                    <div class="pp-card shadow-grey"  style="float: right; margin-left:20px; width:70%;">
                         <div class="as-count-sect card-seperator">
                         <div class="cad-head">
                             <div class="module-label">ACCESS</div>
@@ -101,7 +104,10 @@
                         </tbody>
                     </table>           
 
-                <div class="btn-box">
+               
+            </div>
+
+            <div class="btn-box">
                     <button mat-raised-button class="mat-sm-btn" (click)="create();" [disabled]="selectedItems.length === 0 || disableBtn" style="padding: 0px 20px !important;">
                       <span *ngIf="createRole"><i class="fa fa-plus"></i> Create Role</span>
                       <span *ngIf="creatingRole">Creating Role... <i class="fa fa-spinner fa-spin"></i></span>
@@ -109,7 +115,6 @@
                       <span *ngIf="updatingRole">Updating Role... <i class="fa fa-spinner fa-spin"></i></span>
                     </button>
                 </div>
-            </div>
-        </div>
+        </form>
     </div>
 </div>

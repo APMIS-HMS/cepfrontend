@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FeatureModuleService } from '../../../../services/module-manager/setup/index';
-import { AccessControlService } from '../../../../services/facility-manager/setup/index';
+import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
+import { AccessControlService } from '../../../../../services/facility-manager/setup/index';
 
-import { Facility, User } from '../../../../models/index';
+import { Facility, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -16,9 +16,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class AccessRoleDetailsComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
+  selectedRole: any;
   user: User = <User>{};
   roles: any = <any>[];
   loading: boolean = true;
+
+  createAccessrole = false;
 
   constructor(
     private _locker: CoolLocalStorage,
@@ -34,6 +37,7 @@ export class AccessRoleDetailsComponent implements OnInit {
     this._getAllRoles();
   }
 
+
   private _getAllRoles() {
     this._accessControlService.find({ query: {facilityId: this.selectedFacility._id } }).then(res => {
       console.log(res);
@@ -42,5 +46,15 @@ export class AccessRoleDetailsComponent implements OnInit {
         this.roles = res.data;
       }
     }).catch(err => console.log(err));
+  }
+
+  close_onClick(e) {
+    this.createAccessrole = false;
+  }
+  
+  newAccessrole_onClick(role) {
+    console.log(role);
+    this.selectedRole = role;
+    this.createAccessrole = true;
   }
 }

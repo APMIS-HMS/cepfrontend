@@ -11,6 +11,8 @@
         <i class="fa fa-clone" aria-hidden="true"></i> Modules</li>
     <li (click)="changeRoute('network')" [class.pg-menuActive]="networkContentArea">
         <i class="fa fa-th-large" aria-hidden="true"></i> Network</li> 
+    <li (click)="changeRoute('access')" [class.pg-menuActive]="accessContentArea">
+            <i class="fa fa-th-large" aria-hidden="true"></i> Access Control</li> 
 </ul>
 <div class="pgMenu-wrapa">
     <i (click)="pgMenu_click()" class="fa fa-chevron-down pgMenu-ico" aria-hidden="true"></i>
@@ -27,6 +29,8 @@
             <i class="fa fa-clone" aria-hidden="true"></i> Modules</li>
         <li (click)="changeRoute('network')" [class.pg-menuActive]="networkContentArea">
             <i class="fa fa-th-large" aria-hidden="true"></i> Network</li> 
+        <li (click)="changeRoute('access')" [class.pg-menuActive]="accessContentArea">
+                <i class="fa fa-th-large" aria-hidden="true"></i> Access Control</li> 
     </ul>
 </div>
 <div class="portal-wrap">
