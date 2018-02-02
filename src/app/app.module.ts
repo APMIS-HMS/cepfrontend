@@ -129,7 +129,7 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService, SetupService.DepartmentService
   ],
   bootstrap: [AppComponent]
 })
