@@ -33,8 +33,8 @@ export class RoomComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private router: Router,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage,
 		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+		private _locker: CoolLocalStorage,
 		private _wardAdmissionService: WardAdmissionService,
 		private _wardEventEmitter: WardEmitterService,
 		private _roomGroupService: RoomGroupService) {
@@ -46,8 +46,8 @@ export class RoomComponent implements OnInit {
 		this._wardAdmissionService.listenerUpdate.subscribe(payload => {
 			this.getWardRooomItems();
 		});
-		this.getWaitGroupItems();
-		this.getServicePriceTag();
+		// this.getWaitGroupItems();
+		// this.getServicePriceTag();
 	}
 
 	ngOnInit() {
@@ -57,8 +57,8 @@ export class RoomComponent implements OnInit {
 		this._wardEventEmitter.setRouteUrl('Room Setup');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.getWardRooomItems();
-		this.getWaitGroupItems();
-		this.getServicePriceTag();
+		// this.getWaitGroupItems();
+		// this.getServicePriceTag();
 	}
 
 	editRoom(index: Number, selectedRoom: any) {
@@ -93,30 +93,34 @@ export class RoomComponent implements OnInit {
 			});
 	}
 
-	getServicePriceTag() {
-		this._facilitiesServiceCategoryService.find({query: {facilityId: this.facility._id}}).then(payload => {
-			payload.data[0].categories.forEach(item => {
-				if (item.name === 'Ward') {
-					this.wardServicePriceTags = item.services;
-				}
-			});
-		});
-	}
+	// getServicePriceTag() {
+	// 	this._facilitiesServiceCategoryService.find({query: {facilityId: this.facility._id}}).then(res => {
+  //     if (res.data.length > 0) {
+  //       res.data[0].categories.forEach(item => {
+  //         if (item.name === 'Ward') {
+  //           this.wardServicePriceTags = item.services;
+  //         }
+  //       });
+  //     }
+	// 	});
+	// }
 
-	getWaitGroupItems() {
-		this._roomGroupService.findAll().then(payload => {
-			this.roomGroupItems = payload.data;
-		});
-	}
+	// getWaitGroupItems() {
+	// 	this._roomGroupService.findAll().then(res => {
+  //     console.log(res);
+	// 		// this.roomGroupItems = res.data;
+	// 	});
+	// }
 
 	getWardRooomItems() {
-		this._wardAdmissionService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
+    this._facilitiesService.get(this.facility._id, {}).then(res => {
+      console.log(res);
 			this.loading = false;
-			if (res.data.length > 0) {
-				const rooms = res.data[0].locations.filter(x => x.minorLocationId._id === this.wardId);
-				this.wardDetail = rooms[0];
-        this.rooms = rooms[0].rooms;
-			}
+			// if (res.data.length > 0) {
+			// 	const rooms = res.data[0].locations.filter(x => x.minorLocationId._id === this.wardId);
+			// 	this.wardDetail = rooms[0];
+      //   this.rooms = rooms[0].rooms;
+			// }
 		});
 	}
 

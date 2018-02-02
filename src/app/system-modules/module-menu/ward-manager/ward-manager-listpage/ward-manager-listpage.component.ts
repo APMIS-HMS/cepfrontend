@@ -39,28 +39,33 @@ export class WardManagerListpageComponent implements OnInit {
 	}
 
 	getFacilityWard() {
-		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-      this.loading = false;
-			if (res.data.length > 0) {
-        res.data[0].locations.forEach(ward => {
-          ward.rooms.forEach(room => {
-            let bedCount = 0;
-						if (room.beds.length > 0) {
-              room.beds.forEach(bed => {
-								if (bed.isAvailable) {
-									room.availableBeds = ++bedCount;
-								} else {
-                  room.availableBeds = 0;
-                }
-							});
-						} else {
-							room.availableBeds = 0;
-						}
-					});
-				});
-        this.wards = res.data[0].locations;
-			}
-		});
+    this._facilitiesService.get(this.facility._id, {}).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
+		// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
+    //   this.loading = false;
+		// 	if (res.data.length > 0) {
+    //     res.data[0].locations.forEach(ward => {
+    //       ward.rooms.forEach(room => {
+    //         let bedCount = 0;
+		// 				if (room.beds.length > 0) {
+    //           room.beds.forEach(bed => {
+		// 						if (bed.isAvailable) {
+		// 							room.availableBeds = ++bedCount;
+		// 						} else {
+    //               room.availableBeds = 0;
+    //             }
+		// 					});
+		// 				} else {
+		// 					room.availableBeds = 0;
+		// 				}
+		// 			});
+		// 		});
+    //     this.wards = res.data[0].locations;
+		// 	}
+		// });
 	}
 
 	goToFacility() {
