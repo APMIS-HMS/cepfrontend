@@ -234,29 +234,30 @@ export class EditEmpBasicComponent implements OnInit {
 	}
 
 	savePerson() {
+		console.log(this.facilityForm2.controls);
 		if (!this.facilityForm2.valid) {
 			this.mainErr = false;
 			this.errMsg = 'A required field has been left empty';
 		} else {
 			this.loading = true;
 			let person = {
-				_id: this.selectedPerson._id,
-				title: this.facilityForm2.controls['title'].value.name,
+				_id: this.selectedPerson._id, 
+				title: this.facilityForm2.controls['title'].value,
 				apmisId: this.selectedPerson.apmisId,
 				firstName: this.facilityForm2.controls['firstname'].value,
 				lastName: this.facilityForm2.controls['lastname'].value,
 				otherNames: this.facilityForm2.controls['othernames'].value,
-				gender: this.facilityForm2.controls['gender'].value.name,
-				maritalStatus: this.facilityForm2.controls['maritalStatus'].value.name,
+				gender: this.facilityForm2.controls['gender'].value,
+				maritalStatus: this.facilityForm2.controls['maritalStatus'].value,
 				dateOfBirth: this.facilityForm2.controls['date'].value,
-				nationality: this.facilityForm2.controls['nationality'].value.name,
-				stateOfOrigin: this.facilityForm2.controls['stateofOrigin'].value.name,
-				lgaOfOrigin: this.facilityForm2.controls['localgovtarea'].value.name,
+				nationality: this.facilityForm2.controls['nationality'].value,
+				stateOfOrigin: this.facilityForm2.controls['stateofOrigin'].value,
+				lgaOfOrigin: this.facilityForm2.controls['localgovtarea'].value,
 				homeAddress: {
 					street: this.facilityForm2.controls['homeaddress'].value,
-					state: this.facilityForm2.controls['stateofresidence'].value.name,
-					lga: this.facilityForm2.controls['lgaofresidence'].value.name,
-					country: this.facilityForm2.controls['nationality'].value.name
+					state: this.facilityForm2.controls['stateofresidence'].value,
+					lga: this.facilityForm2.controls['lgaofresidence'].value,
+					country: this.facilityForm2.controls['nationality'].value
 				},
 				email: this.facilityForm2.controls['email'].value,
 				//secondaryContactPhoneNo: this.facilityForm2.controls['phone'].value,

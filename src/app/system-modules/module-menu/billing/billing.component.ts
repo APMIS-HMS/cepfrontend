@@ -13,6 +13,7 @@ export class BillingComponent implements OnInit {
   contentSecMenuShow = false;
   serviceStyle = true;
   pricelistStyle= false;
+  pgMenuToggle = false;
 
   constructor() { }
 
@@ -44,6 +45,9 @@ export class BillingComponent implements OnInit {
     this.services = false;
     this.pricelistStyle = true;
     this.serviceStyle = false;
+  }
+  pgMenu_click() {
+    this.pgMenuToggle = !this.pgMenuToggle;
   }
 
 }
