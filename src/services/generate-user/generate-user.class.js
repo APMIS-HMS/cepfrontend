@@ -14,7 +14,6 @@ class Service {
   }
 
   create(data, params) {
-    logger.info(data);
     const userService = this.app.service('users');
     // const personService = this.app.service('people');
     const getTokenService = this.app.service('get-tokens');
@@ -22,7 +21,6 @@ class Service {
     return new Promise(function (resolve, reject) {
       getTokenService.get(tokenLabel.tokenType.autoPassword, {}).then(smsPayload => {
         data.password = smsPayload.result;
-        logger.info(data.password);
         if (data.facilityId !== undefined) {
           data.facilitiesRole = [];
           data.facilitiesRole.push({ facilityId: data.facilityId });

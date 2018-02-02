@@ -10,27 +10,10 @@ module.exports = function (app) {
     Schema
   } = mongooseClient;
   const consultingRoom = new Schema({
-    facilityId: {
-      type: Schema.Types.ObjectId,
-      require: true
-    },
+    facilityId: { type: Schema.Types.ObjectId, require: true },
     rooms: [roomModel],
-    majorLocationId: {
-      type: Schema.Types.ObjectId,
-      require: true
-    },
-    minorLocationId: {
-      type: Schema.Types.ObjectId,
-      require: true
-    },
-    createdAt: {
-      type: Date,
-      'default': Date.now
-    },
-    updatedAt: {
-      type: Date,
-      'default': Date.now
-    }
+    majorLocationId: { type: Schema.Types.ObjectId, require: true },
+    minorLocationId: { type: Schema.Types.String, require: true },
   }, {
     timestamps: true
   });

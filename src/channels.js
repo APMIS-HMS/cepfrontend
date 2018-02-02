@@ -63,11 +63,9 @@ module.exports = function (app) {
     return app.channel(data._id);
   });
   app.service('patients').publish('created', (data) => {
-    // logger.info(data.facilityId);
     return app.channel(data.facilityId);
   });
   app.service('employees').publish('created', (data) => {
-    logger.info(data.facilityId);
     return app.channel(data.facilityId);
   });
 };

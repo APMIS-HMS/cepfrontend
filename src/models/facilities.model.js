@@ -34,7 +34,7 @@ module.exports = function (app) {
     facilityTypeId: { type: String, required: false },
     facilityClassId: { type: String, required: false },
     logoObject: { type: Schema.Types.Mixed, required: false },
-    facilitymoduleId: [{ type: Schema.Types.ObjectId, require: false }],
+    facilitymoduleId: [{ type: Schema.Types.Mixed, require: false }],//{isActive,moduleId}
     minorLocations: [locationSchema],
     ownershipCentreId: { type: String, required: false },
     verificationToken: { type: String, required: false },

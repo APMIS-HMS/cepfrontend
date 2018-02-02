@@ -18,7 +18,6 @@ class Service {
   }
 
   create(data, params) {
-    // logger.info(data);
     const facilityService = this.app.service('facilities');
     const getTokenService = this.app.service('get-tokens');
 

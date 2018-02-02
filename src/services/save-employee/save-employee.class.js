@@ -34,26 +34,26 @@ class Service {
         personId: data.personId
       }
     });
-    logger.info(userList);
     if (userList.data.length > 0) {
       let selectedUser = userList.data[0];
       if (selectedUser.facilitiesRole === undefined) {
         selectedUser.facilitiesRole = [];
+
+        let facilityRole = {
+          facilityId: data.facilityId,
+        };
+        let facilitiesRole = selectedUser.facilitiesRole;
+        facilitiesRole.push(facilityRole);
+        let patchedUser = await userService.patch(selectedUser._id, {
+          facilitiesRole: facilitiesRole
+        });
+        return patchedUser;
+      } else {
+        return [];
       }
-      let facilityRole = {
-        facilityId: data.facilityId,
-      };
-      let facilitiesRole = selectedUser.facilitiesRole;
-      facilitiesRole.push(facilityRole);
-      let patchedUser = await userService.patch(selectedUser._id, {
-        facilitiesRole: facilitiesRole
-      });
-      return patchedUser;
-    } else {
-      return [];
+
+
     }
-
-
   }
 
   update(id, data, params) {
