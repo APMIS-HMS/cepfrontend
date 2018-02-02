@@ -36,7 +36,7 @@ export class PasswordResetComponent implements OnInit {
   ngOnInit() {
     this.frm_pwdReset1 = this.formBuilder.group({
       apmisid: ['', [<any>Validators.required]],
-      phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(14), <any>Validators.pattern(PHONE_REGEX)]]
+      phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(11), <any>Validators.pattern(PHONE_REGEX)]]
       // phoneNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
     });
 

@@ -1,6 +1,8 @@
 export interface ScheduleRecordModel {
-    schedulerType: any;
-    clinicObject: any;
+    scheduleType: any;
+    clinic: any;
     schedules: any[];
     facilityId: string;
+    department: string;
+    unit: string;
 }

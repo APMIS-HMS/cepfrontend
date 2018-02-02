@@ -94,11 +94,12 @@ export class ConsultingRoomComponent implements OnInit {
   }
   onSelectSchedulerManager(manager: ConsultingRoomModel) {
     this.selectedManager = manager;
-    const filteredClinic = this.clinicLocations.filter(x => x._id === this.selectedManager.minorLocationId);
+    console.log(this.selectedManager);
+    const filteredClinic = this.clinicLocations.filter(x => x.name === this.selectedManager.minorLocationId);
     if (filteredClinic.length > 0) {
       this.selectedMinorLocation = filteredClinic[0];
     }
-    this.locationTypeControl.setValue(this.selectedMinorLocation);
+    this.locationTypeControl.setValue(this.selectedManager.minorLocationId);
     this.loadManagerRooms(false);
   }
   loadManagerRooms(force: boolean) {

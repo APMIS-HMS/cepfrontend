@@ -198,10 +198,10 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.facilityObj.departments[index] = department;
     this.facilityService.update(this.facilityObj).then(payload => {
       this.systemService.off();
-      this.systemService.announceSweetProxy('Unit removed successfully','info');
+      this.systemService.announceSweetProxy('Unit removed successfully', 'info');
     }).catch(err => {
       this.systemService.off();
-      this.systemService.announceSweetProxy('There was an error while removing this unit','error');
+      this.systemService.announceSweetProxy('There was an error while removing this unit', 'error');
     });
   }
   deptEditNameToggle() {
@@ -272,6 +272,8 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     this.selectedDepartment = undefined;
   }
   newDept_onClick() {
+    this.selectedDepartment = undefined;
+    this.selectedUnit = undefined;
     this.newDept = true;
   }
   newUnit_onClick(dept) {
