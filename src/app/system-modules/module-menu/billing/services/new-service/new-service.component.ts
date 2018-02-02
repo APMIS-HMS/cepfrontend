@@ -19,7 +19,7 @@ export class NewServiceComponent implements OnInit {
   @Input() selectedService: any = <any>{};
   mainErr = true;
   errMsg = 'you have unresolved errors';
-  btnTitle = 'CREATE SERVICE';
+  btnTitle = 'ADD SERVICE';
 
   public frmNewservice: FormGroup;
 
@@ -30,7 +30,7 @@ export class NewServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.btnTitle = 'CREATE SERVICE';
+    this.btnTitle = 'ADD SERVICE';
     this.addNew();
     const subscribeForServiceDictionary = this.frmNewservice.controls['serviceName'].valueChanges
       .debounceTime(200)
@@ -98,7 +98,7 @@ export class NewServiceComponent implements OnInit {
         let goingIndex = -1;
         payload.data[0].categories.forEach((item, i) => {
 
-          if (this.btnTitle === 'CREATE SERVICE') {
+          if (this.btnTitle === 'ADD SERVICE') {
             if (item._id === this.frmNewservice.controls['serviceCat'].value) {
               item.services.push(serviceItem);
             }

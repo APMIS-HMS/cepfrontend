@@ -257,15 +257,14 @@ export class ServicesComponent implements OnInit {
   }
 
   closeSearch(){
-    this.searchShow = false;    
+    this.searchShow = false;
   }
 
-  
   showSearchc(){
     this.searchShowc = true;
   }
 
   closeSearchc(){
-    this.searchShowc = false;    
+    this.searchShowc = false;
   }
 }
