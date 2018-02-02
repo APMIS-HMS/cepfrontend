@@ -70,7 +70,7 @@ export class EditEmpBasicComponent implements OnInit {
 		private locker: CoolLocalStorage,
 		private systemModulesService: SystemModuleService,
 		private departmentService: DepartmentService,
-		private _countryServiceFacade: CountryServiceFacadeService,) { }
+		private _countryServiceFacade: CountryServiceFacadeService, ) { }
 
 	ngOnInit() {
 		console.log(this.selectedPerson);
@@ -127,30 +127,32 @@ export class EditEmpBasicComponent implements OnInit {
 		this.prime();
 
 		this.facilityForm2.controls['nationality']
-		.valueChanges.subscribe(payload => {
-			this._countryServiceFacade.getOnlyStates(payload.name, true).then(payl => {
-				this.statesOfOrigin = payl;
-			})
-		});
+			.valueChanges.subscribe(payload => {
+				this.selectedCountry = payload;
+				this._countryServiceFacade.getOnlyStates(payload.name, true).then(payl => {
+					this.statesOfOrigin = payl;
+					this.states = payl;
+				})
+			});
 
 		this.facilityForm2.controls['stateofOrigin']
-		.valueChanges.subscribe(payload => {
-			console.log(this.selectedCountry.name);
-			this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, payload.name, true).then((payl:any) => {
-				console.log(payl.lgs);
-				this.lgasOfOrigin = payl.lgs;
-			})
-		});
+			.valueChanges.subscribe(payload => {
+				console.log(this.selectedCountry);
+				this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, payload.name, true).then((payl: any) => {
+					console.log(payl.lgs);
+					this.lgasOfOrigin = payl.lgs;
+				})
+			});
 
 		this.facilityForm2.controls['stateofresidence']
-		.valueChanges.subscribe(payload => {
-			console.log(this.selectedCountry.name);
-			this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, payload.name, true).then((payl:any) => {
-				console.log(payl.lgs);
-				this.lgas = payl.lgs;
-			})
-		});
-		
+			.valueChanges.subscribe(payload => {
+				console.log(this.selectedCountry.name);
+				this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, payload.name, true).then((payl: any) => {
+					console.log(payl.lgs);
+					this.lgas = payl.lgs;
+				})
+			});
+
 	}
 
 	prime() {
@@ -170,29 +172,33 @@ export class EditEmpBasicComponent implements OnInit {
 			this.countries = results[3];
 			console.log(this.countries);
 			this.stateAvailable = false;
-			const country = this.countries.filter(item => item.name === this.selectedPerson.homeAddress.country);
-			this.selectedCountry = country[0];
-			this._countryServiceFacade.getOnlyStates(this.selectedCountry.name, true).then((payl) => {
-				this.states = payl;
-				this.statesOfOrigin = payl;
-				let stateOfOrigin = this.statesOfOrigin.filter(x => x.name == this.selectedPerson.stateOfOrigin);
-				console.log(stateOfOrigin);
-				this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, stateOfOrigin[0].name, true).then((paylo:any) => {
-					this.lgasOfOrigin = paylo.lgs;
-					console.log(paylo.lgs);
-				});
-				let stateofresidence = this.states.filter(x => x.name == this.selectedPerson.homeAddress.state);
-				console.log(stateofresidence[0].name);
-				this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, stateofresidence[0].name, true).then((paylo:any) => {
-					this.lgas = paylo.lgs;
-					console.log(this.lgas);
+			if (this.selectedPerson.homeAddress.country) {
+				const country = this.countries.filter(item => item.name === this.selectedPerson.homeAddress.country);
+				this.selectedCountry = country[0];
+				console.log(this.selectedCountry);
+				this._countryServiceFacade.getOnlyStates(this.selectedCountry.name, true).then((payl) => {
+					this.states = payl;
+					this.statesOfOrigin = payl;
+					let stateOfOrigin = this.statesOfOrigin.filter(x => x.name == this.selectedPerson.stateOfOrigin);
+					console.log(stateOfOrigin);
+					this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, stateOfOrigin[0].name, true).then((paylo: any) => {
+						this.lgasOfOrigin = paylo.lgs;
+						console.log(paylo.lgs);
+					});
+					let stateofresidence = this.states.filter(x => x.name == this.selectedPerson.homeAddress.state);
+					console.log(stateofresidence[0].name);
+					this._countryServiceFacade.getOnlyLGAndCities(this.selectedCountry.name, stateofresidence[0].name, true).then((paylo: any) => {
+						this.lgas = paylo.lgs;
+						console.log(this.lgas);
+					})
 				})
-			})
-			// let lgs = this.selectedCountry.states.filter(item => item.name == this.);
-			console.log(this.selectedCountry);
-			/* if (this.selectedCountry.states.length > 0) {
-				this.stateAvailable = true;
-			} */
+				// let lgs = this.selectedCountry.states.filter(item => item.name == this.);
+				console.log(this.selectedCountry);
+				/* if (this.selectedCountry.states.length > 0) {
+					this.stateAvailable = true;
+				} */
+			}
+
 
 
 		});
@@ -266,6 +272,7 @@ export class EditEmpBasicComponent implements OnInit {
 				this.loading = false;
 				this.close_onClick(true);
 			}).catch(err => {
+				console.log(err);
 				this.systemModulesService.announceSweetProxy('Error occured while saving information, please check it and try again.', 'error');
 			});
 		}
@@ -319,13 +326,13 @@ export class EditEmpBasicComponent implements OnInit {
 		return l1.name == l2;
 	}
 
-	compareDepartments(d1:any, d2:any){
+	compareDepartments(d1: any, d2: any) {
 		console.log('d1: ', d1);
 		console.log('d2: ', d2);
 		return d1._id == d2;
 	}
 
-	getDepartmentById(){
+	getDepartmentById() {
 		const deptId = this.selectedEmployee.departmentId;
 		const depts = this.facility.departments;
 
@@ -336,7 +343,7 @@ export class EditEmpBasicComponent implements OnInit {
 
 		console.log(this.selectedDepartment);
 
-		
+
 	}
 
 
