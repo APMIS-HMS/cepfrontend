@@ -16,6 +16,7 @@ export class FacilitiesService {
   private _rest;
   private _restLogin;
   private _socketAddNetwork;
+  private _socketModule;
   private _socketJoinNetwork;
 
   private sliderAnnouncedSource = new Subject<Object>();
@@ -40,6 +41,7 @@ export class FacilitiesService {
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
     this._socketAddNetwork = _socketService.getService('add-networks');
     this._socketJoinNetwork = _socketService.getService('join-network');
+    this._socketModule = _socketService.getService('custom-facility-modules');
     // client.service('messages').on('created', addMessage);
 
   }
@@ -206,6 +208,14 @@ export class FacilitiesService {
         'ismember': isMemberOf
       }
     })
+  }
+
+  getModule(id, query) {
+    return this._socketModule.get(id, query);
+  }
+
+  createModule(facility: any,param:any) {
+    return this._socketModule.create(facility,param);
   }
 
 }

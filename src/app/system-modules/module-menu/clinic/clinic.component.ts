@@ -62,8 +62,6 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.checkPageUrl(page);
 		this.authFacadeService.getLogingEmployee().then((payload) => {
 			this.loginEmployee = payload;
-			console.log(this.loginEmployee);
-
 
 			if (this.loginEmployee.professionId !== undefined) {
 				if (this.loginEmployee.professionId === 'Doctor'

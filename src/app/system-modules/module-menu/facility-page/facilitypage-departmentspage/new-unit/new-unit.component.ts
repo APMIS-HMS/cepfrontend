@@ -130,7 +130,7 @@ export class NewUnitComponent implements OnInit {
 
         if (children != null) {
           children.value.readonly = true;
-          // children.disabled = true;
+          console.log(children);
           (<FormArray>this.clinicForm.controls['clinicArray'])
             .push(
             this.formBuilder.group({
@@ -158,15 +158,16 @@ export class NewUnitComponent implements OnInit {
         this.errMsg = 'you left out a required field';
       } else {
         if (this.unit === undefined) {
-          console.log(1);
           const id = this.department._id;
           const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
 
+          console.log(clinics);
           const clinicList = [];
           clinics.forEach((itemi, i) => {
             clinicList.push(itemi.value);
           });
           console.log(2);
+          console.log(clinicList);
           this.facilityObj.departments.forEach(function (item, i) {
             console.log(item._id);
             console.log(id);
@@ -181,6 +182,7 @@ export class NewUnitComponent implements OnInit {
             }
           });
           console.log(3);
+          console.log(this.facilityObj)
           this.facilityService.update(this.facilityObj).then((payload) => {
             console.log(4);
             this.facilityObj = payload;
@@ -231,6 +233,9 @@ export class NewUnitComponent implements OnInit {
                     unit.clinics.forEach((clinic, k) => {
                       let shouldDelete = false;
                       that.clinicsToDelele.forEach((toDelete) => {
+                        console.log('am deleting');
+                        console.log(clinic);
+                        console.log(toDelete);
                         if (clinic._id === toDelete._id) {
                           shouldDelete = true;
                         }

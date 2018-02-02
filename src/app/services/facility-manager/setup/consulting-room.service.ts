@@ -15,8 +15,8 @@ export class ConsultingRoomService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('consultingrooms');
-    this._socket = _socketService.getService('consultingrooms');
+    this._rest = _restService.getService('consulting-rooms');
+    this._socket = _socketService.getService('consulting-rooms');
     this._socket.timeout = 30000;
     this._socket.on('created', function (gender) {
     });

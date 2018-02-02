@@ -43,8 +43,10 @@ export class WardCheckInComponent implements OnInit {
     this.miniFacility = <Facility>this.locker.getObject('miniFacility');
     this.user = <User>this.locker.getObject('auth');
 
-		if (this.loginEmployee.workSpaces !== undefined) {
+    console.log(this.loginEmployee);
+		if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
 			this.loginEmployee.workSpaces.forEach(workspace => {
+        console.log(workspace);
 				if (workspace.isActive && workspace.locations.length > 0) {
 					workspace.locations.forEach(x => {
 					  if (x.isActive && x.majorLocationId.name === 'Ward') {
@@ -52,8 +54,7 @@ export class WardCheckInComponent implements OnInit {
 					  }
 					});
 				  }
-			})
-
+			});
 		}
 
 		this.wardCheckin = this.formBuilder.group({
@@ -64,6 +65,7 @@ export class WardCheckInComponent implements OnInit {
 
 		this.wardCheckin.controls['location'].valueChanges.subscribe(value => {
 			this.facilityService.find({ query: { '_id': this.facility._id, 'minorLocations.locationId': value._id } }).then(res => {
+        console.log(res);
 				if (res.data.length > 0) {
 					this.wards = res.data[0].minorLocations.filter(x => x.locationId === value._id);
 				}

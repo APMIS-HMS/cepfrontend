@@ -15,7 +15,7 @@ export class FacilityModuleService {
   }
 
   find(query: any) {
-    return this._socket.find({ query: query });
+    return this._socket.find(query);
   }
 
   findAll() {

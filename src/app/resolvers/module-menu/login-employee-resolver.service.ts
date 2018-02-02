@@ -56,11 +56,11 @@ export class LoginEmployeeResolverService implements Resolve<Employee> {
 
                 this.schedules.forEach((items, s) => {
                   this.loginEmployee.units.forEach((itemu, u) => {
-                    if (itemu === items.clinicObject.unit._id) {
-                      const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
-                      if (res.length > 0) {
-                        this.clinicLocations.push(res[0]);
-                      }
+                    if (itemu === items.unit) {
+                      // const res = inClinicLocations.filter(x => x._id === items.clinicObject.clinic.clinicLocation);
+                      // if (res.length > 0) {
+                      //   this.clinicLocations.push(res[0]);
+                      // }
                     }
                   });
                 });
