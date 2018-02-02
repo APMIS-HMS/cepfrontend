@@ -11,7 +11,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
 @NgModule({
   declarations: [
     // SystemModuleComponent,
-    
+    // ChangePasswordComponent,
   ],
   exports: [
   ],
@@ -19,7 +19,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
     // CommonModule,
     // ReactiveFormsModule,
     // FormsModule 
-    ChangePasswordComponent,
+
     LogOutConfirmModule,
     systemModulesRoutes,
     SharedModule,
