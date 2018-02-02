@@ -116,6 +116,9 @@ const facilityRoles = require('./facility-roles/facility-roles.service.js');
 const saveEmployee = require('./save-employee/save-employee.service.js');
 const scheduleTypes = require('./schedule-types/schedule-types.service.js');
 const schedules = require('./schedules/schedules.service.js');
+const wardSetup = require('./ward-setup/ward-setup.service.js');
+const wardroomgroups = require('./wardroomgroups/wardroomgroups.service.js');
+const wardRoomPrices = require('./ward-room-prices/ward-room-prices.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -235,4 +238,7 @@ module.exports = function (app) {
   app.configure(saveEmployee);
   app.configure(scheduleTypes);
   app.configure(schedules);
+  app.configure(wardSetup);
+  app.configure(wardroomgroups);
+  app.configure(wardRoomPrices);
 };
