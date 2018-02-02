@@ -18,3 +18,22 @@
         text-align: center;
 }
 
+.table{
+    width: 100%;
+}
+
+.table-header{
+    background: #337de6;
+    color: #fff;
+    height: 50px !important;
+}
+
+.table-content{
+    min-height: 40px;
+    line-height: 40px;
+}
+
+.pp-card{
+    padding: 20px !important;
+    box-sizing: border-box;
+}
