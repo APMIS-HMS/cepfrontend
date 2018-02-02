@@ -120,6 +120,9 @@ const billManagers = require('./bill-managers/bill-managers.service.js');
 const customFacilityModules = require('./custom-facility-modules/custom-facility-modules.service.js');
 const appointmentTypes = require('./appointment-types/appointment-types.service.js');
 const orderstatus = require('./orderstatus/orderstatus.service.js');
+const wardSetup = require('./ward-setup/ward-setup.service.js');
+const wardroomgroups = require('./wardroomgroups/wardroomgroups.service.js');
+const wardRoomPrices = require('./ward-room-prices/ward-room-prices.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -243,4 +246,7 @@ module.exports = function (app) {
   app.configure(customFacilityModules);
   app.configure(appointmentTypes);
   app.configure(orderstatus);
+  app.configure(wardSetup);
+  app.configure(wardroomgroups);
+  app.configure(wardRoomPrices);
 };
