@@ -4,6 +4,7 @@ import { FacilityModule, Facility } from '../../../../models/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-facilitypage-modulespage',
   templateUrl: './facilitypage-modulespage.component.html',
@@ -19,6 +20,7 @@ export class FacilitypageModulespageComponent implements OnInit {
   facility: any = <any>{};
   systemModules: any[] = [];
   facilityModules: any[] = [];
+  idToRemove: any = <any>{}
   constructor(private facilityModuleService: FacilityModuleService,
     private locker: CoolLocalStorage,
     private route: ActivatedRoute,
@@ -59,7 +61,7 @@ export class FacilitypageModulespageComponent implements OnInit {
       console.log(payload);
       this.systemModuleService.off;
       this.systemModules = payload;
-    },err=>{
+    }, err => {
       this.systemModuleService.off;
     });
   }
@@ -72,7 +74,7 @@ export class FacilitypageModulespageComponent implements OnInit {
     }).then((payload) => {
       console.log(payload);
       this.systemModuleService.off;
-      if(payload.facilitymoduleId.length > 0){
+      if (payload.facilitymoduleId.length > 0) {
         this.facilityModules = payload.facilitymoduleId;
       }
     }, error => {
@@ -92,17 +94,9 @@ export class FacilitypageModulespageComponent implements OnInit {
   }
 
   deactivate(id) {
-    let facility = <any>this.locker.getObject("selectedFacility");
-    let ind = facility.facilityModulesId.indexOf(id.toString());
-
-    facility.facilityModulesId.splice(ind, 1);
-    this.facilityService.update(facility).then(payload => {
-      this.getModules();
-      this.getFacility();
-    });
-
+    
   }
-
+  
   onActive(value) {
     this.facilityService.createModule({}, {
       query: {
@@ -120,21 +114,29 @@ export class FacilitypageModulespageComponent implements OnInit {
   }
 
   onDeactive(value) {
-    this.facilityService.createModule({}, {
-      query: {
-        isRemove: true,
-        moduleId: value._id,
-        facilityId: this.facility._id
-      }
-    }).then((payload) => {
-      console.log(payload);
-      this.getModules();
-      this.getFacility();
-    }, error => {
-      console.log(error);
-    })
+    this.systemModuleService.on;
+    this.idToRemove = value;
+    this.systemModuleService.announceSweetProxy('Are you sure you want to deactive this module', 'question', this);
   }
 
+  sweetAlertCallback(result) {
+    if (result.value) {
+      this.facilityService.createModule({}, {
+        query: {
+          isRemove: true,
+          moduleId: this.idToRemove._id,
+          facilityId: this.facility._id
+        }
+      }).then((payload) => {
+        console.log(payload);
+        this.getModules();
+        this.getFacility();
+        this.idToRemove=<any>{};
+      }, error => {
+        console.log(error);
+      })
+    }
+  }
 
   allModuleTab() {
     this.allModulesShow = true;

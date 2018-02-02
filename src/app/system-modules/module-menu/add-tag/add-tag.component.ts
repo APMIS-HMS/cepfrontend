@@ -74,7 +74,7 @@ export class AddTagComponent implements OnInit {
 
   onTagRemove(tag) {
     this.systemModuleService.on;
-    this.systemModuleService.announceSweetProxy('', 'warning', this);
+    this.systemModuleService.announceSweetProxy('You are about to delete this tag', 'question', this);
     this.editedTag = tag;
   }
   
