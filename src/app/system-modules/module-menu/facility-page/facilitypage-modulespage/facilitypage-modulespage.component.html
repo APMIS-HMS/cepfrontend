@@ -66,7 +66,7 @@
             
                 <tbody>
                     <tr *ngFor="let module of facilityModules">
-                        <td>{{module.name}}</td>
+                        <td>{{module?.name}}</td>
                         <td class="th-act">
                             <button class="tbl-btn-red" *ngIf="module.canDisable==true" (click)="onDeactive(module)"><i class="fa fa-ban" aria-hidden="true"></i> {{module.status}}</button>
                         </td>
