@@ -6,7 +6,7 @@
       <div class="card-title">Network Members</div>
       <div class="tbl-resp-wrap">
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">  
-            <tbody>
+            <tbody *ngIf="members.length > 0">
                 <tr *ngFor="let networkMembers of members">
                     <td>
                         <div class="empWrap">
@@ -23,6 +23,11 @@
                     </td>
                 </tr>
             </tbody>
+            <tbody *ngIf="members.length == 0">
+                <tr>
+                    <td class="table-content" colspan="6" border="0.5" style="text-align: center "> No data available in table</td>
+                </tr>
+            </tbody>
         </table>
       </div>
     </div>
@@ -31,7 +36,7 @@
       <div class="card-title">Other Networks</div>
       <div class="tbl-resp-wrap">
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
-            <tbody>
+            <tbody *ngIf="others.length > 0">
                 <tr *ngFor="let networkJoined of others">
                     <td>
                         <div class="empWrap">
@@ -46,6 +51,11 @@
                             <i (click)="leaveNetwork(networkJoined._id)" class="fa fa-trash" aria-hidden="true"> Leave</i> 
                         </div>
                     </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="others.length == 0">
+                <tr>
+                    <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
                 </tr>
             </tbody>
         </table>

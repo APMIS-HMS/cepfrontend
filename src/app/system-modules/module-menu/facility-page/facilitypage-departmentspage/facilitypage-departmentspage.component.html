@@ -36,7 +36,7 @@
                                 </tr>
                             </thead>
             
-                            <tbody>
+                            <tbody *ngIf="dept.units.length > 0">
                                 <tr *ngFor="let unit of dept.units">
                                     <td> {{unit.name}}</td>
                                     <td>{{unit.shortName}}</td>
@@ -73,6 +73,11 @@
                                         <i (click)="remove(dept, unit)" class="fa fa-trash" aria-hidden="true"></i>
                                     </td>
                                 </tr> 
+                            </tbody>
+                            <tbody *ngIf="dept.units.length == 0">
+                                <tr>
+                                    <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
