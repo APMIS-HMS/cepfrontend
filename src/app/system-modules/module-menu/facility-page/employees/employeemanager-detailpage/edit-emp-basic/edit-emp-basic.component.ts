@@ -241,7 +241,7 @@ export class EditEmpBasicComponent implements OnInit {
 		} else {
 			this.loading = true;
 			let person = {
-				_id: this.selectedPerson._id,
+				_id: this.selectedPerson._id, 
 				title: this.facilityForm2.controls['title'].value,
 				apmisId: this.selectedPerson.apmisId,
 				firstName: this.facilityForm2.controls['firstname'].value,
